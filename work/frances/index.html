@@ -1,0 +1,33 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="./libraries/RGraph.common.core.js"></script>
+    <script src="./libraries/RGraph.common.effects.js"></script>
+    <script src="./libraries/RGraph.common.tooltips.js"></script>
+    <script src="./libraries/RGraph.hbar.js"></script>
+</head>
+<body>
+
+    <h1>HBar with sequential colors and Grow() animation</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        hbar = new RGraph.HBar('cvs', [29,26,35,41,52,41,61]);
+        hbar.Set('chart.labels', ['Olga','Pete','Lou','Kim','Jane','Rod','Fred']);
+        hbar.Set('chart.colors', ['red','green','blue','cyan','pink','orange','violet']);
+        hbar.Set('chart.colors.sequential', true);
+        hbar.Set('chart.grouping', 'stacked');
+        hbar.Set('chart.shadow', true);
+        hbar.Set('chart.shadow.color', '#ccc');
+        hbar.Set('chart.shadow.offsetx', 0);
+        hbar.Set('chart.shadow.offsety', 0);
+        hbar.Set('chart.shadow.blur', 15);
+        hbar.Set('chart.vmargin', 3);
+        hbar.Set('chart.tooltips', ['Red','Green','Blue','Cyan','pink','Orange','Violet']);
+        
+        //hbar.Draw();
+        RGraph.Effects.HBar.Grow(hbar);
+    </script>
+
+</body>
+</html>
