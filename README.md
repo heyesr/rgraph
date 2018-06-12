@@ -1,4 +1,4 @@
 RGraph
 ======
 
-This is the September 2014 release of RGraph 
+This is the official Github repository of RGraph - an Open Source JavaScript charts library for websites.
