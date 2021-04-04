@@ -1,0 +1,12 @@
++---------------------------+
+| RGraph demos and examples |
++---------------------------+
+
+These demos are bundled with the RGraph distribution to enable you to view the features of RGraph
+and provide you with a starting point for your own charts and/or give you ideas about things you
+may wish to implement.
+
+New demos are constantly being added so with each release there may well be new demos that you
+haven't seen. Some of the RGraph demos and HTML5 canvas features are demonstrated online:
+
+                                   https://www.rgraph.net/demos

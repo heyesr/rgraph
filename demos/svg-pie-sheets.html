@@ -1,0 +1,122 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Pie chart using the Google Sheets connector</title>
+
+
+    <meta name="description" content="An SVG Pie chart using the Google Sheets connector. The Pie chart gets its data and labels from the spreadsheet." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Pie chart using the Google Sheets connector</h1>
+    
+    <div style="width: 650px; height: 300px; float: right" id="chart-container"></div>
+
+    <p>
+        This is a demo of a chart being created by using the Google Sheets connector that's bundled with
+        RGraph.
+        <a href="https://docs.google.com/spreadsheets/d/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/edit?usp=sharing">
+            You can see the Google Sheet that RGraph is fetching data from here</a>
+        
+        and there's documentation for
+        
+        <a href="/canvas/sheets.html">
+            the Google Sheets Connector</a> here.
+    </p>
+    
+    <p>
+        It's actually using the data that's on the Bar worksheet (there are multiple buttons at the bottom of
+        the screen that allow you access to the other worksheets). The labels are coming from the spreadsheet too.
+    </p>
+    
+    <p>
+        The stroke color is set to white and the linewidth
+        is 2. There's no other configuration so the Pie chart looks quite standard, though there is a
+        responsive configuration so that on smaller screens the labels disappear and tooltips are used instead.
+    </p>
+
+    
+    <br clear="all" />
+
+
+
+        
+    <script>
+        // A pretty basic Pie chart that doesn't do anything particularly magical.
+        // The only thing that's worthy of note here is the fact that it gets its
+        // data via the Google Sheets import tool. The key for the spreadsheet
+        // (the unique identifier) can be found in the URL and is this:
+        //
+        // 1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E
+        //
+        // This, along with a callback function that creates the chart, are given to
+        // the Sheets object constructor. The optional 2nd argument for the Sheets
+        // constructor that specifies the worksheet to use has been omitted this time.
+        //
+        // Remember that the Google Sheets import tool can be used standalone - ie
+        // without the RGraph core library. Along with the permissive MIT license,
+        // this means that you are free to incorporate it into your own projects
+        // or tools if you want to.
+        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        {
+            // Get the data and the labels from the spreadsheet. Note that you can
+            // use the familiar row and column names to get the data.
+            var data   = sheet.get('B2:B13'),
+                labels = sheet.get('A2:A13');
+
+            new RGraph.SVG.Pie({
+                id: 'chart-container',
+                data: data,
+                options: {
+                    labels: labels,
+                    colorsStroke: 'white',
+                    linewidth: 2,
+                    textSize: 10
+                }
+            
+            // Draw the chart and add some responsive accommodation
+            }).draw().responsive([
+                {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},css:{'float':'right'}},
+                {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},css: {'float': 'none'}}
+            ]);
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.sheets.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <link rel="stylesheet" href="../css/animate.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart</title>
+
+    <meta name="description" content="An SVG Bar chart that uses the CSS animate library" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG Bar chart</h1>
+    <p>A pretty standard SVG Bar chart that is animated using the CSS3 animation library that's provided with RGraph. It has tooltips which even work before the animation has finished. You have to be a quick clicker though! All of the possible different animations are shown below.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container" class="animated expand"></div>
+
+
+
+
+    <script>
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [4,8,6,3,5,9,8],
+            options: {
+                marginLeft: 50,
+                colors: ['#c66','#6c6','#66c'],
+                yaxisScaleUnitsPost: '%',
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                tooltips: [
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben',
+                    'Bob', 'Jerry', 'Ben'
+                ],
+                grouping: 'stacked',
+                marginInner: 20,
+                linewidth:3,
+                title: 'An SVG Bar chart',
+                shadow: true
+            }
+        }).draw();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container" class="animated expand"&gt;&lt;/div&gt;
+<span>
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flash"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounce"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated shake"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated tada"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated swing"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated wobble"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated wiggle"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated pulse"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flip"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flipInX"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flipOutX"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flipInY"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated flipOutY"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeIn"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInUp"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInDown"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInUpBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInDownBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInLeftBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeInRightBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOut"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutUp"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutDown"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutUpBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutDownBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutLeftBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated fadeOutRightBig"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceIn"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceInDown"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceInUp"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceInLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceInRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceOut"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceOutDown"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceOutUp"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceOutLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated bounceOutRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateIn"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateInDownLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateInDownRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateInUpLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateInUpRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateOut"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateOutDownLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateOutDownRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateOutUpLeft"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rotateOutUpRight"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated lightSpeedIn"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated lightSpeedOut"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated hinge"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rollIn"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated rollOut"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated expand"&gt;&lt;/div&gt; --&gt;
+&lt;!-- &lt;div style="width: 750px; height: 300px" id="chart-container" class="animated contract"&gt;&lt;/div&gt; --&gt;
+</span>
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

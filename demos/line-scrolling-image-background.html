@@ -1,0 +1,125 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart with a scrolling background image</title>
+    
+    
+    <meta name="description" content="A Line chart with a scrolling background image" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart with a scrolling background image</h1>
+
+
+    <div id="container" style="overflow: hidden; position: relative; width: 600px; height: 250px;">
+        <canvas id="cvs_chart" width="600" height="250" style="position: absolute; top: 0; left: 0; z-index: 1">[No canvas support]</canvas>
+    </div>
+    
+    <style>
+        button {
+            font-size: 18pt;
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+
+    <button onclick="img.src = '../images/line-scrolling-background-image1.jpg'">Background1</button>
+    <button onclick="img.src = '../images/line-scrolling-background-image2.jpg'">Background2</button>
+
+    <script>
+        imgX  = 0;     // Initial start position
+        delta = -0.5;  // Number of pixels to move by
+        delay = 50;    // Milliseconds between frames
+
+        img = new Image();
+            img.src            = '../images/line-scrolling-background-image1.jpg';
+            img.style.position = 'absolute';
+            img.style.top      = '-50px';
+            img.style.left     = 0;
+            img.style.zIndex   = 0;
+            img.style.opacity  = 0.5;
+        document.getElementById('container').appendChild(img);
+
+
+
+        line = new RGraph.Line({
+            id: 'cvs_chart',
+            data: [5,4,1,6,8,5,3],
+            options: {
+                marginLeft: 50,
+                marginRight: 50,
+                linewidth: 5,
+                tickmarksStyle: null,
+                backgroundGrid: false,
+                shadow: false,
+                colors: ['#000'],
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+            }
+        }).trace();            
+
+        function drawImage ()
+        {
+            if (imgX <= 0 - img.width + line.canvas.width || imgX >= 1) {
+                delta *= -1;
+            }
+
+            img.style.left = imgX + 'px';
+            imgX += delta;
+
+            setTimeout(drawImage, delay);
+        }
+        
+        
+        setTimeout(drawImage, delay);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="container" style="overflow: hidden; position: relative; width: 600px; height: 250px;"&gt;
+    &lt;canvas id="cvs_chart" width="600" height="250" style="position: absolute; top: 0; left: 0; z-index: 1"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+    button {
+        font-size: 18pt;
+        margin: 5px;
+        padding: 5px;
+    }
+&lt;/style&gt;
+
+&lt;button onclick="img.src = '../images/line-scrolling-background-image1.jpg'"&gt;Background one&lt;/button&gt;
+&lt;button onclick="img.src = '../images/line-scrolling-background-image2.jpg'"&gt;Background two&lt;/button&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

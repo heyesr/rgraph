@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart</title>
+
+    <meta name="description" content="An SVG Bar chart with pastel style colors" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Bar chart</h1>
+    <p>A simple Bar chart that has a custom bolder-than-normal title font, uses <code>colorsSequential</code> and uses the <code>grow()</code> effect. The number of frames that's used by the <code>grow()</code> effect has been set higher (to 60) so it's slower than it is by default.</p>
+
+    
+    <div style="padding: 15px; display: inline-block">
+        <div style="width: 750px; height: 300px" id="cc"></div>
+    </div>
+
+
+
+    <script>
+        new RGraph.SVG.Bar({
+            id: 'cc',
+            data: [71,55,50,65,92,68,38,71,54,60,36,21],
+            options: {
+                title: 'A simple Bar chart ',
+                titleFont: 'Impact, Arial Black, Arial',
+                titleSize: 24,
+                colors: ['#4F81BC','#C0504E','#9BBB58','#8064A1','#8064A1','#4AACC5','#F79647','#7F6084','#77A033','#33558B','#E59566','#4F81BC','#C0504E'],
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                colorsSequential: true,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false
+            }
+        }).grow({frames: 15});
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 750px; height: 300px" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

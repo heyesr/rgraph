@@ -1,0 +1,93 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart example showing the X axis drawing API object</title>
+    
+    
+    
+    <meta name="description" content="A Horizontal Bar chart where the X axis is drawn using the drawing API" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart example showing the X axis drawing API object</h1>
+
+   <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+
+    <script>
+        marginTop = 55;
+
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [[80,64],[1,2],[11,12],[3,12],[5,7]],
+            options: {
+                marginLeft: 165,
+                marginRight: 20,
+                marginTop: 35,
+                yaxisLabels: ['Improved','Worsened', 'No change - \r\npeoples perceptions\r\nare generally positive','No change - \r\n peoples perceptions\r\nare generally negative',"Don't know"],
+                colors: ['#F68B23','#164366'],
+                yaxis: false,
+                xaxisScaleMax: 100,
+                xaxisPosition: 'top',
+                xaxisLabels: false,
+                backgroundGrid: false,
+                key: ['Non-disabled','Disabled'],
+                keyPosition: 'margin',
+                keyPositionY: 10,
+                tooltips: '%{property:yaxisLabels[%{group}]}',
+                marginLeft: 175,
+                marginTop: marginTop,
+                highlightStroke: 'rgba(255,255,255,0.7)'
+            }
+        }).on('draw', function (obj)
+        {
+            // Draw a gray rectangle at the back of the chart
+            obj.path(
+                'gco destination-over ss #ddd sr % % % % gco source-over',
+                obj.marginLeft,
+                obj.marginTop,
+                obj.canvas.width - obj.marginLeft - obj.marginRight,
+                obj.canvas.height - obj.marginTop - obj.marginBottom
+            );
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.drawing.xaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

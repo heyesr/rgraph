@@ -1,0 +1,203 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Another dynamically updating Line chart</title>
+    
+    
+    <meta name="description" content="Another dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>Another dynamically updating Line chart (using two canvas tags)</h1>
+    
+    <p>
+        This chart uses two canvas tags - one for the background and axes and
+        another for the
+        scrolling Line. This saves on the cost of drawing each frame - but by how much
+        and whether it's
+        noticeable is dependent on many factors.
+    </p>
+
+    
+    <div style="position: relative; width: 600px; height: 250px">
+        <canvas id="cvs1" width="600" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250"  style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+    </div>
+        
+
+    
+    <script>
+        // Define the variables that are going to be used
+
+        // Refresh rate (in milliseconds - 1000 per second)
+        //
+        // *** This is not actually used on this page because     ***
+        // *** setTimeout() is not used - requestAnimationFrame() ***
+        // *** is used instead which handles the timing for you   ***
+        var delay = 40;
+        
+        // Number of points shown on the chart
+        var points = 1200;
+        
+        // Make an array of null values
+        for (var i=0,data=[]; i<points; ++i) {
+            data[i] = null;
+        }
+        
+        // Maximum Y value on the chart
+        var max = 100;
+        
+        // Minimum Y value on the chart
+        var min = 0;
+        
+        // Halfway between the min and max
+        var num = (( (max - min) / 2) + min);
+
+        // Generate the labels that are spread across the X axis.
+        var labels = ['20s', '18s','16s','14s','12s','10s','8s','6s','4s','2s','0s'];
+        
+        // The increment/decrement of each iteration
+        var delta = 2;
+
+
+
+
+
+
+
+        // Draw the chart. On subsequent draws this chart is updated with new data and
+        // redrawn. This is faster than creating a whole new object and drawing that.
+        var objbg = new RGraph.Line({
+            id: 'cvs1',
+            data: [],
+            options: {
+                yaxisScaleMax: max,
+                tickmarksStyle: null,
+                marginLeft: 35,
+                linewidth: 1,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: '#eee',
+                xaxisTickmarksCount: 5,
+                axesColor: '#666',
+                textColor: '#666',
+                colors: ['red'],
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false
+            }
+        }).draw();
+
+
+
+
+
+
+        // Draw the chart. On subsequent draws this chart is updated with new data and
+        // redrawn. This is faster than creating a whole new object and drawing that.
+        var obj = new RGraph.Line({
+            id: 'cvs2',
+            data: data,
+            options: {
+                yaxisScaleMax: max,
+                marginLeft: 35,
+                tickmarksStyle: null,
+                linewidth: 1,
+                backgroundGrid: false,
+                colors: ['red'],
+                xaxis: false,
+                xaxisLabels: labels,
+                yaxis: false,
+                shadow: true,
+                shadowOffsetx:2,
+                shadowOffsety:2,
+                shadowColor: '#666'
+            }
+        }).draw();
+
+
+
+
+
+
+        
+        // This is the main draw() function that is called multiple times per
+        // second to update the chart with new data. It:
+        // 
+        // 1. Clears the canvas so that it's ready to be drawn on again
+        // 2. Removes a piece of data from the rear of the Line chart internal data
+        //    variable
+        // 3. Adds a new piece of data on to the end of the same array
+        // 4. Draws the chart again
+        function draw()
+        {
+            // Clear (NOT reset) the canvas
+            RGraph.clear(obj.canvas);
+
+            // Generate a random number between -5 and 5 and add it to the num
+            // variable. Adding a small change instead of generating a whole new
+            // number results in a gentler change to the line.
+            num += RGraph.random(-1 * delta, delta);
+
+            // Limit the num variable to between the minimum and maximum
+            num = Math.max(min, num);
+            num = Math.min(max, num);
+
+            // Remove a number from the front of the data array
+            obj.original_data[0].shift();
+
+            // Add the new number on to end of the data array
+            obj.original_data[0].push(num);
+            
+            // Draw the chart
+            obj.draw();
+            
+            // Call this function again after the delay (using requestAnimationFrame()
+            // NOT setTimeout() ). The updateCanvas() function is a compatibility wrapper around
+            // requestAnimationFrame().
+            RGraph.Effects.updateCanvas(draw);
+        }
+
+        draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="position: relative; width: 600px; height: 250px"&gt;
+    &lt;canvas id="cvs1" width="600" height="250" style="position: absolute; top: 0; left: 0"  data-l="false"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="600" height="250"  style="position: absolute; top: 0; left: 0" data-l="false"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

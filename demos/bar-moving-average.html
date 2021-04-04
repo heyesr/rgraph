@@ -1,0 +1,107 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with a moving average line</title>
+    
+    
+    <meta name="description" content="A Bar chart with a moving average line" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Bar chart with a moving average line</h1>
+
+    <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    
+    <script>
+        // Initialise the Bar chart data and a few other variables
+        bar_data  = [40, 45, 33, 39, 57, 49, 50, 54, 48, 41, 45, 48];
+        line_data = [];
+        total     = 0;
+        
+        // Loop through the bar chart data and create the Line chart data
+        bar_data.forEach(function (v, k, a)
+        {
+            total += v;
+            line_data[k] = k > 0 ? total / (k + 1) : null;
+        });
+
+        bar = new RGraph.Bar({
+            id:  'cvs',
+            data: bar_data,
+            options: {
+                xaxisLabels: ['1 Jan','2 Jan','3 Jan','4 Jan','5 Jan','6 Jan','7 Jan','8 Jan','9 Jan','10 Jan','11 Jan','12 Jan'],
+                xaxisLabelsAngle: 45,
+                xaxisLabelsOffsety: 10,
+                colors: ['#4472C4','black'],
+                xaxis: false,
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                marginInner: 10,
+                title: 'A Bar chart with a moving average line',
+                titleSize: 16,
+                titleBold: true,
+                yaxisScaleUnitsPre: '$',
+                key: ['Stock price', 'Moving average'],
+                keyPosition: 'margin'
+            }
+        }).draw();
+        
+        
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: line_data,
+            options: {
+                shadow: false,
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                marginInner: 30,
+                colors: ['#334E7B'],
+                yaxisScaleMax: bar.max,
+                linewidth: 3
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

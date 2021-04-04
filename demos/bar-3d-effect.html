@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with 3D effect</title>
+    
+    
+    <meta name="description" content="A Bar chart with a 3D effect" />
+    
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart with a 3D effect</h1>
+    <P>
+        Here's one of RGraphs 3D Bar charts. It's not just a regular 2D Bar chart
+        with some extra bits added on - the perspective is accurate so that the
+        chart has a "proper and correct" 3D appearance. This particular chart
+        is a grouped Bar chart and it has a key included. The animations - such
+        as <code>grow()</code> and <code>wave()</code> - work as they would with 2D charts. Incidentally there
+        are some units appended to the scale so the left margin has been increased.
+    </P>
+
+    <div style="display: inline-block; margin: 35px">
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [ [4,8,3],[5,2,1], [8,4,2],[3,6,1],[5,1,0],[2,5,1],[1,2,2] ],
+            options: {
+                variant: '3d',
+                variantThreedAngle: 0.1,
+                colorsStroke: 'rgba(0,0,0,0)',
+                colors: ['Gradient(#fbb:red)', 'Gradient(#bfb:green)','Gradient(#bbf:blue)'],
+                marginTop: 35,
+                marginLeft: 45,
+                marginRight: 15,
+                marginBottom: 85,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                shadowColor:'#ccc',
+                shadowOffsetx: 3,
+                backgroundGridColor: '#eee',
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleUnitsPost: 'km',
+                title: 'Distance run in the past week',
+                key: ['John','Kevin','Lucy'],
+                keyShadow: true,
+                keyShadowColor: '#ccc',
+                keyShadowOffsety: 0,
+                keyShadowOffsetx: 3,
+                keyShadowBlur: 15
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; margin: 35px"&gt;
+    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

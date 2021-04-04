@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart showing students who left and rejoined the school</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Line chart showing students who left and rejoined the school</h1>
+
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id:'cvs',
+            data: [
+                [250,450,400,350,450,450],
+                [325,300,425,500,400,530]
+            ],
+            options: {
+                colors: ['red', 'blue'],
+                tickmarksStyle: ['filledsquare', 'filledcircle'],
+                tickmarksSize: 7,
+                linewidth: 5,
+                shadow: false,
+                backgroundGridHlinesCount: 6,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginInner: 30,
+                xaxisLabels: ['1996','1997','1998','1999','2000','2001'],
+                yaxisScaleMax: 600,
+                yaxisLabelsCount: 6,
+                yaxisTickmarksCount: 6,
+                marginLeft: 50,
+                textSize: 16,
+                yaxisLabelsOffsetx: -5
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
+

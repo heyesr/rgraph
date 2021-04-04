@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic grouped SVG Horizontal Bar chart</title>
+    
+    
+    <meta name="description" content="A basic grouped SVG Horizontal Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic grouped SVG Horizontal Bar chart</h1>
+    <p>This is an example of a basic Horizontal Bar chart that's grouped. It also uses the <code>marginInnerTop</code> and <code>marginInnerBottom</code> options so the bars and the tickmarks have a vertical margin.</p>
+
+    
+    <div style="width: 350px; height: 500px; display: inline-block" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[5,4,8],[8,4,6],[6,2,9],[8,8,9],[4,6,3],[8,4,1],[6,5,6]],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                title: 'A grouped HBar chart',
+                marginInner: 10,
+                marginInnerTop: 50,
+                marginInnerBottom: 50
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 350px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html > 
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart showing popularity of languages</title>
+    <meta name="description" content="A Horizontal Bar chart that's showing the popularity of various computer programming languages. The labels are added manually using the RGraph.text() function." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar showing popularity of languages</h1>
+    
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        This Horizontal Bar chart does not use the <code>yaxisLabels</code> option
+        but instead has a minimal <code>marginLeft</code> setting and then uses some
+        custom code in the <code>draw</code> event to manually draw some labels. It also
+        uses the <code>labelsAbove</code> option to indicate the percentages for each bar.
+    </p>
+    
+    <p>
+        The <code>grow()</code> effect is employed to animate the chart.
+    </p>
+    
+    <p>
+        If the <code>draw</code> event wasn't used and the labels were simply
+        added after the chart had been drawn then they would
+        disappear when the canvas is cleared for the second frame of the
+        animation. And that happens so fast that it would seem like they
+        just aren't being drawn.
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function doesn't do much - it simply changes the width and height of
+        the canvas tag and changes the CSS <code>float</code> that's applied to the container of the canvas.
+    </p>
+    
+    <p>
+        This chart has been updated in March 2020 to add tooltips that use formatting and the highlighting
+        color has been updated to a gradient so that the labels on the left-hand-side are unobscured.
+    </p>
+    
+    <div style="clear: both"></div>
+    
+    <script>
+        // The labels for the chart are not added by giving them to the
+        // chart but manually adding text to the chart.
+        labels = ['PHP','Python','C#','Java','MySQL','Oracle','JSP','MS SQL Server','Ruby'];
+
+        // Create the Horizontal Bar chart and configure it. With there
+        // being no labels on the left-hand-side the margin autofit
+        // will make the left margin zero
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [86,75,71,65,60,55,53,51,45],
+            options: {
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisScale: false,
+                labelsAbove: true,
+                labelsAboveUnitsPost: '%',
+                colors: ['green'],
+                shadow: true,
+                shadowColor: '#ddd',
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                tooltips: '<i style="position: relative; top: -5px">Usage worldwide:</i> <span style="font-size: 26pt; ">%{value}%</span>',
+                tooltipsCss: {
+                    fontSize: '14pt'
+                },
+                highlightFill: 'Gradient(rgba(255,255,255,0):white)',
+                highlightStroke: 'Gradient(rgba(255,255,255,0):white)'
+            }
+        
+        // Use the draw event to add the labels on the left-hand-side
+        }).on('draw', function (obj)
+        {
+            var coords = obj.coords;
+
+            // Loop through the coordinates of the bars
+            for (var i=0; i<coords.length; ++i) {
+            
+                // For each of the coordinates add a text label
+                // on the left-hand-side of the bar
+                RGraph.text({
+                    object: obj,
+                    text:   labels[i],
+                    x:      coords[i][0] + 10,
+                    y:      coords[i][1] + (coords[i][3] / 2),
+                    valign: 'center',
+                    bold:   true,
+                    color:  'white'
+                });
+            }
+        }).grow().responsive([
+            {maxWidth: null,width:600,height: 350,parentCss:{'float':'right'}},
+            {maxWidth: 800,width:400,height: 300,parentCss:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="450"&gt;
+        [No canvas support]
+    &lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>    
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A product revenue Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A product revenue Line chart</h1>
+
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id:'cvs',
+            data: [
+                [62,67,48,35,42,48,69,61,86,67,65,79],
+                [41,50,33,39,62,57,28,41,42,58,59,41],
+                [37,29,25,29,39,20,21,30,26,32,30,23]
+            ],
+            options: {
+                colors: ['red', '#0c0','black'],
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                backgroundColor: 'Gradient(#aaf:white)',
+                backgroundGrid: false,
+                key: ['Atom synthesizer','Quantum computer','Proton cannon'],
+                keyPosition: 'margin',
+                textAccessible: false,
+                shadow: false,
+                tickmarksStyle: ['square','circle','cross'],
+                tickmarksSize: 5,
+                linewidth: 1
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
+

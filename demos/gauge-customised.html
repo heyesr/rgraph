@@ -1,0 +1,155 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A customised Gauge chart</title>
+    
+    
+    <meta name="description" content="A Gauge chart that has been customised to look quite different from what is the default appearance." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A customised Gauge chart</h1>
+
+    <div style="float: right">
+        <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        Here's an example of the canvas Gauge chart which is just one of the various meter-type charts
+        that's available with RGraph. These charts are:
+    </p>
+    
+    <ul style="list-style-type: disc">
+        <li>Fuel (canvas)</li>
+        <li>Gauge (canvas)</li>
+        <li>Horizontal Progress bar (canvas)</li>
+        <li>Meter (canvas)</li>
+        <li>Odometer (canvas)</li>
+        <li>Semi-circular progress (canvas)</li>
+        <li>Thermometer (canvas)</li>
+        <li>Vertical Progress bar (canvas)</li>
+        <li>Gauge (SVG)</li>
+        <li>Semi-circular progress (SVG)</li>
+    </ul>
+    
+    <p>
+        As you can see - there are far more canvas based meters than SVG ones. Though you can quite easily
+        configure the vertical and horizontal SVG Bar charts to appear as progress bars. There are demos
+        of this being done in <a href="/download.html">the download archive</a>. There's also a demo available
+        <a href="https://www.rgraph.net/demos/pie-horseshoe.html">
+            of a Pie chart being configured as a progress gauge
+        </a>
+        
+        and other meters
+        <a href="/demos/pie-progress.html">here</a>,
+        <a href="/demos/donut-nested-progress.html">here</a>,
+        <a href="/demos/donut-segments.html">here</a>,
+        <a href="/demos/svg-pie-meter.html">here</a> and 
+        <a href="/demos/svg-pie-dashboard.html">here</a>
+    </p>
+    
+    <p>
+        Regarding this chart, the top and bottom titles are being configured, the colors for the banding
+        around the Gauge is being set with specific ranges, there are multiple needles - each with its
+        own color and the tickmarks are being configured.
+    </p>
+
+    <p>
+        As you can see it looks quite different to the standard Gauge!
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function in this case doesn't change the appearance or size of the
+        chart but instead changes the CSS so the <code>float</code> is removed from the canvas and
+        parent DIV and the alignment of the parent is changed to be center aligned.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 200,
+            value: [184,12],
+            options: {
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+
+                // Configure the top titles appearance
+                titleTop: 'Air Speed',
+                titleTopSize: 22,
+                titleTopFont: 'Impact',
+                titleTopColor: 'white',
+                titleTopSize: 24,
+                titleTopItalic: true,
+                
+                // Configure the bottom titles appearance
+                titleBottom: 'Knots',
+                titleBottomSize: 14,
+                titleBottomItalic: true,
+                titleBottomFont: 'Impact',
+                titleBottomColor: '#ccc',
+                titleBottomPos: 0.4,
+
+                // The rest of the configuration for the Gauge chart - the needle,
+                // centerpin, tickmarks and the border
+                colorsRanges: [[160,200,'rgba(255,0,0,1)'], [120,160,'rgba(255,255,0,0.95']],
+                backgroundColor: 'black',
+                backgroundGradient: true,
+                centerpinColor: '#666',
+                needleSize: [null, 50],
+                needleColors: ['Gradient(transparent:white:white:white:white:white)', 'Gradient(transparent:#d66:#d66:#d66:#d66)'],
+                textColor: 'white',
+                tickmarksLargeColor: 'white',
+                tickmarksMediumColor: 'white',
+                tickmarksSmallColor: 'white',
+                borderOuter: '#666',
+                borderInner: '#333'
+            }
+        }).draw().responsive([
+            {maxWidth:null,css:{'float':'right'},parentCss:{textAlign:'none','float': 'right'}},
+            {maxWidth:600,css:{'float':'none'},parentCss:{textAlign:'center','float': 'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="300" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

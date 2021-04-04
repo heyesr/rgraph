@@ -1,0 +1,143 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Funnel chart showing the key stages of plan CD1</title>
+    
+    
+    <meta name="description" content="An SVG Funnel chart showing the key stages of plan CD1. It takes a little bit of configuration to get the default Funnel to look like this - but it's all on this page." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Funnel chart showing the key stages of plan CD1</h1>
+    
+    <div style="width: 650px; height: 500px; border: 1px solid #ddd; float: right" id="chart-container"></div>
+    
+    <p>
+        A demonstration of the SVG Funnel chart. This chart is customised using custom tooltips, a key, the
+        labels are positioned in the middle of each "segment" and the background bars are set to use a
+        gradient that goes towards white on the right-hand-side. The font size of the labels has been
+        increased too.
+    </p>
+    
+    <p>
+        The tooltips have been customised by using the <code>RGraph.SVG.tooltips.style</code> object. Any CSS
+        property that you set on this object will be applied to any subsequent tooltip that's shown.
+    
+    </p>
+    <p>
+        You
+        have to use the JavaScript versions of CSS property names when setting properties on this object
+        so hyphens are removed and a capital
+        letter is added in its place and the occasional properties name is significantly different, for
+        example (not an exhaustive list!):
+    </p>
+    
+    <table border="1" cellspacing="0">
+        <tr><th align="center">CSS name</th><th align="center">JavaScript name</th></tr>
+        <tr><td>background-color</td><td>backgroundColor</td></tr>
+        <tr><td>float</td><td>cssFloat</td></tr>
+        <tr><td>padding-left</td><td>paddingLeft</td></tr>
+        <tr><td>padding-right</td><td>paddingRight</td></tr>
+        <tr><td>padding-top</td><td>paddingTop</td></tr>
+        <tr><td>padding-bottom</td><td>paddingBottom</td></tr>
+        <tr><td>margin-left</td><td>marginLeft</td></tr>
+        <tr><td>margin-right</td><td>marginRight</td></tr>
+        <tr><td>margin-top</td><td>marginTop</td></tr>
+        <tr><td>margin-bottom</td><td>marginBottom</td></tr>
+        <tr><td>z-index</td><td>zIndex</td></tr>
+    </table>
+    <p>
+        <a href="https://www.dummies.com/web-design-development/javascript/converting-css-property-names-to-javascript/" target="_blank" rel="nofollow">
+            There's a full list of CSS properties and the JavaScript versions of their names available here.
+        </a>
+    </p>
+    
+    <p>
+        When the screen size is smaller not much changes - the size of the labels and the margins.
+    </p>
+    
+    <br clear="all" />
+
+
+
+        
+    <script>
+        // Create the Funnel chart and configure it so that it has a large
+        // left margin (enough space for the labels),
+        funnel = new RGraph.SVG.Funnel({
+            id: 'chart-container',
+            data: [100,75,50,25],
+            options: {
+                title: 'A "key stages of plan CD1" funnel',
+                titleSubtitle: 'Each stage is depicted by a separate color',
+                marginTop: 75,
+                linewidth: 0,
+                colors: ['#3EB0BB','#EE7E34','#677E9D','#388E90'],
+                backgroundBars: true,
+                backgroundBarsColors: ['Gradient(#3EB0BB:white)', 'Gradient(#EE7E34:white)', 'Gradient(#677E9D:white)'],
+                labels: ['Introduction (75%)', 'Site visit (50%)', 'Finalisation (25%)'],
+                labelsItalic: true,
+                labelsBold: false,
+                labelsColor: 'gray',
+                labelsHalign: 'left',
+                
+                // This can also be set to 'edge' and controls the vertical positioning
+                // of the labels
+                labelsPosition: 'section',
+
+                // Tooltips for the chart which are using the new formatted tooltips feature
+                tooltips: '%{property:labels[%{index}]}',
+
+                // These are CSS styles for the tooltips that are displayed.
+                // The names are exactly the same as CSS properties (the JavaScript
+                // versions of the names)
+                tooltipsCss: {
+                    fontSize: '26pt'
+                },
+
+                key: ['Introduction','Site visit','Finalisation']
+            }
+        }).draw().responsive([
+            {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300}},
+            {maxWidth: 700,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.funnel.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 500px; height: 400px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

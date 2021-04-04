@@ -1,0 +1,156 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dynamically updating Line chart showing values for the last 10 minutes (1 per second)</title>
+    
+    
+    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example). It's updated once per second. and shows the last 10 minutes worth of data." />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dynamically updating Line chart showing values for the last 10 minutes (1 per second)</h1>
+    
+    <p>
+        <b>Note</b>
+        Because Chrome slows down timers when it's in the background - this chart can occasionally miss out X values when
+        the browser is in the background or is minimised. So for that reason - if you're running this, or another timer based
+        updating chart, then you're advised to use a browser <i>other than Chrome</i> (or if in Chrome keep it in the foregound).
+    </p>
+
+    <canvas id="cvs" width="800" height="250">[No canvas support]</canvas><br />
+    
+    Current seconds: <div id="numvalues" style="display: inline">0</div>
+    
+    <script>
+        function format (value)
+        {
+            value = String(value);
+
+            if (value.length === 1) {
+                value = '0' + value;
+            }
+            
+            return value;
+        }
+
+        lastnumber  = 50;
+        chart       = null;
+        data        = [];
+        labels      = [];
+
+        /**
+        * Make the array of empty values
+        */
+        for (var i=0; i<600; i+=1) {
+            data[i] = [0];
+            labels[i] = '';
+        }
+
+        // Make and draw the chart
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [],
+            options: {
+                xaxis: false,
+                yaxis: false,
+                xaxisTickmarksCount: 20,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textColor: '#aaa'
+            }
+        }).draw();
+
+
+
+
+
+        // The draw() function gets called repeatedly every second
+        function draw()
+        {
+            var d = new Date();
+            var seconds = d.getSeconds();
+
+
+            // Reset the canvas
+            RGraph.reset(document.getElementById('cvs'));
+
+
+        
+            /**
+            * Add the label
+            */
+            if (parseInt(seconds) < 0.1) {
+                labels.unshift(format(d.getHours()  ) + ':' + format(d.getMinutes()));
+                labels.pop();
+            } else {
+                $cl(seconds);
+                labels.unshift('');
+                labels.pop();
+            }
+
+            // Add a new value to the chart data
+            var random  = RGraph.random(-5,5);
+        
+            // Create the random value
+            lastnumber = lastnumber + random;
+            lastnumber = Math.max(0, lastnumber);
+            lastnumber = Math.min(100, lastnumber);
+            data[0] = lastnumber
+            data.unshift(null);
+            data.pop();
+            line.original_data[0] = data;
+            
+            line.draw();
+
+            // Update the counter
+            document.getElementById('numvalues').innerHTML = d.getSeconds();
+        
+            // Call this function again in one seconds time
+            // 
+            // TODO Could change things so that the function runs 4 times a second (though only updates the chart once per second)
+            //      Might be a little more accurate. It would be a significant change though.
+            setTimeout(draw, 1000);
+        }
+        
+        draw();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

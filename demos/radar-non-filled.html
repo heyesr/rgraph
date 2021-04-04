@@ -1,0 +1,102 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A non-filled Radar chart</title>
+
+    
+    
+    <meta name="description" content="A non-filled Radar chart with two data series. The Radar chart can be used to show a dataset where the magnitude of each point relative to the others is important." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+    <h1>A non-filled Radar chart</h1>
+
+    <canvas id="cvs" width="500" height="400" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's a Radar chart which happens to have two datasets. By default Radar charts look a little
+        different, with a fill color applied. This can be set to transparent though, as is the case
+        here, giving us this style of appearance.
+    </p>
+    
+    <p>
+        The labels are set to only be drawn on the north axis, the <code>textSize</code> has been increased
+        to 16 and the top label (on the "north" axis) has been set to be blank as it would clash with the
+        scale labels.
+    </p>
+    
+    <p>
+        The axes on the chart have also been disabled.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Create and configure the Radar chart so that it's not filled and
+        // only has the labels on the north axis. The text size has been
+        // slightly increased.
+        new RGraph.Radar({
+            id: 'cvs',
+            data: [
+                [8,7,6,7,8,6],
+                [8,9,4,6,6,8]
+            ],
+            options: {
+                backgroundCirclesPoly: true,
+                backgroundCirclesSpacing: 30,
+                colors: ['transparent'],
+                axesColor: 'transparent',
+                highlights: true,
+                colorsStroke: ['red', 'black'],
+                linewidth: 3,
+                labels: ['', 'Barry', 'Gary','Dave','Paul','Rich'],
+                labelsAxes: 'n',
+                textSize: 16
+            }
+        }).trace().responsive([
+            {maxWidth: null, width: 500, height: 400,css:{'float':'right'}},
+            {maxWidth: 600,  width: 300, height: 300,css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.radar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+</body>
+</html>

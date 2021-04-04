@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart showing the new default colors</title>
+    
+    
+    <meta name="description" content="A Bar chart showing the new default colors" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing the new default colors</h1>
+
+    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[4,8,6,5,3,8],[1,2,3,4,5,6],[8,4,6,3,5,4],[8,4,3,2,5,8],[4,8,6,5,3,5]],
+            options: {
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+                marginInner: 25,
+                marginInnerGrouped: 3,
+                backgroundGridVlinesCount: 5,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 2
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+
+</body>
+</html>

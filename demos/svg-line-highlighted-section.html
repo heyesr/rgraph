@@ -1,0 +1,151 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Line chart with a highlighted section</title>
+    
+    
+    <meta name="description" content="A Line chart with a highlighted section. The highlight is achieved by covering two sides of the chart with a semi-transparent gray rectangle." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+</head>
+<body>
+
+    <h1>A Line chart with a highlighted section</h1>
+    
+    <div style="width: 450px; height: 200px; display: inline-block; background-color: black; float: right" id="cc"></div>
+
+    <p>
+        Here we have an example of a dark themed SVG Line chart that has a section of
+        it highlighted. The standard Line is a filled Line object that does NOT
+        use the <code>filledAccumulative</code> option
+        - it uses transparency in the colors instead so that you can see datasets at
+        the back of other datasets.
+    </p>
+    
+    <p>
+        The thing that differentiates this demo is the fact that once rendered there
+        are two rectangles placed over the chart - one on the left-hand-side and one
+        on the right-hand-side. This leaves a section in the middle of those two
+        rectangles that has a highlighted appearance.
+    </p>
+    
+    <p>
+        As it is on this chart, the section that's highlighted has no real meaning -
+        but this doesn't have to be the case and it could highlight certain entries
+        or a range on the chart (for example it could be a horizontal highlight
+        rectangle).
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function simply changes the SVG tag from being floated right to not
+        having any <code>float:</code> at all.
+    </p>
+    
+    <p>
+        Because adding the <code>responsive()</code> function means that the chart is redrawn
+        whenever the window size changes (ie when you resize the browser) the two covers are drawn in the
+        <code>draw</code> event and the nodes are assigned to global variables. These coverings are removed
+        before the chart is redrawn so they don't accumulate on top of each other.
+    </p>
+    
+    
+        
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'cc',
+            data: [
+                [22,45,56,53,45,23,12,19,43,56,56,76,64,35,22],
+                [13,18,33,23,43,45,56,43,45,12,45,53,56,56,51],
+                [48,56,45,35,21,56,48,45,45,56,53,65,35,22,21],
+                [12,23,25,22,21,32,24,21,12,53,12,32,22,33,12]
+            ],
+            options: {
+                spline: true,
+                filled: true,
+                colors: [
+                    'rgba(146,223,179,0.75)',
+                    'rgba(109,194,189,0.75)',
+                    'rgba(173,136,190,0.75)',
+                    'rgba(84,112,133,0.75)'
+                ],
+                backgroundGridColor: '#666',
+                textColor: 'white',
+                xaxisLabels: ['Rich','Terry','Fay','Hoolio','Bob','Carl','Pob','Neil','Matt','Kev','Jill','Lou','Luis','Pete','John'],
+                key: ['H67','JK89','GB88','SX95'],
+                keyLabelsColor: 'white',
+                keyLabelsBackground: 'black',
+                textSize: 8
+            }
+        }).on('draw', function (obj)
+        {
+            // Remove previous rect tags from the SVG tag
+            if (typeof r1 === 'object') r1.parentNode.removeChild(r1);
+            if (typeof r2 === 'object') r2.parentNode.removeChild(r2);
+
+            var x1 = obj.coords[5][0];
+            var x2 = obj.coords[8][0];
+
+            // These cover the left and right sides of the chart in a dark,
+            // semi-transparent rect
+            r1 = RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'rect',
+                attr: {
+                    x: 35,
+                    y: 35,
+                    width: x1 - 35,
+                    height: 130,
+                    fill: 'rgba(0,0,0,0.35)'
+                }
+            });
+
+            r2 = RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'rect',
+                attr: {
+                    x: x2,
+                    y: 35,
+                    width: 200,
+                    height: 130,
+                    fill: 'rgba(0,0,0,0.3)'
+                }
+            });
+        }).draw().responsive([
+            {maxWidth: null,css: {'float':'right'}},
+            {maxWidth: 700,css: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+    <div style="clear: both"></div>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 600px; height: 250px; display: inline-block; background-color: black"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

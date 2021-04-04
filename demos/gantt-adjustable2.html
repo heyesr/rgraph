@@ -1,0 +1,119 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: An adjustable Gantt chart showing a work schedule</title>
+    
+    
+    
+    <meta name="description" content="An adjustable Gantt chart showing a work schedule" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An adjustable Gantt chart showing a work schedule</h1>
+
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+    <br />
+    <br />
+    <span style="display: inline-block; width: 125px">Name:</span> <input type="text" id="name" style="font-size: 16pt; padding: 5px"/><br />
+    <span style="display: inline-block; width: 125px">Event start:</span> <input type="text" id="eventStart"  style="font-size: 16pt; padding: 5px" /><br />
+    <span style="display: inline-block; width: 125px">Event duration:</span> <input type="text" id="eventduration"  style="font-size: 16pt; padding: 5px" />
+
+    <script>
+        data = [
+            {start: 3,  duration: 5, label: 'Barney', color: 'red'},
+            {start: 7,  duration: 3, label: 'Harry', color: 'blue'},
+            {start: 14, duration: 5, label: 'Cynthia', color: 'pink'},
+            [
+                {start: 14, duration: 5, label: 'Kiffen', color: '#aaf'},
+                {start: 21, duration: 5, color: '#aaf'}
+            ],
+            {start: 21, duration: 5, label: 'John', color: 'cyan'},
+            {start: 21, duration: 5, label: 'Jenny', color: 'green'},
+            {start: 21, duration: 5, label: 'Ken', color: 'black'},
+            {start: 14, duration: 5, label: 'Richard', color: 'pink'},
+            [
+                {start: 14, duration: 5, label: 'Lucy', color: '#fc7'},
+                {start: 21, duration: 5, color: '#fc7'}
+            ]
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                borders: false,
+                xaxisLabels: [
+                    'M','T','W','T','F','','',
+                    'M','T','W','T','F','','',
+                    'M','T','W','T','F','','',
+                    'M','T','W','T','F','',''
+                ],
+                xaxisScaleMax: 28,
+                backgroundVbars: [
+                    [5, 2, 'rgba(240,240,240,0.75)'],
+                    [12, 2, 'rgba(240,240,240,0.75)'],
+                    [19, 2, 'rgba(240,240,240,0.75)'], 
+                    [26, 2, 'rgba(240,240,240,0.75)']
+                ],
+                adjustable: true
+            }
+        }).draw().on('adjust', function (obj)
+        {
+            var event    = RGraph.Registry.get('adjusting.gantt'); // Don't chain this line
+            var dataset  = event.dataset,
+                index = event.index;
+
+            if (RGraph.isArray(event.object.data[dataset])) {
+                document.getElementById('eventStart').value    = obj.data[dataset][index].start + 1;
+                document.getElementById('eventduration').value = obj.data[dataset][index].duration;
+                document.getElementById('name').value          = obj.data[dataset][0].label;
+
+            } else {
+                document.getElementById('eventStart').value    = obj.data[dataset].start + 1;
+                document.getElementById('eventduration').value = obj.data[dataset].duration;
+                document.getElementById('name').value          = obj.data[dataset].label;
+            }
+        });
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+
+&lt;br /&gt;&lt;br /&gt;
+
+&lt;span style="display: inline-block; width: 125px"&gt;Name:&lt;/span&gt; &lt;input type="text" id="name" style="font-size: 16pt; padding: 5px"/&gt;&lt;br /&gt;
+&lt;span style="display: inline-block; width: 125px"&gt;Event start:&lt;/span&gt; &lt;input type="text" id="eventStart"  style="font-size: 16pt; padding: 5px" /&gt;&lt;br /&gt;
+&lt;span style="display: inline-block; width: 125px"&gt;Event duration:&lt;/span&gt; &lt;input type="text" id="eventduration"  style="font-size: 16pt; padding: 5px" /&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

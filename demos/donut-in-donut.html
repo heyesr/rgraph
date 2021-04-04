@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <title>RGraph demo: A Donut-in-donut example</title>
+    <script src="demos.js" ></script>
+
+    
+    <meta name="description" content="An example of a nested Donut chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Donut-in-donut example</h1>
+    
+    <p>
+        This example of three donut charts shows how they can be nested inside each
+        other.
+    </p>
+
+    <canvas id="cvs" width="550" height="550">[No canvas support]</canvas>
+<script>
+        pie1 = new RGraph.Pie({
+            id: 'cvs',
+            data: [4,3,5,6,8],
+            options: {
+                variant: 'donut',
+                variantDonutWidth: 50,
+                colorsStroke: 'white',
+                linewidth: 5,
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+                shadowBlur: 25,
+                shadowOffsetx: 0,
+                shadowOffsety: 0
+            }
+        }).draw()
+
+        pie2 = new RGraph.Pie({
+            id: 'cvs',
+            data: [5,4,8,6,2],
+            options: {
+                radius: pie1.radius - 50,
+                variant: 'donut',
+                variantDonutWidth: 50,
+                colorsStroke: 'white',
+                linewidth: 5,
+                shadow: false
+            }
+        }).draw()
+
+
+
+        pie3 = new RGraph.Pie({
+            id: 'cvs',
+            data: [4,1,5,6,3],
+            options: {
+                radius: pie2.radius - 50,
+                variant: 'donut',
+                variantDonutWidth: 50,
+                colorsStroke: 'white',
+                linewidth: 5,
+                shadowBlur: 25,
+                shadowOffsetx: 0,
+                shadowOffsety: 0
+            }
+        }).draw();
+        
+        RGraph.ObjectRegistry.bringToFront(pie2);
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="550" height="550"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.vprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A VProgress chart with a table in the tooltips</title>
+    <meta name="description" content="This is an example of a VProgress chart with a table of data in the tooltip, using tooltip templates." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+
+    <style>        
+        .RGraph_tooltip table{
+            border-collapse: collapse;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .RGraph_tooltip h2 {
+            margin: 5px;
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip table {
+            border: none;
+            font-family: Verdana;
+        }
+
+        .RGraph_tooltip thead th {
+            font-style: italic;
+        }
+
+        .RGraph_tooltip td {
+            padding: 5px;
+        }
+        
+        .RGraph_tooltip td:nth-child(1) {
+            background-color: #ddd;
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>A VProgress chart with a table in the tooltips</h1>
+
+    <p>
+        This uses the new <code>%{table}</code> option for a formatted tooltip. The code to implement it
+        can get quite hairy (three nested arrays) so pay close attention when writing it.
+    </p>
+    
+    <div>
+        <canvas id="cvs" width="120" height="400">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 67,
+            options: {
+                marginInner: 10,
+                scaleUnitsPost: 'kg',
+                tooltips: '<h2>Historical</h2><h2>values</h2> %{table}',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                },
+                tooltipsFormattedTableData: [
+                    [
+                        ['Monday',    '55kg'],
+                        ['Tuesday',   '61kg'],
+                        ['Wednesday', '48kg'],
+                        ['Thursday',  '75kg'],
+                        ['Friday',    '46kg'],
+                        ['Saturday',  '50kg'],
+                        ['Sunday',    '59kg']
+                    ]
+                ]
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.vprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="120" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+
+&lt;style&gt;
+    .RGraph_tooltip h2 {
+        margin: 5px;
+        font-style: italic;
+    }
+    
+    .RGraph_tooltip table {
+        border-collapse: collapse;
+        font-family: Verdana;
+    }
+
+    .RGraph_tooltip thead th {
+        font-style: italic;
+    }
+
+    .RGraph_tooltip th,
+    .RGraph_tooltip td {
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+    
+    .RGraph_tooltip td:nth-child(1){
+        font-style: italic;
+    }
+    
+    .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
+        background-color: #eee;
+    }
+    
+    .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
+        background-color: #ddd;
+    }
+&lt;/style&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

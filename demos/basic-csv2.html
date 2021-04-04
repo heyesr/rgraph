@@ -1,0 +1,128 @@
+<?php
+    header('Content-Type: ISO-8859-1');
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>RGraph demo: A basic Bar chart using column based CSV data</title>
+    
+
+    
+    <meta name="description" content="A basic example of an RGraph Bar chart that uses AJAX to fetch a CSV file and then parses it with JavaScript. Instead of each row being a dataset - this CSV holds the data as columns" />
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A basic Bar chart using CSV data (with column based data)</h1>
+
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline.
+        You can view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+    </div>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        /**
+        * This is the callback for the AJAX request
+        */
+        var callback = function ()
+        {
+            // Parse the AJAX result text
+            var text   = this.responseText.split(/\r?\n/);
+            var labels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+            var data   = [];
+            var key    = text[0].split(/,/);
+            
+            for (var row=1; row<text.length; ++row) {
+
+                var cells = text[row].split(/,/);
+
+                for (var i=0; i<cells.length; ++i) {
+                    
+                    if (!data[i]) data[i] = [];
+                    
+                    // Add the value that hs been retrieved from the CSV file. Remember that because the CSV file is a
+                    // text file - it needs to be converted to a number first
+                    data[i].push(Number(cells[i]));
+                }
+            }
+
+
+            var line = new RGraph.Line({
+                id: 'cvs',
+                data: data,
+                options: {
+                    linewidth: 2,
+                    shadowColor: '#ccc',
+                    xaxisLabels: labels,
+                    marginInner: 5,
+                    yaxisScaleDecimals: 2,
+                    yaxisScaleUnitsPre: '£',
+                    marginLeft: 45,
+                    key: key,
+                    keyPosition: 'margin'
+                }
+            }).draw();
+        }
+
+
+        /**
+        * Make the AJAX call that fetches the CSV data
+        */
+        RGraph.AJAX({url: '/sample2.csv', callback: callback});
+    </script>
+    
+    <p>
+        This basic example uses AJAX to request a CSV file as with <a href="basic-csv.html">basic-csv.html</a> but unlike that example
+        this CSV file holds each dataset as columns instead of rows. <a href="/sample2.csv">You can see the CSV file here.</a>
+    </p>
+    
+    <p>
+        <b>Note:</b>
+        In October 2013 a new CSV reader was added to RGraph. It makes reading CSV files much easier. You can read about
+        <a href="https://www.rgraph.net/canvas/docs/csv-reader.html">the new CSV reader here</a>.
+    </p>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

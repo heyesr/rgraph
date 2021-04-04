@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart customised to look like the charts in Google Webmaster Tools</title>
+    
+    <meta name="description" content="A Scatter chart customised to look like the charts in Google Webmaster Tools" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart customised to look like the charts in Google Webmaster Tools</h1>
+
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+    
+    <script>
+        // Create some sample data
+        for (i=0,data=[],y=21; i<90; i+=1) {
+            data.push([i, y = Math.max(0,y + RGraph.random(-5,5))]);
+        }
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScaleMax: 90,
+                xaxisLabels: [
+                    ['January', 0],
+                    ['February', 30],
+                    ['March', 60]
+                ],
+                xaxisLabelsSpecificAlign: 'left',
+                line: true,
+                tickmarksStyle: null,
+                backgroundGridVlinesCount: 3,
+                textSize: 14
+            }
+        }).trace({frames: 60});
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="200"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

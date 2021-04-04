@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.image.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of the drawing API image object with a circular border</title>
+
+    
+    <meta name="description" content="An example of the drawing API image object with a circular border" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+        
+    <h1>An example of the drawing API image object with a circular border</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        var line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,4,8,4,3,5,2],
+            options: {
+                marginInner: 5,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 7
+            }
+        }).draw()
+
+        var coords = line.coords[2];
+        
+        var img = new RGraph.Drawing.Image({
+            id: 'cvs',
+            x: 25 + 45,
+            y: 25 + 45,
+            src: '../images/logo.png',
+            options: {
+                halign: 'center',
+                valign: 'center',
+                alpha: 1,
+                border: true,
+                borderColor: '#ccc',
+                borderLinewidth: 2,
+                borderRadius: 50,
+                colorsBackground: 'white',
+                shadow: true,
+                shadowColor: '#ddd'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.image.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

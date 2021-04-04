@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Rose chart with a list in the tooltips</title>
+    <meta name="description" content="This is an example of a Rose chart with a list in the tooltips, using formatted tooltips." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+
+    <style>
+        .RGraph_tooltip li {
+            text-align: left;
+            margin: 3px;
+        }
+
+        .RGraph_tooltip h2 {
+            color: white;
+            margin: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>A Rose chart with a list in the tooltips</h1>
+    
+    <div>
+        <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Rose({
+            id: 'cvs',
+            data: [2,4,3,4,8,6,5],
+            options: {
+
+                tooltips: '<h2>Results</h2> %{list}',
+                
+                // The type of the list (ordered or unordered)
+                tooltipsFormattedListType: 'ol',
+                
+                // The items that appear in the list
+                tooltipsFormattedListItems: [
+                    ['Barry','Larry','Harry'],
+                    ['Bill','Lil','Jill'],
+                    ['Jack','Zak','Quack'],
+                    ['Lucy','Phil','Val'],
+                    ['Billy','Harry','Billy'],
+                    ['Nev','Olga','Tommy'],
+                    ['Harry','Viv','Mark']
+                ],
+
+                // The rest of the chart configuration
+                labels: RGraph.DAYS_LONG,
+                textSize: 16,
+                title: 'A demonstration of a tooltip list',
+                titleBold: true,
+                titleY: '-15',
+                shadow: false
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+
+&lt;style&gt;
+    .RGraph_tooltip li {
+        margin: 3px;
+    }
+
+    .RGraph_tooltip h2 {
+        color: white;
+        margin: 5px;
+        font-style: italic;
+    }
+&lt;/style&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

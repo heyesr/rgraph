@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart showing levels of Corona virus infections</title>
+    <meta name="description" content="This is an example of a Bar chart that illustrates levels of Corona virus infections. It's a copy  of a chart that appeared on the BBC news website" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing levels of Corona virus infections</h1>
+
+    <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+
+
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [
+                0,8,2,10,5,6,15,8,9,25,
+                8,9,3,15,15,16,39,14,13,10,
+                65,38,45,14,80,70,102,98,110,70,
+                120,315,371,258,0
+            ],
+            options: {
+                backgroundGridHlinesCount: 4,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxisLabelsCount: 4,
+                yaxisScaleMax: 400,
+                xaxisLabels: [
+                    '','23 Jan','','','','','',
+                    '','','31 Jan','','','','',
+                    '','','','8 Feb','','','',
+                    '','','','','16 Feb','','',
+                    '','','','','','24 Feb','',
+                ],
+                xaxisLabelsSize: 16,
+                xaxisLabelsOffsety: 10,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                yaxis: false,
+                marginInner: 1,
+                colors: ['#1280A1'],
+                title: 'Daily confirmed cases of Corona virus outside of China',
+                titleBold: true,
+                titleSize: 16,
+                titleX: 35,
+                titleHalign: 'left'
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

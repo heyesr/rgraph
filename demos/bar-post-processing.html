@@ -1,0 +1,144 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with post-processing</title>
+    
+    
+    <meta name="description" content="A Bar chart that shows you that by using the draw event along with the coordinates you can do post-processing on your charts" />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+        
+    <h1>A Bar chart with post-processing</h1>
+    
+    <canvas id="cvs" width="600" height="250" style="float: left">[No canvas support]</canvas>
+    
+    <p>
+        This Bar chart uses the custom RGraph <code>draw</code> event to add
+        highlight to each bar.<br />
+        
+        There's an SVG version of this chart in
+        <a href="https://www.rgraph.net/download.html">the download archive</a>.
+    </p>
+    
+    <p>
+        The highlight is added using the <code>draw</code> event (which is triggered at the end of the
+        <code>draw()</code> function) so the coordinates of the bars are available.
+    </p>
+    
+    <p>
+        The gradient is created using this bit of code, which uses an RGraph function for creating gradients
+        easily:
+    </p>
+    
+    <pre class="code">obj.context.fillStyle = RGraph.linearGradient({
+    object: obj,                  <span>// The chart object</span>
+    x1: 0, y1: 0, x2: 0, y2: 250, <span>// strartX, startY, endX, endY</span>
+    colors: [
+        'rgba(255,255,255,.75)',  <span>// Start color</span>
+        'rgba(255,255,255,0)'     <span>// End color</span>
+    ]
+});</pre>
+
+    <p>
+        The <code>responsive()</code> function reduces the size of the text, turns off axes and the shadow
+        and removes the CSS <code>float</code> from the canvas tag.
+    </p>
+    
+    <br clear="all" />
+    
+
+    
+
+    <script>
+        // Create the bar chart just like a normal grouped bar chart
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[47,75],[32,74],[71,85],[25,19],[23,71],[81,59],[43,130],[23,20]],
+            options: {
+                marginLeft: 25,
+                colors: ['#494949','#35A0DA'],
+                xaxisLabels: ['Alf','Bert','Craig','Dan','Edgar','Fred','Gary','Harry'],
+                yaxisLabelsCount: 3,
+                yaxisTickmarksCount: 3,
+                backgroundGridHlinesCount: 3,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                colorsStroke: 'rgba(0,0,0,0)',
+                shadowOffsety: -3
+            }
+        
+        // Now use the draw event and the coordinates that were created when
+        // the chart was drawn to add a highlight to the left side of each
+        // bar. The highlight is graduated from semi-opaque white at the top
+        // to fully transparent white at the bottom.
+        }).on('draw', function (obj)
+        {
+            var len = obj.coords.length;
+
+            for (var i=0; i<len; ++i) {
+
+                // Get the coordinates for each bar - full height but only half
+                // width.
+                var x = obj.coords[i][0],
+                    y = obj.coords[i][1],
+                    w = obj.coords[i][2] / 2,
+                    h = obj.coords[i][3];
+
+                // Create the gradient using an RGraph API function
+                obj.context.fillStyle = RGraph.linearGradient({
+                    object: obj,
+                    x1: 0, y1: 0, x2: 0, y2: 250,
+                    colors: ['rgba(255,255,255,.75)','rgba(255,255,255,0)']
+                });
+                
+                // Draw the highlight rectangle
+                obj.context.fillRect(x,y,w,h)
+            }
+        }).draw().responsive([
+            {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, css: {'float': 'left'}},
+            {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, css: {'float': 'none'}}
+        ], {delay: 0});
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+
+</body>
+</html>

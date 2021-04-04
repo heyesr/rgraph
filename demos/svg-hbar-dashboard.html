@@ -1,0 +1,236 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Horizontal Bar/Bar/Pie dashboard</title>
+
+    
+    <meta name="description" content="An SVG Horizontal Bar/Bar/Pie dashboard" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Horizontal Bar/Bar/Pie dashboard</h1>
+    <p>Here's an example of a dashboard thats made up of Horizontal Bar charts, Bar charts and a Pie chart. There are various ways shown of visualising the same data. Each chart uses its own SVG tag and the DIV tags that you specify are shown below.</p>
+
+
+    <div style="border: 1px solid gray; width: 750px; height: 600px">
+        <div style="width: 375px; height: 200px; float: left" id="cc1"></div>
+        <div style="width: 375px; height: 200px; float: left" id="cc2"></div>
+        <div style="width: 150px; height: 200px; float: left" id="cc3"></div>
+        <div style="width: 150px; height: 200px; float: left" id="cc4"></div>
+        <div style="width: 150px; height: 200px; float: left" id="cc5"></div>
+        <div style="width: 150px; height: 200px; float: left" id="cc6"></div>
+        <div style="width: 150px; height: 200px; float: left" id="cc7"></div>
+        <div style="width: 750px; height: 200px; float: left" id="cc8"></div>
+    </div>
+    
+        
+
+    <script>
+        data   = [
+            [10,23,18,25,15],
+            [12,25,14,5,4],
+            [13,20,13,8,3],
+            [12,19,17,10,8],
+            [15,16,13,8,5]
+        ];
+        colors    = ['#0B74B5','#D56229','#1B9F77','#CF77A9','#E79F26'];
+        pieLabels = ['Category 1','Category 2','Category 3','Category 4','Category 5'];
+        labels    = ['Item 1','Item 2','Item 3','Item 4','Item 5'];
+
+        pie = new RGraph.SVG.Pie({
+            id: 'cc1',
+            data: data[0],
+            options: {
+                colors: colors,
+                centerx: 250
+            }
+        }).draw();
+
+        hbar1 = new RGraph.SVG.HBar({
+            id: 'cc2',
+            data: data,
+            options: {
+                colors: colors,
+                grouping: 'stacked',
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                yaxisLabels: labels,
+                xaxisScaleMax: 90
+            }
+        }).draw();
+        
+        // Add the labels on the left of the Pie chart
+        for (var i=0; i<pieLabels.length; ++i) {
+        
+            var y = (i * 30) + 35;
+        
+            RGraph.SVG.text({
+                object: pie,
+                text: pieLabels[i],
+                x: 100,
+                y: y,
+                halign: 'right',
+                valign: 'center'
+            });
+            
+            RGraph.SVG.create({
+                svg: pie.svg,
+                type: 'circle',
+                attr: {
+                    cx: 115,
+                    cy: y,
+                    r: 8,
+                    fill: colors[i]
+                }
+            });
+        }
+
+
+        // Second row
+        
+
+        hbar2 = new RGraph.SVG.HBar({
+            id: 'cc3',
+            data: data[0],
+            options: {
+                colors: [colors[0]],
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                yaxisLabels: labels,
+                xaxisScaleMax: 30,
+                textSize: 10,
+                xaxisLabelsCount: 2
+            }
+        }).draw();
+        
+
+        hbar2 = new RGraph.SVG.HBar({
+            id: 'cc4',
+            data: data[1],
+            options: {
+                colors: [colors[1]],
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                xaxisScaleMax: 30,
+                textSize: 10,
+                xaxisLabelsCount: 2
+            }
+        }).draw();
+        
+
+        hbar3 = new RGraph.SVG.HBar({
+            id: 'cc5',
+            data: data[2],
+            options: {
+                colors: [colors[2]],
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                xaxisScaleMax: 30,
+                textSize: 10,
+                xaxisLabelsCount: 2
+            }
+        }).draw();
+        
+
+        hbar4 = new RGraph.SVG.HBar({
+            id: 'cc6',
+            data: data[3],
+            options: {
+                colors: [colors[3]],
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                xaxisScaleMax: 30,
+                textSize: 10,
+                xaxisLabelsCount: 2
+            }
+        }).draw();
+        
+
+        hbar5 = new RGraph.SVG.HBar({
+            id: 'cc7',
+            data: data[4],
+            options: {
+                colors: [colors[4]],
+                backgroundGrid: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                xaxisScaleMax: 30,
+                textSize: 10,
+                xaxisLabelsCount: 2
+            }
+        }).draw();
+        
+
+        bar = new RGraph.SVG.Bar({
+            id: 'cc8',
+            data: data,
+            options: {
+                colors: colors,
+                backgroundGridHlinesCount: 2,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                yaxis: false,
+                yaxisScaleMax: 30,
+                yaxisLabelsCount: 2,
+                marginInner: 25,
+                xaxisLabels: labels
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="border: 1px solid gray; width: 750px; height: 600px"&gt;
+    &lt;div style="width: 375px; height: 200px; float: left" id="cc1"&gt;&lt;/div&gt;
+    &lt;div style="width: 375px; height: 200px; float: left" id="cc2"&gt;&lt;/div&gt;
+    &lt;div style="width: 150px; height: 200px; float: left" id="cc3"&gt;&lt;/div&gt;
+    &lt;div style="width: 150px; height: 200px; float: left" id="cc4"&gt;&lt;/div&gt;
+    &lt;div style="width: 150px; height: 200px; float: left" id="cc5"&gt;&lt;/div&gt;
+    &lt;div style="width: 150px; height: 200px; float: left" id="cc6"&gt;&lt;/div&gt;
+    &lt;div style="width: 150px; height: 200px; float: left" id="cc7"&gt;&lt;/div&gt;
+    &lt;div style="width: 750px; height: 200px; float: left" id="cc8"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

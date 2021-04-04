@@ -1,0 +1,201 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dual-color scrolling Line chart</title>
+
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A scrolling dual color Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dual-color scrolling Line chart</h1>
+    
+    <p>
+        This demo has been adapted from the updating line chart in the docs.
+    </p>
+
+   <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+
+    <p>
+        <b>Update</b><br />
+        There's information <a href="https://www.rgraph.net/canvas/docs/howto-make-a-dynamic-scrolling-line-chart.html">on this HOWTO page</a> about creating dual color Line
+        charts using
+        gradients. It's <b>very</b> simple and can be done using either the
+        RGraph <code>Gradient()</code> shortcut or more directly with the canvas  linear gradient functionality.
+    </p>
+
+    <script>
+        d1  = [];
+        l   = 0; // The letter 'L' - NOT a one
+    
+        // Pre-pad the arrays with null values
+        for (var i=0; i<600; ++i) {
+            d1.push(null);
+        }
+        
+        var obj = null;
+
+        function getGraph(id, d1)
+        {
+            // After creating the chart, store it in a global variable
+            if (!obj) {
+
+                obj = new RGraph.Line({
+                    id: id,
+                    data: d1,
+                    options: {
+                        //xaxisTickmarksCount: 100,
+                        backgroundGrid: false,
+                        backgroundBarsColor1: 'white',
+                        backgroundBarsColor2: 'white',
+                        title: 'Bandwidth used',
+                        titleVpos: 0.5,
+                        xaxisTitle: 'Time >>>',
+                        xaxisTitlePos: 0.5,
+                        yaxisTitle: 'Bandwidth (MB/s)',
+                        yaxisPosition: 'right',
+                        yaxisScaleMax: 50,
+                        colors: ['black'],
+                        linewidth: 0.75,
+                        xaxisTickmarksCount: 25,
+                        filled: true,
+                        marginTop: 25,
+                        marginBottom: 25,
+                        marginRight: 50,
+                        tickmarksStyle: [null,null],
+                        shadow: false,
+                        colors: ['rgba(0,0,0,0.2)']
+                    }
+                })
+
+
+
+                var grad = obj.context.createLinearGradient(0,0,0,250);
+                grad.addColorStop(0, '#efefef');
+                grad.addColorStop(0.9, 'rgba(0,0,0,0)');
+
+                obj.set('filledColors', [grad]);
+            }
+
+            return obj;
+        }
+
+
+
+        /**
+        * This gets called repeatedly to update the chart
+        */
+        function drawGraph ()
+        {
+            RGraph.clear(document.getElementById("cvs"));
+            
+            var graph = getGraph('cvs', d1);
+            graph.draw();
+
+
+
+
+
+            // The color boundary
+            var boundary = (200 * ((graph.scale2.max - 20) / graph.scale2.max)) + 25;
+
+
+            /**
+            * Clip the canvas tag and draw the upper half
+            */
+            graph.context.save();
+                graph.context.beginPath();                
+                graph.context.rect(0,0,600, boundary);
+                graph.context.clip();
+                
+                // Set the color
+                graph.set('filledColors', 'rgba(255,0,0,0.5)');
+                graph.draw();
+            graph.context.restore();
+
+
+
+
+
+
+            /**
+            * Clip the canvas tag and draw the lower half
+            */
+            graph.context.save();
+                graph.context.beginPath();                
+                graph.context.rect(0,boundary,600,250 - boundary);
+                graph.context.clip();
+                
+                // Set the color
+                graph.set('filledColors', 'rgba(0,255,0,0.5)');
+                graph.draw();
+            graph.context.restore();
+
+
+
+
+
+
+            // Add some data to the data arrays
+            var r1 = RGraph.random(
+                RGraph.isNull(d1[d1.length - 1]) ? 26 : d1[d1.length - 1] - 2,
+                RGraph.isNull(d1[d1.length - 1]) ? 24 : d1[d1.length - 1] + 2
+            );
+
+           r1 = Math.max(r1, 0);
+           r1 = Math.min(r1, 50);
+
+            d1.push(r1);
+            
+            if (d1.length > 600) {
+                d1 = RGraph.arrayShift(d1);
+            }
+
+            obj.original_data[0] = d1;
+            setTimeout(drawGraph, 50);
+        }
+    
+        drawGraph();
+    </script>
+
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

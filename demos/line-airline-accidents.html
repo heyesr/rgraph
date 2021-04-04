@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Airline fatalities per year</title>
+    
+    
+    <meta name="description" content="Airline fatalities per year" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>Airline fatalities per year</h1>
+
+    <canvas id="cvs" width="800" height="250">[No canvas support]</canvas>
+    
+    <script>
+        years    = [1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996];
+        data     = [4,8,6,5,6,5,3,2,3,1,0,1,0,3,2,5,4,5,4,6,5,3,8,7];
+        tooltips = [];
+        color    = '#D10A11';
+
+        data.forEach(function (v, k, arr)
+        {
+            tooltips[k] = '<span style="font-size: 20pt">{1}<p align="center"><b>Deaths:</b> {2}</p></span>'.format(
+                years[k],
+                RGraph.random(300,500)
+            );
+        });
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabels: [
+                    'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+                    'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'
+                ],
+                textSize: 10,
+                colors: [color],
+                xaxis: false,
+                yaxis: false,
+                marginLeft: 50,
+                backgroundGridColor:  '#ddd',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridHlinesCount: 3,
+                yaxisLabelsCount: 3,
+                yaxisScaleUnitsPost: 'k',
+                tickmarksStyle: null,
+                shadow: false,
+                linewidth: 3,
+                textColor: '#888',
+                yaxisScaleMax: 12,
+                tooltips: function (index)
+                {
+                    return tooltips[index];
+                },
+                tooltipsPointer: false,
+                highlightStyle: 'halo',
+                tooltipsCss: {
+                    padding:         '10px',
+                    paddingBottom:   '5px',
+                    backgroundColor: 'white',
+                    color:           'black',
+                    textAlign:       'left',
+                    border:          '3px solid %{property:colors[0]}'
+                }
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="../libraries/RGraph.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.common.dynamic.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.common.tooltips.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.line.js" &gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

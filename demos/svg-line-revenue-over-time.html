@@ -1,0 +1,131 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart showing revenue over time</title>
+
+    
+    <meta name="description" content="An SVG Line chart showing revenue over time. This example shows that a chart doesn't have to be complicated to be attractive." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An SVG Line chart showing revenue over time</h1>
+    
+    <div style="width:650px; height: 250px; float: right" id="chart-container"></div>
+    
+    <p>
+        Here's a nice, simply-presented SVG Line chart. It has no background grid, a large <code>marginInner</code>
+        setting (which was, until version 5.01, called <code>hmargin</code>) larger than usual text
+        and an extra little bit of text that's added after the chart has been drawn. Because it's an SVG based
+        chart this does not need to be added in the <code>draw</code> event.
+    </p>
+    
+    <p>
+        Even if it was canvas based, because there's no dynamic features (like tooltips) the chart is not
+        redrawn at all so technically, even with canvas, the <code>draw</code> event would not need to be
+        used.
+    </p>
+    
+    <p>
+        The chart has a responsive section which reduces the size of a few properties and also removes the
+        CSS <code>float:</code> from the SVG tag.
+    </p>
+    
+    <br clear="all" />
+
+    <script>    
+        // This is the data for the Line chart. A simple JavaScript array.
+        data = [500,600,800,720,900,1100];
+
+        // Create the Line chart. Give it the data that's defined above.
+        // There's nothing notable about the configuration.
+        line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                colors: ['#00AD4B'],
+                backgroundGrid: false,
+                xaxisLabels: ['Febuary','March','April','May','June','July'],
+                xaxisTickmarks: false,
+                yaxisTickmarks: false,
+                backgroundGridColor: '#999',
+                tickmarksStyle: 'circle',
+                marginLeft: 75
+            }
+        }).responsive([
+            {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20},css:{'float':'right'}},
+            {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14},css:{'float':'none'}}
+        ]).on('draw', function (obj)
+        {
+            var textsize = obj.get('data-textsize');
+
+            // Format the text that is about to be added to the Line chart
+            // above the last datapoint.
+            label = RGraph.SVG.numberFormat({
+                
+                // The value of the last point on the chart
+                num: obj.data[0][5],
+                
+                thousand: ','
+            });
+            
+            //
+            // Remove the text label if its' present
+            //
+            if (typeof textLabel !== 'undefined') {
+                textLabel.parentNode.removeChild(textLabel);
+            }
+
+            // Use the RGraph API function to add the label above the last
+            // point. Unlike the canvas libraries the SVG text function
+            // doesn't have to be inside the draw event because SVG doesn't
+            // clear itself like canvas does when things need redrawing.
+            textLabel = RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg,
+                
+                text:   label,
+                
+                size:   textsize,
+                bold:   (textsize > 14),
+    
+                x:      obj.coords[5].x,
+                y:      obj.coords[5].y - 25,
+                valign: 'bottom',
+                halign: 'center'
+            });
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

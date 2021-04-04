@@ -1,0 +1,158 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: An SVG Bar chart with a canvas background</title>
+    
+    
+    <meta name="description" content="An SVG Bar chart with a canvas background" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An SVG Bar chart with a canvas background</h1>
+    <p>This is an interesting mix - it's a regular SVG Bar chart that has been arranged to have a canvas background. Then a star-burst pattern is drawn on the canvas and is continually updated giving it a slow rotation effect. The Bar chart uses the <code>wave()</code> effect and and has the <code>labelsAbove</code> option enabled. However the position of the labels has been adjusted using the <code>labelsAboveOffsety</code> option so that the text appears at the top of the bars - and also it has been colored white so that you can see it.</p>
+
+    
+    <div id="outer" style="padding: 15px; display: inline-block">
+        <canvas width="750" height="300" id="cvs_background"></canvas>
+        <div style="width: 750px; height: 300px" id="cc"></div>
+    </div>
+    
+    <style>
+        div#outer {
+            position: relative;
+        }
+        
+        div#outer canvas {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            width: 680px;
+            height: 230px;
+        }
+    </style>
+
+
+
+    <script>
+        color1    = 'white';
+        color2    = 'rgba(64,64,64,0.15)';
+        increment = 0.0005;
+        radius    = 500; // The gradient radius
+    
+        ca    = document.getElementById('cvs_background'),
+        co    = ca.getContext('2d');
+        cx    = ca.width / 2,
+        cy    = ca.height / 2,
+        angle = 0
+    
+        // This draws the rotating background on the canvas
+        function draw ()
+        {
+            co.clearRect(-5000,-5000,10000,10000);
+    
+    
+            co.translate(cx,cy);
+            co.rotate(increment);
+            co.translate(cx * -1,cy * -1);
+            
+            // Keep a record of what the angle used is
+            angle += increment;
+            
+            for (var i=0; i<6.28; i+=(6.28 / 15)) {
+    
+                var endpoint1 = RGraph.getRadiusEndPoint(cx, cy, i - 0.1, 10000 * angle * 4);
+                var endpoint2 = RGraph.getRadiusEndPoint(cx, cy, i + 0.1, 10000 * angle * 4);
+            
+                co.beginPath();
+                    co.fillStyle = color2;
+                    co.moveTo(cx,cy);
+                    co.lineTo(endpoint1[0],endpoint1[1]);
+                    co.lineTo(endpoint2[0],endpoint2[1]);
+                    co.lineTo(cx,cy);
+                co.fill();
+            }
+            
+            // Draw a circular gradient from the center outwards
+            var grad = co.createRadialGradient(cx, cy, 0, cx, cy, radius);
+                grad.addColorStop(0, 'white');
+                grad.addColorStop(0.25, 'rgba(255,255,255,0.75)');
+                grad.addColorStop(0.5, 'rgba(255,255,255,0)');
+            
+            co.fillStyle = grad;
+            RGraph.path(co, 'b a % % % % % % f',cx, cy,1000,0,2 * Math.PI,-1);
+    
+            setTimeout(draw, 25);
+        }
+        
+        draw();
+        
+        var bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: [4,8,6,5,3,7,8],
+            options: {
+                backgroundGrid: false,
+                colors: ['black'],
+                labelsAbove: true,
+                labelsAboveUnitsPost: 'km',
+                labelsAboveOffsety: 30,
+                labelsAboveColor: 'white',
+                labelsAboveBold: true,
+                labelsAboveItalic: true,
+                marginInner: 25,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thuesday','Friday','Saturday','Sunday'],
+                tooltips: '%{property:xaxisLabels[%{group}]}: %{value_formatted}',
+                tooltipsFormattedUnitsPost: 'kg'
+            }
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="outer" style="padding: 15px; display: inline-block"&gt;
+    &lt;canvas width="750" height="300" id="cvs_background"&gt;&lt;/canvas&gt;
+    &lt;div style="width: 750px; height: 300px" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+    div#outer {
+        position: relative;
+    }
+    
+    div#outer canvas {
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        width: 680px;
+        height: 230px;
+    }
+&lt;/style&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

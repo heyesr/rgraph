@@ -1,0 +1,117 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A customised and adjustable Gauge chart</title>
+    
+    <meta name="description" content="A customised Gauge chart which can be adjusted" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A customised and adjustable Gauge chart</h1>
+    
+    <p>
+        This example Gauge chart doesn't use the built-in adjusting but uses a custom
+        <code>click</code> event listener (which you can see below) in order to make the
+        adjusting animated. It also uses a custom <code>draw</code> event to draw the centerpin.
+    </p>
+
+    <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
+    
+    <script>
+        gauge = new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: 7,
+            options: {
+                marginLeft: 10,
+                marginRight: 10,
+                marginTop: 10,
+                marginBottom: 10,
+                anglesStart: RGraph.PI - (RGraph.PI / 8),
+                anglesEnd: RGraph.TWOPI + (RGraph.PI / 8),
+                shadow: false,
+                textColor: 'white',
+                tickmarksLargeColor: 'white',
+                tickmarksMediumColor: 'white',
+                tickmarksSmallColor: 'white',
+                colorsRanges: [],
+                backgroundColor: 'black',
+                borderInner: 'black',
+                borderOuter: 'black',
+                borderOutline: 'black',
+                needleColors: ['red'],
+                needleType: 'line',
+                needleTail: true,
+                needleWidth: 7,
+                centerpinRadius: 0.1,
+                titleTop: 'Speed',
+                titleTopColor: 'white',
+                titleTopBold: true,
+                titleTopSize: 14,
+                labelsCentered: true,
+                labelsOffsetRadius: 7,
+                textAccessible: false
+            }
+        }).on('draw', function (obj)
+        {
+            // This circle becomes the border of the centerpin
+            obj.path(
+                'b a % % 10 0 6.29 false f %',
+                obj.centerx, obj.centery, '#aaa'
+            );
+        }).draw();
+        
+        //
+        // Add a click handler to the canvas to enable adjusting
+        //
+        gauge.canvas.onclick = function (e)
+        {
+            var ca    = e.target,
+                obj   = ca.__object__,
+                value = obj.getValue(e);
+            obj.value = value;
+
+            obj.grow();
+        }
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart getting the X/Y value</title>
+    <meta name="description" content="A guide for getting the X/Y value from a Scatter chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <style>
+        input {
+            font-size: 16pt;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>A Scatter chart getting the X/Y value</h1>
+
+
+<div style="float: right; width: 600px">
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <div style="position: relative; left: 25px; width: 550px">
+        <span style="font-size: 16pt">X:</span> <input type="text" id="x" /><br />
+        <span style="font-size: 16pt">Y:</span> <input type="text" id="y" />
+    </div>
+</div>
+
+<p>
+    The Line chart has no concept of an X axis scale. The values that you supply
+	are simply spaced equally across the chart. The
+    Scatter chart on the other hand does have an X axis scale, so you can have
+	an uneven distribution of elements across the chart
+    if you so wished.
+</p>
+
+<p>
+    Because the X axis is scaled this means that you can get the relevant X value
+	from a <code>click</code> or <code>mousemove</code> event. You can also get
+    the relevant Y value so you then have an (X,Y) coordinate pair. The code to
+	achieve this is as follows. It uses the RGraph
+    replacement for the <code>mousemove</code> event but this is not a requirement:
+</p>
+
+
+
+    <script>
+        data   = [];
+        colors = ['red',  'green', 'blue', 'pink', 'black', 'gray'];
+        xmax   = 365;
+        ymax   = 50;
+
+        // Generate some data
+        for (var i=0; i<100; ++i) {
+            data[i] = [
+                RGraph.random(0,xmax),
+                RGraph.random(0,ymax),
+                colors[RGraph.random(0,colors.length - 1)]
+            ];
+        }
+
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScaleMax: xmax,
+                xaxisLabels: ['Q1','Q2','Q3','Q4'],
+                textSize: 14,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).draw();
+            
+        scatter.canvas.onmousemove = function (e)
+        {
+            var obj = e.target.__object__;
+            var x   = obj.getXValue(e);
+            var y   = obj.getYValue(e);
+            
+            document.getElementById("x").value = x.toFixed(1);
+            document.getElementById("y").value = y.toFixed(1);
+        }
+    </script>
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right; width: 600px"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;div style="position: relative; left: 25px; width: 550px"&gt;
+        X: &lt;input type="text" id="x" /&gt;&lt;br /&gt;
+        Y: &lt;input type="text" id="y" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

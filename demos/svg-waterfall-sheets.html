@@ -1,0 +1,92 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.waterfall.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Waterfall chart using the Google Sheets connector</title>
+    <meta name="description" content="An SVG Waterfall chart using the Google Sheets connector" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Waterfall chart using the Google Sheets connector</h1>
+    <p>A Waterfall chart that's being created using the Google Sheets connector. In this case only positive values are being displayed.</p>
+
+    
+    <div style="width: 1000px; height: 300px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        {
+            var data   = sheet.get('B2:B13'),
+                labels = sheet.get('A2:A13');
+            
+            // TODO Carriage returns don't work yet
+            for (var i=0; i<labels.length; i+=2) {
+                labels[i] = "\n" + labels[i];
+            }
+            
+            labels.push('Total');
+
+            new RGraph.SVG.Waterfall({
+                id: 'chart-container',
+                data: data,
+                options: {
+                    marginTop: 50,
+                    marginBottom: 45,
+                    textSize: 9,
+                    xaxisLabels: labels,
+                    tooltips: labels,
+                    yaxis: false,
+                    backgroundGridColor: '#eee',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    colorsStroke: '#aaa',
+                    yaxisLabelsCount: 6,
+                    xaxisColor: '#333',
+                    title: 'Cumulative total of widgets sold by Brian',
+                    titleSubtitle: 'Numbers are sales by store only',
+                    titleSubtitleItalic: true,
+                    labelsAbove: true,
+                    labelsAboveUnitsPost: 'pc'
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.sheets.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.waterfall.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 1000px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

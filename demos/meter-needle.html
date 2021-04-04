@@ -1,0 +1,81 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Meter chart with a triangular needle</title>
+    
+    
+    <meta name="description" content="A Meter chart with a triangular needle" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Meter chart with a triangular needle</h1>
+
+    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    
+    <script>
+        meter = new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 62,
+            options: {
+                segmentsRadiusStart: 125,
+                needleRadius: 115,
+                needleType: 'pointer',
+                tickmarksLargeColor: 'transparent',
+                tickmarksSmallColor: 'transparent',
+                labels: false,
+                linewidth: .00001,
+                linewidthSegments: 20,
+                colorsStroke: 'white',
+                colorsRanges: [
+                    [0, 33, '#FFC900'],
+                    [33, 66, '#8FCE21'],
+                    [66, 100, '#0094DA']
+                ]
+            }
+        }).grow();
+        
+        meter.canvas.onclick = function (e)
+        {
+            var value = meter.getValue(e);
+            
+            meter.value = value;
+            meter.grow();
+        }
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

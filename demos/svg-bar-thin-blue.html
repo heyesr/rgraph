@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A thin blue SVG Bar chart</title>
+    
+    
+    <meta name="description" content="A thin blue SVG Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A thin blue SVG Bar chart</h1>
+    <p>A Bar chart that has a high <code>marginInner</code> setting giving it a thin bar effect. It's grouped and uses the <code>grow()</code> effect. It also has a title and a subtitle.</p>
+
+    
+    <div style="width: 750px; height: 300px; display: inline-block" id="chart-container"></div>
+
+
+    
+    <script>
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [[5,3],[4,6],[4,5],[8,5],[3,6],[5,6],[8,5],[1,9],[4,3],[4,8],[5,8],[4,8]],
+            options: {
+                marginLeft: 75,
+                marginRight: 25,
+                marginBottom: 35,
+                marginTop: 45,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textSize: 12,
+                yaxis: false,
+                yaxisScaleUnitsPre: '',  // Default
+                yaxisScaleUnitsPost: 'k',
+                yaxisScalePoint: '.',    // Default
+                yaxisScaleThousand: ',', // Default
+                yaxisScaleDecimals: 0,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Sep','Dec'],
+                colors: ['#5cf', 'black'],
+                marginInner: 9,
+                marginInnerGrouped: 2,
+                title: 'Monthly sales figures',
+                titleSubtitle: 'Turnover grouped by sales team'
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

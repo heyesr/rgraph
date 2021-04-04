@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A bank of adjustable Gauge charts</title>
+
+    
+    <meta name="description" content="A bank of adjustable Gauge charts" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A bank of adjustable Gauge charts</h1>
+    <p>
+        These Gauge charts are adjustable and the center one can be animated by
+        clicking the button below (it animates to a random value). The <code>centerx</code>
+        and <code>radius</code> values are set explicitly so the sizes are fixed no matter
+        what the size of the canvas is.
+    </p>
+    
+    <button onclick="animateGauge()">Click me to animate the center Gauge</button><br /><br />
+
+    <canvas id="cvs" width="725" height="250" style="border: 1px solid gray">[No canvas support]</canvas>
+
+    <script>
+        gauge1 = new RGraph.Gauge({
+            id: 'cvs',
+            min:0,
+            max: 10,
+            value: 18,
+            options: {
+                titleTop: 'Pressure',
+                titleTopBold: true,
+                titleTopSize: 14,
+                titleBottom: 'Pa',
+                titleBottomColor: '#aaa',
+                centerx: 125,
+                radius: 110,
+                adjustable: true,
+                textAccessible: false
+            }
+        }).draw();
+
+        gauge2 = new RGraph.Gauge({
+            id: 'cvs',
+            min:0,
+            max: 100,
+            value: 78,
+            options: {
+                centerx: 360,
+                radius:110,
+                adjustable: true,
+                titleTop: 'Volume',
+                titleTopBold: true,
+                titleTopSize: 14,
+                titleBottomColor: '#aaa',
+                textAccessible: false
+            }
+        }).draw();
+
+        gauge3 = new RGraph.Gauge({
+            id: 'cvs',
+            min:0,
+            max: 100,
+            value: 78,
+            options: {
+                centerx: 600,
+                radius:110,
+                adjustable: true,
+                titleTop: 'Flow rate',
+                titleTopBold: true,
+                titleTopSize: 14,
+                titleBottomColor: '#aaa',
+                textAccessible: false
+            }
+        }).draw();
+        
+        function animateGauge ()
+        {
+            gauge2.value = RGraph.random(0,100);
+            gauge2.grow()
+        }
+    </script>
+    
+    
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="250" style="border: 1px solid #ccc"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart using the Google Sheets connector</title>
+
+    
+    <meta name="description" content="An SVG Bar chart using the Google Sheets connector" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Bar chart using the Google Sheets connector</h1>
+    <p>This is a Bar chart that's getting information from a Google Sheets spreadsheet using the connector that's supplied with RGraph. The connector can get information from any worksheet should you have multiple - but this is fetching data from the first. The labels are arranged such that every other label is prefixed by a unicode white-space character and a linebreak - giving a two line appearance for the labels.</p>
+    <p><a href="https://docs.google.com/spreadsheets/d/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/edit?usp=sharing">You can see the Google Sheet that RGraph is fetching data from here.</a></p>
+    
+    <div style="width: 700px; height: 300px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        {
+            var data   = sheet.get('B2:B13'),
+                labels = sheet.get('A2:A13');
+            
+            for (var i=0; i<labels.length; i+=2) {
+                labels[i] = "\u00A0\n" + labels[i];
+            }
+
+            new RGraph.SVG.Bar({
+                id: 'chart-container',
+                data: data,
+                options: {
+                    marginBottom: 50,
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    yaxis: false,
+                    colors: ['Gradient(rgb(102, 102, 204):rgb(102, 102, 204):white)'],
+                    xaxisLabels: labels
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.sheets.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 700px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

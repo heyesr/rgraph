@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Gantt chart grow() effect</title>
+    
+    
+    <meta name="description" content="A Gantt chart grow()" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Gantt chart grow() effect</h1>
+
+    <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+    
+    <script>
+        var data = [
+            {start: 0,duration: 5,label:'Fred',color:'Gradient(aqua:white)'},
+            {start: 7,duration: 10,label:'Jerry',color:'Gradient(gray:white)'},
+            {start: 15,duration: 5,label:'Barney',color:'Gradient(red:#fdd)'},
+            {start: 15,duration: 10,label:'Ben',color:'Gradient(blue:#ddf)'},
+            {start: 23,duration: 5,label:'Rachel',color:'Gradient(green:#dfd)'},
+            {start: 27,duration: 5,label:'Paul',color:'Gradient(black:#ddd)'}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                borders: false,
+                xaxisScaleMax: 30,
+                backgroundGridHlinesCount: 6,
+                backgroundGridVlinesCount: 30
+            }
+        }).grow();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraphgantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A filled blue SVG Line chart</title>
+    
+    
+    <meta name="description" content="A filled blue SVG Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A filled blue SVG Line chart</h1>
+    <p>
+        This is a demo of a filled Line chart that's using the <code>filledClick</code> option
+        to add an event listener to the fill (so that when you click on it, it runs a
+        function that you define). There's no vertical grid lines either.
+    </p>
+
+
+    
+    <div style="width: 850px; height: 400px" id="chart-container"></div>
+
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                1,3,4,2,5,6,4,5,3,7,8,9,8,9,10,13,15,12,16,17,15,18,15,15,19,16,19,
+                21,22,20,23,21,25,24,23,26,25,27,28,27,26,28,29,28,28,30,32,31,32,33,34,
+                35,34,36,38,35,36,37,39,40,42,43,46,45,44,46,48,47,49,50,52,51,49,56,55,
+                61,62,65,66,68,69,75,76,78,80,84,86,89,91,95,92,99,105,108,106,110,111,
+                119,125,128,134,139,143,148,150                    
+            ],
+            options: {
+                linewidth: 2,
+                xaxisLabels: ['Aug 13, 2012','Sep 9 2013','Oct 6 2014'],
+                marginLeft: 65,
+                marginRight: 55,
+                filled: true,
+                filledColors: ['#C2D1F0'],
+                filledClick: function (e, obj)
+                {
+                    alert('The fill was clicked!');
+                },
+                colors: ['#3366CB'],
+                yaxis: false,
+                xaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textSize: 16
+            }
+        }).trace();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 850px; height: 400px; background-color: black" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

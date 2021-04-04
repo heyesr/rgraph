@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.rose.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic SVG Rose chart</title>
+    
+    
+    <meta name="description" content="A basic SVG Rose chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Rose chart</h1>
+    <p>
+        Here's a basic Rose chart demo using a title and subtitle and it also has
+        tooltips. The Rose chart can be in 4 main modes which allows you to show a
+        variety of datasets: It can be <code>regular</code> <code>stacked</code> and also <code>non-equi-angular</code>
+        and <code>stacked non-equi-angular</code>. So it's quite good at showing a variety
+        of different types of data.
+    </p>
+
+    
+    <div style="width: 500px; height: 500px" id="chart-container"></div>
+
+
+
+    <script>
+        rose = new RGraph.SVG.Rose({
+            id: 'chart-container',
+            data: [8,6,4,3,9,4,5],
+            options: {
+                scaleUnitsPost: '%',
+                scaleDecimals: 1,
+                colors: ['red'],
+                linewidth: 2,
+                backgroundGridColor: '#aaa',
+                backgroundGridRadialsCount: 0,
+                amargin: 0.05,
+                //amargin: '5deg',
+                colorsStroke: 'transparent',
+                tooltips: ['Alf','Bertie','Charlie','Doug','Edgar','Frankie','Gary'],
+                title: 'Bobs Day at the races',
+                titleY: 35,
+                titleSubtitle: 'A chart showing winners of the individual races',
+                marginTop: 50
+            }
+        }).draw().responsive([
+            {maxWidth: 600, width: 400, height: 400, options: {}},
+            {maxWidth: null,width: 500, height: 500, options: {}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 500px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

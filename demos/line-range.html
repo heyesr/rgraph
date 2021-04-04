@@ -1,0 +1,144 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.drawing.poly.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A 'stacked' range Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="A range chart with the data such that the datasets appear to be stacked range sections." />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A 'stacked' range Line chart</h1>
+    
+    <p>
+        This is an example of how you can manipulate the data that you give to a
+        range chart so that you get a stacking
+        effect. There are actually three Line charts here - one on top of the other.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+
+    <script>
+        data = [[3,5,6,7,4,8,5,9,13,14,16,15,17,18,19,21,24,25,25,26,28,28,27,26,25,25]];
+        
+        for (var j=1; j<6; j+=2) {
+            data[j]   = [];
+            data[j+1] = [];
+            for (var i=0,len=data[0].length; i<len; i+=1) {
+                data[j][i] = data[0][i] + (2 * j);
+                data[j+1][i] = data[0][i] + (2 * j);
+            }
+        }
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [data[0], data[1]],
+            options: {
+                filledColors: 'red',
+                filled: true,
+                filledRange: true,
+                colors: ['rgba(0,0,0,0)'],
+                linewidth: 1,
+                yaxisScaleMax: 50,
+                xaxisTickmarksCount: 25,
+                marginBottom: 50,
+                tickmarksStyle: null
+            }
+        }).draw();
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [data[2], data[3]],
+            options: {
+                filledColors: '#0c0',
+                filled: true,
+                filledRange: true,
+                colors: ['rgba(0,0,0,0)'],
+                linewidth: 1,
+                yaxisScaleMax: 50,
+                xaxisTickmarksCount: 25,
+                backgroundGrid: false,
+                marginBottom: 50,
+                tickmarksStyle: null
+            }
+        }).draw();
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [data[4], data[5]],
+            options: {
+                filledColors: '#66f',
+                filled: true,
+                filledRange: true,
+                colors: ['rgba(0,0,0,0)'],
+                linewidth: 1,
+                yaxisScaleMax: 50,
+                xaxisTickmarksCount: 25,
+                backgroundGrid: false,
+                marginBottom: 50,
+                tickmarksStyle: null
+            }
+        }).draw();
+
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [4,7,8,5,4,6,8,9,12,18,19,17,19,21,22,25,24,26,27,29,28,27,29,33,35,37],
+            options: {
+            xaxisLabels: ['12th','\r\n13th','14th','\r\n15th','16th','\r\n17th','18th','\r\n19th','20th','\r\n21st','22nd','\r\n23rd','24th','\r\n25th','26th','\r\n27th','28th','\r\n29th','30th','\r\n31st','1st','\r\n2nd','3rd','\r\n4th','5th','\r\n6th'],
+                colors: ['black'],
+                linewidth: 3,
+                yaxisScaleMax: 50,
+                xaxisTickmarksCount: 0,
+                backgroundGrid: false,
+                marginBottom: 50,
+                tickmarksStyle: null
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.poly.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
+

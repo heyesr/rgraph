@@ -1,0 +1,100 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A dark and graduated blue Bar chart</title>    
+    <meta name="description" content="An example of a graduated dark blue Bar chart. It has no labels and no axes. The background grid horizontal lines are disabled." />
+    
+        <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A dark and graduated blue Bar chart</h1>
+    
+    <div style="width: 600px; height: 300px; background-color: black; float: right" id="chart-container"></div>
+    
+    <p>
+        A dark and graduated Bar chart. The colors are black at the bottom of the
+        bars graduating to blue towards the top. The background grid is customised
+        too with the horizontal grid-lines having been disabled. Nor are there any
+        labels. It uses the <code>responsive()</code> function to enable it to
+        reduce in size on smaller screens.
+    </p>
+    
+    <p>
+        Another thing to note here is the complete lack of any labels.
+        You don't always need to have labels as the meaning may be
+        clear without them - perhaps having a title elsewhere on the page. I
+        wouldn't imagine that these use cases are very common though - with most cases
+        requiring at least a scale in order to make sense.
+    </p>
+    
+    <p>
+        When the screen is smaller not much happens - there's no text to reduce in size so the only
+        thing that's done is the CSS <code>float</code> is removed and the <code>marginInner</code>
+        is tweaked.
+    </p>
+
+    
+    
+
+
+    <script>
+        // This is not a complicated configuration - here the data is
+        // separated out to its own variable.
+        data = [6,4,5,5,7,4,8];
+    
+        // There's no labels or scale on this chart - 99% of the time
+        // you do want at least a scale on your chart but sometimes
+        // you will be able to omit it. Other than that, an RGraph
+        // gradient is being used and there's no horizontal
+        // background bars.
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                backgroundGridColor: '#999',
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                colors: ['Gradient(#6969FF:#6969FF:#000)']
+            }
+        // Draw the chart and add some responsive capabilities
+        }).draw().responsive([
+            {maxWidth: null,width:600, height: 300,options: {marginInner:15},css:{'float':'right'}},
+            {maxWidth: 800, width:400, height: 200,options: {marginInner:10},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the graphic to show up:
+    <pre class="code">
+&lt;div style="width: 600px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

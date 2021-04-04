@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Scatter chart with a connecting line</title>
+
+    
+    <meta name="description" content="A Scatter chart with a connecting line" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A Scatter chart with a connecting line</h1>
+    <p>This is an example of a Scatter chart that has been configured to use a connecting line. The chart shows how you can use datetime values as the X coordinate instead of a number if you want to.</p>
+
+    
+    <div style="width: 700px; height: 250px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        data = [
+            {x:'23:59 04-01-2012', y:1},
+            {x:'2012 5th February', y:6},
+            {x:'Mar 9 2012', y:6},
+            {x:'2012/08/30', y:9},
+            {x:'2012-09.12', y:5},
+            {x:'2012 November 5', y:4}
+        ];
+
+        new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: data,
+            options: {
+                line: true,
+                lineLinewidth: 2,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                tickmarksSize: 0,
+                colors: ['black'],
+                title: 'A Scatter chart with a connecting line ',
+                xaxisScaleMin: '2012/01/01',
+                xaxisScaleMax: '31st dec 2012 23:59:59',
+                xaxisLabels: [
+                    'Jan','Feb','Mar','Apr',
+                    'May','Jun','Jul','Aug',
+                    'Sep','Oct','Nov','Dec'
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 700px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

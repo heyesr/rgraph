@@ -1,0 +1,188 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart using the animationTraceCenter option</title>
+    
+    
+    <meta name="description" content="A demonstration of the animationTraceCenter option which alters the behaviour of the trace() effect so that the tracing starts in the middle instead of on the left." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart using the animationTraceCenter option</h1>
+
+    <canvas id="cvs" width="600" height="250" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        This is a canvas  based demonstration of the Line chart <code>animationTraceCenter</code> option
+        which is used when utilising the <code>trace()</code> effect.
+    </p>
+    
+    <p>
+        In addition to this <code>trace()</code> effect there are three datasets shown - and each one is
+        its own chart object.
+        The second and third charts start animating when the previous chart has finished.
+    </p>
+    
+    <p>
+        ie When the first Line chart finishes its <code>trace()</code> effect the callback triggers the
+        second chart to start animating and then when it also finishes animating the third Line chart is
+        animated.
+    </p>
+    
+    <p>
+        The overall effect is as you see here - each dataset animating sequentially. This is better than delayed
+        effects (so the second Line chart starts tracing whilst the first is still animating and similarly
+        for the third dataset) because the browser isn't animating two charts at once - thus reducing the
+        amount of work that it has to do.
+    </p>
+    
+    <p>
+        In terms of other configuration the <code>linewidth</code> option is set to zero, the
+        <code>backgroundGrid</code> and the <code>axes</code> options are set to false (on two
+        of the chart objects),
+        the colors are set to gradients and the Y axis scale maximum is set to 35.
+        The labels are added to the first chart that's drawn
+    </p>
+    
+    <p>
+        When the screen shrinks the chart is made to be smaller in order to accommodate the smaller screen
+        and the text size is reduced. The CSS <code>float</code> setting of the canvas tag is removed so
+        that it isn't aligned to the right-hand-side.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Create the first Line chart. Note the animationTraceCenter
+        // property is set to true which changes the behaviour of the
+        // trace() effect. The backgroundGrid and axes are enabled on this
+        // chart (horizontal lines only). The charts are all filled and
+        // splines. The effect used is (obviously) the trace effect and
+        // the callback function creates the second Line chart.
+        l1 = new RGraph.Line({
+            id: 'cvs',
+            data: [8,6,3,5,12,8,5,4,6,12],
+            options: {
+                animationTraceCenter: true,
+                tickmarksStyle: null,
+                shadow: false,
+                linewidth: 0,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                spline: true,
+                filled: true,
+                colors: ['Gradient(#fcc:red)'],
+                yaxisScaleMax: 35,
+                xaxisLabels:['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00']
+            }
+        }).trace(null, function ()
+        {
+            // Create the second Line chart. Again this uses the
+            // animationTraceCenter property that modifies the
+            // trace() effect. It has no axes or backgroundGrid
+            // - these are defined on the first chart. Note that
+            // unlike the first chart this has two datasets
+            // defined - the dataset from the first chart (which
+            // is transparent) and this charts dataaset.
+            new RGraph.Line({
+                id: 'cvs',
+                data: [
+                    [8,6,3,5,12,8,5,4,6,12],
+                    [4,8,6,3,5,2,4,8,5,2]
+                ],
+                options: {
+                    animationTraceCenter: true,
+                    tickmarksStyle: null,
+                    shadow: false,
+                    linewidth: 0,
+                    backgroundGrid: false,
+                    xaxis: false,
+                    yaxis: false,
+                    colors: ['transparent', 'Gradient(white:green)'],
+                    spline: true,
+                    filled: true,
+                    yaxisScaleMax: 35
+                }
+            }).trace(null, function ()
+            {
+                // Again the trace() effect callback function is used
+                // to trigger the drawing of the next Line chart.
+                // Three datasets now - ie all three. The first two are
+                // colored transparent so that you can't see them. Like
+                // the second chart there's no backgroundGrid or axes and
+                // with this being the final chart - there's no callback
+                // function.
+                new RGraph.Line({
+                    id: 'cvs',
+                    data: [
+                        [8,6,3,5,12,8,5,4,6,12],
+                        [4,8,6,3,5,2,4,8,5,2],
+                        [8,6,3,5,9,4,5,8,4,6]
+                    ],
+                    options: {
+                        animationTraceCenter: true,
+                        tickmarksStyle: null,
+                        shadow: false,
+                        linewidth: 0,
+                        backgroundGrid: false,
+                        xaxis: false,
+                        yaxis: false,
+                        colors: ['transparent', 'transparent', 'Gradient(white:blue)'],
+                        spline: true,
+                        filled: true,
+                        yaxisScaleMax: 35
+                    }
+                }).trace();
+            });
+        });
+        
+        // Add some responsiveness to the charts. This is added to the first chart but since all three
+        // are being drawn on the same canvas it doesn't need to be added to each chart object.
+        l1.responsive([
+            {maxWidth:null,width: 600,height:250,options:{textSize: 10},css:{'float':'right'}},
+            {maxWidth:900, width: 400,height:200,options:{textSize: 8},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="700" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

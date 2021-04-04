@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart with a dark theme</title>
+
+    
+    <meta name="description" content="An SVG Line chart with a dark theme" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Line chart with a dark theme</h1>
+    <p>A dark themed filled Line chart with a red tinge to it. The chart is using a gradient as the fill color and is also using the spline option. The background of the chart is dark by using the <code>colorsBackground</code> option.</p>
+
+    
+    <div style="width: 950px; height: 250px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        var data = [4,5,3,8,6,5,9,4,1,8,5,6,8,9,4,8,7,9,8,9,11,13,10,12,11,16,15,18,13,19,21,17,19,23,18,21,25,26,24,29,30];
+
+        var line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                colors: ['red'],
+                linewidth: 5,
+                backgroundGridColor: '#666',
+                backgroundGridVlinesCount: 4,
+                backgroundColor: 'black',
+                xaxis: false,
+                xaxisTickmarks:false,
+                xaxisLabels: [
+                    'Quarter 1',
+                    'Quarter 2',
+                    'Quarter 3',
+                    'Quarter 4'
+                ],
+                xaxisLabelsPosition: 'section',
+                yaxisTickmarks:false,
+                yaxis: false,
+                spline: true,
+                filled: true,
+                filledColors: ['Gradient(rgba(255,0,0,0.75):rgba(255,0,0,0.5):rgba(255,0,0,0))']
+            }
+        }).trace();
+        
+        line.svg.style.borderTopLeftRadius = '25px';
+        line.svg.style.borderBottomRightRadius = '25px';
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 950px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

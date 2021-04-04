@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart showing Facebook revenue over the years</title>
+    
+    
+    <meta name="description" content="A Bar chart showing Facebook revenue over the years" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing Facebook revenue over the years</h1>
+
+    
+    <div style="padding-left: 35px; display: inline-block">
+        <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[153,-138],[272,-56],[777,229],[1974,606],[3711,1000],[5089,53],[7872,1500],[12466,2940],[17928,3688],[27638,10217],[40653,15934]],
+            options: {
+                yaxisScaleMax: 50000,
+                labelsAbove:true,
+                //labelsAboveSize: 8,
+                //labelsAboveBold: true,
+                labelsAboveBackground: 'rgba(255,255,255,0.75)',
+                yaxis: false,
+                backgroundGridVlines:false,
+                backgroundGridBorder:false,
+                colors: ['#2876DD','#0F283E'],
+                title: 'Facebook revenue from 2007 to 2017',
+                titleSize: 16,
+                titleBold: true,
+                xaxisLabels:['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'],
+                xaxisLabelsOffsety: 30,
+                yaxisTitle: 'Millions of US dollars',
+                yaxisTitleX: 20,
+                marginLeft: 80,                
+                key: ['Revenue','Net income'],
+                keyPositionX:80,
+                keyPositionY:33,
+                keyPositionGraphBoxed: false,
+                keyColorShape: 'circle',                
+                labelsAboveSize: 8,
+                yaxisScaleSize: 8
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding-left: 35px"&gt;
+    &lt;canvas id="cvs" width="650" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+    
+
+
+
+</body>
+</html>

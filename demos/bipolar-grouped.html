@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped Bipolar chart</title>
+
+    
+    <meta name="description" content="A grouped Bipolar chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A grouped Bipolar chart</h1>
+
+    <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left:  [[1,2,3],[4,5,6],[7,8,9]],
+            right: [[1,2,3],[4,5,6],[7,8,9]],
+            options: {
+                marginInner: 30,
+                yaxisLabels: ['Alf','Barry','Charlie'],
+                colors: [
+                    'Gradient(red:red:white:red:red)',
+                    'Gradient(green:green:white:green:green)',
+                    'Gradient(blue:blue:white:blue:blue)'
+                ],
+                tooltips: 'Group: %{group} Index: %{index} Seq: %{seq}',
+                colorsStroke: 'transparent',
+                axes: false,
+                grouping: 'grouped' // Default
+            }
+        }).grow();
+    </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

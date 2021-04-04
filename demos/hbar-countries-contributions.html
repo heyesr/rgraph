@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart showing contributions to the EU</title>
+
+    <meta name="description" content="A Horizontal Bar chart showing contributions to the EU" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart showing contributions to the EU</h1>
+
+    <canvas id="cvs" width="900" height="900">[No canvas support]</canvas>
+    
+    <script>
+        source_data = [
+            ['Germany',29.37616,13.05616],
+            ['France',23.2916,14.23932],
+            ['Italy',17.16792,12.55426],
+            ['UK',17.06837,6.30829],
+            ['Spain',11.36872,13.75218],
+            ['Netherlands',6.55214,2.26407],
+            ['Belgium',5.29076,7.20947],
+            ['Poland',4.21444,16.17946],
+            ['Sweden',4.21148,1.661],
+            ['Austria',3.19142,1.86196],
+            ['Denmark',2.89935,1.43476],
+            ['Finland',2.15909,1.49678],
+            ['Greece',1.90644,7.21455],
+            ['Portugal',1.79296,6.16278],
+            ['Ireland',1.73123,1.87429],
+            ['Czech Republic',1.61663,4.89312],
+            ['Romania',1.47429,5.56058],
+            ['Hungary',1.01109,5.90983],
+            ['Slovakia',0.79935,2.02608],
+            ['Bulgaria',0.47756,1.97686],
+            ['Slovenia',0.42562,0.8136],
+            ['Lithuania',0.40477,1.88121],
+            ['Luxembourg',0.3218,1.59824],
+            ['Latvia',0.26901,1.06321],
+            ['Croatia',0.23824,0.28996],
+            ['Estonia',0.21195,0.97333],
+            ['Cyprus',0.18483,0.22707],
+            ['Malta',0.08642,0.1737]
+        ];
+        
+        labels = [];
+        data   = [];
+
+        // Create the separate data and labels arrays
+        for (var i=0; i<source_data.length; ++i) {
+            labels[i] = source_data[i][0];
+              data[i] = [source_data[i][1], source_data[i][2]];
+        }
+
+        new RGraph.HBar({
+            id: 'cvs',
+            data: data,
+            options: {
+                yaxisLabels: labels,
+                marginLeftAuto: true,
+                marginInner: 10,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridVlinesCount: 13,
+                xaxis: false,
+                yaxis: false,
+                colors: ['#7CB5EC','#B03060'],
+                xaxisLabelsCount: 13,
+                xaxisScaleMax: 32.5,
+                xaxisScaleDecimals: 1,
+                xaxisTitle: 'Contributions / receipts (ebn)',
+                xaxisTitleY: 910,
+                xaxisTitleColor: '#aaa',
+                key: ['Money contributed in 2013','Money received in 2013'],
+                keyPosition: 'margin',
+                keyLabelsBold: true
+            }
+        }).grow({frames: 60});
+        
+        node = RGraph.text.find({
+            id: 'cvs',
+            text: /ebn/
+        });
+        
+        node[0].innerHTML = node[0].innerHTML.replace('ebn', '&euro;bn');
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="900" height="900"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

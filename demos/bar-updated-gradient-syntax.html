@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A demo of the updated JSON gradient syntax</title>
+    
+    
+    <meta name="description" content="You can read about the new JSON based gradient syntax in the RGraph canvas documentation: https://www.rgraph.net/canvas/docs/available-canvas-color-definitions.html#rgraph-gradients-json-syntax" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A demo of the updated JSON gradient syntax</h1>    
+
+    <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [4,8,6,3,5,4,9],
+            options: {
+                colors: ['Gradient({colors:["red","yellow","red"],x1:0,y1:0,x2:700,y2:350})'],
+                xaxis: false,
+                yaxis: false,
+                labelsAbove:true,
+                labelsAboveSize:20,
+                labelsAboveSpecific: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textSize: 20,
+                marginBottom: 5,
+                marginTop: 5,
+                marginRight: 5,
+                marginLeft: 45,
+                shadow: false
+            }
+        }).grow();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+</body>
+</html>

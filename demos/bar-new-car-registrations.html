@@ -1,0 +1,155 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo:  A Bar chart showing new car registrations</title>
+    
+    
+    <meta name="description" content="A grouped Bar chart showing motor vehicle sales which has three bars per group along with a turquoise color theme." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing new car registrations</h1>
+
+    <div style="display: inline-block; margin: 35px; float: right">
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        A straight-forward Bar chart with a nice aesthetic to it. This style (ie the colors) of chart is frequently used
+        by the BBC news website.
+    </p>
+    
+    <p>
+        It's a grouped Bar chart with three data-pieces per segment (the third data-pieces are quite
+        small when compared to the other two).
+    </p>
+    
+    <p>
+        The background grid vertical lines are disabled (there's still a border around the edge of
+        the grid) and there's a key that's positioned in the margin, on the left hand side.
+    </p>
+
+    <p>
+        If you like this style of chart then you could also try a slightly larger  font size.
+    </p>
+
+    <p>
+        The <code>responsive()</code> function alters the text sizes of the chart and changes the CSS
+        value of the <code>float</code> property so that on smaller screens it's not aligned to the
+        right.
+    </p>
+    
+    <p>
+        There now some tooltips on the chart which use both the <code>tooltipsCss</code> property and
+        the formatted tooltips feature. These use a white-on-black theme and are left aligned - both using
+        CSS. As a result they have a nice aesthetic  to them.
+    </p>
+    
+    <br clear="all" />
+
+    <script>
+        // Create a Bar chart with a 2D array as the data. Each group
+        // has three elements even though the chart gives the
+        // impression that there's only two values.
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [
+                [1075000,910000,10000],
+                [900000,980000,15000],
+                [970000,1050000,30000],
+                [1100000,1120000,40000],
+                [1190000,1230000,50000],
+                [1270000,1260000,70000],
+                [1300000,1150000,75000]
+            ],
+            options: {
+                colors: ['#024E4E','#009997','#9ECECD'],
+                xaxisLabels: ['2010','2011','2012','2013','2014','2015','2016'],
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridHlinesCount: 7,
+                
+                // The Y axis on this chart has seven values (eight if you
+                // include zero) instead of five and the maximum value is
+                // specifically set to 1,400,000
+                yaxisLabelsCount: 7,
+                yaxisScaleMax: 1400000,
+                
+                // The key is specified to appear in the margin and is aligned to
+                // the left-hand-side of the main chart area.
+                key: ['Petrol','Diesel','All AFVs'],
+                keyPosition: 'margin',
+                keyPositionX: 100,
+
+                // The title is specified but is aligned to the left-hand-side
+                // of the main chart area.
+                title: 'New car registrations in the UK, 2010-2016',
+
+                titleX: 100,
+                titleY: 0,
+                titleBold: true,
+                titleHalign: 'left',
+                
+                // Use formatted tooltips to show tooltips
+                tooltips: '<i>Results for <b style="font-size: 14pt">%{property:key[%{index}]}</b> in <b style="font-size: 14pt">%{property:xaxisLabels[%{group}]}</b>:</i><br /><span style="font-size: 20pt">$%{value_formatted}</span>',
+                
+                // Add some CSS values which are applied to the tooltip
+                tooltipsCss: {
+                    textAlign: 'center'
+                },
+                textAccessible: false
+            }
+        }).draw().on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'white');
+
+        }).responsive([
+            {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right'}},
+            {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 50}, parentCss: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; margin: 35px; float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

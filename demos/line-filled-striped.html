@@ -1,0 +1,119 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A striped Line chart</title>
+    
+    
+    <meta name="description" content="A striped Line chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A striped line chart</h1>
+
+    <canvas id="cvs" width="800" height="300">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [8,7,6,5,8,7,9,8,6,5,8,3,4,1,1,9,5,7,8,5,6,9,8,7],
+            options: {
+                tickmarksStyle: 'circle',
+                tickmarksSize: 5,
+                linewidth: 2,
+                marginInner: 5,
+                shadow: false,
+                filled: true,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                title: 'Sales figures for 2012',
+                titleSize: '16',
+                titleBold: true,
+                yaxisScaleUnitsPost: '%',
+                marginLeft: 50,
+                xaxisLabels: [
+                    '','Jan','',
+                    '','Feb','',
+                    '','Mar','',
+                    '','Apr','',
+                    '','May','',
+                    '','Jun','',
+                    '','Jul','',
+                    '','Aug','',
+                    '','Sep','',
+                    '','Oct','',
+                    '','Nov','',
+                    '','Dec',''
+                ]
+            }
+        }).draw().exec(function (obj)
+        {
+            // The fill
+            var grad = obj.context.createLinearGradient(0,15,0,275);
+            grad.addColorStop(0, 'rgba(248,231,209,0.75)');
+            grad.addColorStop(0.6, 'rgba(248,231,209,0.5)');
+            grad.addColorStop(0.6, 'rgba(220,234,216,0.75)');
+            grad.addColorStop(0.8, 'rgba(220,234,216,0.5)');
+            grad.addColorStop(0.8, 'rgba(132,208,248,0.75)');
+            grad.addColorStop(1.0, 'rgba(132,208,248,0.5)');
+            
+            obj.set({
+                filledColors: grad
+            });
+
+            // The stroke
+            var grad2 = obj.context.createLinearGradient(0,25,0,275);
+            grad2.addColorStop(0, 'orange');
+            grad2.addColorStop(0.6, 'orange');
+            grad2.addColorStop(0.6, 'green');
+            grad2.addColorStop(0.8, 'green');
+            grad2.addColorStop(0.8, 'blue');
+            grad2.addColorStop(1.0, 'blue');
+            
+            obj.set({
+                colors: [grad2]
+            });
+            
+            RGraph.redraw();
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

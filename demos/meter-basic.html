@@ -1,0 +1,97 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic, responsive Meter chart</title>
+    
+    
+    <meta name="description" content="A basic Meter chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic, responsive Meter chart</h1>
+    
+    <p>
+        An example of using the responsive function so that the chart shrinks when the screen size shrinks.
+    </p>
+
+    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 45,
+            options: {
+                colorsGreenColor: 'Gradient(green:#040)',
+                colorsYellowColor: 'Gradient(#ff0:#440)',
+                colorsRedColor: 'Gradient(#f00:#400)',
+                labelsValue: true,
+                labelsValueUnitsPost: ',000k',
+                labelsRadiusOffset: -3
+            }
+        }).draw().responsive([
+            // This is the configuration for small screens
+            {
+                maxWidth:900,
+                width:400,
+                height:150,
+                options:{textSize: 8},
+                callback:function (obj)
+                {
+                    // Set the width/height of the container
+                    obj.canvas.parentNode.style.width  = '400px';
+                    obj.canvas.parentNode.style.height = '150px';
+                }
+            },
+
+            // This is the default configuration (for larger screens)
+            {
+                maxWidth:null,
+                width:600,
+                height:300,
+                options:{textSize: 18},
+                callback:function (obj)
+                {
+                    // Set the width/height of the container
+                    obj.canvas.parentNode.style.width  = '600px';
+                    obj.canvas.parentNode.style.height = '300px';
+                }
+            }
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

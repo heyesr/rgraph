@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Pie chart with gradients</title>
+    
+    
+    <meta name="description" content="A Pie chart with gradients" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Pie chart with gradients</h1>
+    <p>
+        This Pie chart shows you how you can use gradients, shadows and segment
+        separation combined with each other to good effect.
+    </p>
+
+    <canvas id="cvs" width="800" height="600">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [17,15,16,15,13,13,15,15,11,15,12,15,15],
+            options: {
+                radius: 175,
+                linewidth: 3,
+                textSize: 18,
+                colorsStroke: 'white',
+                shadow: false,
+                labels: ['Alvin','Pete','Hoolio','Jack','Kevin','Luis','Louise','Jesse','Rachel','Christian','Lola','Kevin','Barry','Peter','Luis'],
+                exploded: 5,
+                colors: [
+                    'Gradient(white:#ff0:#aa0:#660)', 'Gradient(white:#f00:#a00:#600)',
+                    'Gradient(white:#0ff:#0aa:#066)', 'Gradient(white:#0f0:#0a0:#060)',
+                    'Gradient(white:#fff:#aaa:#666)', 'Gradient(white:#f0f:#a0a:#606)',
+                    'Gradient(white:#ff0:#aa0:#660)','Gradient(white:#f00:#a00:#600)',
+                    'Gradient(white:#0ff:#0aa:#066)','Gradient(white:#0f0:#0a0:#060)',
+                    'Gradient(white:#fff:#aaa:#666)', 'Gradient(white:#f0f:#a0a:#606)',
+                    'Gradient(white:#fff:#aaa:#666)'
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="600"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

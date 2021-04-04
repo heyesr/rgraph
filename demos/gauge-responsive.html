@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A responsive Gauge chart</title>
+
+    
+    <meta name="description" content="A simple Gauge chart using the defaults but which has been made to be responsive" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A responsive Gauge chart</h1>
+
+    <canvas id="cvs" width="350" height="350">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: 3.29,
+            options: {
+                labelsValue: true,
+                labelsValueDecimals: 2,
+                labelsValueBounding: false,
+                labelsValueYPos: 0.4,
+                labelsValueUnitsPost: '%',
+                labelsValueSize: 20,
+                colorsGreenColor: '#afa',
+                colorsGreenWidth: 15,
+                colorsRedWidth: 15,
+                colorsYellowWidth: 15,
+                labelsCentered: true,
+                labelsOffsetAngle: 0,
+                labelsOffsetx: 0,
+                labelsOffsety: 0
+            }
+        }).draw().responsive([
+            {maxWidth: 800,  width: 250, height: 250, options: {textSize: 14,labelsOffsetRadius: 15}},
+            {maxWidth: null, width: 450, height: 450, options: {textSize: 24,labelsOffsetRadius: 25}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

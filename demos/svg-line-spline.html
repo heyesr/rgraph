@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A spline SVG Line chart</title>
+    
+    
+    <meta name="description" content="A spline SVG Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A spline SVG Line chart</h1>
+    <p>Here we have a spline Line chart with multiple datasets. The spline option simply makes the lines curvy instead of angular. There's also a shadow enabled and the vertical grid lines are disabled.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                [4,1,8,6,3,5,4,2,9,3,6,3],
+                [1,9,6,3,4,6,8,5,5,5,2,8],
+                [4,6,3,5,2,8,9,5,6,5,6,1],
+                [4,8,6,3,5,4,2,5,1,6,9,9]
+            ],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                marginLeft: 50,
+                marginBottom: 50,
+                linewidth: 5,
+                spline: true,
+                shadow: true,
+                shadowOpacity: .25,
+                title: 'A multi-line spline chart',
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

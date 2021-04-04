@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>RGraph demo: A basic example of a Pie chart that uses the pseudo-events</title>
+
+    
+    <meta name="description" content="A basic example of the Pie chart pseudo-events. It shows an example Pie chart and there is little happening on the page so the source is easy to navigate." />
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <!-- 1/3. Include the RGraph libraries -->
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+
+<body>
+
+    
+
+    <h1>A basic example of a Pie chart that uses the pseudo-events</h1>
+
+    <!-- 2/3. This is the canvas that the chart is drawn on -->
+    <canvas id="cvs" width="400" height="250">[No canvas support]</canvas>
+
+    <!--
+        3/3. This creates and displays the chart.
+    -->
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [12,13,16,15,16],
+            options: {
+                labels: ['Charly','Lou','Pete','Jim','Fred']
+            }
+        }).draw()   
+
+        // This is the function for the mousemove event. It changes the pointer to the hand.
+        // When the mouse is moved away from the segment the pointer is changed back to what it was
+        // automatically for you.
+        .on('mousemove', function (e, shape)
+        {
+            return true;
+        })
+
+        // This is the function for the click event.
+        .on('click', function (e, shape)
+        {
+            alert('A segment was clicked (with index: ' + shape.index + ')');
+        });
+    </script>
+    
+    <p>
+        This is a basic example of the Line chart that shows you how to use the
+        pseudo-events that RGraph has:
+    </p>
+    
+    <ul>
+        <li><code>click</code></li>
+        <li><code>mousemove</code></li>
+        <li><code>mouseover</code></li>
+        <li><code>mouseout</code></li>
+    </ul>
+    
+    <p>
+        Here the <code>mousemove</code> event is used to change the mouse cursor
+        (it's automatically changed back for you). And the <code>click</code> event
+        is used to show an alert.
+    </p>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="400" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

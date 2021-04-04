@@ -1,0 +1,100 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart with vertical scrolling</title>
+    
+    
+    
+    <meta name="description" content="A Horizontal Bar chart with vertical scrolling" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart with vertical scrolling</h1>
+
+    <div style="position: relative">
+        <div style="width: 600px; height: 400px;overflow: auto; overflow-x: hidden">
+            <canvas id="cvs" width="600" height="1000"></canvas>
+        </div>
+        <canvas id="axes" width="600" height="50" style="position: absolute; top: 400px; left: 0; z-index: 3"></canvas>
+    </div>
+    
+    <p>&nbsp;</p>
+
+    
+    <script>
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [4,6,8,5,9,6,4,8,4,6,12,2,8,6,4,3,2,5,9],
+            options: {
+                marginBottom: 35,
+                xaxis: false,
+                yaxis: false,
+                xaxisScale: false,
+                yaxisLabels: ['Rob','Jason','Louise','Pob','Kevin','Jerry','Inga','Hoolio','Fliss','Matt','Gary','Doug','Mark','Lucy','Lynn','Olga','Kris','Harry','Dave'],
+                textAccessiblePointerevents: true,
+                marginBottom: 5,
+                marginInner: 20
+            }
+        }).on('draw', function (obj)
+        {
+            obj.coords.forEach(function (v, k, arr)
+            {
+                obj.path(
+                    'b a % % % 0 7 false f red',
+                    v[0] + v[2], v[1] + (v[3] / 2), 11
+                );
+            });
+        }).draw();
+
+        var xaxis = new RGraph.Drawing.XAxis({
+            id: 'axes',
+            y: 2,
+            options: {
+                xaxisScale: true,
+                xaxisScaleMax: hbar.max,
+                colors: ['black'],
+                marginLeft: hbar.get('marginLeft')
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.xaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="position: relative"&gt;
+    &lt;div style="width: 600px; height: 400px;overflow: auto; overflow-x: hidden"&gt;
+        &lt;canvas id="cvs" width="600" height="1000"&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
+    &lt;canvas id="axes" width="600" height="50" style="position: absolute; bottom: 5px; left: 0; z-index: 3"&gt;&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart using the Google Sheets connector</title>
+
+    
+    <meta name="description" content="A Scatter chart using the Google Sheets connector" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart using the Google Sheets connector</h1>
+
+    
+    <canvas id="cvs" width="700" height="250">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', 3, function (sheet)
+        {        
+            var x = sheet.get('A2:A11'),
+                y = sheet.get('B2:B11'),
+                p = [];
+            
+            for (var i=0; i<x.length; i++) {
+                p.push([x[i], y[i]]);
+            }
+
+            var line = new RGraph.Scatter({
+                id: 'cvs',
+                data: p,
+                options: {
+                    xaxisScaleMax: 100,
+                    xaxisLabels: ['Q1','Q2','Q3','Q4'],
+                    yaxis: false,
+                    backgroundGridBorder: false,
+                    backgroundGridVlines: false
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="../libraries/RGraph.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.common.sheets.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.scatter.js" &gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="700" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

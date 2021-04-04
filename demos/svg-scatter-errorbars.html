@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Scatter chart with errorbars</title>
+
+    <meta name="description" content="An SVG Scatter chart with errorbars" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Scatter chart with errorbars</h1>
+    <p>An example of a Scatter chart that uses <code>errorbars</code>. The <code>errorbars</code> can be both upper and lower values. <code>errorbars</code> can be used to show a range of possible values or standard-deviation etc. They can also be colored individually if required.</p>
+
+    
+    <div style="width: 650px; height: 350px; border: 1px solid #ddd" id="chart-container"></div>
+
+
+
+
+    <script>
+        var data1 = [
+            {x:1, y:7, errorbar: 3, color: 'red'},
+            {x:2, y:5, errorbar: {max: 6, color: 'red', linewidth: 2}, color: 'red'},
+            {x:3, y:3, errorbar: {min: 1, max: 1}, color: 'red'}
+        ];
+
+        var data = [
+            {x:7,  y:7, errorbar: {min: 1, max: null}, color: 'red'},
+            {x:8,  y:5, errorbar: {min: 1, max: 1}, color: 'red'},
+            {x:10, y:3, errorbar: {min: 1, max: 1}, color: 'red'}
+        ];
+
+
+        new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: [data, data1],
+            options: {
+                //errorbarsLinewidth: 5,
+                //errorbarsCapwidth: 20,
+                //errorbarsColor: 'pink',
+                marginLeft: 35,
+                xaxisScaleMin: 0,
+                xaxisScaleMax: 12,
+                xaxisLabels: ['Q1', 'Q2','Q3','Q4'],
+                tickmarksStyle: 'circle'
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 350px; border: 1px solid #ddd" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

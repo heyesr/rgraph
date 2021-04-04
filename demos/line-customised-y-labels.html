@@ -1,0 +1,115 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.line.js"></script>
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.common.dynamic.js"></script>
+    <script src="../libraries/RGraph.common.tooltips.js"></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js"></script>
+    <script src="demos.js"></script>
+    
+    <title>RGraph demo: A Line chart demo with customised Y labels</title>
+    <meta name="description" content="A Line chart demo with customised Y labels" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Line chart with customised Y labels</h1>
+
+    <canvas id="cvs" width="600" height="250" style="float: right">[No canvas support]</canvas>
+
+
+    <script>
+        labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [7,5,6,9,5,4,7],
+            options: {
+                spline: true,
+                xaxisLabels: labels,
+                tooltips: labels,
+                marginInner: 35,
+                tickmarksStyle: 'endcircle',
+                tickmarksSize: 5,
+                linewidth: 3,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textColor: '#999',
+                textSize: 14
+            }
+        }).on('draw', function (obj)
+        {
+            var ca = obj.canvas;
+            var co = obj.context;
+
+            // Because we're not drawing an axis, draw an extra grid line
+            co.strokeStyle = obj.get('backgroundGridColor');
+            co.strokeRect(obj.get('marginLeft'), ca.height - obj.get('marginBottom'), ca.width - obj.get('marginRight') - obj.get('marginLeft'), 0)
+        });
+        
+        var yaxis = new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 20,
+            options: {
+                marginTop: line.get('marginTop'),
+                marginBottom: line.get('marginBottom'),
+                yaxisScaleMax: 10,
+                yaxisLabelsOffsety: -15,
+                yaxisPosition: 'right',
+                yaxisColor: 'transparent',
+                yaxisScaleUnitsPost: 'Kg',
+                textColor: '#999',
+                colors: ['rgba(0,0,0,0)'],
+                textSize: 14
+            }
+        });
+        
+        // Delay the effect starting a little
+        setTimeout(function ()
+        {
+            line.trace();
+        }, 100);
+    </script>
+    
+    <p>
+        In order to show significantly customised labels you can either
+        draw the axes yourself using the <code>draw</code> event
+        or, as is done in this case, you can use the drawing API Y axis object. The axes are offset slightly by
+        using the margins so the labels appear to be sitting on top of the grid lines. The axes of the Line
+        chart are turned off and the color of the axis line is transparent so that just the text labels are visible.
+    </p>
+    
+    
+    <p></p>
+        
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right; border: 1px solid gray"&gt;
+    &lt;canvas width="600" height="250" style="float: right" &gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

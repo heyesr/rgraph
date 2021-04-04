@@ -1,0 +1,252 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+
+    <style>        
+        .RGraph_tooltip h2 {
+            margin: 5px;
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip table {
+            border-collapse: collapse;
+            font-family: Verdana;
+        }
+
+        .RGraph_tooltip thead th {
+            font-style: italic;
+        }
+
+        .RGraph_tooltip th,
+        .RGraph_tooltip td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .RGraph_tooltip td:nth-child(1){
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
+            background-color: #eee;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
+            background-color: #ddd;
+        }
+    </style>
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: An SVG Scatter chart showing the new (version 5.25) formatted tooltips table feature</title>
+    <meta name="description" content="An SVG Scatter chart showing the new (version 5.25) formatted tooltips table feature" />
+
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+
+    <h1>An SVG Scatter chart showing the new (version 5.25) formatted tooltips table feature</h1>
+    
+    <div id="cc" style="width: 600px; height: 400px;"></div>
+
+
+
+    <script>
+        new RGraph.SVG.Scatter({
+            id: 'cc',
+            data: [
+                [
+                    {x:.5,y:1},
+                    {x:1.5,y:2},
+                    {x:2.5,y:3},
+                    {x:3.5,y:4},
+                    {x:4.5,y:5},
+                    {x:5.5,y:6},
+                    {x:6.5,y:7}
+                ],
+                [
+                    {x:.5,y:2,color:'red'},
+                    {x:1.5,y:3,color:'red'},
+                    {x:2.5,y:4,color:'red'},
+                    {x:3.5,y:5,color:'red'},
+                    {x:4.5,y:6,color:'red'},
+                    {x:5.5,y:7,color:'red'},
+                    {x:6.5,y:8,color:'red'}
+                ]
+            ],
+            options: {
+                xaxisScaleMax: 7,
+                tooltips: '<h2>Results for %{prop:xaxisLabels[%{group}]}</h2> %{table}',
+                tooltipsEffect: 'none',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                },
+                
+                // These headers are used as the first "row" of the table
+                tooltipsFormattedTableHeaders: ['','Alf','Bert','Charlie','Dave','Egbert','Fred','Gary'],
+                
+                // The data that appears in the tooltip table. As you can see - it's a
+                // three-dimensional array
+                tooltipsFormattedTableData: [
+
+                    // Monday tooltip (black)
+                    [
+                        ['Attempt 1',5,9,6,3,5,6,6], // First row
+                        ['Attempt 2',9,6,8,4,8,6,8], // Second row
+                        ['Attempt 3',8,6,3,6,5,8,9], // Third row
+                        ['Attempt 4',4,8,6,3,3,5,5], // Fourth row
+                        ['Attempt 5',1,2,3,4,5,6,7]  // Fifth row
+                    ],
+                    
+                    // Tuesday tooltip (black)
+                    [
+                        ['Attempt 1', 9,8,6,3,5,8,8], // First row
+                        ['Attempt 2', 4,8,4,6,8,7,3], // Second row
+                        ['Attempt 3', 8,6,3,6,9,9,6], // Third row
+                        ['Attempt 4', 8,6,8,3,4,7,4], // Fourth row
+                        ['Attempt 5', 8,3,3,1,7,8,7], // Fifth row
+                        ['Attempt 6', 8,6,6,9,4,3,2]  // Sixth row
+                    ],
+                    
+                    // Wednesday tooltip (black)
+                    [
+                        ['Attempt 1', 4,8,6,3,4,4,4], // First row
+                        ['Attempt 2', 5,8,6,9,5,8,4], // Second row
+                        ['Attempt 3', 7,8,5,6,3,2,4], // Third row
+                        ['Attempt 4', 6,8,9,6,5,3,6]  // Fourth row
+                    ],
+                    
+                    // Thursday tooltip (black)
+                    [
+                        ['Attempt 1', 4,5,6,3,5,8,8], // First row
+                        ['Attempt 2', 2,6,6,5,5,8,8], // Second row
+                        ['Attempt 3', 8,3,5,8,9,6,5]  // Third row
+                    ],
+                    
+                    // Friday tooltip (black)
+                    [
+                        ['Attempt 1', 9,6,5,3,5,6,9], // First row
+                        ['Attempt 2', 4,8,6,5,2,5,5]  // Second row
+                    ],
+                    
+                    // Saturday tooltip (black)
+                    [
+                        ['Attempt 1', 4,8,6,3,'DNF',8,4], // First row
+                        ['Attempt 2', 4,8,6,3,5,2,2],     // Second row
+                        ['Attempt 3', 8,7,5,4,6,3,5],     // Third row
+                        ['Attempt 4', 9,6,6,6,4,8,6]      // Fourth row
+                    ],
+                    
+                    // Sunday tooltip (black)
+                    [
+                        ['Attempt 1', 1,9,8,5,6,6,6], // First row
+                        ['Attempt 2', 1,9,8,5,6,6,6], // Second row
+                        ['Attempt 3', 8,6,3,3,5,6,8], // Third row
+                        ['Attempt 4', 4,8,6,3,5,5,5], // Fourth row
+                        ['Attempt 5', 9,6,3,5,6,9,9]  // Fifth row
+                    ],
+                    
+                    // Monday tooltip (red)
+                    [
+                        ['Attempt 1', 4,5,2,3,5,6,6], // First row
+                        ['Attempt 2', 1,5,3,2,5,6,8], // Second row
+                        ['Attempt 3', 4,8,6,3,5,6,8], // Third row
+                        ['Attempt 4', 4,8,5,6,3,5,3], // Fourth row
+                        ['Attempt 5', 5,8,6,3,5,6,8]  // Fifth row
+                    ],
+                    
+                    // Tuesday tooltip (red)
+                    [
+                        ['Attempt 1', 1,2,3,4,5,6,7], // First row
+                        ['Attempt 2', 5,2,4,6,9,9,5], // Second row
+                        ['Attempt 3', 4,2,3,5,6,8,9], // Third row
+                        ['Attempt 4', 4,5,8,6,3,5,8], // Fourth row
+                        ['Attempt 5', 4,3,5,6,9,8,5]  // Fifth row
+                    ],
+                    
+                    // Wednesday tooltip (red)
+                    [
+                        ['Attempt 1', 6,8,5,2,5,3,6], // First row
+                        ['Attempt 2', 4,9,5,6,2,3,1], // Second row
+                        ['Attempt 3', 8,5,6,9,5,8,5], // Third row
+                        ['Attempt 4', 5,1,2,3,5,6,8], // Fourth row
+                        ['Attempt 5', 4,8,5,5,6,6,6]  // Fifth row
+                    ],
+                    
+                    // Thursday tooltip (red)
+                    [
+                        ['Attempt 1', 4,1,5,5,5,2,3], // First row
+                        ['Attempt 2', 5,3,5,6,8,9,9], // Second row
+                        ['Attempt 3', 1,2,3,5,6,8,8], // Third row
+                        ['Attempt 4', 1,5,8,4,9,5,6], // Fourth row
+                        ['Attempt 5', 4,8,5,6,3,2,5]  // Fifth row
+                    ],
+                    
+                    // Friday tooltip (red)
+                    [
+                        ['Attempt 1', 6,6,3,5,8,9,5], // First row
+                        ['Attempt 2', 5,1,9,5,8,8,6], // Second row
+                        ['Attempt 3', 3,5,2,6,9,5,8], // Third row
+                        ['Attempt 4', 3,2,6,5,9,8,6], // Fourth row
+                        ['Attempt 5', 5,2,3,5,1,8,5]  // Fifth row
+                    ],
+                    
+                    // Saturday tooltip (red)
+                    [
+                        ['Attempt 1', 4,8,5,2,3,3,5], // First row
+                        ['Attempt 2', 3,5,6,8,9,6,6], // Second row
+                        ['Attempt 3', 7,5,6,3,5,1,2], // Third row
+                        ['Attempt 4', 5,2,5,6,8,9,9], // Fourth row
+                        ['Attempt 5', 1,5,3,6,9,5,6]  // Fifth row
+                    ],
+                    
+                    // Sunday tooltip (red)
+                    [
+                        ['Attempt 1', 1,9,6,3,5,4,8], // First row
+                        ['Attempt 2', 4,8,6,6,6,5,3], // Second row
+                        ['Attempt 3', 8,5,6,3,5,6,8], // Third row
+                        ['Attempt 4', 4,8,1,5,3,2,6], // Fourth row
+                        ['Attempt 5', 9,6,3,5,6,4,5]  // Fifth row
+                    ]
+                ],
+
+                // The rest of the chart configuration
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 12,
+                title: 'A demonstration of tooltip tables',
+                titleBold: true
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="cc" style="width: 600px; height: 300px"&gt;&lt;div&gt;;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

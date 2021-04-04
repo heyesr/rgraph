@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.circle.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of the drawing API circle object being used as a tooltip hotspot</title>
+
+    
+    <meta name="description" content="An example of the drawing API circle object being used as a tooltip hotspot" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+        
+    <h1>An example of the drawing API circle object being used as a tooltip hotspot</h1>
+
+    <div style="height: 320px">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,8,6,4,3,5,2],
+            options: {
+                marginInner: 5,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 20,
+                xaxisLabelsAngle: 45,
+                xaxisLabelsOffsety: 7
+            }
+        }).draw();
+        
+        coords = line.coords[0];
+
+        // Create the hotspot
+        circle = new RGraph.Drawing.Circle({
+            id: 'cvs',
+            x: coords[0],
+            y: coords[1],
+            radius: 7,
+            options: {
+                colorsFill: 'rgba(255,0,0,0.25)',
+                tooltips: 'Monday was a grand day out!',
+                tooltipsCss: {
+                    fontSize: '22pt'
+                },
+                tooltipsEvent: 'mousemove',
+                tooltipsOffsety: -10,
+                highlightStroke: 'transparent',
+                highlightFill: 'transparent'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.circle.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

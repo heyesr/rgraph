@@ -1,0 +1,102 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A time based SVG Scatter chart</title>
+
+    
+    <meta name="description" content="A time based SVG Scatter chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A time based SVG Scatter chart</h1>
+    <p>This Scatter chart has been configured to use datetime values for the X coordinates, the title has been customised slightly and the points have tooltips. The background grid has no vertical gridlines.</p>
+
+    
+    <div style="width: 700px; height: 250px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        above = false;
+
+        data = [
+            {x:'23:59 15-01-2012',    y:5, tooltip: 'Yunka',   above: above},
+            {x:'2012 15th February',  y:6, tooltip: 'Ally',    above: above},
+            {x:'Mar 15 2012',         y:6, tooltip: 'Fred!',   above: above},
+            {x:'2012/04/15',          y:6, tooltip: 'Tom!',    above: above},
+            {x:'2012-05.15',          y:5, tooltip: 'Rachel!', above: above},
+            {x:'2012 June 15',        y:4, tooltip: 'Jone!',   above: above},
+            {x:'July 2012 15th',      y:5, tooltip: 'Luis!',   above: above},
+            {x:'aug 15th 2012',       y:6, tooltip: 'Peter!',  above: above},
+            {x:'15th september 2012', y:7, tooltip: 'Harry!',  above: above},
+            {x:'15 Oct 2012',         y:6, tooltip: 'Bert!',   above: above},
+            {x:'2012.11.15',          y:4, tooltip: 'Bob!',    above: above},
+            {x:'2012.12-15 00:00:00', y:5, tooltip: 'Bill!',   above: above}
+        ];
+
+        scatter = new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: data,
+            options: {
+                tickmarksStyle: 'plus',
+                tickmarksStyle: 'cross',
+                tickmarksStyle: 'square',
+                tickmarksStyle: 'rect',
+                tickmarksStyle: 'dot',
+                tickmarksStyle: 'circle',
+                tickmarksStyle: 'cross',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                tickmarksSize: 15,
+                colors: ['red', 'gray'],
+                title: 'A Scatter chart using datetime values',
+                titleItalic: true,
+                titleBold: true,
+                //tooltipsEvent: 'click',
+                xaxisScaleMin: '2012/01/06 12:14:12',
+                xaxisScaleMax: '31st dec 2012',
+                xaxisLabels: [
+                    'Jan','Feb','Mar','Apr',
+                    'May','Jun','Jul','Aug',
+                    'Sep','Oct','Nov','Dec'
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 700px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

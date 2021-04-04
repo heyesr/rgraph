@@ -1,0 +1,155 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Gantt chart showing the formatted tooltips %{table} option</title>   
+    <meta name="description" content="A Gantt chart showing the formatted tooltips %{table} option" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+    <style>        
+        .RGraph_tooltip h2 {
+            margin: 5px;
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip table {
+            border-collapse: collapse;
+            font-family: Verdana;
+        }
+
+        .RGraph_tooltip thead th {
+            font-style: italic;
+        }
+
+        .RGraph_tooltip th,
+        .RGraph_tooltip td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .RGraph_tooltip td:nth-child(1){
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
+            background-color: #eee;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    
+
+    <h1>A Gantt chart showing the formatted tooltips %{table} option</h1>
+
+    <canvas id="cvs" width="675" height="350">[No canvas support]</canvas>
+    
+    <script>
+        data = [
+            {start: 31, duration: 28,  complete: 67, label: 'Richard',  linewidth: 0, color: 'red', background: 'pink'},
+            {start: 0,  duration: 28,  complete: 50, label: 'Rachel',   linewidth: 0, color: 'red', background: 'pink'},
+            {start: 12, duration: 28,  complete: 45, label: 'Fred',     linewidth: 0, color: 'red', background: 'pink'},
+            {start: 59, duration: 14,  complete: 0,  label: 'Barney',   linewidth: 0, color: 'red', background: 'pink'}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScaleMax: 122,
+                backgroundGridVlinesCount: 4,
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                labelsPercent: true,
+                tooltips: '<h2>Results for %{prop:days[%{group}]}</h2> %{table}',
+                days:['Mondays','Tuesdays','Wednesdays','Thursdays'],
+                tooltipsEffect: 'none',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                },
+
+                // These headers are used as the first "row" of the table
+                tooltipsFormattedTableHeaders: ['','Alf','Bert','Charlie','Dave','Egbert','Fred','Gary'],
+
+                // The data that appears in the tooltip table. As you can see - it's a
+                // three-dimensional array
+                tooltipsFormattedTableData: [
+
+                    [
+                        ['Attempt 1',5,9,6,3,5,6,6], // First row
+                        ['Attempt 2',9,6,8,4,8,6,8], // Second row
+                        ['Attempt 3',8,6,3,6,5,8,9], // Third row
+                        ['Attempt 4',4,8,6,3,3,5,5], // Fourth row
+                        ['Attempt 5',1,2,3,4,5,6,7]  // Fifth row
+                    ],
+                    
+                    [
+                        ['Attempt 1', 9,8,6,3,5,8,8], // First row
+                        ['Attempt 2', 4,8,4,6,8,7,3], // Second row
+                        ['Attempt 3', 8,6,3,6,9,9,6], // Third row
+                        ['Attempt 4', 8,6,8,3,4,7,4], // Fourth row
+                        ['Attempt 5', 8,3,3,1,7,8,7], // Fifth row
+                        ['Attempt 6', 8,6,6,9,4,3,2]  // Sixth row
+                    ],
+                    
+                    [
+                        ['Attempt 1', 4,8,6,3,4,4,4], // First row
+                        ['Attempt 2', 5,8,6,9,5,8,4], // Second row
+                        ['Attempt 3', 7,8,5,6,3,2,4], // Third row
+                        ['Attempt 4', 6,8,9,6,5,3,6]  // Fourth row
+                    ],
+                    
+                    [
+                        ['Attempt 1', 4,5,6,3,5,8,8], // First row
+                        ['Attempt 2', 2,6,6,5,5,8,8], // Second row
+                        ['Attempt 3', 8,3,5,8,9,6,5]  // Third row
+                    ]
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="675" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

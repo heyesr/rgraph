@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A stepped Line chart that uses the trace() effect</title>
+    
+    
+    <meta name="description" content="A stepped Line chart that uses the trace() effect" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A stepped Line chart that uses the trace() effect</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [70,60,80,50,50,60,70,60,50,40,50,50],
+                [20,30,50,40,30,50,40,30,60,50,10,20]
+            ],
+            options: {
+                marginLeft: 45,
+                marginRight: 100,
+                backgroundGrid: false,
+                xaxis: false,
+                stepped: true,
+                yaxisScaleUnitsPre: '$',
+                yaxisScaleUnitsPost: 'K',
+                yaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                key: ['Credit limit','MTM + AR'],
+                keyPosition: 'margin',
+                keyColorShape: 'circle',
+                linewidth: 3,
+                shadow: false,
+                textSize: 14,
+                tickmarksStyle: null
+            }
+        }).trace();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

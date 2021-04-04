@@ -1,0 +1,116 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A range chart with a median value</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="A range chart with a median value" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A range chart with a median value</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+
+    <script>
+        data = [10];
+        range_upper = [];
+        range_lower = [];
+
+        // Create some data
+        for (var i=1,last=10; i<240; i+=1) {
+
+            var num = Number(last) + RGraph.random(-2,2);
+            num = Math.max(num, 0);
+            num = Math.min(num, 20);
+
+            last = num;
+            data.push(num);
+
+            range_lower[i] = data[i] - 5;
+            range_lower[i] = Math.max(range_lower[i], 0);
+            range_upper[i] = data[i] + 5;
+        }
+
+
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [
+                range_upper,
+                range_lower
+            ],
+            options: {
+                filled: true,
+                filledRange: true,
+                filledColors: 'rgba(0,132,0,0.25)',
+                colors: ['rgba(0,0,0,0)'],
+                backgroundGridVlinesCount: 11,
+                tickmarksStyle: null,
+                marginBottom: 50,
+                xaxisTickmarksCount: 11,
+                xaxis: false,
+                yaxis: false
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                colors: ['#00830B'],
+                backgroundGrid: false,
+                xaxis: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                marginBottom: 50,
+                tickmarksStyle: null,
+                yaxisScaleMax: line.max,
+                shadow: false,
+                linewidth: 2,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>
+

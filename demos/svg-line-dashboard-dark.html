@@ -1,0 +1,439 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A predominantly Line chart based status dashboard</title>
+    
+    
+    <meta name="description" content="A predominantly Line chart based status dashboard. The dashboard is made from 4 Line charts, a Pie chart and some text." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A predominantly Line chart based status dashboard</h1>
+
+    <p>
+        This is a darker dashboard which shows multiple Line charts and also a Pie
+        (which uses the <code>donut</code> option). Lots of code and CSS for this demo as
+        it goes far beyond the normal single chart demos. It does show what you
+        can achieve when you build several objects into one page though. 
+    </p>
+    
+    <p>
+        The stacked Lines are accompanied by a Pie chart, as already mentioned,
+        using the <code>donut</code> option. There's a segment that also shows just some regular
+        text.
+    </p>
+    
+    <p>
+        You can combine any number of charts like this in order to create your own
+        tailored dashboard that shows you whatever information you want to see.
+        It's effectively just a webpage with many charts on it.
+    </p>
+
+   
+    <style>
+        div#cc1,
+        div#cc2 {
+            width: 295px;
+            height: 200px;
+            background-color: black;
+            float:left;
+        }
+        div#cc3 {
+            width: 190px;
+            height: 200px;
+            background-color: black;
+            float:left;
+            position: relative;
+        }
+
+        div#cc3 span:nth-child(2) {
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            font-size: 40pt;
+            color: #02BDD0;
+        }
+        
+        div#cc4 {
+            width: 195px;
+            height: 200px;
+            background-color: black;
+            float:left;
+        }
+        
+        div#cc5,
+        div#cc6 {
+            width: 490px;
+            height: 200px;
+            background-color: black;
+            float:left;
+        }
+        
+        div#cc1,
+        div#cc2,
+        div#cc3,
+        div#cc4,
+        div#cc5,
+        div#cc6 {
+            float: left;
+        }
+        
+        div#cc1 span:nth-child(1),
+        div#cc2 span:nth-child(1),
+        div#cc3 span:nth-child(1),
+        div#cc4 span:nth-child(1),
+        div#cc5 span:nth-child(1),
+        div#cc6 span:nth-child(1) {
+            color: #ccc;
+            font-size: 10pt;
+            position: absolute;
+            top: 0;
+            left: 5px;
+        }
+    </style>
+
+    <div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818">
+        <div id="cc1">
+            <span>Searches over time by query type</span>
+        </div>
+        <div id="cc2">
+        <span>Search capacity by query type</span>
+        </div>
+        <div id="cc3">
+            <span>Searches</span>
+            <span>260</span>
+        </div>
+        <div id="cc4">
+            <span>Capacity usage by query</span>
+        </div>
+        <div id="cc5">
+            <span>Capacity usage by query</span>
+        </div>
+        <div id="cc6">
+            <span>search capacity by user</span>
+        </div>
+        
+        <div style="clear: both"></div>
+    </div>
+
+
+
+
+        
+
+    <script>
+        l1 = new RGraph.SVG.Line({
+            id: 'cc1',
+            data: [
+                [0,8,0,0,8,0,2,8,0,0,8,1,0,6],
+                [null,null,null,null,null,null,null,null,null,null,null,null,null,5],
+                [15,13,12,15,13,13,15,12.5,13,14,13,12,16,17],
+                [null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+            ],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                filled: true,
+                linewidth: 2,
+                colors: ['#C2BBCD','rgba(0,0,0,0)','#EFB875'],
+                filledColors: ['#9894AD','red','#C8924C'],
+                filledOpacity: 0.85,
+                filledAccumulative: true,
+                marginLeft: 25,
+                marginRight: 5,
+                marginTop: 35,
+                marginBottom: 30,
+                xaxis: false,
+                yaxis: false,
+                textColor: '#aaa',
+                textSize: 8,
+                key: ['searchapi','scheduled search','interactive search'],
+                keyColors: ['#C2BBCD','red','#EFB875'],
+                keyOffsety: 180,
+                keyTextBackground: 'rgba(0,0,0,0)',
+                keyTextColor: '#ccc',
+                xaxisLabels: [
+                    '', '10:48',
+                    '', '10:50',
+                    '', '10:52',
+                    '', '10:54',
+                    '', '10:56',
+                    '', '10:58',
+                    ''
+                ]
+            }
+        }).draw();
+
+
+
+        l2 = new RGraph.SVG.Line({
+            id: 'cc2',
+            data: [
+                [40,8,0,0,0,0,0,0,0,0,0,0,0,28],
+                [4,8,1,1,5,0,1,5,0,0,5,0,0,4],
+                [0,0,0,1,5,0,0,0,0,0,0,0,0,0]
+            ],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                filled: true,
+                linewidth: 2,
+                colors: [],
+                filledColors: ['#8DB26C','green','#CB6800'],
+                filledOpacity: 0.85,
+                filledAccumulative: true,
+                marginLeft: 23,
+                marginRight: 5,
+                marginTop: 35,
+                marginBottom: 30,
+                xaxis: false,
+                yaxis: false,
+                textColor: '#aaa',
+                textSize: 8,
+                key: ['searchapi','scheduled search','interactive search'],
+                keyColors: ['#8DB26C','green','#CB6800'],
+                keyOffsety: 180,
+                keyTextBackground: 'rgba(0,0,0,0)',
+                keyTextColor: '#ccc',
+                yaxisScaleUnitsPost: 'k',
+                yaxisLabelsCount:3,
+                xaxisLabels: [
+                    '', '10:48',
+                    '', '10:50',
+                    '', '10:52',
+                    '', '10:54',
+                    '', '10:56',
+                    '', '10:58',
+                    ''
+                ]
+            }
+        }).draw();
+
+
+
+        p1 = new RGraph.SVG.Pie({
+            id: 'cc4',
+            data: [70, 5,22,3],
+            options: {
+                colors: ['green','#a00','#CB6800','#00a'],
+                donut: true,
+                donutWidth: 20
+            }
+        }).draw();
+
+
+
+
+        l5 = new RGraph.SVG.Line({
+            id: 'cc5',
+            data: [
+                [0,9,0,0,8,0,2,8,0,0,8,1,0,6],
+                [6,6,8,5,6,8,6,7,8,9,7,6,8,5],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+                [2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+                [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            ],
+            options: {
+                yaxisScaleMax: 25,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                filled: true,
+                linewidth: 2,
+                colors: ['#0a0','#aa0','#00a','transparent','transparent','transparent','transparent','transparent'],
+                filledColors: ['#278419','#CA9B53','#A390AE','#B71700','#2D929E','#126293','#8AB269'],
+                filledOpacity: 0.85,
+                filledAccumulative: true,
+                marginLeft: 25,
+                marginRight: 5,
+                marginTop: 35,
+                marginBottom: 30,
+                xaxis: false,
+                yaxis: false,
+                textColor: '#aaa',
+                textSize: 8,
+                key: ['searchapi','scheduled search','interactive search'],
+                keyColors: ['#C2BBCD','red','#EFB875'],
+                keyOffsety: 180,
+                keyTextBackground: 'rgba(0,0,0,0)',
+                keyTextColor: '#ccc',
+                xaxisLabels: [
+                    '', '10:48',
+                    '', '10:50',
+                    '', '10:52',
+                    '', '10:54',
+                    '', '10:56',
+                    '', '10:58',
+                    ''
+                ]
+            }
+        }).draw();
+
+
+
+
+        l6 = new RGraph.SVG.Line({
+            id: 'cc6',
+            data: [
+            
+                [4,10,0,0,0,0,0,0,0,0,0,0,0,28],
+                [40,8,1,1,5,0,1,5,0,0,5,0,0,4],
+                [0,0,0,1,5,0,0,0,0,0,0,0,0,0]
+            ],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                filled: true,
+                linewidth: 2,
+                colors: [],
+                filledColors: ['#8DB26C','#5A3180','#CB6800'],
+                filledOpacity: 0.85,
+                filledAccumulative: true,
+                marginLeft: 23,
+                marginRight: 5,
+                marginTop: 35,
+                marginBottom: 30,
+                xaxis: false,
+                yaxis: false,
+                textColor: '#aaa',
+                textSize: 8,
+                key: ['searchapi','scheduled search','interactive search'],
+                keyColors: ['#8DB26C','green','#CB6800'],
+                keyOffsety: 180,
+                keyTextBackground: 'rgba(0,0,0,0)',
+                keyTextColor: '#ccc',
+                yaxisScaleUnitsPost: 'k',
+                yaxisLabelsCount:3,
+                xaxisLabels: [
+                    '', '10:48',
+                    '', '10:50',
+                    '', '10:52',
+                    '', '10:54',
+                    '', '10:56',
+                    '', '10:58',
+                    ''
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+    <div style="clear: both"></div>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;style&gt;
+    div#cc1,
+    div#cc2 {
+        width: 295px;
+        height: 200px;
+        background-color: black;
+        float:left;
+    }
+    div#cc3 {
+        width: 190px;
+        height: 200px;
+        background-color: black;
+        float:left;
+        position: relative;
+    }
+
+    div#cc3 span:nth-child(2) {
+        display: inline-block;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        font-size: 40pt;
+        color: #02BDD0;
+    }
+    
+    div#cc4 {
+        width: 195px;
+        height: 200px;
+        background-color: black;
+        float:left;
+    }
+    
+    div#cc5,
+    div#cc6 {
+        width: 490px;
+        height: 200px;
+        background-color: black;
+        float:left;
+    }
+    
+    div#cc1,
+    div#cc2,
+    div#cc3,
+    div#cc4,
+    div#cc5,
+    div#cc6 {
+        float: left;
+    }
+    
+    div span:nth-child(1) {
+        color: #ccc;
+        font-size: 10pt;
+        position: absolute;
+        top: 0;
+        left: 5px;
+    }
+&lt;/style&gt;
+
+&lt;div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818"&gt;
+    &lt;div id="cc1"&gt;
+        &lt;span&gt;Searches over time by query type&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div id="cc2"&gt;
+    &lt;span&gt;Search capacity by query type&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div id="cc3"&gt;
+        &lt;span&gt;Searches&lt;/span&gt;
+        &lt;span&gt;260&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div id="cc4"&gt;
+        &lt;span&gt;Capacity usage by query&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div id="cc5"&gt;
+        &lt;span&gt;Capacity usage by query&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div id="cc6"&gt;
+        &lt;span&gt;search capacity by user&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div style="clear: both"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

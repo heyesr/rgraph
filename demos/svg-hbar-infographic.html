@@ -1,0 +1,178 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An infographic SVG Horizontal Bar chart</title>
+    
+    
+    <meta name="description" content="An SVG Horizontal Bar chart that might be used in an infographic. It's basically a Horizontal Bar chart with circles drawn at the end of the bars." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+
+    <h1>An infographic SVG Horizontal Bar chart</h1>
+    
+    <div style="width: 350px; height: 300px; display: inline-block; float: right" id="chart-container"></div>
+    
+    <p>
+        Here's a small Horizontal Bar chart that has had some extra work done to it so that it appears
+        similar to what you might see used in an infographic.
+    </p>
+    
+    <p>
+        It's just a case of sorting the data
+        so that the data-pieces appear in the correct order and the bars also have a bulb at the end
+        indicating the position in the results (assuming that there was a competition of some kind).
+        The chart is SVG based so this bulb doesn't have to be drawn in the <code>draw</code>
+        event.
+    </p>
+
+    <p>
+        The raw data for the chart is sorted using the JavaScript array function <code>sort()</code> so
+        that the highest number is at the top. Since the array is two-dimensional a custom sort function
+        has to be used so that the action of sorting can be stipulated. This is the call to the
+        <code>sort()</code> function:
+    </p>
+    
+    <pre class="code">
+data.sort(function (a, b)
+{
+    return b[0] - a[0];
+});
+</pre>
+    
+    <p>
+        The original data array is two-dimensional (as you can see below in the source code) so that
+        after sorting it, the label and the color are still all correlated and the correct name and
+        color are associated with the correct bar.
+    </p>
+
+
+
+        
+    <script>
+        // The "raw" data. This array contains the data, the label and the color.
+        data = [
+            [4,'John', 'red'],
+            [8,'Luis','green'],
+            [6,'Joan','blue'],
+            [5,'Larry','brown']
+        ];
+
+        // Sort the data array defined above using the JavaScript sort function.
+        // It uses a custom function that allows you to control the sort procedure.
+        // This function sorts the array based on the data in the second dimension.
+        data.sort(function (a, b)
+        {
+            return b[0] - a[0];
+        });
+        
+        // Initialise the 'extracted' arrays that are given to RGraph
+        data_extracted   = [];
+        labels_extracted = [];
+        colors_extracted = [];
+        
+        // Go through the main data and separate out the different bits of
+        // data into the relevant arrays
+        data.forEach(function (v, k, arr)
+        {
+            data_extracted.push(v[0])
+            labels_extracted.push(v[1] + ' ({1}%)'.format(v[0]))
+            colors_extracted.push(v[2]);
+        });
+
+        // Create the Horizontal Bar chart using the data that was extracted above.
+        // At this point the chart is a standard Horizontal Bar chart.
+        hbar = new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: data_extracted,
+            options: {
+                yaxisLabels: labels_extracted,
+                xaxis:false,
+                yaxis: false,
+                colors: ['red','green','blue','brown'],
+                colorsSequential: true,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                marginInner: 10
+            }
+        }).draw();
+        
+        // Loop through the coordinates that are stored in the Horizontal Bar
+        // object.
+        for (var i=0; i<hbar.coords.length; ++i) {
+        
+            // Get the credentials of the bars on the Horizontal Bar chart from the
+            // attributes of the SVG elements.
+            var x = parseFloat(hbar.coords[i].element.getAttribute('x')),
+                y = parseFloat(hbar.coords[i].element.getAttribute('y')),
+                w = parseFloat(hbar.coords[i].element.getAttribute('width')),
+                h = parseFloat(hbar.coords[i].element.getAttribute('height')),
+                c = hbar.coords[i].element.getAttribute('fill');
+
+            // Add the circles at the end of each bar. Remember that this doesn't need to
+            // be in a draw event like with the canvas charts.
+            RGraph.SVG.create({
+                svg: hbar.svg,
+                type: 'circle',
+                attr: {
+                    cx: x + w,
+                    cy: y + (h / 2),
+                    r: 30,
+                    fill: c,
+                    stroke: 'white',
+                    'stroke-width': 7
+                }
+            });
+
+            // This adds the text that sits inside the circles and indicates
+            // the position (ie 1-4).
+            RGraph.SVG.text({
+                object: hbar,
+                x: x + w,
+                y: y + (h / 2),
+                text: i+1,
+                halign: 'center',
+                valign: 'center',
+                color: 'white',
+                size: 30,
+                bold: true
+            });
+        }
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 350px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

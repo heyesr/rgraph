@@ -1,0 +1,118 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="description" content="Showing the ModalDialog with the dollar events" />
+    
+    <title>RGraph demo: Showing the ModalDialog with the dollar events</title>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>Showing the ModalDialog with the dollar events</h1>
+
+    <canvas id="cvs" width="650" height="250" style="float: right">[No canvas support]</canvas>
+
+
+    <p>
+        Here there is a straight-forward Bar chart that uses the dollar events to add some interactivity to the chart.
+        When the second bar is clicked a ModalDialog is shown to the user. This dialog could then show further information
+        to the user.
+    </p>
+
+
+    <script>
+        window.onload = function ()
+        {
+            // First create the chart
+            var bar = new RGraph.Bar({
+                id: 'cvs',
+                data: [4,8,5,3,5,6,8],
+                options: {
+                    title: 'Bar chart with clickable second bar',
+                    xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                    backgroundGridVlinesCount: 7,
+                    marginTop: 30,
+                    textSize: 14
+                }
+            });
+
+            // Now add The highlight for the clickable bar. The .ondraw event must be used because if not then the
+            // highlight wouldn't get redrawn.
+            bar.ondraw = function (obj)
+            {
+                var idx = 1,
+                      x = bar.coords[idx][0],
+                      y = bar.coords[idx][1],
+                      w = bar.coords[idx][2],
+                      h = bar.coords[idx][3];
+                
+                bar.path(
+                    'b lw 2 r % % % % s black',
+                    x, y, w, h
+                );
+            }
+    
+            bar.draw();
+            
+            // Now add the click and mousemove events
+            bar.$1.onmousemove = function (e, shape)
+            {
+                return true;
+            }
+            
+            bar.$1.onclick = function (e, shape)
+            {
+                ModalDialog.show('string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>');
+                
+                ModalDialog.dialog.onclick = function (e)
+                {
+                    e.stopPropagation();
+                }
+                
+                window.onclick = function (e)
+                {
+                    ModalDialog.hide();
+                }
+                
+                e.stopPropagation();
+            }
+        }
+    </script>
+
+    <br clear="all" /> 
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.modaldialog.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="650" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+    
+</body>
+</html>

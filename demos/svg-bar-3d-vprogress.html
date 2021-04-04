@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG 3D Vertical Progress chart</title>
+
+    <meta name="description" content="An SVG 3D Vertical Progress chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG 3D Vertical Progress chart</h1>
+    <p>This is a demo of a 3D Bar chart that's configured to look like a vertical progress bar - ie which has just a single bar. It has a tooltip, uses the <code>tooltip</code> RGraph event to set the border color and uses the <code>RGraph.SVG.tooltips.style</code> object to set some default styles. Because there's only a single bar/dataset there's actually no need to use the <code>tooltip</code> event - you could just set the border color as a default instead.</p>
+
+    
+    <div style="width: 150px; height: 300px" id="chart-container"></div>
+
+
+
+
+    <script>
+        value = 89;
+
+        vprogress = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [value],
+            options: {
+                variant: '3d',
+                grouping: 'stacked',
+                colorsStroke: 'rgba(0,0,0,)',
+                colors: ['Gradient(#aaa:#bfb)'],
+                marginTop: 30,
+                marginLeft: 65,
+                marginRight: 35,
+                marginBottom: 35,
+                xaxisLabels: ['Result'],
+                xaxisColor: '#ddd',
+                xaxisTickmarks: false,
+                yaxisColor: '#ddd',
+                yaxisScaleUnitsPost: 'km',
+                yaxisTickmarks: false,
+                shadow: false,
+                backgroundGridColor: '#eee',
+                titleY: 10,
+                marginInner: 3,
+                tooltips: ['Result: {1},000m'.format(value)],
+                tooltipsCss: {
+                    fontSize:        '105%',
+                    fontFamily:      'Arial, sans-serif',
+                    fontWeight:      'bold',
+                    paddingTop:      '10px',
+                    textAlign:       'center'
+                },
+                yaxisScaleMax: 100
+            }
+        }).draw().on('tooltip', function (obj)
+        {
+            var tooltip = RGraph.SVG.REG.get('tooltip'),
+                idx     = RGraph.SVG.sequentialIndexToGrouped(tooltip.__index__, obj.data);
+
+            tooltip.style.borderColor = '#0f0';
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

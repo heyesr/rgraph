@@ -1,0 +1,107 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
+    
+    
+    
+    
+    <meta name="description" content="A demo of the Chrome-only (currently) dotted or dashed background grid" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>    
+
+    <h1>A demo of the Chrome-only dotted or dashed background grid</h1>
+    
+    <p>
+        This demo uses the newer addition to canvas from the canvas v5 specification -
+        native dotted and dashed lines.
+        As browsers add support you will be able to use the option in those too but
+        initially it's only supported in Chrome.
+    </p>
+    
+    <pre class="code">
+obj.set('backgroundGridDashed', true);
+obj.set('backgroundGridDotted', true);
+</pre>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        new RGraph.Waterfall({
+            id: 'cvs1',
+            data: [4,8,6,5,-5,-6,6,-5,-4,-3,2,1],
+            options: {
+                marginTop: 35,
+                backgroundGridDashed: true,
+                backgroundGridVlinesCount: 13,
+                xaxisLabels: [
+                    'Mal',   'Barry',
+                    'Gary',  'Neil',
+                    'Kim',   'Pete',
+                    'Lou',   'Fred',
+                    'Jobe',  'Fred',
+                    'Harry', 'Jake',
+                    'Total'
+                ],
+                title: 'A dashed background grid',
+                textSize: 12,
+                colorsStroke: 'rgba(0,0,0,0)'
+            }
+        }).draw();
+
+        new RGraph.Waterfall({
+            id: 'cvs2',
+            data: [4,8,6,5,-5,-6,6,-5,-4,-3,1],
+            options: {
+                marginTop: 35,
+                xaxisLabels: [
+                    'Mal',   'Barry',
+                    'Gary',  'Neil',
+                    'Kim',   'Pete',
+                    'Lou',   'Fred',
+                    'Jobe',  'Lucy',
+                    'Kevin', 'Nevil'
+                ],
+                backgroundGridDotted: true,
+                title: 'A dotted background grid',
+                colorsStroke: 'rgba(0,0,0,0)'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.waterfall.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs1" width="600" height="250"&gt;
+&lt;canvas id="cvs2" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

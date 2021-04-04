@@ -1,0 +1,132 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    
+    <meta name="description" content="A variant of the Bar chart is to have it drawn in a sketchy, freehand style. Here's an example depicting bad things to release at a wedding!" />
+    
+    <title>RGraph demo: Things to release at a wedding</title>
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>Things to release at a wedding</h1>
+
+
+    <div style="float: right;  margin-top: 25px">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        Here's a nice, amusing chart that's rather different to the other charts that are shown on
+        this site.
+    </p>
+    
+    <p>
+        It uses the <code>variant: 'sketch'</code> option so that instead of the normal style that
+        Bar charts are drawn with the chart is drawn with a sketchy style. The title also uses this
+        font.
+    </p>
+
+    <p>
+        The Y axis labels are done using the <code>yaxisLabelsSpecific</code> option with just two labels - 
+        so one appears at the top and one at the bottom.
+    </p>
+    
+    <p>
+        The font that's used by the chart is set by setting the <code>textFont</code> property (which is
+        the default font for the chart) and is set to <code>Comic San MS</code> which complements the
+        style of the chart well.
+    </p>
+    
+    <p>
+        The <code>labelsAbove</code> and <code>labelsAboveSpecific</code> options are used to get the
+        text that appears above the bars - and this text ends up using the default font that is set on
+        the chart (<code>Comic Sans MS</code>).
+    </p>
+    
+    <p>
+        With smaller screens the chart looks much the same - just smaller. This is done by changing sizes of
+        text (eg the labels and the title), the size of the canvas is reduced and the parent elements CSS
+        <code>float</code> is removed.
+    </p>
+    
+    <br clear="all" />
+
+    <script>
+        // Create the Bar chart and give it some data. This chart is
+        // made to look sketchy by supplying the variant property and
+        // setting it to 'sketch'
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [50,40,10,-25,-50,50],
+            options: {
+                colors: ['black'],
+                yaxis: false,
+                yaxisLabelsSpecific: ['Very cool', 'Uncool'],
+                marginLeft: 100,
+                marginBottom: 115,
+                marginTop: 75,
+                variant: 'sketch',
+                
+                /// You can uncomment this if you don't want the inner vertical
+                // lines
+                //variantSketchVerticals: false,
+
+                // The font that's used for the text on the chart is set to
+                // Comic sans MS. This style of font fits well with the
+                // sketchy drawing style.
+                textFont: 'Comic sans MS',
+
+                linewidth: 1,
+                backgroundGrid: false,
+                title: 'Things to release at a wedding',
+                
+                // The labelsAbove labels serve as the labels for the chart
+                labelsAbove: true,
+                labelsAboveSpecific: ['Butterflies', 'Doves', 'Pidgeons', 'Wasps', 'Prisoners', 'The Kraken']
+            }
+        }).draw().responsive([
+            {maxWidth: null,width:600,height: 250,options: {titleY:25,textSize: 12,marginInner: 15,marginBottom:100,titleSize: 20},parentCss:{'float':'right'}},
+            {maxWidth: 800,width:400,height: 200,options: {titleY: 10,textSize: 8,marginInner: 5,marginBottom:65,titleSize: 15},parentCss:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right; width: 600px; margin-top:10px"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+
+</body>
+</html>

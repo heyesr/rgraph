@@ -1,0 +1,131 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Favourite dog breeds</title>
+    
+    
+    <meta name="description" content="A sketchy variation of the Bar chart that's showing that the French Mastiff dog breed is far and away the best dog breed!" />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>Favourite dog breeds</h1>
+
+    <canvas id="cvs" width="600 " height="250" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        How could you resist such a <i>gorgeous</i> face?! Here's an amusing chart that shows you exactly
+        what your favourite dog breed should be. This type of dog was featured in the Tom Hanks film
+        <b><i>Turner and Hooch</i></b>. A funny film from the 1980's that's definitely worth watching.
+    </p>
+    
+    <p>
+        The chart demonstrates the <code>sketch</code> variant (add <code>variant: 'sketch'</code> to
+        your chart configuration) that the Bar chart has that gives the
+        chart more of a "hand drawn" look. The background image depicts a French Mastiff dog  that was
+        added using the <code>backgroundImage</code> property.
+    </p>
+    
+    <p>
+        The font has been set to <code>Comic sans MS</code> so that it goes well with the style of the chart.
+    </p>
+    
+    <p>
+        The chart has been given a large bottom margin so that the slogan on the background image is clearly
+        visible.
+    </p>
+    
+    <p>
+        To get the chart looking good on smaller screens the <code>responsive()</code> function changes
+        the margins, updates the width and height of the background image and the CSS <code>float</code>
+        is removed.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // This is used to give the background image the correct height and
+        // width
+        canvas = document.getElementById('cvs');
+
+        // Configure the Bar chart. It has a sketchy appearance because of the
+        // variant property.
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [99,10],
+            options: {
+                colors: ['#000'],
+                labelsAbove: true,
+                labelsAboveSpecific: ['French Mastiff', 'Umm... whatever...'],
+                variant: 'sketch',
+                variantSketchVerticals: true,
+                yaxisLabelsCount: 1,
+                
+                marginTop: 50,
+                
+                // The font that's used can be set to any thats available
+                // to the browser - here the Comic Sans MS font fits with
+                // the sketchy style
+                textFont: 'Comic sans MS',
+
+                backgroundGrid: false,
+                textColor: '#000',
+                
+                // The background image properties. Give the URL of the image (which should
+                // be held on the same server as your website) and the X/Y/width/height
+                // properties. Also set the image to be semi-transparent.
+                backgroundImage: '../images/i-love-my-dog-de-bordeaux.png',
+                backgroundImageX: 0,
+                backgroundImageY: 0,
+                backgroundImageAlpha: 0.5,
+
+                linewidth: 5,
+                yaxis: false,
+                xaxisColor: '#000',
+                xaxisLinewidth: 5,
+                yaxisScaleUnitsPost: '%'
+            }
+        }).draw().responsive([
+            {maxWidth: null, width: 600, height: 250,options:{marginLeft: 150,marginBottom: 60,marginInner: 45,labelsAboveSize: 24,textSize: 20,backgroundImageW: 600,backgroundImageH: 250},css:{'float':'right'}},
+            {maxWidth: 800, width: 400, height: 200,options:{marginLeft: 50,marginBottom: 40,marginInner: 15,labelsAboveSize: 16,textSize: 10,backgroundImageW: 400,backgroundImageH: 200},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="900" height="550" style="background-color: white; border-radius: 5px; box-shadow: 2px 2px 2px #999"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

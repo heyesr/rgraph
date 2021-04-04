@@ -1,0 +1,148 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.vprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A set of thin Vertical Progress bars</title>
+
+    
+    
+    <meta name="description" content="A set of thin Vertical Progress bars" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A set of thin Vertical Progress bars</h1>
+
+    <canvas id="cvs" width="600" height="400" style="background-color: black">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 16.66,
+            options: {
+                tickmarks: false,
+                colors: ['#68C7FE'],
+                marginRight: 540,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+        
+        
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 33.33,
+            options: {
+                tickmarks: false,
+                colors: ['#4BB3D3'],
+                marginLeft: 120,
+                marginRight: 445,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+        
+        
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 50,
+            options: {
+                tickmarks: false,
+                colors: ['#4BB3D3'],
+                marginLeft: 210,
+                marginRight: 355,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+        
+        
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 66.66,
+            options: {
+                tickmarks: false,
+                colors: ['#86AA65'],
+                marginLeft: 300,
+                marginRight: 270,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+        
+        
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 82.33,
+            options: {
+                tickmarks: false,
+                colors: ['#EDA637'],
+                marginLeft: 390,
+                marginRight: 180,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+        
+        
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 100,
+            options: {
+                tickmarks: false,
+                colors: ['#D94C4B'],
+                marginLeft: 470,
+                marginRight: 100,
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                backgroundColor: '#ddd'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.vprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="400" style="background-color: black""&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

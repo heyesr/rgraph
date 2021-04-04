@@ -1,0 +1,176 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="An adjustable line chart using one-touch adjusting" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: An adjustable Line chart using one-touch adjusting</title>
+    
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>An adjustable Line chart using one-touch adjusting</h1>
+
+    <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
+
+    <script>
+        // The data for the chart
+        var data = [5,14,2,4,1,8,6,5,9,4];
+
+        // Create and configure the chart
+        var line = new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                yaxisScaleMax: 20,
+                marginInner: 10,
+                tickmarksStyle: 'circle',
+                xaxisLabels: ['Fred', 'John', 'Kev', 'Lou', 'Pete','Mark','Neil','Indra','Lewis','Bob'],
+                xaxis: false,
+                yaxis: false,
+                yaxisTickmarksCount: 5,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                labelsAbove: true,
+                labelsAboveBorder: false,
+                labelsAboveDecimals: 1
+            }
+        }).draw();
+
+
+
+
+        //
+        // This is the function that handles adjusting the line when
+        // the chart is touched.
+        //
+        line.canvas.onmousedown = function(e)
+        {
+            var obj      = e.target.__object__,
+                newvalue = obj.getValue(e),
+                mouseXY  = RGraph.getMouseXY(e),
+                mouseX   = mouseXY[0],
+                mouseY   = mouseXY[1],
+                coords   = obj.coords2[0];
+
+            // Determine the closest point to the touch/click
+            var index = closest({
+                coords:    coords,
+                mousex:    mouseX,
+                tolerance: 10 // Pixels, default is 10
+            });
+
+
+
+
+            if (index >= 0) {
+                data[index] = newvalue;
+                
+                grow({
+                    object: obj,
+                    index: index,
+                    value: newvalue
+                })
+            }
+        };
+
+
+
+
+        //
+        // Finds the closest point to the given mouseX coordinate. It allows a
+        // tolerance of 10 (or so) pixels.
+        //
+        //  @param object opt An object consisting of;
+        //                     o coords The coordinates of all of the points
+        //                     o mousex The mouseX coordinate
+        //                     o tolerance The number of pixels leeway
+        //                       that's allowed. The default is 10
+        //
+        function closest (opt)
+        {
+            var coords    = opt.coords,
+                mouseX    = opt.mousex,
+                tolerance = (typeof opt.tolerance === 'number' ? opt.tolerance : 10),
+                point     = null;
+
+            // Loop through the coordinates looking for the closest
+            // (going by X coordinate)
+            for (var i=0,distance = null; i<coords.length; ++i) {
+                if (mouseX > coords[i][0] - tolerance && mouseX < coords[i][0] + tolerance) {
+                    point = i;
+                }
+            }
+            
+            return point;
+        }
+
+
+
+
+        // The animation function that makes the point grow to
+        // its new position.
+        function grow (opt)
+        {
+            var obj   = opt.object,
+                idx   = opt.index,
+                value = opt.value;
+                
+            
+            // Determine the original value or the point thats being adjusted
+            var original_value = line.original_data[0][idx];
+
+
+            var frames = 15,
+                delay  = 16.666;
+
+            for (var i=0; i<frames; i++) {
+                (function (i)
+                {
+                    setTimeout(function ()
+                    {
+                        line.original_data[0][idx] = ((value - original_value) * (i + 1) / frames) + original_value;
+                        
+                        // Update this so that the labelsAbove labels are correctly updated
+                        line.data_arr = RGraph.arrayLinearize(line.original_data);
+                        
+                        RGraph.redraw();
+                    }, delay * i);
+                })(i)
+            }
+        }
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="650" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

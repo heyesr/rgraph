@@ -1,0 +1,167 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+
+    <script src="../libraries/RGraph.drawing.image.js"></script>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of how to use images as labels</title>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <meta name="description" content="As well as text labels you can configure RGraph to show images as labels on your chart. This may help the readability of your chart." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An example of how to use images as labels</h1>
+
+    <canvas id="cvs" width="400" height="250" style="float: right"></canvas>
+    
+    <p>
+    
+    </p>
+    <p>
+        Since the advent of the <code>RGraph.text()</code> function, which saves the
+        coordinates of the text that is added to the canvas, you have been able to use
+        those coordinates to draw an image on to the canvas. You could even use the coordinates
+        of the bar itself if you wished (if you wanted to add an image above the bar for
+        example)
+    </p>
+    
+    <p>
+        You might find that using images (eg faces) may make your charts more
+		instantly recognisable.
+    </p>
+    
+    <p>
+        The code below first creates an array of the image URLs, then creates the chart and then adds the
+        images. The configuration is quite straight-forward.
+    </p>
+    
+    <p>
+        The next bit of code is where the coordinates of the text are looped through and the images are
+        added in place of the text. With canvas charts the coordinates of the text that's added to the canvas
+        are saved in the
+        <code>obj.coordsText</code> variable so you can use them to add the images in place of the text.
+        Remember that the text labels are actually just empty strings - this is so that the coordinates of
+        where the text should be are stored in the <code>obj.coordsText</code> variable.
+    </p>
+    
+    <p>
+        Instead of just using the canvas API function <code>drawImage()</code> -
+        <a href="/canvas/drawing-api-image.html">
+            drawing API Image objects
+        </a>
+        are used to place the images. This means that if you need to you can add tooltips to the
+        images or add event listeners (eg <code>click</code>, <code>mousemove</code>, <code>mouseover</code>
+        and <code>mouseout</code>.
+    </p>
+    
+    <br clear="all" />
+
+    <script>
+        // This is a simple array that holds the paths to the images
+        images = [
+            '../images/face1.png',
+            '../images/face2.png'
+        ];
+
+        // Create the Bar chart. The configuration adds empty labels which
+        // have their coordinates stored which can then be used to add the
+        // images that are added after
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [8,4],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                
+                // The empty labels that we use the coordinates of
+                xaxisLabels: ['',''],
+
+                marginBottom: 70,
+                marginInner: 45,
+                labelsAbove: true,
+                labelsAboveSpecific: ['Fred','Lenny'],
+                labelsAboveSize: 18,
+                textFont: 'Comic sans MS',
+                colors: ['#ccf'],
+                textSize: 16
+            }
+        }).grow();
+
+        // Loop through the coordinates and add the images that are used
+        // as the labels
+        for (var i=0,idx=0;i<bar.coordsText.length; i+=1) {
+            if (bar.coordsText[i].tag == 'xaxis.labels') {
+
+                // Use the drawing API Image object to add the image instead of the
+                // canvas' 2D context directly. This means that the images will be redrawn
+                // automatically should tooltips be added to the chart later. Plus, of
+                // course, the drawing API image objects supports having a tooltip itself.
+                new RGraph.Drawing.Image({
+                    id: 'cvs',
+                    
+                    // Use the coordinates of the blank labels that were added in the
+                    // chart configuration to position the image.
+                    x: bar.coordsText[i].x,
+                    y: bar.coordsText[i].y + 5,
+
+                    src: images[idx++],
+                    options: {
+                        halign: 'center'
+                    }
+                }).draw();
+
+                // Possible DOM1-style events for the drawing API Image object. These
+                // are examples of adding events to the image that you can use if you
+                // want
+                // 
+                // image.onclick = function (e, obj)
+                // {
+                // }
+                // image.onmousemove = function (e, obj)
+                // {
+                // }
+                // image.onmouseover = function (e, obj)
+                // {
+                // }
+                // image.onmouseout = function (obj)
+                // {
+                // }
+            }
+        }
+    </script>
+
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.image.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="350" style="float: right"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

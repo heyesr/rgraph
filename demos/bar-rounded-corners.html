@@ -1,0 +1,114 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart with rounded tops</title>
+    
+    
+    <meta name="description" content="A Bar chart with rounded tops" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart with rounded tops</h1>
+
+    
+    <div style="padding: 15px; display: inline-block">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script>
+        window.roundedCorners = 10;
+    
+        //
+        // This adds a roundedRect(x, y, width, height, radius) function to the drawing context.
+        // The radius argument dictates by how much the corners are rounded.
+        // 
+        // @param number x      The X coordinate
+        // @param number y      The Y coordinate
+        // @param number width  The width of the rectangle
+        // @param number height The height of the rectangle
+        // @param number radius The radius of the corners. Bigger values mean more rounded corners
+        //
+        CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
+        {
+            var radius = window.roundedCorners;
+
+            // Because the function is added to the context prototype
+            // the 'this' variable is actually the context
+            
+            // Save the existing state of the canvas so that it can be restored later
+            this.save();
+            
+                // Translate to the given X/Y coordinates
+                this.translate(x, y);
+    
+                // Move to the center of the top horizontal line
+                this.moveTo(width / 2,0);
+                
+                // Draw the rounded corners. The connecting lines in between them are drawn automatically
+                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
+                this.arcTo(width, height, 0, height, Math.min(width / 2, 0));
+                this.arcTo(0, height, 0, 0, Math.min(height / 2, 0));
+                this.arcTo(0, 0, radius, 0, Math.min(width / 2, radius));
+    
+                // Draw a line back to the start coordinates
+                this.lineTo(width / 2,0);
+    
+            // Restore the state of the canvas to as it was before the save()
+            this.restore();
+        };
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [12,18,10,9,6,20,18,5,9,13,15,11],
+            options: {
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                marginLeft: 50
+            }
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px; display: inline-block"&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

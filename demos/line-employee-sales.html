@@ -1,0 +1,329 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart showing employee sales</title>
+    <meta name="description" content="A Line chart showing multiple datasets and which has a dark color scheme. It also has a key and clears the canvas before it starts drawing." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+</head>
+<body>
+
+    <h1>A Line chart showing employee sales</h1>
+    
+    <canvas id="cvs" width="575" height="450" style="float: right">[No canvas support]</canvas><br />
+    <a href="#bar-chart-version">A Bar chart version of the chart</a>
+    
+    
+    
+    <p>
+        A Line chart showing the employee sales by department. Since this chart is
+        a copy of a chart found on the Internet it uses the Line chart - though a
+        stacked or grouped Bar chart may represent the data better because the types
+        of furniture aren't really related to each other.
+    </p>
+    
+    <p>
+        There's <a href="#bar-chart-version">a grouped Bar chart version</a>
+        of the chart that's shown below that makes the
+        data far easier to interpret (in my opinion).
+    </p>
+
+    <br clear="all" />
+    
+    <script>
+        // Create the Line chart
+        new RGraph.Line({
+            id: 'cvs',
+            
+            // The four datasets that are shown on the chart - a multi-dimensional
+            // array.
+            data: [
+                [190,165,47,121,30,72],
+                [12,180,10,80,25,75],
+                [42,80,93,25,21,120],
+                [2,42,27,47,43,50]
+            ],
+
+            options: {
+                shadow: false,
+                tickmarksStyle: null,
+                backgroundGridVlines: false,
+                backgroundGridColor: 'gray',
+                colorsBackground: '#222',
+                xaxis: false,
+                yaxis: false,
+                textColor: '#A7A5A6',
+                textSize: 10,
+                title: '2009 employee sales by department',
+                titleColor: 'white',
+                xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
+                marginLeft: 50,
+                marginRight: 50,
+                marginBottom: 60,
+                colors: ['#B8202C','#96D1E3','#FA8710','#62648D'],
+                
+                // The key for this chart is positioned in the bottom margin
+                // instead of the top
+                key: ['Mary','Tom','Brad','Kate'],
+                keyPosition: 'margin',
+                keyLabelsSize: 14,
+                keyLabelsColor: 'rgb(248,248,248)',
+                keyPositionY: 425
+            }
+        
+        // Here we use the beforedraw event to clear the canvas to a dark
+        // color before the drawing is performed. Since it's the beforedraw
+        // event the call to the draw() function has to be after the on()
+        // function (otherwise the beforedraw event would have already run
+        // by the time that the event is added.
+        }).on('beforedraw', function (obj)
+        {
+            // Clear the canvas to a specific color
+            RGraph.clear(obj.canvas, '#555557');
+
+        // Use the trace effect to show the chart and add some responsive capability to accommodate
+        // smaller screens.
+        }).trace().responsive([
+            {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
+            {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="575" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <pre class="code">
+&lt;script&gt;
+    <span>// Create the Line chart</span>
+    new RGraph.Line({
+        id: 'cvs',
+        
+        <span>// The four datasets that are shown on the chart - a multi-dimensional
+        // array.</span>
+        data: [
+            [190,165,47,121,30,72],
+            [12,180,10,80,25,75],
+            [42,80,93,25,21,120],
+            [2,42,27,47,43,50]
+        ],
+
+        options: {
+            shadow: false,
+            tickmarksStyle: null,
+            linewidth: 7,
+            backgroundGridVlines: false,
+            backgroundGridColor: 'gray',
+            colorsBackground: '#222',
+            xaxis: false,
+            yaxis: false,
+            textColor: '#A7A5A6',
+            textSize: 10,
+            title: '2009 employee sales by department',
+            titleColor: 'white',
+            titleSize: 24,
+            xaxisLabels: ['Food','Auto','Household','Furniture','Kitchen','Bath'],
+            marginLeft: 50,
+            marginRight: 50,
+            marginTop: 75,
+            marginBottom: 60,
+            colors: ['#B8202C','#96D1E3','#FA8710','#62648D'],
+            
+            <span>// The key for this chart is positioned in the bottom margin
+            // instead of the top</span>
+            key: ['Mary','Tom','Brad','Kate'],
+            keyPosition: 'margin',
+            keyLabelsSize: 14,
+            keyLabelsColor: 'rgb(248,248,248)',
+            keyPositionY: 425
+        }
+    
+    <span>// Here we use the beforedraw event to clear the canvas to a dark
+    // color before the drawing is performed. Since it's the beforedraw
+    // event the call to the draw() function has to be after the on()
+    // function (otherwise the beforedraw event would have already run
+    // by the time that the event handler function is added.</span>
+    }).on('beforedraw', function (obj)
+    {
+        <span>// Clear the canvas to a specific color</span>
+        RGraph.clear(obj.canvas, '#555557');
+    
+    <span>// Use the trace effect to show the chart and add some responsive capability to accommodate
+    // smaller screens.</span>
+    }).trace().responsive([
+        {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
+        {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
+    ]);
+&lt;/script&gt;
+</pre>
+
+
+
+
+
+
+    <a name="bar-chart-version"></a>
+    <h2>A Bar chart version of the chart</h2>
+
+    <p>
+        Here's a version of the above Line chart but using a grouped Bar chart instead
+        of a Line chart. Personally I think the Bar chart makes the interpretation of the
+        data easier and makes the intent easier to read.
+    </p>
+
+
+    <canvas id="cvs2" width="575" height="450">[No canvas support]</canvas><br />
+    <a href="javascript: bar.wave()">Animate the Bar chart</a>
+    
+    <script>
+        // A Bar chart version of the Line chart that's shown above. With
+        // the Bar chart the data is arranged differently to the Line chart - 
+        // each set of numbers is actually just one group of bars on the chart.
+        // Other than this the configuration is much the same as the Line
+        // chart.
+        bar = new RGraph.Bar({
+            id: 'cvs2',
+            data: [
+                [190,12,42,2],
+                [165,180,80,42],
+                [47,10,93,47],
+                [121,80,25,27],
+                [30,25,21,43],
+                [72,75,120,50]
+            ],
+            options: {
+                grouping: 'grouped',
+                shadow: false,
+                tickmarksStyle: null,
+                linewidth: 7,
+                backgroundGridVlines: false,
+                backgroundGridColor: 'gray',
+                colorsBackground: '#222',
+                xaxis: false,
+                yaxis: false,
+                textColor: '#d7d5d6',
+                textSize: 12,
+                title: '2009 employee sales by department',
+                titleColor: 'white',
+                xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
+                marginTop: 75,
+                marginBottom: 60,
+                key: ['Mary','Tom','Brad','Kate'],
+                keyPosition: 'margin',
+                keyLabelsSize: 14,
+                keyLabelsColor: 'rgb(248,248,248)',
+                keyPositionY: 425,
+                colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
+            }
+        // Again, the beforedraw function is used to clear the canvas to
+        // a dark color before the chart is drawn.
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, '#555557');
+
+        // Use the wave effect to show the chart and add some responsive capability to accommodate
+        // smaller screens.
+        }).draw().responsive([
+            {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
+            {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+
+    This is the code that generates the chart:
+<pre class="code">
+&lt;script&gt;
+    <span>// A Bar chart version of the Line chart that's shown above. With
+    // the Bar chart the data is arranged differently to the Line chart - 
+    // each set of numbers is actually just one group of bars on the chart.
+    // Other than this the configuration is much the same as the Line
+    // chart.</span>
+    new RGraph.Bar({
+        id: 'cvs2',
+        data: [
+            [190,12,42,2],
+            [165,180,80,42],
+            [47,10,93,47],
+            [121,80,25,27],
+            [30,25,21,43],
+            [72,75,120,50]
+        ],
+        options: {
+            grouping: 'grouped',
+            shadow: false,
+            tickmarksStyle: null,
+            linewidth: 7,
+            backgroundGridVlines: false,
+            backgroundGridColor: 'gray',
+            colorsBackground: '#222',
+            xaxis: false,
+            yaxis: false,
+            textColor: '#d7d5d6',
+            textSize: 12,
+            title: '2009 employee sales by department',
+            titleColor: 'white',
+            xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
+            marginTop: 75,
+            marginBottom: 60,
+            key: ['Mary','Tom','Brad','Kate'],
+            keyPosition: 'margin',
+            keyLabelsSize: 14,
+            keyLabelsColor: 'rgb(248,248,248)',
+            keyPositionY: 425,
+            colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
+        }
+    <span>// Again, the beforedraw function is used to clear the canvas to
+    // a dark color before the chart is drawn.</span>
+    }).on('beforedraw', function (obj)
+    {
+        RGraph.clear(obj.canvas, '#555557');
+
+    <span>// Use the wave effect to show the chart and add some responsive capability to accommodate
+    // smaller screens.</span>
+    }).wave().responsive([
+        {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
+        {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
+    ]);
+&lt;/script&gt;
+</pre>
+
+</body>
+</html>

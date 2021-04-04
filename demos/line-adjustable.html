@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An adjustable Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A regular Line chart which is adjustable - so you can drag the datapoints up and down" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>An adjustable Line chart</h1>
+
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+    <button style="padding: 5px; font-size: 16pt" onclick="line.set('outofboundsClip', !line.get('outofboundsClip')); RGraph.redraw()">Toggle the outofboundsClip option</button>
+
+    <script>
+        line = new RGraph.Line({
+            id:'cvs',
+            data: [
+                [4,5,8,7,6,4,3,5,8,4,3,5],
+                [7,1,6,9,4,6,5,2,6,4,8,3]
+            ],
+            options: {
+                xaxisLabels: ['Kev','Matt','Rich','Dave','Iggy','Polly','Fiona','Fred','Pete','Lou','Fred','Bob'],
+                marginBottom: 35,
+                linewidth: 2,
+                shadow: true,
+                adjustable: true,
+                title: 'An adjustable Line chart',
+                titleBold: true,
+                titleSize: 16,
+                spline: true,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 2
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
+&lt;button style="padding: 5px; font-size: 16pt" onclick="line.set('outofboundsClip', !line.get('outofboundsClip')); RGraph.redraw()"&gt;Toggle the outofboundsClip option&lt;/button&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

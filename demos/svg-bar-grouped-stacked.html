@@ -1,0 +1,147 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A grouped and stacked SVG Bar chart</title>
+    
+    
+    <meta name="description" content="A grouped and stacked SVG Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A grouped and stacked SVG Bar chart</h1>
+    
+    <p>
+        This is a grouped and stacked Bar chart. A regular grouped Bar chart is
+        created and then the coordinates of that Bar chart are used to position
+        vertical progress bars (which in reality are actually more Bar charts).
+    </p>
+    
+    <p>
+        The bars are animated by using the <code>grow()</code> effect - but each <code>grow()</code> effect is
+        delayed by 50 milliseconds which gives it the appearance of being the
+        <code>wave()</code> effect.
+    </p>
+
+    
+
+    <div style="width: 950px; height: 300px" id="cc"></div>
+
+
+
+    <script>
+        data = [
+            [9,7,8],
+            [14,10,11],
+            [9,11,12],
+            [8,6,9],
+            [9,11,12]
+        ];
+    
+        tooltips = [];
+        
+        for (var i=0; i<18; i++) {
+            tooltips.push([
+                'Fred',
+                'Jemima',
+                'Lucifer'
+            ])
+        }
+
+        bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: data,
+            options: {
+                marginTop: 75,
+                key: ['Fred','Jemima','Lucifer'],
+                keyColors: ['rgba(255,0,0,0.25)','rgba(0,255,0,0.25)','rgba(0,0,255,0.25)'],
+                marginInner: 20,
+                marginInnerGrouped: 5,
+                yaxis: false,
+                xaxis: false,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+                colors: ['rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)'],
+                title: 'Widgets created by day, worker and time of day',
+                titleSubtitle: 'Making widgets is hard work and this shows the results of last weeks output',
+                titleSubtitleY: '+5',
+                labelsAbove: true,
+                labelsAboveSize: 8,
+                labelsAboveSpecific: ['8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm']
+            }
+        }).on('draw', function (obj)
+        {
+            for (var i=0; i<obj.coords.length; ++i) {
+                (function (index)
+                {
+                    var coords = obj.coords[index];
+
+                    setTimeout(function ()
+                    {
+                        new RGraph.SVG.Bar({
+                            id: 'cc',
+                            data: [[33.333,33.333,33.333]],
+                            options: {
+                                backgroundGrid: false,
+                                colors: ['rgba(255,0,0,0.75)','rgba(0,255,0,0.75)','rgba(0,0,255,0.75)'],
+                                tooltips: tooltips[index],
+                                yaxisScaleMax: 100,
+                                marginInner: 0,
+                                marginInnerGrouped: 0,
+                                grouping: 'stacked',
+                                yaxis: false,
+                                xaxis: false,
+                                yaxisScale: false,
+                                marginLeft: coords.x,
+                                marginRight: obj.width - coords.x - coords.width,
+                                marginTop: coords.y,
+                                marginBottom: obj.height - coords.y - coords.height
+                            }
+                        }).grow();
+                    }, 50 * index);
+                })(i);
+            }
+        }).draw();
+        
+        // Some tooltips appearance customisation
+        RGraph.SVG.tooltips.style.backgroundColor = 'black';
+        RGraph.SVG.tooltips.style.color           = 'white';
+        RGraph.SVG.tooltips.style.fontWeight      = 'bold';
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 950px; height: 300px" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Gauge chart using the CSV reader</title>
+
+    
+    <meta name="description" content="A Gauge chart using the CSV reader" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Gauge chart using the CSV reader</h1>
+    
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline.
+        You can view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+    </div>
+    <p>
+        This demo fetches the first row of the CSV file (not including the labels)
+        but only uses the first value (as the Gauge value)
+    </p>
+
+    <canvas id="cvs" width="250" height="250">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        {
+            // Fetch the the first row, 
+            var row = csv.getRow(0, 1);
+
+            var gauge = new RGraph.Gauge({
+                id: 'cvs',
+                min: -50,
+                max: 50,
+                value: row[0],
+                options: {
+                    marginLeft: 10,
+                    marginRight: 10,
+                    marginTop: 10,
+                    marginBottom: 10,
+                    shadowBlur: 10,
+                    shadowColor: '#ddd',
+                    valueTextUnitsPost: 'mm',
+                    tickmarksSmall: 50,
+                    tickmarksMedium: 5,
+                    tickmarksLarge: 5,
+                    labelsCount: 10,
+                    colorsRanges: [[-50,-45,'red'], [-45,40,'yellow'], [-40,40, '#cfc'], [40,45, 'yellow'], [45,50,'red']]
+                }
+            }).grow()
+        }});
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

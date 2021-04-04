@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An inverted Bipolar chart</title>
+
+    
+    <meta name="description" content="A Bipolar chart where the  scale and values increase towards the center" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>An inverted Bipolar chart</h1>
+    
+    <p>
+        By using the margin settings to shift the charts left or right, two
+        Bipolar charts can be made to give an inverted appearance.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: [4,6,3,5,8],
+            right: [4,6,5,9,2],
+            options: {
+                colors: ['#7CB5EC'],
+                yaxisLabels: ['John','Luke','Pete','Jane','Fred'],
+                axes: false,
+                marginLeft: -225,
+                marginRight: 325,
+                marginCenterAutosize: false,
+                marginCenter: 75,
+                textAccessibleOverflow: 'hidden'
+            }
+        }).grow();
+
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: [4,6,3,5,8],
+            right: [4,6,5,9,2],
+            options: {
+                yaxisLabels: ['John','Luke','Pete','Jane','Fred'],
+                axes: false,
+                marginLeft: 325,
+                marginRight: -230,
+                textAccessibleOverflow: 'hidden',
+                colors: ['#7CB5EC']
+            }
+        }).grow();
+    </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

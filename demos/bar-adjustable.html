@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A customised and adjustable Bar chart</title>
+    
+    
+    
+    <meta name="description" content="One of the dynamic features that RGraph supports for certain canvas charts is adjusting. This an example of an adjustable Bar chart." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>An adjustable Bar chart</h1>
+
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        Here's a basic Bar chart which only has one  configuration option specified: <code>adjustable</code>
+        This means that the chart can be adjusted dynamically by clicking on the chart and moving your mouse
+        up and down. The types of charts that can be adjusted are:
+    </p>
+    
+    <ul style="list-style-type: disc">
+        <li>Bar charts</li>
+        <li>Fuel charts</li>
+        <li>Gantt charts</li>
+        <li>Gauge charts</li>
+        <li>Horizontal Bar charts</li>
+        <li>Horizontal Progress bars</li>
+        <li>Line charts (including spline charts)</li>
+        <li>Meter charts</li>
+        <li>Odometer charts</li>
+        <li>Semi-circular Progress bars</li>
+        <li>Thermometer charts</li>
+        <li>Vertical Progress bars</li>
+        <li>SVG Gauge</li>
+    </ul>
+    
+    <p>
+        <a href="https://www.rgraph.net/canvas/adjusting.html">
+            You can read more about adjusting and see the canvas documentation for it here.
+        </a>
+    </p>
+    
+    <p>
+        When the browser/screen is smaller the size of the canvas is reduced, the <code>textSize</code> is
+        reduced and the CSS <code>float</code> on the container is removed.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Quite a basic Bar chart which just has the single 'adjustable'
+        // property being stipulated meaning that you dynamically adjust
+        // the chart
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [8,6,4,8,9,5,3,2,5],
+            options: {
+                adjustable: true,
+                xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John']
+            }
+        }).draw().responsive([
+            {maxWidth: null,width: 600,height: 250,options:{textSize:10},parentCss: {'float':'none'}},
+            {maxWidth: 800,width: 350,height: 200,options:{textSize:10},parentCss: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+</body>
+</html>

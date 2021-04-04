@@ -1,0 +1,77 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart fetching its data via AJAX</title>
+
+
+    
+    <meta name="description" content="A Horizontal Bar chart fetching its data via AJAX" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline. You can
+        view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+    </div>
+
+    <h1>A Horizontal Bar chart fetching its data via AJAX</h1>
+
+   <canvas id="cvs" width="600" height="600">[No canvas support]</canvas>
+
+   <script>
+       RGraph.AJAX.getCSV({url: '/getdata.html', callback: function (data)
+       {
+            new RGraph.HBar({
+                id: 'cvs',
+                data: data,
+                options: {
+                    grouping: 'grouped',
+                    marginInner: 5,
+                    yaxisLabels: ['Charlie','Jake','Luis','Jack','Bernie','Luis','Bob','Joe','Jack','Cynthia'],
+                    colors: ['Gradient(white:#3366CC:#3366CC)'],
+                    backgroundGridHlinesCount: 10,
+                    backgroundGridVlinesCount: 5,
+                    textSize: 16,
+                    marginLeft: 100
+                }
+            }).draw();
+       }});
+   </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="600"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG black and white Line chart</title>
+    
+    
+    <meta name="description" content="An SVG black and white Line chart which is simple in appearance but is aesthetically pleasing. It has a little bit of custom drawing too." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex,nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An SVG black and white Line chart</h1>
+    
+    <div id="cc" style="width:600px; height: 250px; float: left"></div>
+    
+    <p>
+        This is an SVG version of a canvas Line chart which you can see in
+        <a href="https://www.rgraph.net/download.html#stable">the download archive</a>.
+    </p>
+    
+    <p>
+        So this Line chart looks like a simple black and white affair - and it is, though to get it looking
+        like it does you need to set a few configuration options.
+    </p>
+    
+    <p>
+        The <code>linewidth</code> has been increased (and also the linewidth of the X and Y axes), the
+        tickmarks on the axes have been disabled, the number of Y axis labels has been reduced
+        (and units appended), the
+        margins have been tweaked, the background grid has been disabled and the size and font of the text
+        on the chart has been altered.
+    </p>
+    
+    <p>
+        However this is not all! There's also a <code>draw</code> event listener that draws the overhang
+        at the end of the axes. This is done using the <code>RGraph.SVG.create()</code> function (because the
+        chart is SVG the <code>draw</code> event
+        doesn't have to be used - you could just place the code that draws the overhangs after the main
+        chart code if you wanted to). The function that does this is:
+    </p>
+    
+    <pre class="code">
+<span>// The create() function is the main RGraph function used to create SVG elements</span>
+RGraph.SVG.create({
+    
+    <span>// Give it the chart object (the obj variable) and
+    // stipulate the type of element to be created</span>
+    svg: obj.svg,
+    type: 'path',
+    
+    <span>// Set the parent of the new element</span>
+    parent: obj.svg.all,
+    
+    <span>// A list of attributes for the new tag</span>
+    attr: {
+    
+        <span>// The d attribute of the path tag is the path that should be drawn. Here
+        // the RGraph format() function is used to create a custom string with
+        // various replacements (so that there's not just a lot of concatenation
+        // and hence the path is a bit more readable.</span>
+        d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
+            prop.marginLeft - size,
+            obj.height - prop.marginBottom,
+            prop.marginLeft,
+            obj.height - prop.marginBottom,
+            prop.marginLeft,
+            obj.height - prop.marginBottom + size
+        ),
+        
+        <span>// Set the colors and the linewidth</span>
+        stroke: 'black',
+        'stroke-width': 7,
+        fill: 'rgba(0,0,0,0)'
+    }
+</pre>
+
+    <br clear="all" />
+    
+    <script>
+        // This function draws the tails to the axes. It gets the linewidth directly from the
+        // line chart object whilst the tailsize is hardcoded to 20.
+        function drawTails (obj)
+        {
+            var prop      = obj.properties,
+                linewidth = prop.linewidth;
+
+            // A single path command that draws both of the overhangs on both axes
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'path',
+                parent: obj.svg.all,
+                attr: {
+                    d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
+                        prop.marginLeft - 20 + 5,
+                        obj.height - prop.marginBottom,
+                        prop.marginLeft,
+                        obj.height - prop.marginBottom,
+                        prop.marginLeft,
+                        obj.height - prop.marginBottom + 20 - 5
+                    ),
+                    stroke: 'black',
+                    'stroke-width': linewidth,
+                    fill: 'rgba(0,0,0,0)'
+                }
+            });
+        }
+
+        // Create the Line chart. Nothing special is done here though note
+        // that the background grid is disabled and the number of Y axis
+        // labels is reduced.
+        line = new RGraph.SVG.Line({
+            id: 'cc',
+            data: [0,10,46,13,74,100,51],
+            options: {
+                linewidth: 7,
+                colors: ['black'],
+                shadow: false,
+                xaxisTickmarks: false,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                yaxisTickmarks: false,
+                
+                // Reduce the amount of Y labels. The number of Y labels does not
+                // include zero so you'll get three labels here in total
+                yaxisLabelsCount: 2,
+
+                yaxisScaleUnitsPost: '%',
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 12,
+                marginRight: 10,
+                marginTop: 20,
+                backgroundGrid: false,
+                textFont: 'Verdana'
+            }
+        
+        // The draw event adds the overhang to each of the axes
+        }).on('draw', drawTails)
+        
+        // Use the trace() effect to draw the chart setting the number of
+        // frames used by the animation to 60
+        .trace({frames: 60}).responsive([
+            {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7},css: {'float':'right'}},
+            {maxWidth: 900,width: 400,height: 150,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5},css: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="cc" style="width:600px; height: 250px"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

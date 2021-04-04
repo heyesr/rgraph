@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+     <script src="../libraries/RGraph.common.core.js" ></script>
+     <script src="../libraries/RGraph.common.dynamic.js" ></script>
+     <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A customised and adjustable Horizontal Bar chart</title>
+    
+    
+    <meta name="description" content="A customised and adjustable Horizontal Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A customised and adjustable Horizontal Bar chart</h1>
+
+    <canvas id="cvs" width="800" height="200">[No canvas support]</canvas>
+
+    <script>
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [75,25],
+            options: {
+                yaxisLabels: ['Johnny','Meredith'],
+                adjustable: true,
+                marginLeft: 150,
+                xaxisScaleMax: 100,
+                labelsAbove: true,
+                labelsAboveSize: 18,
+                labelsAboveUnitsPost: '%',
+                labelsAboveDecimals: 1,
+                textSize: 14,
+                textAccessiblePointerevents: false,
+                xaxis: false
+            }
+        }).draw().on('adjust', function (obj)
+        {
+            var shape = RGraph.Registry.get('adjusting.shape');
+
+            // Get the value of the bar that's just been adjusted
+            var index = shape.dataset,
+                value = hbar.data[index],
+                other = 100 - value;
+            
+            // Now adjust the other value
+            hbar.data[index ? 0 : 1] = other;
+            
+            RGraph.redraw();
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="200"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

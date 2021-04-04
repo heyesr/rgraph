@@ -1,0 +1,110 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart using the trace() effect</title>
+    
+    
+    <meta name="description" content="An SVG Line chart using the trace() effect, It's a simple blue Line chart that has circular tickmarks." />
+
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An SVG Line chart using the trace() effect</h1>
+    
+    <div style="width: 750px; height: 300px; background-color: black; box-shadow: 3px 3px 3px #ccc; float: right" id="chart-container"></div>
+    
+    <p>
+        A dark themed filled Line chart that also has the <code>spline</code> option enabled.
+        Circular tickmarks are enabled. The SVG tag has a black background and the
+        line is colored dark blue. It uses the <code>trace()</code> effect and
+        has a semi-opaque fill color - so you can see the background through it.
+    </p>
+    
+    <p>
+        Note that this choice of colors may not be best suited for someone who has
+        sight difficulties as the difference in colors (the black and the dark blue)
+        may be too slight for them to distinguish.
+    </p>
+    
+    <p>
+        Also, a chart that shows the achievements of individual figures, like this one
+        does, may be more suited to a Bar (horizontal or vertical) as the data
+        is not really a continuing series, but more a set of individual numbers that
+        apply (in this case) to a group of people.
+    </p>
+    
+    <p>
+        In terms of responsiveness when the screen is smaller the labels change to use dual lines
+        and the tickmarks disappear.
+    </p>
+
+
+    
+
+
+
+
+        
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [5,8,6,3,4,1,9,8,2,3,5,6,7,8,9,4,5,6,3,2,5,4,8,6,4,5,3,1,6,4,5],
+            options: {
+                backgroundGridVlinesCount: 11,
+                marginInner: 0,
+                textColor: 'white',
+                textFont: 'Verdana',
+                filled: true,
+                filledColors: ['rgba(25,51,74,0.75)'],
+                colors: ['#5AF'],
+                marginRight: 40,
+                marginBottom: 50,
+                marginTop: 20,
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleUnitsPost: 'm',
+                yaxisScaleUnitsPre: '$',
+                tickmarksFill: 'black',
+                tickmarksLinewidth: 2,
+                linewidth: 4,
+                spline: true
+            }
+        }).trace().responsive([
+            {maxWidth: null,width:750,height:300,options: {xaxisLabels: ['Kev','John','Fred','July','Fred','Olga','Ben','Boris','Lenny','Pete','Lewis'],marginLeft: 65,textSize: 14,tickmarksStyle: 'circle',tickmarksSize: 5,linewidth: 3}, css:{'float':'right'}},
+            {maxWidth: 800, width:400,height:200,options: {xaxisLabels: ['Kev','\nJohn','Fred','\nJuly','Fred','\nOlga','Ben','\nBoris','Lenny','\nPete','Lewis'],marginLeft: 50,textSize: 10,tickmarksStyle: '',tickmarksSize: 3,linewidth: 2}, css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 950px; height: 400px; background-color: black; box-shadow: 3px 3px 3px #ccc" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

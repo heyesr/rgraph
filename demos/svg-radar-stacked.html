@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.radar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A stacked SVG Radar chart</title>
+    <meta name="description" content="A stacked SVG Radar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A stacked SVG Radar chart</h1>
+    <p>This is an example of a Radar chart that has been configured with multiple datasets and is using the <code>filledAccumulative</code> option so that the datasets appear stacked on top of each other.</p>
+
+    
+    <div style="width: 900px; height: 800px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        data = [];
+
+        for (var j=0; j<5; ++j) {
+            
+            data[j]=[]
+            
+            for (var i=0; i<50; ++i) {
+                data[j][i] = RGraph.SVG.random({min: 9, max: 10, dp: 2});
+            }
+        }
+        
+        
+        // Create the labels
+        for (var i=0,labels=[]; i<25; ++i) {
+            labels.push(1990+i)
+        }
+        
+        
+
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                backgroundGridRadialsCount: 25,
+                filled: true,
+                filledAccumulative: true,
+                colors: ['red','blue','green','black','orange'],
+                scaleUnitsPost: 'kg',
+                tickmarksStyle: false,
+                linewidth: 1,
+                labels: labels
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.radar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

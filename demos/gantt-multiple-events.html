@@ -1,0 +1,105 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A Gantt chart showing multiple events per row</title>
+
+    <meta name="description" content="A Gantt chart showing multiple events per row" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Gantt chart showing multiple events per row</h1>
+    
+    <p>
+        By using nested arrays you can show multiple events per row (with tooltips).
+    </p>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+        data = [
+            [ 
+                {start: 5, duration: 10, label: 'Maths',  color: 'Gradient(#fdd:red)'},
+                {start: 16, duration: 8,  color: 'Gradient(#fdd:red)'}
+            ],
+            [
+                {start: 0, duration: 10, label: 'French', color: 'Gradient(#dfd:green)'},
+                {start: 14, duration: 10, color: 'Gradient(#dfd:green)'}
+            ],
+            [
+                {start: 0,  duration: 5, label: 'German', color: 'Gradient(pink:#ff69b4)'},
+                {start: 6,  duration: 5, color: 'Gradient(pink:#ff69b4)'},
+                {start: 12, duration: 5, color: 'Gradient(pink:#ff69b4)'},
+                {start: 18, duration: 5, color: 'Gradient(pink:#ff69b4)'}
+            ],
+              
+            {start: 5, duration: 15, label: 'Polish', color: 'Gradient(#ffffbb:orange)'},
+
+            [
+                {start: 5, duration: 5,  label: 'Dutch',  color: 'Gradient(#faa:pink)'},
+                {start: 11, duration: 5,  color: 'Gradient(#faa:pink)'}
+            ]
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                tooltips: ['A','B','C','D','E','F','G','H','I','J','K','L','M'],
+                xaxisScaleMax: 24,
+                xaxisLabels: ['A','B','C','D'],
+                labelsInbar: [
+                    'Maths', 'Maths',
+                    'French', 'French',
+                    'German','German','German','German',
+                    'Polish',
+                    'Dutch','Dutch'
+                ],
+                labelsInbarAlign: 'center',
+                labelsInbarFont: 'Arial',
+                labelsInbarSize:22,
+                labelsInbarColor: '#333',
+                marginInner: 10
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dual color filled range Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    
+    <meta name="description" content="A range Line chart which shows two colors - the threshold of which is configurable" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dual-color filled range Line chart</h1>
+    
+    <p>
+        A dual-color filled range Line chart - so below the threshold it can be one
+        color and above the threshold it can be another.
+        The threshold is controllable by you. The chart below uses randomised data so
+        if you refresh the page it will be
+        slightly different. It uses the <code>trace()</code> effect as the
+        <code>trace()</code> effect uses the <code>clip()</code> function
+        and so it conflicts
+        with the range clipping.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+    Threshold: <input type="text" onkeyup="update(event)" value="40" id="val" />
+
+    <p>
+        <b>Update</b><br />
+        There's information <a href="https://www.rgraph.net/canvas/docs/howto-make-a-dynamic-scrolling-line-chart.html">on this HOWTO page</a> about creating dual color Line
+        charts using
+        gradients. It's <b>very</b> simple and can be done using either the
+        RGraph <code>Gradient()</code> shortcut or more directly with the canvas
+        linear gradient functionality.
+    </p>
+
+    <script>
+        function update ()
+        {
+            var obj = document.getElementById('cvs').__object__;
+
+            obj.set({
+                filledRangeThreshold: Number(document.getElementById('val').value)
+            });
+
+            RGraph.clear(obj.canvas);
+            obj.draw();
+        }
+
+
+        d1  = [], d2  = [], val = 47, numvlines = null;
+
+        for (var i=0; i<90; ++i) {
+            d1.push(RGraph.random(45,50) *  Math.sin(i / 57.29));
+            d2.push(RGraph.random(35,45) * Math.sin(i / 57.29));
+        }
+
+        for (var i=0; i<90; ++i) {
+            val = RGraph.random(-2,2) + val
+            val = Math.min(val, 50);
+
+            d1.push(val + 3);
+            d2.push(val - 3);
+        }
+
+
+
+        var line = new RGraph.Line({
+            id: 'cvs',
+            data: [d1, d2],
+            options: {
+                filled: true,
+                filledRange: true,
+                filledRangeThreshold: 40,
+                filledRangeThresholdColors: ['rgba(255,0,0,0.5)', 'rgba(0,0,255,0.5)'],
+                filledColors: 'red',
+                colors: ['rgba(0,0,0,1)'],
+                backgroundGridVlinesCount: numvlines = 7,
+                xaxisTickmarksCount: numvlines,
+                linewidth: 0.0001,
+                tickmarksStyle: null,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Spare']
+            }
+        }).fadeIn({frames: 30})
+        
+        //
+        // Set the value of the input
+        //
+        document.getElementById('val').value = 40;
+    </script>
+
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+Threshold: &lt;input type="text" onkeyup="update(event)" value="40" id="val" /&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
+

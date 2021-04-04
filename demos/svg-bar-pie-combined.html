@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG version of a canvas Pie/Bar example chart</title>
+
+    
+    <meta name="description" content="An SVG version of a canvas Pie/Bar example chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG version of a canvas Pie/Bar example chart</h1>
+    <p>This is an SVG version of an, originally canvas based, demo that shows the combination of a Pie and grouped Bar chart. Both are animated - the Pie chart with the <code>roundRobin()</code> effect and the Bar chart with the <code>wave()</code> effect. The Bar chart has the <code>labelsAbove</code> option enabled.</p>
+
+
+
+    <div id="cc" style="width: 650px; height: 350px"></div>
+
+        
+    <script>
+        var bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: [[50,60,52],[65,30,50],[40,80,70],[115,100,70]],
+            options: {
+                labelsAbove: true,
+                labelsAboveSize: 10,
+                xaxisLabels: ['Bob', 'Jamie', 'Cynthia', 'Peter'],
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginInner: 25,
+                colors: ['Gradient(#f11:#f11:white)','Gradient(#1cc:#1cc:white)','Gradient(#00f:#00f:white)'],
+                shadow: true,
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowBlur: 7
+            }
+        }).wave();
+        
+        var pie = new RGraph.SVG.Pie({
+            id: 'cc',
+            data: [270,270,164],
+            options: {
+                exploded: [7,2,],
+                centerx: 90,
+                centery: 85,
+                radius: 30,
+                shadow: true,
+                shadowBlur: 7,
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowOpacity: .25,
+                tooltips: ['Total Monday sales: 270','Total Tuesday sales: 270','Total Wednesday sales: 264'],
+                tooltipsEvent: 'mousemove',
+                colorsStroke: 'rgba(0,0,0,0)',
+                colors: ['Gradient(white:red)','Gradient(white:#0f0)','Gradient(white:blue)'],
+                labels: ['Mondays results'],
+                labelsSticks: false,
+                textBold: true
+            },
+        }).roundRobin({frames: 50});
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

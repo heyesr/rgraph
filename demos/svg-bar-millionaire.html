@@ -1,0 +1,106 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart configured to look like the millionaire Bar chart</title>
+    
+    
+    <meta name="description" content="An SVG Bar chart configured to look like the millionaire Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Bar chart configured to look like the millionaire Bar chart</h1>
+    <p>
+        This is a demonstration of a chart that has been made to look like the
+        "Who wants to be a millionaire" Bar chart (for the "Ask the audience"
+        question results). It uses a CSS gradient for the background and adds
+        custom text to the chart using the RGraph API (though it doesn't use the
+        <code>draw</code> event because SVG doesn't need to). It uses the
+        coordinates that are stored on the chart object for this (the <code>obj.coords</code>
+        variable).</p>
+    
+    <p>
+        <a href="bar-millionaire.html">
+            There's a canvas version of this chart here.
+        </a>
+    </p>
+
+    
+
+    <div style="width: 300px; height: 250px; border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px" id="cc"></div>
+
+
+
+
+
+    <script>
+        scores = [50,20,15,15];
+
+        var bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: RGraph.SVG.arrayClone(scores),
+            options: {
+                backgroundGridLinewidth: 3,
+                backgroundGridColor: '#6A93CA',
+                backgroundGridVlinesCount: 8,
+                backgroundGridHlinesCount: 10,
+                xaxis: false,
+                yaxis: false,
+                colors: ['#F874EE'],
+                marginLeft: 10,
+                marginRight: 10,
+                marginTop: 30,
+                marginBottom: 45,
+                yaxisScaleMax: 100,
+                xaxisLabels: ['A','B','C','D'],
+                xaxisLabelsSize: 26,
+                xaxisLabelsColor: 'yellow'
+            }
+        }).grow();
+        
+        // Add the text that gives the percentages
+        for (var i=0; i<scores.length; ++i) {
+
+            RGraph.SVG.text({
+                object: bar,
+                text: scores[i] + '%',
+                x: bar.coords[i].x + (bar.coords[i].width / 2),
+                y: bar.get('marginTop') - 6,
+                color: 'white',
+                halign: 'center',
+                size: 18
+            });
+        }
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>,
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 300px; height: 250px; border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px" id="cc"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

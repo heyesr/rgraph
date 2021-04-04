@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart demonstrating PHP integration</title>
+
+    <meta name="description" content="An SVG Bar chart demonstrating PHP integration" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG Bar chart demonstrating PHP integration</h1>
+    <p>
+        This is a demonstration of integrating your PHP server-based code with
+        RGraph. As demonstrated here you can use the <code>json_encode()</code> PHP
+        function to convert your PHP arrays or objects into a string that you
+        can print along with the rest of your page. You can then use the resulting
+        JavaScript data structure to pass the information to RGraph.
+    </p>
+
+    This is the JSON that is being printed by PHP on to the page:
+    
+    <pre class="code">[{"value":6,"label":"Jan","labelsAbove":""},{"value":3,"label":"Feb","labelsAbove":""},{"value":8,"label":"Mar","labelsAbove":""},{"value":9,"label":"Apr","labelsAbove":"Highest"},{"value":4,"label":"May","labelsAbove":""},{"value":5,"label":"Jun","labelsAbove":""},{"value":6,"label":"Jul","labelsAbove":""},{"value":4,"label":"Aug","labelsAbove":""},{"value":3,"label":"Sep","labelsAbove":""},{"value":1,"label":"Oct","labelsAbove":"Lowest"},{"value":5,"label":"Nov","labelsAbove":""},{"value":6,"label":"Dec","labelsAbove":""}]</pre>
+
+    <div style="width: 550px; height: 300px" id="chart-container"></div>
+
+
+
+
+    <script>
+        // This JSON could be printed by PHP. Eg :
+        //
+        // <?php printf('var src = %s;', json_encode($data)) ?>
+        //
+        var src = [{"value":6,"label":"Jan","labelsAbove":""},{"value":3,"label":"Feb","labelsAbove":""},{"value":8,"label":"Mar","labelsAbove":""},{"value":9,"label":"Apr","labelsAbove":"Highest"},{"value":4,"label":"May","labelsAbove":""},{"value":5,"label":"Jun","labelsAbove":""},{"value":6,"label":"Jul","labelsAbove":""},{"value":4,"label":"Aug","labelsAbove":""},{"value":3,"label":"Sep","labelsAbove":""},{"value":1,"label":"Oct","labelsAbove":"Lowest"},{"value":5,"label":"Nov","labelsAbove":""},{"value":6,"label":"Dec","labelsAbove":""}];
+        
+        data        = [];
+        labels      = [];
+        labelsAbove = [];
+
+        // Extract the data from the array
+        for (var i=0; i< src.length; ++i) {
+            data.push(src[i].value);
+            labels.push(src[i].label);
+            labelsAbove.push(src[i].labelsAbove);
+        }
+
+        var bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                colors: ['#a00'],
+                xaxisLabels: labels,
+                labelsAbove: true,
+                labelsAboveSize: 8,
+                labelsAboveSpecific: labelsAbove,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 550px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

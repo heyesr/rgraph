@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A "rectangular" Pie chart</title>
+    
+    
+    <meta name="description" content="A rectangular Pie chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A "rectangular" Pie chart</h1>
+    
+    <p>
+        By using a large <code>radius</code> setting the Pie will be too
+        large for
+        the canvas and you'll get a "rectangular" Pie chart effect.
+    </p>
+
+    <canvas id="cvs" width="350" height="250" style="border: 1px solid #aaa">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [4,8,4,6,5,3,2,5],
+            options: {
+                radius: 350,
+                key: ['Alvin','Pete','Hoolio','Jack','Kev','Luis','Lou','Jesse'],
+                colorsStroke: 'white',
+                linewidth: 3
+            }
+        }).roundRobin().grow();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

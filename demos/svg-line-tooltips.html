@@ -1,0 +1,82 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+
+    <title>RGraph demo: An SVG Line chart with tooltips</title>
+    
+    
+    <meta name="description" content="An SVG Line chart with tooltips" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Line chart with tooltips</h1>
+    <p>A simple Line chart that has the X axis positioned in the middle and has tooltips enabled. The tickmarks in a <code>dot</code> style - ie a point with a circle around them.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                [15,23,-5,-15,23,35,31],
+                [45,23,45,12,50,12,45],
+                [5,6,3,5,8,9,44]
+            ],
+            options: {
+                marginInner: 15,
+                marginLeft: 50,
+                marginRight: 35,
+                marginBottom: 50,
+                yaxisScaleMin: -50,
+                yaxisScaleMax: 50,
+                yaxisScaleUnitsPre: '$',
+                linewidth: 3,
+                backgroundGridVlinesCount: 7,
+                backgroundGridHlinesCount: 10,
+                tooltips: '%{prop:xaxisLabels[%{index}]}<br /><span style="font-size: 30pt">%{value_formatted}</span>',
+                tooltipsFormattedUnitsPre: '$',
+                xaxisLabels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

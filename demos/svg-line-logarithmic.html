@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart using a logarithmic scale</title>
+    
+    
+    <meta name="description" content="An SVG Line chart using a logarithmic scale" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Line chart using a logarithmic scale</h1>
+    <p>
+        Here we have a logarithmic Line chart with a scale that goes from
+        0 - 1,000,000 allowing you to show some greatly differing values. To use
+        this sort of chart you need to convert your data into the correct format
+        first. There's an <code>RGraph.SVG.log()</code> function in the RGraph libraries that
+        you can use to convert your data into the correct format. There's a
+        demonstration in the code below - it's very simple.
+    </p>
+
+    
+    <div style="width: 950px; height: 250px" id="chart-container"></div>
+
+
+        
+    <script>
+        data = [0,10,0,100,0,1000,0,10000,0,100000];
+        
+        for (var i=0; i<data.length; ++i) {
+            if (data[i] > 0) {
+                data[i] = RGraph.SVG.log({num:data[i], base: 10});
+            }
+        }
+
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                xaxisLabels: ['','A','','B','','C','','D','','E'],
+                yaxisScale: false,
+                yaxisLabels:['0','10','100','1,000','10,000','100,000','1,000,000'],
+                marginLeft: 100,                
+                backgroundGridHlinesCount: 6,
+                yaxisScaleMin: 0,
+                yaxisScaleMax: 6,
+                linewidth: 3,
+                yaxis: false,
+                xaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).trace();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

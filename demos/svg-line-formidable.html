@@ -1,0 +1,314 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <!-- The SVG chart libraries -->
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    
+    <!-- The canvas chart libraries -->
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Line with a simple look and feel</title>
+    
+    
+    <meta name="description" content="An SVG Line chart with three datasets and a simple look and feel. This page also shows you how to get transparent tickmarks." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+    
+    <h1>An SVG Line with a simple look and feel</h1>
+
+    <ul>
+        <li>
+            <a href="#how-to-get-transparent-tickmarks-using-the-canvas-line-chart">
+                How to get transparent tickmarks using the canvas Line object
+            </a>
+        </li>
+    </ul>
+
+    <div id="cc" style="width:700px; height: 300px; float: right; background-color: black"></div>
+
+    <p>
+        Here is a simple Line chart that has three separate datasets. The labels
+        for the chart (on the X axis) are not a scale - they're just regular labels
+        as you would normally give to a Line chart but they're numbers instead
+        of words - that's all. The Line doesn't have the facility to show
+        a scale across the X axis - for that you'll need to use a Scatter chart
+        with the <code>line</code> option enabled.
+    </p>
+    
+    <p>
+        As for the tickmarks, while at first glance it may appear that they're
+        'hollow' they're actually just using a fill color that matches the
+        background.
+    </p>
+    
+    <p>
+        Other than this it's a pretty basic dark-themed Line that uses the
+        <code>trace()</code> effect.
+    </p>
+    
+    <script>
+        line = new RGraph.SVG.Line({
+            id: 'cc',
+            data: [
+                [9,9,0,9,0],
+                [6,7,10,5,0],
+                [9,4,0,3,4]
+            ],
+            options: {
+                colors: ['#cc0','blue','red'],
+                xaxis: false,
+                yaxis: false,
+                linewidth: 3,
+                backgroundGridColor: '#999',
+                xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
+                textColor: '#ccc',
+                tickmarksStyle: 'circle',
+                tickmarksFill: 'black',
+                tickmarksLinewidth: 3
+            }
+        }).trace().responsive([
+            {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},css:{'float':'right'}},
+            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="cc" style="width:700px; height: 300px"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <pre class="code">
+&lt;script&gt;
+    line = new RGraph.SVG.Line({
+        id: 'cc',
+        data: [
+            [9,9,0,9,0],
+            [6,7,10,5,0],
+            [9,4,0,3,4]
+        ],
+        options: {
+            colors: ['#cc0','blue','red'],
+            xaxis: false,
+            yaxis: false,
+            linewidth: 3,
+            backgroundGridColor: '#999',
+            xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
+            textColor: '#ccc',
+            tickmarksStyle: 'circle',
+            tickmarksFill: 'black',
+            tickmarksLinewidth: 3
+        }
+    }).trace().responsive([
+        {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},css:{'float':'right'}},
+        {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},css:{'float':'none'}}
+    ]);
+&lt;/script&gt;
+</pre>
+
+
+
+    <a name="how-to-get-transparent-tickmarks-using-the-canvas-line-chart"></a>
+    <h2>How to get transparent tickmarks using the canvas Line graph</h2>
+
+    <div style="float: right; position: relative; background-color: black; width: 650px; height: 250px">
+        <canvas id="cvs1" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+        <canvas id="cvs2" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        You may have noticed that on the chart above the center of the tickmarks are
+        not transparent - they're just colored black in order to make them blend in
+        with the rest of the chart.
+    </p>
+    
+    <p>
+        Making them transparent is more complicated than you might think for these
+        reasons:
+    </p>
+    
+    <ul style="list-style-type: disc">
+        <li>
+            If you use a transparent fill then the Line itself would still be
+            visible.
+        </li>
+        <li>
+            If you use a black fill it overwrites the background grid (this is the
+            first chart).
+        </li>
+        <li>
+            If you use the <code>globalCompositeOperation</code> option but with only one
+            canvas it clears the background grid - so the line can't be seen and nor
+            can the grid. The result would be similar to the first situation
+            in this list.
+        </li>
+    </ul>
+    
+    <p>
+        The solution here is to use layers. "But wait! Canvas doesn't have layers!"
+        you might cry. And yes - you would be correct - but they can be simulated
+        by using - in this case - multiple canvas tags.
+    </p>
+    
+    <p>
+        So there's two canvas tags being utilised here (positioned one in front of
+        the other) - one on to which the background is drawn and a second on to
+        which the lines are drawn. When the insides of the tickmarks are cleared
+        to transparency then the canvas at the back shows through. And that
+        is the canvas that has the background grid on it.
+    </p>
+    
+    <p>
+        There's more code required than a regular chart (as you might imagine) - but
+        as you can see it's not a lot more and nor is it complicated. Feel free to
+        copy and paste the code.
+    </p>
+
+
+    <br clear="all" />
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="position: relative; background-color: black; width: 750px; height: 250px"&gt;
+    &lt;canvas id="cvs1" width="750" height="250" style="position: absolute; top: 0; left: 0"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="750" height="250" style="position: absolute; top: 0; left: 0"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <pre class="code">
+&lt;script&gt;
+    line1 = new RGraph.Line({
+        id: 'cvs1',
+        data: [null,null,null,null,null],
+        options: {
+            axes: false,
+            backgroundGridColor: '#999',
+            yaxisLabels: false,
+             arksSize: 9
+        }
+    }).draw();
+
+
+    var line2 = new RGraph.Line({
+        id: 'cvs2',
+        data: [
+            [9,9,0,9,0],
+            [6,7,10,5,0],
+            [9,4,0,3,4]
+        ],
+        options: {
+            colors: ['#cc0','blue','red'],
+            axes: false,
+            linewidth: 3,
+            backgroundGrid: false,
+            xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
+            textColor: '#ccc',
+            tickmarksSize: 6,
+            tickmarksStyle: function (obj, data, value, index, x, y, color, prevX, prevY)
+            {
+                // Draw the fill of the tickmark
+                obj.path(
+                    'gco destination-out b a % % % 0 6.29 false f red s % gco source-over',
+                    x, y, obj.get('tickmarksSize') - 1, color
+                );
+
+                // This draws the outline of the tickmark
+                obj.path(
+                    'b lw 2 a % % % 0 6.29 false s %',
+                    x, y, obj.get('tickmarksSize'), color
+                );
+            },
+            tickmarkSize: 6
+        }
+    }).draw().responsive([
+        {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
+        {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
+    ]);
+&lt;/script&gt;
+</pre>
+
+
+    <script>
+        var line1 = new RGraph.Line({
+            id: 'cvs1',
+            data: [null,null,null,null,null],
+            options: {
+                xaxis: false,
+                yaxis: false,
+                backgroundGridColor: '#999',
+                yaxisLabels: false
+            }
+        }).draw();
+
+
+        var line2 = new RGraph.Line({
+            id: 'cvs2',
+            data: [
+                [9,9,0,9,0],
+                [6,7,10,5,0],
+                [9,4,0,3,4]
+            ],
+            options: {
+                colors: ['#cc0','blue','red'],
+                axes: false,
+                linewidth: 3,
+                backgroundGrid: false,
+                xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
+                textColor: '#ccc',
+                tickmarksSize: 6,
+                tickmarksStyle: function (obj, data, value, index, x, y, color, prevX, prevY)
+                {
+                    // Draw the fill of the tickmark
+                    obj.path(
+                        'gco destination-out b a % % % 0 6.29 false f red s % gco source-over',
+                        x,y,obj.get('tickmarksSize') - 1,color
+                    );
+
+                    // This draws the outline of the tickmark
+                    obj.path(
+                        'b lw 2 a % % % 0 6.29 false s %',
+                        x,y,obj.get('tickmarksSize'),color
+                    );
+                },
+                tickmarkSize: 6
+            }
+        }).draw().responsive([
+            {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
+            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
+        ]);
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A gray Pie chart</title>
+    
+    
+    <meta name="description" content="A Pie chart using a gray theme and the responsive() functionality. Here, the labels have the value of each segment added before they're assigned to the chart - but only when you're viewing the larger version of the chart. For the smaller version the figures are removed from the labels." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A gray Pie chart</h1>
+
+    <canvas id="cvs" width="550" height="250" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's a gray themed Pie chart. It uses the responsive function in order to allow for smaller
+        screens, the labels are bold and the text is slightly smaller than usual.
+    </p>
+    
+    <p>
+        In terms of
+        responsiveness, when the screen/browser is smaller the labels are changed to not have
+        the percentage appended to them, reduced in size and the <code>labelsSticks</code>
+        option is disabled.
+    </p>
+    
+    <p>
+        Initially the labels are simple strings that consist of operating system  names (like this:
+        <code>['Symbian','Blackberry','Android','iOS','Windows','Others']</code>)
+        But these labels then have the relevant percentage that is being represented appended to them
+        (for larger screens only).
+    </p>
+    
+    <p>
+        The labels are bold too. The font that the labels are rendered in is set to
+        <code>Lucida Grande</code> - though if this font is not on your system you may see the labels
+        rendered using <code>Arial</code> instead.
+    </p>
+    
+    <p>
+        The tooltips are created in the same way - just a little more verbosely. They're triggered
+        using the <code>mouseover</code> event. The <code>tooltipsCss</code> property is used to
+        set styles on the tooltips (ie the <code>font-size</code> <code>text-align</code> and
+        <code>pointer-events</code> properties). The <code>pointer-events</code> CSS property is turned
+        off so that you can move the mouse pointer around and still see the correct tooltip even if another
+        tooltip is in the way.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Here's the data, the labels and the tooltips that have been separated
+        // out from the configuration in order to aid clarity
+        data         = [41.2,18.2,17.2,14.2,5,4.2];
+        labels       = ['Symbian','Blackberry','Android','iOS','Windows','Others'];
+        labels_small = RGraph.arrayClone(labels);
+        labels_large = RGraph.arrayClone(labels);
+        tooltips     = [];
+        
+        // This bit of code loops through the labels and adds the relevant value
+        // to them. Normally a forEach() loop doesn't tend to get recommended
+        // because a function gets created for each iteration  (even though
+        // functions are cheap in JavaScript) so it suffers performance wise -
+        // but this isn't in a loop and there's not many data points so it's
+        // not too bad to use here.
+        labels.forEach(function (v, k, arr)
+        {
+            // Add the market share to the tooltip
+            tooltips[k] = '<b>{1}</b><br /><i>Market share: {2}%</i>'.format(
+                labels[k],
+                data[k]
+            );
+            
+            // Add the values from the data to the labels
+            labels_large[k] = labels[k] + ' ' + data[k] + '%';
+        });
+
+
+        // Create the Pie chart and give it the tooltips and the labels that
+        // were created above. The roundRobin() animation effect is used to
+        // display the chart.
+        new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                marginTop: 50,
+                
+                // Set the values that were created above as the tooltips
+                tooltips: tooltips,
+                
+                // Some default styles for the tooltips
+                tooltipsCss: {
+                    fontSize: '16pt',
+                    textAlign:'left',
+                    pointerEvents: 'none'
+                },
+
+                labels: labels_large,
+                labelsBold: true,
+                labelsColors: ['black'],
+                textFont: 'Lucida Grande, "Lucida Sans Unicode", Arial',
+                textSize: 10,
+                textColor: 'black',
+                shadow: false,
+                colors: ['#F0F0F0','#08306B','#D9D9D9','#BDBDBD','#969696','#D9D9D9'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                tooltipsEvent: 'mousemove',
+                highlightStyle: 'outline',
+                title: 'Smartphone share in Q2 2010',
+                titleSize: 18
+            }
+        }).draw().responsive([
+            {maxWidth: null, width: 550, height: 250, options: {labelsList: true, labels: labels_large,textSize:10},css:{'float':'right'}},
+            {maxWidth: 900, width: 350, height: 250, options: {labelsList: false, labels: labels_small,textSize:8},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="550" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped Bar chart</title>
+    
+    
+    <meta name="description" content="This demonstration shows a grouped Bar chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A grouped Bar chart</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [[1250,1450,750,450],[1300,1375,750,525],[1500,1480,650,600],[1450,1500,700,450]],
+            options: {
+                xaxisLabels: ['Jan 2008\r\nStart year','Jan 2009\r\nBest year','Jan 2010\r\nLast year','Jan 2011\r\nThis year!'],
+                colors: ['#C7CFC7','#B2C8B2','#D9E0DE','#CDDED1'],
+                marginInner: 15,
+                marginInnerGrouped: 3,
+                marginLeft: 45,
+                marginBottom: 45,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textSize: 12,
+                colorsStroke: 'rgba(0,0,0,0)',
+                shadow: false
+            }
+        }).draw();
+    </script>
+    
+    <br />
+    
+    <code>marginInnerGrouped</code> setting:<input type="text" id="marginInnerGrouped" value="3" onkeyup="bar.set('marginInnerGrouped', Number(this.value)); RGraph.clear(bar.canvas); bar.draw();" size="1" />
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+
+</body>
+</html>

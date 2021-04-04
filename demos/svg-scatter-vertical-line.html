@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A vertical line chart using the SVG Scatter chart</title>
+
+    
+    <meta name="description" content="A vertical line chart using the SVG Scatter chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A vertical line chart using the SVG Scatter chart</h1>
+    <p>This is a demo of a Scatter chart with a connecting line that has actually been configured to look like a vertical Line chart. It uses the X axis scale and Y axis labels.</p>
+
+    
+    <div style="width: 300px; height: 600px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        data = [
+            {x:50, y:1},
+            {x:42, y:3},
+            {x:89, y:5},
+            {x:76, y:7},
+            {x:16, y:9},
+            {x:44, y:11},
+            {x:44, y:13}
+        ];
+
+        new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: data,
+            options: {
+                backgroundGridVlinesCount: 5,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                line: true,
+                lineLinewidth: 2,
+                yaxisScaleMax: 14,
+                xaxisScaleMin: 0,
+                xaxisScaleMax: 100,
+                xaxisScale: true,
+                xaxisLabelsCount: 5,
+                xaxisLabelsPositionEdgeTickmarksCount: 5,
+                yaxisLabelsPositionEdgeTickmarksCount: 14,
+                yaxisLabels: [
+                    '', 'Bazz',
+                    '', 'Lucy',
+                    '', 'Pete',
+                    '', 'Olga',
+                    '', 'Hank',
+                    '', 'Jane',
+                    '', 'Jack', ''
+                ],
+                yaxisScale: false,
+                marginLeft: 50,
+                tickmarksSize: 0,
+                xaxis: false
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 300px; height: 600px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

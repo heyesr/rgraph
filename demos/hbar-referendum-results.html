@@ -1,0 +1,188 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart using formatted tooltips</title>
+    
+    
+    
+    <meta name="description" content="An example of a Horizontal Bar chart that's showing the result of the 2016 UK referendum that decided the question of EU membership." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart using formatted tooltips</h1>
+
+    <canvas id="cvs" width="600" height="275" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's a Horizontal Bar chart clearly indicating the 2016 UK referendum results. Let's not dwell on the
+        disastrous nature of the vote though and look at the chart shall we?
+    </p>
+    
+    <p>
+        It has a high <code>marginInner</code> setting - though the bars are still quite thick
+        due to the height of the chart and the fact that there's only two values that are being
+        represented.
+    </p>
+    
+    <p>
+        It uses the <code>labelsAbove</code> setting, has <code>tooltips</code> and the number of X axis
+        labels has been increased. The number of vertical background grid lines has been increased to match
+        the number of labels.
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function reduces the size of the chart, the text that's on the chart,
+        slightly reduces the <code>marginInner</code> and reduces the number of X axis labels that you see.
+        It also removes  the CSS <code>float</code> on the canvas tag.
+    </p>
+    
+    <p>
+        This demo shows the new formatted tooltips feature - which allows you to specify the tooltips as
+        a string instead of an array of tooltips:
+    </p>
+    
+    <pre class="code">
+...
+tooltips: '%{function:getTooltip(%{group})}'
+...
+</pre>
+
+    <p>
+        The <code>getTooltip()</code> function is called with the group ID given as an argument and
+        that function looks like this:
+    </p>
+    
+    <pre class="code">
+<span>// Format and return the correct tooltip</span>
+function getTooltip(group)
+{
+    var results = [
+        [408,'The "Leave" campaign won a significant&lt;br /&gt;majority with a total of 408 seats.'],
+        [242, 'The "Remain" campaign fought valiantly&lt;br /&gt;but, alas, it was to no avail.']
+    ];
+
+    return 'Seats: &lt;b&gt;{1}&lt;/b&gt;&lt;br /&gt;&lt;span style="color: #666"&gt;{2}&lt;/span&gt;'.format(
+        results[group][0],
+        results[group][1]
+    );
+}
+</pre>
+
+    <p>
+        This function returns the correct text based on the group ID that is given and
+        that text is then used as the tooltip.
+    </p>
+    
+    <p>
+        And finally, it's animated using the <code>grow()</code> effect - which is a linear growing effect.
+    </p>
+    
+    <script>
+        //
+        // This the function that builds and returns the
+        // correct tooltip based on the group ID that is
+        // passed to it
+        function getTooltip(group)
+        {
+            var results = [
+                [408,'The "Leave" campaign won a significant<br />majority with a total of 408 seats.'],
+                [242, 'The "Remain" campaign fought valiantly<br />but, alas, it was to no avail.']
+            ];
+
+            return 'Seats: <b>{1}</b><br /><span style="color: #ccc">{2}</span>'.format(
+                results[group][0],
+                results[group][1]
+            );
+        }
+
+        // A pretty standard Horizontal Bar chart which has two bars that are
+        // showing the results of the 2016 UK Europe referendum/disaster. The
+        // tooltips have HTML in them which is fine because tooltips are
+        // actually just &lt;div&gt; tags.
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [408,242],
+            options: {
+                xaxisLabelsSize: 8,
+                yaxisLabels: ['Leave','Remain'],
+                marginTop: 50,
+                xaxis: false,
+                yaxisColor: '#ccc',
+                textColor: '#666',
+                backgroundGridBorder: false,
+                backgroundGridHlines: false,
+                backgroundGridVlinesCount: 18,
+                labelsAbove: true,
+                tooltips: '%{function:getTooltip(%{group})}',
+                tooltipsCss: {
+                    fontFamily: 'Arial',
+                    fontSize: '14pt'
+                },
+                
+                // Use the newer highlight inverting so that the bars that aren't highlighted
+                // are faded out.
+                highlightStyle: 'invert',
+                highlightFill: 'rgba(255,255,255,0.85)',
+
+                title: 'Leave vs Remain - General election seats won\r\nbased on EU referendum results',
+                titleBold: true,
+                titleY: '-10',
+                titleHalign: 'center',
+                titleColor: 'gray'
+            }
+
+        // Use the grow() animation effect
+        }).grow().responsive([
+            {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},css:{'float':'right'}},
+            {maxWidth: 700, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},css:{'float':'none'}}
+        
+        ])
+        
+        // This is a way to specify CSS values for the tooltips. You
+        // should use the JavaScript versions of the CSS names (ie
+        // hyphens are replaced with capital letters as shown below).
+        // A few names are significantly different (eg "float"
+        // becomes "cssFloat")
+        RGraph.tooltips.style.textAlign = 'left';
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="275"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>    
+
+</body>
+</html>

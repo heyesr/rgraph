@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of the drawing API X axis object</title>
+    
+    
+    <meta name="description" content="An example of the drawing API X axis object" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+        
+    <h1>An example of the drawing API X axis</h1>
+
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [4,6,8,4,5,3,7,5,4,9],
+            options: {
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                labelsAbove: true,
+                colors: ['blue','blue','blue','blue','blue','red','red','red','red','red'],
+                colorsSequential: true,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false
+            }
+        }).draw();
+
+        xaxes = new RGraph.Drawing.XAxis({
+            id: 'cvs',
+            y: bar.canvas.height - bar.get('marginBottom'),
+            options: {
+                xaxisLabels: ['Team A','Team B'],
+                marginLeft: 35,
+                marginRight: 35
+            }
+        }).on('click', function (e, obj)
+        {
+            alert('The X axis has been clicked!');
+        }).on('mousemove', function (e, obj)
+        {
+            return true;
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.xaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

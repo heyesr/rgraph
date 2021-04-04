@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Horizontal Bar chart showing late excuse numbers</title>
+    
+    
+    <meta name="description" content="An SVG Horizontal Bar chart showing late excuse numbers" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Horizontal Bar chart showing late excuse numbers</h1>
+    <p>A Horizontal Bar chart with a large left margin setting. With Horizontal Bar charts the left margin setting is auto-sized by default to make sufficient room for the labels. The chart is animated using the <code>grow()</code> effect and the <code>labelsAbove</code> option is enabled.</p>
+
+    
+    <div style="width: 750px; height: 500px; display: inline-block" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [12, 7, 26, 5, 14],
+            options: {
+                backgroundGridBorder: false,
+                yaxisColor: '#ddd',
+                xaxisColor: '#ddd',
+                backgroundGridHlines: false,
+                colors: ['#4F81BD'],
+                marginInner: 25,
+                yaxisLabels: [
+                    'I had no clean pants to wear',
+                    'I thought it was Saturday',
+                    'I forgot to set my alarm',
+                    'It was still too dark, I thought it was nighttime',
+                    'I got stuck in traffic'
+                ],
+                labelsAbove: true,
+                labelsAboveColor: '#333'
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 750px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

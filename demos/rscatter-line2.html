@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rscatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Radial Scatter chart with a joining line</title>
+
+    
+    
+    <meta name="description" content="A Radial Scatter chart with a joining line" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A Radial Scatter chart with a joining line</h1>
+
+    <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    
+    <script>
+        data = [
+            [15,80],
+            [55,65],
+            [65,45],
+            [84,96],
+            [125,85],
+            [175,78]
+        ];
+
+        new RGraph.RScatter({
+            id: 'cvs',
+            data: [data],
+            options: {
+                line: true,
+                lineColors: ['red'],
+                scaleUnitsPost: 'kj'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rscatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="500"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>RGraph demo: A basic example of JSON and AJAX</title>
+
+    
+    <meta name="description" content=" A basic example of a chart created using JSON and AJAX. It shows a simple example and there is little happening on the page so the source is easy to navigate." />
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <!-- Include the RGraph libraries -->
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+
+<body>
+
+    
+
+    <h1>A basic example of AJAX and JSON data</h1>
+
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline.
+        You can view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+    </div>
+
+    <p>
+        This is a basic example of using JSON and AJAX. AJAX is used to request
+        the data and it's returned in JSON format. The JSON
+        data is then evaluated and a chart created using it.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        /**
+        * Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html?json
+        * If you view this in your browser you'll see that all it does is output a JSON object (a JavaScript object).
+        */
+        RGraph.AJAX.getJSON({url: '/getdata.html?json', callback: drawGraph});
+
+
+
+        /**
+        * This is the AJAX callback function. It splits up the response, converts
+        * it to numbers and then creates the chart.
+        */
+        function drawGraph (json)
+        {
+            // Set the JSON on the window object so that the button below can show it to the user.
+            window.__json__ = json;
+
+
+
+            // Now draw the chart
+            var line = new RGraph.Line({
+                id: 'cvs',
+                data: json.data,
+                options: {
+                    marginInner: 10,
+                    linewidth: 2,
+                    yaxisScaleMax: 100,
+                    xaxisLabels: json.labels,
+                    marginLeft: 35
+                }
+            }).draw();
+        }
+    </script>
+
+    <br />
+
+    <button onclick="$p(window.__json__)">Show the JSON output</button>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

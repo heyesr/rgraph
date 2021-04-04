@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A grouped Bar chart with a wave() effect</title>
+    
+    
+    <meta name="description" content="A grouped Bar chart with a wave() effect" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+    <h1>A grouped Bar chart with a wave() effect</h1>
+
+    
+    <div style="padding: 15px; display: inline-block">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script>
+        data       = [4,8,6,3,5,8,4];
+        data_chart = [];
+
+        data.forEach(function (v, k, arr)
+        {
+            data_chart.push(0);
+
+            for (var i=0; i<5; ++i) {
+                data_chart.push(v);
+            }
+            
+            data_chart.push(0);
+        });
+
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: data_chart,
+            options: {
+                xaxisLabels: [
+                    '','','Monday','','',
+                    '','','Tuesday','','',
+                    '','','Wednesday','','',
+                    '','','Thursday','','',
+                    '','','Friday','','',
+                    '','','Saturday','','',
+                    '','','Sunday','',''
+                ],
+                yaxisScaleUnitsPost: 'k',
+                colors: ['Gradient(#fff:red)'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A grouped Bar chart using the Wave effect',
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                marginLeft: 50,
+                marginInner: -1,
+                shadow: 0,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).wave({frames: 60});
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+</body>
+</html>

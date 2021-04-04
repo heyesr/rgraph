@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A graduated orange filled SVG Line chart</title>
+    
+    
+    <meta name="description" content="A graduated orange filled SVG Line chart" />
+
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>   
+
+    <h1>A graduated orange filled SVG Line chart</h1>
+
+    <div id="cc" style="width:800px; height: 300px; background-color: black; float: right; margin: 25px"></div>
+    
+    
+    <p>
+        This is another simple yet aesthetically pleasing chart. It's a Line
+        chart, which doesn't use the <code>spline</code> option so it isn't curved, and which uses a
+        gradient as the fill color. It also uses the <code>trace()</code> animation effect.
+    </p>
+    
+    <p>
+        There's not a lot else to say about this chart - though this is a good point
+        at which to tell you that the gradient handling code is due an upgrade.
+        Currently you can pass a gradient like this:
+        <code>Gradient(red:white)</code> and this is nice
+        and simple - but it doesn't afford you a lot of control over the gradient.
+    </p>
+    
+    <p>
+        The code that parses the gradient can handle more values than that, so what
+        I'm thinking is a JSON variation so that many more values are possible
+        and there's plenty of room for future options. Here's what it might look
+        like:
+    </p>
+    
+    <pre class="code">
+Gradient(red:white) <span>// Current style (will still work just fine)</span>
+Gradient({colors: ["red","white"]}) <span>// Specifying just the colors but in a JSON style</span>
+Gradient({colors: ["red","white"], start:125, end:250}) <span>// Specifying the colors and the start/end points to the gradient</span>
+Gradient({colors: ["red","white"], gradientUnits: "objectBoundingBox"}) <span>// Specifying the colors and the units for the gradient</span>
+</pre>
+    
+    <script>
+        var line = new RGraph.SVG.Line({
+            id: 'cc',
+            data: [3,3.6,3.2,4.2,3.4,4,3,5,4.1,4.7,4,4.9,3.1],
+            options: {
+                linewidth:7,
+                colors: ['white'],
+                filled: true,
+                filledColors: ['Gradient(red:rgba(255,0,0,0.75):rgba(255,0,0,0.35):rgba(0,0,0,0.25))'],
+                backgroundGridColor: '#666',
+                textColor: 'white',
+                yaxisColor: 'gray',
+                xaxisColor: 'gray',
+                xaxisLabels: ['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018'],
+                textSize: 16
+            }
+        }).trace();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="cc" style="width:700px; height: 300px"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

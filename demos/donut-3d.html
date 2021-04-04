@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A 3D Donut chart</title>
+    
+    
+    <meta name="description" content="A variation of the Pie and Donut chart is to have it drawn in a 3D style. Here's an example of what to expect to see." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A 3D Donut chart</h1>
+    
+    <canvas id="cvs" width="600" height="350" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's an example of a 3D Pie chart effect used in conjunction with the
+        <code>donut3d</code> variation (use the <code>variant</code> property as shown below).
+    </p>
+    
+    <p>
+        Other variants include: <code>pie</code> <code>pie3d</code> and <code>donut</code>
+    </p>
+    
+    <p>
+        On this chart the shadow is used to accentuate the appearance of depth. and the
+        <code>textAccessible</code> option is turned off.
+    </p>
+    
+    <p>
+        The 3D effect is achieved by stretching the canvas in the horizontal direction - which is why the
+        text looks stretched.
+    </p>
+    
+    <p>
+        In terms of responsiveness, when viewing on smaller screens the labels are switched to
+        tooltips and a title is added to indicate as such.
+    </p>
+
+    <br clear="all" />
+    
+
+    <script>
+        labels = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];
+
+        // Create the Pie chart, set the donut variant and the rest of the
+        // configuration. The variant property is what sets the chart to
+        // be a Donut chart instead of a regular Pie chart.
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [4,8,6,3,5,2,5],
+            options: {
+                shadow: true,
+                shadowOffsetx: 0,
+                shadowOffsety: 5,
+                shadowColor: '#aaa',
+                variant: 'donut3d',
+                labels: labels,
+                labelsSticksLength: 15,
+                labelsSticksLinewidth: 2,
+                textAccessible: false,
+                colorsStroke: 'transparent'
+            }
+        }).draw().responsive([
+            {maxWidth: null,width:600,height:350,options:{radius: 100,labelsList: true, labels:labels,title:'',tooltips:null}},
+            {maxWidth: 900,width:400,height:250,options:{radius: 90,labels: null,title: '(Click for labels)',tooltips:labels}}
+        ]);
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="350" style="border: 1px solid #eee"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

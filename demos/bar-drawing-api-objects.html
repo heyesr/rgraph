@@ -1,0 +1,148 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
+    <script src="../libraries/RGraph.drawing.rect.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart made with the Drawing API objects</title>
+    
+    
+    <meta name="description" content="A Bar chart that is made with the drawing API objects" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart made with the Drawing API objects</h1>
+    
+    <p>
+        This is a demo of the Drawing API objects being used to make a bar chart all
+        by themselves (without the actual Bar chart).
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        data    = [100,80,60,40,20];
+        labels  = ['Fred','Barney','Wilma','Betty','Dino'];
+        marginInner = 5;
+        max     = 100;
+
+        xaxis = new RGraph.Drawing.XAxis({
+            id: 'cvs',
+            y: 225,
+            options: {
+                xaxisLabels: labels,
+                marginLeft: 50,
+                tooltips: ['The X axis shows Flintstones characters'],
+                textAccessiblePointerevents: false
+            }
+        }).draw();
+
+        yaxis = new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 50,
+            options: {
+                yaxisScaleMax: max,
+                marginBottom: 25,
+                yaxisTickmarksEndBottom: true,
+                yaxis: false,
+                tooltips: ['The Y axis shows a scale of how much the characters did&lt;br /&gt; something - at some point'],
+                textAccessiblePointerevents: false
+            }
+        }).draw()
+    
+        for (var i=0; i<data.length; ++i) {
+
+            width = ((600-50-25) / data.length) - (marginInner * 2);
+            height = (data[i] / max) * (xaxis.canvas.height - 25 - 25);
+            x = 50 + (((600-50-25) / data.length) * i) + marginInner;
+            y = 250 - 25 - height;
+        
+            rect = new RGraph.Drawing.Rect({
+                id: 'cvs',
+                x: x,
+                y: y,
+                width: width,
+                height: height,
+                options: {
+                    tooltips: [labels[i]],
+                    highlightStroke: 'rgba(0,0,0,0)'
+                }
+            }).draw()
+        }
+        
+        RGraph.redraw();
+    </script>
+    
+    <p>
+        <b>Is it quicker than using the standard Bar chart?</b><br />
+        No.
+    </p>
+    
+    <p>
+        <b>Is it easier to implement than the standard Bar chart?</b><br />
+        No.
+    </p>
+    
+    <p>
+        <b>Is it easier to maintain than the standard Bar chart?</b><br />
+        No.
+    </p>
+    
+    <p>
+        <b>Does it encompass all of the features of the standard Bar chart?</b><br />
+        No.
+    </p>
+    
+    <p>
+        <b>So why?</b><br />
+        It's just an example of three of the drawing API objects - the X axis, the Y axis and the Rect. If what you want is a Bar
+        chart - use the RGraph Bar chart.
+    </p>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.xaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+
+
+</body>
+</html>

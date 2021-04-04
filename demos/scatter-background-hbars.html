@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart with background horizontal bars</title>
+    <meta name="description" content="A Scatter chart with background horizontal bars" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart with background horizontal bars</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: [[45,36],[156,32],[142,23],[256,59],[123,48]],
+            options: {
+                xaxisScaleMax: 365,
+                yaxisScaleMax: 60,
+                xaxisLabels: ['Q1','Q2','Q3','Q4'],
+                yaxisLabelsCount: 6,
+                backgroundHbars: [
+                    [0,40,'rgba(0,255,0,0.2)'],
+                    [40,10,'rgba(255,255,0,0.2)'],
+                    [50,10,'rgba(255,0,0,0.2)']
+                ]
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

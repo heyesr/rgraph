@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.activity.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A nested Donut chart progress bar</title>
+    <meta name="description" content="A nested Donut chart using the RGraph.Activity class." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A nested Donut chart progress bar</h1>
+    
+    <canvas id="cvs" width="450" height="450" style="background-color: black; float: right">[No canvas support]</canvas>
+    
+    <p>
+        This is an example of the new (in version 5.28) <code>RGraph.Activity</code> class.
+        (<a href="/canvas/activity.html">You can read the documentation page for the Activity meter here.</a>
+        Previously to get this sort of chart a large amount of custom code was necessary but now
+        the chart has been given its own class - which is in the <code>RGraph.activity.js</code> file.
+    </p>
+    
+    <p>
+        The colors and quantity of the rings is specified by you and the icons are configurable (or can be
+        replaced with text if you prefer. The chart can be animated using the <code>grow</code> effect, adjusted and can now also have tooltips.
+    </p>
+
+    
+    
+    <script>
+        activity = new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: [67,57,46],
+            options: {
+                icons: [
+                    '../images/activityMeter-arrowright.png',
+                    '../images/activityMeter-arrowup.png',
+                    '../images/activityMeter-arrowdown.png'
+                ],
+                width: 50,
+                marginTop: 5,
+                marginBottom: 5,
+                marginLeft: 5,
+                marginRight: 5
+            }
+        }).grow().responsive([
+            {maxWidth: null, width: 450, height: 450, options: {width: null}, css: {'float':'right'}},
+            {maxWidth: 650,  width: 250, height: 250, options: {width: 25}, css: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

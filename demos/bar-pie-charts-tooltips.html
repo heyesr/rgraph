@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with Pie charts in tooltips</title>
+    
+    
+    <meta name="description" content="A Bar chart that has tooltips and uses the tooltip event to add Pie charts to the tooltips" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A Bar chart with Pie charts in tooltips</h1>
+    
+    <p>
+        This Bar chart shows how you can have charts in tooltips. It uses
+        the new DOM1 style of adding
+        the <code>tooltip</code> event. This <code>tooltip</code> event
+        creates the chart in the tooltip.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [14,16,18,19,13,14],
+            options: {
+                xaxisLabels: ['Fred','John','James','Louis','Pete','Kevin'],
+                tooltips: '<div style="text-align: center; font-weight: bold; font-size: 16pt">%{property:xaxisLabels[%{group}]}</div><br  /><canvas id="tooltip_canvas" width="250" height="110"></canvas>',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    border: '3px solid black'
+                }
+            }
+        }).grow().on('tooltip', function (obj)
+        {
+            var pie_data = [
+                [80,75,65], [84,85,95],
+                [43,54,85], [43,51,62],
+                [74,75,65], [78,85,95],
+                [46,35,52], [84,94,94]
+            ]
+            var tooltip = RGraph.Registry.get('tooltip');
+            var index   = tooltip.__index__;
+            
+            RGraph.reset(document.getElementById("tooltip_canvas"));
+
+            var pie = new RGraph.Pie({
+                id: 'tooltip_canvas',
+                data: pie_data[index],
+                options: {
+                    labels: ['Monday','Tuesday','Wednesday'],
+                    marginTop: 10,
+                    labelsList: false,
+                    marginBottom: 25,
+                    colors: ['red','#00c','#0c0'],
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    shadow: false,
+                    exploded: 1
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

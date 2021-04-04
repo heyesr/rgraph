@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart which is configured as a Bubble chart</title>
+    
+    
+    
+    <meta name="description" content="A Scatter chart which is configured to use Bubbles and hides the tooltips when you move the mouse away from the Bubble" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart that's configured as a Bubble chart</h1>
+
+    <canvas id="cvs" width="600" height="200">[No canvas support]</canvas><br />
+    <button onclick="var scatter = RGraph.ObjectRegistry.getFirstObjectByType('scatter'); scatter.set('colorsBubbleGraduated', !scatter.get('colorsBubbleGraduated') ); RGraph.redraw();">Toggle gradients</button>
+    
+    <script>
+        // Create and configure the Scatter chart
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: [
+                [30,15,  'red',   'Red bubble tooltip'],
+                [60,5,   'blue',  'Blue bubble tooltip'],
+                [90,8,   'pink',  'Pink bubble tooltip'],
+                [120,19, 'green', 'Green bubble tooltip'],
+                [150,14, 'gray',  'Gray bubble tooltip'],
+                [50,12,  'red',   'Red bubble tooltip'],
+                [180,24, 'gray',  'Gray bubble tooltip'],
+                [250,21, 'black', 'Black bubble tooltip']
+            ],
+            options: {
+                xaxisScaleMax: 365,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                textSize:14,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis:false,
+                tooltipsHotspot: 10,
+                
+                bubbleMin:0,
+                bubbleMax: 100,
+                bubbleWidth: 50,
+                bubbleData: [50,60,70,80,90,84,86,87]
+            }
+        }).draw();
+        
+        // This custom mousemove event listener hides the tooltip if the mouse
+        // is not over a mark.
+        scatter.canvas.onmousemove = function (e)
+        {
+            var obj   = e.target.__object__;
+            var shape = obj.getShape(e);
+
+            if (!shape) {
+                RGraph.hideTooltip();
+                RGraph.redraw();
+            }
+        }
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="200"&gt;
+    [No canvas support]
+&lt;/canvas&gt;&lt;br /&gt;
+&lt;button onclick="var scatter = RGraph.ObjectRegistry.getFirstObjectByType('scatter'); scatter.set('colorsBubbleGraduated', !scatter.get('colorsBubbleGraduated') ); RGraph.redraw();"&gt;Toggle gradients&lt;/button&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

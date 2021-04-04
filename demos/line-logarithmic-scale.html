@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A demo of a logarithmic chart</title>
+    
+    
+    <meta name="description" content="A Line chart using specific labels to give a logarithmic axis" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A demo of a logarithmic chart</h1>
+    
+    <p>
+        This demonstrates a logarithmic chart using <code>log(10)</code>. It has
+        custom Y labels.
+    </p>
+
+    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    
+    <script>
+        data = [999999,5,6,4,6,8012,12,7];
+
+        for (var i=0;i<data.length; ++i) {
+            data[i] = RGraph.log(data[i], 10); // This function is in RGraph.common.core.js
+        }
+
+        // Create the Line object and then use the set() method to configure
+        // the chart so that the Line chart object can be used in the
+        // configuration
+        var line = new RGraph.Line({
+            id: 'cvs',
+            data: data
+        });
+
+        line.set({
+            yaxisTickmarksCount: 6,
+            yaxisScaleMax: 6,
+            yaxisLabelsSpecific: ['1,000,000','100,000','10,000','1,000','100','10','0'],
+            xaxisLabels: ['Pob','Libby','June','Hoolio','Jane','Daz','Luis','John'],
+            xaxisTickmarksCount: 7,
+            textSize: 14,
+            marginLeft: 95,
+            backgroundGridHlinesCount: 6,
+            backgroundGridVlinesCount: 7
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An outlined red SVG Line chart</title>
+    
+    
+    <meta name="description" content="An outlined red SVG Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An outlined red SVG Line chart</h1>
+    <p>
+        Here's an example of am outlined red and white Line chart. It's achieved by
+        using two Line charts, one on top of the other. And with the linewidth of
+        the underlying line chart a couple of points bigger than the upper Line
+        chart. This could be done using just a single SVG tag but this uses two
+        that are positioned on top of each other. It also uses the <code>trace()</code> effect
+        (on both Line charts).
+    </p>
+
+    
+    <div style="display: inline-block; position: relative; width: 750px; height: 300px">
+        <div style="position: absolute; width: 750px; height: 300px; top: 0; left: 0" id="chart-container1"></div>
+        <div style="position: absolute; width: 750px; height: 300px; top: 0; left: 0" id="chart-container2"></div>
+    </div>
+
+
+
+
+        
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container1',
+            data: [10,15,13,16,15,16,13,14,18,16,13,175,-160,11,15,10,16,13,16,15,18,13,12],
+            options: {
+                marginLeft: 50,
+                yaxisScaleMin: 'mirror',
+                colors: ['white'],
+                xaxis: false,
+                yaxis: false,
+                yaxisLabelsCount: 0,
+                linewidth: 10,
+                backgroundColor: '#ddd',
+                backgroundGrid: false,
+                backgroundGridBorder: false,
+                yaxisScale: false,
+                tickmarksStyle: 'filledendcircle',
+                tickmarksSize: 15
+            }
+        }).trace();
+
+        new RGraph.SVG.Line({
+            id: 'chart-container2',
+            data: [10,15,13,16,15,16,13,14,18,16,13,175,-160,11,15,10,16,13,16,15,18,13,12],
+            options: {
+                marginLeft: 50,
+                colors: ['red'],
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleMin: 'mirror',
+                yaxisLabelsCount: 0,
+                yaxisScale: false,
+                linewidth: 7,
+                backgroundGrid: false,
+                backgroundGridBorder: false,
+                yaxisScaleMin: 'mirror',
+                tickmarksStyle: 'filledendcircle',
+                tickmarksSize: 13
+            }
+        }).trace();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; position: relative; width: 750px; height: 300px"&gt;
+    &lt;div style="position: absolute; width: 750px; height: 300px; top: 0; left: 0" id="chart-container1"&gt;&lt;/div&gt;
+    &lt;div style="position: absolute; width: 750px; height: 300px; top: 0; left: 0" id="chart-container2"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart with the X axis in the middle</title>
+    
+    
+    
+    
+    <meta name="description" content="A Scatter chart which is demonstrating the Scatter chart X axis options" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <style>
+        button {
+            line-height: normal;
+            line-height: initial;
+        }
+    </style>
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart demonstrating  the axis options</h1>
+
+    <button onclick="scatter.set('yaxisScaleInvert', !scatter.get('yaxisScaleInvert')); RGraph.redraw();">Toggle inverted labels</button>
+    <button onclick="scatter.set('xaxisPosition', scatter.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();">Toggle the X axis position</button>
+    <button onclick="scatter.set('yaxisPosition', scatter.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();">Toggle the Y axis position</button>
+    
+    <button onclick="scatter.set('yaxisScale', scatter.get('yaxisScale') ? false : true); RGraph.redraw();">Toggle the Y axis labels</button>
+
+    <button onclick="scatter.set('yaxisLabelsSpecific', scatter.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();">Toggle specific Y axis labels</button>
+    <button onclick="scatter.set('yaxisScaleMin', scatter.get('yaxisScaleMin') ? 0 : 50); RGraph.redraw();">Toggle the yaxisScaleMin</button>
+    <button onclick="scatter.set('xaxis', !scatter.get('xaxis')); RGraph.redraw();">Toggle X axis</button>
+    
+    <br />
+
+    <style>
+        button {
+            width: 200px;
+            height: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+
+    <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+    
+    <script>
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: [[15,60]],
+            options: {
+                yaxisScaleMax: 100,
+                xaxisScaleMax: 365,
+                yaxisTickmarksCount: 10,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisPosition: 'center',
+                marginBottom: 45,
+                marginLeft: 65,
+                marginRight: 65
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;button onclick="scatter.set('yaxisScaleInvert', !scatter.get('yaxisScaleInvert')); RGraph.redraw();"&gt;Toggle inverted labels&lt;/button&gt;
+&lt;button onclick="scatter.set('xaxisPosition', scatter.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();"&gt;Toggle the X axis position&lt;/button&gt;
+&lt;button onclick="scatter.set('yaxisPosition', scatter.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();"&gt;Toggle the Y axis position&lt;/button&gt;
+&lt;button onclick="scatter.set('yaxisLabels', scatter.get('yaxisLabels') ? false : true); RGraph.redraw();"&gt;Toggle the Y axis labels&lt;/button&gt;
+&lt;button onclick="scatter.set('yaxisLabelsSpecific', scatter.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();"&gt;Toggle specific Y axis labels&lt;/button&gt;
+&lt;button onclick="scatter.set('yaxisScaleMin', scatter.get('yaxisScaleMin') ? 0 : 50); RGraph.redraw();"&gt;Toggle the yaxisScaleMin (50) setting&lt;/button&gt;
+&lt;button onclick="scatter.set('xaxis', scatter.get('xaxis') ? false : true); RGraph.redraw();"&gt;Toggle the X axis&lt;/button&gt;
+
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

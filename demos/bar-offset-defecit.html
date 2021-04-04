@@ -1,0 +1,143 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A thin grouped Bar chart</title>
+    
+    
+    <meta name="description" content="A thin grouped Bar chart thats animated with margins" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A thin grouped Bar chart</h1>
+
+    
+    <div style="padding-left: 35px; display: inline-block">
+        <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script>
+        csv = "1987 Q1,-0.1\n1987 Q2,-1.6\n1987 Q3,-1.8\n1987 Q4,-3\n1988 Q1,-3.3\n1988 Q2,-3.3\n1988 Q3,-3.3\n1988 Q4,-5.1\n1989 Q1,-4.2\n1989 Q2,-4.6\n1989 Q3,-4.9\n1989 Q4,-3.8\n1990 Q1,-4.3\n1990 Q2,-4.1\n1990 Q3,-2.4\n1990 Q4,-2.5\n1991 Q1,-1.8\n1991 Q2,-1\n1991 Q3,-1.5\n1991 Q4,-1.1\n1992 Q1,-1.3\n1992 Q2,-1.7\n1992 Q3,-1.9\n1992 Q4,-1.6\n1993 Q1,-1.3\n1993 Q2,-1.8\n1993 Q3,-1.3\n1993 Q4,-1.2\n1994 Q1,-0.5\n1994 Q2,-0.9\n1994 Q3,-0.2\n1994 Q4,-0.3\n1995 Q1,0.4\n1995 Q2,-1.5\n1995 Q3,-1.2\n1995 Q4,-0.5\n1996 Q1,-0.7\n1996 Q2,-0.5\n1996 Q3,-0.6\n1996 Q4,-0.5\n1997 Q1,-0.3\n1997 Q2,-0.2\n1997 Q3,0.7\n1997 Q4,-1\n1998 Q1,-1\n1998 Q2,-1.3\n1998 Q3,0.8\n1998 Q4,-0.2\n1999 Q1,-2.7\n1999 Q2,-2.2\n1999 Q3,-2.6\n1999 Q4,-2.1\n2000 Q1,-2.1\n2000 Q2,-2.5\n2000 Q3,-2.2\n2000 Q4,-1.9\n2001 Q1,-1.6\n2001 Q2,-2.3\n2001 Q3,-2.1\n2001 Q4,-1.8\n2002 Q1,-2\n2002 Q2,-2.6\n2002 Q3,-1.6\n2002 Q4,-1.7\n2003 Q1,-0.9\n2003 Q2,-2\n2003 Q3,-2.3\n2003 Q4,-1.3\n2004 Q1,-1.8\n2004 Q2,-1.7\n2004 Q3,-2.8\n2004 Q4,-0.8\n2005 Q1,-1.3\n2005 Q2,-0.1\n2005 Q3,-1.7\n2005 Q4,-1.6\n2006 Q1,-2.1\n2006 Q2,-1.4\n2006 Q3,-2.8\n2007 Q1,-2.6\n2007 Q2,-1.5\n2007 Q3,-3.1\n2007 Q4,-2.5\n2008 Q1,-3.2\n2008 Q2,-3.9\n2008 Q3,-3.1\n2008 Q4,-3.9\n2009 Q1,-4.6\n2009 Q2,-3.9\n2009 Q3,-1.5\n2009 Q4,-1.9\n2010 Q1,-2.5\n2010 Q2,-2.1\n2010 Q3,-3.5\n2010 Q4,-2.8\n2011 Q1,-1\n2011 Q2,-0.2\n2011 Q3,-3\n2011 Q4,-2.9\n2012 Q1,-2.8\n2012 Q2,-4.1\n2012 Q3,-3.5\n2012 Q4,-4.3\n2013 Q1,-3.7\n2013 Q2,-3.2\n2013 Q3,-4.7\n2013 Q4,-6\n2014 Q1,-4.7\n2014 Q2,-3.9\n2014 Q3,-4.6\n2014 Q4,-5.4\n2015 Q1,-5.4\n2015 Q2,-4.7\n2015 Q3,-4.4\n2015 Q4,-7\n2016 Q1,-5.7\n2016 Q2,-5.9"
+
+        new RGraph.CSV('str:' + csv, function (csv)
+        {
+            var labels   = csv.getCol(0),
+                data     = csv.getCol(1),
+                colors   = [],
+                tooltips = [];
+            
+            data.forEach(function (v,k,arr)
+            {
+                colors[k] = v > 0 ? '#7CB5EC' : '#B03060';
+            });
+            
+            var crlf = false;
+
+            labels.forEach(function (v,k,arr)
+            {
+                tooltips[k] = '<b>{2}</b><br /><br />Current account deficit: <b>{1}</b>'.format(
+                    data[k],
+                    labels[k]
+                );
+
+                // Reduce the amount of labels to one for every 8 data-pieces
+                if (k % 8 !== 0) {
+                    labels[k] = '';
+                }
+            });
+                
+
+            new RGraph.Bar({
+                id: 'cvs',
+                data: data,
+                options: {
+                    tooltips: tooltips,
+                    tooltipsEvent: 'mousemove',
+                    tooltipsPointer: false,
+                    tooltipsPositionStatic: false,
+                    tooltipsCss: {
+                        backgroundColor: 'white',
+                        color: 'black',
+                        borderWidth: '3px'
+                    },
+                    xaxisLabelsOffsety: 10,
+                    xaxisLabelsAngle: 25,
+                    textSize: 9,
+                    marginLeft: 50,
+                    marginBottom: 50,
+                    yaxisScaleMax: 2,
+                    yaxisScaleMin: -8,
+                    colors: colors,
+                    colorsSequential: true,
+                    marginInner: 2,
+                    xaxisLabels: labels,
+                    textColor: 'gray',
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    xaxis: false,
+                    yaxis: false,
+                    title: 'Britains current account deficit is bigger than at the height of the Lawson boom',
+                    titleSize: 12,
+                    yaxisTitle: 'Current account balance as % of GDP',
+                    yaxisTitlePos: 0.3,
+                    yaxisTitleBold: false,
+                    yaxisLabelsOffsetx: -10
+                }
+            }).on('tooltip', function (obj)
+            {
+                var tooltip = RGraph.Registry.get('tooltip');
+                var index   = tooltip.__index__;
+
+                if (data[index] > 0) {
+                    tooltip.style.borderColor = 'blue';
+                }
+            }).grow({frames: 60});
+
+            RGraph.tooltips.style.textAlign       = 'left';
+            RGraph.tooltips.style.border          = '1px solid red';
+            RGraph.tooltips.style.backgroundColor = 'white';
+            RGraph.tooltips.style.padding         = '10px';
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding-left: 35px"&gt;
+    &lt;canvas id="cvs" width="950" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

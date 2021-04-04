@@ -1,0 +1,134 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="../css/animations.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="A demonstration of how you can add CSS3 animations to your charts" />
+    
+    <title>RGraph demo: CSS3 animations</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>CSS3 animations</h1>
+    
+    <p>
+        New CSS3 animations can be used to great effect with your canvas tags.
+        <b>Updated:</b> This demo was updated in June 2013 so that now instead
+        of just one switch between charts it repeatedly switches back and forth
+        between the charts.
+    </p>
+    
+    <p>
+        Another update: It now adds the CSS animation to the DIV wrapper that RGraph
+        adds so that the DOM text is moved as well as the canvas.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <br />
+    
+    <script>
+        chart = 1;
+
+        // Draws the blue bar chart
+        function drawBar1 ()
+        {
+            new RGraph.Bar({
+                id: 'cvs',
+                data: [4,5,3,8,4,9,6,5,3],
+                options: {
+                    colors: ['blue'],
+                    xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    backgroundGridVlinesCount: 9
+                }
+            }).draw();
+        }
+
+        // Draws the red bar chart
+        function drawBar2 ()
+        {
+            new RGraph.Bar({
+                id: 'cvs',
+                data: [4,8,5,4,8,6,3,5,2],
+                options: {
+                    colors: ['red'],
+                    xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    backgroundGridVlinesCount: 9
+                }
+            }).draw();
+        }
+
+
+
+
+        // The swap function
+        function swap ()
+        {
+            $('#cvs').parent().addClass('animated bounceOutLeft');
+            setTimeout(function ()
+            {
+                RGraph.reset(document.getElementById("cvs"));
+
+                if (chart == 2) {
+                    drawBar1();
+                    chart = 1;
+                } else {
+                    drawBar2();
+                    chart = 2;
+                }
+
+                $('#cvs').parent().removeClass('bounceOutLeft');
+                $('#cvs').parent().addClass('bounceInLeft');
+            }, 750)
+        }
+        
+        // Start with the first bar chart
+        drawBar1();
+        chart = 1;
+    </script>
+    
+    <button onclick="swap()">Click me</button>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+</body>
+</html>

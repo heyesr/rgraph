@@ -1,0 +1,175 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script> 
+
+    <title>RGraph demo: A black and purple combined Bar and Line chart</title>
+    
+    <meta name="description" content="A black and purple combined Bar and Line chart that illustrates the dynamic nature of RGraph by using an option to switch the Line from a spline to a non-spline." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A combined Bar and Line chart</h1>
+    
+    <div style="float: right; display: inline-block; margin: 25px">
+        <canvas id="cvs" width="750" height="250" style="background-color: #555; border: 5px solid black; border-radius: 7px; box-shadow: 2px 2px 3px gray">[No canvas support]</canvas><br />
+        <button style="border-radius: 5px; font-size: 20px; margin: 10px; padding: 7px" onclick="line.set('spline', !line.get('spline')); RGraph.redraw()">Toggle spline</button>
+    </div>
+    <p>
+        This demo is an example of a combined Bar and Line. In this case the
+        Line is a spline but it doesn't have to be. In fact there's a button
+        beneath the chart that you can use to toggle whether it's a spline (curvy) or
+        a regular angular Line. All this button does is toggle the
+        <code>spline</code> setting and then redraw the canvas.
+    </p>
+    
+    <p>
+        In RGraph combining a Bar chart and a Line chart is made easy by the
+        <code>CombinedChart</code> class. You can see
+        this being used in the code below. It simply takes the Bar and the Line
+        objects and sets the correct settings on them and then draws the chart. But
+        normally you would want only one set of labels (ie the Bar or the
+        Line) drawn, however here the Bar charts labels are on one side
+        and the Line chart labels are on the other. So after the combo class has
+        been drawn, the Y labels are turned back on for the Line chart object and
+        everything is redrawn. You can see how this is done in the code below.
+    </p>
+    
+    <p>
+        The <code>CombinedChart</code> class is freely
+        usable by you in a very similar way to the other RGraph classes. It's
+        created in the same way and you pass it an array of objects - which usually
+        is a combination of Bar and Line objects. You can give it more types if you
+        want. 
+    </p>
+    
+    <p>
+        Apart from this the chart has "larger than the default" text and the Bar
+        uses a gradient for the fill color: <code>Gradient(#A18AC5:#D1AAF5)</code>
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function reduces the size of the chart, the size of the text on the
+        chart and the margins. The function is added to both the Bar and the Line chart and the Line chart
+        version also reduces its <code>linewidth</code>.
+    </p>
+    
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [81,90,75,85,90,78,61],
+            options: {
+                yaxisScaleMax: 100,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: '#999',
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                marginLeft: 55,
+                marginRight: 55,
+                marginBottom: 45,
+                colors: ['Gradient(#A18AC5:#D1AAF5)'],
+                textColor: '#ccc',
+                xaxisTickmarksCount: 0,
+                xaxis: false,
+                yaxis: false,
+                shadowColor: 'black',
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowBlur: 15,
+                colorsStroke: 'rgba(0,0,0,0)',
+                combinedEffect: 'wave',
+                combinedEffectOptions: '{frames: 30}'
+            }
+        });
+
+
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [150,255,566,542,588,122,131],
+            options: {
+                yaxisScaleMax: 600,
+                xaxis: false,
+                yaxis: false,
+                backgroundGrid: false,
+                colors: ['#d00'],
+                yaxisPosition: 'right',
+                textColor: '#ccc',
+                marginLeft: 45,
+                marginRight: 45,
+                tickmarksStyle: null,
+                spline: true,
+                combinedEffect: 'trace',
+                textSize: 18
+            }
+        });
+        
+        combo = new RGraph.CombinedChart([bar, line])
+            .draw();
+        
+        // Because the combo class turns the Line chart labels off,
+        // turn them back on
+        line.set({
+            yaxisScale: true
+        });
+
+        RGraph.redraw();
+        
+        // Add some responsive capability to the Bar chart
+        bar.responsive([
+            {maxWidth: null,width:750,height:250,options:{textSize:18,marginInner: 20}},
+            {maxWidth: 900, width:400,height:200,options:{textSize:12,marginInner: 7}}
+        ]);
+        
+        // Add some responsive capability to the Line chart
+        line.responsive([
+            {maxWidth: null,width:750,height:250,options:{textSize:18,marginInner: 45,linewidth: 7}},
+            {maxWidth: 900, width:400,height:200,options:{textSize:12,marginInner: 20,linewidth: 5}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="900" height="250" style="background-color: #555; border: 5px solid black; border-radius: 7px; box-shadow: 2px 2px 3px gray"&gt;
+    [No canvas support]
+&lt;/canvas&gt;&lt;br /&gt;
+&lt;button style="border-radius: 5px; font-size: 20px; margin: 10px; padding: 7px" onclick="line.set('spline', !line.get('spline')); RGraph.redraw()"&gt;Toggle spline&lt;/button&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+
+</body>
+</html>

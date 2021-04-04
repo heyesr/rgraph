@@ -1,0 +1,109 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: Examples of the drawing API Y axis object</title>
+    
+    
+    <meta name="description" content="Examples of the drawing API Y axis object" />
+     
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+        
+    <h1>Examples of the drawing API Y axis object</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 50,
+            options: {
+                yaxisScaleMax: 100,
+                tooltips: ['Hurrah'],
+                textAccessiblePointerevents: false
+            }
+        }).draw();
+
+        new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 100,
+            options: {
+                yaxisScaleMax: 1000,
+                yaxisColor: '#74cfb9'
+            }
+        }).draw();
+
+        new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 160,
+            options: {
+                yaxisScaleMax: 0.001,
+                yaxisScaleDecimals: 4,
+                yaxisColor: 'blue'
+            }
+        }).draw();
+
+        new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 250,
+            options: {
+                yaxisScaleMax: 0.000001,
+                yaxisScaleDecimals: 7,
+                xaxisPosition: 'center',
+                yaxisColor: 'green'
+            }
+        }).draw();
+
+        new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 300,
+            options: {
+                yaxisScaleMax: 0.1,
+                yaxisScaleDecimals: 2,
+                yaxisScaleInvert: true,
+                yaxisColor: 'red'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

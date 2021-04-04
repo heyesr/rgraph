@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A combined Bar and Line chart</title>
+    
+    
+    <meta name="description" content="A combined Bar and Line chart that shows the CombinedChart class" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A combined Bar and Line chart</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [[3,4,6],[2,5,3],[1,5,2],[1,4,6],[1,6,8]],
+            options: {
+                xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim'],
+                colors: ['Gradient(#99f:#27afe9:#058DC7:#058DC7)', 'Gradient(#94f776:#50B332:#B1E59F)', 'Gradient(#fe783e:#EC561B:#F59F7D)'],
+                marginInner: 15,
+                colorsStroke: 'white',
+                linewidth: 2,
+                shadowOffsetx: 1,
+                shadowOffsety: 0,
+                shadowBlur: 1,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                xaxisScaleZerostart: true,
+                xaxis: false,
+                combinedEffect: 'wave',
+                combinedEffectCallback: function () {$a('Finished the bar effect!')},
+                combinedEffectOptions: '{frames: 90}'
+            }
+        });
+
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [2,3,2,1,5],
+            options: {
+                spline: true,
+                tickmarksStyle: 'filledcircle',
+                colors: ['#CDE217'],
+                yaxisScaleMax: 10,
+                shadow: false,
+                xaxis: false,
+                yaxis: false,
+                combinedEffect: 'trace',
+                combinedEffectCallback: function () {$a('Finished the line effect!')},
+                combinedEffectOptions: '{frames: 90}'
+            }
+        });
+
+        combo = new RGraph.CombinedChart(bar, line);
+        combo.draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+</body>
+</html>

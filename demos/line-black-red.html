@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dual color Line chart</title>
+    
+    
+    <meta name="description" content="A dual color Line chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dual color Line chart</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,4,1,6,null,null,null],
+            options: {
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                colors: ['black'],
+                title: 'A dual color line chart',
+                titleSize: 16,
+                titleBold: true,
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 5,
+                shadow: false,
+                marginTop: 35,
+                marginRight: 30,
+                marginLeft: 30
+            }
+        }).draw();
+
+
+        line2 = new RGraph.Line({
+            id: 'cvs',
+            data: [null,null,null,6,5,4,3],
+            options: {
+                colors: ['red'],
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 5,
+                shadow: false,
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                marginTop: 35,
+                marginRight: 30,
+                marginLeft: 30
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js"></script>
+    <script src="../libraries/RGraph.gauge.js"></script>
+    <script src="../libraries/RGraph.line.js"></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart / Gauge chart dashboard</title>
+    
+    
+    <meta name="description" content="A Line chart / Gauge chart dashboard" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A Line chart / Gauge chart dashboard</h1>
+
+    <canvas id="cvs" width="975" height="250" style="border: 1px solid #ddd; box-shadow: 1px 1px 2px #ccc">[No canvas support]</canvas>
+    
+    <script>
+        //var grad;
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [125,128,135,136,21,137,125,123,126,124,123,125,128,128,124,125,126,123,122,121,126,124,125,126,122,121,120,119,11,17],
+                [125,126,179,165,132,35,36,37,48,49,12,35,48,45,46,43,38,51,52,12,16,95,96,91,48,43,29,24,53,101]
+            ],
+            options: {
+                colors: ['#0091FE','#90AA00'],
+                backgroundColor: '#eee',
+                backgroundGridColor: 'white',
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleMax: 180,
+                yaxiScaleDecimals: 2,
+                textSize: 8,
+                textColor: '#0091FE',
+                marginLeft: 40,
+                marginRight:300,
+                yaxisLabelsCount: 6,
+                tickmarksStyle: 'dot',
+                tickmarksSize: 5,
+                tickmarksStyleDotLinewidth: 1,
+                shadow: false
+            }
+        }).trace({frames: 60});
+        
+        grad = line.context.createLinearGradient(825 - 65,0,825 + 65,0);
+        grad.addColorStop(0, 'green');
+        grad.addColorStop(0.4, 'yellow');
+        grad.addColorStop(0.6, 'yellow');
+        grad.addColorStop(1, 'red');
+
+
+
+        gauge = new RGraph.Gauge({
+            id: 'cvs',
+            value: 57,
+            min: 0,
+            max: 100,
+            options: {
+                centerx: 825,
+                centery: 63,
+                radius: 75,
+                anglesStart: 3.14 - 0.785,
+                anglesEnd: 6.28 + 0.785,
+                colorsGreenEnd: 100,
+                colorsRedStart: 100,
+                colorsYellowColor: 'transparent',
+                colorsRedColor: 'transparent',
+                colorsGreenColor: grad,
+                textColor: 'gray',
+                labelsCount: 0,
+                labelsValue: true,
+                labelsValueBounding: false,
+                labelsValueColor: '#aaa',
+                labelsValueUnitsPost: '%',
+                tickmarksLargeColor: 'transparent',
+                tickmarksSmallColor: 'transparent',
+                shadow: false,
+                needleColors: ['blue'],
+                backgroundColor: 'rgba(0,0,0,0)',
+                borderOuter: 'rgba(0,0,0,0)',
+                borderInner: 'rgba(0,0,0,0)',
+                borderOutline: 'rgba(0,0,0,0)'
+            }
+        }).on('beforedraw', function (obj)
+        {
+            // On the first frame obj.centerx is not defined, but
+            // it is on subsequent frames
+            obj.path(
+                'b a % % 60 0 6.28 false f rgba(232,232,232,.5)',
+                obj.centerx, obj.centery
+            );
+        }).draw();
+
+        gauge = new RGraph.Gauge({
+            id: 'cvs',
+            value: 34,
+            min: 0,
+            max: 100,
+            options: {
+                centerx: 825,
+                centery: 187,
+                radius: 75,
+                anglesStart: 3.14 - 0.785,
+                anglesEnd: 6.28 + 0.785,
+                colorsGreenEnd: 100,
+                colorsRedStart: 100,
+                colorsYellowColor: 'transparent',
+                colorsRedColor: 'transparent',
+                colorsGreenColor: grad,
+                textColor: 'transparent',
+                tickmarksLargeColor: 'transparent',
+                tickmarksSmallColor: 'transparent',
+                shadow: false,
+                needleColors: ['blue'],
+                backgroundColor: 'rgba(0,0,0,0)',
+                borderOuter: 'rgba(0,0,0,0)',
+                borderInner: 'rgba(0,0,0,0)',
+                borderOutline: 'rgba(0,0,0,0)',
+                labelsValue: true,
+                labelsValueColor: '#aaa',
+                labelsValueBounding: false,
+                labelsValueUnitsPost: 'km/h'
+            }
+        }).on('beforedraw', function (obj)
+        {
+            // On the first frame obj.centerx is not defined, but
+            // it is on subsequent frames
+            obj.path(
+                'b a % % 60,0,6.28, false f rgba(232,232,232,.5)',
+                obj.centerx, obj.centery
+            );
+        }).draw();
+
+
+
+        // Draw the right hand Y axis using the drawing API
+        yaxis = new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: line.canvas.width - line.marginRight,
+            options: {
+                yaxis: false,
+                yaxisPosition: 'right',
+                yaxisScaleMax: 8,
+                yaxiScaleDecimals: 1,
+                textSize: 8,
+                textColor: '#90AA00',
+                colors: ['transparent']
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="975" height="250" style="border: 1px solid #ddd; box-shadow: 1px 1px 2px #ccc"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

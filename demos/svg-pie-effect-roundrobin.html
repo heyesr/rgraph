@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Pie chart using the roundRobin() effect</title>
+    <meta name="description" content="An SVG Pie chart using the roundRobin() effect" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Pie chart using the roundRobin() effect</h1>
+    <p>Here's a Pie chart that has one of the segments exploded and which is using the <code>roundRobin()</code> effect. It uses gradients for the colors.</p>
+
+    
+    <div style="width: 650px; height: 350px; border: 1px solid #ddd" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [85,48,13,56,79,95],
+            options: {
+                labels: ['Alf','Berty','Craig','Dean','Elgar','Fliss'],
+                shadow: true,
+                exploded: [0,25],
+                colors: [
+                    'Gradient(white:red)',
+                    'Gradient(white:pink)',
+                    'Gradient(white:blue)',
+                    'Gradient(white:yellow)',
+                    'Gradient(white:#f0f)',
+                    'Gradient(white:brown)',
+                    'Gradient(white:gray)'
+                ]
+            }
+        }).roundRobin();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 350px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

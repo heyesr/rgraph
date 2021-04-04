@@ -1,0 +1,104 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart with a static Y axis</title>
+    
+    
+    <meta name="description" content="A Line chart with a Y axis that doesn't move" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart with a static Y axis</h1>
+    
+    <p>
+        A chart where the Y axis is static and doesn't move when you scroll
+        from left to right.
+    </p>
+
+
+
+
+    <div style="position: relative; width: 600px; height: 220px">
+        <canvas id="axes" width="41" height="200" style="position: absolute; top: 5px; left: 0; z-index: 3"></canvas>
+        <div style="width: 600px; overflow: auto; position: absolute; left: 41px">
+            <canvas id="cvs" width="1000" height="200"></canvas>
+        </div>
+    </div>
+    
+    <script>
+        // This is the code that produces the chart
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [4,6,8,5,9,6,4,8,4,6,15,2],
+            options: {
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                tooltips: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                tooltipsCoordsPage: true,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                marginInner: 25,
+                tickmarksStyle: 'endcircle',
+                marginLeft: 0,
+                tooltipsPositionStatic: false,
+                tooltipsOffsety: -10
+            }
+        }).draw();
+
+        var yaxis = new RGraph.Drawing.YAxis({
+            id: 'axes',
+            x: 40,
+            options: {
+                yaxisScaleMax: line.max,
+                colors: ['black']
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="position: relative; width: 600px; height: 220px"&gt;
+    &lt;canvas id="axes" width="41" height="200" style="position: absolute; top: 5px; left: 0; z-index: 3"&gt;&lt;/canvas&gt;
+    &lt;div style="width: 600px; overflow: auto; position: absolute; left: 41px"&gt;
+        &lt;canvas id="cvs" width="1000" height="200"&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

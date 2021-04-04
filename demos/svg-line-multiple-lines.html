@@ -1,0 +1,69 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart showing multiple lines</title>
+    
+    
+    <meta name="description" content="An SVG Line chart showing multiple lines" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG Line chart showing multiple lines</h1>
+    <p>A simple Line chart which is showing multiple datasets.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                [19,165,132,111,185,149,199],
+                [48,46,51,94,84,25,65],
+                [35,26,15,23,43,12,26]
+            ],
+            options: {
+                linewidth: 3,
+                marginLeft: 50,
+                marginBottom: 50,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                title: 'A line chart with multiple lines'
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

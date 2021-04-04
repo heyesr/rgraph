@@ -1,0 +1,143 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart using AJAX</title>
+
+    
+    <meta name="description" content="RGraph has AJAX functionality that makes integration with your existing scripts easy and painless." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A Bar chart using AJAX</h1>
+
+    <script>
+        if (!location.host) {
+            document.write(`
+<div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+    <b>Note:</b>
+    For browser security reasons the AJAX demos don't work offline.
+    You can view the demos on the RGraph website here:
+    <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+</div>`);
+        }
+    </script>
+    
+    <br />
+
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        Here is an example of a 3D variation of the Bar chart which is both animated using the
+        <code>grow()</code> effect and which is also fetching its data via AJAX.
+    </p>
+    
+    <p>
+        The AJAX script is a simple one that just outputs a sequence of random numbers.
+        <a href="/getdata.html">You can see the script directly by going here.</a>
+    </p>
+    
+    <p>
+        If you view the AJAX script you'll see that it just outputs the numbers and nothing
+        else - so no labels or title. So on the chart the labels are just hard coded.
+    </p>
+    
+    <p>
+        The rest of the configuration is pretty straight-forward - and you can see it below.
+    </p>
+
+    <p>
+        When the screen is smaller the canvas dimensions are reduced, the <code>marginInner</code> is
+        reduced and the <code>textSize</code> is reduced as well.
+    </p>
+
+    <script>
+        // Use the RGraph.AJAX.getCSV() function to fetch some CSV data from the server.
+        // This example fetches the URL https://www.rgraph.net/getdata.html which just
+        // outputs a set of CSV values. The second argument is a function which is
+        // used as the callback and creates the chart.
+        RGraph.AJAX.getCSV('/getdata.html', function (data)
+        {
+            new RGraph.Bar({
+                id: 'cvs',
+                
+                // Use the CSV data directly in the chart configuration
+                data: data,
+
+                options: {
+                    colors: ['gradient(#080:green)'],
+                    xaxisLabels: ['John', 'Fred', 'Joe', 'Rich', 'Pete', 'Lilly', 'Fred', 'Joe', 'Rich', 'Pete'],
+                    marginLeft: 35,
+                    
+                    // This sets it so that the bar chart is drawn as a 3D variant
+                    variant: '3d',
+
+                    // 3D Bar charts look better with a transparent stroke color
+                    colorsStroke: 'transparent',
+
+                    marginInnerGrouped: true,
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    shadowOffsetx: 10,
+                    marginBottom: 75,
+                    xaxis: false,
+                    yaxis: false,
+                    
+                    tooltips: '<span style="font-size: 14pt">Total value:</span><br /><span style="font-size: 26pt">%{value}%</span>'
+                }
+            
+            // The grow() animation effect is used and works just like a regular Bar chart. Some
+            // responsive capability is also added.
+            }).grow().responsive([
+                {maxWidth: null,width:600,height:250,options:{marginInner: 10,textSize:12}},
+                {maxWidth: 800,width:400,height:200,options:{marginInner: 5,textSize:10}}
+            ]);
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

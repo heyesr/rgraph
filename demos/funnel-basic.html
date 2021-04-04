@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Funnel chart</title>
+    
+    
+    
+    <meta name="description" content="A basic Funnel chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A basic Funnel chart</h1>
+
+    <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+
+    
+    <script>
+        new RGraph.Funnel({
+            id: 'cvs',
+            data: [100,42,34,23],
+            options: {
+                labels: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
+                tooltips: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
+                labelsSticks: true,
+                labelsX: 10,
+                marginLeft: 230,
+                colorsStroke: 'rgba(0,0,0,0)',
+                textBoxed: false,
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 3,
+                shadowColor: 'gray'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.funnel.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="500"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

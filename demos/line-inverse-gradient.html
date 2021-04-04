@@ -1,0 +1,125 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart which uses an inverted gradient fill</title>
+    
+    <meta name="description" content="A Line chart which uses an inverted gradient fill" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart which uses an inverted gradient fill</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        data = [
+            49,51,52,51,49,48,49,50,48,47,47,45,46,47,49,50,49,48,48,47,47,47,49,50,50,51,
+            49,47,47,49,51,51,51,51,50,51,50,50,48,49,49,50,50,49,49,47,48,50,51,51,51,50,
+            52,53,52,53,52,50,51,50,51,52,51,51,52,51,50,49,50,50,51,52,51,51,51,51,50,51,
+            50,50,50,50,49,50,48,48,48,46,48,50,50,51,52,52,54,53,53,53,52,52,51,50,51,52,
+            53,52,54,54,54,56,58,57,59,58,59,58,58,58,59,57,59,60,61,62,62,64,66,68,68,68,
+            67,68,67,68,69,68,68,70,69,71,72,70,70,69,67,68,67,66,65,63,64,66,65,67,67,69,
+            70,69,70,69,67,68,67,67,68,70,71,71,69,69,70,70,69,68,68,69,71,72,73,73,73,75,
+            77,79,79,81,83,84,83,85,85,86,86,86,87,89,87,85,86,87,86,86,84,85,84,85,85,85,
+            85,84,83,83,82,81,82,83,83,81,81,82,82,80,79,78,76,76,75,74,73,73,72,71,72,72,
+            72,70,69,71,71,72,73,73,73,72,71,72,71,70,70,68,68,69,70,69,67,66,67,68,69,71,
+            72,72,71,72,70,72,73,75,74,75,76,76,75,75,76,75,74,75,76,77,79,80,81,82,83,82,
+            83,82,83,83,81,82,84,85,83,83,85,84,84,83,83,85,86,84,85,87,88,87,85,87,87,88,
+            89,89,91,90,90,91,93,93,93,93,92,91,91,90,90,89,89,90,89,90,90,91,91,93,94,96,
+            97,97,98,99,100,100,100,100,99,99,98,99,98,97,97,97,97,96,96,97,97,96,97,96,96,
+            95,96,97,96,97,97,95,94,93,94,94,95,93,94,94,95,94,93,95,94,92,92,92,93,93,93,
+            93,93,94,94,93,93,94,95,97,96,95,97,98,97,99,100,98,99,100,100,100,100,99,98,
+            98,99,98,99,99,100,100,99,99,98,97,97,95,94,95,94,94,95,94,94,95,96,94,95,95,
+            97,96,95,96,94,93,93,95,96,96,95,95,96,97,96,95,96,95,94,94,94,96,97,98,97,97,
+            96,95,96,95,94,94,94,92,92,91,93,93,93,92,93,93,93,95,95,94,94,94,93,93,95,95,
+            93,93,91,90,90,91,90,90,92,90,89,90,91,90,91,89,89,89,88,87,88,88,87,88,87,87,
+            86,86,85,85,84,82,81,79,77,78,76,78,78,78,77,78,78,79,80,82,81,80,82,83,83,85,
+            84,85,85,86,85,86,87,88,89,89,88,86,87,88,88,86,87,88,88,88,86,85,85,83,85,84,
+            83,81,81,81,81,83,82,83,84,83,83,82,80,81,80,79,77,76,75,74,74,73,73,72,73,74,
+            74,74,75,76,78,80
+        ];
+        
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                yaxisScaleMax: 150,
+                colors: ['black'],
+                shadow: false,
+                tickmarksStyle: null,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                linewidth: 1,
+                shadow: true
+            }
+        }).on('draw', function (obj)
+        {
+            var coords = obj.coords2[0],
+                co     = obj.context;
+            
+            co.beginPath();
+                co.moveTo( coords[0][0], coords[0][1] );
+                for (var i=1; i<coords.length; ++i) {
+                    co.lineTo( coords[i][0], coords[i][1] );
+                }
+                co.lineTo( obj.canvas.width - obj.marginRight, obj.marginTop );
+                co.lineTo( obj.marginLeft, obj.marginTop );
+            co.closePath;
+            
+            // Create a gradient for the fill
+            grad = co.createLinearGradient(0,0,0,250);
+            grad.addColorStop(0,'white');
+            grad.addColorStop(0.1,'white');
+            grad.addColorStop(1,'#4689DC');
+            
+            // Set a shadow:
+            co.shadowOffsetX = 1;
+            co.shadowOffsetY = 1;
+            co.shadowColor   = '#666';
+            co.shadowBlur    = 3;
+            
+            co.fillStyle = grad;
+            co.fill();
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

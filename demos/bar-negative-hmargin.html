@@ -1,0 +1,194 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar/Line chart using a negative horizontal margin</title>
+    
+    
+    <meta name="description" content="A combined Bar and Line chart using a negative horizontal margin. This gives the bars on the chart an overlapping appearance." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A Bar/Line chart using a negative horizontal margin</h1>
+
+    
+    <div style="padding: 25px; display: inline-block; margin:20px;float: right">
+        <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        This is a demo of a combined (grouped) Bar and Line chart where the <code>marginInnerGrouped</code>
+        setting on the Bar chart has been set to <code>-15</code>, This gives the appearance of the bars
+        overlapping each other slightly.
+    </p>
+    
+    <p>
+        It has dual Y axes by utilising the drawing API Y axis and the colors have been specifically set
+        to what they are in order to link the bars and lines together.
+    </p>
+    
+    <p>
+        The Lines also have slightly larger than normal tickmarks for a nicer aesthetic and the whole
+        chart uses slightly-larger-than-the-default text.
+    </p>
+    
+    <p>
+        In terms of responsiveness there's not much done by the Line chart - though there's a lot done
+        by the Bar chart - particularly to accommodate the Y axis objects. To make it easier to understand
+        you will do well to "unminify" it and spread it across multiple lines.
+    </p>
+    
+    <br clear="all" />
+
+
+
+    <script>
+        marginLeft = 25;
+
+        // Draw the Y axis that's positioned on the right-hand-side. It's colored
+        // red so that it matches the color of the Line and it's therefore easier
+        // to read the chart.
+        axes = new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 625,
+            options: {
+                textSize: 16,
+                yaxisScaleMax: 10,
+                yaxisPosition: 'right',
+
+                // This is not just a normal space character - it comes from
+                // the Windows 'charmap' program and is a non-breaking space.
+                // This means that it doesn't get removed like normal space
+                // characters do. You may need to get this character from
+                // 'charmap' as when you copy the code from this page it
+                // might be converted to a regular space - which is not the
+                // same.
+                yaxisScaleUnitsPre: ' ',
+
+                yaxisScaleUnitsPost: 'ma',
+                yaxisColor: 'red',
+                yaxisLinewidth: 3,
+                yaxisTickmarksLength: 5,
+                marginBottom: 5,
+                marginLeft:marginLeft
+            }
+        }).draw();
+        
+        // Create the Y axis that appears on the left-hand-side of the chart. It
+        // has a different scale to the other Y axis. It's colored gray so that
+        // it's easier to tally with the correct Line and Bars.
+        axes2 = new RGraph.Drawing.YAxis({
+            id: 'cvs',
+            x: 25,
+            options: {
+                textSize: 16,
+                yaxisScaleMax: 20,
+                
+                // This is not just a normal space character - it comes from
+                // the Windows 'charmap' program and is a non-breaking space.
+                // This means that it doesn't get removed like normal space
+                // characters do. You may need to get this character from
+                // 'charmap' as when you copy the code from this page it
+                // might be converted to a regular space - which is not the
+                // same.
+                yaxisScaleUnitsPost: 'ma ',
+
+                yaxisColor: 'gray',
+                yaxisLinewidth: 3,
+                yaxisTickmarksLength: 5,
+                marginBottom: 5
+            }
+        }).draw();
+
+        // Create the Bar chart. The marginInnerGrouped setting is set to
+        // -15 and this is what gives the chart the overlapping appearance.
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [[4,8],[6,5],[5,4],[1,9],[4,8],[8,6]],
+            options: {
+                marginBottom: 5,
+                marginLeft:marginLeft,
+                colors: ['red','gray'],
+                backgroundGrid: false,
+                yaxisScale: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleMax: 20,
+                yaxisScaleUnitsPost: '%'
+            }
+        }).wave({frames: 30}).responsive([
+            {maxWidth: null, width: 650, height: 250, options: {xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback: function () {axes.x = 625;axes.set('textSize', 16);axes.set('linewidth', 2);axes2.set('textSize', 16);axes2.set('linewidth', 2);axes2.canvas.parentNode.parentNode.style.cssFloat = 'right';axes.x = 625;}},
+            {maxWidth: 900,width: 300,height: 150,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],marginInnerGrouped: -5,marginInner: 15,textSize: 8},callback: function () {axes.x = 315;axes.set('textSize', 8);axes.set('linewidth', 2);axes2.set('textSize', 8);axes2.set('linewidth', 2);axes2.canvas.parentNode.parentNode.style.cssFloat = 'none';axes.x = 270;}}
+        ]);
+
+        // Create the Line chart (both lines are added by this Line chart).
+        // It's a spline chart so that its curvy.
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [14,18,16,12,15,13],
+                [10,16,13,19,16,20]
+            ],
+            options: {
+                spline: true,
+                backgroundGrid: false,
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 7,
+                shadow: false,
+                linewidth: 5,
+                marginLeft:marginLeft, 
+                marginBottom: 5,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                colors: ['red', 'gray'],
+                yaxisScaleMax: 20,
+                yaxisScale: false
+            }
+        }).trace().responsive([
+            {maxWidth: null, options: {linewidth: 5,tickmarksSize: 7,marginInner: 55}},
+            {maxWidth: 900, options: {linewidth: 3,tickmarksSize: 3,marginInner: 30}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;canvas id="cvs" width="750" height="500"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

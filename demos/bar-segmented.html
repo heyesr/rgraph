@@ -1,0 +1,114 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A segmented Bar chart</title>
+    
+    
+    <meta name="description" content="A Bar chart that demonstrates the RGraph.SegmentedBar custom class that's a part of the RGraph.bar.js file. There are two canvas tags in use but the code side of things is done by the custom class." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A segmented Bar chart</h1>
+
+    <div style="display: inline-block; position: relative; width: 600px; height: 250px; float: left">
+        <canvas id="cvs1" width="600" height="250" style="position:absolute; top: 0; left: 0">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250" style="position:absolute; top: 0; left: 0">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        Previously this type of chart was achievable, but required custom coding. Now however (as of
+        version 5.23) there is a custom class that does all of the necessary customisation for you. All
+        you need to do is add the display customisations (as shown below).
+    </p>
+
+    <p>
+        The rear canvas shows a Bar chart just as the front one does but
+        without any data - so you can just see the grid.
+    </p>
+    <p>
+        The front canvas draws the Bar
+        chart - and then a custom <code>draw</code> event uses the standard canvas <code>clearRect()</code>
+        function to return bits of the top canvas back to transparency. So
+        the grid on the rear canvas then shows through.
+    </p>
+    
+    <p>
+        All of this is done by the <code>RGraph.SegmentedBar</code> custom class so, again, you just need to
+        customise it.
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function on the object just resizes the canvas tag and the parent
+        container DIV tag.
+    </p>    
+
+
+
+
+    <script>
+
+        seg = new RGraph.SegmentedBar({
+            id: ['cvs1', 'cvs2'],
+            data: [4,5,3,2, 4,5,1],
+            options: {
+                segmentsCount: 5,
+                segmentsLinewidth: 10
+            }
+        });
+        
+        seg.foreground.set({
+            yaxisLabelsSpecific: ['Level 5','Level 4','Level 3','Level 2','Level 1',''],
+            xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+            shadow: false,
+            colors: ['Gradient(#fdd:red)'],
+            marginLeft: 75
+        });
+        
+        seg.background.set({
+            marginLeft: 75
+        });
+
+        seg.draw().responsive([
+            {maxWidth: null,width:600,height:250,options:{marginInner: 5,yaxisLabelsOffsety:20, textSize:16},parentCss:{width:'600px',height:'250px'}},
+            {maxWidth: 800,width:400,height:200,options:{marginInner: 3,yaxisLabelsOffsety:15, textSize:12},parentCss:{width:'400px',height:'200px'}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; position: relative; width: 600px; height: 250px; float: left"&gt;
+    &lt;canvas id="cvs1" width="600" height="250" style="position:absolute; top: 0; left: 0"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="600" height="250" style="position:absolute; top: 0; left: 0"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

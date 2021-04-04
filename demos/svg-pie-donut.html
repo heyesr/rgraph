@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic SVG Pie chart</title>
+    <meta name="description" content="A basic SVG Pie chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Donut chart</h1>
+    <p>A Pie chart thats configured as a donut chart (ie a Pie chart with a big hole in the middle!) It uses gradients as colors and a shadow to add a degree of depth to the chart.</p>
+
+    
+    <div style="width: 350px; height: 350px" id="chart-container"></div>       
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [41,37,16,3,3],
+            options: {
+                exploded: 5,
+                donut: true,
+                title: "Browser share",
+                titleSize: 20,
+                titleBold: true,
+                titleItalic: true,
+                name: ['MSIE 7', 'MSIE 6', 'Firefox', 'Safari', 'Other'],
+                tooltips: '%{property:name[%{index}]}: %{value}%',
+                shadow: true,
+                colors: [
+                  'Gradient(red:red:red:#faa:red)',
+                  'Gradient(#0f0:#0f0:#0f0:#afa:#0f0)',
+                  'Gradient(#00f:#00f:#00f:#aaf:#00f)',
+                  'Gradient(gray:gray:gray:#ccc:gray)',
+                  'Gradient(#f0f:#f0f:#f0f:#faf:#f0f)',
+                  'Gradient(#ff0:#ff0:#ff0:#ffa:#ff0)',
+                  'Gradient(red:red:red:#faa:red)'
+                ]
+            }
+        }).roundRobin();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 350px; height: 350px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

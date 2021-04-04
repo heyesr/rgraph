@@ -1,0 +1,112 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.ajax.js" ></script>
+    <script src="../libraries/RGraph.svg.common.csv.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped SVG Bar chart using the CSV reader</title>
+
+    
+    <meta name="description" content="A grouped SVG Bar chart using the CSV reader" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A grouped SVG Bar chart using the CSV reader</h1>
+    <p>The CSV reader demonstrated by reading CSV data via AJAX and showing a grouped Bar chart. Other than the CSV reader it's a pretty normal grouped Bar chart that uses the <code>grow()</code> effect.</p>
+
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline
+        (this demo
+        is using the CSV reader option that reads data that's embedded
+        in the page
+        itself). You can view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html#svg" target="_blank">
+            https://www.rgraph.net/demos/index.html#svg
+        </a>
+        
+        and this demo is available here:
+        <a href="https://www.rgraph.net/demos/svg-bar-csv2.html" target="_blank">
+            http://www.rgraph.net/demos/svg-bar-csv2.html
+        </a>
+    </div>
+
+
+
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+    
+
+    <script>
+        new RGraph.CSV('/sample.csv', function (csv)
+        {
+            var numrows = csv.numrows,
+                rows    = [],
+                row     = [],
+                labels  = [];
+        
+            for (var i=0; i<numrows; ++i) {
+                
+                var row   = csv.getRow(i, 1).slice(0,3);
+                var label = csv.getRow(i).slice(0,1)[0];
+
+                rows.push(row);
+                labels.push(label);
+            }
+
+            new RGraph.SVG.Bar({
+                id: "chart-container",
+                data: rows,
+                options: {
+                    marginLeft: 50,
+                    yaxisScaleUnitsPost: 'k',
+                    colors: ['red','green', 'blue'],
+                    marginInner: 10,
+                    xaxis: false,
+                    yaxis: false,
+                    backgroundGridBorder: false,
+                    backgroundGridVlines: false,
+                    xaxisLabels: labels
+                }
+            }).grow();
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.ajax.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+    [No canvas support]
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

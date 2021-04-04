@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
+    
+    
+    
+    <meta name="description" content="A demonstration of the Scatter chart with a Chrome-only (currently) dotted and dashed background grid" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A demo of the Chrome-only dotted or dashed background grid</h1>
+    
+    <p>
+        This uses the newer addition to canvas from the canvas v5 specification -
+        native dotted or dashed lines.
+        As browsers add support you will be able to use the option in those too
+        but initially it's only supported in Chrome.
+    </p>
+
+    <pre class="code">
+obj.Set('backgroundGridDashed', true);
+obj.Set('backgroundGridDotted', true);
+</pre>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Scatter({
+            id: 'cvs1',
+            data: [[50,50]],
+            options: {
+                backgroundGridDashed: true,
+                xaxisScaleMax: 150,
+                xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                title: 'A dashed background grid',
+                marginTop: 35
+            }
+        }).draw();
+
+        new RGraph.Scatter({
+            id: 'cvs2',
+            data: [[50,50]],
+            options: {
+                backgroundGridDotted: true,
+                xaxisScaleMax: 150,
+                xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                title: 'A dotted background grid',
+                marginTop: 35
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

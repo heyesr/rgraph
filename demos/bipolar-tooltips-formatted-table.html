@@ -1,0 +1,282 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bipolar chart with a table in the tooltips</title>
+    <meta name="description" content="This is an example of a Bipolar chart with a table of data in the tooltips, using tooltip templates." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+
+    <style>        
+        .RGraph_tooltip h2 {
+            margin: 5px;
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip table {
+            border-collapse: collapse;
+            font-family: Verdana;
+        }
+
+        .RGraph_tooltip thead th {
+            font-style: italic;
+        }
+
+        .RGraph_tooltip th,
+        .RGraph_tooltip td {
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .RGraph_tooltip td:nth-child(1){
+            font-style: italic;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
+            background-color: #eee;
+        }
+        
+        .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>A Bipolar chart with a table in the tooltips</h1>
+    
+    <p>
+        This uses the new <code>%{table}</code> option for formatted tooltips. The code to implement it
+        can get quite hairy (three nested arrays) so pay close attention when writing it.
+    </p>
+    
+    <div>
+        <canvas id="cvs" width="550" height="450">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left:  [4,8,6,4,3,9,8],
+            right: [1,9,5,6,3,3,6],
+            options: {
+
+                tooltips: '<h2>Results for %{prop:yaxisLabels[%{dataset2}]}</h2> %{table}',
+                tooltipsEffect: 'none',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                },
+
+                // These headers are used as the first "row" of the table
+                tooltipsFormattedTableHeaders: ['','Alf','Bert','Charlie','Dave','Egbert','Fred','Gary'],
+                
+                // The data that appears in the tooltip table. As you can see - it's a
+                // three-dimensional array
+                tooltipsFormattedTableData: [
+
+                    // Monday tooltip (left)
+                    [
+                        ['Attempt 1',5,9,6,3,5,6,6], // First row
+                        ['Attempt 2',9,6,8,4,8,6,8], // Second row
+                        ['Attempt 3',8,6,3,6,5,8,9], // Third row
+                        ['Attempt 4',4,8,6,3,3,5,5], // Fourth row
+                        ['Attempt 5',1,2,3,4,5,6,7]  // Fifth row
+                    ],
+                    
+                    // Tuesday tooltip (left)
+                    [
+                        ['Attempt 1', 9,8,6,3,5,8,8], // First row
+                        ['Attempt 2', 4,8,4,6,8,7,3], // Second row
+                        ['Attempt 3', 8,6,3,6,9,9,6], // Third row
+                        ['Attempt 4', 8,6,8,3,4,7,4], // Fourth row
+                        ['Attempt 5', 8,3,3,1,7,8,7], // Fifth row
+                        ['Attempt 6', 8,6,6,9,4,3,2]  // Sixth row
+                    ],
+                    
+                    // Wednesday tooltip (left)
+                    [
+                        ['Attempt 1', 4,8,6,3,4,4,4], // First row
+                        ['Attempt 2', 5,8,6,9,5,8,4], // Second row
+                        ['Attempt 3', 7,8,5,6,3,2,4], // Third row
+                        ['Attempt 4', 6,8,9,6,5,3,6]  // Fourth row
+                    ],
+                    
+                    // Thursday tooltip (left)
+                    [
+                        ['Attempt 1', 4,5,6,3,5,8,8], // First row
+                        ['Attempt 2', 2,6,6,5,5,8,8], // Second row
+                        ['Attempt 3', 8,3,5,8,9,6,5]  // Third row
+                    ],
+                    
+                    // Friday tooltip (left)
+                    [
+                        ['Attempt 1', 9,6,5,3,5,6,9], // First row
+                        ['Attempt 2', 4,8,6,5,2,5,5]  // Second row
+                    ],
+                    
+                    // Saturday tooltip (left)
+                    [
+                        ['Attempt 1', 4,8,6,3,'DNF',8,4], // First row
+                        ['Attempt 2', 4,8,6,3,5,2,2],     // Second row
+                        ['Attempt 3', 8,7,5,4,6,3,5],     // Third row
+                        ['Attempt 4', 9,6,6,6,4,8,6]      // Fourth row
+                    ],
+                    
+                    // Sunday tooltip (left)
+                    [
+                        ['Attempt 1', 1,9,8,5,6,6,6], // First row
+                        ['Attempt 2', 1,9,8,5,6,6,6], // Second row
+                        ['Attempt 3', 8,6,3,3,5,6,8], // Third row
+                        ['Attempt 4', 4,8,6,3,5,5,5], // Fourth row
+                        ['Attempt 5', 9,6,3,5,6,9,9]  // Fifth row
+                    ],
+                    
+                    // Monday tooltip (right)
+                    [
+                        ['Attempt 1', 4,8,6,4,5,2,3], // First row
+                        ['Attempt 2', 8,9,6,5,6,9,3], // Second row
+                        ['Attempt 3', 1,6,8,5,6,3,9], // Third row
+                        ['Attempt 4', 4,8,6,5,2,3,5], // Fourth row
+                        ['Attempt 5', 4,8,6,9,9,8,5]  // Fifth row
+                    ],
+                    
+                    // Tuesday tooltip (right)
+                    [
+                        ['Attempt 1', 6,8,5,4,6,3,5], // First row
+                        ['Attempt 2', 8,5,6,3,5,8,8], // Second row
+                        ['Attempt 3', 5,8,4,9,7,6,3], // Third row
+                        ['Attempt 4', 7,5,8,4,9,6,3], // Fourth row
+                        ['Attempt 5', 1,5,2,4,6,3,5]  // Fifth row
+                    ],
+                    
+                    // Wednesday tooltip (right)
+                    [
+                        ['Attempt 1', 1,6,8,4,5,2,3], // First row
+                        ['Attempt 2', 9,5,4,8,6,8,4], // Second row
+                        ['Attempt 3', 3,5,6,8,4,8,8], // Third row
+                        ['Attempt 4', 4,9,6,5,3,6,9], // Fourth row
+                        ['Attempt 5', 7,4,7,4,8,4,5]  // Fifth row
+                    ],
+                    
+                    // Thursday tooltip (right)
+                    [
+                        ['Attempt 1', 4,8,6,5,4,2,3], // First row
+                        ['Attempt 2', 4,9,5,6,8,8,8], // Second row
+                        ['Attempt 3', 9,9,9,6,5,3,6], // Third row
+                        ['Attempt 4', 4,9,6,8,8,5,2], // Fourth row
+                        ['Attempt 5', 4,8,9,7,8,7,9]  // Fifth row
+                    ],
+                    
+                    // Friday tooltip (right)
+                    [
+                        ['Attempt 1', 8,5,2,5,8,9,6], // First row
+                        ['Attempt 2', 9,6,3,6,9,8,7], // Second row
+                        ['Attempt 3', 4,5,6,6,5,4,5], // Third row
+                        ['Attempt 4', 1,2,3,4,5,6,7], // Fourth row
+                        ['Attempt 5', 7,6,5,4,3,2,1]  // Fifth row
+                    ],
+                    
+                    // Saturday tooltip (right)
+                    [
+                        ['Attempt 1', 6,8,5,5,4,9,8], // First row
+                        ['Attempt 2', 5,8,6,5,3,5,2], // Second row
+                        ['Attempt 3', 4,8,5,2,5,9,9], // Third row
+                        ['Attempt 4', 4,3,5,6,8,8,8], // Fourth row
+                        ['Attempt 5', 4,5,2,4,5,4,6]  // Fifth row
+                    ],
+                    
+                    // Sunday tooltip (right)
+                    [
+                        ['Attempt 1', 4,8,7,9,6,6,6], // First row
+                        ['Attempt 2', 1,6,5,4,3,2,1], // Second row
+                        ['Attempt 3', 1,2,3,5,8,9,6], // Third row
+                        ['Attempt 4', 4,9,6,6,3,9,6], // Fourth row
+                        ['Attempt 5', 7,6,4,1,3,2,5]  // Fifth row
+                    ]
+                ],
+
+                // The rest of the chart configuration
+                marginInner: 5,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 16,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                title: 'A demonstration of tooltip tables',
+                titleBold: true,
+                titleSize: 22
+            }
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+
+&lt;style&gt;
+    .RGraph_tooltip h2 {
+        margin: 5px;
+        font-style: italic;
+    }
+    
+    .RGraph_tooltip table {
+        border-collapse: collapse;
+        font-family: Verdana;
+    }
+
+    .RGraph_tooltip thead th {
+        font-style: italic;
+    }
+
+    .RGraph_tooltip th,
+    .RGraph_tooltip td {
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+    
+    .RGraph_tooltip td:nth-child(1){
+        font-style: italic;
+    }
+    
+    .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
+        background-color: #eee;
+    }
+    
+    .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
+        background-color: #ddd;
+    }
+&lt;/style&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

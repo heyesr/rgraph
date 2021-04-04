@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A 3D Horizontal Bar chart</title>
+    
+    
+    
+    <meta name="description" content="A 3D Horizontal Bar chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A 3D Horizontal Bar chart</h1>
+
+    <canvas id="cvs" width="600" height="550">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[1,null],[1,2],[5,4],[7,8],[4,3],[8,8],[4,6]],
+            options: {
+                colors: ['red','#0c0'],
+                grouping: 'grouped',
+                yaxisPosition: 'left',
+                variant: '3d',
+                marginLeft: 100,
+                shadow: true,
+                shadowOffsety:  0,
+                shadowOffsetx: 13,
+                shadowBlur: 3,
+                shadowColor: '#ccc',
+                marginInner: 10,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+            }
+        }).draw();
+    </script>
+    
+    
+    <br />
+
+
+
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="550"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

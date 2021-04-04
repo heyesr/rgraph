@@ -1,0 +1,275 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Bar and Line charts with a switch effect</title>
+    
+    
+    <meta name="description" content="There are numerous ways of switching between charts - some of which have examples in the download archive. Here's a nice example of a CSS transition." />
+
+    <style>
+        div#container {
+            position: relative;
+            width: 600px;
+            height: 250px;
+        }
+        
+        div#container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 600px;
+            height: 250px;
+            background-color: white;
+            transition: all 1s;
+            opacity: 1;
+        }
+        
+        div#container canvas#cvs1 {
+            top: 125px;
+            left: 300px;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+    </style>
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A Bar and Line chart with a switch effect</h1>
+
+    <span style="font-weight: bold; color: red;">Requires jQuery</span>
+
+    <div id="container" style="float: right">
+        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <p>
+        Note that this effect doesn't use the <code>textAccessible</code> option. This is because the
+        effect moves the whole canvas around - not just what's on it.
+    </p>
+    
+    <p>
+        It's a nice transition effect where one chart blends into another with a "folding-away" type motion.
+        The other chart is shown in the reverse direction. The effect is not animated by using JavaScript
+        based animation but by using JavaScript to apply CSS properties. The CSS transitions which are also
+        specified on the canvas then take care of doing the animating.
+    </p>
+    
+    <p>
+        The charts themselves are quite straight-forward - with the Line chart having a larger linewidth
+        and bigger tickmarks than normal.
+    </p>
+        
+    <p>
+        If rewritten
+        it might be possible by applying the CSS to the <code>textAccessible</code> container DIV instead of the canvas tag.
+        This way the DIV and everything in it (ie the canvas and the text) is animated.
+    </p>
+
+    <br clear="all" />
+
+    <script>
+        // First create the Bar chart but don't call the draw() function.
+        bar = new RGraph.Bar({
+            id: 'cvs1',
+            data: [4,8,12],
+            options: {
+                colors: ['#5690C9'],
+                marginInner: 25,
+                colorsStroke: 'transparent',
+                axesLinewidth: 15,
+                textSize: 16,
+                titleSize: 12,
+                yaxisTickmarksCount: 0,
+                xaxisTickmarksCount: 0,
+                xaxis: false,
+                yaxis: false,
+                shadow: false,
+                title: 'A Bar chart (click to switch to the Line chart)',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['John','Fred','Lucy'],
+                
+                // Set this to false so that instead of using DOM text that's
+                // positioned over the canvas, regular canvas text is used
+                // instead. This means it gets animated with the canvas tag.
+                textAccessible: false
+            }
+
+        }).draw();
+
+        // Create the Line chart with no X axis
+        line = new RGraph.Line({
+            id: 'cvs2',
+            data: [
+                [1,6,4],
+                [5,3,8]
+            ],
+            options: {
+                colors: ['#B71A1A','#54A4CF'],
+                
+                // Use a custom tickmark function so that we can draw the mark manually
+                tickmarksStyle: function myTick (obj, data, value, index, x, y, color, prevX, prevY)
+                {
+                    // This is an RGraph function for drawing paths on the canvas. As of
+                    // version 5.02 you can use the RGraph.path() function instead if you
+                    // prefer.
+                    obj.path(
+                        'b a % % % % % false f %',
+                        x, y, 15, 0, 2 * Math.PI, false,
+                        color
+                    );
+                },
+
+                linewidth: 10,
+                shadow: false,
+                xaxisLabels: ['John','Fred','Lucy'],
+                title: 'A Line chart (click to switch to the Bar chart)',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                marginInner: 25,
+                textSize: 16,
+                textColor: '#000',
+                titleSize: 12,
+                yaxisColor: '#999',
+                
+                // As detailed above this option is set so that the chart uses normal
+                // canvas text
+                textAccessible: false
+            }
+        }).draw();
+
+
+
+
+        // This is the click event handler that swaps the canvas tag width/height/opacity
+        // CSS properties. It's added using jQuery to BOTH canvas tags.
+        $('canvas').click(function (e)
+        {
+            var id = e.target.id;
+    
+            // If the canvas that was clicked on was cvs1 then do this
+            // (hide cvs1 and show cvs2)
+            if (id === 'cvs1') {
+                $('#cvs1').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(180deg)'
+                });
+    
+                $('#cvs2').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+
+
+
+
+            // If the canvas that was clicked on was cvs2 then do this
+            // (hide cvs2 and show cvs1)
+            } else {
+    
+                $('#cvs2').css({
+                    width: 0,
+                    height: 0,
+                    top: '125px',
+                    left: '300px',
+                    opacity: 0,
+                    transform: 'rotate(180deg)'
+                });
+    
+                $('#cvs1').css({
+                    width: '600px',
+                    height: '250px',
+                    top: 0,
+                    left: 0,
+                    opacity: 1,
+                    transform: 'rotate(0)'
+                });
+            }
+        });
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+
+&lt;style&gt;
+    div#container {
+        position: relative;
+        width: 600px;
+        height: 250px;
+    }
+    
+    div#container canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 600px;
+        height: 250px;
+        background-color: white;
+        transition: all 1s;
+        opacity: 1;
+    }
+    
+    div#container canvas#cvs1 {
+        top: 125px;
+        left: 300px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        transform: rotate(90deg);
+    }
+&lt;/style&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="container"&gt;
+    &lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html> 

@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.ajax.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic SVG Bar chart using the AJAX getCSV() function</title>
+
+    
+    <meta name="description" content="A basic SVG Bar chart using the AJAX getCSV() function" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Bar chart using the AJAX getCSV() function</h1>
+    
+    <p>A basic demonstration of the <code>getCSV()</code> function
+    that's a part of RGraph. Here a new Bar chart is created every
+    second by fetching the data from the <code>https://www.rgraph.net/getdata.html</code> URL. The whole
+    thing is on a timer so that it repeats itself every second. The CSV
+    connector can also get data from within the page - there's an
+    example of the data for that in the source code snippet.</p>
+
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+    
+
+    <script>
+        // This is the function that runs every second to fetch new data
+        function update ()
+        {
+            RGraph.SVG.AJAX.getCSV('/getdata.html', function (csv)
+            {
+                if (window.bar) {
+                    RGraph.SVG.clear(window.bar.svg);
+                }
+
+                window.bar = new RGraph.SVG.Bar({
+                    id: 'chart-container',
+                    data: csv,
+                    options: {
+                    }
+                }).draw();
+            });
+
+            setTimeout(function ()
+            {
+                update()
+            }, 1000);
+        }
+
+        // Initiate the first AJAX request
+        update();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.ajax.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="klkl" style="display: none"&gt;
+    Richard,8,4,7,6,5,3,4
+    Dave,7,4,6,9,5,8,7
+    Luis,4,3,5,2,6,5,4
+    Kevin,4,2,8,9,6,7,3
+    Joel,4,5,1,3,5,8,6
+    Pete,4,5,6,3,5,8,6
+&lt;/div&gt;
+
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

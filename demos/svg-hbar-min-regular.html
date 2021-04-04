@@ -1,0 +1,168 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A page showing the various X scale variations of the SVG Horizontal Bar chart</title>
+
+    
+    <meta name="description" content="A page showing the various X scale variations of the SVG Horizontal Bar chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A page showing the various X scale variations of the SVG Horizontal Bar chart</h1>
+    <p>There's a few Horizontal Bar charts on this page that all demonstrate the various scale combinations that you can have.</p>
+
+
+
+    <div id="chart-container1" style="width: 400px; height: 450px"></div><br />
+    <div id="chart-container2" style="width: 400px; height: 450px"></div><br />
+    <div id="chart-container3" style="width: 500px; height: 550px"></div><br />
+    <div id="chart-container4" style="width: 500px; height: 450px"></div><br />
+    <div id="chart-container5" style="width: 500px; height: 450px"></div><br />
+    <div id="chart-container6" style="width: 500px; height: 450px"></div>
+
+        
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container1',
+            data: [-5,-7,-9,-11,-13,-15],
+            options: {
+                marginLeftAuto: false,
+                marginLeft: 15,
+                marginRight: 50,
+                xaxisScaleMax: -5,
+                xaxisScaleMin: -15,
+                yaxisLabels: ['Harry','Lucy','Pete','Nick','Al','John'],
+                title: 'Both min and max negative',
+            }
+        }).draw();
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container2',
+            data: [0,1,2,3,4,5,6],
+            options: {
+                xaxisScaleMax: 10,
+                yaxisLabels: ['Harry','Lucy','Pete','Nick','Al','John','Kevin'],
+                title: 'Min set to zero and max positive',
+                marginInner: 10,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).draw();
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container3',
+            data: [10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10],
+            options: {
+                xaxisScaleMin: 'mirror',
+                yaxisLabels: [
+                    'Harry','Lucy','Pete','Nick','Al','John','Kerridge',
+                    'Harry','Lucy','Pete','Nick','Al','John','Kerridge',
+                    'Harry','Lucy','Pete','Nick','Al','John','Kerridge'
+                ],
+                title: 'Min negative and max positive',
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                colors: [
+                    'red', 'blue','green',
+                    'red', 'blue','green',
+                    'red', 'blue','green',
+                    'red', 'blue','green',
+                    'red', 'blue','green',
+                    'red', 'blue','green',
+                    'red', 'blue','green'
+                ],
+                colorsSequential: true,
+            }
+        }).draw();
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container4',
+            data: [5,6,7,8,9,10],
+            options: {
+                marginRight: 190,
+                title: 'Both min and max above zero',
+                yaxisLabels: ['Ken','Larry','Kevin','Jobe','Lucy','John'],
+                xaxisScaleMin: 5,
+                xaxisScaleMax: 10,
+                backgroundGridBorder: false,
+                backgroundGridHlines: false
+            }
+        }).draw();
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container5',
+            data: [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10],
+            options: {
+                marginLeftAuto: false,
+                marginLeft: 15,
+                marginRight: 50,
+                title: 'Zero max and negative min',
+                yaxisLabels: ['Ken','Larry','Kevin','Jobe','Lucy','John'],
+                xaxisScaleMin: -10,
+                xaxisScaleMax: 0,
+                backgroundGridBorder: false,
+                backgroundGridHlines: false
+            }
+        }).draw();
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container6',
+            data: [-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+            options: {
+                colors: ['Gradient(red:white:red:red:#c00:#600)'],
+                marginInner: 1,
+                title: 'Offset axis, negative min positive max',
+                xaxisScaleMin: -5,
+                xaxisScaleMax: 20,
+                backgroundGridBorder: false,
+                backgroundGridHlines: false
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 400px; height: 450px" id="chart-container1"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div style="width: 400px; height: 450px" id="chart-container2"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div style="width: 500px; height: 550px" id="chart-container3"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div style="width: 500px; height: 450px" id="chart-container4"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div style="width: 500px; height: 450px" id="chart-container5"&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div style="width: 500px; height: 450px" id="chart-container6"&gt;&lt;/div&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

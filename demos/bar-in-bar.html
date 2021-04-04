@@ -1,0 +1,110 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of a Bar chart with bars-in-bars</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="An example of a Bar chart with bars-in-bars" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An example of a Bar chart with bars-in-bars</h1>
+    
+    <p>
+        By using two bar chart objects you can achieve a bar-in-bar effect.
+        Here it shows the total number of cars produced versus
+        those which are then sold. It's similar to a stacked or grouped Bar chart.
+    </p>
+
+    <p>
+        <a href="svg-bar-in-bar.html">
+            There's an SVG version of this chart here.
+        </a>
+    </p>
+    <canvas id="cvs" width="900" height="200">[No canvas support]</canvas>
+    <script>
+        data = {};
+        data.shipped = [88000,88000,105000,105000,116000,116000,126000];
+        data.sold    = [30000,54000,54000,62000,63000,68000,68000];
+
+        bar1 = new RGraph.Bar({
+            id: 'cvs',
+            data: data.shipped,
+            options: {
+                marginTop: 40,
+                marginLeft: 70,
+                colors: ['rgba(0,0,255,0.2)'],
+                xaxisLabels: ['Fred','Barney','Wilma','Betty','Dino','Bam-bam','Pebble'],
+                labelsAbove: data.shipped,
+                title: 'Total cars produced vs sold',
+                titleSize: 14,
+                colorsStroke: 'rgba(0,0,0,0)',
+                xaxisScaleZerostart: true,
+                shadow: true
+            }
+        }).draw();
+
+        bar2 = new RGraph.Bar({
+            id: 'cvs',
+            data: data.sold,
+            options: {
+                yaxisScaleMax: bar1.scale2.max,
+                marginTop: 40,
+                marginLeft: bar1.get('marginLeft'),
+                colors: ['pink'],
+                xaxis: false,
+                yaxis: false,
+                labelsAbove: true,
+                marginInner: 20,
+                yaxisLabels: false,
+                backgroundGrid: false,
+                colorsStroke: 'rgba(0,0,0,0)',
+                shadow: true
+            }
+        }).draw();
+    </script>
+    
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+
+    
+
+
+</body>
+</html>

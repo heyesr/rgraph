@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <title>A basic demo of the standalone CSV reader</title>
+
+    <script src="/libraries/RGraph.svg.common.csv.js"></script>
+</head>
+<body>
+    <h1>A basic demo of the standalone CSV reader</h1>
+
+    <p>
+        This demo doesn't show a chart - but instead just uses the now standalone
+        CSV reader to fetch a CSV file and show it. Both the canvas and SVG
+        versions of the CSV reader are standalone.
+    </p>
+
+
+    <!-- Use this for embedded data -->
+    <div id="mydata" style="display: none">Jay,8,6,3,5,6,8</div>
+
+
+    <script>
+        new RGraph.CSV('/sample.csv', function (csv)
+        //new RGraph.CSV('id:mydata', function (csv)
+        {
+            // Get the first row
+            var data = csv.getRow(0);
+
+            alert(data);
+        });
+    </script>
+    
+    <pre class="code">
+&lt;!-- Use this for embedded data --&gt;
+&lt;div id="mydata" style="display: none"&gt;Jay,8,6,3,5,6,8&lt;/div&gt;
+</pre>
+
+
+
+    <pre class="code">
+&lt;script>
+    new RGraph.CSV('/sample.csv', function (csv)
+    <span>//new RGraph.CSV('id:mydata', function (csv)</span>
+    {
+        // Get the first row
+        var data = csv.getRow(0);
+
+        alert(data);
+    });
+&lt;/script&gt;
+</pre>
+</body>
+</html>

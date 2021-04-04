@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Trigonometry curves (sine, cosine and tangent)</title>
+    
+    
+    
+    <meta name="description" content="A Scatter chart that shows trigonometry curves (sine, cosine and tangent)" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>Trigonometry curves (sine, cosine and tangent)</h1>
+
+    <canvas id="cvs" width="1000" height="300">[No canvas support]</canvas>
+    
+    <script>
+        var data_sin = [],
+            data_cos = [],
+            data_tan = [];
+
+        for (var i=-360; i<360; i+=1) {
+            data_sin.push([i, Math.sin(i / (180 / Math.PI))]).toString();
+            data_cos.push([i, Math.cos(i / (180 / Math.PI))]).toString();
+            
+            var tan_value = Math.tan(i / (180 / Math.PI));
+            data_tan.push([i, (tan_value < 1 && tan_value > -1) ? tan_value : null]);
+        }
+
+        xaxis = new RGraph.Drawing.XAxis({
+            id: 'cvs',
+            y: 150,
+            options: {
+                yaxisPosition: 'center',
+                xaxisLabelsCount: 4,
+                xaxisTickmarksCount: 8,
+                xaxisScaleMax: 360
+            }
+        }).draw();
+
+
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: [
+                data_sin,
+                data_cos,
+                data_tan
+            ],
+            options: {
+                xaxisPosition: 'center',
+                xaxisScaleMax: 360,
+                xaxis: false,
+                yaxisScaleMax: 1,
+                yaxisScaleDecimals: 1,
+                yaxisTickmarksCount: 10,
+                marginLeft: 500,
+                marginTop: 25,
+                marginBottom: 25,
+                line: true,
+                lineLinewidth: 3,
+                tickmarksStyle: null,
+                backgroundGrid: false,
+                outofbounds: false
+            }
+        }).trace();
+
+        t = RGraph.text.find({
+            id: 'cvs',
+            text: /^0(\.0+)?$/
+        });
+        
+        t[0].style.color = 'rgba(0,0,0,0)';
+        t[1].style.color = 'rgba(0,0,0,0)';
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.xaxis.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scteter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="1000" height="200"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

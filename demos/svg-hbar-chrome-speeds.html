@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Horizontal Bar chart that shows Chrome speeds</title>
+    
+    
+    <meta name="description" content="An SVG Horizontal Bar chart that shows Chrome speeds" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Horizontal Bar chart that shows Chrome speeds</h1>
+    <p>This is a Horizontal Bar chart that shows the difference in Chrome browser speeds between versions. The <code>grow()</code> effect is being used along with there being no X axis.</p>
+
+    
+    <div style="width: 450px; height: 180px" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [215, 175],
+            options: {
+                yaxisLabels: ['Chrome 18', 'Chrome 19'],
+                colors: ['#3266cc'],
+                title: 'SunSpider score',
+                titleSubtitle: 'milliseconds (less is better)',
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridVlinesCount: 4,
+                marginInner: 8,
+                marginBottom: 35,
+                marginTop: 45,
+                marginLeft: 85,
+                xaxis: false
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 450px; height: 180px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A Gantt chart with tooltips on the labels</title>
+    
+    
+    <meta name="description" content="A Gantt chart with tooltips on the labels" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Gantt chart with tooltips on the labels</h1>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+
+        gantt = new RGraph.Gantt({
+            id: 'cvs',
+            data: [
+                {start: 0,  duration: 11, label:'Ricardo', border: 'rgba(0,0,0,0)'},
+                {start: 12, duration: 19, label:'Carlos',  border: 'rgba(0,0,0,0)'},
+                {start: 23, duration: 5,  label:'Hoolio',  border: 'rgba(0,0,0,0)'},
+                {start: 28, duration: 7,  label:'Bevin',   border: 'rgba(0,0,0,0)'},
+                {start: 32, duration: 3,  label:'Jooli',   border: 'rgba(0,0,0,0)'},
+                {start: 10, duration: 12, label:'Rich',    border: 'rgba(0,0,0,0)'}
+            ],
+            options: {
+                colorsDefault: 'red',
+                xaxisScaleMax: 35,
+                
+                // The custom property
+                yaxisLabelsTooltips: '<b>%{property:yaxisLabels[%{group}]}</b>',
+                
+                tooltipsPositionStatic: false,
+                tooltipsOffsety: -10,
+
+                backgroundGridVlinesCount: 5,
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5']
+            }
+        }).on('draw', function (obj)
+        {
+            // Get the text nodes using the tag to find them
+            var nodes = RGraph.text.find({
+                id: 'cvs',
+               tag: 'yaxis.labels'
+            });
+
+            // Loop through the text nodes and add the click event listener
+            for (var i=0; i<nodes.length; ++i) {
+            
+                nodes[i].style.pointerEvents = 'auto';
+                
+                (function (index)
+                {
+                    nodes[index].addEventListener('click', function (e)
+                    {
+                        RGraph.clear(obj.canvas);
+                        RGraph.text.domNodeCache = [];
+                        RGraph.redraw();
+
+                        RGraph.tooltip({
+                            object: obj,
+                              text: typeof obj.properties.yaxisLabelsTooltips === 'string'
+                                        ? obj.properties.yaxisLabelsTooltips
+                                        : obj.properties.yaxisLabelsTooltips[index],
+                             index: index,
+                             event: e
+                        });
+                    }, false);
+    
+                    nodes[index].addEventListener('mousemove', function (e)
+                    {
+                        e.target.style.cursor = 'pointer';
+                    }, false);
+                })(i);
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

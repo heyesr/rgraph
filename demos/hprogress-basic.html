@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Horizontal Progress bar</title>
+    
+    <meta name="description" content="A basic Horizontal Progress bar" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic Horizontal Progress bar</h1>
+
+    <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.HProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: [10,10,10,10],
+            options: {
+                marginInner: 7,
+                marginLeft: 20,
+                marginRight: 20,
+                marginTop: 20,
+                marginBottom: 20,
+                bevelled: true,
+                tooltips: [
+                    '<b>An example tooltip!</b>',
+                    'Foo',
+                    'bar',
+                    'Jello'
+                ],
+                colors: ['red','yellow','pink','white']
+            }
+        }).grow();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="100"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

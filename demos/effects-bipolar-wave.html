@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Bipolar chart wave() effect</title>
+    <meta name="description" content="Bipolar chart wave() effect" />
+    
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>Bipolar chart wave() effect</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        left = [4,8,6,3,1,20,5];
+        right = [15,13,18,19,12,16,14];
+
+        bar = new RGraph.Bipolar({
+            id: 'cvs',
+            left: left,
+            right: right,
+            options: {
+                titleLeft: 'August 2013',
+                titleRight: 'August 2014',
+                textSize: 16,
+                textColor: '#666',
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                colors: ['gradient(red:red:red:red:#fcc:#fcc:#fcc:red:red:red:red)'],
+                axes: false
+            }
+        }).wave();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

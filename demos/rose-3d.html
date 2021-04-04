@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A 3D rose chart</title>
+
+
+    
+    <meta name="description" content="A 3D Rose chart. The 3D Rose chart has a nice aesthetic to it and could work well as part of a presentation." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A 3D Rose chart</h1>
+
+    <canvas id="cvs" width="600" height="300" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's a novel version of the more traditional 2D Rose chart - the 3D Rose chart. It doesn't add
+        any advantages over the 2D version - though it might make your presentations look a little nicer!
+    </p>
+
+    <p>
+        There are tooltips, which you can see by clicking on the segments as usual. These tooltips were
+        formerly built dynamically. They still are currently however the method that's used has changed
+        to the new (version 5.22) formatted tooltips.
+    </p>
+    
+    <p>
+        This means the amount of code has been both reduced and simplified. The tooltips are created by
+        concatenating the name (the <span style="white-space: nowrap;"><code>%{property:myNames[%{index}]}</code></span> bit) and the value (the
+        <code>%{value}</code> bit).
+    </p>
+    
+    <p>
+        In terms of responsiveness, on smaller screens it switches from 3D to 2D and is slightly smaller.
+        The labels are changed from the full names of the weekdays to the shorter three letter
+        variations.
+    </p>
+
+    <br clear="all" />
+
+    <script>
+        labels_small = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+        labels_large = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+        // This is a stacked 3D Rose chart. The data is the same as a regular stacked
+        // Rose chart and looks just like the data that you'd pass to a grouped or
+        // stacked Bar chart.
+
+        new RGraph.Rose({
+            id: 'cvs',
+            data: [[4,8,7],[6,5,8],[4,5,3],[4,9,8],[3,8,6],[4,6,3],[1,5,8]],
+
+            options: {
+                // A custom property used in the tooltips
+                myNames: ['Wilf','Harry','Gerrard'],
+
+                colorsStroke: 'rgba(0,0,0,0)',
+                margin: 7,
+                variant: '3d',
+                variantThreedDepth: 10,
+                labelsAxes: 'n',
+                colors: ['gradient(#faa:red)','Gradient(#afa:green)','gradient(#aaf:#ddf)'],
+                
+                // Tooltips, given as a template string
+                tooltips: '%{property:myNames[%{index}]} on %{property:labels[%{group}]}: <b>%{value}%</b>',
+                
+                // Some CSS styles that are added to the tooltips
+                tooltipsCss: {
+                    fontSize:'20pt'
+                },
+
+                labels: labels_large,
+                textAccessible: false
+            }
+        }).grow({frames: 15}).responsive([
+            {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},css: {'float':'right'}},
+            {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},css: {'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="300" style="float: right"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+</body>
+</html>

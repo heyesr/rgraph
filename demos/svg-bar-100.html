@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG 100% Bar chart</title>
+
+    <meta name="description" content="An SVG 100% Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG 100% Bar chart</h1>
+    <p>This is a demo of a Bar chart that's configured to look like a 100% Bar chart.</p>
+
+    
+    <div style="width: 650px; height: 300px" id="chart-container"></div>
+
+    <script>
+        data = [
+            0,3,2,5,4,6,2,5,8,7,
+            9,8,6,8,7,5,8,9,11,13,
+            16,11,12,15,14,16,15,17,18,16,
+            19,18,16,15,18,19,20,23,24,21,
+            22,26,24,25,27,28,26,28,29,30,
+            32,34,30,31,29,28,34,35,38,37,
+            39,41,43,42,41,45,39,40,46,43,
+            40,38,36,37,39,35,34,33,35,32,
+            30,29,31,26,28,24,25,26,25,25,
+            26,24,28,25,26,24,25,27,25,26,
+            27,26,29,28,24,26,25,25,27,28,
+            27,26,25,26,23,24,23,21,20,20
+        ];
+        
+        max = 100;
+        
+        // Turn the dataset into a stacked one
+        data.forEach(function (v, k, arr)
+        {
+            arr[k] = [v, 2, max - v - 2];
+        });
+
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+            grouping: 'stacked',
+                marginInner: .5,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                xaxis: false,
+                colors: ['Gradient(red:white)','yellow', '#eee'],
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

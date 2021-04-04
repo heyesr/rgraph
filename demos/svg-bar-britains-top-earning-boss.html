@@ -1,0 +1,124 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: The earnings of Britain's top boss</title>
+    
+    <meta name="description" content="An SVG Bar chart of the earnings of Britain's highest paid boss. As you can see there's quite a jump up to £199m. A good year!" />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Bar chart of the earnings of Britain's top boss</h1>
+
+    <div style="float: right">
+        <div style="width: 600px; height: 250px" id="chart-container"></div>
+    </div>
+
+    <p>
+        She founded Bet365 -  an online gambling firm. Who would have guessed that gambling could be so
+        profitable?! Ok perhaps everyone in the world! Personally though, if a company that I started
+        earned just (?) five million pounds - I'd retire!
+    </p>
+    
+    <p>
+        The chart itself is quite straight-forward with a single solid color for the bars, a small
+        <code>marginInner</code> setting and large text. Being like this though makes the clarity
+        of the chart quite good.
+    </p>
+    
+    <p>
+        It also uses the <code>labelsAbove</code> setting to show the exact figures that the bars
+        represent.
+    </p>
+    
+    <p>
+        For smaller screens the CSS <code>float</code> is removed from the SVG tag and the size of the text
+        on the chart is reduced.
+    </p>
+
+
+
+    <script>
+        // Create the SVG Bar chart.
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            
+            // The data is here, directly in the chart configuration
+            data: [6,5,13,30,54,199,220,320],
+
+            options: {
+
+                // Add labelsAbove and color them turquoise like the bar color
+                labelsAbove: true,
+                labelsAboveSize: 12,
+                labelsAboveUnitsPre: '£',
+                labelsAboveUnitsPost: 'm',
+                labelsAboveColor: '#1280A1',
+                labelsAboveBold: true,
+
+                // Give the bars a turqoise color
+                colors: ['#1280A1'],
+                
+                // Only horizontal grid lines are shown
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                
+                // Disable both of the X and Y axes (but there are still some
+                // X axis labels given)
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['2012','2013','2014','2015','2016','2017','2018','2019'],
+                
+                // The base size of the text on the chart is slightly larger
+                // than normal
+                textSize: 14,
+
+                marginLeft: 85,
+                
+                // Give the Y axis labels some units that are both prepended
+                // and appended to the numbers
+                yaxisScaleUnitsPost: 'm',
+                yaxisScaleUnitsPre: '£'
+            }
+        }).draw().responsive([
+            {maxWidth: null, width: 600,height:250,options:{labelsAboveSize: 12,textSize: 14},parentCss: {'float': 'right'}},
+            {maxWidth: 800,  width: 400,height:200,options:{labelsAboveSize: 8,textSize: 10},parentCss: {'float': 'none'}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 900px; height: 350px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

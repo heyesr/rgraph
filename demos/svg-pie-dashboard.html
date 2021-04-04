@@ -1,0 +1,389 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: SVG Pie charts that are configured to look like meters</title>
+    <meta name="description" content="Three SVG Pie charts that have been configured to look like meters along with three horizontal Progress bars." />
+
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>SVG Pie charts that are configured to look like meters</h1>
+
+    <div id="meters">
+        <div id="chart-container1"></div>
+        <div id="chart-container2"></div>
+        <div id="chart-container3"></div>
+        <div id="chart-container4"></div>
+        <div id="chart-container5"></div>
+        <div id="chart-container6"></div>
+    </div>
+
+    <p>
+        Here we have three Pie charts that have been configured to look like gauges
+        showing percentages. They're regular Pie charts with two colors but then a
+        big black circle is added over the top which makes them look like donut
+        charts (somewhat). And finally the text is added to the center in the <code>draw</code>
+        event.
+    </p>
+    
+    <p>
+        There's also three Horizontal Progress bars placed at the bottom of the SVG
+        drawing area. These progress bars are actually Horizontal Bar charts that
+        are configured with just a single data point so that there's just one bar -
+        which effectively makes it a progress bar. You can make Vertical Progress
+        bars in a similar manner by using the regular Bar chart.
+    </p>
+    
+    <p>
+        Like the canvas chart libraries you can make other types of charts using
+        the regular SVG chart libraries and combining them. Eg a combined Bar
+        and Line chart.
+    </p>
+
+    <style>
+        div#meters{
+            position: relative;
+            background-color: black;
+            height: 325px;
+            width: 600px;
+            float: left;
+            margin: 25px;
+        }
+
+        div#meters div {
+            float: left;
+            width: 200px;
+            height: 200px;
+        }
+        
+        
+        div#chart-container4,
+        div#chart-container5,
+        div#chart-container6 {
+            position: absolute !important;
+            left: 0 !important;
+            top: 180px !important;
+            width: 600px !important;
+            height: 70px !important;
+        }
+        
+        div#chart-container5 {top: 210px !important;}
+        div#chart-container6 {top: 240px !important;}
+    </style>
+
+
+
+
+        
+    <script>
+        // Create the first Pie chart. It uses the roundRobin() effect and is
+        // configured to appear as a donut chart. With there being only two
+        // values given to the chart it makes the donut chart look like a
+        // circular Progress bar.
+        pie1 = new RGraph.SVG.Pie({
+            id: 'chart-container1',
+            data: [15,85],
+            options: {
+                colors: ['red', 'transparent'],
+                donut: true,
+                donutWidth: 10
+            }
+        }).on('draw', function (obj)
+        {
+            // This serves as the background for the chart. Just setting the second color of
+            // the Pie chart to gray gives a different style compared to adding this circle
+            // as the 'background'.
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r: obj.radius,
+                    fill: 'gray'
+                }
+            });
+
+            // This smaller black circle turns the gray circle that was just added
+            // into a donut.
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r: obj.radius - obj.properties.donutWidth,
+                    fill: 'black'
+                }
+            });
+
+            // Add the text label that indicates the 'value' of the first Pie segment
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   obj.data[0] + '%',
+                x:      obj.centerx,
+                y:      obj.centery,
+                halign: 'center',
+                valign: 'center',
+                size:   20,
+                bold:   true,
+                color:  '#999'
+            });
+
+            // Add the smaller text label that sits under the main percentage label.
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   'Charles',
+                x:      obj.centerx,
+                y:      obj.centery + 15,
+                halign: 'center',
+                valign: 'top',
+                size:   12,
+                bold:   true,
+                color:  '#999'
+            });
+        
+        // Use the roundRobin() effect for the red Pie segment.
+        }).roundRobin({frames: 45});
+
+
+
+
+
+
+
+
+
+
+        // Add the second 'meter' that shows Rickys progress
+        new RGraph.SVG.Pie({
+            id: 'chart-container2',
+            data: [50,50],
+            options: {
+                colors: ['red', 'transparent'],
+                donut: true,
+                donutWidth: 10
+            }
+        }).on('draw', function (obj)
+        {
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r: obj.radius,
+                    fill: 'gray'
+                }
+            });
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r:  obj.radius - obj.properties.donutWidth,
+                    fill: 'black'
+                }
+            });
+
+            // Add the text label that indicates the 'value' of the second Pie segment
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   obj.data[0] + '%',
+                x:      obj.centerx,
+                y:      obj.centery,
+                halign: 'center',
+                valign: 'center',
+                size:   20,
+                bold: true,
+                color:  '#999'
+            });
+
+            // Add the smaller text label that sits under the main percentage label.
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   'Ricky',
+                x:      obj.centerx,
+                y:      obj.centery + 15,
+                halign: 'center',
+                valign: 'top',
+                size:   12,
+                bold: true,
+                color:  '#999'
+            });
+        }).roundRobin({frames: 45});
+
+
+
+
+
+
+
+
+
+
+        // Add the third 'meter' that shows Freddys progress
+        new RGraph.SVG.Pie({
+            id: 'chart-container3',
+            data: [42,58],
+            options: {
+                colors: ['red', 'transparent'],
+                donut: true,
+                donutWidth: 10
+            }
+        }).on('draw', function (obj)
+        {
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r: obj.radius,
+                    fill: 'gray'
+                }
+            });
+            RGraph.SVG.create({
+                svg: obj.svg,
+                type: 'circle',
+                parent: obj.layers.background1,
+                attr: {
+                    cx: obj.centerx,
+                    cy: obj.centery,
+                    r: obj.radius - obj.properties.donutWidth,
+                    fill: 'black'
+                }
+            });
+
+            // Add the text label that indicates the 'value' of the third Pie segment
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   obj.data[0] + '%',
+                x:      obj.centerx,
+                y:      obj.centery,
+                halign: 'center',
+                valign: 'center',
+                size:   20,
+                bold: true,
+                color:  '#999'
+            });
+
+            // Add the smaller text label that sits under the main percentage label.
+            RGraph.SVG.text({
+                object: obj,
+                parent: obj.svg.all,
+                text:   'Freddy',
+                x:      obj.centerx,
+                y:      obj.centery + 15,
+                halign: 'center',
+                valign: 'top',
+                size:   12,
+                bold: true,
+                color:  '#999'
+            });
+        }).roundRobin({frames: 45});
+
+        // This is the common configuration for the red progress bars
+        conf = {
+            xaxis: false,
+            xaxisScale: false,
+            xaxisScaleMax: 100,
+            xaxisLabels: false,
+            yaxis: false,
+            colors: ['red'],
+            marginTop: 40,
+            marginBottom: 5,
+            backgroundGrid: false
+        };
+
+        
+
+        // These Horizontal Bar charts become the gray backgrounds for the progress bars
+        new RGraph.SVG.HBar({id: 'chart-container4', data: [100], options: conf}).on('beforedraw', function (obj) {var prop = obj.properties;prop.colors = ['gray'];prop.title = 'Overall 16%';prop.titleSize = 22;prop.titleColor = '#666';prop.titleBold = true;}).draw();
+        new RGraph.SVG.HBar({id: 'chart-container5', data: [100], options: conf}).on('beforedraw', function (obj) {obj.properties.colors = ['gray']}).draw();
+        new RGraph.SVG.HBar({id: 'chart-container6', data: [100], options: conf}).on('beforedraw', function (obj) {obj.properties.colors = ['gray']}).draw();
+
+        // These Horizontal Bar charts become the red foregrounds for the progress bars
+        new RGraph.SVG.HBar({id: 'chart-container4', data: [16], options: conf}).grow();
+        new RGraph.SVG.HBar({id: 'chart-container5', data: [88], options: conf}).grow();
+        new RGraph.SVG.HBar({id: 'chart-container6', data: [74], options: conf}).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;style&gt;
+    div#meters{
+        position: relative;
+        background-color: black;
+        height: 425px;
+    }
+
+    div#meters div {
+        float: left;
+        width: 300px;
+        height: 300px;
+    }
+    
+    
+    div#chart-container4,
+    div#chart-container5,
+    div#chart-container6 {
+        position: absolute !important;
+        left: 0 !important;
+        top: 280px !important;
+        width: 900px !important;
+        height: 70px !important;
+    }
+    
+    div#chart-container5 {top: 310px !important;}
+    div#chart-container6 {top: 340px !important;}
+&lt;/style&gt;
+
+&lt;div id="meters"&gt;
+    &lt;div id="chart-container1"&gt;&lt;/div&gt;
+    &lt;div id="chart-container2"&gt;&lt;/div&gt;
+    &lt;div id="chart-container3"&gt;&lt;/div&gt;
+    &lt;div id="chart-container4"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

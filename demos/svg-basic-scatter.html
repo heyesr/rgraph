@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic SVG Scatter chart</title>
+
+    
+    <meta name="description" content="A basic SVG Scatter chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Scatter chart</h1>
+    <p>The Scatter chart is quite versatile and has a few modes of operation which you can read about on <a href="/svg/scatter.html">the Scatter chart documentation page</a>. This particular one is just a regular Scatter chart (though with two datasets) along with a key for telling the datasets apart and a title.</p>
+
+    
+    <div style="width: 650px; height: 350px" id="chart-container"></div>
+
+
+
+
+    <script>
+    
+        // Generate some random data
+        colors = ['red','black', 'green', 'blue','pink'];
+
+        for (var i=0,data=[]; i<colors.length; ++i) {
+            
+            data[i] = [];
+            
+            for (var j=0; j<100; ++j) {
+                data[i].push({
+                    x: RGraph.SVG.random({min:0, max:365}),
+                    y: RGraph.SVG.random({min:0, max:50}),
+                    tooltip: 'A tooltip',
+                    color: colors[i]
+                });
+            }
+        }
+
+
+        scatter = new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: data,
+            options: {
+                key: ['Bob','Jack','Jim','Lou','Bill'],
+                marginTop: 55,
+                xaxisScaleMax: 365,
+                xaxisLabels: ['A','B','C','D','E'],
+                tooltips: 'Dataset: %{dataset}, index: %{index}, sequential index: %{seq}',
+                tooltipsCss: {
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontSize: '20pt'
+                },
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                colors: colors,
+                title: 'This is a Scatter chart with five datasets',
+                titleBold: true,
+                titleItalic:true
+            }
+        }).draw().responsive([
+            {maxWidth: 700, width: 450, height: 250, options: {textSize:10,titleSize: 14}},
+            {maxWidth: null,width: 650, height: 350, options: {textSize:12,titleSize: 20}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 350px; border: 1px solid #ddd" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

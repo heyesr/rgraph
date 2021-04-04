@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.waterfall.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A stacked SVG Waterfall chart using the Bar chart</title>
+    
+    
+    <meta name="description" content="A stacked SVG Waterfall chart using the Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A stacked SVG Waterfall chart using the Bar chart</h1>
+    <p>
+        A waterfall chart where each bar is covered by a stacked Bar chart so it
+        looks like the Waterfall chart is a stacked variation. The chart is using
+        the <code>labelsAbove</code> option which have been given a dark background
+        color in order to make them more readable.
+    </p>
+
+    
+    <div style="width: 800px; height: 300px" id="cc"></div>
+
+
+
+        
+
+    <script>
+        // This is the data for the Waterfall and each of the Bar charts        
+        data = {
+            waterfall: [39,34,33,38],
+            bar: [
+                [26,13],
+                [19,15],
+                [14,19],
+                [19,19]
+            ]
+        };
+
+        /// Create the Waterfall chart
+        waterfall = new RGraph.SVG.Waterfall({
+            id: 'cc',
+            data: RGraph.SVG.arrayClone(data.waterfall),
+            options: {
+                marginLeft: 50,
+                xaxisLabels: ['John','Lewis','Pete','Jill','Total'],
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).draw();
+
+
+        // Create the Bar charts
+        for (var k=0; k<4; ++k) {
+
+            (function (index)
+            {
+                new RGraph.SVG.Bar({
+                    id: 'cc',
+                    data: [RGraph.SVG.arrayClone(data.bar[index])],
+                    options: {
+                        ColorsStroke: 'rgba(0,0,0,0)',
+                        colors: ['red','#eee'],
+                        labelsAbove: true,
+                        labelsAboveBold: true,
+                        labelsAboveBackground: 'gray',
+                        labelsAboveBackgroundPadding: 3,
+                        labelsAboveColor: 'white',
+                        labelsAboveUnitsPost: '%',
+                        textSize:         8,
+                        colorsSequential: true,
+                        backgroundGrid: false,
+                        xaxis:          false,
+                        yaxis:          false,
+                        yaxisScaleMax:       RGraph.SVG.arraySum(data.bar[index]),
+                        yaxisScale:     false,
+                        marginLeft:     waterfall.coords[index].x,
+                        marginRight:    waterfall.width - (waterfall.coords[index].x + waterfall.coords[index].width),
+                        marginTop:      waterfall.coords[index].y,
+                        marginBottom:   waterfall.height - (waterfall.coords[index].y + waterfall.coords[index].height),
+                        marginInner:    -1,
+                        grouping:       'stacked'
+                    }
+                }).draw();
+            })(k);
+        }
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.waterfall.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 800px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

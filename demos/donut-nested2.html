@@ -1,0 +1,116 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.text.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: Another nested Donut/Pie chart</title>
+    
+    
+    <meta name="description" content="Another nested Donut/Pie chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>Another nested Donut/Pie chart</h1>
+
+    <canvas id="cvs" width="475" height="350">[No canvas support]</canvas>
+    
+    <script>
+        centerx = 170;
+        conf1 = {
+            colors: ['#0096A0','#0096A0','#FDA72A','#FDA72A','#0096A0','#0096A0'],
+            variant: 'donut',
+            radius: 125,
+            centerx: centerx,
+            variantDonutWidth: 20,
+            linewidth: 2,
+            exploded: [,25], // Just explode the second segment
+            colorsStroke: 'white',
+            shadow: false
+        };
+        
+        // Make a copy of the configuration
+        conf2 = {};
+        for (var i in conf1) {conf2[i] = conf1[i];}
+        conf2.radius = 104;
+        
+        // Make another copy of the configuration
+        conf3 = {};
+        for (var i in conf1) {conf3[i] = conf1[i];}
+        conf3.radius = 83;
+        
+
+        // Create the first Pie chart
+        pie1 = new RGraph.Pie({
+            id: 'cvs',
+            data: [1,1,1,1,1,1],
+            options: conf1
+        }).roundRobin({frames: 15}, function ()
+        {
+            // Create the second Pie chart
+            var pie2 = new RGraph.Pie({
+                id: 'cvs',
+                data: [1,1,1,1,1,1],
+                options: conf2
+            }).roundRobin({frames: 15}, function ()
+            {
+                // Create the third Pie chart
+                var pie3 = new RGraph.Pie({
+                    id: 'cvs',
+                    data: [1,1,1,1,1,1],
+                    options: conf3
+                }).roundRobin({frames: 15}, function ()
+                {
+                    var text = new RGraph.Drawing.Text({
+                        id: 'cvs',
+                        x: pie1.centerx,
+                        y: pie1.centery,
+                        text: '100%',
+                        options: {
+                            halign: 'center',
+                            valign: 'center',
+                            textSize: 30
+                        }
+                    }).draw();
+                });
+            });        
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.text.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="475" height="350" &gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+</body>
+</html>

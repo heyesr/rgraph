@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.rose.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Rose configured to be in a pattern</title>
+    
+    
+    <meta name="description" content="An SVG Rose configured to be in a pattern" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Rose configured to show a pattern</h1>
+    <p>A simple Rose chart that has been configured with a pattern - the segments are growing in both angle and radius. The colors are set to be sequential.</p>
+
+    
+    <div style="width: 500px; height: 500px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        rose = new RGraph.SVG.Rose({
+            id: 'chart-container',
+            data: [[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7],[8,8],[9,9],[10,10]],
+            options: {
+                variant: 'non-equi-angular',
+                colorsSequential: true,
+                colorsOpacity: 0.35,
+                colors: ['red','green','blue','pink','#0f0','red','orange','yellow','blue','gray']
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 500px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

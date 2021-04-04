@@ -1,0 +1,163 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dynamically updating Line chart</title>
+    
+    
+    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX." />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dynamically updating Line chart</h1>
+    
+    <p>
+        This chart updates itself 20 times per second. New values are appended
+        to the data that's displayed and old values are removed.
+        Careful use is made of local variables - so that the
+        updates are done smoothly.
+    </p>
+    
+    <p>
+        Setting the <code>yaxisScaleMax</code> property to 250 means the scale stays
+        the same - but you can also have a dynamic scale that
+        changes to accommodate the values on the chart.
+    </p>
+
+    
+    <div style="text-align:center; font-weight: bold; font-size: 14pt; width: 600px">
+        Bandwidth used  (Mb/s)<br />
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+        <span style="font-size: 12pt; font-weight: normal">
+            Last 60 seconds
+        </span>
+    </div>
+    
+    <button id="toggleButton">Toggle yaxisScaleMax to 250</button>
+    
+    <script>
+        canvas    = document.getElementById("cvs");
+        obj       = null;
+        data      = [];
+        l         = 0; // The letter 'L' - NOT a one
+        numvalues = 1200;
+        updates   = 0;
+
+        // Pre-pad the arrays with null values
+        for (var i=0; i<numvalues; ++i) {
+            data.push(null);
+        }
+    
+        function drawGraph ()
+        {
+            RGraph.clear(canvas);
+            
+
+            if (!obj) {
+                obj = new RGraph.Line({
+                    id: 'cvs',
+                    data: [],
+                    options: {
+                        colors: ['black'],
+                        linewidth: 0.75,
+                        shadow: false,
+                        tickmarksStyle: null,
+                        marginTop: 10,
+                        marginBottom: 15,
+                        marginRight: 40,
+                        backgroundGridVlines: false,
+                        yaxisPosition: 'right',
+                        yaxisTickmarksCount: 5,
+                        xaxisTickmarksCount: 0,
+                        yaxisLabelsCount: 5,
+                        xaxis: false
+                    }
+                })
+            }
+
+            // Add some data to the data arrays
+            var len          = data.length,
+                lastvalue    = RGraph.isNull(data[len - 1]) ? 26 : data[len - 1],
+                random_value = RGraph.random(lastvalue  - 2,lastvalue  + 2);
+           
+           random_value = Math.max(random_value, 0);
+           random_value = Math.min(random_value, 250);
+
+            data.push(random_value);
+            
+            if (data.length > numvalues) {
+                data = RGraph.arrayShift(data);
+            }
+
+            obj.original_data[0] = data;
+            obj.draw();
+            setTimeout(drawGraph, 16.666);
+
+            updates++;
+            if (updates % 100 === 0) {
+                console.log(updates);
+            }
+        }
+    
+        drawGraph();
+
+
+
+
+
+        /**
+        * Add the toggle button's click function
+        */
+        document.getElementById("toggleButton").onclick = function (e)
+        {
+            if (obj.get('yaxisScaleMax')) {
+                obj.set('yaxisScaleMax', null)
+            } else {
+                obj.set('yaxisScaleMax', 250)
+            }
+        }
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align:center; font-weight: bold; font-size: 14pt; width: 600px"&gt;
+    Bandwidth used  (Mb/s)&lt;br /&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
+    &lt;span style="font-size: 12pt; font-weight: normal"&gt;
+        Last 60 seconds
+    &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;button id="toggleButton"&gt;Toggle yaxisScaleMax to 250&lt;/button&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

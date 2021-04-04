@@ -1,0 +1,98 @@
+    <!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.marker1.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart that also uses the drawing API</title>
+    
+    
+    <meta name="description" content="A Bar chart that uses a marker drawing API object to add a label to the chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A Bar chart that also uses the drawing API</h1>
+    
+    <p>
+        This Bar chart shows a regular bar chart that also makes use of the drawing
+        API to draw a label on the chart.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [4,8,5,3,2],
+            options: {
+                xaxisLabels: ['Fred','John','James','Louis','Pete'],
+                colorsStroke: 'rgba(0,0,0,0)'
+            }
+        }).draw();
+        
+        // Get the X/Y coordinates from the bar chart
+        idx = 2;
+        x   = bar.coords[idx][0] + (bar.coords[idx][2] / 2);
+        y   = bar.coords[idx][1];
+        r   = 15;
+
+        marker = new RGraph.Drawing.Marker1({
+            id: 'cvs',
+            x: x,
+            y: y,
+            radius: r,
+            text: 'A',
+            options: {
+                tooltips: ['James was the winner by a country mile.'],
+                highlightFill: 'rgba(255,0,0,0.2)',
+                textAccessiblePointerevents: false
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamics.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.marker1.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+
+</body>
+</html>

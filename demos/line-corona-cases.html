@@ -1,0 +1,629 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Line charts showing Corona virus cases</title>
+    
+    
+    <meta name="description" content="Lines chart showing Corona virus cases" />
+    
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <div id="covid-data-date" style="display: none">
+        28 Jul 2020	259,022	700	259,722
+        27 Jul 2020	259,022	660	259,682
+        26 Jul 2020	258,964	213	259,177
+        25 Jul 2020	258,609	184	258,793
+        24 Jul 2020	258,221	132	258,353
+        23 Jul 2020	257,610	98	257,708
+        22 Jul 2020	256,946	53	256,999
+        21 Jul 2020	256,223	37	256,260
+        20 Jul 2020	255,567	16	255,583
+        19 Jul 2020	254,834	10	254,844
+        18 Jul 2020	254,452	8	254,460
+        17 Jul 2020	253,991	4	253,995
+        16 Jul 2020	253,456	2	253,458
+        15 Jul 2020	252,818	1	252,819
+        14 Jul 2020	252,097	1	252,098
+        13 Jul 2020	251,454	2	251,456
+        12 Jul 2020	250,772	1	250,773
+        11 Jul 2020	250,427	1	250,428
+        10 Jul 2020	250,012	1	250,013
+        09 Jul 2020	249,492	1	249,493
+        08 Jul 2020	248,811	1	248,812
+        07 Jul 2020	248,150	1	248,151
+        06 Jul 2020	247,597	0	247,597
+        05 Jul 2020	246,944	1	246,945
+        04 Jul 2020	246,405	1	246,406
+        03 Jul 2020	246,019	0	246,019
+        02 Jul 2020	245,473	1	245,474
+        01 Jul 2020	244,915	0	244,915
+        30 Jun 2020	244,306	0	244,306
+        29 Jun 2020	243,735	1	243,736
+        28 Jun 2020	243,067	2	243,069
+        27 Jun 2020	242,657	1	242,658
+        26 Jun 2020	242,156	1	242,157
+        25 Jun 2020	241,513	1	241,514
+        24 Jun 2020	240,876	1	240,877
+        23 Jun 2020	240,147	1	240,148
+        22 Jun 2020	239,419	-1	239,418
+        21 Jun 2020	238,605	0	238,605
+        20 Jun 2020	238,054	0	238,054
+        19 Jun 2020	237,425	0	237,425
+        18 Jun 2020	236,616	-3	236,613
+        17 Jun 2020	235,672	-4	235,668
+        16 Jun 2020	234,762	-6	234,756
+        15 Jun 2020	233,770	-7	233,763
+        14 Jun 2020	232,833	-7	232,826
+        13 Jun 2020	232,086	-7	232,079
+        12 Jun 2020	231,299	-5	231,294
+        11 Jun 2020	230,362	-4	230,358
+        10 Jun 2020	229,442	-3	229,439
+        09 Jun 2020	228,356	-4	228,352
+        08 Jun 2020	227,299	-4	227,295
+        07 Jun 2020	226,306	-3	226,303
+        06 Jun 2020	225,641	-3	225,638
+        05 Jun 2020	224,923	-1	224,922
+        04 Jun 2020	223,907	1	223,908
+        03 Jun 2020	222,770	1	222,771
+        02 Jun 2020	221,535	2	221,537
+        01 Jun 2020	220,190	2	220,192
+        31 May 2020	218,875	5	218,880
+        30 May 2020	217,890	3	217,893
+        29 May 2020	216,889	3	216,892
+        28 May 2020	215,518	2	215,520
+        27 May 2020	213,943	3	213,946
+        26 May 2020	212,327	4	212,331
+        25 May 2020	210,862	6	210,868
+        24 May 2020	209,481	6	209,487
+        23 May 2020	208,284	5	208,289
+        22 May 2020	206,984	5	206,989
+        21 May 2020	205,184	3	205,187
+        20 May 2020	202,909	4	202,913
+        19 May 2020	200,556	2	200,558
+        18 May 2020	197,972	2	197,974
+        17 May 2020	195,754	2	195,756
+        16 May 2020	194,164	0	194,164
+        15 May 2020	192,394	-2	192,392
+        14 May 2020	190,265	-2	190,263
+        13 May 2020	188,055	-2	188,053
+        12 May 2020	185,174	-2	185,172
+        11 May 2020	182,246	-1	182,245
+        10 May 2020	179,176	-1	179,175
+        09 May 2020	177,167	-2	177,165
+        08 May 2020	175,377	-4	175,373
+        07 May 2020	172,755	-5	172,750
+        06 May 2020	169,552	-4	169,548
+        05 May 2020	166,282	1	166,283
+        04 May 2020	163,138	-1	163,137
+        03 May 2020	160,292	1	160,293
+        02 May 2020	157,659	-1	157,658
+        01 May 2020	154,917	0	154,917
+        30 Apr 2020	150,824	-1	150,823
+        29 Apr 2020	146,509	0	146,509
+        28 Apr 2020	141,766	1	141,767
+        27 Apr 2020	137,645	3	137,648
+        26 Apr 2020	133,612	5	133,617
+        25 Apr 2020	130,476	4	130,480
+        24 Apr 2020	127,103	6	127,109
+        23 Apr 2020	122,734	3	122,737
+        22 Apr 2020	118,164	2	118,166
+        21 Apr 2020	113,369	-2	113,367
+        20 Apr 2020	109,398	-5	109,393
+        19 Apr 2020	105,713	-6	105,707
+        18 Apr 2020	102,241	-7	102,234
+        17 Apr 2020	98,117	-5	98,112
+        16 Apr 2020	94,035	-10	94,025
+        15 Apr 2020	89,669	-15	89,654
+        14 Apr 2020	85,433	-7	85,426
+        13 Apr 2020	81,866	-3	81,863
+        12 Apr 2020	78,427	-4	78,423
+        11 Apr 2020	75,478	-2	75,476
+        10 Apr 2020	72,398	1	72,399
+        09 Apr 2020	68,818	2	68,820
+        08 Apr 2020	64,753	5	64,758
+        07 Apr 2020	60,454	0	60,454
+        06 Apr 2020	55,872	0	55,872
+        05 Apr 2020	51,483	1	51,484
+        04 Apr 2020	48,400	1	48,401
+        03 Apr 2020	45,009	5	45,014
+        02 Apr 2020	40,910	-1	40,909
+        01 Apr 2020	36,838	-1	36,837
+        31 Mar 2020	32,739	-1	32,738
+        30 Mar 2020	28,954	0	28,954
+        29 Mar 2020	25,429	0	25,429
+        28 Mar 2020	22,989	-2	22,987
+        27 Mar 2020	20,615	-2	20,613
+        26 Mar 2020	17,953	-1	17,952
+        25 Mar 2020	15,340	0	15,340
+        24 Mar 2020	13,076	0	13,076
+        23 Mar 2020	11,052	-2	11,050
+        22 Mar 2020	9,033	-2	9,031
+        21 Mar 2020	7,824	-2	7,822
+        20 Mar 2020	6,788	-1	6,787
+        19 Mar 2020	5,705	1	5,706
+        18 Mar 2020	4,774	1	4,775
+        17 Mar 2020	3,865	1	3,866
+        16 Mar 2020	3,185	1	3,186
+        15 Mar 2020	2,640	1	2,641
+        14 Mar 2020	2,243	1	2,244
+        13 Mar 2020	1,929	1	1,930
+        12 Mar 2020	1,537	1	1,538
+        11 Mar 2020	1,122	1	1,123
+        10 Mar 2020	769	1	770
+        09 Mar 2020	546	1	547
+        08 Mar 2020	422	1	423
+        07 Mar 2020	372	1	373
+        06 Mar 2020	325	1	326
+        05 Mar 2020	252	1	253
+        04 Mar 2020	205	1	206
+        03 Mar 2020	156	1	157
+        02 Mar 2020	104	0	104
+        01 Mar 2020	65	0	65
+        29 Feb 2020	45	0	45
+        28 Feb 2020	40	0	40
+        27 Feb 2020	29	0	29
+        26 Feb 2020	22	0	22
+        25 Feb 2020	18	0	18
+        24 Feb 2020	13	0	13
+        23 Feb 2020			
+        22 Feb 2020			
+        21 Feb 2020	11	0	11
+        20 Feb 2020			
+        19 Feb 2020			
+        18 Feb 2020			
+        17 Feb 2020			
+        16 Feb 2020			
+        15 Feb 2020			
+        14 Feb 2020			
+        13 Feb 2020			
+        12 Feb 2020			
+        11 Feb 2020	10	0	10
+        10 Feb 2020			
+        09 Feb 2020	9	0	9
+        08 Feb 2020	8	0	8
+        07 Feb 2020			
+        06 Feb 2020			
+        05 Feb 2020	4	0	4
+        04 Feb 2020			
+        03 Feb 2020	3	0	3
+        02 Feb 2020			
+        01 Feb 2020			
+        31 Feb 2020			
+        30 Jan 2020	2	0	2
+    </div>
+
+
+
+
+    <div id="covid-data-daily" style="display: none">
+        28 Jul 2020	0	40	40
+        27 Jul 2020	58	447	505
+        26 Jul 2020	355	29	384
+        25 Jul 2020	388	52	440
+        24 Jul 2020	611	34	645
+        23 Jul 2020	664	45	709
+        22 Jul 2020	723	16	739
+        21 Jul 2020	656	21	677
+        20 Jul 2020	733	6	739
+        19 Jul 2020	382	2	384
+        18 Jul 2020	461	4	465
+        17 Jul 2020	535	2	537
+        16 Jul 2020	638	1	639
+        15 Jul 2020	721	0	721
+        14 Jul 2020	643	-1	642
+        13 Jul 2020	682	1	683
+        12 Jul 2020	345	0	345
+        11 Jul 2020	415	0	415
+        10 Jul 2020	520	0	520
+        09 Jul 2020	681	0	681
+        08 Jul 2020	661	0	661
+        07 Jul 2020	553	1	554
+        06 Jul 2020	653	-1	652
+        05 Jul 2020	539	0	539
+        04 Jul 2020	386	1	387
+        03 Jul 2020	546	-1	545
+        02 Jul 2020	558	1	559
+        01 Jul 2020	609	0	609
+        30 Jun 2020	571	-1	570
+        29 Jun 2020	668	-1	667
+        28 Jun 2020	410	1	411
+        27 Jun 2020	501	0	501
+        26 Jun 2020	643	0	643
+        25 Jun 2020	637	0	637
+        24 Jun 2020	729	0	729
+        23 Jun 2020	728	2	730
+        22 Jun 2020	814	-1	813
+        21 Jun 2020	551	0	551
+        20 Jun 2020	629	0	629
+        19 Jun 2020	809	3	812
+        18 Jun 2020	944	1	945
+        17 Jun 2020	910	2	912
+        16 Jun 2020	992	1	993
+        15 Jun 2020	937	0	937
+        14 Jun 2020	747	0	747
+        13 Jun 2020	787	-2	785
+        12 Jun 2020	937	-1	936
+        11 Jun 2020	920	-1	919
+        10 Jun 2020	1,086	1	1,087
+        09 Jun 2020	1,057	0	1,057
+        08 Jun 2020	993	-1	992
+        07 Jun 2020	665	0	665
+        06 Jun 2020	718	-2	716
+        05 Jun 2020	1,016	-2	1,014
+        04 Jun 2020	1,137	0	1,137
+        03 Jun 2020	1,235	-1	1,234
+        02 Jun 2020	1,345	0	1,345
+        01 Jun 2020	1,315	-3	1,312
+        31 May 2020	985	2	987
+        30 May 2020	1,001	0	1,001
+        29 May 2020	1,371	1	1,372
+        28 May 2020	1,575	-1	1,574
+        27 May 2020	1,616	-1	1,615
+        26 May 2020	1,465	-2	1,463
+        25 May 2020	1,381	0	1,381
+        24 May 2020	1,197	1	1,198
+        23 May 2020	1,300	0	1,300
+        22 May 2020	1,800	2	1,802
+        21 May 2020	2,275	-1	2,274
+        20 May 2020	2,353	2	2,355
+        19 May 2020	2,584	0	2,584
+        18 May 2020	2,218	0	2,218
+        17 May 2020	1,590	2	1,592
+        16 May 2020	1,770	2	1,772
+        15 May 2020	2,129	0	2,129
+        14 May 2020	2,210	0	2,210
+        13 May 2020	2,881	0	2,881
+        12 May 2020	2,928	-1	2,927
+        11 May 2020	3,070	0	3,070
+        10 May 2020	2,009	1	2,010
+        09 May 2020	1,790	2	1,792
+        08 May 2020	2,622	1	2,623
+        07 May 2020	3,203	-1	3,202
+        06 May 2020	3,270	-5	3,265
+        05 May 2020	3,144	2	3,146
+        04 May 2020	2,846	-2	2,844
+        03 May 2020	2,633	2	2,635
+        02 May 2020	2,742	-1	2,741
+        01 May 2020	4,093	1	4,094
+        30 Apr 2020	4,315	-1	4,314
+        29 Apr 2020	4,743	-1	4,742
+        28 Apr 2020	4,121	-2	4,119
+        27 Apr 2020	4,033	-2	4,031
+        26 Apr 2020	3,136	1	3,137
+        25 Apr 2020	3,373	-2	3,371
+        24 Apr 2020	4,369	3	4,372
+        23 Apr 2020	4,570	1	4,571
+        22 Apr 2020	4,795	4	4,799
+        21 Apr 2020	3,971	3	3,974
+        20 Apr 2020	3,685	1	3,686
+        19 Apr 2020	3,472	1	3,473
+        18 Apr 2020	4,124	-2	4,122
+        17 Apr 2020	4,082	5	4,087
+        16 Apr 2020	4,366	5	4,371
+        15 Apr 2020	4,236	-8	4,228
+        14 Apr 2020	3,567	-4	3,563
+        13 Apr 2020	3,439	1	3,440
+        12 Apr 2020	2,949	-2	2,947
+        11 Apr 2020	3,080	-3	3,077
+        10 Apr 2020	3,580	-1	3,579
+        09 Apr 2020	4,065	-3	4,062
+        08 Apr 2020	4,299	5	4,304
+        07 Apr 2020	4,582	0	4,582
+        06 Apr 2020	4,389	-1	4,388
+        05 Apr 2020	3,083	0	3,083
+        04 Apr 2020	3,391	-4	3,387
+        03 Apr 2020	4,099	6	4,105
+        02 Apr 2020	4,072	0	4,072
+        01 Apr 2020	4,099	0	4,099
+        31 Mar 2020	3,785	-1	3,784
+        30 Mar 2020	3,525	0	3,525
+        29 Mar 2020	2,440	2	2,442
+        28 Mar 2020	2,374	0	2,374
+        27 Mar 2020	2,662	-1	2,661
+        26 Mar 2020	2,613	-1	2,612
+        25 Mar 2020	2,264	0	2,264
+        24 Mar 2020	2,024	2	2,026
+        23 Mar 2020	2,019	0	2,019
+        22 Mar 2020	1,209	0	1,209
+        21 Mar 2020	1,036	-1	1,035
+        20 Mar 2020	1,083	-2	1,081
+        19 Mar 2020	931	0	931
+        18 Mar 2020	909	0	909
+        17 Mar 2020	680	0	680
+        16 Mar 2020	545	0	545
+        15 Mar 2020	397	0	397
+        14 Mar 2020	314	0	314
+        13 Mar 2020	392	0	392
+        12 Mar 2020	415	0	415
+        11 Mar 2020	353	0	353
+        10 Mar 2020	223	0	223
+        09 Mar 2020	124	0	124
+        08 Mar 2020	50	0	50
+        07 Mar 2020	47	0	47
+        06 Mar 2020	73	0	73
+        05 Mar 2020	47	0	47
+        04 Mar 2020	49	0	49
+        03 Mar 2020	52	1	53
+        02 Mar 2020	39	0	39
+        01 Mar 2020	20	0	20
+        29 Feb 2020	5	0	5
+        28 Feb 2020	11	0	11
+        27 Feb 2020	7	0	7
+        26 Feb 2020	4	0	4
+        25 Feb 2020	5	0	5
+        24 Feb 2020	2	0	2
+        23 Feb 2020			
+        22 Feb 2020			
+        21 Feb 2020	1	0	1
+        20 Feb 2020			
+        19 Feb 2020			
+        18 Feb 2020			
+        17 Feb 2020			
+        16 Feb 2020			
+        15 Feb 2020			
+        14 Feb 2020			
+        13 Feb 2020			
+        12 Feb 2020			
+        11 Feb 2020	1	0	1
+        10 Feb 2020			
+        09 Feb 2020	1	0	1
+        08 Feb 2020	4	0	4
+        07 Feb 2020			
+        06 Feb 2020			
+        05 Feb 2020	1	0	1
+        04 Feb 2020			
+        03 Feb 2020	1	0	1
+        02 Feb 2020			
+        01 Feb 2020			
+        31 Jan 2020			
+        30 Jan 2020	2	0	2
+    </div>
+    
+        <div id="covid-data-sex" style="display: none">
+            0 to 4	865	753
+            5 to 9	945	877
+            10 to 14	1,075	1,040
+            15 to 19	1,811	2,704
+            20 to 24	4,102	7,984
+            25 to 29	6,414	11,615
+            30 to 34	7,063	10,964
+            35 to 39	6,607	9,633
+            40 to 44	6,767	9,971
+            45 to 49	7,802	11,451
+            50 to 54	8,657	12,509
+            55 to 59	8,650	11,236
+            60 to 64	7,462	7,742
+            65 to 69	6,218	4,638
+            70 to 74	6,973	5,111
+            75 to 79	7,773	6,460
+            80 to 84	9,018	8,956
+            85 to 89	7,962	10,461
+            90+	5,762	11,800
+    </div>
+
+    <h1>Line charts showing Corona virus cases</h1>
+
+
+    <div style="display: inline-block; margin: 35px">
+        <canvas id="cvs" width="1000" height="300">[No canvas support]</canvas>
+    </div>
+
+
+    <div style="display: inline-block; margin: 35px">
+        <canvas id="cvs-daily" width="800" height="250">[No canvas support]</canvas>
+    </div>
+
+
+    <div style="display: inline-block; margin: 35px">
+        <canvas id="cvs-sex" width="800" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.CSV('id:covid-data-date', function (csv)
+        {
+        
+            var data   = [];
+            var labels = [];
+
+            for (var i=0,row; i<csv.numrows; i++) {
+                row = csv.getRow(i);
+                data.push(Number(String(row[3]).replace(/,/,'')));
+                
+                if (i % 12 === 0) {
+                    labels.push(row[0]);
+                }
+            }
+            
+            data.reverse();
+            labels.reverse();
+
+
+            var line = new RGraph.Line({
+                id: 'cvs',
+                data: data,
+                options: {
+                    title: 'Total number of lab-confirmed cases in England by specimen date',
+                    titleX: 35,
+                    titleHalign: 'left',
+                    titleBold: true,
+                    titleItalic: true,
+                    yaxisLabelsCount: 6,
+                    xaxisLabels: labels,
+                    xaxisLabelsAngle: 45,
+                    xaxisLabelsOffsety: 5,
+                    xaxis: false,
+                    yaxis: false,
+                    marginInner: 1,
+                    backgroundGridHlinesCount: 6,
+                    backgroundGridVlinesCount: labels.length -1 ,
+                    shadow: false,
+                    colors: ['#62A3B3'],
+                    linewidth: 5
+                }
+            }).draw();
+        },'	');
+
+
+
+
+
+        new RGraph.CSV('id:covid-data-daily', function (csv)
+        {
+            var data   = [];
+            var labels = [];
+            var ravg   = [];
+            var tot    = 0;
+
+            for (var i=0,row; i<csv.numrows; i++) {
+                row = csv.getRow(i);
+                num = Number(String(row[3]).replace(/,/,''));
+                
+                data.push(num);
+
+                if (i % 12 === 0) {
+                    labels.push(row[0]);
+                }
+            }
+            
+            data.reverse();
+            labels.reverse();
+            
+            //
+            // Calculate the rolling average
+            //
+            for (var i=0; i<data.length; i++) {
+                num = data[i];
+                tot += num;
+                ravg.push(tot / (i + 1));
+            }
+
+
+            var bar = new RGraph.Bar({
+                id: 'cvs-daily',
+                data: data,
+                options: {
+                    xaxisLabels: labels,
+                    xaxisLabelsAngle: 45,
+                    xaxisLabelsPosition: 'edge',
+                    xaxisLabelsOffsety: 5,
+                    marginInner: 1,
+                    backgroundGridVlinesCount: labels.length - 1,
+                    backgroundGridAutofitAlign: false,
+                    colors: ['#62A3B3'],
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisLabelsColor: '#62A3B3',
+                    key: ['Daily cases','Average daily cases'],
+                    keyLabelsOffsety: 2,
+                    keyColors: ['#62A3B3','#300'],
+                    keyPosition: 'margin'
+                }
+            }).draw();
+            
+            var line = new RGraph.Line({
+                id: 'cvs-daily',
+                data: ravg,
+                options: {
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisPosition: 'right',
+                    yaxisLabelsColor: '#300',
+                    backgroundGrid: false,
+                    shadow: false,
+                    colors: ['#300']
+                }
+            }).draw();
+
+        },'	');
+        
+        
+        
+
+        new RGraph.CSV('id:covid-data-sex', function (csv)
+        {
+            var data   = [],
+                labels = [];
+                     
+            for (var i=0,row; i<csv.numrows; i++) {
+                row = csv.getRow(i);
+
+                data.push([
+                    Number(String(row[1]).replace(/,/, '')),
+                    Number(String(row[2]).replace(/,/, ''))
+                ]);
+                labels.push(row[0]);
+            }
+
+            bar = new RGraph.Bar({
+                id: 'cvs-sex',
+                data: data,
+                options: {
+                    backgroundGridVlines: false,
+                    xaxisLabels: labels,
+                    xaxisLabelsAngle: 45,
+                    xaxisLabelsOffsety: 5,
+                    xaxis: false,
+                    yaxis: false,
+                    colors: ['#5C1955','#62A3B3'],
+                    tooltips: '<b>%{prop:xaxisLabels[%{group}]}</b> %{key} ',
+                    tooltipsFormattedKeyLabels: ['Male','Female'],
+                    tooltipsFormattedKeyColorsCss: {
+                        border: '1px solid #ccc'
+                    },
+                    tooltipsEvent: 'mousemove',
+                    tooltipsCss: {
+                        backgroundColor: 'black',
+                        color: 'white',
+                        textAlign: 'left'
+                    },
+                    tooltipsPointer: true,
+                    tooltipsPointerCss: {
+                    },
+                    tooltipsPositionStatic: true
+                }
+            }).draw();
+        },'	');
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; margin: 35px"&gt;
+    &lt;canvas id="cvs" width="1000" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

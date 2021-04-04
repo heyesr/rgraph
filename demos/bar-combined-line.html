@@ -1,0 +1,134 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A combined Bar and Line chart</title>
+    
+    
+    <meta name="description" content="A combined Bar and Line chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A combined Bar and Line chart</h1>
+
+
+    <canvas id="cvs" width="1000" height="350">[No canvas support]</canvas>
+
+    <script>
+        // Create the data and colors
+        barData  = [];
+        lineData = [];
+        colors   = [];
+
+        for (var i=0; i<60; ++i) {
+            if (i < 30) {
+                barData[i] = RGraph.random(-100, 0);
+                colors[i] = '#318CBD';
+            } else {
+                barData[i] = RGraph.random(0, 100);
+                colors[i] = '#BD3929';
+            }
+            
+            lineData[i] = (((i/60) * 200) - 100) * RGraph.random(0, 10);
+        }
+
+
+
+        var bar = new RGraph.Bar({
+            id: 'cvs',
+            data: barData,
+            options: {
+                shadowBlur: 1,
+                shadowOffsetx: 1,
+                shadowOffsety: 1,
+                marginInner: 1,
+                marginLeft: 35,
+                colors: colors,
+                colorsSequential: true,
+                xaxisPosition: 'center',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                yaxisScaleMax: 100,
+                marginBottom: 50,
+                colorsStroke: 'rgba(0,0,0,0)',
+                xaxisLabelsOffset: 8,
+                xaxisLabels: [
+                    '1987', '\n1988','1989','\n1990','1991',
+                    '\n1992', '1993','\n1994','1995','\n1996',
+                    '1997', '\n1998','1999','\n2000','2001',
+                    '\n2002','2003','\n2004','2005','\n2006',
+                    '2007','\n2008','2009','\n2010','2011',
+                    '\n2012','2013','\n2014','2015','\n2016'
+                ]
+            }
+        });
+
+        // Now add the line chart
+        var line = new RGraph.Line({
+            id: 'cvs',
+            data: lineData,
+            options: {
+                colors: ['#FFD600'],
+                xaxisPosition: 'center',
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                linewidth: 3,
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowBlur: 5,
+                tickmarksStyle: false,
+                marginLeft: 35,
+                combinedEffect: 'trace',
+                combinedEffectOptions: '{frames: 30}'
+            }
+        });
+        
+        // Create the combined class
+        combo = new RGraph.CombinedChart([bar, line]);
+        combo.draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+
+
+
+</body>
+</html>

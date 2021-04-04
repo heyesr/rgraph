@@ -1,0 +1,92 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped Horizontal Bar chart</title>
+    
+    
+    
+    <meta name="description" content="This is a Horizontal Bar chart that shows grouped data" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A grouped Horizontal Bar chart</h1>
+    
+    <p>
+        This Horizontal Bar chart demonstrates the <code>marginInner</code> and
+        <code>marginInnerGrouped</code> settings. The <code>marginInner</code> is either side of the group
+        of bars whilst <code>marginInnerGrouped</code> is between the bars in that group.
+    </p>
+    
+    <p>
+        It also demonstrates inverted highlighting.
+    </p>
+
+   <canvas id="cvs" width="600" height="600">[No canvas support]</canvas>
+
+   <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[8,6,4,3], [4,8,3,5],[4,9,9,7],[6,5,3,4],[3,7,8,8]],
+            options: {
+                grouping: 'grouped',
+                marginInner: 20,
+                yaxisLabels: ['Charlie','Jake','Luis','Jack','Bernie'],
+                key: ['Monday','Tuesday','Wednesday','Thursday'],
+                keyPosition: 'margin',
+                keyColors: ['#3366CC','#DC3912','#FF9900','#109618'],
+                colors: ['#3366CC','#DC3912','#FF9900','#109618'],
+                textSize: 16,
+                xaxis: false,
+                highlightStyle: 'invert',
+                highlightFill: 'rgba(255,255,255,0.75',
+                highlightStroke: 'rgba(255,255,255,0.75',
+                tooltipsCss: {
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontSize: '18pt'
+                },
+                tooltips: '%{property:key[%{index}]}: %{value}%'
+            }
+        }).draw();
+   </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="600"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

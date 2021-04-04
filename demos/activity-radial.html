@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.activity.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: The Activity meter configured as a Radial Progress meter</title>
+    
+    
+    <meta name="description" content="The Activity meter configured as a Radial Progress meter" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>The Activity meter configured as a Radial Progress meter</h1>
+
+    <br />
+    <br />
+
+    <div>
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        data = [28,19,39,45,48,53,26,35,45,15,13,43];
+        labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        activity = new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: data,
+            options: {
+                marginInner: 3,
+                backgroundColor: 'transparent',
+                backgroundGrid: true,
+                backgroundGridColor: '#ddd',
+                backgroundGridRadials: false,
+                backgroundRings: false,
+                colors: ['#0a0'],
+                labels: labels,
+                labelsSize: 8,
+                labelsItalic: true,
+                labelsColor: '##333',
+                ends: 'straight'
+            }
+        }).grow();
+
+        setInterval(function ()
+        {
+            activity.value[0]  += RGraph.random(-3, 3);
+            activity.value[1]  += RGraph.random(-3, 3);
+            activity.value[2]  += RGraph.random(-3, 3);
+            activity.value[3]  += RGraph.random(-3, 3);
+            activity.value[4]  += RGraph.random(-3, 3);
+            activity.value[5]  += RGraph.random(-3, 3);
+            activity.value[6]  += RGraph.random(-3, 3);
+            activity.value[7]  += RGraph.random(-3, 3);
+            activity.value[8]  += RGraph.random(-3, 3);
+            activity.value[9]  += RGraph.random(-3, 3);
+            activity.value[10] += RGraph.random(-3, 3);
+            activity.value[11] += RGraph.random(-3, 3);
+            
+            activity.grow();
+        }, 2500);
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="500"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

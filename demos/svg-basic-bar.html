@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A basic SVG Bar chart</title>
+    
+    
+    <meta name="description" content="A basic SVG Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic (and responsive) SVG Bar chart</h1>
+    <p>
+        A demonstration of a simple Bar chart. The Bar chart does however have a
+        title, subtitle and multi-line labels. The multiple lines are achieved using
+        the carriage return/newline string: <code>\r\n</code> As you can see you can have
+        multiple new lines in your text if you wish.
+    </p>
+
+    
+    <div style="width: 750px; height: 300px; display: inline-block" id="chart-container"></div>
+        
+    <script>
+        function getLabel (index)
+        {
+            var text = bar.properties['xaxisLabels'][index];
+
+            return '<b>' + text.replace(new RegExp('day.*', 'is'), 'day').trim() + '</b>';
+        }
+
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [8,5,9,3,5,2,4],
+            options: {
+                marginTop: 45,
+                tooltips: '%{function:getLabel(%{group})}',
+                title: 'A basic Bar chart',
+                titleSubtitle: 'A chart showing the daily totals for last week',
+                titleSubtitleItalic: true,
+                colors: ['red','pink'],
+                shadowOpacity: 0.2
+            }
+        }).draw().responsive([
+            {maxWidth: 750,  width: 400, height: 200, options: {textSize: 8, marginInner: 10,xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], xaxis: false, yaxis: false, shadow: false,marginBottom:25}},
+            {maxWidth: null, width: 750, height: 300, options: {textSize: 12,marginInner: 20,xaxisLabels: ['Monday\nresults','Tuesday\nresults','Wednesday\nresults\n (winner!)','Thursday\nresults','Friday\r\nresults','Saturday\nresults','Sunday\nresults'], xaxis: true, yaxis: true, shadow: true,marginBottom:75}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

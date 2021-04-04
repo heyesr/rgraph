@@ -1,0 +1,82 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: An adjustable Gantt chart with only one bar adjustable</title>
+    
+    
+    
+    <meta name="description" content="An adjustable Gantt chart with only one bar adjustable" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An adjustable Gantt chart with only one bar adjustable</h1>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+        data = [
+            [{start: 0, duration: 31, complete: 67, label: 'Richard'}, {start: 59, duration: 28, complete: 67}],
+            {start: 0,  duration: 28, complete: 50, label: 'Rachel'},
+            {start: 12, duration: 28, complete: 45, label: 'Fred'},
+            [{start: 0, duration: 14, complete: 0, label: 'Barney'}, {start: 59, duration: 21, complete: 5}],            
+            {start: 46, duration: 31,  complete: 92, label: 'Paul', color: 'red'},
+            {start: 80, duration: 21,  complete: 46, label: 'Harry'},
+            {start: 94, duration: 17,  complete: 84, label: 'Shane'},
+            {start: 34, duration: 14,  complete: 32, label: 'Kyle'},
+            {start: 64, duration: 14,  complete: 28, label: 'Cynthia'},
+            {start: 13, duration: 61,  complete: 74, label: 'Mabel'},
+            {start: 84, duration: 31,  complete: 16, label: 'Paul'},
+            {start: 80, duration: 22,  complete: 45, label: 'Kiffen'},
+            {start: 0,  duration: 115, complete: 50, label: 'John'}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 120,
+                labelsPercent: true,
+                backgroundGridVlinesCount: 4,
+                adjustable: true,
+                adjustableOnly: [,,,,,,true]
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

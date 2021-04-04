@@ -1,0 +1,162 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="../css/animations.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="A demonstration of how you can add CSS3 animations to your charts" />
+    
+    <title>RGraph demo: CSS3 animations</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG chart using CSS3 animations</h1>
+    <p>RGraph includes a CSS3 based animation library that you can use to animate your chart. CSS3 animation is commonly smoother and faster than JavaScript based animation (eg jQuery). You can use the selector below to browse through the animations that are available.</p>
+
+    <div id="chart-container" style="width: 600px; height: 250px; display: inline-block"></div><br />
+
+    <select id="animation_selector" onchange="selectAnimation(this.value)" style="font-size: 24pt; padding: 5px;">
+        
+        <option selected>Select effect...</option>
+        
+        <option>flash</option>
+        <option>bounce</option>
+        <option>shake</option>
+        <option>tada</option>
+        <option>swing</option>
+        <option>wobble</option>
+        <option>wiggle</option>
+        <option>pulse</option>
+        <option>flip</option>
+        <option>flipInX</option>
+        <option>flipOutX</option>
+        <option>flipInY</option>
+        <option>flipOutY</option>
+        
+        <option></option>
+
+        <option>fadeIn</option>
+        <option>fadeInUp</option>
+        <option>fadeInDown</option>
+        <option>fadeInLeft</option>
+        <option>fadeInRight</option>
+        <option>fadeInUpBig</option>
+        <option>fadeInDownBig</option>
+        <option>fadeInLeftBig</option>
+        <option>fadeInRightBig</option>
+        
+        <option></option>
+
+        <option>fadeOut</option>
+        <option>fadeOutUp</option>
+        <option>fadeOutDown</option>
+        <option>fadeOutLeft</option>
+        <option>fadeOutRight</option>
+        <option>fadeOutUpBig</option>
+        <option>fadeOutDownBig</option>
+        <option>fadeOutLeftBig</option>
+        <option>fadeOutRightBig</option>
+        
+        <option></option>
+
+        <option>bounceIn</option>
+        <option>bounceInDown</option>
+        <option>bounceInUp</option>
+        <option>bounceInLeft</option>
+        <option>bounceInRight</option>
+
+        <option></option>
+    
+        <option>bounceOut</option>
+        <option>bounceOutDown</option>
+        <option>bounceOutUp</option>
+        <option>bounceOutLeft</option>
+        <option>bounceOutRight</option>
+
+        <option></option>
+    
+        <option>rotateIn</option>
+        <option>rotateInDownLeft</option>
+        <option>rotateInDownRight</option>
+        <option>rotateInUpLeft</option>
+        <option>rotateInUpRight</option>
+
+        <option></option>
+
+        <option>rotateOut</option>
+        <option>rotateOutDownLeft</option>
+        <option>rotateOutDownRight</option>
+        <option>rotateOutUpLeft</option>
+        <option>rotateOutUpRight</option>
+
+        <option></option>
+
+        <option>lightSpeedIn</option>
+        <option>lightSpeedOut</option>
+
+        <option></option>
+
+        <option>hinge</option>
+        <option>rollIn</option>
+        <option>rollOut</option>
+        <option>expand</option>
+        <option>contract</option>
+    </select>
+    
+    <script>
+        var bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [4,5,3,8,4,9,6],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thur','Fri','Sat','Sun'],
+                marginInner: 20
+            }
+        }).draw();
+
+
+        /**
+        * The swap function
+        */
+        function selectAnimation(effect)
+        {
+            var div = document.getElementById('chart-container');
+
+            div.className = '';
+            div.className = 'animated ' + effect;
+        }
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="chart-container" style="600px; height: 250px; display: inline-block"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

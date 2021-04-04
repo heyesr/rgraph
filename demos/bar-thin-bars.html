@@ -1,0 +1,109 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.dynamic.js"></script>
+    <script src="../libraries/RGraph.bar.js"></script>
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.common.tooltips.js"></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart with thin bars</title>
+    <meta name="description" content="A guide to get thin bar chart bars. This is done by altering the marginInner setting - increasing it gives thinner bars and vice-versa" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <style>
+        button,
+        input {
+            font-size: 18pt;
+            padding: 3px;
+        }
+        
+        button:hover {
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>A Bar chart with thin bars</h1>
+
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+        
+        <div style="position: relative; left: 25px">
+            <input type="text" id="marginInner" value="5" />
+            <button onclick="bar.set('marginInner', Number(document.getElementById('marginInner').value)); RGraph.clear(bar.canvas); bar.draw();">Set marginInner</button>
+        </div>
+    </div>
+
+    <p>
+        It's quite easy to get thin bars in your Bar chart by using the
+        <code>marginInner</code> property. This property doesn't
+        directly specify the width of the bar, but specifies the amount
+        of space each side of the bar. If you set it to 0 to
+        start with and gradually increase it you can more easily see the
+        effect that it has.
+    </p>
+    
+    <p>
+        This also applies to the Horizontal Bar chart and the
+        <code>vmargin</code> property.
+    </p>
+    
+    <p>
+        <b>Warning:</b>
+        If you set this property too high it can make the width of the bars
+        negative. The Bars may appear to be OK but dynamic
+        features such as tooltips will cease to work.
+    </p>
+
+    <br clear="all" />
+
+    
+    <script>
+        // This global variable is necessary
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [4,8,5,6,3,5,8],
+            options: {
+                marginInner: 5,
+                textSize: 14,
+                yaxis: false,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                backgroundGridHlines: false,
+                backgroundGridBorder: false
+            }
+        }).wave();
+    </script>
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
+    
+    &lt;div style="position: relative; left: 25px"&gt;
+        &lt;input type="text" id="marginInner" value="5" /&gt;
+        &lt;button onclick="bar.set('marginInner', Number(document.getElementById('marginInner').value)); RGraph.clear(bar.canvas); bar.draw();"&gt;Set marginInner&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+</body>
+</html>

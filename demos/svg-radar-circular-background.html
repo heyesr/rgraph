@@ -1,0 +1,77 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.radar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Radar chart using a circular background</title>
+    <meta name="description" content="An SVG Radar chart using a circular background" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Radar chart using a circular background</h1>
+    <p>Here we have a Radar chart that has been set to have a circular background grid instead of an angular one. Other than that it's a pretty standard Radar chart.</p>
+
+    
+    <div style="width: 600px; height: 500px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: [8,4,7,6,5,8,9,8,6,4,8,7],
+            options: {
+                colors: ['red'],
+                tickmarksStyle: 'circle',
+                linewidth: 3,
+                labels: [
+                    'Rhodd',
+                    'Gareth',
+                    'Jeffory',
+                    'Gordon',
+                    'Edgar',
+                    'Lawrence',
+                    'Oliver',
+                    'Peter',
+                    'Lucifer',
+                    'Kenneth',
+                    'Jarvis',
+                    'Quentin'
+                ],
+                scaleColor: '#999',
+                backgroundGridPoly: false
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.radar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 500px; height: 400px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart with different linewidths</title>
+    
+    
+    <meta name="description" content="A Line chart with different linewidths" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart with different linewidths</h1>
+
+    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [31,25,23,41,35,36,56,66,46,13,32,41],
+                [45,12,83,53,52,54,12,32,65,98,87,86]
+            ],
+            options: {
+                filledColors: 'rgba(255,0,0,0.3)',
+                colors: ['gray', 'green'],
+                linewidth: [7, 3],
+                title: 'Multiple lines with different linewidths',
+                titleSize: 16,
+                titleBold: true,
+                key: ['Thursday', 'Wednesday'],
+                keyBackground: 'rgba(255,255,255,0.8)',
+                keyRounded: false,
+                xaxisLabels: ['Jobe', 'Violet', 'Olga', 'Kev', 'Bob', 'Lynn', 'Pete', 'Lou', 'John', 'Hope', 'Fred', 'John'],
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowBlur: 15,
+                shadowColor: ['gray','green'],
+                xaxis: false,
+                yaxis: false,
+                yaxisPosition: 'right',
+                marginLeft: 5,
+                marginRight: 35,
+                marginTop: 35,
+                marginBottom: 35
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="900" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

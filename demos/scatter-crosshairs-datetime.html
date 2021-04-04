@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart with the crosshairs showing datetime values</title>
+    
+    
+    
+    <meta name="description" content="A Scatter chart with the crosshairs showing datetime values" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+
+    <h1>A Scatter chart with the crosshairs showing datetime values</h1>
+
+    <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    
+    <script>
+        data = [
+            ['2016-01-01',68],
+            ['2016-02-28',65],
+            ['2016-03-19',54],
+            ['2016-04-12',62],
+            ['2016-05-13',45],
+            ['2016-06-02',21],
+            ['2016-06-02',21],
+            ['2016-07-02',21],
+            ['2016-08-02',21],
+            ['2016-09-02',21],
+            ['2016-11-02',21],
+            ['2016-12-02',21]
+        ];
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                marginLeft: 50,
+                yaxisScaleUnitsPost: 'Kg',
+                xaxisScaleMin: '2016-01-01',
+                xaxisScaleMax: '2016-12-31',
+                line: true,
+                crosshairs: true,
+                crosshairsSnap: true,
+                crosshairsCoords: true,
+                crosshairsCoordsLabelsX: 'Date',
+                crosshairsCoordsLabelsY: 'Weight',
+                crosshairsCoordsFormatterY: function (args)
+                {
+                    return args.value + 'Kg';
+                },
+                crosshairsCoordsFormatterX: function (args)
+                {
+                    var obj    = args.object,
+                        coord  = args.value,
+                        months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    
+                    var d = new Date(coord),
+                        date  = (function (date)
+                        {
+                            if (date === 1) {
+                                date = '1st';
+                            } else if (date === 2) {
+                                date = '2nd';
+                            } else if (date === 3) {
+                                date = '3rd';
+                            } else {
+                                
+                                date = date + 'th';
+                            }
+                            
+                            return date;
+
+                        })(d.getDate()),
+                        month = months[d.getMonth()],
+                        year  = d.getFullYear();
+                    
+                    return '{1} {2} {3}'.format(
+                        date,
+                        month,
+                        year
+                    );
+                },
+                xaxisLabels: ['Q1','Q2','Q3','Q4']
+            }
+        }).draw();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

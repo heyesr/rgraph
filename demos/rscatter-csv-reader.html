@@ -1,0 +1,142 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.rscatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Radial Scatter chart using the CSV reader</title>
+
+    
+    
+    <meta name="description" content="A Radial Scatter chart using the CSV reader. The RGraph CSV reader reads remote files or an embedded CSV string." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A Radial Scatter chart using the CSV reader</h1>
+
+    <br />
+
+    <script>
+        if (!location.host) {
+            document.write(`
+<div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+    <b>Note:</b>
+    For browser security reasons the AJAX demos don't work offline.
+    You can view the demos on the RGraph website here:
+    <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+</div>`);
+        }
+    </script>
+
+    <canvas id="cvs" width="500" height="450" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Here's a Radial Scatter chart - a circular Scatter chart. It's a variation on the regular Scatter
+        chart that might suit your data better than the traditional style of Scatter. Radial Scatter charts
+        are only available on canvas - not SVG.
+    </p>
+    
+    <p>
+        Each point has two values - the angle of the point in degrees and the absolute magnitude. If
+        your values for the angle are initially in a relative format then you would need to convert
+        them first. You could do that with the following example code:
+    </p>
+    
+    <pre class="code">
+arr = [[10,10],[5,10]];
+max = 10;
+for (var i=0; i&lt;arr.length; i++) {
+    arr[i][0] = arr[i][0] / max * 360;
+}
+console.log(arr);
+</pre>
+
+    <p>
+        All this snippet does is convert the data to proportional values based on the maximum value in the
+        array - so you would get an array of <code>[360, 180]</code> So one point would be placed on the north
+        axis and the other point would be placed on the south axis.
+    </p>
+    
+    <p>
+        The only other configuration is the labels being changed from being on all four axes to just the
+        'north' axis.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Create the CSV reader with the URL of the CSV file and the
+        // callback function.
+        new RGraph.CSV('/sample.csv', function (csv)
+        {
+            // Fetch the two rows of data from the CSV file, starting at the
+            // second column (the numbers start at zero)
+
+            // Fetch the first row of the CSV file
+            var row1 = csv.getRow(0, 1);
+            
+            // Fetch the second row of the CSV file
+            var row2 = csv.getRow(1, 1);
+            
+            // Create an empty array that will hold the data
+            var data = [];
+
+            // Now fill the data array with the data that was retrieved from
+            // the CSV file
+            for (var i=0; i<row1.length; i+=1) {
+                data.push( [(row1[i] / 10) * 360, row2[i]]);
+            }
+
+            // Create and show the RScatter chart with only the north axis
+            // having labels
+            new RGraph.RScatter({
+                id: 'cvs',
+                data: data,
+                options: {
+                    labelsAxes: 'n'
+                }
+            }).draw()
+        });
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rscatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+</body>
+</html>

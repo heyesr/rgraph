@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>RGraph demo: A basic example of a combined Bar and Line chart</title>
+
+    
+    <meta name="description" content=" A basic example of a combined Bar and Line chart. It shows a simple example and there is little happening on the page so the source is easy to navigate." />
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <!-- Include the RGraph libraries -->
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+
+<body>
+
+    
+
+    <h1>A basic example of a combined Bar and Line chart</h1>
+
+    <!-- The canvas on to which the chart is drawn -->
+    <canvas id="cvs" width="1000" height="250">[No canvas support]</canvas>
+
+    <!-- The JavaScript code that creates the chart -->
+    <script>
+        // The order in which you create the charts is important - the Line chart must be last. If you create the Bar object
+        // second, it will be drawn "on top" of the Line.
+        bar  = new RGraph.Bar({
+            id: 'cvs',
+            data: [143,140,141,135,136,132,129,125,126,127,127,129],
+            options: {
+                marginLeft: 50,
+                marginRight: 5,
+                yaxisScaleMax: 250,
+                colors: ['yellow'],
+                colorsStroke: '#ddd',
+                xaxisLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                shadow: false,
+                tooltips: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }
+        });
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [14,35,15,36,37,26,28,18,38,17,9,14],
+            options: {
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                linewidth: 3,
+                tickmarksStyle: 'endcircle',
+                yaxisScaleMax: 50,
+                title: 'A combined Bar and Line chart',
+                tooltips: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                tooltipsEvent: 'mousemove',
+                marginLeft: bar.get('marginLeft'),
+                marginRight: bar.get('marginRight'),
+                marginInner: 45,
+                yaxisScale: false
+            }
+        });
+        
+        // Now draw both of the charts. Bar chart first, then the Line chart is
+        // drawn on top of it
+        RGraph.redraw();
+    </script>
+    
+    <p>
+        This is an example of a Bar chart combined with a Line chart. The source
+        code is documented to make it easier
+        for you to copy and paste it if you wish.
+    </p>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

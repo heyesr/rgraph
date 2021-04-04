@@ -1,0 +1,124 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Pie chart with custom border highlighting</title>
+    
+    
+    <meta name="description" content="A Pie chart that has been exploded and drawn with a border and custom highlighting" />
+     
+    
+    <style>
+        .RGraph_tooltip {
+            background-color: white ! important;
+        }
+        
+        .RGraph_tooltip img {
+            display: none;
+        }
+    </style>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+
+    <h1>A Pie chart with custom border highlighting</h1>
+    
+    <p>
+        Tooltips and other dynamic features may be affected by the redrawing.
+    </p>
+
+    <canvas id="cvs" width="550" height="300">[No canvas support]</canvas>
+    
+<script>
+    colors = ['red','#ccc','#0f0','blue','pink','yellow','black'];
+    labels = ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+    // Create the Pie chart
+    new RGraph.Pie({
+        id: 'cvs',
+        data: [4,6,3,5,2,5,8],
+        options: {
+            labels: labels,
+            tooltips: labels,
+            tooltipsEvent: 'mousemove',
+            tooltipsHighlight: false,
+            tooltipsPointer: false,
+            textColor: '#aaa',
+            colorsStroke: 'rgba(0,0,0,0)',
+            exploded: [,25],
+            labelsSticksColors: RGraph.arrayPad([], labels.length, 'gray'),
+            labelsSticksLinewidth: 1
+        }
+    }).draw().on('tooltip', function (obj)
+    {
+        var co      = obj.context,
+            tooltip = RGraph.Registry.get('tooltip'),
+            index   = tooltip.__index__,
+            color   = colors[index],
+            e       = window.event,
+            shape   = obj.getShape(e);
+
+        obj.path(
+            'b a % % % % % false a % % % % % true f %',
+            shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd,
+            shape.x, shape.y, obj.radius + 7, shape.angleEnd, shape.angleStart,
+            color
+        );
+
+        obj.path(
+            'lc butt lw 3 b a % % % % % false s white',
+            shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd
+        );
+        
+        tooltip.style.borderColor = color;
+    });
+
+
+        
+        // Set some CSS on the tooltip
+        RGraph.tooltips.style.border     = '3px black solid';
+        RGraph.tooltips.style.padding    = '3px';
+        RGraph.tooltips.style.color      = 'black';
+        RGraph.tooltips.style.fontWeight = 'bold';
+        RGraph.tooltips.style.fontSize = '16pt';
+</script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

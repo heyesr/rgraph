@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart showing income and expenditure</title>
+    
+    
+    <meta name="description" content="A Bar chart showing income and expenditure" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing income and expenditure</h1>
+
+    <ul>
+        <li><a href="svg-bar-income-expenditure.html">There's also an SVG version of this chart.</a></li>
+    </ul>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        data1 = [[2,5,9],[4,2,6],[6,5,8]];
+        data2 = [[-2,-1,-6],[0,0,-6],[0,-5,-8]];
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: data1,
+            options: {
+                marginLeft: 35,
+                shadow: false,
+                colorsStroke: 'rgba(0,0,0,0)',
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                colors: ['Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)'],
+                marginInner: 25,
+                backgroundGridVlinesCount: 3,
+                xaxisPosition: 'center',
+                textSize: 14,
+                yaxisScaleMax: 10
+            }
+        }).wave();
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: data2,
+            options: {
+                marginLeft: 35,
+                shadow: false,
+                colors: ['Gradient(red:#faa:red)', 'Gradient(red:#faa:red)', 'Gradient(red:#faa:red)'],
+                marginInner: 25,
+                xaxisPosition: 'center',
+                textSize: 14,
+                backgroundGrid: false,
+                yaxisScaleMax: 10
+            }
+        }).wave();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+
+</body>
+</html>

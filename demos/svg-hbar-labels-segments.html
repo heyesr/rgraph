@@ -1,0 +1,122 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Horizontal Bar chart showing custom ingraph labels</title>
+    
+    <meta name="description" content="An SVG Horizontal Bar chart showing custom ingraph labels" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Horizontal Bar chart showing custom ingraph labels</h1>
+    <p>
+        This chart shows how you can use a little bit of extra coding in order to add
+        your own, custom ingraph labels. Normally the <code>labelsAbove</code> option on a stacked
+        chart will show a single summation of the values for each bar. This, on the
+        other hand, shows a label for each bar. Some of the values in the data are
+        null for which no label is shown.
+        <a href="hbar-labels-segments.html">
+            There's also a canvas version of this chart available.
+        </a>
+    </p>
+    
+
+    <div style="width: 900px; height: 300px" id="chart-container"></div>
+
+
+
+    <script>
+        data = [
+            [null,null,null,5,18,36,41],
+            [5,null,9,14,23,41,8],
+            [null,null,5,27,23,32,13]
+        ];
+        
+        units = '%';
+
+        hbar = new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                key: ['1*','2*','3*','4*','5*','6*','7*'],
+                marginInnerTop: 20,
+                marginInnerBottom: 20,
+                grouping: 'stacked',
+                xaxis: false,
+                yaxisLabels: ['A', 'B', 'C'],
+                yaxisTickmarks: false,
+                xaxisScaleUnitsPost: units,
+                xaxisLabelsCount: 4,
+                backgroundGridBorder: false,
+                backgroundGridVlinesCount: 4,
+                backgroundGridHlines: false,
+                colors: ['#c00','#E06666','#F4B400','#E5E5E5','#71DCD8','#00B1AA','#00817C']
+            }
+        }).draw();
+        
+        // Add the ingraph labels
+        for (var i=0; i<data.length; ++i) {
+            data[i].forEach(function (v, k, arr)
+            {
+                if (!RGraph.SVG.isNull(v)) {
+                    
+                    var coords = hbar.coords2[i][k],
+                        x      = coords.x + coords.width - (coords.width / 2);
+
+                    RGraph.SVG.text({
+                        object: hbar,
+                        
+                        x: x,
+                        y: coords.y + (coords.height / 2),
+                        
+                        valign: 'center',
+                        halign: 'center',
+                        
+                        text: data[i][k] + units,
+                        
+                        size: 12,
+                        bold: true,
+                        
+                        background: 'rgba(255,255,255,0.75)',
+                        padding: 2
+                    });
+                }
+            });
+        }
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 950px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

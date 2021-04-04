@@ -1,0 +1,133 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <style>
+        table {
+            border-color: #ccc;
+        }
+
+        td {
+            text-align: left;
+            padding-left: 15px;
+        }
+    </style>
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Gantt chart showing the new (version 5.22) formatted tooltips feature</title>
+    <meta name="description" content="A Gantt chart showing the new formatted tooltips feature" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+
+    <h1>A Gantt chart showing the new (version 5.22) formatted tooltips feature</h1>
+    
+    <p>
+        Formatted tooltips are a new feature in version 5.22 and make it super-easy to
+        have unique tooltips but using just one specification in your configuration
+        (as shown below).
+    </p>
+    
+    <canvas id="cvs" width="800" height="500">[No canvas support]</canvas>
+
+    <script>
+        function getValue (index, group, seq)
+        {
+            if (typeof data[group].start === 'number') {
+                return '{1},{2},{3}'.format(
+                    data[group].start,
+                    data[group].duration,
+                    data[group].complete
+                );
+            } else {
+                return '{1},{2},{3}'.format(
+                    data[group][index].start,
+                    data[group][index].duration,
+                    data[group][index].complete
+                );
+            }
+        }
+
+        // A function used in the template
+        function getDay (index, group, seq)
+        {
+            var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+            
+            return days[group] + " (indexes: index=" + index + ", group=" + group + ", seq=" + seq + ")";
+        }
+
+        data = [
+            [{start: 31, duration: 28,  complete: 67, label: 'Richard',  linewidth: 0, color: 'red', background: 'pink'},{start: 0, duration: 7, color: 'red',  linewidth: 0}],
+            {start: 0,  duration: 28,  complete: 50, label: 'Rachel',   linewidth: 0, color: 'red', background: 'pink'},
+            {start: 12, duration: 28,  complete: 45, label: 'Fred',     linewidth: 0, color: 'red', background: 'pink'},
+            [{start: 59, duration: 14,  complete: 0,  label: 'Barney',   linewidth: 0, color: 'red', background: 'pink'}, {start: 0, duration: 7, color: 'red',  linewidth: 0}],
+            {start: 59, duration: 21,  complete: 5,  label: 'Gloria',   linewidth: 0, color: 'red', background: 'pink'},
+            {start: 46, duration: 31,  complete: 92, label: 'Paul',     linewidth: 0, color: 'red', background: 'pink'},
+            {start: 80, duration: 21,  complete: 46, label: 'Harry',    linewidth: 0, color: 'red', background: 'pink'},
+            {start: 94, duration: 17,  complete: 84, label: 'Shane',    linewidth: 0, color: 'red', background: 'pink'},
+            [{start: 34, duration: 14,  complete: 32, label: 'Kyle',     linewidth: 0, color: 'red', background: 'pink'}, {start: 0, duration: 7, color: 'red',  linewidth: 0}],
+            {start: 64, duration: 14,  complete: 28, label: 'Cynthia',  linewidth: 0, color: 'red', background: 'pink'},
+            {start: 13, duration: 61,  complete: 74, label: 'Mabel',    linewidth: 0, color: 'red', background: 'pink'},
+            {start: 34, duration: 31,  complete: 16, label: 'Paul',     linewidth: 0, color: 'red', background: 'pink'},
+            {start: 80, duration: 22,  complete: 45, label: 'Kiffen',   linewidth: 0, color: 'red', background: 'pink'},
+            {start: 0,  duration: 115, complete: 50, label: 'John',     linewidth: 0, color: 'red', background: 'pink'}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsPercent: true,
+                backgroundGridVlinesCount: 4,
+                title: 'An example Gantt chart',
+                titleBold: true,
+                titleSize: 18,
+                titleItalic: true,
+                myNames: ['Ken','John','Doug'],
+                tooltips: 'A summary of the template options that are available to you.<p /><table border="1" align="center" cellspacing="0"><tr><td>%%{index}</td><td>%{index}</td></tr><tr><td>%%{dataset}</td><td>%{dataset}</td></tr><tr><td>%%{group}</td><td>%{group}</td></tr><tr><td>%%{sequential_index}</td><td>%{sequential_index}</td></tr><tr><td>%%{seq}</td><td>%{seq}</td></tr><tr><td>%%{prop:title}</td><td>%{prop:title}</td></tr><tr><td> %%{prop:yaxisLabels[%{group}]} (auto-populated)</td><td>%{prop:yaxisLabels[%{group}]}</td></tr><tr><td>%%{function:getValue(%%{index}, %%{group}, %%{seq})}}</td><td>%{function:getValue(%{index}, %{group}, %{seq})}</td></tr></table>',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                }
+            }
+        }).draw();
+
+        RGraph.tooltips.style.maxWidth = '950px';
+        RGraph.tooltips.style.fontSize = '14pt';
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="650" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

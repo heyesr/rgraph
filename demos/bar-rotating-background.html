@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.starburst.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart with a rotating background</title>
+    
+    
+    <meta name="description" content="A Bar chart with a rotating background" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart with a rotating background</h1>
+    
+    <p>
+        This is the single canvas version of this demo that only uses a single
+        canvas. The
+        background rotates and the Bar chart is drawn on top. Because of the
+        constant updating it's not conducive to interactive features - for that
+        you'll want the
+        <a href="/download.html">
+            <b>two canvas version</b>
+        </a> (bar-rotating-background-dual-canvas.html).
+    </p>
+
+    
+    <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+
+
+
+    <script>
+        // Create and configure the Bar chart. Note that the chart is not drawn yet. That is done using
+        // the StarBurst callback function.
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [1,5,3,2,5,6,8],
+            options: {
+                colors: ['Gradient(#fcc:red)'],
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                yaxisLinewidth: 2,
+                axesLinewidth: 2,
+                yaxisTickmarksCount: 0,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                backgroundGrid: false,
+                shadow: false,
+                textSize: 14
+            }
+        });
+
+        // Create and configure the StarBurst. This starburst is not animated .
+        new RGraph.StarBurst({
+            id: 'cvs',
+            options: {
+                colors:['rgba(255,0,0,0.01)','red'],
+                callback: function ()
+                {
+                    bar.draw();
+                }
+            }
+        }).draw();
+	</script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+
+</body>
+</html>

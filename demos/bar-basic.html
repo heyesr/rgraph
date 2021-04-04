@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic Bar chart</title>
+    <meta name="description" content="This is a simple example of a Bar chart that illustrates a basic configuration. RGraph has many basic examples of charts in the download archive." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A basic Bar chart</h1>
+    
+    <div>
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        An example of a straight-forward Bar chart. It has the axes turned off, the default margin sizes
+        have been altered and uses units on the Y axis labels. Otherwise it's pretty unremarkable except
+        for the fact
+        that two of the labels are multi-line. This is accomplished by using carriage returns in the
+        text like this: <code>Monday<span>\n</span>(yuck!)</code>
+    </p>
+    
+    <p>
+        When the screen is smaller the size of the canvas is reduced, the size of the text is reduced
+        and the labels are changed so that the weekday names are the three letter versions.
+    </p>
+
+    <br clear="both" />
+
+
+
+    <script>
+        // Create the new Bar chart. Nothing special is being done here - note
+        // though that when you create a new RGraph object you don't necessarily
+        // need to assign the chart object to a variable - like it isn't here.
+        new RGraph.Bar({
+            id: 'cvs',
+            data: '12,18,10,9,6,20,18'.split(','),
+            options: {
+                
+                // Add some X axis labels - you can use a newline character (\n) to make
+                // the label span multiple lines
+                yaxisScaleUnitsPost: 'k',
+                colors: ['red'],
+                title: 'A basic Bar chart using accessible text',
+                titleBold: true,
+                xaxis: false,
+                yaxis: false,
+                marginLeft: 50,
+                tooltips: '%{key}',
+                tooltipsFormattedUnitsPost: '%',
+                tooltipsCss: {
+                    fontSize: '26pt'
+                },
+                tooltipsFormattedKeyLabels: ['Dave','John'],
+                tooltipsEvent: 'mousemove'
+            }
+        }).draw().responsive([
+            {maxWidth:null,width:750,height:250,options: {textSize:14,xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'],marginInner: 20}},
+            {maxWidth:900,width:400,height:150,options: {textSize:10,xaxisLabels:['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'],marginInner: 10}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15PX"&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

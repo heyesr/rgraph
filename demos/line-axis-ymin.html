@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart with an adjustable minimum Y value</title>
+    
+    
+    <meta name="description" content="A Line chart with an adjustable minimum Y value" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart with an adjustable minimum Y value</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+    Minimum Y value: <input type="text" id="yaxisScaleMin" value="0" style="font-size: 16pt" /><br />
+    Maximum Y value: <input type="text" id="yaxisScaleMax" value="10" style="font-size: 16pt" />
+
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,4,1,6,8,5,3],
+            options: {
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                marginLeft: 55,
+                marginRight: 35,
+                marginBottom: 35,
+                marginTop: 35,
+                title: 'A Line chart with an adjustable Y axis min/max',
+                titleBold: true,
+                titleSize: 16
+            }
+        }).draw();
+    
+        document.getElementById("yaxisScaleMin").onkeyup = function (e)
+        {
+            line.set('yaxisScaleMin', parseInt(e.target.value));
+            RGraph.redraw();
+        }
+    
+        document.getElementById("yaxisScaleMax").onkeyup = function (e)
+        {
+            line.set('yaxisScaleMax', parseInt(e.target.value));
+            RGraph.redraw();
+        }
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

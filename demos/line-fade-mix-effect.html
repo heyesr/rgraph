@@ -1,0 +1,146 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <title>RGraph demo: A Line chart with a fade/mix effect</title>
+    
+    
+    <meta name="description" content="A Line chart with a fade/mix effect" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A Line chart with a fade/mix effect</h1>
+
+
+    
+    <div style="display: inline-block; width: 600px; height: 250px; position: relative; float: right; text-align: center">
+        <canvas id="cvs1" width="600" height="250" style="position: absolute; top: 15px; left: 0">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250" style="position: absolute; top: 15px; left: 0; opacity: 0">[No canvas support]</canvas><br />
+        <button id="butShowLine" disabled style="z-index: 1; position: relative">Line chart</button>
+        <button id="butShowBar" style="z-index: 1; position: relative">Bar chart</button>
+    </div>
+
+
+    <p>
+        When creating a fade-out/fade-in effect you could use a single canvas and
+		fade the charts in and out sequentially - 
+        but you won't get the mix-in effect like you do below. This mix effect is
+		achieved by using two canvas tags
+        and fading one out whilst fading in the other. This way one is partly faded
+		out whilst the other is partly faded in. You
+        can see the effect by clicking the buttons below to switch between charts.
+		The charts are both drawn initially;
+        however one of the canvas tags is set to have no opacity so that you can't
+		see it. During the switch the canvas
+        is faded in and the other canvas is faded out.
+    </p>
+    
+    <p>
+        The buttons are also disabled appropriately to provide a better
+		user experience.
+    </p>
+    
+    <br />
+    
+
+    <script>
+        // Create the line chart
+        var line = new RGraph.Line({
+            id: 'cvs1',
+            data: [1,5,3,4,6],
+            options: {
+                xaxisLabels: ['Jane','Luis','Pete','Hoolio','Rich'],
+                backgroundGridVlinesCount: 4,
+                shadow: false,
+                tickmarksStyle: 'filledcircle',
+                textAccessible: false
+            }
+        }).fadeIn({frames: 60});
+
+
+
+
+        // Create the Bar chart
+        var bar = new RGraph.Bar({
+            id: 'cvs2',
+            data: [1,5,3,4,6],
+            options: {
+                xaxisLabels: ['Jane','Luis','Pete','Hoolio','Rich'],
+                backgroundGridVlinesCount: 5,
+                shadow: false,
+                marginInner: 20,
+                textAccessible: false
+            }
+        }).draw();
+
+
+
+
+        $('#butShowBar').on('click', function (e)
+        {
+            line.fadeOut()
+            bar.fadeIn(null, function ()
+            {
+                $('#butShowBar')[0].disabled  = true;
+                $('#butShowLine')[0].disabled = false;
+            });
+        });
+
+
+
+
+        $('#butShowLine').on('click', function (e)
+        {
+            bar.fadeOut();
+            line.fadeIn(null, function ()
+            {
+                $('#butShowBar')[0].disabled  = false;
+                $('#butShowLine')[0].disabled = true;
+            });
+        });
+    </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; width: 600px; height: 250px; position: relative; float: right; text-align: center"&gt;
+    &lt;canvas id="cvs1" width="600" height="250" style="position: absolute; top: 15px; left: 0"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="600" height="250" style="position: absolute; top: 15px; left: 0; opacity: 0"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
+    &lt;button id="butShowLine" disabled style="z-index: 1; position: relative"&gt;Line chart&lt;/button&gt;
+    &lt;button id="butShowBar" style="z-index: 1; position: relative"&gt;Bar chart&lt;/button&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+</body>
+</html>

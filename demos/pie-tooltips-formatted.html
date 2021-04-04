@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <style>
+        table {
+            border-color: #ccc;
+        }
+
+        td {
+            text-align: left;
+            padding-left: 15px;
+        }
+    </style>
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Pie chart showing the new (version 5.22) formatted tooltips feature</title>
+    <meta name="description" content="A Pie chart showing the new formatted tooltips feature" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+
+    <h1>A Pie chart showing the new (version 5.22) formatted tooltips feature</h1>
+    
+    <p>
+        Formatted tooltips are a new feature in version 5.22 and make it super-easy to
+        have unique tooltips but using just one specification in your configuration
+        (as shown below).
+    </p>
+    
+    <canvas id="cvs" width="350" height="350">[No canvas support]</canvas>
+
+    <script>
+        // A function used in the template
+        function getDay (index, group, seq)
+        {
+            var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+            
+            return days[index] + " (indexes: index=" + index + ", group=" + group + ", seq=" + seq + ")";
+        }
+
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [4,6,8,5,7,9,5],
+            options: {
+                shadow: false,
+                myNames: ['Ken  ','Mark','Barry','Lewis','Pete','Larry','Jerry'],
+                title: 'This is an example Pie chart',
+                titleBold: true,
+                titleSize: 20,
+                tooltipsFormattedKeyColors: ['pink','blue','pink','blue','pink','blue','pink'],
+                tooltipsFormattedKeyLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                tooltipsFormattedUnitsPost: '%',
+                tooltips: 'A summary of the template options that are available to you.<p /><table border="1" align="center" cellspacing="0"><tr><td>%%{index}</td><td>%{index}</td></tr><tr><td>%%{dataset}</td><td>%{dataset}</td></tr><tr><td>%%{group}</td><td>%{group}</td></tr><tr><td>%%{sequential_index}</td><td>%{sequential_index}</td></tr><tr><td>%%{seq}</td><td>%{seq}</td></tr><tr><td>%%{value}</td><td>%{value}</td></tr><tr><td>%%{value_formatted}</td><td>%{value_formatted}</td></tr><tr><td>%%{prop:title}</td><td>%{prop:title}</td></tr><tr><td>%%{property:myNames[%%{index}]} (custom property)</td><td>%{property:myNames[%{index}]}</td></tr><tr><td>%%{function:getDay(%%{index}, %%{group}, %%{seq})}</td><td>%{function:getDay(%{index}, %{group}, %{seq})}</td></tr><tr><td>%%{key}</td><td>%{key}</td></tr></table>',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black'
+                },
+            }
+        }).draw();
+        
+        RGraph.tooltips.style.maxWidth = '950px';
+        RGraph.tooltips.style.fontSize = '14pt';
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs1" width="350" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="350" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

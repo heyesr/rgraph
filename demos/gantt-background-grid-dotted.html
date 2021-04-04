@@ -1,0 +1,138 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    
+    
+    <meta name="description" content="An example of the (currently) Chrome-only dotted or dashed background grid feature" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A demo of the dotted or dashed background grid (limited browser support)</h1>
+    
+    <p>
+        This uses the relatively recent addition to canvas from the canvas v5
+        specification - native dotted and dashed lines.
+        In somewhat limited testing it worked in Chrome, Firefox and Internet
+        Explorer 11.
+    </p>
+    
+    <pre class="code">
+backgroundGridDashed: true,
+backgroundGridDotted: true
+</pre>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <script>
+        new RGraph.Gantt({
+            id: 'cvs1',
+            data: [
+                {start: 0, duration: 5, complete: 50, label: 'Richard'},
+                {start: 3, duration: 2, complete: 25, label: 'John'},
+                {start: 3, duration: 2, complete: 10, label: 'Fred'}
+            ],
+            options: {
+                //yaxis: false,
+                //yaxisLabelsFont:  'Monospace',
+                //yaxisLabelsColor: 'red',
+                //yaxisLabelsSize:  26,
+                //yaxisLabelsItalic:  true,
+                //yaxisLabelsBold:  true,
+                //yaxisLabelsOffsetx:  50,
+                //yaxisLabelsOffsety:  50,
+                //yaxisLabelsHalign:  'left',
+                //yaxisLabelsValign:  'top',
+                //yaxisTitle: 'Worker',
+                //yaxisTitleColor: 'red',
+                //yaxisTitleFont: 'Verdana',
+                //yaxisTitleSize: 20,
+                //yaxisTitleBold: true,
+                //yaxisTitleItalic: true,
+                //yaxisTitleOffsetx: 150,
+                //yaxisTitleOffsety: 150,
+                //yaxisTitleX: 50,
+                //yaxisTitleY: 50,
+                //yaxisTitleHalign: 'right',
+                //yaxisTitleValign: 'top',
+                //yaxisTitlePos: 0.1,
+
+
+                //xaxisTitle: 'Worker',
+                //xaxisTitleColor: 'red',
+                //xaxisTitleFont: 'Verdana',
+                //xaxisTitleSize: 20,
+                //xaxisTitleBold: true,
+                //xaxisTitleItalic: true,
+                //xaxisTitleX: 50,
+                //xaxisTitleY: 50,
+                //xaxisTitleHalign: 'left',
+                //xaxisTitleValign: 'bottom',
+                //xaxisTitlePos: 0.1,
+                
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+                xaxisScaleMax: 5,
+                title: 'A dashed background grid',
+                backgroundGridDashed: true,
+                marginRight: 45,
+                marginLeft: 145,
+            }
+        }).draw();
+
+
+
+        new RGraph.Gantt({
+            id: 'cvs2',
+            data: [
+                {start: 0, duration: 5, complete: 50, label: 'Richard'},
+                {start: 3, duration: 2, complete: 25, label: 'John'},
+                {start: 3, duration: 2, complete: 10, label: 'Freed'}
+            ],
+            options: {
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+                xaxisScaleMax: 5,
+                title: 'A dotted background grid',
+                titleY: 25,
+                backgroundGridDotted: true,
+                marginRight: 45
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

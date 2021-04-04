@@ -1,0 +1,128 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A basic Pie chart</title>
+    <meta name="description" content="A basic Pie chart which has a large first segment and which uses the roundRobin() effect. The curvy sticks for labels are now the default (they didn't used to be)." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A basic Pie chart</h1>
+
+    <canvas id="cvs" width="550" height="250" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        A simple Pie chart that shows off the label sticks to good effect. As far as the Pie chart
+        itself goes there's not a whole lot to it - the tooltips and labels both use the same array
+        (which is defined just above the chart itself).
+    </p>
+    <p>
+        The shadow is turned off (set to a transparent color) and the stroke color is also set to
+        transparent. The Pie chart also uses the <code>roundRobin()</code> animation effect.
+    </p>
+    
+    <p>
+        With smaller screens the labels are disabled and a key is used instead. This takes up a little
+        extra space so that the chart fits better in the available space.
+    </p>
+    
+    <p>
+        The tooltips have been customised using formatted tooltips and the <code>tooltipsCss</code> property.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // A basic configuration for a Pie chart with just the labels
+        // separated out into their own array. This is because the same
+        // array is used for both the labels and the tooltips so
+        // doing this makes for less upkeep when the time comes to
+        // change things around.
+        //
+        // Also note that the stroke color has been set to transparent so
+        // that there's no separation between the segments
+        //
+        labels = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [20,1,1,1,1,1,1],
+            options: {
+                
+                // This is the tooltip property using formatted tooltips
+                tooltips: '%{property:myDaynames[%{index}]}<br /><span style="font-weight: bold; font-size:26pt">%{value_formatted}</span>',
+                
+                // The units that are appended to the %{value_formatted} value
+                tooltipsFormattedUnitsPost: '%',
+                
+                // Turn the little triangular pointer off
+                tooltipsPointer: false,
+                
+                // Turn fixed positioning off
+                tooltipsPositionStatic: false,
+                
+                // Some CSS values that are set on the tooltips so that you can customise them
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    border: '3px solid black'
+                },
+
+                // A custom property - the formatted tooltips can then
+                // access this to use the data inside the tooltip
+                myDaynames: labels,
+
+                shadow: false,
+                colorsStroke: 'transparent',
+                keyPositionGraphBoxed: false,
+                
+            }
+        // Draw the chart and add responsive capabilities. On smaller screens the width
+        // is reduced and the labels are changed to a key. This takes up less space.
+        }).draw().responsive([
+            {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},css:{'float':'right'}},
+            {maxWidth: 600,width:420,height:250,options: {centerx: 150,key:labels, labels: []},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An example of "explode when clicked"</title>
+
+    
+    <meta name="description" content="A Pie chart that's exploded and uses custom code to handle exploding the chart using the click event" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>An example of "explode when clicked"</h1>
+
+    <p>
+        This demo shows a Pie chart that has two expanding segments when
+        clicked.
+    </p>
+
+    <canvas id="cvs" width="480" height="250">[No canvas support]</canvas>
+    
+    <script>
+        // Create the Pie chart as normal
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [8,6,5,3,5],
+            options: {
+                linewidth: 1,
+                shadow: true,
+                labels: ['Bob',,,'Jerry']
+            }
+        }).draw();
+
+
+
+        // Add the event listener functions using the new dollar syntax.
+        // This handles the click for the first and fourth segments
+        pie.$3.onclick =
+        pie.$0.onclick = function (e, shape)
+        {
+            var obj = shape.object;
+            obj.set('exploded', []);
+            obj.explodeSegment(shape.index, 15);
+        }
+
+        // Add the event listener functions using the new dollar syntax. This
+        // handles the mousemove
+        // for the first and fourth segments
+        pie.$3.onmousemove =
+        pie.$0.onmousemove = function (e, shape)
+        {
+            return true;
+        }
+
+
+        // This function "resets" the Pie before the above two functions fire.
+        // Note that the event is registered to
+        // use the capture phase of click event so that it will fire
+        // before the above two $ events.
+        window.addEventListener('click', function (e)
+        {
+            pie.set('exploded', []);
+            RGraph.redraw();
+        }, true);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="480" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+</body>
+</html>

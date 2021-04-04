@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.fuel.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Fuel chart with mousewheel support</title>
+    
+    
+    
+    <meta name="description" content="A Fuel chart with mousewheel support" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Fuel chart with mousewheel support</h1>
+
+    <p>
+        This demo is interesting because as well as employing the traditional <code>adjustable</code>
+        feature it also uses a custom event listener in order to add mouse wheel support. This means
+        that you can also use your mouse wheel to control the value of the Fuel gauge.
+    </p>
+
+    <canvas id="cvs" width="200" height="200">[No canvas support]</canvas>
+    
+    <script>
+        fuel = new RGraph.Fuel({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 56,
+            options: {
+                scaleVisible: true,
+                scaleUnitsPost: '%',
+                textSize: 9,
+                adjustable: true
+            }
+        }).draw();
+        
+        fuel.canvas.addEventListener('wheel', function (e)
+        {
+            var amount = 3;
+            var dir = e.deltaY;
+            
+            if (dir < 0) {
+                fuel.value += amount;
+                if (fuel.value > 100) fuel.value = 100;
+            } else {
+                fuel.value -= amount;
+                if (fuel.value < 0) fuel.value = 0;
+            }
+            
+            RGraph.redraw();
+
+            e.preventDefault();
+        }, false);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.fuel.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="200" height="200"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

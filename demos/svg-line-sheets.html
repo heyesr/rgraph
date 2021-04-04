@@ -1,0 +1,71 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Line chart using the Google Sheets connector</title>
+
+    
+    <meta name="description" content="An SVG Line chart using the Google Sheets connector" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Line chart using the Google Sheets connector</h1>
+    <p>Here's a demo of <a href="https://www.rgraph.net/canvas/docs/import-data-from-google-sheets.html">the Google Sheets connector</a> that's bundled with RGraph. The connector is fetching data from the first sheet (there are multiple sheets) but the connector supports fetching data from any sheet.<br /><a href="https://docs.google.com/spreadsheets/d/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/edit?usp=sharing">You can see the Google Sheet that RGraph is fetching data from here.</a></p>
+    
+    <div style="width: 1000px; height: 300px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        {
+            var data   = sheet.get('B2:B13'),
+                labels = sheet.get('A2:A13');
+
+            new RGraph.SVG.Line({
+                id: 'chart-container',
+                data: data,
+                options: {
+                    linewidth:2,
+                    marginInner: 0,
+                    xaxisLabels: labels,
+                    marginRight: 45
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.sheets.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 1000px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

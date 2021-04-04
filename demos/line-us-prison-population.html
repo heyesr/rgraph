@@ -1,0 +1,162 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart showing US prison population</title>
+    
+    
+    <meta name="description" content="A Line chart with custom tickmarks and custom styled tooltips" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart showing US prison population</h1>
+
+    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+
+    <script>
+        data = [
+            0.140652855, 0.156898821, 0.17392137, 0.181314164, 0.190083403,
+            0.204936627, 0.219226948, 0.232290443, 0.248576086, 0.276869432,
+            0.297991221, 0.314307072, 0.333516451, 0.352770502, 0.380347379,
+            0.410398994, 0.425115587, 0.439371182, 0.45309086, 0.47202617,
+            0.466500291, 0.466535618, 0.475166227, 0.478867548, 0.485024967,
+            0.489713802, 0.500002324, 0.503305103, 0.500315325, 0.496573444
+        ];
+ 
+        line = new RGraph.Line({
+            id:'cvs',
+            data: data,
+            options: {
+                title: 'An interactive Line chart showing the percentage of the US population that are incarcerated',
+                titleFont: 'Arial',
+                titleY: 10,
+                textColor: '#333',
+                textSize: 12,
+                marginLeft: 45,
+                marginBottom: 55,
+                backgroundBarsColor1: 'rgba(255,255,255,1)',
+                backgroundBarsColor2: 'rgba(255,255,255,1)',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundVlinesCount: 29,
+                colors: ['rgb(46,162,200)'],
+                filled: true,
+                filledColors: 'Gradient(white:rgba(77,193,231,0.75))',
+                linewidth: 0.5,
+                xaxisLabels: ['1980', '\r\n1981', '1982', '\r\n1983', '1984', '\r\n1985','1986','\r\n1987', '1988', '\r\n1989', '1990', '\r\n1991', '1992', '\r\n1993', '1994', '\r\n1995', '1996', '\r\n1997', '1998', '\r\n1999', '2000', '\r\n2001', '2002', '\r\n2003', '2004', '\r\n2005', '2006', '\r\n2007', '2008', '\r\n2009'],
+                yaxisScaleDecimals: 1,
+                tickmarksStyle: myTick,
+                tooltips: ['id:1980', 'id:1981', 'id:1982', 'id:1983', 'id:1984', 'id:1985','id:1986','id:1987', 'id:1988', 'id:1989', 'id:1990', 'id:1991', 'id:1992', 'id:1993', 'id:1994', 'id:1995', 'id:1996', 'id:1997', 'id:1998', 'id:1999', 'id:2000', 'id:2001', 'id:2002', 'id:2003', 'id:2004', 'id:2005', 'id:2006', 'id:2007', 'id:2008', 'id:2009'],
+                tooltipsCssClass: 'tooltip',
+                xaxis: false,
+                xaxisTickmarksCount: 29,
+                shadow: false,
+                highlightStyle: 'halo'
+            }
+        }).draw();
+
+        function myTick (obj, data, value, index, x, y, color, prevX, prevY)
+        {
+            var co = obj.canvas.getContext("2d");
+            co.fillStyle = "white";
+            
+            if(   index === 3
+               || index === 4
+               || index === 20
+               || (index >= 13 && index<= 16)){
+                co.fillStyle = "#4C2288";
+            }
+
+            // Draw the custom tickmark
+            obj.path(
+                'b a % % % 0 6.2830 false c s null f null',
+                x, y, 3
+            );
+        }
+    </script>
+
+
+
+    <div style="display: none"> 
+        <div id="1983"><a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America" rel="nofollow">Corrections Corporation of America</a> is founded</a></div> 
+        <div id="1984"><a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow">Sentencing Reform Act</a> passed</a></div> 
+        <div id="1993"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes law</a> enacted in Washington</div> 
+        <div id="1994"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota</div> 
+        <div id="1995"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Arkansas, Georgia, Maryland, Montana,<br/> New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,<br/> Utah, Vermont, Wisconsin</div> 
+        <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div> 
+        <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow">Substance Abuse and Crime Prevention Act</a> passed in California</div> 
+    </div>
+
+    <style>
+        .tooltip {
+            background-color: #efefef !important;
+            font: 10px Arial, sans-serif !important;
+            padding: 3px;
+            border-color: #999 !important;
+            color: black !important;
+        }
+    </style>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: none"&gt; 
+    &lt;div id="1983"&gt;&lt;a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America" rel="nofollow"&gt;Corrections Corporation of America&lt;/a&gt; is founded&lt;/a&gt;&lt;/div&gt; 
+    &lt;div id="1984"&gt;&lt;a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow"&gt;Sentencing Reform Act&lt;/a&gt; passed&lt;/a&gt;&lt;/div&gt; 
+    &lt;div id="1993"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes law&lt;/a&gt; enacted in Washington&lt;/div&gt; 
+    &lt;div id="1994"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota&lt;/div&gt; 
+    &lt;div id="1995"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in Arkansas, Georgia, Maryland, Montana,&lt;br/&gt; New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,&lt;br/&gt; Utah, Vermont, Wisconsin&lt;/div&gt; 
+    &lt;div id="1996"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in Florida, Tennessee, Virginia&lt;/div&gt; 
+    &lt;div id="2000"&gt;&lt;a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow"&gt;Substance Abuse and Crime Prevention Act&lt;/a&gt; passed in California&lt;/div&gt; 
+&lt;/div&gt;
+
+&lt;style&gt;
+    .tooltip {
+        background-color: #efefef !important;
+        font: 10px Arial, sans-serif !important;
+        padding: 3px;
+        border-color: #999 !important;
+        color: black !important;
+    }
+&lt;/style&gt;
+
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>

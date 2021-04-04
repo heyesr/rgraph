@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic SVG Funnel chart</title>
+    
+    
+    <meta name="description" content="A basic SVG Funnel chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Funnel chart</h1>
+    <p>Here's a demo of a simple SVG Funnel chart. With Funnel charts the labels can be centered on the edge of each segment or in the center of each segment. Here they're centered on the edges. Unlike the canvas Funnel chart the SVG version does cannot taper to a point. Depending on the data that you have you could actually create an inverted Funnel chart.</p>
+
+    
+    <div style="width: 500px; height: 500px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        // The data
+        data = [50,48,42,31,25,16,8];
+        
+        // Make the labels
+        labels = [];
+        data.forEach(function (v,k,arr)
+        {
+            labels[k] = 'Stage ' + (k+1) + ' (' + v + '%)';
+        });
+
+        new RGraph.SVG.Funnel({
+            id: 'chart-container',
+            data: [50,48,42,31,25,16,8],
+            options: {
+                labelsPosition: 'edge',
+                labels: labels,
+                labelsHalign: 'left',
+                labelsSize: 20,
+                marginLeft: 200,
+                
+                // You can do this to add highlighting to your chart. The tooltips
+                // consist of just a space - this makes them non-empty
+                tooltips: ' ',
+                tooltipsOverride: function (obj, opt)
+                {
+                }
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.funnel.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 500px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

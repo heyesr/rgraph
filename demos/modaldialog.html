@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
+
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: An example of the ModalDialog</title>
+    
+    <script>
+        function showDialog ()
+        {
+            ModalDialog.show('string:<b>Please login</b><p><table border="0"><tr><td align="right" style="padding-top: 4px">Email</td><td><input type="text" size="20" name="email" style="width: 150px" /></td></tr><tr><td align="right" style="padding-top: 4px">Password</td><td><input type="password" size="20" name="password" style="width: 150px" /></td></tr><tr><td colspan="2" align="right"><input type="reset" value="Cancel" onclick="ModalDialog.Close()"><input type="submit" name="submit" value="Login &raquo;" onclick="alert(\'This is just an example\'); event.stopPropagation()"></td></tr></table></p>', 300);
+            
+            ModalDialog.background.onclick = function (e)
+            {
+                ModalDialog.hide();
+            }
+        }
+    </script>
+
+    
+    <meta name="description" content="An example of the ModalDialog" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <style>
+        button,
+        #ModalDialog_dialog input {
+            font-size: 16pt;
+            margin: 5px;
+            cursor: pointer;
+            cursor: hand;
+        }
+        
+        #ModalDialog_dialog input[type=text],
+        #ModalDialog_dialog input[type=password] {
+            cursor: initial;
+        }
+        
+        #ModalDialog_dialog input[value=Cancel] {
+            opacity: 0.5;
+        }
+    </style>
+
+</head>
+<body>
+
+    
+
+    <h1>An example of the ModalDialog</h1>
+
+    <button onclick="showDialog()">Show dialog</button>
+
+    <p></p>
+    
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    
+</body>
+</html>

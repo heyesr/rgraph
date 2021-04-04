@@ -1,0 +1,148 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.drawing.rect.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped Bar chart</title>
+    
+    
+    <meta name="description" content="This demonstration shows a grouped Bar chart (the one from the example page as of March 2014)" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+        
+    <h1>A grouped Bar chart</h1>
+    
+
+    <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
+
+    <script>
+        data = [[17,14,9,16,28,2], [22,15,19,16,12,6], [18,15,21,13,11,13], [17,12,12,14,22,3]];
+        tooltipsFormattedTableLabels = ['SPD','CDU','Grune','Linke','AfD', 'FDP'];
+        tooltipsFormattedTableData   = [];
+
+        for (var i=0; i<data.length; i++) {
+            
+            tooltipsFormattedTableData[i] = [];
+            
+            for (var j=0; j<tooltipsFormattedTableLabels.length; ++j) {
+                tooltipsFormattedTableData[i].push([tooltipsFormattedTableLabels[j], data[i][j]]);
+            }
+        }
+
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridHlinesCount: 3,
+                yaxisLabelsCount: 3,
+                textColor: '#666',
+                textSize: 10,
+                marginInner: 55,
+                marginInnerGrouped: 2,
+                colors: ['#E30513', '#1C1C1B', '#86BC24', '#E5007D', '#2F8DCD', '#F9D900'],
+                xaxisLabels: ['Arbeiter','Angestellte','Selbststandige','Arbeitslose'],
+                yaxisScaleUnitsPost: ' %',
+                marginLeft: 50,
+                marginBottom: 65,
+                marginTop: 65,
+                title: 'AfD unter Arbeitern und Arbeitslosen starkste Kraft',
+                titleX: 50,
+                titleHalign: 'left',
+                titleColor: 'gray',
+                titleSize: 14,
+                key: ['SPD','CDU','Grune','Linke','AfD','FDP'],
+                keyPosition: 'margin',
+                keyPositionY: 320,
+                keyTextSize: 12
+            }
+        }).grow({frames:60});
+
+
+        // This chart is here to facilitate the tooltips
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [1,1,1,1],
+            options: {
+                backgroundGrid: false,
+                colors: ['transparent'],
+                marginLeft: 50,
+                marginBottom: 65,
+                marginInner: 55,
+                marginInnerGrouped: 2,
+                marginTop: 65,
+                tooltips: '%{table}',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    padding: '10px',
+                    paddingLeft: '20px',
+                    border: '3px solid red',
+                    textAlign: 'left'
+                },
+                tooltipsFormattedTableData: tooltipsFormattedTableData,
+                tooltipsEvent: 'click',
+                highlightStroke: 'transparent'
+            }
+        }).draw();
+    </script>
+    
+    <style>
+        .RGraph_tooltip {padding:10px!important;}
+        .RGraph_tooltip table {border-collapse:collapse;}
+        .RGraph_tooltip table td:nth-child(1) {font-weight:bold;padding:3px;}
+        .RGraph_tooltip table td:nth-child(1) {background-color:#ddd;}
+        .RGraph_tooltip table td:nth-child(2) {padding-left:10px;}
+    </style>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+
+&lt;style&gt;
+    .RGraph_tooltip {padding:10px!important;}
+    .RGraph_tooltip table {border-collapse:collapse;}
+    .RGraph_tooltip table td:nth-child(1) {font-weight:bold;padding:3px;}
+    .RGraph_tooltip table td:nth-child(1) {background-color:#ddd;}
+    .RGraph_tooltip table td:nth-child(2) {padding-left:10px;}
+&lt;/style&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+</body>
+</html>

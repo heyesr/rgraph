@@ -1,0 +1,215 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Meter chart</title>
+    
+    
+    <meta name="description" content="A basic Meter chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <style>
+        canvas#cvs2 {
+            border-radius: 25px;
+        }
+    </style>
+
+</head>
+<body>
+
+    
+
+    <h1>Two dual-scale Meter charts</h1>
+
+    <canvas id="cvs1" width="600" height="450">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="450">[No canvas support]</canvas>
+    
+    <script>
+        meter1 = new RGraph.Meter({
+            id: 'cvs1',
+            min: 0,
+            max: 50,
+            value: 22,
+            options: {//
+                anglesStart: RGraph.PI - 0.55,
+                anglesEnd: RGraph.TWOPI + 0.5,
+                centery: 290,
+                textSize: 12,
+                textValign: 'bottom',
+                colorsGreenStart: 40,
+                colorsGreenEnd: 50,
+                colorsRedStart:0,
+                colorsRedEnd: 30,
+                colorsYellowStart: 30,
+                colorsYellowEnd: 40,
+                colorsGreenColor: '#000',
+                colorsYellowColor: '#000',
+                colorsRedColor: '#000',
+                segmentsRadiusStart: 225,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                //needleRadius: 10,
+                needleColor: 'rgba(0,0,0,0)',
+                centerpinStroke: 'white',
+                centerpinFill: 'black',
+                scaleUnitsPost: 'pc'
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'white');
+        }).on('draw', function (obj)
+        {
+            //obj.path(
+            //    'b a % % % 0 6.2830 false f white',
+            //    obj.centerx, obj.centery, obj.radius - 50
+            //);
+        }).draw();
+
+
+        meter2 = new RGraph.Meter({
+            id: 'cvs1',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+                radius: meter1.radius - 10,
+                backgroundColor: 'rgba(0,0,0,0)',
+                anglesStart: RGraph.PI - 0.55,
+                anglesEnd: RGraph.TWOPI + 0.5,
+                centery: 290,
+                textSize: 12,
+                textColor: 'black',
+                textValign: 'bottom',
+                colorsGreenColor: 'black',
+                colorsYellowColor: 'black',
+                colorsRedColor: 'black',
+                segmentsRadiusStart: 217,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                needleRadius: 150,
+                needleColor: 'gray',
+                centerpinStroke: 'gray',
+                centerpinFill: 'gray',
+                labelsRadiusOffset:-30,
+                scaleUnitsPost:'%'
+            }
+        }).draw();
+        
+        meter2.canvas.onclick = function (e)
+        {
+            var value = meter2.getValue(e);
+            
+            meter2.value = value;
+            meter2.grow();
+        }
+
+
+
+        
+        
+        // Make the second, more colorful example
+        meter3 = new RGraph.Meter({
+            id: 'cvs2',
+            min: 0,
+            max: 50,
+            value: 22,
+            options: {
+                backgroundColor: 'black',
+                anglesStart: RGraph.PI - 0.55,
+                anglesEnd: RGraph.TWOPI + 0.5,
+                centery: 290,
+                textSize: 12,
+                textColor: 'pink',
+                textValign: 'bottom',
+                colorsGreenStart: 40,
+                colorsGreenEnd: 50,
+                colorsGreenColor: '#0a0',
+                colorsRedStart:0,
+                colorsRedEnd: 30,
+                colorsYellowStart: 30,
+                colorsYellowEnd: 40,
+                segmentsRadiusStart: 235,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                needleRadius: 50,
+                needleColor: '#ddd',
+                centerpinStroke: 'black',
+                centerpinFill: '#ddd',
+                adjustable: true,
+                labelsRadiusOffset: 10
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'black');
+        }).on('draw', function (obj)
+        {
+            obj.path(
+                'b a % % % 0 6.2830 false f black',
+                obj.centerx, obj.centery, obj.radius - 50
+            );
+        }).draw();
+
+        meter4 = new RGraph.Meter({
+            id: 'cvs2',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+                radius: meter1.radius - 50,
+                backgroundColor: 'black',
+                anglesStart: RGraph.PI - 0.55,
+                anglesEnd: RGraph.TWOPI + 0.5,
+                centery: 290,
+                textSize: 12,
+                textColor: 'white',
+                textValign: 'bottom',
+                colorsGreenColor: '#0a0',
+                segmentsRadiusStart: 193,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                needleRadius: 150,
+                needleColor: '#ddd',
+                centerpinStroke: 'black',
+                centerpinFill: '#ddd',
+                adjustable: true,
+                labelsRadiusOffset: -25
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs1" width="600" height="450"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="600" height="450"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

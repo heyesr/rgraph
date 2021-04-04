@@ -1,0 +1,122 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Line chart with dynamically updating data</title>
+    
+    
+    <meta name="description" content="A Line chart with dynamically updating data" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A Line chart with dynamically updating data</h1>
+    <p>This is a demo of a Line chart that shows a constantly updating Line chart. It updates every 50 milliseconds with new data. There's only one Line chart object and its data is updated (new data added and the last data-piece removed from the datasets) every 50 milliseconds. If you want to change the delay then open the console (CTRL+SHIFT+J in Chrome) and enter: <code>DELAY = 20</code> and press enter.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+    <script>
+        iteration = 0;
+        data      = [];
+        last      = 0;
+        DELAY     = 50;
+
+        line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                marginInner: 0,
+                title: 'An updating SVG Line chart',
+                yaxis: false,
+                xaxis: false,
+                backgroundGridColor: '#ccc',
+                backgroundGridVlinesCount: 15,
+                backgroundGridBorder: true,
+                colors: ['#c00'],
+                linewidth: 1,
+                yaxisScaleMax: 100
+            }
+        }).draw();
+        
+        RGraph.SVG.create({
+            svg: line.svg,
+            type: 'rect',
+            attr: {
+                x:35,
+                y:35,
+                width:680,
+                height:230,
+                stroke: '#ccc',
+                fill: 'transparent'
+            }
+        });
+
+
+
+
+        function update ()
+        {
+            if (iteration === 0) {
+                line.originalData[0] = RGraph.SVG.arrayFill({
+                    array:  [],
+                    length: 1440
+                });
+            }
+
+            // A global
+            last  = last + RGraph.SVG.random({min:-5, max:5});
+            if (last < 0)   last = 0;
+            if (last > 100) last = 100;
+
+            line.originalData[0].push(last);
+            line.originalData[0].shift();
+
+            RGraph.SVG.redraw();
+            
+            iteration++;
+
+            setTimeout(function ()
+            {
+                update()
+            }, DELAY); // Change this to 60000 for a whole days worth of monitoring
+        }
+
+        update();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

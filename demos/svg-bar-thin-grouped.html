@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A thin grouped SVG Bar chart</title>
+    
+    
+    <meta name="description" content="A thin grouped SVG Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A thin grouped SVG Bar chart</h1>
+    <p>A Bar chart that has a significant <code>marginInner</code> setting and which uses the <code>grow()</code> effect. The title position has been adjusted to be off to one side and horizontally aligned left. The size of the text is slightly smaller than normal and it has had the color adjusted to gray.</p>
+
+    
+    <div style="padding: 15px; display: inline-block">
+        <div style="width: 950px; height: 300px" id="chart-container"></div>
+    </div>
+
+
+    
+
+    <script>
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [
+                [1.694,3.528],[2.873,4.354],
+                [7.874, 2.283],[13.556,16.063],
+                [17.889,21.235],[31.318,22.891],
+                [54.899,23.186],[107.843,22.609],
+                [147.123,15.922],[211.663,8.916],
+                [151.249,3.218],[108.742,9.637],
+                [67.415,5.273],[57.066,3.828],
+                [26.971,9.676],[3.650,9.149],
+                [1.721,19.925],[1.554,22.371],
+                [1.920,23.552],[3.447,21.294]
+            ],
+            options: {
+                marginInner: 10,
+                xaxisLabels: [
+                    'Jan `15','',
+                    'Mar `15','',
+                    'May `15','',
+                    'Jul `15','',
+                    'Sep `15','',
+                    'Nov `15','',
+                    'Jan `15','',
+                    'Mar `15','',
+                    'May `15','',
+                    'Jul `15',''
+                ],
+                colors: ['Gradient(#c00:#fff)'],
+                yaxisScaleMax: 250,
+                yaxisScaleUnitsPost: '.000',
+                yaxis: false,
+                xaxis: false,
+                colors: ['#000','#2F8DCD'],
+                marginLeft: 75,
+                textSize: 10,
+                textColor: 'gray',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                title: 'Fluchtlinge kommen wieder u ber Italien',
+                titleX: 75,
+                titleHalign: 'left',
+                titleColor: '#999'
+            }
+        });
+        
+        setTimeout(function ()
+        {
+            bar.grow();
+        }, 250)
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

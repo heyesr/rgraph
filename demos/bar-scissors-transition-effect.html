@@ -1,0 +1,186 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.common.effects.js"></script>
+    <script src="../libraries/RGraph.bar.js"></script>
+    <script src="../libraries/RGraph.line.js"></script>
+    <script src="../libraries/RGraph.pie.js"></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with a scissors transition effect</title>
+    <meta name="description" content="A guide for making a scissors transition effect between different charts." />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Bar chart with a scissors transition effect</h1>
+
+    
+    <div style="float: right; text-align: center">
+        <button onclick="hide(showBarChart)">Bar</button>
+        <button onclick="hide(showLineChart)">Line</button>
+        <button onclick="hide(showPieChart)">Pie</button><br />
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        This HOWTO document shows you how to create a transition effect between
+		three charts using the vertical scissors open and
+        close effects. The code for it is shown below.
+    </p>
+    
+    <br clear="all" />
+
+
+
+    <script>
+        bar = null;
+
+        function disableButtons ()
+        {
+            // This disables all of the buttons
+            var buttons = document.getElementsByTagName('button');
+            for (var i=0; i<buttons.length; ++i) {
+                buttons[i].disabled = true;
+            }
+        }
+
+
+
+
+        function enableButtons ()
+        {
+            // This disables all of the buttons
+            var buttons = document.getElementsByTagName('button');
+            for (var i=0; i<buttons.length; ++i) {
+                buttons[i].disabled = false;
+            }
+        }
+
+
+
+
+        // Hides the canvas using the VScissors effect
+        function hide (callback)
+        {
+            var canvas = document.getElementById("cvs");
+
+            // Close the "scissors"
+            canvas.__object__.vScissorsClose(null, function () {
+                RGraph.reset(canvas);
+                callback();
+            });
+            
+            disableButtons();
+        }
+
+
+
+
+        function showBarChart ()
+        {
+            var canvas = document.getElementById("cvs");
+            
+            // Now draw the bar chart
+            var bar = new RGraph.Bar({
+                id: 'cvs',
+                data: [4,6,3,5,2,4,6,8,9,5,4,1],
+                options: {
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    yaxis: false,
+                    xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                    textSize: 14
+                }
+            }).vScissorsOpen(null, enableButtons);
+            
+        }
+
+
+
+
+        // Show the line chart
+        function showLineChart ()
+        {
+            var canvas = document.getElementById("cvs");
+            
+            // Now draw the bar chart
+            var line = new RGraph.Line({
+                id: 'cvs',
+                data: [4,6,3,5,2,4,6,8,9,5,4,1],
+                options: {
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    yaxis: false,
+                    xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                    textSize: 14,
+                    shadow: false
+                }
+            }).vScissorsOpen(null, enableButtons);
+        }
+
+
+
+
+        // Shows the Pie chart
+        function showPieChart ()
+        {
+            var canvas = document.getElementById("cvs");
+            
+            // Now draw the Pie chart
+            var pie = new RGraph.Pie({
+                id: 'cvs',
+                data: [4,5,1,2,3],
+                options: {
+                    labels: ['Joe','Pete','Luis','Kevin','John'],
+                    labelsSpaced: true,
+                    textSize: 14
+                }
+            }).vScissorsOpen(null, enableButtons)
+        }
+
+
+        // Initially the canvas is black so there is no need to clear anything. So it is sufficient to
+        // just call the relevant function to show the first chart.
+        window.onload = (function ()
+        {
+            disableButtons();
+            showBarChart();
+        })
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&gt;div style="float: right; text-align: center"&lt;
+    &gt;button onclick="hide(showBarChart)"&lt;Bar&gt;/button&lt;
+    &gt;button onclick="hide(showLineChart)"&lt;Line&gt;/button&lt;
+    &gt;button onclick="hide(showPieChart)"&lt;Pie&gt;/button&lt;&gt;br /&lt;
+    &gt;canvas id="cvs" width="600" height="250"&lt;[No canvas support]&gt;/canvas&lt;
+&gt;/div&lt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

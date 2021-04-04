@@ -1,0 +1,119 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.activity.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A progress-bar Activity meter</title>
+
+
+    
+    <meta name="description" content="A progress bar Activity meter. Formerly this necessitated a significant amount of custom coding, however now it has been converted into a stand-alone chart type so the code has been greatly reduced." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>    
+
+    <h1>A radial progress-bar chart</h1>
+
+    <canvas id="cvs" width="400" height="400" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Formerly this interesting style of chart was a variant of the Pie chart that was created by using
+        a custom class that resided in the Pie chart library. It also made use of the Rose chart in
+        order to draw a circular background grid.
+    </p>
+    
+    <p>
+        Now however it has been promoted to a full chart type - the Activity meter - so the code
+        necessary is much smaller. By default the Activity meter class creates a much different
+        looking chart but with some configuration you can achieve the style as it's shown here.
+    </p>
+    
+    <p>
+        You can see the code that creates the chart below and how easy it is to implement.
+    </p>
+    
+    <p>
+        You can use this style of chart in order to show one or more values that make more sense when
+        they're arranged in a circle than in a horizontal or vertical arrangement.
+    </p>
+    
+    <p>
+        If you want to add animation then the <code>grow()</code> effect looks nice.
+    </p>
+
+    <br clear="all" />
+    
+    <script>
+        activity = new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: [28,19,39,45],
+            options: {
+                backgroundColor: 'transparent',
+                backgroundGrid: true,
+                backgroundGridColor: '#aaa',
+                backgroundRings: false,
+                colors: ['blue','gray','green','red'],
+                labels: ['Month 1','Month 2','Month 3','Month 4'],
+                labelsBold: true,
+                labelsItalic: true,
+                tooltips:                        'Result: %{key}',
+                 tooltipsCss:                       {
+                    fontSize: '20pt',
+                    textAlign: 'left'
+                 },
+                tooltipsFormattedKeyLabels:      ['Jenny','Richard','Dave','Kev'],
+                ends: 'straight',
+                labelsColor: 'black'
+            }
+        }).grow();
+        
+        setInterval(function ()
+        {
+            activity.value[0] += RGraph.random(-10,10);
+            activity.value[1] += RGraph.random(-10,10);
+            activity.value[2] += RGraph.random(-10,10);
+            activity.value[3] += RGraph.random(-10,10);
+            
+            activity.grow();
+        }, 5000);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="400" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

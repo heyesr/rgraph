@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dark red and white Line chart</title>
+
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A dark red and white Line chart with a dark background" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dark red and white Line chart</h1>
+    <p>
+        A Line chart that color-wise is inverted - so there's a dark
+        background with light-gray axes and text and the line colors
+        are red and white. There's no background grid. Also, it uses
+        the <code>trace()</code> effect.
+    </p>
+
+
+    <div style="background-color: black; display: inline-block">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        line = new RGraph.Line({
+            id:'cvs',
+            data: [
+                [5,2,10,3,5,4,5,5,2.5,6],
+                [3,1,7,5,10,6,4,4,2,1]
+            ],
+            options: {
+                colors: ['red','white'],
+                backgroundGrid: false,
+                xaxisColor: '#ccc',
+                yaxisColor: '#ccc',
+                textColor: '#ccc',
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 10,
+                linewidth:3,
+                xaxisLabels: ['2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'],
+                marginLeft: 50,
+                marginRight: 50,
+                marginTop: 50,
+                marginBottom: 50
+            }
+        }).trace();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="background-color: black; display: inline-block"&gt;
+    &lt;canvas id="cvs" width="750" height="350">[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

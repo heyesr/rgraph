@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A large 3D Donut chart</title>
+    
+    <meta name="description" content="A large 3D Donut chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A large 3D Donut chart</h1>
+
+    <canvas id="cvs" width="800" height="450">[No canvas support]</canvas>
+    
+    <script>
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [25,8,6,3,5,2,8,6,4,3,2,1],
+            options: {
+                colors: ["rgb(128,243,32)", "rgb(214,7,143)", "rgb(1,191,202)", "rgb(229,156,4)", "rgb(106,24,237)", "rgb(60,254,91)", "rgb(251,47,73)", "rgb(15,122,246)", "rgb(172,218,9)", "rgb(176,1,185)", "rgb(13,225,162)", "rgb(249,112,20)", "rgb(64,55,253)", "rgb(101,252,52)"],
+                colorsStroke: "rgba(0,0,0,0)",
+                labels: ["NetFlix", "Apple", "Google", "IMAPS", "AppleiCloud", "Yahoo", "TLS", "Amazon", "Facebook", "Unknown", "DNS", "Playstation", "", ""],
+                labelsSticks: [true, true, true, true, true, true, true, true, true, true, true, true, false, false],
+                labelsSticksLength: 20,
+                labelsSticksColors: "black",
+                labelsList: false,
+                labelsIngraph: true,
+                labelsIngraphColor: "Black",
+                labelsIngraphFont: "Arial",
+                labelsIngraphSize: 5,
+                labelsIngraphBold: null,
+                labelsIngraphItalic: null,
+                labelsIngraphBounding: true,
+                labelsIngraphSpecific: ['52%', '14%', '9%', '8%', '5%', '3%', '', '', '', '', '', '', '', ''],
+                marginTop: 0,
+                marginBottom: 0,
+                shadow: true,
+                shadowColor: "#bbb",
+                shadowOffsetx: 0,
+                shadowOffsety: 10,
+                shadowBlur: 15,
+                textSize: 8,
+                textColor: "black",
+                textAccessible: false,
+                tooltips: ["NetFlix", "Apple", "Google", "IMAPS", "AppleiCloud", "Yahoo", "TLS", "Amazon", "Facebook", "Unknown", "DNS", "Playstation", "HTTP", "MQTT"],
+                radius: 140,
+                variant: "donut3d",
+                variantThreedDepth: 25,
+                exploded: 25,
+                origin: 3.455751918948773
+            }
+          }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

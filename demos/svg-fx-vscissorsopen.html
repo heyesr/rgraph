@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.fx.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A demo of the SVG vscissorsopen() effect</title>
+    
+    
+    <meta name="description" content="A demo of the SVG vscissorsopen() effect" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A demo of the SVG vscissorsopen() effect</h1>
+    <p>The <code>vscissorsOpen()</code> effect first covers the chart with DIV tags and then reveals the it by reducing the height of the DIV tags, alternately moving towards the top and the bottom.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [4,8,6,3,5,9,6],
+            options: {
+                linewidth: 5,
+                marginInner: 0,
+                title: 'The vscissorsopen() effect',
+                marginLeft: 50,
+                marginBottom: 50,
+                yaxisScaleDecimals: 2,
+                tickmarksStyle: 'circle',
+                tickmarksLinewidth: 5,
+                tickmarksSize: 7,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                shadow: true
+            }
+        }).vscissorsopen();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.fx.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

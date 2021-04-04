@@ -1,0 +1,120 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Rose chart explode/implode transition</title>
+
+    
+    
+    <meta name="description" content="A Rose chart explode/implode transition effect" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Rose chart explode/implode transition effect</h1>
+
+    <button onclick="transition();">Switch!</button>
+    
+    <canvas id="cvs" width="450" height="400">[No canvas support]</canvas>
+
+    <script>
+        function transition ()
+        {
+            var cvs = document.getElementById('cvs');
+
+            cvs.__object__.explode(null, function ()
+            {
+                visible === 1 ? drawRose2() : drawRose1();
+            });
+        }
+
+
+
+
+        /**
+        * Draws the first Rose chart
+        */
+        function drawRose1 ()
+        {
+            var cvs = document.getElementById("cvs");
+            
+            RGraph.reset(cvs);
+            
+            var rose = new RGraph.Rose({
+                id: 'cvs',
+                data: [4,8,6,5,3,2,9,4,2,8],
+                options: {
+                    backgroundGrid: false,
+                    colorStroke: 'rgba(0,0,0,0)',
+                    margin: 3,
+                    clearto: 'white',
+                    axesColor: 'rgba(0,0,0,0)'
+                }
+            }).implode();
+            
+            
+            // A global
+            visible = 1;
+        }
+
+        // Draws the second Rose chart
+        function drawRose2 ()
+        {
+            var cvs = document.getElementById("cvs");
+
+            RGraph.reset(cvs);
+
+            var rose = new RGraph.Rose({
+                id: 'cvs',
+                data: [1,8,8,8,4,6,3,2,5,6],
+                options: {
+                    colorsSequential: true,
+                    backgroundGrid: false,
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    margin: 3,
+                    clearto: 'white'
+                }
+            }).implode();
+            
+            // A global
+            visible = 2;
+        }
+        drawRose1();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

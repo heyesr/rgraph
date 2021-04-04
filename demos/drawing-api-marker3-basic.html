@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.drawing.marker3.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic example of the drawing API marker3 object</title>
+
+    
+    <meta name="description" content="A basic example of the drawing API narker3 object" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic example of the drawing API marker3 object</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,8,6,4,3,5,2],
+            options: {
+                marginInner: 5,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+            }
+        }).draw();
+        
+        coords = line.coords[2];
+        
+        marker3 = new RGraph.Drawing.Marker3({
+            id: 'cvs',
+            x: line.coords[4][0],
+            y: line.coords[4][1],
+            radius: 50,
+            text: 'Friday dip in activity',
+            options: {
+                align: 'left',
+                textAccessiblePointerevents: false,
+                colorsFill: 'rgba(255,0,0,0.5)'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.drawing.marker2.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+        This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

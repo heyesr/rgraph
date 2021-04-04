@@ -1,0 +1,252 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Pie chart configured to look like a Meter</title>
+
+    
+    <meta name="description" content="A set of concentric SVG Pie charts that have been configured to look like a Meter that could represent your figures." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+    
+
+</head>
+<body>
+    <h1>An SVG Pie chart configured to look like a Meter</h1>
+
+    <div class="warning" style="margin-bottom: 25px">
+        There's a dedicated canvas chart type that looks similar to this called
+        <a href="/canvas/activity.html">the Activity meter</a>. It can also be
+        further configured to look even more like this. And because it's its own
+        dedicated chart type, to do so requires a lot less code
+    </div>
+
+    <div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"></div>
+
+    <p>
+        Here's a set of Pie objects that have been configured so that
+        they appear as circular progress meters.
+    </p>
+    
+    <p>
+        This is done by adding one Pie object that
+        has the real color and is configured with the real value on top of another
+        which is used as the background and has a single value of 100 so it's a
+        full Pie segment.
+    </p>
+
+    <p>
+        The labels are added by utilising the
+        <code>RGraph.SVG.text()</code> API function.
+        You can use this function to add your own text labels  to your visualisations.
+        To position the text the <code>pie.centerx</code>
+        and <code>pie.centery</code> API variables are used.
+    </p>
+    
+    <p>
+        One more thing that's used is the
+        <code>RGraph.SVG.GLOBALS</code> variable. All
+        objects get any values that are set on this object first before their own
+        properties. This means that you can set common values as defaults and all
+        subsequently created objects will use them.
+    </p>
+
+    
+    
+        
+    <script>
+        // These global settings are applied to all objects that are created
+        // subsequently. If you're creating multiple charts that use the same
+        // properties and settings you can use the RGraph.SVG.GLOBALS object
+        // to 'centralise' the configuration.
+        RGraph.SVG.GLOBALS = {
+            colors: ['#666'],
+            donut: true,
+            donutWidth: 30,
+            marginLeft: 5,
+            marginRight: 5,
+            marginTop: 5,
+            marginBottom: 5
+        };
+
+
+
+        // Create the outer Donuts background
+        pie1a = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+            }
+        }).draw();
+
+        // Create the outer Donut. This chart shows the real values.
+        pi1b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [65,35],
+            options: {
+                colors: ['#9AC17E','transparent']
+            }
+        }).roundRobin();
+
+
+
+        // Create the second Donuts background. Note the reduction in the
+        // radius setting.
+        pie2a = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                radius: pie1a.radius - 33
+            }
+        }).draw();
+
+        // Create the second Donuts foreground. It uses the same radius
+        // as the above Donut.
+        pie2b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [23,77],
+            options: {
+                radius: pie2a.radius,
+                colors: ['#FADA31','transparent']
+            }
+        }).roundRobin();
+
+
+
+        // Create the background for the third Donut chart. The radius has
+        // been reduced again from the second Donut chart.
+        pie3a = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                radius: pie2a.radius - 33
+            }
+        }).draw();
+
+        // The foreground for the third donut chart.
+        pie3b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [65,35],
+            options: {
+                radius: pie3a.radius,
+                colors: ['#D3696B','transparent']
+            }
+        }).roundRobin();
+        
+        
+
+
+        // The background for the fourth Donut chart. Again,
+        // the radius has been reduced from the previous
+        // Donut chart.
+        pie4a = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                radius: pie3a.radius - 33
+            }
+        }).draw();
+
+        // The foreground for the the fourth Donut chart.
+        pie4b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [63,37],
+            options: {
+                radius: pie4a.radius,
+                colors: ['#82C1E0','transparent']
+            }
+        }).roundRobin();
+        
+        
+        
+        
+
+        // Add some custom text - the label - for the outer Donut chart.
+        RGraph.SVG.text({
+            object: pie1a,
+            text: 'First option',
+            x: pie1a.centerx - 5,
+            y: pie1a.centery - pie1a.radius + (RGraph.SVG.GLOBALS.donutWidth / 2),
+            color: 'white',
+            bold: true,
+            halign: 'right',
+            valign: 'center',
+            background: 'rgba(255,255,255,0.35)',
+            padding: 2
+        });
+
+        // The label for the second Donut.
+        RGraph.SVG.text({
+            object: pie1a,
+            text: 'Second option',
+            x: pie2a.centerx - 5,
+            y: pie2a.centery - pie2a.radius + (RGraph.SVG.GLOBALS.donutWidth / 2),
+            color: 'white',
+            bold: true,
+            halign: 'right',
+            valign: 'center',
+            background: 'rgba(255,255,255,0.35)',
+            padding: 2
+        });
+
+        // The label for the third Donut.
+        RGraph.SVG.text({
+            object: pie1a,
+            text: 'Third option',
+            x: pie3a.centerx - 5,
+            y: pie3a.centery - pie3a.radius + (RGraph.SVG.GLOBALS.donutWidth / 2),
+            color: 'white',
+            bold: true,
+            halign: 'right',
+            valign: 'center',
+            background: 'rgba(255,255,255,0.35)',
+            padding: 2
+        });
+
+        // The label for the fourth Donut - the innermost one.
+        RGraph.SVG.text({
+            object: pie1a,
+            text: 'Fourth option',
+            x: pie4a.centerx - 5,
+            y: pie4a.centery - pie4a.radius + (RGraph.SVG.GLOBALS.donutWidth / 2),
+            color: 'white',
+            bold: true,
+            halign: 'right',
+            valign: 'center',
+            background: 'rgba(255,255,255,0.35)',
+            padding: 2
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

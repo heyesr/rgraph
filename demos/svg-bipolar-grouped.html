@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A grouped SVG Bipolar chart</title>
+    
+    
+    <meta name="description" content="A grouped SVG Bipolar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A grouped SVG Bipolar chart</h1>
+    <p>
+        A grouped Bipolar chart which has a title, subtitle and an increased
+        <code>marginInner</code> setting.
+    </p>
+
+    
+    <div style="padding: 15px; display: inline-block">
+        <div style="width: 600px; height: 500px" id="cc"></div>
+    </div>
+
+
+
+
+
+
+    <script>
+        new RGraph.SVG.Bipolar({
+            id: 'cc',
+            left: [[4,3,5],[8,6,5],[4,8,8],[4,4,4],[6,5,8]],
+            right: [[9,15,8],[4,3,8],[26,5,15],[3,16,24],[12,16,18]],
+            options: {
+                grouping: 'grouped',
+                marginInner: 15,
+                title: 'A grouped Bipolar example chart',
+                titleSubtitle: 'A subtitle to go along with the title',
+                marginTop: 50
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 600px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

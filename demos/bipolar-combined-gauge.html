@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bipolar chart with a Gauge on the same page</title>
+    
+    
+    <meta name="description" content="A page with two canvas tags that show a Bipolar chart and a Gauge chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Bipolar chart with a Gauge on the same page</h1>
+
+    <p>
+        This is an example of two different charts (on two different canvas tags) on
+        one page.
+    </p>
+
+    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="250" height="250">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs1',
+            left: [4,8,6,4,3],
+            right: [18,4,6,3,3],
+            options: {
+                yaxisLabels: ['Luis','Peter','Joe','Hoolio','Gina']
+            }
+        }).draw();
+
+        new RGraph.Gauge({
+            id: 'cvs2',
+            min: 0,
+            max: 100,
+            value: 87,
+            options: {
+                textAccessiblePointerevents: false,
+                adjustable: true
+            }
+        }).draw();
+    </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="250" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

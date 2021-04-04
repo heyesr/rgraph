@@ -1,0 +1,162 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart and Horizontal Bar chart based dashboard</title>
+
+    
+    <meta name="description" content="A Bar chart and Horizontal Bar chart based dashboard" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart and Horizontal Bar chart based dashboard</h1>
+    <p>This is a sales dashboard - essentially just a couple of Bar charts along with a couple of Horizontal Bar charts. The charts are 300px wide each for a total of 600px and when the screen size shrinks they go to 300px wide. If you wanted to you could probably cut the size of the code down by using the <code>RGraph.SVG.GLOBALS</code> object to set some default values.</p>
+
+    
+    <div style="width: 300px; float: left">
+        <div style="width: 300px; height: 180px" id="cc1"></div>
+        <div style="width: 300px; height: 250px" id="cc2"></div>
+    </div>
+    
+    <div style="width: 300px; float: left">
+        <div style="width: 300px; height: 180px" id="cc3"></div>
+        <div style="width: 300px; height: 250px" id="cc4"></div>
+    </div>
+    
+    
+    <div style="clear: both"></div>
+
+
+    <script>
+        labels = ['John','Samantha','Lewis','Paula', 'Perry'];
+        colors = ['#00c','#c00','orange','green'];
+        
+        RGraph.SVG.GLOBALS.colors = colors;
+
+        bar1 = new RGraph.SVG.Bar({
+            id: 'cc1',
+            data: [[81,26],[35,25],[50,35],[80,26],[45,28]],
+            options: {
+                yaxisLabelsCount: 4,
+                marginInner: 10,
+                yaxis: false,
+                xaxisTickmarks: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                textSize: 8,
+                textColor: 'gray',
+                xaxisLabels: labels,
+                marginTop: 50,
+                marginRight: 5,
+                yaxisScaleMax: 100,
+                key: ['Count','Avg inactive days']
+            }
+        }).draw();
+        
+        hbar1 = new RGraph.SVG.HBar({
+            id: 'cc2',
+            data: [[11,7,3,1],[4,2,6,0],[11,6,4,3],[8,8,3,2],[9,4,1,0]],
+            options: {
+                key: ['API Dev','Custom rep.','Data','Integration'],
+                yaxisLabels: labels,
+                grouping: 'stacked',
+                colorsStroke: 'white',
+                textSize: 8,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxisTickmarks: false,
+                marginInner: 7
+            }
+        }).draw();
+
+
+
+
+
+        bar2 = new RGraph.SVG.Bar({
+            id: 'cc3',
+            data: [5349186, 1876562,1243027,944489],
+            options: {
+                colorsSequential: true,
+                marginInner: 10,
+                yaxis: false,
+                xaxisTickmarks: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                textSize: 8,
+                textColor: 'gray',
+                marginRight: 5,
+                key: ['Count','Avg inactive days'],
+                marginTop: 50,
+                marginLeft: 75,
+                keyOffsetx: 30,
+                keyOffsety: -10,
+                key: ['Direct','Custom','API Dev','Data'],
+                labelsAbove: true,
+                labelsAboveSize: 7
+            }
+        }).draw();
+        
+        hbar2 = new RGraph.SVG.HBar({
+            id: 'cc4',
+            data: [[15,22,5,3],[25,20,15,5],[5,5,6,4],[ 5,4,3,1],[5,8,4,3]],
+            options: {
+                key: ['API Dev','Custom rep.','Data','Integration'],
+                yaxisLabels: labels,
+                grouping: 'stacked',
+                colorsStroke: 'white',
+                textSize: 8,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxisTickmarks: false,
+                marginInner: 7
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 300px; float: left"&gt;
+    &lt;div style="width: 300px; height: 180px" id="cc1"&gt;&lt;/div&gt;
+    &lt;div style="width: 300px; height: 250px" id="cc2"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div style="width: 300px; float: left"&gt;
+    &lt;div style="width: 300px; height: 180px" id="cc3"&gt;&lt;/div&gt;
+    &lt;div style="width: 300px; height: 250px" id="cc4"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div style="clear: both"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

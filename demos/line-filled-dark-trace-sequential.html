@@ -1,0 +1,164 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Line chart using sequential trace() effects</title>
+    
+    <meta name="description" content="A Line chart using sequential trace() effects" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Line chart using sequential trace() effects</h1>
+    <p>
+        This is similar to the SVG demo <code>svg-line-filled-dark.html</code>
+        (which you can see in <a href="https://www.rgraph.net/download.html">the download archive</a>)
+        but the
+        <code>trace()</code> effect traces each dataset separately with a small
+        delay in between.
+    </p>
+
+    
+    <div style="background-color: black">
+        <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+    </div>
+
+
+
+
+        
+    <script>
+        dataset1 = [
+            213, 212, 208, 209, 207, 205, 204, 206, 205, 202, 203, 202,
+            201, 204, 205, 203, 142, 156, 152, 164, 165, 135, 198, 185,
+            201, 195, 197, 194, 135, 132, 153, 156, 167, 174, 193, 195,
+            192, 191, 190, 185, 188, 189, 187, 187, 180, 184, 186, 185,
+            215, 218, 220, 171, 178, 182, 181, 175, 181, 179, 178, 179,
+            178, 179, 175, 178, 177, 176, 174, 173, 175, 177, 174, 173,
+            175, 174, 172, 171, 170, 169, 168, 169, 167, 165, 164, 162,
+            160, 158, 155, 156, 157, 155, 159, 187, 184, 185, 186, 183,
+            182, 184, 185, 187
+        ];
+        dataset2 = [
+            120, 123, 121, 120, 125, 122, 121, 120, 118, 116, 113, 114,
+            111, 108, 106, 118, 124, 123, 120, 134, 135, 115, 116, 125,
+            132, 153, 148, 151, 165, 164, 166, 171, 178, 175, 176, 179,
+            181, 183, 183, 185, 188, 189, 210, 213, 220, 184, 186, 145,
+            156, 149, 132, 135, 132, 133, 128, 129, 126, 123, 122, 115,
+            101, 213, 256, 255, 248, 245, 240, 238, 233, 212, 245, 255,
+            251, 233, 251, 212, 156, 157, 184, 189, 194, 194, 192, 201,
+            200, 203, 214, 228, 264, 233, 264, 254, 258, 251, 235, 239,
+            233, 212, 244, 241
+        ];
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                dataset1,
+                dataset2
+            ],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: '#999',
+                shadow: false,
+                textColor: 'white',
+                textSize: 16,
+                xaxisLabels: [
+                    '', 'Q1', '',
+                    '', 'Q2', '',
+                    '', 'Q3', '',
+                    '', 'Q4', ''
+                ],
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleUnitsPost: 'kg',
+                marginBottom: 35,
+                marginLeft: 70,
+                marginRight: 10,
+                marginTop: 25,
+                linewidth: 2,
+                filled: true,
+                filledAccumulative: true,
+                filledColors: [
+                    'Gradient(rgba(255,0,0,0.3):rgba(255,0,0,1))',
+                    'rgba(0,0,0,0)'
+                ],
+                colors: ['red','transparent'],
+                tickmarksStyle: null
+            }
+        }).trace();
+        
+        setTimeout(function ()
+        {
+            new RGraph.Line({
+                id: 'cvs',
+                data: [
+                    dataset1,
+                    dataset2
+                ],
+                options: {
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScaleMax: 450,
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    backgroundGridColor: '#999',
+                    shadow: false,
+                    textColor: 'white',
+                    textSize: 16,
+                    xaxisLabels: [
+                        '', 'Q1', '',
+                        '', 'Q2', '',
+                        '', 'Q3', '',
+                        '', 'Q4', ''
+                    ],
+                    yaxisScaleUnitsPost: 'kg',
+                    marginBottom: 35,
+                    marginLeft: 70,
+                    marginRight: 10,
+                    marginTop: 25,
+                    linewidth: 2,
+                    filled: true,
+                    filledAccumulative: true,
+                    filledColors: [
+                        'rgba(0,0,0,0)',
+                        'Gradient(rgba(0,0,0,0.75):rgba(0,255,0,1))'
+                    ],
+                    tickmarksStyle: null
+                }
+            }).trace();
+        }, 250);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="background-color: black"&gt;
+    &lt;canvas id="cvs" width="700" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>

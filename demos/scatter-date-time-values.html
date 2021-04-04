@@ -1,0 +1,136 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart using date/time values</title>
+    <meta name="description" content="A Scatter chart which uses date/times as the X axis values. The date/time parsing in RGraph is quite versatile and can handle a wide variety of formats." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A Scatter chart using date/time values</h1>
+
+    <canvas id="cvs" width="600" height="200" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        This demo shows how you can use date/time values as X values with the Scatter
+        chart. Although it's a Scatter chart it can also
+        show a line that connects the points, as you can see on the example to the right.
+        The chart has two datasets, one of which is set to be drawn as being stepped.
+    </p>
+    
+    <p>
+        The date/time format parsing in RGraph is done by the <code>RGraph.parseDate()</code> function
+        internally and this function is quite versatile in the formats that it accepts.
+    </p>
+    
+    <p>
+        This means that you are free to use many different formats for the date/time values that you supply.
+        Some of the different formats that are accepted are shown in the source code below.
+    </p>
+    
+    <p>
+        For smaller screens the text size is reduced and the CSS <code>float</code> is reduced.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // The first dataset - the set of points that are drawn on
+        // to the chart. Note the different formats of the date/time
+        // values.
+        data1 = [
+            ['2012-02-12 15:51:55', 5],
+            ['2012-03-01 21:45',10],
+            [],
+            [],
+            ['August 15 2012',7],
+            ['15 Nov 2012', 16]
+        ];
+        
+        // The second set of points that are drawn on to the chart
+        data2 = [
+            ['5th January 2012 12:45', 6],
+            ['2012 Mar 05 09:45',17],
+            ['2012/05/05 12:48:45',13],
+            ['2012/09/09 15:45:45',19],
+            ['2012/12/31 23:59:59',2]
+        ];
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: [data1, data2],
+            options: {
+                // Stipulate the start of year (ie the minimum value of the chart)
+                xaxisScaleMin: '2012-01-01',
+                
+                // Stipulate the end of year (ie the maximum value of the chart)
+                xaxisScaleMax: '2012-12-31 23:59:59',
+
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                yaxis: false,
+                line: true,
+                lineLinewidth: 1,
+                
+                // The value can either be a boolean (ie true or false) or an
+                // array of booleans - with one entry per dataset.
+                lineStepped: [false, true],
+
+                // Here are some more Line configuration properties
+                lineShadowColor: '#999',
+                lineShadowBlur: 15,
+                lineShadowOffsetx: 0,
+                lineShadowOffsety: 0,
+
+                // Configure the background grid
+                backgroundGridBorder: false,
+                backgroundGridVlines: false
+            }
+        
+        // Draw the chart and add some responsive capabilities so that it fits well on smaller
+        // screens
+        }).draw().responsive([
+            {maxWidth: null,width:600,height:200,options:{textSize:12},css:{'float':'right'}},
+            {maxWidth: 900,width:400,height:200,options:{textSize:10},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="200"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A pink and blue Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A Line chart with little chrome around it thats colored pink and blue" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A pink(ish) and blue Line chart</h1>
+
+    <canvas id="cvs" width="300" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [23,20,12,43,11,41,34,56,31,39,15,56],
+                [15,9,39,29,37,23,42,32,45,11,30,45]
+            ],
+            options: {
+                marginLeft: 5,
+                marginRight: 5,
+                marginTop: 5,
+                marginBottom: 5,
+                backgroundGridVlines: false,
+                linewidth: 5,
+                marginInner: 3,
+                axesLinewidth: 5,
+                xaxisLinewidth: 5,
+                yaxisLinewidth: 5,
+                xaxisTickmarksCount: 0,
+                yaxisTickmarksCount: 0,
+                colors: ['#F60091','#00ACDE'],
+                filled: true,
+                filledAccumulative: true,
+                filledColors: ['rgba(255,200,200,0.5)','rgba(200,200,255,0.5)'],
+                yaxisScale: false
+            }
+        }).trace({frames: 60});
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="300" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>
+

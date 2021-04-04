@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart using gradients</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A Line chart using gradients" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart using gradients</h1>
+    <p>
+        This filled Line chart is showing you how you can use gradients on both
+        the fill color and also the background color of the chart to good effect.
+        It's animated using the <code>trace()</code> effect and the margins are reduced to zero
+        so that the chart covers the entire canvas. The data is simply generated
+        randomly.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [1,1,1,2,1,2,2,4,6,6,7,6,8,6,5,6,8,8,9,10,10,11,11,11,11,11,12,12,14,14,14,16,15,17,19,18,20,20,20,20,19,21,22,21,19,20,22,22,21,22,22,24,23,24,25,23,25,24,25,24,22,24,23,23,23,21,22,23,24,25,25,27,27,27,28,30,31,32,31,30,30,30,30,30,31,31,32,32,34,34,32,30,29,28,27,29,29,28,27,28],
+            options: {
+                backgroundColor: 'Gradient(yellow:#F25A06)',
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                colors: ['Gradient(#B68208:#3A2C00)'],
+                filled: true,
+                marginTop: 0,
+                marginBottom: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                tickmarksStyle: null
+            }
+        }).trace();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+
+</body>
+</html>
+

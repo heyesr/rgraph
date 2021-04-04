@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Bar chart wave() effect</title>
+    <meta name="description" content="Bar chart wave() effect" />
+    
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+    <h1>Bar chart wave() effect</h1>
+
+    <canvas id="cvs" width="650" height="350">[No canvas support]</canvas>
+    
+    <script>
+        data = [4,8,6,3,5,2,6,8,4,5,7,8];
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: data,
+            options: {
+                backgroundGridVlinesCount: 0,
+                linewidth: 0,
+                shadow: false,
+                marginInner: 7,
+                colors: ['Gradient(pink:red:#f33)', 'Gradient(green:#0f0)'],
+                labelsAbove: true,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                clearto: 'white',
+                variant: '3d',
+                marginBottom: 90,
+                xaxis: false,
+                yaxis: false
+            }
+        }).wave({frames: 60});
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="650" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

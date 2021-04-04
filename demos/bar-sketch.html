@@ -1,0 +1,77 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    
+    <meta name="description" content="A Bar chart that is using the sketch variant" />
+    <title>RGraph demo: Fruit consumed at the luncheon</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <div style="text-align: center; font-family: Comic sans MS; width: 800px">
+        <h1>Fruit consumed at the luncheon</h1>
+    
+        <canvas id="cvs" width="800" height="250">[No canvas support]</canvas>
+    
+        <script>
+            bar = new RGraph.Bar({
+                id: 'cvs',
+                data: [248,243,180,160,120,43],
+                options: {
+                    colors: ['black'],
+                    labelsAbove: true,
+                    labelsAboveSpecific: ['Apples', 'Oranges', 'Kiwi', 'Grapes', 'Mango', 'Kumquat'],
+                    labelsAboveSize: 12,
+                    marginTop: 50,
+                    marginLeft: 150,
+                    marginBottom: 25,
+                    marginInner: 20,
+                    variant: 'sketch',
+                    variantSketchVerticals: true,
+                    yaxisLabelsSpecific: ['Lots', 'Not so much'],
+                    textFont: 'Comic sans MS',
+                    textSize: 18,
+                    backgroundGrid: false
+                }
+            }).draw();
+        </script>
+    </div>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+
+</body>
+</html>

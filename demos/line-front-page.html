@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A spline Line chart</title>
+    
+    
+    <meta name="description" content="A spline Line chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+    
+    <h1>A spline Line chart</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        data1 = [4,6,12,16,8,4,2,8,18,16,14,16];
+        data2 = [2,4,8,4,2,6,6,12,8,10,6,8];
+
+        myLine = new RGraph.Line({
+            id: 'cvs',
+            data: [data1, data2],
+            options: {
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                tickmarksStyle: null,
+                marginLeft: 40,
+                marginRight: 15,
+                marginBottom: 30,
+                colors: ['red', 'black'],
+                yaxisScaleUnitsPost: '%',
+                linewidth: 5,
+                marginInner: 15,
+                textColor: '#333',
+                backgroundGridVlinesCount: 11,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                title: 'An example Line chart',
+                titleSize: 15,
+                titleBold: true,
+                axesColor: '#666',
+                textColor: '#666',
+                spline: true
+            }
+        }).draw();
+
+        // Use the trace() animation to show the chart
+        myLine.set({
+            tooltips: [
+                '<b>January</b><br />Started off the year quite averagely',
+                '<b>February</b><br />Better than January, rising quite nicely',
+                '<b>March</b><br />March was quite a spike',
+                '<b>April</b><br />Rising very impressively',
+                '<b>May</b><br />Dropping after the last two month spike',
+                '<b>June</b><br />Still dropping',
+                '<b>July</b><br />The fall is beginning to subside, but still dropping',
+                '<b>August</b><br />A good rise after the fall',
+                '<b>September</b><br />A very good peak',
+                '<b>October</b><br />The peak is now subsiding',
+                '<b>November</b><br />Still subsiding',
+                '<b>December</b><br />Rising again after the last fall',
+                
+                
+                '<b>January</b><br />Started off the year quite averagely',
+                '<b>February</b><br />Rising as with Robert',
+                '<b>March</b><br />Not as good as Robert, but OK',
+                '<b>April</b><br />Dropping after the peak',
+                '<b>May</b><br />The low point as with last year',
+                '<b>June</b><br />Rising higher than Robert',
+                '<b>July</b><br />Consistent with last month',
+                '<b>August</b><br />A nice high point',
+                '<b>September</b><br />A low point',
+                '<b>October</b><br />A nice rise',
+                '<b>November</b><br />Falling for Autumn...',
+                '<b>December</b><br />Rising again for Christmas'
+            ]
+        }).trace();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

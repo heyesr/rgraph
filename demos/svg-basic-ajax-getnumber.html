@@ -1,0 +1,98 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.ajax.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic SVG Vertical Progress Bar using the AJAX getNumber() function</title>
+
+    
+    <meta name="description" content="A basic SVG Vertical Progress Bar using the AJAX getNumber() function" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A basic SVG Vertical Progress Bar using the AJAX getNumber() function</h1>
+    
+    <p>
+        This is a demo of an SVG Bar chart that has been configured to act as a
+        progress bar and which is fetching the value by making use of the AJAX
+        <code>getNumber()</code> function. The <code>getNumber()</code> function
+        is an easy way to fetch
+        a single value from your server (and which is given to you as a true
+        JavaScript number - not a string.
+    </p>
+
+    <div style="width: 130px; height: 300px" id="chart-container"></div>
+    
+        
+    <script>
+        RGraph.SVG.AJAX.getNumber('/getdata.html', function (num)
+        {
+            // This bar chart becomes the background
+            new RGraph.SVG.Bar({
+                id: 'chart-container',
+                data: [100],
+                options: {
+                    marginLeft: 45,
+                    colors: ['#ddd'],
+                    backgroundGrid: false,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScale: false,
+                    yaxisScaleMax: 100,
+                    shadow: true,
+                    shadowOpacity: .1
+                }
+            }).draw();
+
+            var bar = new RGraph.SVG.Bar({
+                id: 'chart-container',
+                data: [num],
+                options: {
+                    marginLeft: 45,
+                    colors: ['Gradient(red:#fcc)'],
+                    backgroundGrid: false,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScaleMax: 100,
+                    marginInner: 8
+                }
+            }).grow();
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.ajax.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 100px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

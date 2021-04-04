@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Horizontal Bar chart</title>
+    
+    
+    
+    <meta name="description" content="A basic Horizontal Bar chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart showing Chrome speeds</h1>
+
+   <canvas id="cvs" width="350" height="176">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [215, 175],
+            options: {
+                yaxisLabels: ['Chrome 18', 'Chrome 19'],
+                colors: ['#3266CC'],
+                title: 'SunSpider score',
+                xaxisTitle: 'milliseconds (less is better)',
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridVlinesCount: 4,
+                marginBottom: 55,
+                marginInner: 8,
+                marginTop: 35,
+                marginLeft: 85,
+                tooltips: ['<b>Chrome 18</b>','<b>Chrome 19</b><br /><a href="http://www.google.com" style="color: #ddf" target="_blank">Learn more...</a>']
+            }
+        }).draw();
+   </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="176"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

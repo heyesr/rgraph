@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="../css/animate.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    
+    <title>RGraph demo: A range Bar chart</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A range Bar chart</h1>
+    <p>This is a floating Bar chart that could be used in order to indicate a range of sorts. It's actually a regular stacked Bar chart but just has the first color set to <code>transparent</code>. The background color has been set to a gradient going from white to slightly gray.</p>
+
+    <div id="chart-container" style="width: 600px; height: 250px; display: inline-block"></div><br />
+
+    
+        
+    <script>
+        data = [[5,16],[8,12],[9,16],[8,12],[9,15],[5,18],[4,12],[3,16]];
+
+        var bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                xaxisLabels: ['Quentin','Bob','Neil','Olga','Charles','Chris','Luis','Pete'],
+                xaxisColor: 'gray',
+                colors: ['transparent', 'gradient(red:#fdd)'],
+                backgroundColor: 'Gradient(#ddd:white:white)',
+                grouping: 'stacked',
+                yaxis: false,
+                backgroundGrid: false
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="chart-container" style="600px; height: 250px; display: inline-block"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

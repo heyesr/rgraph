@@ -1,0 +1,131 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Pie chart that retrieves JSON data via AJAX</title>
+
+    <meta name="description" content="A Pie chart that retrieves JSON data via AJAX. JSON data is easy to use when successfully retrieved and fits in well with the RGraph configuration." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A Pie chart that retrieves JSON data via AJAX</h1>
+
+    <script>
+        if (!location.host) {
+            document.write(`
+<div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+    <b>Note:</b>
+    For browser security reasons the AJAX demos don't work offline.
+    You can view the demos on the RGraph website here:
+    <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+</div>`);
+    </script>
+
+    <canvas id="cvs" width="450" height="350" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        As well as the <code>RGraph.AJAX.getNumber()</code>, <code>RGraph.AJAX.getString()</code> and
+        <code>RGraph.AJAX.getCSV()</code> canvas AJAX functions there's also a convenient way to fetch
+        JSON content from your server by way of the <code>RGraph.AJAX.getJSON()</code> function.
+    </p>
+    
+    <p>
+        Since the responses to AJAX calls start off as strings this function handily converts the response
+        into a JavaScript object automatically for you.
+    </p>
+    
+    <p>
+        As you can see from the example below this means that you can use the response directly in any
+        chart configuration (ie the <code>json.data</code> and <code>json.labels</code> variables).
+    </p>
+    
+    <p>
+        This demo page is intended to show the AJAX+JSON functionality that RGraph has so the rest of
+        the Pie chart configuration is pretty straight forward.
+    </p>
+    
+    <p>
+        The Pie chart does have a key though - which together with the tooltips use the labels which
+        are part of the JSON response.
+    </p>
+    
+    <p>
+        Added in March 2020 was the new feature of tooltip templates and the use of the
+        <code>tooltipsCss</code> property - which makes it much easier to add custom styles to your tooltips.
+    </p>
+    
+    
+    <br clear="all" />
+
+    <script>
+        // Use the AJAX function RGraph.AJAX.getJSON() to fetch some JSON from the server.
+        // When you make an AJAX request to the server the reponse is a string - so RGraph
+        // will convert the response to JSON for you automatically. The function is given
+        // the URL of the AJAX script and a callback function that creates the chart. Here
+        // the data (json.data) and the labels (json.labels) are used in the configuration.
+        RGraph.AJAX.getJSON('/getdata.html?json', function (json)
+        {
+            var pie = new RGraph.Pie({
+                id: 'cvs',
+                data: json.data,
+                options: {
+                    tooltips: 'Score for <b>%{property:myNames[%{index}]}</b> was  %{value_formatted}',
+                    tooltipsFormattedUnitsPost: '%',
+                    tooltipsCss: {
+                        fontSize: '18pt'
+                    },
+                    myNames: json.labels,
+                    shadow: false,
+                    key: json.labels,
+                    keyPositionGraphBoxed: false,
+                    colors: ['red','gray','#afa','blue','pink','yellow','black','orange','cyan','purple'],                    
+                    centerx: 175
+                }
+            }).draw();
+        });
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+
+</body>
+</html>

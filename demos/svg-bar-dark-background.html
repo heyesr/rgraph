@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Bar chart with a dark background</title>
+    
+    
+    <meta name="description" content="An SVG Bar chart with a dark background" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG Bar chart with a dark background</h1>
+    <p>This is an SVG version of the canvas based <a href="https://www.rgraph.net/demos/bar-dark-background.html" target="_blank">bar-dark-background.html</a> demo. It's a Bar chart, with a dark background and light pink and light blue graduated bars. It also uses the <code>wave()</code> effect too. Other than that it's pretty standard.</p>
+
+    <div style="width: 600px; height: 300px; background-color: black; border-radius: 10px" id="cc"></div>
+    
+    <script>
+        var data = [[45,56],[75,32],[39,47],[34,48],[46,47],[48,52]];
+
+        new RGraph.SVG.Bar({
+            id: 'cc',
+            data: data,
+            options: {
+                colors: ['Gradient(white:white:#ccf:#ccf:#ccf:#ccf)','Gradient(white:white:#faa:#faa:#faa:#faa)'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textColor: 'white',
+                xaxisLabels: ['2007','2008','2009','2011','2012','2013'],
+                marginInner: 7
+            }
+        }).responsive([
+            {maxWidth:500,width:400,height:200,options: {textSize: 10,textBold: true,marginBottom: 35,marginLeft: 35,marginRight: 15,marginTop: 25}},
+            {maxWidth:null,width:600,height:300,options: {textSize: 16,textBold: false,marginBottom: 45,marginLeft: 45,marginRight: 45,marginTop: 45}}
+        ]);
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 600px; height: 300px; background-color: black; border-radius: 10px" id="cc"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

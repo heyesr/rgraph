@@ -1,0 +1,91 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A dynamic SVG Bar chart</title>
+
+    <meta name="description" content="A dynamic SVG Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+
+    <h1>A dynamic SVG Bar chart</h1>
+    <p>This is an example of a dynamic Bar chart where the values auto-update to new ones. The values are, in this case, random but they could just as easily be taken from a database or connected device (eg a monitor of some sort). Also, if you have just a single data-point then you could, using the Bar chart, have an auto-updating progress bar. If you were to employ this technique but with the Horizontal Bar chart then you could have a dynamic Horizontal Progress bar. It wouldn't make as much sense (IMO) , but you could also use other charts too, for example the Line or Waterfall charts.</p>
+
+    
+    <div style="width: 550px; height: 300px" id="cc"></div>
+
+
+
+    <script>
+        data  = [3,5,4,9,5,6,3,5,2,5,4,2];
+        delay = 200;
+        
+        bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: data,
+            options: {
+                labelsAbove: true,
+                labelsAboveDecimals: 1,
+                labelsAboveUnitsPost: 'kg',
+                labelsAboveSize: 10,
+                title: 'A dynamic Bar chart',
+                titleFont: 'Impact',
+                titleSize: 18,
+                backgroundGridVlines:false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).draw();
+        
+        function update()
+        {
+            for (var i=0; i<12; ++i) {
+                // This condition means that a value is only changed 10% of the time. ish.
+                if (Math.random() > .9) {
+                    var random = Math.random();
+                    bar.data[i] = bar.data[i] + (random > 0.5 ? .1 : -.1);
+                    
+                    bar.data[i] = Math.max(bar.data[i], 0);
+                    bar.data[i] = Math.min(bar.data[i], 10);
+                }
+            }
+
+            RGraph.SVG.redraw();
+        
+            setTimeout(update, delay);
+        }
+
+        setTimeout(update, delay);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 550px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

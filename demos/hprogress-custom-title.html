@@ -1,0 +1,79 @@
+    <!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Progress bar with a custom title</title>
+
+    
+    <meta name="description" content="A Horizontal Progress bar chart which has a custom title that is drawn using the draw event" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Progress chart with a custom title</h1>    
+        <p>
+            With this chart the title is not drawn using  the title property -
+            instead it is drawn using the <code>draw</code>
+            custom event along with the <code>RGraph.text()</code> API function.
+        </p>
+
+    <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
+    
+    <script>
+        hprogress = new RGraph.HProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 89,
+            options: {
+            }
+        }).on('draw', function (obj)
+        {
+            obj.context.fillStyle = 'black';
+            
+            RGraph.text({
+                object:     obj,
+                font:       'Arial',
+                italic:     true,
+                size:       16,
+                x:          obj.canvas.width / 2,
+                y:          obj.get('marginTop') - 5,
+                text:       'A custom title drawn with the draw event',
+                valign:     'bottom',
+                halign:     'center'
+            });
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="100"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

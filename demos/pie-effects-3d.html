@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A 3D Pie chart</title>
+    
+    
+    <meta name="description" content="A Pie chart that has been made to look 3D by transforming the canvas before drawing" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A 3D Pie chart</h1>
+
+    <style>
+        td, span {
+            line-height: 20px !important;
+        }
+    </style>
+
+    <div id="container" style="display: inline-block; position: relative">
+        <canvas id="cvs" width="375" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        colors = ['red','yellow','blue','cyan','green','pink','white','#ddd'];
+        data   = [4,5,5,7,5,8,4,9];
+        labels = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];
+        
+        for (var i=0; i<data.length; i++) {
+            labels[i] = '{1}: {2}%'.format(labels[i], data[i]);
+        }
+
+        key = RGraph.HTML.Key('container',
+        {
+            colors: colors,
+            labels: labels,
+            tableCss: {
+                position: 'absolute',
+                top: '50%',
+                right: '-70px',
+                transform: 'translateY(-50%)'
+            }
+        });
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                colorsStroke: 'transparent',
+                variant: 'pie3d',
+                linewidth: 2,
+                shadowOffsetx: 0,
+                shadowOffsety: 7,
+                shadowColor: '#ddd',
+                shadowBlur: 15,
+                radius: 80,
+                colors: colors
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="container" style="display: inline-block; position: relative"&gt;
+    &lt;canvas id="cvs" width="450" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

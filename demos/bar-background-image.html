@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A grouped Bar chart with a background image</title>
+
+    
+    <meta name="description" content="A grouped Bar chart with a background image" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A grouped bar chart with a background image</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[5,6],[7, 7],[6, 9],[8, 12],[12, 13],[15, 18],[45, 42],[55, 53],[36, 37],[25, 28],[20, 24],[15, 18]],
+            options: {
+                backgroundImage: '../images/bg.png',
+                backgroundGrid: false,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                key: ['Sunshine in 2000', 'Sunshine in 2005'],
+                keyPosition: 'margin',
+                keyBackground: 'rgb(255,255,255)',
+                colors: ['yellow', 'red'],
+                shadow: true,
+                shadowBlur: 15,
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowColor: '#aaa',
+                colorsStroke: 'rgba(0,0,0,0)',
+                marginLeft: 55,
+                marginRight: 5,
+                marginInnerGrouped: 1
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+
+
+
+</body>
+</html>

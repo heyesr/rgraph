@@ -1,0 +1,91 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.horseshoe.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Horseshoe chart</title>
+    
+    
+    <meta name="description" content="This was previously a Pie chart variation but RGraph now has a dedicated RGraph.Horseshoe chart object" />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A Horseshoe meter</h1>
+
+    <canvas id="cvs" width="300" height="300" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        As mentioned above , this was previously a variant on of the <code>Pie</code> chart. Now, however,
+        its been converted to a full chart type - the <code>Horseshoe</code> meter.
+    </p>
+    
+    <p>
+        It's a small, circular meter-type chart type. In previous incarnations a large amount of code
+        was necessary to create this chart - then less so as a Pie chart variant and now there's similarly
+        only a small amount of code that's necessary to create it. As a full chart type it also supports a
+        better style of <code>grow</code> effect - so now if the meter is already showing a value and you
+        set a new one and <code>grow</code> to it - instead of always growing from the minimum value the
+        meter will <code>grow</code> from it's current value. This is shown on the example here.
+    </p>
+    
+    <p>
+        The chart is a simple circular meter which has a circle at either end. These circles can be disabled
+        if you wish. The colors of the chart and of the label can also be changed.
+    </p>
+    
+    <script>
+        horseshoe = new RGraph.Horseshoe({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 65,
+            options: {
+                labelUnitsPost: '%'
+            }
+        }).grow();
+        
+        update = function ()
+        {
+            horseshoe.value = horseshoe.value + RGraph.random(-20,20);
+            horseshoe.grow();
+            
+            setTimeout(update, 2000);
+        };
+
+        setTimeout(update, 2000);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.horseshoe.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="300" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

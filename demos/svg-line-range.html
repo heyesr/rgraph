@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A range SVG Line chart</title>
+    
+    
+    <meta name="description" content="A range SVG Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A range SVG Line chart</h1>
+    <p>
+        This is a regular Line chart with two datasets - however the fill color of
+        the bottom most dataset has been set to transparent. The Line chart uses
+        the <code>spline</code> setting and the <code>trace()</code> effect. No axes are enabled and the
+        vertical background grid lines have been disabled.
+    </p>
+
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+    <script>
+        d1 = [
+            1,5,6,4,3,2,7,4,
+            5,6,3,5,6,4,3,5,
+            4,2,5,6,2,3,6,4, 4
+        ];
+        
+        d2 = [
+            3,7,8,6,5,4,9,6,
+            7,8,5,7,8,6,5,7,
+            6,4,7,8,4,5,8,6,6
+        ];
+
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [d1, d2],
+            options: {
+                xaxisLabels: [
+                    '00','01','02','03','04','05','06','07',
+                    '08','09','10','11','12','13','14','15',
+                    '16','17','18','19','20','21','22','23',
+                    '00'
+                ],
+                filled: true,
+                filledColors: ['transparent', 'rgba(0,255,0,0.25)'],
+                filledAccumulative: true,
+                colors: ['green', 'green'],
+                spline: true,
+                linewidth: 2,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).trace();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

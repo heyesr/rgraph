@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A dark colored SVG Horizontal Bar chart</title>
+    
+    
+    <meta name="description" content="A dark colored SVG Horizontal Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A dark colored SVG Horizontal Bar chart</h1>
+    <p>A Horizontal Bar chart with an offset X axis. The chart has a dark color scheme and uses the <code>wave()</code> effect. The dark background is achieved by setting the background color of the DIV tag (using CSS).</p>
+
+    
+    <div style="width: 750px; height: 500px; display: inline-block; background-color: #000" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[20, 40],[18,80],[9,42],[40,58],[74,20],[20,73], [26,56]],
+            options: {
+                backgroundGrid: false,
+                xaxisColor: '#999',
+                xaxisLabelsColor: '#ccc',
+                yaxisLabelsColor: '#ccc',
+                yaxisColor: '#999',
+                yaxisLabels: ['Category 1','Category 2','Category 3','Category 4','Category 5','Category 6','Category 7'],
+                colorsStroke: 'white',
+                marginInner: 15,
+                xaxisScaleMin: -20,
+                xaxisScaleMax: 80,
+                colors: ['#FFC500','#1E98E4'],
+                xaxisScaleUnitsPost: 'pc'
+            }
+        }).wave({frames:90});
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 500px; display: inline-block; background-color: #000" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

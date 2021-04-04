@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart using the labelsAbove option</title>
+    
+    
+    <meta name="description" content="A Bar chart using the labelsAbove option" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart using the labelsAbove option</h1>
+
+    
+    <div style="padding-left: 35px; display: inline-block">
+        <canvas id="cvs" width="950" height="250">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [33.1,14.5,11.8,10.2,10.4,9.5,4.5,1.1,4.9],
+            options: {
+                yaxisScaleMax: 40,
+                yaxisScaleUnitsPost: ' %',
+                labelsAbove: true,
+                labelsAboveDecimals: 1,
+                labelsAboveUnitsPost: '%',
+                labelsAboveColor: 'black',
+                labelsAboveSize: 10,
+                marginInner: 20,
+                colors: ['#86B5BC','#E30513','#1C1C1B','#86BC24','#E5007D','#2F8DCD','#F9D900','#F6A200','#BCBCBC'],
+                colorsSequential: true,
+                xaxisLabels: ['Nichtwahler','SPD','CDU','Grune','Linke','AfD','FDP','Piraten','Sonstige'],
+                textSize: 10,
+                textColor: 'gray',
+                backgroundGridVlines: false,
+                backgroundGridHlinesCount: 4,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabelsCount: 4,
+                title: 'Das "ehrliche" Wahlergebnis in Berlin',
+                titleSize: 14,
+                titleX: 25,
+                titleY: 0,
+                titleHalign: 'left',
+                titleColor: '#999',
+                yaxisLabelsOffsetx: -10
+            }
+        }).grow({frames: 60});
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding-left: 35px"&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+    
+
+
+
+</body>
+</html>

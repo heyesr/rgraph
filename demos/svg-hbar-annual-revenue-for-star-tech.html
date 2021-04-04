@@ -1,0 +1,152 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Horizontal Bar chart stats for Star Tech</title>
+    
+    <meta name="description" content="An SVG Horizontal Bar chart showing stats for Star Tech (not a real company!). It's a horizontal Bar chart which has been customised to give it a different aesthetic." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An SVG Horizontal Bar chart showing stats for Star Tech</h1>
+    
+    <div id="chart-container"></div>
+
+    <p>
+        Here's a Horizontal Bar chart that has been significantly customised.
+        The DIV tag that the chart sits in has had a gradient applied to the
+        background and two of the corners are curved, using the <code>border-radius</code>
+        CSS property. The bars themselves have been given a gradient, the background
+        grid has been updated so that there's no border and the horizontal grid
+        lines have been disabled. The <code>labelsAbove</code> option has been added and the
+        chart uses the <code>wave()</code> effect.
+    </p>
+    
+    <p>
+        In order to get a different gradient for each bar the
+        <code>colorsSequential</code> has been enabled
+        and five different gradients have been supplied to the
+        <code>colors</code> option.
+    </p>
+    
+    <p>
+        The size of the text has been reduced from the default to 8pt.
+    </p>
+    
+    <p>
+        As far as responsiveness goes the chart simply reduces in size when the screen size is smaller - no
+        options are changed.
+    </p>
+
+    <style>
+        div#chart-container {
+            float: right;
+            width: 650px;
+            height: 300px;
+            display: inline-block;
+            background-image: linear-gradient(45deg, #000049,#0000CB);
+            border-bottom-right-radius: 25px;
+            border-top-left-radius: 25px;
+        }
+    </style>
+
+
+
+        
+    <script>
+        // Create the HBar chart. There's only a small amount of data given
+        // to the chart.
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [2650, 2300, 1950, 1600, 1350],
+            options: {
+                yaxisLabels: ['2005','2004', '2003', '2002','2001'],
+                yaxisColor: 'white',
+                yaxisTickmarks: null,
+                xaxis: false,
+                
+                // Turn off the background grid horizontal lines
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: 'white',
+
+                title: 'Annual revenue for Star Tech',
+                textColor: 'white',
+                textSize: 8,
+                
+                // Use the RGraph short gradient syntax to add some colors
+                // to the chart.
+                colors: [
+                    'Gradient(#9B68C0:#E4C1FD)',
+                    'Gradient(#9B9B9B:#E5E5E5)',
+                    'Gradient(#B38D1A:#F7DD91)',
+                    'Gradient(#4E81B4:#B2D4F6)',
+                    'Gradient(#9B0303:#E57F7F)'
+                ],
+                
+                // So that all of the bars are a separate color (as defined
+                // above) the colorsSequential option should be given.
+                colorsSequential: true,
+
+                labelsAbove: true,
+                xaxisScaleUnitsPre: '$',
+                xaxisScaleUnitsPost: 'm'
+            }
+        
+        // Draw the chart and add a responsive configuration that resizes the chart when you use a
+        // smaller screen
+        }).draw().responsive([
+            {maxWidth:null,width:650,height:300},
+            {maxWidth:800, width:400,height:250}
+        ]);
+    </script>
+
+
+
+    <br clear="all" />
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;style&gt;
+    <span>/*
+    * Here's some CSS to configure the appearance of the DIV tag
+    * that the chart is added to. There's positioning and sizing
+    * information as well as two of the corners being rounded.
+    */</span>
+    div#chart-container {
+        float: right;
+        width: 650px;
+        height: 300px;
+        display: inline-block;
+        background-image: linear-gradient(45deg, #000049,#0000CB);
+        border-bottom-right-radius: 25px;
+        border-top-left-radius: 25px;
+    }
+&lt;/style&gt;
+
+&lt;div id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

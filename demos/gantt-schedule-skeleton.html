@@ -1,0 +1,456 @@
+    <!DOCTYPE html >
+<html lang="en">
+<head>
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    
+    
+    <title>RGraph demo: A Gantt chart schedule demo</title>
+
+
+    <style>
+        span.formLabel,
+        input[type=submit],
+        input[type=text],
+        button {
+            font-family: Arial, sans-serif;
+            font-size: 150%;
+        }
+        
+        span.formLabel {
+            width: 150px;
+            display: inline-block;
+            text-align: right;
+            padding: 5px;
+        }
+        
+        p#eventForm input[type=text],
+        p#addEventForm input[type=text] {
+            border: none;
+            background-color: #eee;
+        }
+        
+        p#eventForm input#startdate,
+        p#eventForm input#duration {
+            background-color: white;
+            width: 150px;
+        }
+        
+        button {
+            cursor: pointer;
+        }
+    </style>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Gantt chart schedule demo</h1>
+    
+    <p>
+        View the source to get the code.
+    </p>
+    
+    <div>
+
+        <canvas id="cvs" width="950" height="450">[No canvas support]</canvas>
+        <p />
+        <button onclick="addPerson()">Add...</button>
+        <button onclick="deletePerson()">Delete</button>
+    </div>
+    
+    <p id="eventForm">
+        <span class="formLabel">Name:</span>
+        <input type="text" id="name" />
+        <button onclick="updateName()">Update</button>
+        
+        <br />
+        <span class="formLabel">Start date:</span>
+        <input type="text" id="startdate" readonly />
+        <i>(dd/mm)</i>
+        
+        <br />
+
+        <span class="formLabel">Duration:</span>
+        <input type="text" id="duration" readonly />
+        <i>(days)</i>
+        
+        <br />
+
+        <span class="formLabel">%&nbsp;Complete:</span>
+        <input type="text" id="complete" />
+        <button onclick="updateComplete()">Update</button>
+        
+        <p>
+            <button id="reset" onclick="reset()" style="background-color: red; color: white">Reset data to defaults</button>
+        </p>
+    </p>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // This function converts day numbers to dates
+        function day2date (num)
+        {
+            var ret = '';
+
+            if (num < 31)  {ret = (num + 1) + '/01/17';return ret; 
+            } else if (num < 59)  {ret = (num - 31 + 1) + '/02/17';return ret;
+            } else if (num < 90)  {ret = (num - 59 + 1) + '/03/17';return ret;
+            } else if (num < 120) {ret = (num - 90 + 1) + '/04/17';return ret;
+            } else if (num < 151) {ret = (num - 120 + 1) + '/05/17';return ret;
+            } else if (num < 181) {ret = (num - 151 + 1) + '/06/17';return ret;
+            } else if (num < 212) {ret = (num - 181 + 1) + '/07/17';return ret;
+            } else if (num < 243) {ret = (num - 212 + 1) + '/08/17';return ret;
+            } else if (num < 273) {ret = (num - 243 + 1) + '/09/17';return ret;
+            } else if (num < 304) {ret = (num - 273 + 1) + '/10/17';return ret;
+            } else if (num < 334) {ret = (num - 304 + 1) + '/11/17';return ret;
+            } else if (num < 365) {ret = (num - 334 + 1) + '/12/17';return ret;}
+        }
+
+        defaults = {};
+        
+        // This is the maximum value that's repesented on the chart.
+        // Here it is 365 - ie one year
+        defaults.max = 365;          
+
+        // The labels for the chart
+        defaults.labels = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            
+            
+        // Some colors
+        defaults.background = '#cfc';
+        defaults.foreground = '#0f0';
+
+        // These are the defaults for a new event
+        defaults.event = {start: 0, duration: 90, complete: 0, label: 'No name',background: defaults.background, color: defaults.foreground}
+        
+            
+        // This is the default data that is represented on the chart.
+        // You could modify this to get this data from your database.
+        defaults.data = load();  
+
+        state = {
+            selected: null
+        };
+        
+
+
+
+
+
+
+
+
+
+
+
+        myGantt = new RGraph.Gantt({
+            id: 'cvs',
+            data: defaults.data,
+            options: {
+                xaxisScaleMax: defaults.max,
+                marginLeft: 100,
+                marginRight: 50,
+                xaxisLabels: defaults.labels,
+                backgroundGridVlinesCount: 12,
+                borders: false,
+                textSize: 18,
+                adjustable: true,
+                textAccessiblePointerevents: false
+            }
+        }).on('firstdraw', function (obj)
+        {
+            var marginLeft = getLongestLabel(obj);
+            
+            obj.set('marginLeft', marginLeft);
+            RGraph.cache = [];
+            setTimeout(function () {RGraph.redraw();}, 25)
+            
+        }).draw().on('adjustend', function (obj)
+        {
+            var el = RGraph.Registry.get('adjusting.gantt');
+
+        }).on('adjust', function ()
+        {
+            save(myGantt.data);
+
+            var el = RGraph.Registry.get('adjusting.gantt');
+
+            document.getElementById('name').value      = el.object.data[el.dataset].label;
+            document.getElementById('startdate').value = day2date(el.object.data[el.dataset].start);
+            document.getElementById('duration').value  = el.object.data[el.dataset].duration;
+            document.getElementById('complete').value  = el.object.data[el.dataset].complete;
+
+        
+        }).on('draw', function (obj)
+        {
+            if (typeof state.selected === 'number') {
+                
+                var index  = state.selected,
+                    coords = obj.coords[index];
+
+                myGantt.path('b r % % % % s red', coords[0], coords[1], coords[2], coords[3]);
+            }
+
+
+        }).exec(function (obj)
+        {
+            obj.canvas.onmousedown = function (e)
+            {
+                var shape = obj.getShape(e);
+                
+                state.selected =  (shape && typeof shape.dataset === 'number') ? shape.dataset : null;
+                
+                RGraph.redraw();
+            }
+        });
+        
+        
+
+
+
+
+
+
+        
+        
+        
+        
+
+
+
+
+
+
+        //
+        // This function is where you would load the data from the server
+        // using, for example, AJAX. By default it uses localData which
+        // means that the data is persistent - but only to the one computer
+        // and only the one browser.
+        function load ()
+        {
+            if (localStorage['rgraph-gantt-chart-mini-app']) {
+                var data = JSON.parse(localStorage['rgraph-gantt-chart-mini-app']);
+            
+            } else {
+
+                var data = [
+                    {start: 0,   duration: 59,  complete: 0,  label: 'Richard', background: defaults.background, color: defaults.foreground},
+                    {start: 28,  duration: 43,  complete: 70, label: 'Rachel',  background: defaults.background, color: defaults.foreground},
+                    {start: 43,  duration: 65,  complete: 45,  label: 'Fred',    background: defaults.background, color: defaults.foreground},
+                    {start: 26,  duration: 31,  complete: 62,  label: 'Jane',    background: defaults.background, color: defaults.foreground},
+                    {start: 143, duration: 84,  complete: 13,  label: 'John',    background: defaults.background, color: defaults.foreground},
+                    {start: 108, duration: 100, complete: 68,  label: 'Lucy',    background: defaults.background, color: defaults.foreground},
+                    {start: 185, duration: 68,  complete: 28,  label: 'Carl',    background: defaults.background, color: defaults.foreground},
+                    {start: 303, duration: 60,  complete: 68,  label: 'Steven',  background: defaults.background, color: defaults.foreground}
+                ]
+            }
+            
+            return data;
+        }
+        
+        
+        
+
+
+
+
+
+
+        //
+        // This function is where you would send the data to the server
+        // You could use the jQuery $.post() function to do this. Then you'd
+        // need to write server-side script (eg PHP, ASP) to take this post
+        // data and save it into a database or a file).
+        function save ()
+        {
+            localStorage['rgraph-gantt-chart-mini-app'] = JSON.stringify(myGantt.data);
+        }
+
+
+
+
+
+
+
+
+        function addPerson ()
+        {
+            var name = prompt('Enter the persons name:','')
+            
+            if (name) {
+                
+                var event = RGraph.arrayClone(defaults.event);
+                event.label = name;
+
+                myGantt.data.push(event);
+
+                myGantt.set('marginLeft', getLongestLabel(myGantt));
+                
+                save();
+                reindex();                
+                
+                RGraph.redraw();
+            }
+        }
+
+
+
+
+
+
+
+        //
+        // This deletes a person from the Gantt chart. It confirms it
+        // but there is no backup!!
+        //
+        function deletePerson ()
+        {
+            if (confirm('Are you sure that you wish to delete this person?')) {
+                myGantt.data[state.selected] = null;
+                
+                reindex();
+                
+                location.href = location.href;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        // This function goes through the Gantt chart data and gets rid
+        // of null values
+        function reindex ()
+        {
+            var arr = [];
+
+            for (var i=0; i<myGantt.data.length; ++i) {
+                if (myGantt.data[i]) {
+                    arr.push(RGraph.arrayClone(myGantt.data[i]));
+                }
+            }
+            
+            myGantt.data = RGraph.arrayClone(arr);
+            
+            state.selected = null;
+            
+            save();
+
+            myGantt.set('marginLeft', Number(getLongestLabel()));
+            
+            RGraph.cache = [];
+
+            RGraph.redraw();
+        }
+        
+        
+        
+        
+        
+        function getLongestLabel ()
+        {
+            var obj = arguments[0] ? arguments[0] : myGantt;
+
+            // Go through the data and get the size of the longest label
+            for (var i=0,length = 0; i<obj.data.length; i++) {
+                var length = Math.max(
+                    length,
+                    RGraph.measureText(
+                        obj.data[i].label,
+                        false,
+                        'Arial',
+                        18
+                    )[0]
+                );
+            }
+            
+            return length;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function updateComplete ()
+        {
+            var complete = parseInt(document.getElementById('complete').value);
+            
+            myGantt.data[state.selected].complete = Math.min(complete, 100);
+            document.getElementById('complete').value = myGantt.data[state.selected].complete;
+
+            save();
+            
+            RGraph.redraw();
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function updateName ()
+        {
+            var name = document.getElementById('name').value;
+            
+            myGantt.data[state.selected].label = name;
+            document.getElementById('name').value = name;
+
+            save();
+            
+            RGraph.redraw();
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function reset ()
+        {
+            if (confirm('Are you sure that you\'d like to reset the data to the defaults?')) {
+                
+                localStorage['rgraph-gantt-chart-mini-app'] = '';
+                
+                myGantt.data = load();
+                
+                RGraph.redraw();
+            }
+        }
+
+        myGantt.canvas.parentNode.style.display = 'inline-block';
+    </script>
+
+</body>
+</html>

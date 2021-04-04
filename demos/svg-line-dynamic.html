@@ -1,0 +1,109 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A scrolling SVG Line chart</title>
+    
+    
+    <meta name="description" content="A scrolling SVG Line chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A scrolling SVG Line chart</h1>
+    <p>This is a demo of a scrolling filled Line chart. The chart is redrawn every 50 millseconds (ie approximately 20 times a second). The new data is pushed on to the end of the data array and the array is then shifted (using the <code>shift()</code> function) in order to knock one off of the beginning of the array.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+        
+    <script>
+        line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: RGraph.SVG.arrayFill({
+                array:  [],
+                value:  0,
+                length: 300
+            }),
+            options: {
+                marginInner: 0,
+                title: 'A scrolling SVG Line chart',
+                marginLeft: 50,
+                marginBottom: 50,
+                yaxisScaleMax: 50,
+                yaxisScaleMin: -25,
+                yaxisLabelsCount: 3,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday', 'Friday'],
+                xaxisLabelsPosition: 'section',
+                xaxisTickmarks: false,
+                backgroundGridVlinesCount: 10,
+                xaxisColor: '#aaa',
+                yaxis: false,
+                backgroundGridColor: '#eee',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridHlinesCount: 3,
+                filled: true,
+                colors: ['#c00'],
+                linewidth: 1,
+                filledColors: ['rgba(255,0,0,0.25)']
+            }
+        }).draw();
+
+
+
+
+        function update ()
+        {
+            // A global
+            last = (window.last || (Math.random() * 75 + -25)) + (Math.random() * 4 - 2);
+            last = Math.min(50, last);
+            last = Math.max(-25, last)
+
+            line.originalData[0].push(last);
+            line.originalData[0].shift();
+
+            RGraph.SVG.redraw();
+
+            setTimeout(function ()
+            {
+                update()
+            }, 50);
+        }
+
+        update();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line and Pie chart with tooltips and custom events</title>
+    
+    
+    <meta name="description" content="A Line and Pie chart with tooltips and custom events" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>Two charts (on two canvas tags) with tooltips and custom events</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="200" height="200">[No canvas support]</canvas>
+    
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [20,30,50,40,30,50,40,30,60,50,10,20],
+            options: {
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                tooltips: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).draw().on('click', function (e, shape)
+        {
+            alert('The Line chart click event');
+        });
+        
+        pie = new RGraph.Pie({
+            id: 'cvs2',
+            data: [5,6],
+            options: {
+                exploded: 5,
+                tooltips: ['John', 'Mary'],
+                colorsStroke: 'rgba(0,0,0,0)'
+            }
+        }).draw().on('click', function (e, shape)
+        {
+            alert('The Pie chart click event');
+        });
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="200" height="200"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

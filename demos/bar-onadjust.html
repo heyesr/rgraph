@@ -1,0 +1,147 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+     <script src="../libraries/RGraph.common.core.js" ></script>
+     <script src="../libraries/RGraph.common.dynamic.js" ></script>
+     <script src="../libraries/RGraph.bar.js" ></script>
+     <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A customised adjustable Bar chart</title>
+    
+    <meta name="description" content="A customised adjustable Bar chart. On this chart when one bar is updated the other bars are also altered so that the combined total of the bars is equal to 300." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A customised adjustable Bar chart</h1>
+
+    <canvas id="cvs" width="600" height="250" style="float: right">[No canvas support]</canvas>
+
+    <p>
+        This demo shows how you can make use of the <code>adjust</code> RGraph
+        event
+        so that when you adjust one bar on the chart the others are updated
+        with the remainder - be it a plus or minus figure - (so that they all add up to 300).
+    </p>
+    
+    <p>
+        Shown below, the code to do this is not a lot and is added in the configuration using the
+        <code>on()</code> function after the <code>draw()</code> call.
+    </p>
+    
+    <p>
+        The first thing the code does is get the <code>shape</code> object for the bar that's being adjusted
+        from RGraph registry. It gets the new value of the bar, takes it off the specified maximum value
+        (which is 300 in this example) and then shares the remainder out between the other bars and sets
+        their values.
+    </p>
+    
+    <p>
+        Finally, it redraws the chart so that the new values are shown on the chart.
+    </p>
+    
+    <p>
+        It should be feasible to maintain the differences between the bars so that instead of the rest of
+        the bars being set to the exact same value they would be set to their original value + their bit
+        of the adjusted bar - be it a plus or a negative.
+    </p>
+    <p>
+        But since that's more involved I'll leave it as an exercise for the reader!
+    </p>
+    
+    <p>
+        There's a Horizontal Bar demo in the download called <code>hbar-onadjust.html</code> that
+        demonstrates this concept, albeit with only two bars.
+    </p>
+    
+    <p>
+        The <code>responsive()</code> function reduces the size of the canvas, reduces the size of the
+        text on the canvas and moves the X axis labels down a little bit. The CSS <code>float</code> is
+        also removed. The dynamic nature of the chart is not altered.
+    </p>
+
+    <br clear="all" />
+
+    <script>
+        // This is the combined maximum value of all of the bars on the chart.
+        combinedMax = 300;
+
+        // Create the Bar chart and configure it with the maximum Y value set to the
+        // combined maximum value. The Bar chart is configured to be adjustable.
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [180,20,20,20,20,20,20],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                adjustable: true,
+                marginLeft: 50,
+                yaxisScaleMax: combinedMax,
+                labelsAbove: true,
+                labelsAboveDecimals: 1
+            }
+        
+        // Here's the adjust event that changes the bars based on the one thats being
+        // adjusted and what it has been adjusted to.
+        }).draw().on('adjust', function (obj)
+        {
+            // Get the shape object of the bar that's being adjusted from the
+            // RGraph registry. You too can use the RGraph registry if you
+            // have some settings to store.
+            var shape = RGraph.Registry.get('adjusting.shape');
+
+            // Get the new value of the bar that's just been adjusted and then
+            // calculate what the value is that the other bars should be set to.
+            var dataset = shape.dataset;
+            var value   = bar.data[dataset];
+            var other   = (combinedMax - value) / (bar.data.length - 1);
+            
+            // Now adjust all of the values of the bars that aren't being
+            // adjusted.
+            for (var i=0; i<bar.data.length; ++i) {
+                if (i != dataset) {
+                    bar.data[i] = other;
+                }
+            }
+            
+            RGraph.redraw();
+        });
+        
+        // Add some responsive capability to the chart so it works well on smaller devices
+        bar.responsive([
+            {maxWidth: null,width:600,height:300,options: {labelsAboveSize: 14,xaxisLabelsOffsety:0,textSize: 14},css:{'float':'right'}},
+            {maxWidth: 900,width:400,height:200,options: {labelsAboveSize: 10,xaxisLabelsOffsety:5,textSize: 10},css:{'float':'none'}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+</body>
+</html>

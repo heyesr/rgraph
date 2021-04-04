@@ -1,0 +1,130 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An adjustable black Meter chart</title>
+    <meta name="description" content="A black Meter chart which has some custom code that has been added to make it adjustable, but using animation instead of the built-in adjusting feature." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>An adjustable black Meter chart</h1>
+    
+    <canvas id="cvs" width="300" height="300" style="background-color: black; border-radius: 15px; box-shadow:3px 3px 3px gray; float: right">[No canvas support]</canvas>
+    
+    <p>
+        This Meter chart has been significantly customised which is why it
+        looks very different to the default Meter. The start
+        and end angles have
+        been adjusted as well as the radius of the black part in the center
+        having been increased. Before drawing the canvas is cleared to a black color. And the
+        Meter is adjustable by way of some custom code that utilises the
+        <code>grow()</code> effect. This type of adjusting is custom - the default adjusting
+        feature in RGraph is not animated.
+    </p>
+    
+    <p>
+        Whilst this chart shows you an example of using the
+        <code>angleStart</code> and
+        <code>angleEnd</code> property you can use
+        these properties to significantly change the look of the Meter chart and
+        have one that is sideways oriented and not vertically oriented. It depends on the
+        interface and aesthetics that you want for how you orient the Meter.
+    </p>
+    
+    <p>
+        The custom code that facilitates the adjusting just consists of an event
+        listener added to the canvas tag, the
+        <code>getValue()</code> function to get
+        the new value based on the click and then the
+        <code>grow()</code> effect that moves
+        the pointer to the new position.
+    </p>
+
+    
+    <script>
+        // Create the Meter chart - it must be assigned to a variable in
+        // this case so that that variable can be used later.
+        meter = new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+
+                // There's various configuration options here so that the Meter looks
+                // quite different to the default.
+                backgroundColor: 'black',
+                anglesStart: RGraph.PI - 0.55,
+                anglesEnd: RGraph.TWOPI + 0.5,
+                centery: 150,
+                textSize: 14,
+                textColor: 'white',
+                textValign: 'center',
+                colorsGreenColor: '#0a0',
+                segmentsRadiusStart: 95,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                needleRadius: 70,
+                needleColor: '#ddd',
+                needleHeadWidth: 0.1,
+                needleHeadLength: 20,
+                centerpinStroke: 'black',
+                centerpinFill: '#ddd'
+            }
+        }).draw();
+
+        // Now add a click event listener so that when the canvas is clicked on
+        // the Meter chart needle animates to show the new value.
+        meter.canvas.onclick = function (e)
+        {
+            var newvalue = meter.getValue(e);
+            
+            meter.value = newvalue;
+            meter.grow();
+        }
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="500" style="background-color: black; border-radius: 15px; box-shadow:3px 3px 3px gray"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

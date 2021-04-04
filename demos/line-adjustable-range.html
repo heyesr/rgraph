@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An adjustable range Line chart</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    
+    <meta name="description" content="A range Line chart which is adjustable - so you can drag the datapoints up and down" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>An adjustable range Line chart</h1>
+    
+    <p>
+        An adjustable range Line chart.
+    </p>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [8,8,6,6,8,9,13,15,16,15,15,12,11,11,13,10,12,11,10,13,12,9,8,11,12,10,16,15,12,11],
+                [4,5,3,2,5,6,8,9,5,6,4,5,3,2,5,6,8,9,5,6,4,5,3,2,5,6,8,9,5,6]
+            ],
+            options: {
+                marginTop: 50,
+                xaxisLabels: ['13th','14th','15th','16th','15th','16th','17th','18th','19th'],
+                title: 'Range of fuel consumption',
+                titleBold: true,
+                filled: true,
+                filledRange: true,
+                filledColors: 'rgba(128,255,128,0.5)',
+                linewidth: 2,
+                colors: ['green'],
+                xaxisTickmarksCount: 8,
+                adjustable: true,
+                tickmarksStyle: null,
+                yaxisScaleMax: 25,
+                textSize: 14
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

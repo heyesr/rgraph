@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Horizontal Bar chart</title>
+    <meta name="description" content="A basic Horizontal Bar chart" />     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic Horizontal Bar chart</h1>
+
+    <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [1,2,5,10,20,30,40,45,50],
+            options: {
+                yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
+                adjustable: true,
+            }
+        }).draw();
+
+        // This adjust event listener makes it so that when you adjust the
+        // chart the bar being adjusted snaps to the nearest whole value.
+        //
+        //.on('adjust', function (e)
+        //{
+        //    var shape   = RGraph.Registry.get('adjusting.shape'),
+        //        obj     = shape.object,
+        //        idx     = shape.index,
+        //        indexes = RGraph.sequentialIndexToGrouped(idx, obj.data);
+        //        group   = indexes[0],
+        //        index   = indexes[1];
+
+        //    obj.data[group][index] = Math.round(obj.data[group][index]);
+        //    
+        //    RGraph.redraw();
+        //});
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

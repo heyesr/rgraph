@@ -1,0 +1,102 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: The old front page Pie chart</title>
+    
+    
+    <meta name="description" content="The old front page Pie chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>The old front page Pie chart</h1>
+    
+    <p>
+        This is the Pie chart from the front page. It starts with the
+        <code>roundRobin()</code>
+        effect and allows you to click to explode
+        the Pie chart segments.
+    </p>
+
+    <canvas id="cvs" width="450" height="250">[No canvas support]</canvas>
+    
+    <script>
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [9,5,12,8,4,9],
+            options: {
+                colorsStroke: '#e8e8e8',
+                linewidth: 2,
+                shadowBlur: 5,
+                shadowOffsetx: 5,
+                shadowOffsety: 5,
+                shadowColor: '#aaa',
+                exploded: 10,
+                radius: 80,
+                labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget']
+            }
+        }).on('click', function (e, shape)
+        {
+            var index = shape.index;
+            var obj = shape.object;
+            
+            // Reset all of the segments to 10
+            obj.set('exploded', 10);
+            
+            obj.explodeSegment(index, 15);
+            
+            e.stopPropagation();
+        }).on('mousemove', function (e, shape)
+        {
+            return true;
+        })
+
+        
+        pie.roundRobin({frames:30});
+
+        
+        window.addEventListener('mousedown', function (e)
+        {
+            pie.set('exploded', 10);
+        }, true);
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

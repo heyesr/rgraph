@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.radar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Radar chart with background coloring</title>
+    
+    
+    <meta name="description" content="An SVG Radar chart with background coloring" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Radar chart with background coloring</h1>
+    <p>This is an example of a Radar chart that is actually made up of two Radar charts. The first is used to create the gray background rings and the second displays the actual Radar chart.</p>
+
+    
+    <div style="width: 600px; height: 500px" id="chart-container"></div>
+
+
+
+        
+    <script>
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: [
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1],
+                [1,1,1,1,1,1]
+            ],
+            options: {
+                filled: true,
+                filledAccumulative: true,
+                colors: ['#ddd','transparent','#ddd','transparent','#ddd'],
+                tickmarksStyle: null,
+                scaleVisible: false,
+                backgroundGridColor: '#eee'
+            }
+        }).draw();
+
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: [
+                [8,9,7,8,9,8],
+                [10,8,9,9,10,9]
+            ],
+            options: {
+                backgroundGrid: false,
+                colors: ['red', 'black'],
+                tickmarksStyle: null,
+                linewidth: 3,
+                labels: ['John','Greg','Luis','Pete','Rich','Todd']
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.radar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 600px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

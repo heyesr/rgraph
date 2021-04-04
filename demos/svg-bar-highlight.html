@@ -1,0 +1,92 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Bar chart with post processing</title>
+    
+    
+    <meta name="description" content="An SVG Bar chart with post processing" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG Bar chart with post processing</h1>
+    
+    <p>This Bar chart uses the custom RGraph <code>draw</code> event to add highlight to each bar.<a href="bar-post-processing.html">There's a canvas version of this chart here.</a> The <code>draw</code> event is used to run some code which, using the coordinates of each bar, adds a semi-opaque rectangle to the left-hand-side of each bar. There's also a shadow and the background grid is customised.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="cc"></div>
+
+
+
+    <script>
+        var bar = new RGraph.SVG.Bar({
+            id: 'cc',
+            data: [[47,75],[32,74],[71,85],[25,19],[23,71],[81,59],[43,130],[23,20]],
+            options: {
+                textSize: 10,
+                marginLeft: 45,
+                colors: ['#494949','#35A0DA'],
+                xaxisLabels: ['Alf','Bert','Craig','Dan','Edgar','Fred','Gary','Harry'],
+                xaxis: false,
+                yaxisLabelsCount: 3,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginInner: 10,
+                shadow: true
+            }
+        }).on('draw', function (obj)
+        {
+            for (var i=0; i<obj.coords.length; ++i) {
+
+                var x = obj.coords[i].x,
+                    y = obj.coords[i].y,
+                    w = obj.coords[i].width / 2,
+                    h = obj.coords[i].height;
+
+
+                RGraph.SVG.create({
+                    object: obj,
+                    type: 'rect',
+                    parent: obj.svg.all,
+                    attr: {
+                        x: x,
+                        y: y,
+                        width: w,
+                        height: h,
+                        fill: 'rgba(255,255,255,.215)'
+                    }
+                });
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

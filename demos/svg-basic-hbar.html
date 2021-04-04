@@ -1,0 +1,76 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A basic SVG Horizontal Bar chart</title>
+    
+    
+    <meta name="description" content="A basic SVG HBar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A basic SVG Horizontal Bar chart</h1>
+    <p>This is a demo of a basic Horizontal Bar chart. It doesn't do anything particularly special but does use a key and also has a title and tooltips. The tooltips don't have any special customisations for their appearance but this is easily achievable.</p>
+
+    
+    <div style="width: 750px; height: 500px; display: inline-block" id="chart-container"></div>
+
+
+
+        
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [14,16,24,26,23,45,12],
+            options: {
+                key: ['Richards sales of widgets'],
+                keyOffsetx: 30,
+                marginTop: 50,
+                yaxisLabels: ['Monday','Tuesday', 'Wednesday', 'Thursday','Friday','Saturday','Sunday'],
+                tooltips: ['Monday','Tuesday', 'Wednesday', 'Thursday','Friday','Saturday','Sunday'],
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                title: 'A basic Horizontal Bar chart'
+            }
+        }).draw().responsive([
+            {maxWidth: 900,width: 400, height: 300, options:{textSize: 10}},
+            {maxWidth: null,width: 750, height: 500, options:{textSize: 12}}
+        ]);
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;div style="width: 450px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

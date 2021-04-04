@@ -1,0 +1,179 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Bar chart with a dark background</title>
+    <meta name="description" content="This is a Bar chart with a dark theme. It illustrates how versatile RGraph can be when you're configuring your charts." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A Bar chart with a dark background</h1>
+    
+    <canvas id="cvs" width="500" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999; float: right">[No canvas support]</canvas>
+
+    <p>
+        This is a grouped Bar chart with two bars per group which uses red and blue
+        graduated fills. The background grid has been customised and the background
+        itself is a dark color (so the text has been changed to white). Also the
+        chart is using the Bar chart <code>wave()</code> effect. This grows sequentially from
+        the left-hand-side with a small delay between each group of bars.
+    </p>
+    
+    <p>
+        The two gradients that are used here  (<code>Gradient(white:#ccf:#ccf:#ccf:#ccf)</code>
+        and <code>Gradient(white:#faa:#faa:#faa:#faa)</code>)
+        are created by using the RGraph specific gradient syntax. This is an easy way
+        to produce gradients (it's certainly easier than the canvas API method!) and
+        can be utilised to produce gradients for your own charts.
+    </p>
+    
+    <p>
+        If you wanted to add further information to the chart in order to identify
+        the meaning of the two bars you could add a key in either the graph or margin
+        modes or you could perhaps use the <code>labelsAbove</code> option.
+    </p>
+    
+    <p>
+        For smaller screens the <code>responsive()</code> function reduces the size of the chart,
+        reduces the size of the text on the chart and reduces the size of the margins.
+    </p>
+    
+    <p>
+        This demo shows the new highlighting style - <code>invert</code>. This reverses the
+        highlighting from adding a rectangle over the focused bar to adding rectangles to every
+        rectangle <i>except</i> the focused bar.
+    </p>
+    
+    <p>
+        The tooltips have no fade effect and are positioned at the top left of the canvas tag by using
+        the <code>tooltip</code> event. This runs a snippet of code which gets the canvas tag x/y
+        coordinates and sets the position of the tooltip accordingly.
+    </p>
+
+    
+    
+    <script>
+        // This is the data that gets displayed on the Bar chart. It's a
+        // 2D array so that a grouped Bar chart can be shown. A 2D array
+        // is also how you show a stacked chart but you have to also specify
+        // the grouping configuration property.
+        data = [[45,56],[75,32],[39,47],[34,48],[46,47],[48,52]];
+
+        // Create the Bar chart and pass it the data
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: data,
+            options: {
+                shadow: false,
+                colorsStroke: 'rgba(0,0,0,0)',
+                grouping: 'grouped',
+                
+                // Use the RGraph specific syntax for gradients
+                colors: [
+                    'Gradient(white:#ccf:#ccf:#ccf:#ccf)',
+                    'Gradient(white:#faa:#faa:#faa:#faa)'
+                ],
+
+                // No vertical background grid lines or border
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+
+                textColor: 'white',
+                xaxisLabels: ['2007','2008','2009','2011','2012','2013'],
+                marginTop: 15,
+                marginRight: 5,
+                xaxis: false,
+                yaxis: false,
+                
+                // These configuration properties make up the tooltips using the
+                // new formatted tooltips feature and the tooltipsCss property.
+                myNames: ['Peter','Charles'],
+                tooltips: 'Sales results in <span style="font-size: 14pt;font-style:italic">%{property:xaxisLabels[%{group}]}</span>:%{key}',
+                tooltipsFormattedKeyColors: ['#aaf', 'pink'],
+                tooltipsFormattedUnitsPre: '$',
+                tooltipsFormattedUnitsPost:',000,000',
+                tooltipsPointer: false,
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    fontSize: '16pt',
+                    border: '5px solid #666',
+                    textAlign: 'left',
+                    pointerEvents: 'none',
+                },
+                tooltipsEffect: 'none',
+                tooltipsEvent: 'mousemove',
+                
+                // Use the newer highlight inverting so that the bars that aren't highlighted
+                // are faded out.
+                highlightStyle: 'invert',
+                highlightFill: 'rgba(0,0,0,0.5)'
+            }
+        
+        // The wave() effect is used to show the chart
+        }).wave().responsive([        
+            {maxWidth: null, width: 500, height: 250, options: {textSize: 16, marginLeft: 35, marginBottom: 35}},
+            {maxWidth: 900,  width: 300, height: 150, options: {textSize: 10,  marginLeft: 25, marginBottom: 20}}
+        
+        // This tooltip event code runs when a tooltip is shown and positions the tooltip at the top of,
+        // and on the left of, the canvas.
+        ]).on('tooltip', function (obj)
+        {
+            // Use the RGraph API to get the canvas coordinates
+            var canvasXY = RGraph.getCanvasXY(obj.canvas);
+            
+            // Get the tooltip DIV tag object from the RGraph Registry
+            var tooltip  = RGraph.Registry.get('tooltip');
+            
+            // Set the x/y coordinates of the tooltip DIV tag
+            tooltip.style.top  = canvasXY[1] - tooltip.offsetHeight - 5 + 'px';
+            tooltip.style.left = canvasXY[0] + 'px';
+        });
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999; float: right"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+
+<span>&lt;!-- Center align the tooltip key --&gt;</span>
+&lt;style&gt;
+    <span>//.RGraph_tooltip table {
+    //    margin-left: auto;
+    //    margin-right: auto;
+    //}</span>
+&lt;/style&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

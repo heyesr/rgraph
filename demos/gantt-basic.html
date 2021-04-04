@@ -1,0 +1,81 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A basic Gantt chart</title>
+    
+    
+    
+    <meta name="description" content="A basic Gantt chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic Gantt chart</h1>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+        data = [
+            {start: 31, duration: 28,  complete: 67,label: 'Richard', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 0,  duration: 28,  complete: 50, label: 'Rachel', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 12, duration: 28,  complete: 45, label: 'Fred', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 59, duration: 14,  complete: 0,  label: 'Barney', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 59, duration: 21,  complete: 5,  label: 'Gloria', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 46, duration: 31,  complete: 92, label: 'Paul', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 80, duration: 21,  complete: 46, label: 'Harry', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 94, duration: 17,  complete: 84, label: 'Shane', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 34, duration: 14,  complete: 32, label: 'Kyle', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 64, duration: 14,  complete: 28, label: 'Cynthia', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 13, duration: 61,  complete: 74, label: 'Mabel', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 34, duration: 31,  complete: 16, label: 'Paul', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 80, duration: 22,  complete: 45, label: 'Kiffen', linewidth: 0, color: 'red', background: 'pink'},
+            {start: 0,  duration: 115, complete: 50, label: 'John', linewidth: 0, color: 'red', background: 'pink'}
+        ];
+
+        gantt = new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsPercent: true,
+                backgroundGridVlinesCount: 4
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>

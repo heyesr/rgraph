@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line/Bar chart made to look like Google Search Console</title>
+
+    
+    <meta name="description" content="A Line/Bar chart made to look like Google Search Console" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>A Line/Bar chart made to look similar to Google Search Console</h1>
+    <p>This is a demonstration of a chart that has been significantly customised to look like Google Search Console (formerly Google Webmaster Tools). You can see from the source code below that there's not a whole lot of configuration that is required to achieve this chart.</p>
+
+
+
+    <div style="width: 750px; height: 100px" id="chart-container"></div>
+    
+        
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: (function ()
+            {
+                var arr = [];
+
+                for (var i=0; i<90; ++i) {
+                    arr.push(RGraph.SVG.random({min: 150, max: 450}))
+                }
+
+                return arr;
+            })(),
+            options: {
+                colors: ['blue'],
+                linewidth: 1,
+                yaxisScaleMax: 1200,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabelsCount: 2,
+                yaxisTextColor: '#aaa',
+                yaxisLabelsOffsety: 10,
+                yaxisLabelsOffsetx: 10,
+                yaxisLabelsHalign: 'left',
+                marginTop: 5,
+                marginBottom: 5,
+                marginLeft: 50,
+                textSize: 8,
+                marginInner: 35
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 100px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

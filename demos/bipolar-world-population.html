@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A basic Bipolar chart</title>
+    
+    
+    <meta name="description" content="A straight-forward Bipolar chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Bipolar chart showing world population by age</h1>
+
+    <canvas id="cvs" width="800" height="1000">[No canvas support]</canvas>
+    
+    <script>
+        // Create some data
+        var female   = RGraph.arrayReverse([0.63,0.62,0.62,0.64,0.65,0.64,0.64,0.64,0.64,0.63,0.65,0.66,0.65,0.65,0.65,0.65,0.68,0.68,0.68,0.70,0.72,0.72,0.69,0.68,0.67,0.67,0.68,0.66,0.68,0.68,0.68,0.69,0.65,0.64,0.63,0.61,0.63,0.62,0.63,0.66,0.70,0.71,0.67,0.66,0.66,0.67,0.72,0.73,0.74,0.74,0.75,0.75,0.73,0.73,0.73,0.70,0.70,0.67,0.65,0.63,0.61,0.60,0.58,0.58,0.60,0.45,0.45,0.44,0.45,0.40,0.37,0.35,0.33,0.32,0.30,0.29,0.28,0.26,0.25,0.25,0.24,0.24,0.22,0.21,0.20,0.18,0.17,0.15,0.14,0.12,0.10,0.09,0.07,0.06,0.04,0.03,0.03,0.02,0.01,0.01,0.02]);
+        var male     = RGraph.arrayReverse([0.66,0.65,0.65,0.67,0.68,0.67,0.67,0.67,0.66,0.66,0.68,0.69,0.68,0.68,0.68,0.68,0.70,0.71,0.73,0.74,0.75,0.75,0.72,0.71,0.69,0.70,0.70,0.68,0.69,0.69,0.68,0.70,0.65,0.64,0.63,0.61,0.63,0.61,0.62,0.65,0.69,0.70,0.66,0.65,0.65,0.66,0.70,0.72,0.72,0.71,0.72,0.73,0.71,0.70,0.69,0.67,0.66,0.63,0.61,0.58,0.57,0.55,0.54,0.53,0.56,0.41,0.40,0.39,0.40,0.35,0.32,0.30,0.28,0.27,0.25,0.24,0.22,0.20,0.19,0.18,0.17,0.17,0.15,0.14,0.12,0.11,0.10,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.02,0.01,0.01,0.01,0.00,0.00,0.00]);
+        var tooltips = [];
+
+        // Make the tooltips
+        for (var i=0; i<male.length; i+=1) {tooltips.push(  'Age %1: %2'.format(String(100 - i), String(male[i])));}
+        for (var i=0; i<female.length; i+=1) {tooltips.push('Age %1: %2'.format(String(100 - i), String(female[i])));}
+
+        // Create and show the chart
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: male,
+            right: female,
+            options: {
+                marginInner: 2,
+                marginBottom: 50,
+                backgroundGrid: false,
+                xaxisScaleDecimals: 1,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: [
+                    '100','','','','','','','','','',
+                    '80','','','','','','','','','',
+                    '60','','','','','','','','','',
+                    '40','','','','','','','','','',
+                    '20','','','','','','','','','',
+                    '0'
+                ],
+                textSize: 26,
+                textColor: '#bbb',
+                tooltips: tooltips,
+                tooltipsEvent: 'onmousemove',
+                colors: ['#f66','blue']
+            }
+        }).draw();
+    </script>
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bipolar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="1000"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+    
+</body>
+</html>

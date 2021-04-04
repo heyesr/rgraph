@@ -1,0 +1,115 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG 100% Bar chart</title>
+
+    
+    <meta name="description" content="An SVG 100% Bar chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>An SVG 100% Bar chart</h1>
+    <p>By configuring your data (as is shown here) you can have your Bar chart take on the appearance of a 100% Bar chart. This chart does just that and also uses the <code>grow()</code> animation effect.</p>
+
+    
+    <div style="width: 750px; height: 300px" id="chart-container"></div>
+
+
+
+
+    <script>
+        // Define the data
+        data  = [[4,2,6],[8,6,4],[1,2,5],[5,6,2],[4,8,8],[3,2,5],[4,6,5]];
+
+        // Calculate the percentages that the data represents
+        data.forEach(function (v, k, arr)
+        {
+            var total = RGraph.SVG.arraySum(v);
+
+            for (var i=0; i<v.length; ++i) {
+                v[i] = (v[i] / total) * 100;
+            }
+        });
+
+
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                marginLeft: 50,
+                colors: ['#c66','#6c6','#66c'],
+                yaxisScaleUnitsPost: '%',
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                names:['Bob','Jerry','Ben'],
+                tooltips: '<span style="font-style:italic; font-size: 12pt; font-wesight: normal">Competition results:</span><br />%{property:names[%{index}]} %{value_formatted}',
+                tooltipsFormattedDecimals: 1,
+                tooltipsFormattedUnitsPost: '%',
+                grouping: 'stacked',
+                marginInner: 20,
+                linewidth:3,
+                yaxisScaleMax: 100,
+                title: 'A 100% Bar chart',
+                shadow: true,
+                tooltipsCss: {
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontSize: '20pt',
+                    textAlign: 'left'
+                }
+            }
+        }).grow();
+
+
+
+
+        // Add this to have "whole bar" tooltips by covering the
+        // stacked bar chart with a regular bar chart.
+        //
+        //new RGraph.SVG.Bar({
+        //    id: 'chart-container',
+        //    data: [100,100,100,100,100,100,100],
+        //    options: {
+        //        marginLeft: 50,
+        //        backgroundGrid: false,
+        //        colors: ['transparent'],
+        //        marginInner: 20,
+        //        yaxisScaleMax: 100,
+        //        tooltips: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+        //    }
+        //}).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

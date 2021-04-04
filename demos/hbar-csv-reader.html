@@ -1,0 +1,105 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart using the CSV reader</title>
+
+
+    
+    <meta name="description" content="This is a simple example of a Horizontal Bar chart that's created by using the CSV reader that comes with RGraph." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart using the CSV reader</h1>
+
+    <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
+        <b>Note:</b>
+        For browser security reasons the AJAX demos don't work offline. You can
+        view the demos on the RGraph website here:
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
+    </div>
+    <canvas id="cvs" width="500" height="250" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+         Here we have a very simple example of the CSV Reader that is bundled with RGraph. This is in
+         addition to the <code>RGraph.AJAX.getCSV()</code> function.
+    </p>
+    
+    <p>
+        The code that fetches the data is this:
+    </p>
+    
+    <pre class="code">var data = csv.getRow(0, 1);</pre>
+    
+    <p>
+        This code fetches the first row (the zero-indexed first argument) and the second argument stipulates
+        that the first element of that row should be ignored (ie starting from column <code>1</code> instead of column
+        <code>0</code>.
+    </p>
+    
+    <p>
+        The only other configuration for the chart is the stipulation of the labels and in increase in the
+        size of the left margin.
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Use the CSV connector to read the sample.csv file from the server
+        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        {
+            // Fetch the first row of the CSV file, starting at the second column
+            // (as with many things in programming - counting starts at zero)
+            var data = csv.getRow(0, 1);
+
+            // Create and show the Horizontal Bar chart using the data that was
+            // retrieved from the CSV file. The only other configuration is the
+            // addition of some labels and widening the left margin.
+            new RGraph.HBar({
+                id: 'cvs',
+                data: data,
+                options: {
+                    yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                    marginLeft: 95
+                }
+            }).draw();
+        }});
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

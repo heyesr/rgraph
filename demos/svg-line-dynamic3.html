@@ -1,0 +1,178 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG dynamically updating SVG Line chart</title>
+    
+    
+    <meta name="description" content="A dynamically updating SVG Line chart. It's aesthetically quite simple in order to keep the frame up and the movement smooth." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A dynamically updating SVG Line chart</h1>
+    
+    <div style="float: right" id="outer-container">
+        <div style="width: 650px; height: 250px" id="cc"></div>
+    </div>
+
+    <p>
+        This is an SVG version of an older dynamic canvas Line chart. There are
+        lots of data points in the dataset (1200) and new ones are added every
+        16.666 milliseconds (ie 60 frames per second).
+    </p>
+    
+    <p>
+        It's purposefully not a complicated chart so that there's not much to do on each redraw. So there's
+        no vertical grid lines or border, no X axis and no shadow.
+    </p>
+    
+    <p>
+        The chart is created only once inside the <code>drawGraph()</code> function and then on each
+        iteration a new value is added to the <code>line.originalData</code> variable.
+    </p>
+    
+    <p>
+        The new value that's added is generated randomly but is constrained to only be a few units higher
+        or lower than the last value in the dataset. This prevents there being large jumps in the data
+        when new values are added.
+    </p>
+    
+    <p>
+        There's not a lot to do for smaller screens. The size of the chart is reduced, the labels are
+        switched to use two lines and the alignment of the SVG tag is altered so that it's centered.
+    </p>
+    
+    
+    <br clear="all" />
+    
+
+    
+    
+    
+    <script>
+        // Define some variables
+        var div       = document.getElementById("cc"),
+            obj       = null,
+            data      = [],
+            
+            // The letter 'L' - NOT a one
+            l         = 0,
+
+            numvalues = 1200,
+            updates   = 0;
+
+        // Pre-pad the data array with null values
+        for (var i=0; i<numvalues; ++i) {
+            data.push(null);
+        }
+
+        // This function is called repeatedly to draw the Line chart.
+        // It only creates the Line chart object once and then stores
+        // it in a global variable. On subsequent calls (this function
+        // gets called 60 times per second) this global variable is
+        // used instead of creating the entire Line chart again.
+        function drawGraph ()
+        {
+            // Create the Line chart if the global variable 'obj'
+            // doesn't exist.
+            if (!obj) {
+                
+                // The Line chart is configured to be quite minimal in appearance.
+                // Of course the less drawing that has to be done the smoother
+                // the updates.
+                obj = new RGraph.SVG.Line({
+                    id: 'cc',
+                    data: data,
+                    options: {
+                        colors: ['black'],
+                        linewidth: 0.75,
+                        shadow: false,
+                        marginTop: 10,
+                        marginBottom: 15,
+                        marginRight: 40,
+                        backgroundGrid: false,
+                        xaxisTickmarks: 0,
+                        yaxisTickmarks: 0
+                    }
+                }).responsive([
+                    {maxWidth: null,width:650,height:250,options:{textSize:16},css:{'float':'right'},parentCss:{'text-align':'none',width:'650px'}},
+                    {maxWidth: 800, width:400,height:150,options:{textSize:12},css:{'float':'none'},parentCss:{'text-align':'center',width:'100%'}}
+                ]);
+            
+            // If the chart has already been created then clear the SVG
+            } else {
+                RGraph.SVG.clear(obj.svg);
+            }
+
+            // Add some random data to the data array. The data is such that each
+            // point is only a few units higher or lower than the previous.
+            var len          = data.length,
+                lastvalue    = RGraph.SVG.isNull(data[len - 1]) ? 26 : data[len - 1],
+                random_value = RGraph.SVG.random({
+                    min: lastvalue  - 2,
+                    max: lastvalue + 2
+                });
+           
+           // The random value is constrained to a minimum of 0 and a
+           // maximum of 250.
+           random_value = Math.max(random_value, 0);
+           random_value = Math.min(random_value, 250);
+
+            // Add the random value to the data
+            data.push(random_value);
+            
+            // If the number of points in the data is greater than the numvalues
+            // variable take a point off of the front of the array.
+            if (data.length > numvalues) {
+                data.shift();
+            }
+
+            // Give the data to the Line chart and redraw the chart.
+            obj.originalData[0] = data;
+            obj.draw();
+            
+            // Call this function again after a small delay.
+            setTimeout(drawGraph, 16.666);
+        }
+        
+        // This sets everything going
+        drawGraph();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 650px; height: 250px" id="cc"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

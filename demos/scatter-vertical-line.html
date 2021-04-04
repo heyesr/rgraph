@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A vertical line chart</title>
+    <meta name="description" content="A guide for drawing a vertical line chart. Vertical line charts aren't one of the supported base types of charts - but can be accomplished by using the Scatter chart." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    <h1>A vertical line chart</h1>
+
+    <canvas id="cvs" width="400" height="550" style="float: right">[No canvas support]</canvas>
+
+    
+    <script>
+        // Create the Scatter chart but configure it in such a way that it has
+        // the appearance of a vertical Line chart. One configuration option
+        // that is used here is the X axis scale - which can be used on any
+        // Scatter chart instead of regular labels.
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: [[76, 6.5],[34,5.5],[12,4.5],[48,3.5],[43,2.5],[14,1.5],[5,0.5]],
+            options: {
+                xaxis: false,
+                xaxisScaleMax: 100,
+                yaxisScaleMax: 7,
+                textSize: 14,
+                line: true,
+                lineLinewidth: 3,
+                backgroundGridBorder: false,
+                backgroundGridHlines: false,
+                backgroundGridVlinesCount: 5,
+                yaxisLabelsSpecific: ['', 'Monday','', 'Tuesday','', 'Wednesday','', 'Thursday','', 'Friday','', 'Saturday','', 'Sunday',''],
+                marginLeft: 100,
+                xaxisScale: true,
+                yaxisTickmarksCount: 14,
+                tickmarksStyle: null
+            }
+        }).draw();
+    </script>
+
+    <p>
+        Vertical line charts are not supported natively in RGraph however they can
+		be achieved using the Scatter chart. With
+        the Scatter chart, unlike the Line chart, you can specify the X and Y coordinates and a connecting
+        line can be shown as in the example.
+    </p>
+    
+    <p>
+        Below is the code that's necessary to achieve the vertical line chart. The Y axis labels are
+        specific and used to show the labels for the chart whilst an X axis scale is enabled to show
+        the magnitude of values. The maximum values are set manually - so you may want to add code
+        that determines these based on the data - like a normal Line chart would.
+    </p>
+    
+    <p>
+        Read the comments in the code sample below to find out more information.
+    </p>
+
+    <br clear="all" />
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="400" height="550" style="float: right"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

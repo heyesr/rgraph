@@ -1,0 +1,114 @@
+<!-- <!DOCTYPE html > -->
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Pie chart thats banded</title>
+
+    
+    <meta name="description" content="An SVG Pie chart thats banded" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Pie chart thats banded</h1>
+    <p>
+        This demo of an SVG Pie chart is a regular Pie chart thats had some
+        post-drawing added to it that's giving the Pie chart a banded appearance.
+        The Pie is <code>exploded</code> by 5 pixels in order to give the appearance
+        of some lines emanating from the center and the chart uses the
+        <code>donut</code> option to get the large hole in the center. The round
+        white lines are spaced apart by 5 pixels. And finally the chart uses the
+        <code>roundRobin()</code> effect.
+    </p>
+    
+    <div style="width: 350px; height: 300px; border: 1px solid #ddd" id="cc"></div>
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'cc',
+            data: [4,8,6,5,3,5,6,8],
+            options: {
+                labels: ['David','Paul','Molly','Rachel','Jobe','Lucy','John','Bob'],
+                labelsSticks: false,
+                exploded: 5,
+                donut: true
+            }                    
+        }).on('draw', function (obj)
+        {
+            var svg  = obj.svg,
+                path = '';
+            
+            var r = obj.radius;
+            
+            while (r > 0) {
+                path =
+                    RGraph.SVG.TRIG.getArcPath3({
+                        cx: obj.centerx,
+                        cy: obj.centery,
+                        r:  r,
+                        start: 0,
+                        end: 3.1415 * 2,
+                        anticlockwise: false,
+                        lineto: false
+                    }) + " " + 
+                    RGraph.SVG.TRIG.getArcPath3({
+                        cx: obj.centerx,
+                        cy: obj.centery,
+                        r:  r - 5,
+                        start: 3.1415 * 2,
+                        end: 0,
+                        anticlockwise: true,
+                        lineto: true
+                    }) + ' Z'
+
+                RGraph.SVG.create({
+                    svg: svg,
+                    type: 'path',
+                    parent: obj.svg.all,
+                    attr: {
+                        d: path,
+                        fill: 'white'
+                    }
+                });
+                    
+                r -= 10;
+            }
+        }).roundRobin({frames: 90});
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 350px; height: 300px; border: 1px solid #ddd" id="cc"&gt;&lt;/div&gt;
+    [No canvas support]
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

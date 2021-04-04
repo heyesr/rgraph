@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A segmented Horizontal Progress bar</title>
+    
+    
+    
+    <meta name="description" content="A segmented Horizontal Progress bar" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A segmented Horizontal Progress bar</h1>
+
+    <div style="margin-bottom: 20px">
+        <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        value = 7;
+
+        hprogress = new RGraph.HProgress({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: 0,
+            options: {
+                colors: ['red'],
+                colorsStrokeOuter: 'rgba(0,0,0,0)',
+                linewidth: 5,
+                tickmarksCount: 0,
+                colorsBackground: 'rgba(0,0,0,0)',
+                marginTop: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                marginBottom: 10,
+                labelsOffsetx: -30,
+                labelsOffsety: -65,
+                textColor: 'white',
+                textSize: 30
+            }
+        }).on('beforedraw', function (obj)
+        {
+            obj.context.fillStyle = 'black';
+            obj.context.fillRect(0,0,obj.canvas.width,obj.canvas.height);
+        }).on('draw', function (obj)
+        {
+            var x    = obj.coords[0][0]
+                y    = obj.coords[0][1],
+                w    = obj.coords[0][2],
+                h    = obj.coords[0][3],
+                lw   = 5,
+                step = 1
+            
+            for (var i=0; i<=10; i+=step) {
+                
+                var x2 = obj.getXCoord(i);
+                
+                obj.path(
+                    'lw % ss white sr % % % %',
+                    lw, x, y, x2 - x, h
+                );
+            }
+        }).draw();
+        
+        
+        // Increase the represented value - a custom grow effect
+        // that increases the value in whole numbers
+        for (var i=0; i<=value; ++i) {
+            (function (num)
+            {
+                setTimeout(function ()
+                {
+                    hprogress.value = num;
+                    RGraph.redraw();
+                }, num * 150);
+            })(i)
+        }
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="margin-bottom: 20px"&gt;
+    &lt;canvas id="cvs" width="600" height="100"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

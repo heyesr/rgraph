@@ -1,0 +1,89 @@
+ <!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Pie chart explode() demo using onmouseover</title>
+
+    
+    <meta name="description" content="A Pie chart that uses the new mouseover event to explode() the Pie chart" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Pie chart explode() demo using onmouseover</h1>
+
+
+<canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+    
+<script>
+    // Create the Pie chart
+    pie = new RGraph.Pie({
+        id: 'cvs',
+        data: [4,6,3,5,2,5,8],
+        options: {
+            labels: ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+            textColor: '#ccc',
+            exploded: 5,
+            radius: 100,
+            linewidth: 1,
+            shadowBlur: 10,
+            shadowColor: '#ccc'
+        }
+    }).on('mouseover', function (e, shape)
+    {
+        var idx = shape.index;
+
+        pie.set('exploded', 5);
+        pie.explodeSegment(idx, 25);
+
+        e.target.style.cursor = 'pointer';
+        
+        e.stopPropagation();
+    }).draw();
+
+    // Add the window click listener that resets the Pie chart
+    window.onclick = function (e)
+    {
+        pie.set('exploded', 5);
+        RGraph.redraw();
+    }
+</script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

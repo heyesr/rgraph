@@ -1,0 +1,102 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A pink Pie chart</title>
+    
+    
+    <meta name="description" content="A pink Pie chart using the (now default) sticks option for labels. The linewidth option is also employed to make a small segment separation effect." />
+     
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A pink Pie chart</h1>
+
+    <canvas id="cvs" width="550" height="200" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        Another quite basic Pie chart which is predominantly a pinkish theme. All of the colors
+        are defined using <code>rgb()</code> values instead of hex values or named colors.
+    </p>
+    
+    <p>
+        The <code>linewidth</code> is set to 2 so the resultant effect is a small amount of segment
+        separation.
+    </p>
+    
+    <p>
+        The labels are defined and the <code>textSize</code> option is enlarged slightly so
+        that those labels are a little bit clearer.
+    </p>
+    
+    <p>
+        It's quite a basic example of a Pie chart but the resulting aesthetic is quite nice.
+        This goes to show that your charts don't need to be fancy to look good!
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // A pretty straight-forward Pie chart. The only thing to note here
+        // really is the use of the linewidth property to create a small
+        // segment separation effect. The default color for the stroke is
+        // white so it just blends into the background of the page (the
+        // default background color of the canvas tag is transparent).
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [3,7.9,2,10.3,11.1,1,63.9],
+            options: {
+                colors: [
+                    'rgb(51,102,204)',
+                    'rgb(220,57,18)',
+                    'rgb(255,153,0)',
+                    'rgb(16,150,24)',
+                    'rgb(153,0,153)',
+                    'rgb(0,153,198)',
+                    'rgb(221,68,119)'
+                ],
+                linewidth: 2,
+                shadow: false,
+                labels: ['3%','7.9%','2%','10.3%','11.1%','1%','62.9%'],
+                textSize: 10,
+                textColor: '#444'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="550" height="450"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

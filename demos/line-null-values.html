@@ -1,0 +1,69 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart with null values</title>
+    
+    
+    <meta name="description" content="A Line chart with null values" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A Line chart with null values</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [1059990.29, 90000.97,508116.23, 54790.12, null,null,null],
+            options: {
+                marginLeft: 75,
+                backgroundGridVlinesCount: 6,
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 5,
+                xaxisTickmarksCount: 6,
+                xaxisLabels: ['John','Fred','Lucy','John','Luis','Pete','Kevin'],
+                colors: ['#c00', 'pink'],
+                linewidth: 2,
+                shadow: false
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>
