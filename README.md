@@ -1,5 +1,5 @@
-RGraph
-======
+RGraph: Beautiful javascript charts for websites
+------------------------------------------------
 
 RGraph is an Open Source JavaScript charts library for websites. It was started in 2008 and was initially canvas only.
 
