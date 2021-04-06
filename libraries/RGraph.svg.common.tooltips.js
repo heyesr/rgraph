@@ -1,5 +1,4 @@
-// Version: 2021-03-01
-//
+
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -200,135 +199,103 @@
             var text = original.replace(/%%/g, '___--PERCENT--___')
 
 
-//
-// Draws the key in the tooltip
-//
-var keyReplacementFunction = function ()
-{
-    if (!specific.values) {
-        return;
-    }
+            //
+            // Draws the key in the tooltip
+            //
 
-    //
-    // Allow the user to specify the key colors
-    //
-    var colors = properties.tooltipsFormattedKeyColors ? properties.tooltipsFormattedKeyColors : properties.colors;
-
-    // Build up the HTML table that becomes the key
-    for (var i=0,str=[]; i<specific.values.length; ++i) {
-
-        var value = (typeof specific.values === 'object' && typeof specific.values[i] === 'number') ? specific.values[i] : 0;
-        var color = colors[i];
-        var label = ( (typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[i] === 'string') ? properties.tooltipsFormattedKeyLabels[i] : '');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Chart specific customisations -------------------------
-        if (typeof opt.object.tooltipsFormattedCustom === 'function') {
-
-            // The index/group/sequential index
-            // The index
-            // The colors
-            var ret = opt.object.tooltipsFormattedCustom(
-                specific,
-                i,
-                colors
-            );
-
-            if (ret.continue) {continue;};
-
-            if (typeof ret.label === 'string') {label = ret.label;};
-            if (ret.color)                     {color = ret.color;};
-            if (typeof ret.value === 'number') {value = ret.value;};
-        }
-
-
-
-
-
-
-
-
-        value = RGraph.SVG.numberFormat({
-             object: opt.object,
-                num: value.toFixed(opt.object.properties.tooltipsFormattedDecimals),
-           thousand: opt.object.properties.tooltipsFormattedThousand  || ',',
-              point: opt.object.properties.tooltipsFormattedPoint     || '.',
-            prepend: opt.object.properties.tooltipsFormattedUnitsPre  || '',
-             append: opt.object.properties.tooltipsFormattedUnitsPost || ''
-        });
-
-        // If the tooltipsFormattedKeyColorsShape property is set to circle then add
-        // some border-radius to the DIV tag
-        //
-        var borderRadius = 0;
-        
-        if (   typeof opt.object.properties.tooltipsFormattedKeyColorsShape === 'string'
-            && opt.object.properties.tooltipsFormattedKeyColorsShape === 'circle') {
-
-            borderRadius = '100px';
-        }
-
-        // Facilitate the  property that allows CSS to be added to
-        // the tooltip key color blob
-        var tooltipsFormattedKeyColorsCss = '';
-        if (properties.tooltipsFormattedKeyColorsCss) {
-            for(property in properties.tooltipsFormattedKeyColorsCss) {
-                if (typeof property === 'string') {
-                    tooltipsFormattedKeyColorsCss += '{1}: {2};'.format(property.replace(/[A-Z]/, function (match)
-                    {
-                        return '-' + match.toLowerCase();
-                    }), String(properties.tooltipsFormattedKeyColorsCss[property]));
+            var keyReplacementFunction = function ()
+            {
+                if (!specific.values) {
+                    return;
                 }
-            }
-        }
+            
+                //
+                // Allow the user to specify the key colors
+                //
+                var colors = properties.tooltipsFormattedKeyColors ? properties.tooltipsFormattedKeyColors : properties.colors;
+            
+                // Build up the HTML table that becomes the key
+                for (var i=0,str=[]; i<specific.values.length; ++i) {
 
-        str[i] = '<tr><td><div class="RGraph_tooltipsFormattedKeyColor" style="text-align: left; background-color: '
-            + color + '; color: transparent; pointer-events: none; border-radius: '
-            + borderRadius + ';' + tooltipsFormattedKeyColorsCss + '">Ml</div></td><td style="text-align: left">'
-            + label
-            + ' ' + value + '</td></tr>';
-    }
-    str = str.join('');
+                    var value = (typeof specific.values === 'object' && typeof specific.values[i] === 'number') ? specific.values[i] : 0;
+                    var color = colors[i];
+                    var label = ( (typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[i] === 'string') ? properties.tooltipsFormattedKeyLabels[i] : '');
 
-    // Add the key to the tooltip text - replacing the placeholder
-    text = text.replace('%{key}', '<table style="color: inherit">' + str + '</table>');
-};
 
-keyReplacementFunction();
+
+                    // Chart specific customisations -------------------------
+                    if (typeof opt.object.tooltipsFormattedCustom === 'function') {
+            
+                        // The index/group/sequential index
+                        // The index
+                        // The colors
+                        var ret = opt.object.tooltipsFormattedCustom(
+                            specific,
+                            i,
+                            colors
+                        );
+
+                        if (ret.continue) {continue;};
+            
+                        if (typeof ret.label === 'string') {label = ret.label;};
+                        if (ret.color)                     {color = ret.color;};
+                        if (typeof ret.value === 'number') {value = ret.value;};
+                    }
+            
+            
+            
+            
+            
+            
+            
+            
+                    value = RGraph.SVG.numberFormat({
+                         object: opt.object,
+                            num: value.toFixed(opt.object.properties.tooltipsFormattedDecimals),
+                       thousand: opt.object.properties.tooltipsFormattedThousand  || ',',
+                          point: opt.object.properties.tooltipsFormattedPoint     || '.',
+                        prepend: opt.object.properties.tooltipsFormattedUnitsPre  || '',
+                         append: opt.object.properties.tooltipsFormattedUnitsPost || ''
+                    });
+            
+                    // If the tooltipsFormattedKeyColorsShape property is set to circle then add
+                    // some border-radius to the DIV tag
+                    //
+                    var borderRadius = 0;
+                    
+                    if (   typeof opt.object.properties.tooltipsFormattedKeyColorsShape === 'string'
+                        && opt.object.properties.tooltipsFormattedKeyColorsShape === 'circle') {
+            
+                        borderRadius = '100px';
+                    }
+            
+                    // Facilitate the  property that allows CSS to be added to
+                    // the tooltip key color blob
+                    var tooltipsFormattedKeyColorsCss = '';
+                    if (properties.tooltipsFormattedKeyColorsCss) {
+                        for(property in properties.tooltipsFormattedKeyColorsCss) {
+                            if (typeof property === 'string') {
+                                tooltipsFormattedKeyColorsCss += '{1}: {2};'.format(property.replace(/[A-Z]/, function (match)
+                                {
+                                    return '-' + match.toLowerCase();
+                                }), String(properties.tooltipsFormattedKeyColorsCss[property]));
+                            }
+                        }
+                    }
+            
+                    str[i] = '<tr><td><div class="RGraph_tooltipsFormattedKeyColor" style="text-align: left; background-color: '
+                        + color + '; color: transparent; pointer-events: none; border-radius: '
+                        + borderRadius + ';' + tooltipsFormattedKeyColorsCss + '">Ml</div></td><td style="text-align: left">'
+                        + label
+                        + ' ' + value + '</td></tr>';
+                }
+                str = str.join('');
+            
+                // Add the key to the tooltip text - replacing the placeholder
+                text = text.replace('%{key}', '<table style="color: inherit">' + str + '</table>');
+            };
+            
+            keyReplacementFunction();
 
 
 
@@ -460,7 +427,7 @@ keyReplacementFunction();
 
 
             // Do property substitution when there's an index to the property
-            var reg = /%{prop(?:erty)?:([a-z0-9]+)\[([0-9]+)\]}/i;
+            var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
 
             while (text.match(reg)) {
 
@@ -484,8 +451,8 @@ keyReplacementFunction();
 
 
 
-            // Third, replace this: %%property:xxx%%
-            while (text.match(/%{property:([a-z0-9]+)}/i)) {
+            // Third, replace this: %{property:xxx} (but there's no index to the property)
+            while (text.match(/%{property:([_a-z0-9]+)}/i)) {
                 var str = '%{property:' + RegExp.$1 + '}';
                 text    = text.replace(str, opt.object.properties[RegExp.$1]);
             }
@@ -494,7 +461,7 @@ keyReplacementFunction();
 
 
             // Fourth, replace this: %%prop:xxx%%
-            while (text.match(/%{prop:([a-z0-9]+)}/i)) {
+            while (text.match(/%{prop:([_a-z0-9]+)}/i)) {
                 var str = '%{prop:' + RegExp.$1 + '}';
                 text    = text.replace(str, opt.object.properties[RegExp.$1]);
             }
@@ -553,9 +520,95 @@ keyReplacementFunction();
 
 
 
+
+
+
+
+
+
+
+
+
+          ////////////////////////////////////////////////////////////////
+         // Do global substitution when there's an index to the global //
+        ////////////////////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)\[([0-9]+)\]}/i;
+
+        while (text.match(reg)) {
+
+            var name  = RegExp.$1,
+                index = parseInt(RegExp.$2);
+
+            if (eval(name)) {
+                text = text.replace(
+                    reg,
+                    eval(name)[index] || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //////////////////////////////////////////////////
+         // Do global substitution when there's no index //
+        //////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)}/i;
+
+        while (text.match(reg)) {
+
+            var name = RegExp.$1;
+
+            if (eval(name)) {
+                text = text.replace(
+                    reg,
+                    eval(name) || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // And lastly - call any functions
             // MUST be last
-            var regexp = /%{function:([A-Za-z0-9]+)\((.*?)\)}/;
+            var regexp = /%{function:([_A-Za-z0-9]+)\((.*?)\)}/;
 
             // Temporarily replace carriage returns and line feeds with CR and LF
             // so the the s option is not needed
@@ -569,6 +622,8 @@ keyReplacementFunction();
                 for (var i=0,len=str.length; i<len; ++i) {
                     str  = str.replace(/\r?\n/, "\\n");
                 }
+                
+                RGraph.SVG.REG.set('tooltip-templates-function-object', opt.object);
 
                 var func = new Function ('return ' + str);
                 var ret  = func();
