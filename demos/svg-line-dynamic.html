@@ -32,11 +32,7 @@
     <script>
         line = new RGraph.SVG.Line({
             id: 'chart-container',
-            data: RGraph.SVG.arrayFill({
-                array:  [],
-                value:  0,
-                length: 300
-            }),
+            data: RGraph.SVG.arrayPad([],300, 0),
             options: {
                 marginInner: 0,
                 title: 'A scrolling SVG Line chart',
