@@ -8,7 +8,6 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
-    <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <script src="demos.js" ></script>
     
     <title>RGraph demo: A grouped Bar chart</title>
@@ -23,6 +22,11 @@
 
         
     <h1>A grouped Bar chart</h1>
+    
+    <p>
+        This chart formerly used the drawing API rect object - however now it simply uses two Bar
+        charts - the second of which is transparent and overlays the first.
+    </p>
     
 
     <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
@@ -79,6 +83,8 @@
             id: 'cvs',
             data: [1,1,1,1],
             options: {
+                yaxis: false,
+                yaxisScale: false,
                 backgroundGrid: false,
                 colors: ['transparent'],
                 marginLeft: 50,
@@ -118,8 +124,10 @@
 
     This goes in the documents header:
     <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js" &gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js" &gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js" &gt;&lt;/script&gt;
 
 &lt;style&gt;
     .RGraph_tooltip {padding:10px!important;}
