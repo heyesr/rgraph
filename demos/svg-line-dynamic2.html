@@ -69,15 +69,8 @@
         function update ()
         {
             if (iteration === 0) {
-                line.originalData[0] = RGraph.SVG.arrayFill({
-                    array:  [],
-                    length: 20
-                });
-                
-                line.originalData[1] = RGraph.SVG.arrayFill({
-                    array:  [],
-                    length: 20
-                });
+                line.originalData[0] = RGraph.SVG.arrayPad([],20);                
+                line.originalData[1] = RGraph.SVG.arrayPad([],20);
             }
 
             // A global
