@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -600,27 +598,41 @@
             return args.array;
         }
 
-        var temp = RGraph.isArray(args.array) ? [] : {};
+        return JSON.parse(JSON.stringify(args.array));
 
-        for (var i in args.array) {
-            if (typeof i === 'string' || typeof i === 'number' ) {
-                if (typeof args.array[i]  === 'number') {
-                    temp[i] = (function (arg) {return Number(arg);})(args.array[i]);
-                
-                } else if (typeof args.array[i]  === 'string') {
-                    temp[i] = (function (arg) {return String(arg);})(args.array[i]);
-                
-                } else if (typeof args.array[i] === 'function') {
-                    temp[i] = args.array[i];
-                
-                } else {
-                    temp[i] = RGraph.arrayClone(args.array[i]);
-                }
-            }
-        }
+        //var temp = RGraph.isArray(args.array) ? [] : {};
+        //
+        //for (var i in args.array) {
+        //    if (typeof i === 'string' || typeof i === 'number' ) {
+        //        if (typeof args.array[i]  === 'number') {
+        //            temp[i] = (function (arg) {return Number(arg);})(args.array[i]);
+        //        
+        //        } else if (typeof args.array[i]  === 'string') {
+        //            temp[i] = (function (arg) {return String(arg);})(args.array[i]);
+        //        
+        //        } else if (typeof args.array[i] === 'function') {
+        //            temp[i] = args.array[i];
+        //        
+        //        } else {
+        //            temp[i] = RGraph.arrayClone(args.array[i]);
+        //        }
+        //    }
+        //}
 
-        return temp;
+        //return temp;
     };
+
+
+
+
+
+
+
+
+    //
+    // An alias of the above function
+    //
+    RGraph.clone = RGraph.arrayClone;
 
 
 
@@ -3799,6 +3811,15 @@
         var args = RGraph.getArgs(arguments, 'object,alert,indent,counter');
         var indent = (args.indent ? args.indent : '    ');
         var str    = '';
+        
+        // A recursion count
+        if (!RGraph.pr.counter) {
+            RGraph.pr.counter = 1;
+        } else if (RGraph.pr.counter >= 3) {
+            return;
+        }
+        
+        RGraph.pr.counter++;
 
         var counter = typeof args.counter == 'number' ? args.counter : 0;
         
@@ -6240,6 +6261,11 @@
     {
         var args = RGraph.getArgs(arguments, 'canvas');
 
+        // If a string has been given then treat it as the ID of the canvas
+        if (typeof args.canvas === 'string') {
+            args.canvas = document.getElementById(args.canvas);
+        }
+
         args.canvas.width = args.canvas.width;
         
         RGraph.ObjectRegistry.clear(args.canvas);
@@ -7672,14 +7698,16 @@
             }
 
         } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
-
+            
             if (properties.xaxisLabelsPosition === 'edge') {
                 var section = (obj.canvas.width - properties.marginLeft - properties.marginRight - (properties.marginInner || 0) - (properties.marginInner || 0) ) / (properties.xaxisLabels.length - 1);
             } else {
                 var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / properties.xaxisLabels.length;
             }
 
+
             for (var i=0; i<properties.xaxisLabels.length; ++i) {
+
 
                 if (properties.xaxisLabelsPosition === 'edge') {
                     var x = properties.marginLeft + (properties.marginInner || 0) + (section * i);
@@ -7796,17 +7824,23 @@
                         }
                     }
 
-                    var ret = RGraph.text({                    
+                    var ret = RGraph.text({
                       object:   obj,
+              
               textConfPrefix:   'xaxisLabels',
+
                         x:      x + properties.xaxisLabelsOffsetx,
                         y:      y + properties.xaxisLabelsOffsety,
+                        
                         text:   String(properties.xaxisLabels[i]),
+                        
                         valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
                         halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
+                        
                         marker: false,
                         angle:  angle,
                         tag:    'xaxis.labels',
+                        
                    cssClass:    RGraph.getLabelsCSSClassName({
                                     object: obj,
                                       name: 'xaxisLabelsClass',
@@ -8552,6 +8586,274 @@
         }
 
         return value;
+    };
+
+
+
+
+
+
+
+
+    //
+    // Label substitution. This allows you to use dynamic
+    // labels if you want like this:
+    //
+    // ...
+    // names: ['Richard','Jerry','Lucy'],
+    // xaxisLabels: '%{names:[%{index}]}: %{value_formatted}'
+    // ...
+    //
+    //@param object args This can be an object which contains the following
+    //                   things:
+    //                           args.text      The text on which to perform the substitution on
+    //                                          (ie the original label)
+    //                           args.object    The chart object
+    //                           args.index     The index of the label
+    //                           args.value     The value of the data point
+    //                           args.decimals  The number of decimals
+    //                           args.point     The decimal character
+    //                           args.thousand  The thousand separator
+    //                           args.unitsPre  The units that are prepended to the number
+    //                           args.unitsPost The units that are appended to the number
+    //                          
+    //
+    RGraph.labelSubstitution = function (args)
+    {
+          //////////////////////
+         // Must be a string //
+        //////////////////////
+        var text = String(args.text);
+
+          /////////////////////////////////////////////////////////////////
+         // If there's no template tokens in the string simply reurn it //
+        /////////////////////////////////////////////////////////////////
+        if (!text.match(/%{.*?}/)) {
+            return text;
+        }
+
+          //////////////////////////////////////////
+         // This allows for escaping the percent //
+        //////////////////////////////////////////
+        var text = text.replace(/%%/g, '___--PERCENT--___');
+
+
+
+
+
+          ////////////////////////////////////
+         // Replace the index of the label //
+        ////////////////////////////////////
+        text = text.replace(/%{index}/g, args.index);
+
+
+
+          ////////////////////////////////////////////////////////////////////
+         // Do property substitution when there's an index to the property //
+        ////////////////////////////////////////////////////////////////////
+        var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
+
+        while (text.match(reg)) {
+
+            var property = RegExp.$1,
+                index    = parseInt(RegExp.$2);
+
+            if (args.object.properties[property]) {
+                text = text.replace(
+                    reg,
+                    args.object.properties[property][index] || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+          ////////////////////////////////////
+         // Replace this: %{property:xxx}% //
+        ////////////////////////////////////
+        while (text.match(/%{property:([_a-z0-9]+)}/i)) {
+            var str = '%{property:' + RegExp.$1 + '}';
+            text    = text.replace(str, args.object.properties[RegExp.$1]);
+        }
+
+
+
+         ////////////////////////////////
+        // Replace this: %{prop:xxx}% //
+        ///////////////////////////////
+        while (text.match(/%{prop:([_a-z0-9]+)}/i)) {
+            var str = '%{prop:' + RegExp.$1 + '}';
+            text    = text.replace(str, args.object.properties[RegExp.$1]);
+        }
+
+
+
+          /////////////////////////////////////////////////////////
+         // Replace this: %{value} and this: %{value_formatted} //
+        ////////////////////////////////////////////////////////
+        while (text.match(/%{value(?:_formatted)?}/i)) {
+            
+            var value = args.value;
+
+            if (text.match(/%{value_formatted}/i)) {
+                text = text.replace(
+                    '%{value_formatted}',
+                    typeof value === 'number' ? RGraph.numberFormat({
+                        object:    args.object,
+                        number:    value.toFixed(args.decimals),
+                        thousand:  args.thousand  || ',',
+                        point:     args.point     || '.',
+                        unitspre:  args.unitsPre  || '',
+                        unitspost: args.unitsPost || ''
+                    }) : null
+                );
+            } else {
+                text = text.replace('%{value}', value);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          ////////////////////////////////////////////////////////////////
+         // Do global substitution when there's an index to the global //
+        ////////////////////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)\[([0-9]+)\]}/i;
+
+        while (text.match(reg)) {
+
+            var name  = RegExp.$1,
+                index = parseInt(RegExp.$2);
+
+            if (eval(name)[index]) {
+                text = text.replace(
+                    reg,
+                    eval(name)[index] || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //////////////////////////////////////////////////
+         // Do global substitution when there's no index //
+        //////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)}/i;
+
+        while (text.match(reg)) {
+
+            var name = RegExp.$1;
+
+            if (eval(name)) {
+                text = text.replace(
+                    reg,
+                    eval(name) || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+
+        ///////////////////////////////////
+        // And lastly - call any functions
+        // MUST be last
+        //////////////////////////////////
+        var regexp = /%{function:([_A-Za-z0-9]+)\((.*?)\)}/;
+        
+        // Temporarily replace carriage returns and line feeds with CR and LF
+        // so the the s option is not needed
+        text = text.replace(/\r/,'|CR|');
+        text = text.replace(/\n/,'|LF|');
+
+        while (text.match(regexp)) {
+
+            var str  = RegExp.$1 + '(' + RegExp.$2 + ')';
+            
+            for (var i=0,len=str.length; i<len; ++i) {
+                str  = str.replace(/\r?\n/, "\\n");
+            }
+            
+            RGraph.Registry.set('label-templates-function-object', args.object);
+
+            var func = new Function ('return ' + str);
+            var ret  = func();
+
+            text = text.replace(regexp, ret)
+        }
+
+
+
+
+
+
+
+        // Replace line returns with br tags
+        text = text.replace(/\r?\n/g, '<br />');
+        text = text.replace(/___--PERCENT--___/g, '%')
+
+        // Replace CR and LF with the relevant character
+        text = text.replace(/\|CR\|/, '\r');
+        text = text.replace(/\|LF\|/, '\n');
+
+
+        return text.toString();
     };
 
 
