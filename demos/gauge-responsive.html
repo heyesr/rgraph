@@ -31,9 +31,7 @@
                 labelsValue: true,
                 labelsValueDecimals: 2,
                 labelsValueBounding: false,
-                labelsValueYPos: 0.4,
                 labelsValueUnitsPost: '%',
-                labelsValueSize: 20,
                 colorsGreenColor: '#afa',
                 colorsGreenWidth: 15,
                 colorsRedWidth: 15,
@@ -44,8 +42,8 @@
                 labelsOffsety: 0
             }
         }).draw().responsive([
-            {maxWidth: 800,  width: 250, height: 250, options: {textSize: 14,labelsOffsetRadius: 15}},
-            {maxWidth: null, width: 450, height: 450, options: {textSize: 24,labelsOffsetRadius: 25}}
+            {maxWidth: null, width: 450, height: 450, options: {textSize: 24,labelsOffsetRadius: 15,labelsValueSize: 28,labelsValueYPos: 0.4}},
+            {maxWidth: 800,  width: 250, height: 250, options: {textSize: 10,labelsOffsetRadius: 15,labelsValueSize: 10,labelsValueYPos: 0.6}}
         ]);
     </script>
 
