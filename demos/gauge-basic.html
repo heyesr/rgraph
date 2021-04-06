@@ -31,7 +31,7 @@
                 labelsValue: true,
                 labelsValueDecimals: 2,
                 labelsValueBounding: false,
-                labelsValueYPos: 0.4,
+                labelsValueYPos: 0.3,
                 labelsValueUnitsPost: '%',
                 labelsValueSize: 20,
                 textSize: 18,
@@ -43,7 +43,11 @@
                 labelsOffsetAngle: 0,
                 labelsOffsetRadius: 25,
                 labelsOffsetx: 0,
-                labelsOffsety: 0
+                labelsOffsety: 0,
+                
+                blarg: ['Aa','Bb','Cc','Dd','Ee','Ff'],
+                labelsSpecific: '%{property:blarg[%{index}]}',
+                labelsCount: 4
             }
         }).draw();
     </script>
