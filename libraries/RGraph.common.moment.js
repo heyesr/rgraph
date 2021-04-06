@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
 //! moment.js
 //! version : 2.27.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors

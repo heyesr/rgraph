@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
