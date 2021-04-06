@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -103,6 +101,11 @@
             yaxisLabelsItalic:          null,
             yaxisLabelsOffsetx:         0,
             yaxisLabelsOffsety:         0,
+            yaxisLabelsFormattedDecimals:   0,
+            yaxisLabelsFormattedPoint:      '.',
+            yaxisLabelsFormattedThousand:   ',',
+            yaxisLabelsFormattedUnitsPre:   '',
+            yaxisLabelsFormattedUnitsPost:  '',
             
             labelsAbove:                false,
             labelsAboveFont:            null,
@@ -372,6 +375,40 @@
             this.marginBottom     = properties.marginBottom;
             this.marginCenter     = properties.marginCenter;
             this.marginCenterAuto = properties.marginCenterAuto;
+
+
+
+            if (properties.yaxisLabels && properties.yaxisLabels.length) {
+                //
+                // If the xaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.yaxisLabels === 'string') {
+                    properties.yaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.left.length,
+                        value:  properties.yaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.yaxisLabels.length; ++i) {
+                    properties.yaxisLabels[i] = RGraph.labelSubstitution({
+                        object:     this,
+                        text:       properties.yaxisLabels[i],
+                        index:      i,
+                        value:      this.left[i],
+                        decimals:   properties.yaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:   properties.yaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost:  properties.yaxisLabelsFormattedUnitsPost || '',
+                        thousand:   properties.yaxisLabelsFormattedThousand  || ',',
+                        point:      properties.yaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
 
 
             //
@@ -899,7 +936,7 @@
         {
             // Allow the not-drawing of the left bars
             if (!properties.leftVisible) {
-                return;;
+                return;
             }
 
             var opt = {};
@@ -2626,7 +2663,6 @@
 
                 return this;
             }
-$c(9)
         };
 
 
