@@ -5,6 +5,7 @@
     
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.activity.js" ></script>
     <script src="demos.js" ></script>
     
@@ -30,7 +31,8 @@
     </div>
     
     <script>
-        data = [28,19,39,45];
+        data   = [28,19,39,45];
+        values = RGraph.clone(data);
         labels = ['John','Fred','Mark','Andy'];
 
         activity = new RGraph.Activity({
@@ -45,15 +47,17 @@
                 backgroundGridRadials: false,
                 backgroundRings: false,
                 colors: ['red','blue','#aaa','black'],
-                labels: labels,
+                labels: '%{global:labels[%{index}]} (%{value_formatted})',
+                labelsFormattedUnitsPost: '%',
                 labelsSize: 16,
                 labelsBold: true,
                 labelsItalic: true,
                 labelsColor: '#333',
                 labelsOffsetx: -20,
-                adjustable: true
+                adjustable: true,
+                labelsFormattedUnitsPost:'%'
             }
-        }).grow();
+        }).draw();
     </script>
 
     <p></p>
@@ -61,6 +65,7 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
 </pre>
     
