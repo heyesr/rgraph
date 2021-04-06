@@ -32,14 +32,15 @@
     <script>
         new RGraph.Bar({
             id: 'cvs',
-            data: [5,4,5,6,8,5,3],
+            data: [[1,5,6],[3,5,8],[1,6,8],[4,3,2],[5,8,8],[6,5,2],[4,8,6]],
             options: {
                 marginBottom: 40,
                 xaxisLabels: ['Monday','\r\nTuesday','Wednesday','\r\nThursday','Friday','\r\nSaturday','Sunday'],
                 colorsStroke: 'rgba(0,0,0,0)',
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
-                yaxis: false
+                yaxis: false,
+                colors: ['red','black','yellow'],
             }
         }).draw();
         
@@ -52,8 +53,9 @@
                 radius: 25,
                 exploded: [5],
                 colorsStroke: 'rgba(0,0,0,0)',
-                shadow: true,
                 colorsStroke: '#fff',
+                colors: ['red','black','yellow'],
+                shadow: false,
                 linewidth: 1
             }
         }).roundRobin({frames: 60});
