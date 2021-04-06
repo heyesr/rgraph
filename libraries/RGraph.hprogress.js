@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -131,6 +129,11 @@
 
             labelsPosition:                     'bottom',
             labelsSpecific:                     null,
+            labelsSpecificFormattedDecimals:    0,
+            labelsSpecificFormattedPoint:       '.',
+            labelsSpecificFormattedThousand:    ',',
+            labelsSpecificFormattedUnitsPre:    '',
+            labelsSpecificFormattedUnitsPost:   '',
             labelsCount:                        10,
             labelsOffsetx:                      0,
             labelsOffsety:                      0,
@@ -366,14 +369,11 @@
             if (properties.key && properties.key.length) {
                 RGraph.drawKey(this, properties.key, properties.colors);
             }
-    
             
             //
-            // This function enables resizing
+            // Reset the strokestyle to black
             //
-            if (properties.resizable) {
-                RGraph.allowResizing(this);
-            }
+            this.context.strokeStyle = 'black';
     
     
     
@@ -1025,8 +1025,39 @@
         //
         this.drawSpecificLabels = function ()
         {
+            //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.labelsSpecific && properties.labelsSpecific.length) {
+                if (typeof properties.labelsSpecific === 'string') {
+                    properties.labelsSpecific = RGraph.arrayPad({
+                        array:  [],
+                        length: properties.labelsCount,
+                        value:  properties.labelsSpecific
+                    });
+                }
+
+            // Label substitution
+            //
+                for (var i=0; i<properties.labelsSpecific; ++i) {
+                    properties.labelsSpecific[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labelsSpecific[i],
+                        index:     i,
+                        value:     typeof this.value === 'object' && typeof this.value[i] === 'number' ? this.value[i] : this.value,
+                        decimals:  properties.labelsSpecificFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsSpecificFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsSpecificFormattedUnitsPost || '',
+                        thousand:  properties.labelsSpecificFormattedThousand  || ',',
+                        point:     properties.labelsSpecificFormattedPoint     || '.'
+                    });
+                }
+            }
+
+        
             var labels = properties.labelsSpecific;
-            
+
             if (labels) {
     
                 var valign  = (properties.labelsPosition == 'top' ? 'bottom' : 'top'),

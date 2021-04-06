@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -106,6 +104,7 @@
         this.gradientCounter  = 1;
         this.sequential       = 0;
         this.line_groups      = [];
+        this.firstDraw        = true; // After the first draw this will be false
 
 
 
@@ -206,15 +205,15 @@
             xaxisLabelsColor:     null,
             xaxisLabelsBold:      null,
             xaxisLabelsItalic:    null,
-            xaxisScaleUnitsPre:        '',
-            xaxisScaleUnitsPost:       '',
-            xaxisScaleMax:             null,
-            xaxisScaleMin:            0,
-            xaxisScalePoint:           '.',
+            xaxisScaleUnitsPre:   '',
+            xaxisScaleUnitsPost:  '',
+            xaxisScaleMax:        null,
+            xaxisScaleMin:        0,
+            xaxisScalePoint:      '.',
             xaxisRound:           false,
-            xaxisScaleThousand:        ',',
-            xaxisScaleDecimals:        0,
-            xaxisScaleFormatter:       null,
+            xaxisScaleThousand:   ',',
+            xaxisScaleDecimals:   0,
+            xaxisScaleFormatter:  null,
             xaxisTitle:           '',
             xaxisTitleBold:       null,
             xaxisTitleSize:       null,
@@ -321,8 +320,17 @@
             errorbarsColor:       'black',
             errorbarsLinewidth:   1,
             errorbarsCapwidth:    10,
+
+            trendline:                  false,
+            trendlineColors:            ['gray'],
+            trendlineLinewidth:         1,
+            trendlineMargin:            15,
+            trendlineDashed:            true,
+            trendlineDotted:            false,
+            trendlineDashArray:         null,
+            trendlineClipping:          null,
             
-            outofbounds: false
+            outofbounds: true
         };
 
 
@@ -437,6 +445,45 @@
             // except for the onbeforedraw event
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
+
+
+
+
+            //
+            // If the labels option is a string then turn it
+            // into an array.
+            //
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+                
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: properties.xaxisLabelsCount,
+                        value:  properties.xaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     this.data[0][i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
 
 
 
@@ -603,6 +650,30 @@
 
 
 
+
+
+
+
+
+
+            //
+            // Draw a trendline if requested
+            //
+            if (properties.trendline) {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (properties.trendline === true || (typeof properties.trendline === 'object' && properties.trendline[i] === true) ) {
+                        this.drawTrendline(i);
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
@@ -622,6 +693,17 @@
 
             //}, false);
 
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
 
 
             // Fire the draw event
@@ -1773,6 +1855,193 @@
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 15                             // An arbitrary amount
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws a trendline on the Scatter chart. This is also known
+        // as a "best-fit line"
+        //
+        // @param dataset The index of the dataset to use
+        //
+        this.drawTrendline = function  (dataset)
+        {
+            var colors    = properties.trendlineColors,
+                linewidth = properties.trendlineLinewidth,
+                margin    = properties.trendlineMargin;
+
+            // Allow for trendlineColor as well (note  - no "s")
+            if (RGraph.SVG.isString(properties.trendlineColor)) {
+                colors = [properties.trendlineColor];
+            }
+
+            // handle the options being arrays
+            if (typeof colors === 'object' && colors[dataset]) {
+                color = colors[dataset];
+            } else if (typeof color === 'object') {
+                color = 'gray';
+            }
+            
+            if (typeof linewidth === 'object' && typeof linewidth[dataset] === 'number') {
+                linewidth = linewidth[dataset];
+            } else if (typeof linewidth === 'object') {
+                linewidth = 1;
+            }
+            
+            if (typeof margin === 'object' && typeof margin[dataset] === 'number') {
+                margin = margin[dataset];
+            } else if (typeof margin === 'object'){
+                margin = 25;
+            }
+            
+
+            // Step 1: Calculate the mean values of the X coords and the Y coords
+            for (var i=0,totalX=0,totalY=0; i<this.data[dataset].length; ++i) {
+                totalX += this.data[dataset][i].x;
+                totalY += this.data[dataset][i].y;
+            }
+            
+            var averageX = totalX / this.data[dataset].length;
+            var averageY = totalY / this.data[dataset].length;
+
+            // Step 2: Calculate the slope of the line
+            
+            // a: The X/Y values minus the average X/Y value
+            for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[dataset].length; ++i) {
+                xCoordMinusAverageX[i] = this.data[dataset][i].x - averageX;
+                yCoordMinusAverageY[i] = this.data[dataset][i].y - averageY;
+                
+                // b. Multiply the averages
+                valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
+                xCoordMinusAverageSquared[i] = xCoordMinusAverageX[i] * xCoordMinusAverageX[i];
+            }
+
+            var sumOfValuesMultiplied = RGraph.SVG.arraySum(valuesMultiplied);
+            var sumOfXCoordMinusAverageSquared = RGraph.SVG.arraySum(xCoordMinusAverageSquared);
+
+            // Calculate m (???)
+            var m = sumOfValuesMultiplied / sumOfXCoordMinusAverageSquared;
+            var b = averageY - (m * averageX);
+
+            // y = mx + b
+            
+            coords =  [
+                [properties.xaxisScaleMin, m * properties.xaxisScaleMin + b],
+                [properties.xaxisScaleMax, m * properties.xaxisScaleMax + b]
+            ];
+
+            //
+            // Draw the line
+            //
+            
+            // Set dotted, dash or a custom dash array
+            var strokeDasharray = ''
+            
+            if (properties.trendlineDashed) {
+                strokeDasharray = '4,4';
+                
+            }
+
+            if (properties.trendlineDotted) {
+                strokeDasharray = '1, 4';
+            }
+            
+            if (!RGraph.SVG.isNull(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
+                strokeDasharray = String(properties.trendlineDashArray).replace(/[|]/, '');
+            }
+
+
+            // Clip the canvas again so that the line doesn't look overly long
+            // (use the minimum an maximum points for this)
+            for (var i=0,xValues=[],yValues=[]; i<this.data[dataset].length; ++i) {
+                if (typeof this.data[dataset][i].x === 'number') {
+                    xValues.push(this.data[dataset][i].x);
+                }
+            
+                if (typeof this.data[dataset][i].y === 'number') {
+                    yValues.push(this.data[dataset][i].y);
+                }
+            }
+
+            // These are the minimum and maximum X/Y values for this dataset
+            var x1 = RGraph.SVG.arrayMin(xValues);
+            var y1 = RGraph.SVG.arrayMin(yValues);
+            var x2 = RGraph.SVG.arrayMax(xValues);
+            var y2 = RGraph.SVG.arrayMax(yValues);
+            
+            
+            // Convert the X/Y values into coordinates on the canvas
+            x1 = this.getXCoord(x1);
+            y1 = this.getYCoord(y1, properties.outofbounds);
+            x2 = this.getXCoord(x2);
+            y2 = this.getYCoord(y2, properties.outofbounds);
+
+
+
+
+
+
+
+
+            // Create the SVG clipPath region
+            var clippath = RGraph.SVG.create({
+                svg: this.svg,
+                parent: this.svg.defs,
+                type: 'clipPath',
+                attr: {
+                    id: 'trendline-clippath-dataset-' + dataset
+                }
+            });
+
+            
+            RGraph.SVG.create({
+                svg: this.svg,
+                parent: clippath,
+                type: 'rect',
+                attr: {
+                    x: properties.trendlineClipping === false ? properties.marginLeft : x1 - margin,
+                    y: properties.trendlineClipping === false ? properties.marginTop : y2 - margin,
+                    width: properties.trendlineClipping === false ?
+                               (this.width - properties.marginLeft - properties.marginRight) :
+                               x2 - x1 + margin + margin,
+                    height: properties.trendlineClipping === false ?
+                                this.height  - properties.marginTop - properties.marginBottom:
+                                y1 - y2 + margin + margin
+                }
+            });
+
+
+
+
+
+
+
+
+            var line = RGraph.SVG.create({
+                svg: this.svg,
+                parent: this.svg.all,
+                type: 'path',
+                attr: {
+                    d: 'M{1} {2} L{3} {4}'.format(
+                        this.getXCoord(coords[0][0]),
+                        this.getYCoord(coords[0][1]),
+                        this.getXCoord(coords[1][0]),
+                        this.getYCoord(coords[1][1])
+                    ),
+                    stroke: color,
+                    fill:'none',
+                    'stroke-width':  linewidth,
+                    'stroke-dasharray': strokeDasharray,
+                    'stroke-linecap': 'round',
+                    'clip-path': 'url(#trendline-clippath-dataset-' + dataset + ')'
+                }
+            });
         };
 
 

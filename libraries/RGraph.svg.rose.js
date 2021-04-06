@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -44,7 +42,7 @@
                     name:   name,
                     value:  value
                 });
-                
+
                 name  = ret.name;
                 value = ret.value;
 
@@ -125,7 +123,7 @@
         this.max             = 0;
         this.redraw          = false;
         this.highlight_node  = null;
-
+        this.firstDraw        = true; // After the first draw this will be false
 
 
 
@@ -184,6 +182,11 @@
             labelsItalic: null,
             labelsRadialMargin: 10,
             labelsAngleOffset: 0,
+            labelsFormattedDecimals:  0,
+            labelsFormattedPoint:     '.',
+            labelsFormattedThousand:  ',',
+            labelsFormattedUnitsPre:  '',
+            labelsFormattedUnitsPost: '',
 
             scaleVisible:     true,
             scaleUnitsPre:    '',
@@ -328,6 +331,11 @@
             this.height = Number(this.svg.getAttribute('height'));
 
 
+
+            // Change this to maintain BC
+            if (typeof properties.marginInner !== 'undefined') {
+                properties.amargin = properties.marginInner;
+            }
 
 
 
@@ -517,6 +525,18 @@
             {
                 obj.hideHighlight(obj);
             }, false);
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
 
 
 
@@ -1461,6 +1481,41 @@
         //
         this.drawLabels = function ()
         {
+            //
+            // If the labels option is a string then turn it
+            // into an array.
+            //
+            if (properties.labels && properties.labels.length) {
+                
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.labels
+                    });
+                }
+
+                // Label substitution
+                //
+                for (var i=0; i<properties.labels.length; ++i) {
+                    properties.labels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
+
             // Draw the scale if required
             if (properties.scaleVisible) {
 
@@ -2039,6 +2094,7 @@
         //
         // The grow effect
         //
+        this.roundRobin =
         this.roundrobin = function (opt)
         {
             var obj      = this,

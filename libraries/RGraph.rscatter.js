@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -126,6 +124,11 @@
 
             labels:                                 null,
             labelsOffsetRadius:                     0,
+            labelsFormattedDecimals:                0,
+            labelsFormattedPoint:                   '.',
+            labelsFormattedThousand:                ',',
+            labelsFormattedUnitsPre:                '',
+            labelsFormattedUnitsPost:               '',
             labelsColor:                            null,
             labelsFont:                             null,
             labelsSize:                             null,
@@ -220,7 +223,8 @@
             scaleUnitsPre:                          '',
             scaleUnitsPost:                         '',
 
-            tickmarks:                              'cross',
+            tickmarks     :                         'cross', // This is done like this for BC
+            tickmarksStyle:                         null,    // This is done like this for BC ** Use this one **
             tickmarksSize:                          3,
 
             axesColor:                              'transparent',
@@ -364,6 +368,47 @@
             
                 this.canvas.__rgraph_aa_translated__ = true;
             }
+
+
+
+
+
+
+            //
+            // Populate the labels string/array if its a string
+            //
+            if (properties.labels && properties.labels.length) {
+                //
+                // If the labels option is a string then turn it
+                // into an array.
+                //
+
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.arrayPad({
+                        array:  [],
+                        length: properties.labelsCount,
+                        value:  properties.labels
+                    });
+                }
+
+                for (var i=0; i<properties.labels.length; ++i) {
+
+                    properties.labels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[0][i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
 
 
             //
@@ -1078,7 +1123,7 @@
         //
         this.drawTick = function (x, y, color)
         {
-            var tickmarks = properties.tickmarks;
+            var tickmarks = properties.tickmarksStyle || properties.tickmarks;
             var ticksize  = properties.tickmarksSize;
     
             this.context.strokeStyle = color;

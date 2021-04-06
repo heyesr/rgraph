@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -110,6 +108,7 @@
         this.max             = 0;
         this.redraw          = false;
         this.highlight_node  = null;
+        this.firstDraw       = true; // After the first draw this will be false
 
         // Convert the data to numbers in case they're passed in as strings
         this.originalData = RGraph.SVG.stringsToNumbers(this.originalData);
@@ -175,6 +174,11 @@
             labelsBold:   null,
             labelsItalic: null,
             labelsOffset: 0,
+            labelsFormattedDecimals:  0,
+            labelsFormattedPoint:     '.',
+            labelsFormattedThousand:  ',',
+            labelsFormattedUnitsPre:  '',
+            labelsFormattedUnitsPost: '',
 
             scaleVisible:     true,
             scaleUnitsPre:    '',
@@ -549,6 +553,20 @@
             {
                 obj.hideHighlight(obj);
             }, false);
+
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
+
 
 
 
@@ -970,6 +988,39 @@
         //
         this.drawLabels = function ()
         {
+            //
+            // If the labels option is a string then turn it
+            // into an array.
+            //
+            if (properties.labels && properties.labels.length) {
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.data[0].length,
+                        value:  properties.labels
+                    });
+                }
+
+                // Label substitution
+                //
+                for (var i=0; i<properties.labels.length; ++i) {
+                    properties.labels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[0][i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
             var angles = this.angles2,
                 labels = properties.labels;
             

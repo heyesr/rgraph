@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -107,6 +105,11 @@
         this.originalColors        = {};
         this.gradientCounter       = 1;
         this.sequentialIndex       = 0; // Used for tooltips
+        this.firstDraw             = true; // After the first draw this will be false
+
+
+
+
         
         //
         // Convert strings to numbers
@@ -196,6 +199,11 @@
             yaxisLabelsBold:        null,
             yaxisLabelsItalic:      null,
             yaxisLabelsColor:       null,
+            yaxisLabelsFormattedDecimals:   0,
+            yaxisLabelsFormattedPoint:      '.',
+            yaxisLabelsFormattedThousand:   ',',
+            yaxisLabelsFormattedUnitsPre:   '',
+            yaxisLabelsFormattedUnitsPost:  '',
             
             // 20 colors. If you need more you need to set the colors property
             colors: [
@@ -346,6 +354,41 @@
 
 
 
+
+            if (properties.yaxisLabels && properties.yaxisLabels.length) {
+                //
+                // If the xaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.yaxisLabels === 'string') {
+                    properties.yaxisLabels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.left.length,
+                        value:  properties.yaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.yaxisLabels.length; ++i) {
+                    properties.yaxisLabels[i] = RGraph.SVG.labelSubstitution({
+                        object:     this,
+                        text:       properties.yaxisLabels[i],
+                        index:      i,
+                        value:      this.left[i],
+                        decimals:   properties.yaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:   properties.yaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost:  properties.yaxisLabelsFormattedUnitsPost || '',
+                        thousand:   properties.yaxisLabelsFormattedThousand  || ',',
+                        point:      properties.yaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
             // Should the first thing that's done inthe.draw() function
             // except for the onbeforedraw event
             this.width  = Number(this.svg.getAttribute('width'));
@@ -432,6 +475,10 @@
 
 
 
+
+
+
+
             //
             // Generate an appropiate scale
             //
@@ -496,6 +543,16 @@
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
 
 
             // Fire the draw event
@@ -2932,7 +2989,7 @@
                             obj.left[i] = null;
                         }
                     } else {
-                        obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.SVG.arrayPad([], obj.left[i].length, 0) : (RGraph.SVG.isNull(obj.left[i]) ? null : 0);
+                        obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.SVG.arrayPad({array: [], length: obj.left[i].length, value: 0}) : (RGraph.SVG.isNull(obj.left[i]) ? null : 0);
                     }
                 }
 
@@ -3024,7 +3081,7 @@
                             obj.right[i] = null;
                         }
                     } else {
-                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad([], obj.right[i].length, 0) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
+                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
                     }
                 }
 

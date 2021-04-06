@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -15,7 +13,6 @@
 // Module pattern
 (function (win, doc, undefined)
 {
-    var RG  = RGraph;
     RGraph.SVG.Gauge = function (conf)
     {
         //
@@ -114,6 +111,7 @@
         this.gradientCounter = 1;
         this.nodes           = {};
         this.shadowNodes     = [];
+        this.firstDraw       = true; // After the first draw this will be false
         
         // Some bounds checking for the value
         if (this.value > this.innerMax) this.value = this.innerMax;
@@ -417,21 +415,43 @@
                 {
                     obj.adjusting_mousedown = true;
                     func(e);
+
+                    // Fire the beforedraw event
+                    RGraph.SVG.fireCustomEvent(obj, 'onadjustbegin');
+
                 }, false);
                 
                 this.container.addEventListener('mousemove', function (e)
                 {
                     if (obj.adjusting_mousedown) {
                         func(e);
+
+                        // Fire the beforedraw event
+                        RGraph.SVG.fireCustomEvent(obj, 'onadjust');
                     }
                 }, false);
                 
                 window.addEventListener('mouseup', function (e)
                 {
                     obj.adjusting_mousedown = false;
+
+                    // Fire the beforedraw event
+                    RGraph.SVG.fireCustomEvent(obj, 'onadjustend');
                 }, false);
             }
 
+
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
 
 
 

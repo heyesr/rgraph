@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -101,7 +99,7 @@
         this.originalColors   = {};
         this.gradientCounter  = 1;
         this.totalColumns     = [];
-
+        this.firstDraw        = true; // After the first draw this will be false
 
 
 
@@ -207,6 +205,11 @@
             xaxisLabelsItalic:    null,
             xaxisLabelsPosition:  'section',
             xaxisLabelsPositionEdgeTickmarksCount: null,
+            xaxisLabelsFormattedDecimals:  0,
+            xaxisLabelsFormattedPoint:     '.',
+            xaxisLabelsFormattedThousand:  ',',
+            xaxisLabelsFormattedUnitsPre:  '',
+            xaxisLabelsFormattedUnitsPost: '',
             xaxisColor:           'black',
             xaxisLabelsOffsetx:   0,
             xaxisLabelsOffsety:   0,
@@ -372,6 +375,49 @@
 
 
 
+
+
+
+
+
+            //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.data.length + (properties.total ? 1 : 0),
+                        value:  properties.xaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
+
+
+
+
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
 
@@ -530,6 +576,18 @@
             //    //RGraph.SVG.removeHighlight(obj);
             //
             //}, false);
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
 
 
 

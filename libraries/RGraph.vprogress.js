@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -160,6 +158,11 @@
             labelsBold:                     null,
             labelsItalic:                   null,
             labelsSpecific:                 null,
+            labelsSpecificFormattedDecimals:    0,
+            labelsSpecificFormattedUnitsPre:    '',
+            labelsSpecificFormattedUnitsPost:   '',
+            labelsSpecificFormattedThousand:    ',',
+            labelsSpecificFormattedPoint:       '.',
 
             adjustable:                     false,
 
@@ -332,6 +335,40 @@
             // Set the current value
             //
             this.currentValue = this.value;
+
+
+
+            //
+            // Populate the labels string/array if its a string
+            //
+            if (properties.labelsSpecific && properties.labelsSpecific.length) {
+                //
+                // If the labels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.labelsSpecific === 'string') {
+                    properties.labelsSpecific = RGraph.arrayPad({
+                        array:  [],
+                        length: properties.labelsCount,
+                        value:  properties.labelsSpecific
+                    });
+                }
+
+                for (var i=0; i<properties.labelsSpecific.length; ++i) {
+                    properties.labelsSpecific[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labelsSpecific[i],
+                        index:     i,
+                        value:     (typeof this.value === 'object' && typeof this.value[i] === 'number') ? this.value[i] : this.value,
+                        decimals:  properties.labelsSpecificFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsSpecificFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsSpecificFormattedUnitsPost || '',
+                        thousand:  properties.labelsSpecificFormattedThousand  || ',',
+                        point:     properties.labelsSpecificFormattedPoint     || '.'
+                    });
+                }
+            }
+
 
 
 

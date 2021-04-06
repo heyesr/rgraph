@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -16,9 +14,9 @@
     //
     RGraph.Line = function (conf)
     {
-        var id                  = conf.id;
-        var canvas              = document.getElementById(id);
-        var data                = conf.data;
+        var id                  = conf.id,
+            canvas              = document.getElementById(id),
+            data                = conf.data;
 
         this.id                 = id;
         this.canvas             = canvas;
@@ -80,7 +78,12 @@
             xaxisTickmarksLastLeft:  null,
             xaxisTickmarksLastRight: null,
             xaxisTickmarksCount:  null,
-            xaxisLabels:          null,            
+            xaxisLabels:          null,
+            xaxisLabelsFormattedDecimals:   0,
+            xaxisLabelsFormattedPoint:      '.',
+            xaxisLabelsFormattedThousand:   ',',
+            xaxisLabelsFormattedUnitsPre:   '',
+            xaxisLabelsFormattedUnitsPost:  '',
             xaxisLabelsSize:      null,
             xaxisLabelsFont:      null,
             xaxisLabelsItalic:    null,
@@ -512,7 +515,41 @@
             this.marginBottom =  properties.marginBottom;
 
     
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+                //
+                // If the xaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.original_data[0].length,
+                        value:  properties.xaxisLabels
+                    });
+                }
     
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     this.original_data[0][i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
+
+
+
+
             // Reset the data back to that which was initially supplied
             this.data = RGraph.arrayClone(this.original_data);
 

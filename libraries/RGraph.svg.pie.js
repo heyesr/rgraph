@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -108,7 +106,7 @@
         this.gradientCounter = 1;
         this.nodes           = [];
         this.shadowNodes     = [];
-
+        this.firstDraw        = true; // After the first draw this will be false
 
 
 
@@ -151,6 +149,11 @@
             labels: [],
             labelsSticks: true,
             labelsSticksOffset: 50,
+            labelsFormattedDecimals:  0,
+            labelsFormattedPoint:     '.',
+            labelsFormattedThousand:  ',',
+            labelsFormattedUnitsPre:  '',
+            labelsFormattedUnitsPost: '',
 
             linewidth: 1,
             
@@ -377,6 +380,37 @@
 
 
             // Draw the labels
+
+            //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.labels && properties.labels.length) {
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.labels
+                    });
+                }
+
+                // Label substitution
+                //
+                for (var i=0; i<properties.labels.length; ++i) {
+                    properties.labels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
             if (properties.labelsSticks) {
                 this.drawLabelsSticks();
             } else {
@@ -410,6 +444,18 @@
             {
                 RGraph.SVG.removeHighlight(obj);
             }, false);
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
 
 
 
@@ -1170,6 +1216,7 @@
         // @param function  An optional callback function to call when
         //                  the effect is complete
         //
+        this.roundrobin =
         this.roundRobin = function ()
         {
             var obj          = this,

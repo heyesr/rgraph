@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -166,7 +164,13 @@
             xaxisTickmarksLastLeft:     null,
             xaxisTickmarksLastRight:    null,
             xaxisTickmarksCount:        null,
-            xaxisLabels:                null,            
+            xaxisLabels:                null,
+            xaxisLabelsFormattedDecimals: 0,
+            xaxisLabelsFormattedPoint: '.',
+            xaxisLabelsFormattedThousand: ',',
+            xaxisLabelsFormattedUnitsPre: '',
+            xaxisLabelsFormattedUnitsPost: '',
+            xaxisLabelsCount:           null,
             xaxisLabelsSize:            null,
             xaxisLabelsFont:            null,
             xaxisLabelsItalic:          null,
@@ -358,7 +362,7 @@
             boxplotCapped:              true,
 
             trendline:                  false,
-            trendlineColor:             'gray',
+            trendlineColors:            ['gray'],
             trendlineLinewidth:         1,
             trendlineMargin:            15,
             trendlineDashed:            true,
@@ -558,6 +562,37 @@
             //
             this.coordsText = [];
 
+
+            //
+            // Populate the labels string/array if its a string
+            //
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+                //
+                // If the labels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: properties.xaxisLabelsCount,
+                        value:  properties.xaxisLabels
+                    });
+                }
+
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     this.data[0][i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
 
 
             //
@@ -2315,10 +2350,19 @@
         {
             var args = RGraph.getArgs(arguments, 'dataset');
 
+
             var color     = properties.trendlineColor,
                 linewidth = properties.trendlineLinewidth,
                 margin    = properties.trendlineMargin;
             
+
+            // Allow for trendlineColors as well
+            if (RGraph.isArray(properties.trendlineColors)) {
+                color = properties.trendlineColors;
+            }
+
+
+
             // handle the options being arrays
             if (typeof color === 'object' && color[args.dataset]) {
                 color = color[args.dataset];

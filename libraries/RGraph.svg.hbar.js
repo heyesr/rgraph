@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -110,7 +108,7 @@
         this.colorsParsed     = false;
         this.originalColors   = {};
         this.gradientCounter  = 1;
-
+        this.firstDraw        = true; // After the first draw this will be false
 
 
 
@@ -211,6 +209,7 @@
             yaxis:                true,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
+            yaxisTickmarksCount: 5,
             yaxisLabels:          [],
             yaxisLabelsPosition:  'section',
             yaxisLabelsOffsetx:   0,
@@ -224,6 +223,11 @@
             yaxisLabelsBold:      null,
             yaxisLabelsItalic:    null,
             yaxisPosition:        'left',
+            yaxisLabelsFormattedDecimals:  0,
+            yaxisLabelsFormattedUnitsPre:  '',
+            yaxisLabelsFormattedUnitsPost: '',
+            yaxisLabelsFormattedThousand:  ',',
+            yaxisLabelsFormattedPoint:     '.',
             yaxisTitle:           '',
             yaxisTitleBold:       null,
             yaxisTitleSize:       null,
@@ -373,6 +377,15 @@
         {
             // Fire the beforedraw event
             RGraph.SVG.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+
+            //
+            // Do the yaxis label substitution. This has to be called
+            // before the left (or right) margin size is calculated.
+            //
+            this.yaxisLabelSubstitution();
 
 
 
@@ -589,10 +602,7 @@
 
             
             
-            // Add the attribution link. If you're adding this elsewhere on your page/site
-            // and you don't want it displayed then there are options available to not
-            // show it.
-            RGraph.SVG.attribution(this);
+
 
 
 
@@ -607,6 +617,21 @@
 
 
 
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
+
+
+
+
+
             // Fire the draw event
             RGraph.SVG.fireCustomEvent(this, 'ondraw');
 
@@ -614,6 +639,51 @@
 
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Do the label substitution. This is called from the top of the
+        // draw function
+        //
+        this.yaxisLabelSubstitution = function ()
+        {
+            if (properties.yaxisLabels && properties.yaxisLabels.length) {
+                //
+                // If the yaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.yaxisLabels === 'string') {
+                    properties.yaxisLabels = RGraph.SVG.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.yaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.yaxisLabels.length; ++i) {
+                    properties.yaxisLabels[i] = RGraph.SVG.labelSubstitution({
+                        object:    this,
+                        text:      properties.yaxisLabels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.yaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.yaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.yaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.yaxisLabelsFormattedThousand  || ',',
+                        point:     properties.yaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
         };
 
 

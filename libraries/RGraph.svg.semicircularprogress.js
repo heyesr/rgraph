@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -105,6 +103,7 @@
         this.gradientCounter = 1;
         this.nodes           = {};
         this.shadowNodes     = [];
+        this.firstDraw       = true; // After the first draw this will be false
 
         // Bounds checking
         if (this.value > this.max) this.value = this.max;
@@ -396,6 +395,18 @@
             {
                 obj.removeHighlight();
             }, false);
+
+
+
+
+            //
+            // Fire the onfirstdraw event
+            //
+            if (this.firstDraw) {
+                this.firstDraw = false;
+                RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
+            }
+
 
 
 

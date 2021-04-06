@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -71,6 +69,11 @@
             linewidth:                      3,
 
             labels:                         [],
+            labelsFormattedDecimals:        0,
+            labelsFormattedPoint:           '.',
+            labelsFormattedThousand:        ',',
+            labelsFormattedUnitsPre:        '',
+            labelsFormattedUnitsPost:       '',
             labelsFont:                     null,
             labelsSize:                     null,
             labelsColor:                    null,
@@ -747,10 +750,48 @@
         //
         this.drawLabels = function ()
         {
+            if (properties.labels && properties.labels.length) {
+                //
+                // If the xaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.labels
+                    });
+                }
+                
+                for (var i=0; i<properties.labels.length; ++i) {
+                    properties.labels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
             // New way of spacing labels out
             if (properties.labels.length && properties.labelsList) {
                 return this.drawLabelsList();
             }
+
+
+
+
+
+
+
 
             var hAlignment = 'left',
                 vAlignment = 'center',

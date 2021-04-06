@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -95,8 +93,13 @@
             labelsCenterPoint:                         '.',
             labelsCenterThousand:                      ',',
             labelsCenterSpecific:                      '',
-            labelsCenterOffsetx:                        0,
-            labelsCenterOffsety:                        0,
+            labelsCenterSpecificFormattedDecimals:     0,
+            labelsCenterSpecificFormattedPoint:        '.',
+            labelsCenterSpecificFormattedThousand:     ',',
+            labelsCenterSpecificFormattedUnitsPre:     '',
+            labelsCenterSpecificFormattedUnitsPost:    '',
+            labelsCenterOffsetx:                       0,
+            labelsCenterOffsety:                       0,
             
             radialsCount:                       36,
 
@@ -429,6 +432,32 @@
                 prefix: 'labelsCenter'
             });
 
+
+
+            //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.labelsCenterSpecific && properties.labelsCenterSpecific.length) {
+    
+                // Label substitution
+                //
+                properties.labelsCenterSpecific = RGraph.labelSubstitution({
+                    object:    this,
+                    text:      properties.labelsCenterSpecific,
+                    index:     0,
+                    value:     this.value,
+                    decimals:  properties.labelsCenterSpecificFormattedDecimals  || 0,
+                    unitsPre:  properties.labelsCenterSpecificFormattedUnitsPre  || '',
+                    unitsPost: properties.labelsCenterSpecificFormattedUnitsPost || '',
+                    thousand:  properties.labelsCenterSpecificFormattedThousand  || ',',
+                    point:     properties.labelsCenterSpecificFormattedPoint     || '.'
+                });
+            }
+
+
+
+
             // Draw the large center label
             RGraph.text({
 
@@ -486,14 +515,18 @@
         //
         this.getValue = function (e)
         {
-            var mouseXY = RGraph.getMouseXY(e);
-            
-            var angle   = RGraph.getAngleByXY(
-                this.centerx,
-                this.centery,
-                mouseXY[0],
-                mouseXY[1]
-            );
+            if (typeof e === 'number') {
+                angle = e;
+            } else {
+                var mouseXY = RGraph.getMouseXY(e);
+                
+                var angle   = RGraph.getAngleByXY(
+                    this.centerx,
+                    this.centery,
+                    mouseXY[0],
+                    mouseXY[1]
+                );
+            }
             
             // Adjust the angle because canvas angles
             // start at the east axis
@@ -592,15 +625,33 @@
         //
         this.getAngle = function (value)
         {
-            // Higher than max
-            if (value > this.max || value < this.min) {
-                return null;
+            if (typeof value === 'number') {
+                // Higher than max
+                if (value > this.max || value < this.min) {
+                    return null;
+                }
+    
+                var angle = (((value - this.min) / (this.max - this.min)) * RGraph.TWOPI) - RGraph.HALFPI;
+    
+                if (value === this.max) angle -= 0.00001;
+                if (value === this.min) angle += 0.00001;
+            
+            } else {
+
+                var mouseX = value.offsetX,
+                    mouseY = value.offsetY;
+    
+                var angle = RGraph.getAngleByXY({
+                    cx: this.centerx,
+                    cy: this.centery,
+                    x:  mouseX,
+                    y:  mouseY
+                });
+                
+                if (angle > (RGraph.PI + RGraph.HALFPI)) {
+                    angle -= RGraph.TWOPI;
+                }
             }
-
-            var angle = (((value - this.min) / (this.max - this.min)) * RGraph.TWOPI) - RGraph.HALFPI;
-
-            if (value === this.max) angle -= 0.00001;
-            if (value === this.min) angle += 0.00001;
             
             return angle;
         };
@@ -825,8 +876,6 @@
                 obj.set({
                     effectRoundrobinMultiplier: RGraph.Effects.getEasingMultiplier(frames, frame)
                 });
-
-                //obj.value = initial + (frame++ * step);
 
                 RGraph.redrawCanvas(obj.canvas);
 

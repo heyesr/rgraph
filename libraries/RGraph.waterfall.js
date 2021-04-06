@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -88,7 +86,12 @@
             xaxisTickmarksLastLeft:  null,
             xaxisTickmarksLastRight: null,
             xaxisTickmarksCount:     null,
-            xaxisLabels:             null,            
+            xaxisLabels:             null,
+            xaxisLabelsFormattedDecimals:  0,
+            xaxisLabelsFormattedUnitsPre:  '',
+            xaxisLabelsFormattedUnitsPost: '',
+            xaxisLabelsFormattedThousand:  ',',
+            xaxisLabelsFormattedPoint:     '.',
             xaxisLabelsSize:         null,
             xaxisLabelsFont:         null,
             xaxisLabelsItalic:       null,
@@ -479,6 +482,44 @@
 
 
 
+
+
+            //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.data.length + (properties.total ? 1 : 0),
+                        value:  properties.xaxisLabels
+                    });
+                }
+
+                // Label substitution
+                //
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     i === this.data.length ? this.runningTotal() : this.data[i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
+
+
             //
             // Make the margins easy ro access
             //            
@@ -843,6 +884,29 @@
 
 
         //
+        // Calculates the running total from the data
+        //
+        // @return The resulting total from the data
+        //
+        this.runningTotal = function ()
+        {
+            var runningTotal = 0;
+
+            for (var i=0; i<this.data.length; ++i) {
+                runningTotal += this.data[i];
+            }
+            
+            return runningTotal;
+        };
+
+
+
+
+
+
+
+
+        //
         // Draws the bars on to the chart
         //
         this.drawBars = function ()
@@ -928,6 +992,8 @@
                     
 
 
+                    // The "runnningTotal" is also calculated by the
+                    // this.runningTotal() function
                     runningTotal += this.data[i];
 
                 this.context.stroke();

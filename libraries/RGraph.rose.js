@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -102,6 +100,11 @@
             titleOffsety:                  0,
             
             labels:                        null,
+            labelsFormattedDecimals:       0,
+            labelsFormattedPoint:          '.',
+            labelsFormattedThousand:       ',',
+            labelsFormattedUnitsPre:       '',
+            labelsFormattedUnitsPost:      '',
             labelsColor:                   null,
             labelsFont:                    null,
             labelsSize:                    null,
@@ -1178,6 +1181,46 @@
         //
         this.drawLabels = function ()
         {
+            if (properties.labels && properties.labels.length) {
+                //
+                // If the labels option is a string then turn it
+                // into an array.
+                //
+
+                if (typeof properties.labels === 'string') {
+                    properties.labels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.labels
+                    });
+                }
+
+                for (var i=0; i<properties.labels.length; ++i) {
+                    properties.labels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.labelsFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsFormattedUnitsPost || '',
+                        thousand:  properties.labelsFormattedThousand  || ',',
+                        point:     properties.labelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             this.context.lineWidth = 1;
             var key = properties.key;
     
