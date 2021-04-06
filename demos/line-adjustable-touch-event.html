@@ -25,10 +25,10 @@
 
     <script>
         // The data for the chart
-        var data = [5,14,2,4,1,8,6,5,9,4];
+        data = [11,13,14,15,17,19,20,19,17,15,14,14,13];
 
         // Create and configure the chart
-        var line = new RGraph.Line({
+        line = new RGraph.Line({
             id: 'cvs',
             data: data,
             options: {
@@ -39,11 +39,16 @@
                 xaxis: false,
                 yaxis: false,
                 yaxisTickmarksCount: 5,
+                tickmarksStyle: 'filledcircle',
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 labelsAbove: true,
                 labelsAboveBorder: false,
-                labelsAboveDecimals: 1
+                labelsAboveDecimals: 1,
+                labelsAboveSize: 9,
+                labelsAboveBold: true,
+                labelsAboveOffsety: -10,
+                shadow: false
             }
         }).draw();
 
