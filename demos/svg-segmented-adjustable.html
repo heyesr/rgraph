@@ -1,0 +1,97 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.segmented.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An adjustable SVG Segmented donut chart</title>
+
+    
+    <meta name="description" content="An adjustable SVG Segmented donut chart" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An adjustable SVG Segmented donut chart</h1>
+    
+    <p>
+        Here we have two examples of adjustable SVG Segmented Donut charts. The red one uses a
+        custom onclick event listener (which you can see below) whilst the green chart uses the built
+        in adjusting feature - which doesn't use animation.
+    </p>
+    
+    <div style="width: 350px; height: 350px" id="chart-container1"></div>
+    <div style="width: 350px; height: 350px" id="chart-container2"></div>
+       
+
+    <script>
+        segmented1 = new RGraph.SVG.Segmented({
+            id: 'chart-container1',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                width: 60,
+                textSize: 55,
+                labelsCenterUnitsPost: 'kg'
+            }
+        }).roundRobin();
+
+        segmented1.container.onclick = function (e)
+        {
+            var value = segmented1.getValue(e);
+            
+            segmented1.value = value;
+            segmented1.grow();
+        };
+
+
+
+
+
+
+
+
+        segmented2 = new RGraph.SVG.Segmented({
+            id: 'chart-container2',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                colors: ['green','#ddd'],
+                width: 60,
+                textSize: 55,
+                labelsCenterUnitsPost: 'kg',
+                adjustable: true
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.segmented.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 350px; height: 350px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
