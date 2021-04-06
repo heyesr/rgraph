@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -83,7 +81,6 @@
             marginBottom:                          15,
             marginInner:                           1,
 
-            backgroundColor:                    'black',
             backgroundGrid:                     false,
             backgroundGridColor:                '#666',
             backgroundGridCircles:              true,
@@ -94,7 +91,8 @@
             backgroundRingsColors:              null,
             backgroundRingsAlpha:               0.5,
 
-            colors:                             ['#F45B5B','#90EE7E','#2B908F','red','green','blue','yellow','pink','cyan','white','gray','black','brown','orange','red','green','blue','yellow','pink','cyan','white','gray','black','brown','orange'],
+            backgroundColor:                    'black',
+            colors:                             ['#F45B5B','#90EE7E','#2B908F','red','green','blue','yellow','pink'],
             
             
             icons:                              [],
@@ -137,6 +135,11 @@
             labelsBackgroundStroke:                    'transparent',
             labelsOffsetx:                             0,
             labelsOffsety:                             0,
+            labelsFormattedDecimals:                    0,
+            labelsFormattedPoint:                       '.',
+            labelsFormattedThousand:                    ',',
+            labelsFormattedUnitsPre:                    '',
+            labelsFormattedUnitsPost:                   '',
 
             contextmenu:                        null,
             annotatable:                        false,
@@ -164,8 +167,6 @@
             tooltipsFormattedTableData:         null,
             tooltipsPointer:                    true,
             tooltipsPositionStatic:             true,
-            
-            effectRoundrobinMultiplier:         1,
 
             highlightStyle:                     null,
             highlightStroke:                    'rgba(0,0,0,0)',
@@ -667,35 +668,79 @@
                 });
             }
 
-            if (properties.labels.length) {
-                
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'labels'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               
+            var textConf = RGraph.getTextConf({
+                object: this,
+                prefix: 'labels'
+            });
+
+            if (typeof properties.labels === 'string') {
+                properties.labels = RGraph.arrayPad({
+                    array:  [],
+                    length: this.coords.length,
+                    value:  properties.labels
                 });
+            }
 
-                // Loop thru the labels
-                for (var i=0; i<this.coords.length; ++i) {
-                    RGraph.text({
-                        object: this,
 
-                          text: (typeof properties.labels[i] === 'string' || typeof properties.labels[i] === 'number') ?  properties.labels[i] : '',
+            // Loop thru the labels
+            for (var i=0; i<properties.labels.length; ++i) {
 
-                             x: this.coords[i].x - 5 + properties.labelsOffsetx,
-                             y: this.coords[i].y - this.coords[i].radiusOuter + ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + properties.labelsOffsety,
+                if ( typeof properties.labels === 'object' && properties.labels.length && typeof properties.labels[i] === 'string' ) {
 
-                        valign: 'center',
-                        halign: 'right',
-                  
-                      bounding: true,
-                  boundingFill: properties.labelsBackgroundFill,
-                boundingStroke: properties.labelsBackgroundStroke,
-
-                textConfPrefix: 'labels',
-                
-                
+                    var text = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.labels[i],
+                        index:     i,
+                        value:     this.value[i],
+                        decimals:  properties.labelsFormattedDecimals,
+                        point:     properties.labelsFormattedPoint,
+                        thousand:  properties.labelsFormattedThousand,
+                        unitsPre:  properties.labelsFormattedUnitsPre,
+                        unitsPost: properties.labelsFormattedUnitsPost,
                     });
                 }
+
+
+
+
+
+                RGraph.text({
+                    object: this,
+
+                      text: (   RGraph.isString(properties.labels[i])
+                             || RGraph.isNumber(properties.labels[i]) ) ?  text : '',
+
+                         x: this.coords[i].x - 5 + properties.labelsOffsetx,
+                         y: this.coords[i].y - this.coords[i].radiusOuter + ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + properties.labelsOffsety,
+
+                    valign: 'center',
+                    halign: 'right',
+              
+                  bounding: true,
+              boundingFill: properties.labelsBackgroundFill,
+            boundingStroke: properties.labelsBackgroundStroke,
+
+            textConfPrefix: 'labels',
+            
+            
+                });
             }
         };
 
