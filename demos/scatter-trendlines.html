@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart with trendlines</title>
+    
+    
+    
+    
+    <meta name="description" content="A Scatter chart with trendlines" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+    <h1>A Scatter chart with trendlines</h1>
+
+    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    
+    <script>
+        data = [
+            [[2,8,'red'],  [3,6,'red'],  [4,8,'red'],  [5,18,'red'],  [6,15,'red']],
+            [[1,1,'green'],  [3,5,'green'],  [6,5,'green'],  [9,6,'green'],  [10,10,'green']]
+        ];
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScaleMax: 31,
+                xaxisLabels: ['Weel 1','Week2','Week 3','Week 4'],
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 10,
+                trendline: true,
+                trendlineColors: ['red','green']
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
