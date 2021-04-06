@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -156,21 +154,26 @@
             xaxisTickmarksLastLeft:  null,
             xaxisTickmarksLastRight: null,
             xaxisTickmarksCount:  null,
-            xaxisLabels:          null,            
+            xaxisLabels:          null,           
             xaxisLabelsSize:      null,
             xaxisLabelsFont:      null,
             xaxisLabelsItalic:    null,
             xaxisLabelsBold:      null,
             xaxisLabelsColor:     null,
-            xaxisLabelsOffsetx:   0,
-            xaxisLabelsOffsety:   0,
-            xaxisLabelsHalign:   null,
-            xaxisLabelsValign:   null,
-            xaxisLabelsPosition:  'section',
-            xaxisLabelsSpecificAlign:'left',
-            xaxisPosition:        'bottom',
-            xaxisLabelsAngle:     0,
-            xaxisTitle:           '',
+            xaxisLabelsFormattedDecimals:       0,
+            xaxisLabelsFormattedPoint:          '.',
+            xaxisLabelsFormattedThousand:       ',',
+            xaxisLabelsFormattedUnitsPre:       '',
+            xaxisLabelsFormattedUnitsPost:      '',
+            xaxisLabelsOffsetx:                 0,
+            xaxisLabelsOffsety:                 0,
+            xaxisLabelsHalign:                  null,
+            xaxisLabelsValign:                  null,
+            xaxisLabelsPosition:                'section',
+            xaxisLabelsSpecificAlign:           'left',
+            xaxisPosition:                      'bottom',
+            xaxisLabelsAngle:                   0,
+            xaxisTitle:                         '',
             xaxisTitleBold:       null,
             xaxisTitleSize:       null,
             xaxisTitleFont:       null,
@@ -681,8 +684,39 @@
             }
 
             //
+            // If the xaxisLabels option is a string then turn it
+            // into an array.
+            //
+            if (properties.xaxisLabels && properties.xaxisLabels.length) {
+                if (typeof properties.xaxisLabels === 'string') {
+                    properties.xaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.xaxisLabels
+                    });
+                }
+
+                // Label substitution
+                //
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.xaxisLabels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                        point:     properties.xaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
+
+            //
             // The new common X axis drawing function
             RGraph.drawXAxis(this);
+
 
             //
             // The new common Y axis drawing function
@@ -1161,14 +1195,23 @@ this.context.lineTo(
                         // Dot chart
                         } else if (variant == 'dot') {
 
+
                             this.context.beginPath();
+                            this.context.strokeStyle = this.properties.colors[0];
                             this.context.moveTo(x + (width / 2), y);
                             this.context.lineTo(x + (width / 2), y + height);
                             this.context.stroke();
 
                             this.context.beginPath();
                             this.context.fillStyle = this.properties.colors[i];
-                            this.context.arc(x + (width / 2), y + (this.data[i] > 0 ? 0 : height), 2, 0, 6.28, 0);
+                            this.context.arc(
+                                x + (width / 2),
+                                y + (this.data[i] > 0 ? 0 : height),
+                                2,
+                                0,
+                                6.28,
+                                0
+                            );
 
                             // Set the colour for the dots
                             this.context.fillStyle = properties.colors[0];
