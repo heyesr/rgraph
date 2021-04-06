@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -59,6 +57,10 @@
     {
         var args = RGraph.getArgs(arguments, 'object,text,x,y,index,event');
 
+        if (RGraph.SHOW_TOOLTIP_TIMER) {
+            clearTimeout(RGraph.SHOW_TOOLTIP_TIMER);
+        }
+    
         if (RGraph.trim(args.text).length === 0) {
             return;
         }
@@ -483,7 +485,7 @@
 
 
             // Do property substitution when there's an index to the property
-            var reg = /%{prop(?:erty)?:([a-z0-9]+)\[([0-9]+)\]}/i;
+            var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
 
             while (text.match(reg)) {
 
@@ -508,7 +510,7 @@
 
 
             // Replace this: %%property:xxx%%
-            while (text.match(/%{property:([a-z0-9]+)}/i)) {
+            while (text.match(/%{property:([_a-z0-9]+)}/i)) {
                 var str = '%{property:' + RegExp.$1 + '}';
                 text    = text.replace(str, args.object.properties[RegExp.$1]);
             }
@@ -517,7 +519,7 @@
 
 
             // Replace this: %%prop:xxx%%
-            while (text.match(/%{prop:([a-z0-9]+)}/i)) {
+            while (text.match(/%{prop:([_a-z0-9]+)}/i)) {
                 var str = '%{prop:' + RegExp.$1 + '}';
                 text    = text.replace(str, args.object.properties[RegExp.$1]);
             }
@@ -567,6 +569,74 @@
 
 
 
+          ////////////////////////////////////////////////////////////////
+         // Do global substitution when there's an index to the global //
+        ////////////////////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)\[([0-9]+)\]}/i;
+
+        while (text.match(reg)) {
+
+            var name  = RegExp.$1,
+                index = parseInt(RegExp.$2);
+
+            if (eval(name)) {
+                text = text.replace(
+                    reg,
+                    eval(name)[index] || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //////////////////////////////////////////////////
+         // Do global substitution when there's no index //
+        //////////////////////////////////////////////////
+        var reg = /%{global:([_a-z0-9.]+)}/i;
+
+        while (text.match(reg)) {
+
+            var name = RegExp.$1;
+
+            if (eval(name)) {
+                text = text.replace(
+                    reg,
+                    eval(name) || ''
+                );
+
+            // Get rid of the text if there was nothing to replace the template bit with
+            } else {
+                text = text.replace(reg,'');
+            }
+                
+            RegExp.lastIndex = null;
+        }
+
+
+
+
+
+
+
 
 
 
@@ -577,7 +647,7 @@
 
             // And lastly - call any functions
             // MUST be last
-            var regexp = /%{function:([A-Za-z0-9]+)\((.*?)\)}/;
+            var regexp = /%{function:([_A-Za-z0-9]+)\((.*?)\)}/;
             
             // Temporarily replace carriage returns and line feeds with CR and LF
             // so the the s option is not needed
@@ -591,6 +661,8 @@
                 for (var i=0,len=str.length; i<len; ++i) {
                     str  = str.replace(/\r?\n/, "\\n");
                 }
+                
+                RGraph.Registry.set('tooltip-templates-function-object', args.object);
 
                 var func = new Function ('return ' + str);
                 var ret  = func();
@@ -910,15 +982,18 @@ if (parseInt(tooltipObj.style.left) < 0) {
         // If the effect is fade:
         // Increase the opacity from its default 0 up to 1 - fading the tooltip in
         if (args.object.get('tooltipsEffect') === 'fade') {
-            for (var i=1; i<=10; ++i) {
-                (function (index)
-                {
-                    setTimeout(function ()
+            //setTimeout(function ()
+            //{
+                for (var i=1; i<=10; ++i) {
+                    (function (index)
                     {
-                        tooltipObj.style.opacity = index / 10;
-                    }, index * 25);
-                })(i);
-            }
+                        setTimeout(function ()
+                        {
+                            tooltipObj.style.opacity = index / 10;
+                        }, index * 25);
+                    })(i);
+                }
+            //}, 1000)
         } else {
             tooltipObj.style.opacity = 1;
         }
