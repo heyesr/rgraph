@@ -31,10 +31,16 @@
             id: 'cvs',
             data: [100,42,34,23],
             options: {
-                labels: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
-                tooltips: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
+                names: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
+                labels: '%{property:names[%{index}]}, (%{value})',
+                tooltips: '%{property:names[%{index}]} %{value_formatted}',
+                tooltipsFormattedUnitsPost: '%',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                tooltipsOffsety: 75,
                 labelsSticks: true,
-                labelsX: 10,
+                labelsX: 2,
                 marginLeft: 230,
                 colorsStroke: 'rgba(0,0,0,0)',
                 textBoxed: false,
