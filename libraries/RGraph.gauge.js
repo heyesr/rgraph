@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -123,6 +121,11 @@
             labelsOffsetRadius:              0,
             labelsOffsetAngle:               0,
             labelsSpecific:                   null,
+            labelsSpecificFormattedDecimals: 0,
+            labelsSpecificFormattedPoint: '.',
+            labelsSpecificFormattedThousand: ',',
+            labelsSpecificFormattedUnitsPre: '',
+            labelsSpecificFormattedUnitsPost: '',
             labelsOffsetx:                    0,
             labelsOffsety:                    0,
             labelsFont:                       null,
@@ -673,6 +676,50 @@
                 object: this,
                 prefix: 'labels'
             });
+
+
+            //
+            // String based labels
+            //
+            if (typeof properties.labelsSpecific === 'string') {
+            
+                // Reset the number of labels to show
+                num = properties.labelsCount - 1;
+
+                if (properties.labelsSpecific && properties.labelsSpecific.length) {
+                    //
+                    // If the labelsSpecific option is a string then turn it
+                    // into an array.
+                    if (typeof properties.labelsSpecific === 'string' ) {
+                        properties.labelsSpecific = RGraph.arrayPad({
+                            array:  [],
+                            length: properties.labelsCount,
+                            value:  properties.labelsSpecific
+                        });
+                    }
+
+
+                    //
+                    // Label substitution
+                    //
+                    for (var i=0; i<properties.labelsSpecific.length; ++i) {
+                        properties.labelsSpecific[i] = RGraph.labelSubstitution({
+                            object:    this,
+                            text:      properties.labelsSpecific[i],
+                            index:     i,
+                            value:     this.value,
+                            decimals:  properties.labelsSpecificFormattedDecimals  || 0,
+                            unitsPre:  properties.labelsSpecificFormattedUnitsPre  || '',
+                            unitsPost: properties.labelsSpecificFormattedUnitsPost || '',
+                            thousand:  properties.labelsSpecificFormattedThousand  || ',',
+                            point:     properties.labelsSpecificFormattedPoint     || '.'
+                        });
+                    }
+                }
+            }
+
+
+
 
             this.context.beginPath();
                 if (num) {

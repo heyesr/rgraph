@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -181,6 +179,11 @@
             yaxisLabelsBold:          null,
             yaxisLabelsItalic:        null,
             yaxisLabelsPosition:      'section',
+            yaxisLabelsFormattedDecimals: 0,
+            yaxisLabelsFormattedPoint: '.',
+            yaxisLabelsFormattedThousand: ',',
+            yaxisLabelsFormattedUnitsPre: '',
+            yaxisLabelsFormattedUnitsPost: '',
             yaxisPosition:            'left',
             yaxisTitle:               null,
             yaxisTitleBold:           null,
@@ -435,6 +438,12 @@
             
                 this.canvas.__rgraph_aa_translated__ = true;
             }
+
+            //
+            // Do the yaxis label substitution. This has to be called
+            // before the left (or right) margin size is calculated.
+            //
+            this.yaxisLabelSubstitution();
 
 
             //
@@ -696,6 +705,51 @@
 
             // Draw the Y axis
             RGraph.drawYAxis(this);
+        };
+
+
+
+
+
+
+
+
+        //
+        // Do the label substitution. This is called from the top of the
+        // draw function
+        //
+        this.yaxisLabelSubstitution = function ()
+        {
+            if (properties.yaxisLabels && properties.yaxisLabels.length) {
+                //
+                // If the yaxisLabels option is a string then turn it
+                // into an array.
+                //
+                if (typeof properties.yaxisLabels === 'string') {
+                    properties.yaxisLabels = RGraph.arrayPad({
+                        array:  [],
+                        length: this.data.length,
+                        value:  properties.yaxisLabels
+                    });
+                }
+
+                //
+                // Label substitution
+                //
+                for (var i=0; i<properties.yaxisLabels.length; ++i) {
+                    properties.yaxisLabels[i] = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      properties.yaxisLabels[i],
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.yaxisLabelsFormattedDecimals  || 0,
+                        unitsPre:  properties.yaxisLabelsFormattedUnitsPre  || '',
+                        unitsPost: properties.yaxisLabelsFormattedUnitsPost || '',
+                        thousand:  properties.yaxisLabelsFormattedThousand  || ',',
+                        point:     properties.yaxisLabelsFormattedPoint     || '.'
+                    });
+                }
+            }
         };
 
 
