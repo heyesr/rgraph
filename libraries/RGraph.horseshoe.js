@@ -1,5 +1,3 @@
-// Version: 2021-03-01
-//
     // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
@@ -72,8 +70,8 @@
             marginTop:                             15,
             marginBottom:                          15,
 
-            backgroundColor:                    '#eee',
-            colors:                             ['black'],
+            backgroundColor:                       null,
+            colors:                                ['black','#eee'],
             
             textFont:                              'Arial, Verdana, sans-serif',
             textSize:                              70,
@@ -96,6 +94,11 @@
             labelsCenterPoint:                         '.',
             labelsCenterThousand:                      ',',
             labelsCenterSpecific:                      '',
+            labelsCenterSpecificFormattedDecimals:     0,
+            labelsCenterSpecificFormattedPoint:        '.',
+            labelsCenterSpecificFormattedThousand:     ',',
+            labelsCenterSpecificFormattedUnitsPre:     '',
+            labelsCenterSpecificFormattedUnitsPost:    '',
             labelsCenterOffsetx:                       0,
             labelsCenterOffsety:                       0,
             
@@ -345,6 +348,23 @@
         {
             var angle = this.getAngle(this.currentValue);
 
+
+
+
+
+            // First thing to do is clear the canvas to the backgroundColor
+            if (properties.backgroundColor) {
+                this.path(
+                    'fs % fr -5 -5 % %',
+                    properties.backgroundColor,
+                    this.canvas.width + 10,
+                    this.canvas.height + 10
+                );
+            }
+
+
+
+
             // Draw the gray background circle
             this.path(
                 'b a % % % 0 6.29 false a % % % 6.29 0 true f %',
@@ -357,7 +377,7 @@
                 this.centery,
                 this.radius - properties.width,
                 
-                properties.backgroundColor
+                properties.colors[1]
             );
 
 
@@ -442,6 +462,20 @@
             }
 
 
+            if (properties.labelsCenterSpecific) {
+                properties.labelsCenterSpecific = RGraph.labelSubstitution({
+                    object:    this,
+                    text:      properties.labelsCenterSpecific,
+                    index:     0,
+                    value:     this.value,
+                    decimals:  properties.labelsCenterSpecificFormattedDecimals  || 0,
+                    unitsPre:  properties.labelsCenterSpecificFormattedUnitsPre  || '',
+                    unitsPost: properties.labelsCenterSpecificFormattedUnitsPost || '',
+                    thousand:  properties.labelsCenterSpecificFormattedThousand  || ',',
+                    point:     properties.labelsCenterSpecificFormattedPoint     || '.'
+                });
+            }
+
 
 
             // Get the text configuration
@@ -508,20 +542,25 @@
         //
         this.getValue = function (e)
         {
-            var mouseXY = RGraph.getMouseXY(e);
+            if (typeof e === 'number') {
+                var angle = e;
+                    angle += RGraph.HALFPI;
+            } else {
+                var mouseXY = RGraph.getMouseXY(e);
+                
+                var angle   = RGraph.getAngleByXY(
+                    this.centerx,
+                    this.centery,
+                    mouseXY[0],
+                    mouseXY[1]
+                );
             
-            var angle   = RGraph.getAngleByXY(
-                this.centerx,
-                this.centery,
-                mouseXY[0],
-                mouseXY[1]
-            );
-            
-            // Adjust the angle because canvas angles
-            // start at the east axis
-            angle += RGraph.HALFPI;
-            if (angle > RGraph.TWOPI) {
-                angle -= RGraph.TWOPI;
+                // Adjust the angle because canvas angles
+                // start at the east axis
+                angle += RGraph.HALFPI;
+                if (angle > RGraph.TWOPI) {
+                    angle -= RGraph.TWOPI;
+                }
             }
 
             // Calculate the value based on the angle and min/max values
@@ -603,18 +642,39 @@
         // This method returns the appropriate angle for a value
         // 
         // @param number value The value
+        //                   OR
+        //        object value An event object
         //
         this.getAngle = function (value)
         {
-            // Higher than max
-            if (value > this.max || value < this.min) {
-                return null;
+            if (typeof value === 'number') {
+                
+                // Higher than max
+                if (value > this.max || value < this.min) {
+                    return null;
+                }
+    
+                var angle = (((value - this.min) / (this.max - this.min)) * RGraph.TWOPI) - RGraph.HALFPI;
+            
+            // An event object has been given
+            } else {
+                var mouseX = value.offsetX,
+                    mouseY = value.offsetY;
+    
+                var angle = RGraph.getAngleByXY({
+                    cx: this.centerx,
+                    cy: this.centery,
+                    x:  mouseX,
+                    y:  mouseY
+                });
             }
-
-            var angle = (((value - this.min) / (this.max - this.min)) * RGraph.TWOPI) - RGraph.HALFPI;
 
             if (value === this.max) angle -= 0.00001;
             if (value === this.min) angle += 0.00001;
+            
+            if (angle > (RGraph.PI + RGraph.HALFPI) ) {
+                angle -= RGraph.TWOPI;
+            }
             
             return angle;
         };
