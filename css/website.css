@@ -12,14 +12,16 @@ body{font-family:sans-serif;font-size:1.2em;color:#666;line-height:45px;padding-
 
 :target{position:relative;top:-50px;}
 
-div#main-body-container{padding:2px;padding-bottom:5px;padding-top:0;margin-left:40px;text-align:left;}
+div#main-body-container{padding:2px;padding-bottom:5px;padding-top:0;margin-left:40px;margin-right:40px;text-align:left;}
 
 h1{}
 h1,h2,h3,h4{font-family:HeaderFont,sans-serif;line-height:100%;font-size:1.25em;color: black;margin:45px 0 45px 0;}
 h1{font-size:2.75em;margin:50px 0 50px 0;}
 h2{font-size:1.5em;}
 h3{font-size:1em;}
-a:link{font-weight:bold;font-style:italic;}
+a:link{color:#3EA6EB;text-decoration:none;}
+a:hover{-text-decoration:underline;color:#1273B6 !important;}
+a:visited{color:#3EA6EB;}
 
 code,span.inline-code-highlight{padding:3px;background-color:#eee;font-family:Monospace;}
 pre,pre.code{padding:5px;background-color:#eee;background-image:linear-gradient(-45deg, rgba(255,255,255,0.5), transparent);padding:15px;line-height: 20px !important;overflow:auto; /*overflow added back in as it was causing small-screen errors*/}
@@ -93,12 +95,14 @@ footer div#footer ul li:nth-child(1){list-style-image: none; position: relative;
 footer div#footer a{font-size:90%;color:#ddd;text-decoration:none;font-style:normal;font-weight:normal;}
 footer div#footer a:hover{color:#fff;}
 
-div#front-page-download-buttons{display:inline-block;text-align:center;}
-div#front-page-download-buttons span#download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:-10px 10px 10px 10px;background-image:linear-gradient(225deg,#0b0,green);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
-div#front-page-download-buttons span#front-page-setup-introduction-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#b00,red);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
-div#front-page-download-buttons span#front-page-setup-donate-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#00b,blue);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
-div#front-page-download-buttons span#front-page-setup-download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#b00,red);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons{display:inline-block;text-align:center;font-weight: bold;font-style:italic;}
+div#front-page-download-buttons span#download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:-10px 10px 10px 10px;background-image:linear-gradient(225deg,#8AD092,#0a0);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-setup-introduction-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#FF5757,#f66);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-setup-donate-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#36A2EB,#66f);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-setup-download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#4BC0C0,#4BC0C0);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-github-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,gray,#ccc);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
 
+div#front-page-download-buttons span#front-page-github-button:hover,
 div#front-page-download-buttons span#download-button:hover,
 div#front-page-download-buttons span#front-page-setup-donate-button:hover,
 div#front-page-download-buttons span#front-page-setup-introduction-button:hover{transform:scale(1.05);}
@@ -140,6 +144,8 @@ div#navigation-top-bar-links a span::after{display:block;position:relative;top:3
 div#navigation-top-bar-links a span:hover::after{transform:scaleX(1);}
 img#navigation-top-bar-hamburger{position:absolute;top:0;right:15px;z-index:5;background-image:url(/images/navigation-icons/small/icons-combined.png);background-position: -146px -125px;cursor:pointer;}
 img#navigation-top-bar-logo{float:left;margin-top:2px;}
+#navigation-top-bar a {font-weight:bold;}
+#navigation-top-bar a:hover {color:white !important}
 
 #front-page-free-for{width:90%;margin-left:5%}
 #front-page-free-for span{font-size:250%;font-family:Segoe UI,sans-serif;font-weight:300;}
@@ -182,12 +188,14 @@ div#front-page-download-buttons{margin-top: 20px;}
 #sidebar-background-images-first,
 #sidebar-background-images-second,
 #sidebar-background-images-third,
-#sidebar-background-images-fourth{position:absolute;background-attachment:fixed;background-position:center;background-repeat:no-repeat;background-size:cover;height:1500px;right:0;left:950px;z-index:999;}
+#sidebar-background-images-fourth,
+#sidebar-background-images-fifth{position:absolute;background-attachment:fixed;background-position:center;background-repeat:no-repeat;background-size:cover;height:1500px;right:0;left:950px;z-index:999;}
 
 #sidebar-background-images-first{top: 0;background-image: url(/images/front-page-sidebar-background1.jpg);background-position:350px -100px;}
 #sidebar-background-images-second{top: 1500px;background-image: url(/images/front-page-sidebar-background2.jpg);background-position:800px 0;}
 #sidebar-background-images-third{top:3000px;background-image:url(/images/front-page-sidebar-background3.jpg);background-position:450px 0;}
 #sidebar-background-images-fourth{top:4500px;height: 1400px;background-image:url(/images/front-page-sidebar-background1.jpg);background-position:450px 0;}
+#sidebar-background-images-fifth{top:5500px;height: 1000px;background-image:url(/images/front-page-sidebar-background2.jpg);background-position:450px 0;}
 
 img.example_images{border: 1px solid transparent;transition:transform.25s ease-in-out;}
 img.example_images:hover{transform:scale(1.05);}
