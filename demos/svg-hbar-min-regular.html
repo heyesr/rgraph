@@ -112,7 +112,7 @@
                 marginLeft: 15,
                 marginRight: 50,
                 title: 'Zero max and negative min',
-                yaxisLabels: ['Ken','Larry','Kevin','Jobe','Lucy','John'],
+                yaxisLabels: ['Ken','Larry','Kevin','Jobe','Lucy','John','Pingu','Thomas','Ben','Larry'],
                 xaxisScaleMin: -10,
                 xaxisScaleMax: 0,
                 backgroundGridBorder: false,
@@ -121,9 +121,11 @@
         }).draw();
 
 
+        data = [-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+
         new RGraph.SVG.HBar({
             id: 'chart-container6',
-            data: [-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+            data: data,
             options: {
                 colors: ['Gradient(red:white:red:red:#c00:#600)'],
                 marginInner: 1,
@@ -131,7 +133,8 @@
                 xaxisScaleMin: -5,
                 xaxisScaleMax: 20,
                 backgroundGridBorder: false,
-                backgroundGridHlines: false
+                backgroundGridHlines: false,
+                yaxisTickmarksCount: data.length
             }
         }).draw();
     </script>
