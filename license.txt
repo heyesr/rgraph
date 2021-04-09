@@ -1,6 +1,4 @@
 
-
-
 RGraph is licensed under the Open Source MIT license. Feel free to use it and/or change
 it as you wish.
 
