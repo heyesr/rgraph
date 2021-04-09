@@ -23,11 +23,12 @@
     <h1>A Scatter chart with trendlines</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     
     <script>
         data = [
             [[2,8,'red'],  [3,6,'red'],  [4,8,'red'],  [5,18,'red'],  [6,15,'red']],
-            [[1,1,'green'],  [3,5,'green'],  [6,5,'green'],  [9,6,'green'],  [10,10,'green']]
+            [[16,1,'green'],  [18,5,'green'],  [21,5,'green'],  [24,6,'green'],  [25,10,'green']]
         ];
 
         new RGraph.Scatter({
@@ -35,7 +36,7 @@
             data: data,
             options: {
                 xaxisScaleMax: 31,
-                xaxisLabels: ['Weel 1','Week2','Week 3','Week 4'],
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4'],
                 yaxis: false,
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
@@ -43,6 +44,22 @@
                 tickmarksSize: 10,
                 trendline: true,
                 trendlineColors: ['red','green']
+            }
+        }).draw();
+
+        new RGraph.Scatter({
+            id: 'cvs2',
+            data: [[1,2],[2,5],[3,6],[4,4],[5,5],[6,6],[7,4],[8,5]],
+            options: {
+                xaxisScaleMax: 10,
+                xaxisLinewidth:3,
+                xaxisTickmarksCount: 0,
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                tickmarksStyle: 'cross',
+                tickmarksSize: 7,
+                trendline: true
             }
         }).draw();
     </script>
@@ -62,9 +79,8 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
 </pre>
 
     This is the code that generates the chart:
