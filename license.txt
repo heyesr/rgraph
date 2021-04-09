@@ -1,4 +1,4 @@
-RGraph is liensed under the Open Source MIT license. Feel free to use it and/or change
+RGraph is licensed under the Open Source MIT license. Feel free to use it and/or change
 it as you wish.
 
 If you wish to contribute to the development of RGraph by making a donation, you can
