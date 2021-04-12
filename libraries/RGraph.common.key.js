@@ -177,13 +177,12 @@
             //
             // Specific location coordinates
             //
-            if (typeof properties.keyPositionX == 'number') {
-                hpos = properties.keyPositionX;
-            }
+            if (typeof properties.keyPositionX === 'number') {hpos = properties.keyPositionX;}
+            if (typeof properties.keyPositionY === 'number') {vpos = properties.keyPositionY;}
             
-            if (typeof properties.keyPositionY == 'number') {
-                vpos = properties.keyPositionY;
-            }
+            // Now allow for offsetting the key
+            if (typeof properties.keyPositionOffsetx === 'number') {hpos += properties.keyPositionOffsetx;}
+            if (typeof properties.keyPositionOffsety === 'number') {vpos += properties.keyPositionOffsety;}
     
     
             // Stipulate the shadow for the key box
@@ -453,14 +452,12 @@
             //
             // Override the horizontal/vertical positioning
             //
-            if (typeof properties.keyPositionX == 'number') {
-                hpos = properties.keyPositionX;
-
-            }
-
-            if (typeof properties.keyPositionY === 'number') {
-                vpos = properties.keyPositionY;
-            }
+            if (typeof properties.keyPositionX === 'number') {hpos = properties.keyPositionX;}
+            if (typeof properties.keyPositionY === 'number') {vpos = properties.keyPositionY;}
+            
+            // Now allow for offsetting the key
+            if (typeof properties.keyPositionOffsetx === 'number') {hpos += properties.keyPositionOffsetx;}
+            if (typeof properties.keyPositionOffsety === 'number') {vpos += properties.keyPositionOffsety;}
 
     
 
