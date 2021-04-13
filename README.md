@@ -15,3 +15,21 @@ RGraph was first created in 2008 using canvas, now supporting both canvas and al
 using SVN for source control and only moved on to GitHub in 2021. It wasn't a full migration by any means -
 but as my familiarity with GitHub grows it will become more and more tied to it and will use it as it
 is intended.
+
+<p>Links point to the RGraph website</p>
+  
+<ul>
+  <li><a href="https://www.rgraph.net" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">Homepage</a></li>
+  <li><a href="https://www.rgraph.net/download.html#stable" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">Download RGraph</a></li>
+  <li><a href="https://www.rgraph.net/svg/index.html" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">SVG documentation</a></li>
+  <li><a href="https://www.rgraph.net/canvas/index.html" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">Canvas documentation</a></li>
+  <li><a href="https://www.rgraph.net/demos/index.html" target="_blank" target="_blank" target="_blank" target="_blank">Demos of charts</a></li>
+  <li><a href="https://www.rgraph.net/blog/index.html" target="_blank" target="_blank" target="_blank">News and updates</a></li>
+  <li><a href="https://www.rgraph.net/about.html" target="_blank" target="_blank">About RGraph and its author</a></li>
+  <li><a href="https://www.rgraph.net/forum/index.html" target="_blank">Get help with RGraph</a></li>
+</ul>
+
+<ul>
+  <li><a href="https://www.facebook.com/rgraph">Facebook profile</a></li>
+  <li><a href="https://twitter.com/_rgraph">Twitter profile</a></li>
+</ul>
