@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://www.rgraph.net/images/logo-250x250.png" alt="The RGraph logo" width="250" height="250" />
+  <img src="https://www.rgraph.net/images/logo-250x250.png" alt="The RGraph logo" width="125" height="125" />
 </p>
 
 <h1 align="center">RGraph: Beautiful javascript charts for websites</h1>
