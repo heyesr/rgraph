@@ -24,7 +24,9 @@
 
     <h1>An SVG Line chart showing UFO sightings</h1>
     
-    <div style="width: 600px; height: 250px; float: right" id="chart-container"></div>
+    <div style="text-align: none">
+        <div style="width: 600px; height: 250px; float: right" id="chart-container"></div>
+    </div>
     
     
     <p>
@@ -85,8 +87,8 @@
         
         // Use the trace() animation to show the chart and add some responsive capability
         }).trace().responsive([
-            {maxWidth: null,width:600,height:250,options:{linewidth: 3,tickmarksSize: 6}},
-            {maxWidth: 900, width:450,height:200,options:{linewidth: 2,tickmarksSize: 5}}
+            {maxWidth: null,width:600,height:250,options:{linewidth: 3,tickmarksSize: 6}, css: {'float':'right'}, parentCss: {textAlign:'none'}, options:{xaxisLabelsAngle: 0}},
+            {maxWidth: 700, width:400,height:200,options:{linewidth: 2,tickmarksSize: 5}, css: {'float':'none'}, parentCss: {textAlign:'center'}, options:{xaxisLabelsAngle: 45}}
         ]);
     </script>
 

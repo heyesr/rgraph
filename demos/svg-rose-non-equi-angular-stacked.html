@@ -23,7 +23,9 @@
 
     <h1>An SVG stacked Rose chart with unequal segment sizes</h1>
     
-    <div style="width: 450px; height: 400px; float: right" id="chart-container"></div>
+    <div>
+        <div style="width: 450px; height: 400px; float: right" id="chart-container"></div>
+    </div>
     
     <p>
         This is a mode of operation that the SVG Rose chart has but the canvas Rose chart does not. It's a
@@ -97,7 +99,10 @@
                 },
                 tooltipsPointer: false
             }
-        }).draw();
+        }).draw().responsive([
+            {maxWidth: null, width: 450, height: 400, css: {'float': 'right'},parentCss:{textAlign:'none'}},
+            {maxWidth: 750,  width: 350, height: 300, css: {'float': 'none'},parentCss:{textAlign:'center'}}
+        ]);
     </script>
 
 

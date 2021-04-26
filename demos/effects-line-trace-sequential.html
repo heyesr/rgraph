@@ -201,18 +201,16 @@
                     marginRight: 15
                 }
             // Add the responsive function after the last chart has finished animating
-            }).trace({frames: frms}, function ()
-            {
-            });
+            }).trace({frames: frms});
         }
 
         setTimeout(function ()
         {
             l1.responsive([
                 {maxWidth:null,width: 600,height:250,css: {'float': 'right'},callback: function (){l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}},
-                {maxWidth:900, width: 400,height:150,css: {'float': 'none'},callback: function () {l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}}
+                {maxWidth:500, width: 400,height:150,css: {'float': 'none'},callback: function () {l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}}
             ]);
-        }, 2000)
+        }, 1500)
 
     </script>
 
