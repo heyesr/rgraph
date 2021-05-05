@@ -2547,6 +2547,82 @@
 
 
         //
+        // The explode effect.
+        // 
+        // @param object     Options for the effect.
+        // @param int        A function that is called when the ffect is complete
+        //
+        this.explode = function ()
+        {
+            var obj       = this,
+                callback  = arguments[2],
+                opt       = arguments[0] || {},
+                frames    = opt.frames || 15,
+                frame     = 0,
+                callback  = arguments[1] || function () {},
+                originX   = this.properties.xaxisScaleMax / 2,
+                originY   = 0,
+                step      = 1 / frames,
+                original  = RGraph.clone(this.data);
+            
+            // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
+            // and then animate
+            this.draw();
+            this.set('yaxisScaleMax', this.scale2.max);
+            
+            // Determine the X origin - it defaults to the center
+            if (opt.originx === 'left') {
+                originX = 0;
+            } else if (opt.originx === 'right') {
+                originX = this.properties.xaxisScaleMax;
+            } else {
+                originX = this.properties.xaxisScaleMax / 2;
+            }
+            
+            // Determine the Y origin - it defaults to the bottom
+            if (opt.originy === 'center') {
+                originY = this.scale2.max / 2;
+            } else if (opt.originy === 'top') {
+                originY = this.scale2.max;
+            } else {
+                originY = 0;
+            }
+
+
+
+            function iterator ()
+            {
+                RGraph.clear(obj.canvas);
+                
+                for (var i=0; i<obj.data.length; ++i) { // Loop through each dataset
+                    for (var j=0; j<obj.data[i].length; ++j) { // Loop through each point
+                        obj.data[i][j][0] = originX + ((original[i][j][0] - originX) * step * frame);
+                        obj.data[i][j][1] = originY + ((original[i][j][1] - originY) * step * frame);
+                    }
+                }
+
+                RGraph.redrawCanvas(obj.canvas);
+                if (frame++ < frames) {
+                    RGraph.Effects.updateCanvas(iterator);
+                } else {
+                    RGraph.redrawCanvas(obj.canvas);
+                    callback(obj);
+                }
+            }
+
+            iterator();
+            
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
         // This helps the Gantt reset colors when the reset function is called.
         // It handles going through the data and resetting the colors.
         //
