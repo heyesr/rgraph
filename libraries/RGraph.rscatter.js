@@ -1590,6 +1590,61 @@
 
 
 
+        //
+        // The explode effect.
+        // 
+        // @param object     Options for the effect.
+        // @param int        A function that is called when the ffect is complete
+        //
+        this.explode = function ()
+        {
+            var obj       = this,
+                callback  = arguments[2],
+                opt       = arguments[0] || {},
+                frames    = opt.frames || 15,
+                frame     = 0,
+                callback  = arguments[1] || function () {},
+                step      = 1 / frames,
+                original  = RGraph.clone(this.data);
+
+            // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
+            // and then animate
+            this.draw();
+            this.set('scaleMax', this.scale2.max);
+            
+
+            function iterator ()
+            {
+                RGraph.clear(obj.canvas);
+                
+                for (var i=0; i<obj.data.length; ++i) { // Loop through each dataset
+                    for (var j=0; j<obj.data[i].length; ++j) { // Loop through each point
+                        obj.data[i][j][1] = original[i][j][1] * step * frame;
+                    }
+                }
+
+                RGraph.redrawCanvas(obj.canvas);
+
+                if (frame++ < frames) {
+                    RGraph.Effects.updateCanvas(iterator);
+                } else {
+                    RGraph.redrawCanvas(obj.canvas);
+                    callback(obj);
+                }
+            }
+
+            iterator();
+            
+            return this;
+        };
+
+
+
+
+
+
+
+
         // If only one tooltip has been given populate each data-piece with it
         this.populateTooltips = function ()
         {
