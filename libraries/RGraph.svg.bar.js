@@ -2207,7 +2207,7 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
                 frame           = -1,
                 callback        = opt.callback || function () {};
 
-            for (var i=0,len=this.coords.length; i<len; i+=1) {
+            for (var i=0,len=this.coords.length; i<len; ++i) {
 
                 opt.startFrames[i] = ((opt.frames / 2) / (obj.coords.length - 1)) * i;
                 opt.counters[i]    = 0;
@@ -2231,25 +2231,27 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
             {
                 ++frame;
 
-                for (var i=0,len=obj.coords.length; i<len; i+=1) {
+                for (var i=0,len=obj.coords.length; i<len; ++i) {
+                
+                    var el = obj.coords[i].element;
 
                     if (frame > opt.startFrames[i]) {
                         
-                        var originalHeight = obj.coords[i].element.getAttribute('data-original-height'),
+                        var originalHeight = el.getAttribute('data-original-height'),
                             height,
-                            value = parseFloat(obj.coords[i].element.getAttribute('data-value'));
+                            value = parseFloat(el.getAttribute('data-value'));
 
                         var height = Math.min(
                             ((frame - opt.startFrames[i]) / framesperbar) * originalHeight,
                             originalHeight
                         );
 
-                        obj.coords[i].element.setAttribute(
+                        el.setAttribute(
                             'height',
                             height < 0 ? 0 : height
                         );
 
-                        obj.coords[i].element.setAttribute(
+                        el.setAttribute(
                             'y',
                             value >=0 ? obj.getYCoord(0) - height : obj.getYCoord(0)
                         );
@@ -2260,23 +2262,23 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
                         if (properties.variant === '3d') {
                         
                             // Remove the 3D sides to the bar
-                            var parent = obj.coords[i].element.rgraph_3d_side_face[0].parentNode;
+                            var parent = el.rgraph_3d_side_face[0].parentNode;
         
-                            if (parent) parent.removeChild(obj.coords[i].element.rgraph_3d_side_face[0]);
-                            if (parent) parent.removeChild(obj.coords[i].element.rgraph_3d_side_face[1]);
+                            if (parent) parent.removeChild(el.rgraph_3d_side_face[0]);
+                            if (parent) parent.removeChild(el.rgraph_3d_side_face[1]);
                             
-                            var parent = obj.coords[i].element.rgraph_3d_top_face[0].parentNode;
-                            if (parent) parent.removeChild(obj.coords[i].element.rgraph_3d_top_face[0]);
-                            if (parent) parent.removeChild(obj.coords[i].element.rgraph_3d_top_face[1]);
+                            var parent = el.rgraph_3d_top_face[0].parentNode;
+                            if (parent) parent.removeChild(el.rgraph_3d_top_face[0]);
+                            if (parent) parent.removeChild(el.rgraph_3d_top_face[1]);
                             
 
 
                             // Now remove and immediately re-add the front face of
                             // the bar - this is so that the front face appears
                             // above the other sides
-                            if (obj.coords[i].element.parentNode) {
-                                var parent = obj.coords[i].element.parentNode;
-                                var node   = parent.removeChild(obj.coords[i].element);
+                            if (el.parentNode) {
+                                var parent = el.parentNode;
+                                var node   = parent.removeChild(el);
                                 parent.appendChild(node);
                             }
                         }
@@ -2284,11 +2286,11 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
 
                         if (properties.grouping === 'stacked') {
                             
-                            var seq = obj.coords[i].element.getAttribute('data-sequential-index');
+                            var seq = el.getAttribute('data-sequential-index');
                             var indexes = RGraph.SVG.sequentialIndexToGrouped(seq, obj.data);
                             
                             if (indexes[1] > 0) {
-                                obj.coords[i].element.setAttribute(
+                                el.setAttribute(
                                     'y',
                                     parseInt(obj.coords[i - 1].element.getAttribute('y')) - height
                                 );
@@ -2298,15 +2300,15 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
                         if (properties.variant === '3d') {
                             // Add the 3D sides to the bar (again)
                             obj.drawSide3dFace({
-                                rect:  obj.coords[i].element,
-                                value: obj.coords[i].element.getAttribute('data-value')
+                                rect:  el,
+                                value: el.getAttribute('data-value')
                             });
     
                             // Draw the top side of the 3D bar
                             if (properties.grouping === 'grouped' || (properties.grouping === 'stacked' && (indexes[1] + 1) === obj.data[indexes[0]].length) ) {
                                 obj.drawTop3dFace({
-                                    rect:  obj.coords[i].element,
-                                    value: obj.coords[i].element.getAttribute('data-value')
+                                    rect:  el,
+                                    value: el.getAttribute('data-value')
                                 });
                             }
                         }
