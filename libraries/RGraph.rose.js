@@ -2107,6 +2107,7 @@
         //                   myRose.roundRobin({frames: 60}; function () {alert('Done!');})
         // @param function   A callback function which is called when the effect is finished
         //
+        this.roundrobin =
         this.roundRobin = function ()
         {
             var obj             = this;

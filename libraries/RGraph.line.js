@@ -3331,6 +3331,7 @@
         // @param object   An object containing options
         // @param function A callback function
         //
+        this.unfoldfromcentertrace =
         this.unfoldFromCenterTrace = function ()
         {
             var obj      = this,
@@ -3398,6 +3399,7 @@
         // @param object An option map of properties. Only frames is supported: {frames: 30}
         // @param function An optional callback
         //
+        this.unfoldfromcenter =
         this.unfoldFromCenter = function ()
         {
             var obj           = this,

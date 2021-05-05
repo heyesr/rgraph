@@ -2786,6 +2786,7 @@ this.context.lineTo(
         // @param function OPTIONAL A function that will be called when the effect
         //                          is complete
         //
+        this.colorwave =
         this.colorWave = function ()
         {
             var obj = this,

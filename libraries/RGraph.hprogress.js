@@ -1501,7 +1501,7 @@
         // 
         // @param object obj The chart object
         //
-        this.grow   = function ()
+        this.grow = function ()
         {
             var obj           = this;
             var canvas        = obj.canvas;

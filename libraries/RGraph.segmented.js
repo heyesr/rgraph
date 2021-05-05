@@ -862,6 +862,7 @@
         // @param object OPTIONAL Options for the effect
         // @param function OPTIONAL A callback function
         //
+        this.roundrobin =
         this.roundRobin = function ()
         {
             var obj      = this,
