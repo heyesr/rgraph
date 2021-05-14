@@ -29,7 +29,10 @@
 
     <script>
         window.roundedCorners = 10;
-    
+
+
+
+
         //
         // This adds a roundedRect(x, y, width, height, radius) function to the drawing context.
         // The radius argument dictates by how much the corners are rounded.
@@ -42,7 +45,7 @@
         //
         CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
         {
-            var radius = window.roundedCorners;
+            var radius = typeof window.roundedCorners === 'number' ? window.roundedCorners : 10;
 
             // Because the function is added to the context prototype
             // the 'this' variable is actually the context
@@ -68,6 +71,13 @@
             // Restore the state of the canvas to as it was before the save()
             this.restore();
         };
+
+
+
+
+
+
+
 
         new RGraph.Bar({
             id: 'cvs',
