@@ -1,0 +1,116 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A graduated Rose chart</title>
+
+
+    
+    <meta name="description" content="A graduated Rose chart. The Rose chart shown here is achieved by manually specifying graduated colors and using a stacked variation." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+    
+
+    <h1>A graduated Rose chart</h1>
+
+    <canvas id="cvs" width="600" height="400" style="float: right">[No canvas support]</canvas>
+    
+    <p>
+        A graduated Rose chart. The Rose chart shown here is achieved by manually specifying
+        graduated colors and using a stacked variation. You could also just use a standard gradient,
+        for example <code>Gradient(#f77:red)</code>
+    </p>
+    
+    <br clear="all" />
+    
+    <script>
+        // Set the data. The actual values don't matter for this chart
+        data = [
+            [1,1,1,1,1,1],
+            [1,1,1,1,1],
+            [1,1,1,1,1,1],
+            [1,1,1,1,1,1],
+            [1,1,1,1],
+            [1,1,1,1,1]
+        ];
+        
+        // These are the original rgba color values
+        originalColors = [
+            'rgba(255,0,0,0)',
+            'rgba(0,255,0,0)',
+            'rgba(0,0,255,0)',
+            'rgba(255,255,0,0)',
+            'rgba(255,0,255,0)',
+            'rgba(0,0,0,0)'
+        ];
+
+        // An array which will contain the colors when they have been generated
+        colors = [];
+        
+        // Generate the colors
+        for (var i=0; i<data.length; ++i) {
+
+            var tmp = [];
+
+            for (var j=0; j<data[i].length; ++j) {
+
+                tmp.push((function (c) {return c.replace(/0\)$/, 0.1 * (10 - (j*2)) + ')');})(originalColors[i]));
+            }
+
+            colors = colors.concat(tmp.reverse());
+
+        }
+
+        new RGraph.Rose({
+            id: 'cvs',
+            data: data,
+            options: {
+                labels: ['Luna','Kevin','Richard','John','Dave','Bob'],
+                colors: colors,
+                colorsSequential: true,
+                margin: 0,
+                labelsAxes: '',
+                scaleMax: 6,
+                labelsBold: true,
+                labelsSize: 16,
+                backgroundGridCirclesCount: 6
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="400"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>    
+
+</body>
+</html>
