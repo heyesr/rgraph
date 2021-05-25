@@ -231,7 +231,7 @@
         // @param     string Optional set of options that are passed
         //                   to the relevant row/col function
         //
-        function get($str, $opt = [])
+        function get ($str, $opt = [])
         {
             // Uppercase letters please!
             $str = strtoupper(trim($str));
@@ -338,7 +338,7 @@
                 $ret = $cells;
             }
             
-            // If the option has been specified then encode the array as a sztring
+            // If the option has been specified then encode the array as a string
             if (!empty($opt['string'])) {
                 $ret = json_encode($ret);
             }
