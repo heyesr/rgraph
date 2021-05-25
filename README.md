@@ -8,7 +8,7 @@ RGraph is an Open Source JavaScript charts library for websites. It was started 
 canvas only.
 
 Now it has support for over 60 responsive chart types across SVG and canvas, multiple data source import
-capability (including CSV files, Google Sheets, AJAX amd documentation for using server data), animations,
+capability (including CSV files, Google Sheets, AJAX and documentation for using server data), animations,
 JSON and AJAX support and more besides. RGraph is licensed using the MIT license.
 
 RGraph was first created in 2008 using canvas, now supporting both canvas and also SVG charts. It was started
