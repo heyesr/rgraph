@@ -153,6 +153,11 @@
             
             // Default for start is 1
             start = start || 1;
+            
+            // Does the row exist?
+            if (!this.data[index - 1]) {
+                return [];
+            }
 
             //
             // Parse the .trim argument
