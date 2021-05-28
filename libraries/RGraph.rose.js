@@ -471,14 +471,6 @@
     
             
             //
-            // This function enables resizing
-            //
-            if (properties.resizable) {
-                RGraph.allowResizing(this);
-            }
-    
-            
-            //
             // This function enables adjusting
             //
             if (properties.adjustable) {

@@ -633,14 +633,7 @@
             // Draw "in graph" labels
             //
             RGraph.drawInGraphLabels(this);
-    
-            
-            //
-            // This function enables resizing
-            //
-            //if (properties.resizable) {
-            //    RGraph.allowResizing(this);
-            //}
+
     
     
             //

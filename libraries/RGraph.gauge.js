@@ -381,13 +381,6 @@
             }
     
             this.drawCenterpin();
-            
-            //
-            // This function enables resizing
-            //
-            if (properties.resizable) {
-                RGraph.allowResizing(this);
-            }
     
     
             //

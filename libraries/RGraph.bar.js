@@ -613,16 +613,6 @@
             }
 
 
-
-
-            //
-            // This function enables resizing
-            //
-            if (properties.resizable) {
-                RGraph.allowResizing(this);
-            }
-
-
             //
             // This installs the event listeners
             //

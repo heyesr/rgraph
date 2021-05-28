@@ -375,13 +375,6 @@
             if (properties.titleSide) {
                 this.drawSideTitle();
             }
-            
-            //
-            // This function enables resizing
-            //
-            //if (properties.resizable) {
-            //    RGraph.allowResizing(this);
-            //}
     
     
     

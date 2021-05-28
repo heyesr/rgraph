@@ -348,15 +348,6 @@
             //
             RGraph.installEventListeners(this);
 
-    
-    
-            
-            //
-            // This function enables resizing
-            //
-            if (properties.resizable) {
-                RGraph.allowResizing(this);
-            }
             
             //
             // Instead of using RGraph.common.adjusting.js, handle them here
