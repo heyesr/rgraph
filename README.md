@@ -32,7 +32,10 @@ is intended.
 </div>
 
 <br clear="all" />
-
+<p align="center">
+    <a href="https://www.rgraph.net/demos/index.html" target="_blank">See more demos...</a>
+</p>
+    
 <p>Links point to the RGraph website</p>
   
 <ul>
