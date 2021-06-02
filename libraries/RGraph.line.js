@@ -354,7 +354,7 @@
             trendlineMargin:            25,
             trendlineDashed:            false,
             trendlineDotted:            false,
-            trendlineDashArray:         null,
+            trendlineDashArray:         null
         }
 
         // Convert strings to numbers
