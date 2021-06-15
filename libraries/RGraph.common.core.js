@@ -8874,6 +8874,8 @@
     //
     RGraph.isString    = function (obj){return typeof obj === 'string';};
     RGraph.isNumber    = function (obj){return typeof obj === 'number';};
+    RGraph.isBool      =
+    RGraph.isBoolean   = function (obj){return typeof obj === 'boolean';};
     //RGraph.isArray Defined above
     RGraph.isObject    = function (obj){return typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0;};
     //RGraph.isNull  Defined above
