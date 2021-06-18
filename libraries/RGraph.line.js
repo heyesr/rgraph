@@ -181,6 +181,7 @@
             tickmarksStyle:             'none',
             tickmarksLinewidth:         null,
             tickmarksSize:              3,
+            tickmarksColor:             null,
             tickmarksStyleDotStroke:    'white',
             tickmarksStyleDotFill:      null,
             tickmarksStyleDotLinewidth: 3,
@@ -1476,6 +1477,11 @@
         //
         this.drawTick = function (lineData, xPos, yPos, color, isShadow, prevX, prevY, tickmarks, index, dataset)
         {
+            // Allow for the tickmarksColor property
+            if (properties.tickmarksColor) {
+                color = properties.tickmarksColor;
+            }
+
             // Various conditions mean no tick
             if (this.hidden(dataset)) {
                 return;
@@ -1491,13 +1497,13 @@
     
             var offset   = 0;
     
-            // Reset the stroke and lineWidth back to the same as what they were when the line was drawm
+            // Reset the stroke and lineWidth back to the same as what they were when the line was drawn
             // UPDATE 28th July 2011 - the line width is now set to 1
             this.path(
                 'lw % ss % fs %',
                 properties.tickmarksLinewidth ? properties.tickmarksLinewidth : properties.linewidth,
-                isShadow ? properties.shadowColor : this.context.strokeStyle,
-                isShadow ? properties.shadowColor : this.context.strokeStyle
+                isShadow ? properties.shadowColor : color,
+                isShadow ? properties.shadowColor : color
             );
 
 
@@ -1517,7 +1523,7 @@
                     if (tickmarks.indexOf('filled') !== -1) {
                         this.path(
                             'fs %',
-                            isShadow ? properties.shadowColor : this.context.strokeStyle
+                            isShadow ? properties.shadowColor : color
                         );
 
                     } else {
@@ -1562,11 +1568,12 @@
                 var ticksize = properties.tickmarksSize;
 
                 this.path(
-                    'b m % % l % % m % % l % % s null',
+                    'b m % % l % % m % % l % % s %',
                     xPos - ticksize, yPos - ticksize,
                     xPos + ticksize, yPos + ticksize,
                     xPos + ticksize, yPos - ticksize,
-                    xPos - ticksize, yPos + ticksize
+                    xPos - ticksize, yPos + ticksize,
+                    color
                 );
     
     
