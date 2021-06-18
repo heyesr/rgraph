@@ -55,18 +55,9 @@
 
         setInterval(function ()
         {
-            activity.value[0]  += RGraph.random(-3, 3);
-            activity.value[1]  += RGraph.random(-3, 3);
-            activity.value[2]  += RGraph.random(-3, 3);
-            activity.value[3]  += RGraph.random(-3, 3);
-            activity.value[4]  += RGraph.random(-3, 3);
-            activity.value[5]  += RGraph.random(-3, 3);
-            activity.value[6]  += RGraph.random(-3, 3);
-            activity.value[7]  += RGraph.random(-3, 3);
-            activity.value[8]  += RGraph.random(-3, 3);
-            activity.value[9]  += RGraph.random(-3, 3);
-            activity.value[10] += RGraph.random(-3, 3);
-            activity.value[11] += RGraph.random(-3, 3);
+            for (var i=0; i<activity.value.length; ++i) {
+                activity.value[i] += RGraph.random(-3, 3);
+            }
             
             activity.grow();
         }, 2500);
