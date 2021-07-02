@@ -343,7 +343,15 @@
             
             dasharray: [1,0],
             dashed: false,
-            dotted: false
+            dotted: false,
+            
+            trendline:                  false,
+            trendlineColors:            ['#666'],
+            trendlineLinewidth:         1,
+            trendlineMargin:            25,
+            trendlineDashed:            false,
+            trendlineDotted:            false,
+            trendlineDashArray:         null
         };
 
 
@@ -693,6 +701,22 @@
             // Always redraw the liines now so that tickmarks are drawn
             this.redrawLines();
 
+
+
+
+
+
+
+
+
+            // Add trendlines if they have been enabled
+            for (let i=0; i<this.data.length; ++i) {
+            
+                if (    (RGraph.SVG.isArray(properties.trendline) && properties.trendline[i])
+                     || (!RGraph.SVG.isArray(properties.trendline) && properties.trendline)) {
+                    this.drawTrendline({dataset: i});
+                }
+            }
 
 
 
@@ -2150,6 +2174,179 @@
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 15                             // An arbitrary amount
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws a trendline on the Scatter chart. This is also known
+        // as a "best-fit line"
+        //
+        // @param dataset The index of the dataset to use
+        //
+        this.drawTrendline = function (opt)
+        {
+            var obj        = this,
+                color      = properties.trendlineColor,
+                linewidth  = properties.trendlineLinewidth,
+                margin     = properties.trendlineMargin;
+
+            //
+            // Create the pseudo-data array
+            //
+            var data=[];
+
+            // Create the data array from the given data and an
+            // increasing X value
+            for (var i=0; i<this.data.length; ++i) {
+                
+                data[i] = [];
+
+                for (var j=0; j<this.data[i].length; ++j) {
+                    data[i].push([j, this.data[i][j]]);
+                }
+            }
+
+            // Allow for trendlineColors as well
+            if (RGraph.SVG.isArray(properties.trendlineColors)) {
+                color = properties.trendlineColors;
+            }
+
+
+
+            // handle the options being arrays
+            if (typeof color === 'object' && color[opt.dataset]) {
+                color = color[opt.dataset];
+            } else if (typeof color === 'object') {
+                color = 'gray';
+            }
+
+            if (typeof linewidth === 'object' && typeof linewidth[opt.dataset] === 'number') {
+                linewidth = linewidth[opt.dataset];
+            } else if (typeof linewidth === 'object') {
+                linewidth = 1;
+            }
+
+            if (typeof margin === 'object' && typeof margin[opt.dataset] === 'number') {
+                margin = margin[opt.dataset];
+            } else if (typeof margin === 'object'){
+                margin = 25;
+            }
+
+
+            // Step 1: Calculate the mean values of the X coords and the Y coords
+            for (var i=0,totalX=0,totalY=0; i<this.data[opt.dataset].length; ++i) {
+                totalX += data[opt.dataset][i][0];
+                totalY += data[opt.dataset][i][1];
+            }
+
+            var averageX = totalX / data[opt.dataset].length;
+            var averageY = totalY / data[opt.dataset].length;
+
+            // Step 2: Calculate the slope of the line
+            
+            // a: The X/Y values minus the average X/Y value
+            for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[opt.dataset].length; ++i) {
+                xCoordMinusAverageX[i] = data[opt.dataset][i][0] - averageX;
+                yCoordMinusAverageY[i] = data[opt.dataset][i][1] - averageY;
+
+                // b. Multiply the averages
+                valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
+                xCoordMinusAverageSquared[i] = xCoordMinusAverageX[i] * xCoordMinusAverageX[i];
+            }
+
+            var sumOfValuesMultiplied          = RGraph.SVG.arraySum(valuesMultiplied);
+            var sumOfXCoordMinusAverageSquared = RGraph.SVG.arraySum(xCoordMinusAverageSquared);
+
+            // Calculate m (???)
+            var m = sumOfValuesMultiplied / sumOfXCoordMinusAverageSquared;
+            var b = averageY - (m * averageX);
+
+            // y = mx + b
+            
+            coords =  [
+                [0, m * 0 + b],
+                [data[0].length - 1, m * (data[0].length - 1) + b]
+            ];
+
+            // Convert the X/Y numbers into coordinates
+            coords[0][0] = properties.marginLeft;
+            coords[0][1] = this.getYCoord(coords[0][1]);
+            coords[1][0] = this.width - properties.marginRight;
+            coords[1][1] = this.getYCoord(coords[1][1]);
+
+
+
+
+
+
+
+
+
+            //
+            // Draw the line
+            //
+            
+            // Set dotted, dash or a custom dash array
+            if (   properties.trendlineDashed === true
+                || (RGraph.SVG.isArray(properties.trendlineDashed) && properties.trendlineDashed[opt.dataset]) ) {
+                var dasharray = [4,4];
+            }
+            
+            if (   properties.trendlineDotted === true
+                || (RGraph.SVG.isArray(properties.trendlineDotted) && properties.trendlineDotted[opt.dataset])) {
+                var dasharray = [1,4];
+            }
+            
+            // Set a lineDash array. It can be an array of two numbers, or it can be a
+            // multi-dimensional array, each of two numbers. One for each line on the
+            // chart.
+            if (RGraph.SVG.isArray(properties.trendlineDashArray)) {
+                if (   properties.trendlineDashArray.length === 2
+                    && typeof properties.trendlineDashArray[0] === 'number'
+                    && typeof properties.trendlineDashArray[1] === 'number'
+                   ) {
+                    var dasharray = properties.trendlineDashArray;
+                
+                } else if (   RGraph.SVG.isArray(properties.trendlineDashArray)
+                           && RGraph.SVG.isArray(properties.trendlineDashArray[opt.dataset])) {
+                    var dasharray = properties.trendlineDashArray[opt.dataset];
+                }
+            }
+
+
+
+
+
+
+
+
+
+            // Draw the line
+            var line = RGraph.SVG.create({
+                svg: obj.svg,
+                parent: obj.layers.background5, // Add the trendline to one of the background layers
+                type: 'line',
+                attr: {
+                    x1: Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin),
+                    y1: coords[0][1],
+                    x2: Math.min(coords[1][0], this.coords2[opt.dataset][this.coords2[opt.dataset].length - 1][0] + margin),
+                    y2: coords[1][1],
+
+                    fill: 'rgba(0,0,0,0)',
+                    stroke: color,
+                    'stroke-width': linewidth,
+                    'stroke-dasharray': dasharray
+                }
+            });
+/*
+trendlineDashArray:         null
+*/
         };
 
 
