@@ -40,36 +40,37 @@
         // Various config
         this.properties =
         {
-            backgroundBarsCount:               null,
-            backgroundBarsColor1:              'rgba(0,0,0,0)',
-            backgroundBarsColor2:              'rgba(0,0,0,0)',
-            backgroundGrid:                    true,
-            backgroundGridAutofit:             true,
-            backgroundGridAutofitAlign:        true,
-            backgroundGridColor:               '#ddd',
-            backgroundGridLinewidth:           1,
-            backgroundGridHsize:               20,
-            backgroundGridVsize:               20,
-            backgroundGridVlines:              true,
-            backgroundGridHlines:              true,
-            backgroundGridBorder:              true,
-            backgroundGridAlign:               true,
-            backgroundGridHlinesCount:         5,
-            backgroundGridVlinesCount:         20,
-            backgroundImage:                   null,
-            backgroundImageStretch:            true,
-            backgroundImageX:                  null,
-            backgroundImageY:                  null,
-            backgroundImageW:                  null,
-            backgroundImageH:                  null,
-            backgroundImageAlign:              null,
-            backgroundHbars:                   null,
+            backgroundBarsCount:                null,
+            backgroundBarsColor1:               'rgba(0,0,0,0)',
+            backgroundBarsColor2:               'rgba(0,0,0,0)',
+            backgroundGrid:                     true,
+            backgroundGridAutofit:              true,
+            backgroundGridAutofitAlign:         true,
+            backgroundGridColor:                '#ddd',
+            backgroundGridLinewidth:            1,
+            backgroundGridHsize:                20,
+            backgroundGridVsize:                20,
+            backgroundGridVlines:               true,
+            backgroundGridHlines:               true,
+            backgroundGridBorder:               true,
+            backgroundGridAlign:                true,
+            backgroundGridHlinesCount:          5,
+            backgroundGridVlinesCount:          20,
+            backgroundImage:                    null,
+            backgroundImageStretch:             true,
+            backgroundImageX:                   null,
+            backgroundImageY:                   null,
+            backgroundImageW:                   null,
+            backgroundImageH:                   null,
+            backgroundImageAlign:               null,
+            backgroundHbars:                    null,
 
-            linewidth:                         1,
+            linewidth:                          1,
 
-            colorsStroke:                      '#666',
-            colors:                            ['green','red','blue'],
-            colorsSequential:                  false,
+            colorsStroke:                       '#666',
+            colors:                             ['green','red','blue'],
+            colorsSequential:                   false,
+            colorsConnectors:                   '#666',
 
             marginLeft:                        35,
             marginRight:                       35,
@@ -1070,7 +1071,7 @@
             // This draws the connecting lines
             //
             this.context.lineWidth   = 1;
-            this.context.strokeStyle = '#666';
+            this.context.strokeStyle = properties.colorsConnectors;
             
             this.context.beginPath();
 
