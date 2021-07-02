@@ -2326,11 +2326,10 @@
 
 
 
-
             // Draw the line
             var line = RGraph.SVG.create({
                 svg: obj.svg,
-                parent: obj.layers.background5, // Add the trendline to one of the background layers
+                parent: obj.svg.all,
                 type: 'line',
                 attr: {
                     x1: Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin),
@@ -2341,13 +2340,28 @@
                     fill: 'rgba(0,0,0,0)',
                     stroke: color,
                     'stroke-width': linewidth,
-                    'stroke-dasharray': dasharray
+                    'stroke-dasharray': dasharray,
+                    
+                    'class': 'rgraph_line_{1}_trendline_{2}'.format(
+                        this.id,
+                        opt.dataset
+                    )
                 }
             });
-/*
-trendlineDashArray:         null
-*/
+
+            // Get a reference to the background gride <path> node
+            var els  = this.svg.getElementsByClassName('rgraph_background_grid'),
+                grid = els[0];
+
+            // Remove the trendline from the DOM
+            obj.svg.all.removeChild(line);
+            
+            // Now re-add it immedately after the background grid
+            grid.insertAdjacentElement('afterend', line);
+            
+            
         };
+        
 
 
 
