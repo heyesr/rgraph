@@ -25,6 +25,11 @@
         //
         this.set = function (name, value)
         {
+            // BC
+            if (name === 'colorsConnector') {
+                name = 'colorsConnectors';
+            }
+
             if (arguments.length === 1 && typeof name === 'object') {
                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
@@ -152,7 +157,7 @@
             colors:               ['black', 'red', 'blue'],
             colorsSequential:     false,
             colorsStroke:          '#aaa',
-            colorsConnector: null,
+            colorsConnectors:      '#666',
             
             total:                true,
             linewidth:            1,
@@ -902,7 +907,7 @@
                             y1: y1 + 0.5,
                             x2: x2,
                             y2: y2 + 0.5,
-                            stroke: properties.colorsConnector || properties.colorsStroke,
+                            stroke: properties.colorsConnectors || properties.colorsStroke,
                             'stroke-width': properties.linewidth,
                             'data-index': i,
                             'data-original-x1': x1,
