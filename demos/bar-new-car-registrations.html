@@ -10,7 +10,7 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo:  A Bar chart showing new car registrations</title>
+    <title>RGraph demo: A grouped Bar chart</title>
     
     
     <meta name="description" content="A grouped Bar chart showing motor vehicle sales which has three bars per group along with a turquoise color theme." />
@@ -23,7 +23,7 @@
 <body>
 
 
-    <h1>A Bar chart showing new car registrations</h1>
+    <h1>A grouped Bar chart</h1>
 
     <div style="display: inline-block; margin: 35px; float: right">
         <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
@@ -115,7 +115,7 @@
                 },
                 textAccessible: false
             }
-        }).draw().on('beforedraw', function (obj)
+        }).grow().on('beforedraw', function (obj)
         {
             RGraph.clear(obj.canvas, 'white');
 
