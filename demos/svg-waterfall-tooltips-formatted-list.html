@@ -76,8 +76,10 @@
             // Hide the tooltip for the total column
             var e   = window.event;
             var idx = e.target.getAttribute('data-index');
-            
+
             if ((parseInt(idx) + 1) === obj.data.length) {
+
+                RGraph.SVG.removeHighlight();
                 RGraph.SVG.hideTooltip();
             }
         });
