@@ -1,0 +1,118 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart that shows the fortune 500 company's by country</title>
+    <meta name="description" content="A Horizontal Bar chart that shows the fortune 500 company's by country" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart that shows the fortune 500 company's by country</h1>
+
+    <canvas id="cvs" width="820" height="250">[No canvas support]</canvas>
+    
+    <script>
+        countries = ['US','China','Japan','France','Germany','Britain','Switzerland','Netherlands','South Korea','Canada','Australia','Italy','India','Brazil','Spain','Russia','Taiwan','Sweden'];
+        data      = [134,103,52,29,28,25,15,12,15,11,8,9,7,7,9,5,7,3];
+
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data:[1,0,1,0,1,0,1],
+            options: {
+                backgroundGrid: false,
+                marginInner: 0,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                marginBottom: 5,
+                marginTop: 5,
+                marginRight: 5,
+                colors: ['#ccc']
+            }
+        }).draw();
+
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabelsCount: 7,
+                xaxisLabelsSize: 10,
+                xaxisLabelsOffsety: 5,
+                xaxisPosition: 'top',
+                xaxisTitle: 'Number of company\'s',
+                xaxisTitleSize: 16,
+                xaxisScaleMax: 140,
+                yaxisLabels: countries,
+                yaxisLabelsSize: 8,
+                xaxis: false,
+                yaxis: false,
+                backgroundGrid: false,
+                marginInner: 1,
+                colors: ['black'],
+                marginBottom: 5,
+                marginTop: 5,
+                marginRight: 5,
+                tooltips: '<i style="font-size: 12pt">July 2019 count:</i><br />%{global:countries[%{group}]}: %{global:data[%{group}]}',
+                tooltipsPointer: false,
+                tooltipsEvent: 'mousemove',
+                tooltipsEffect: 'none',
+                tooltipsPositionStatic: false,
+                tooltipsCss: {
+                    paddingTop: 0,
+                    backgroundColor: 'rgba(255,255,255,0.9)',
+                    color: 'black',
+                    border: '2px solid black',
+                    fontSize: '20pt',
+                    pointerEvents: 'none'
+                }
+            }
+        }).grow({frames: 45});
+        
+        // Set the bar chart left margin to the same as the hbars. Normally you would
+        // need to redraw after doing this but because an animation has been started
+        // before this bit of code runs and finishes after, a redraw is not actually
+        // required (because of the animation redrawing the canvas).
+        bar.set(
+            'marginLeft',
+            hbar.get('marginLeft')
+        );
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="820" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
