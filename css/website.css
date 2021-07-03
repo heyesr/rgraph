@@ -15,8 +15,8 @@ body{font-family:sans-serif;font-size:1.2em;color:#666;line-height:45px;padding-
 div#main-body-container{padding:30px;padding-bottom:5px;padding-top:0;text-align:left;}
 
 h1{}
-h1,h2,h3,h4{font-family:HeaderFont,sans-serif;line-height:100%;font-size:1.25em;color: black;margin:45px 0 45px 0;}
-h1{font-size:2.75em;margin:50px 0 50px 0;}
+h1,h2,h3,h4{font-family:HeaderFont,sans-serif;line-height:100%;font-size:1.25em;color: black;margin:30px 0 45px 0;}
+h1{font-size:2.75em;margin:35px 0 50px 0;}
 h2{font-size:1.5em;}
 h3{font-size:1em;}
 a:link{color:#3EA6EB;text-decoration:none;}
@@ -100,11 +100,11 @@ footer div#footer a{font-size:90%;color:#ddd;text-decoration:none;font-style:nor
 footer div#footer a:hover{color:#fff;}
 
 div#front-page-download-buttons{display:inline-block;text-align:center;font-weight: bold;font-style:italic;}
-div#front-page-download-buttons span#download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:-10px 10px 10px 10px;background-image:linear-gradient(225deg,#8AD092,#0a0);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
-div#front-page-download-buttons span#front-page-setup-introduction-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#FF5757,#f66);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:-10px 10px 10px 10px;background-image:linear-gradient(225deg,#8AD092,#0a0);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-setup-introduction-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#FF5757,#f66);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-setup-donate-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#36A2EB,#66f);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-setup-download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#4BC0C0,#4BC0C0);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
-div#front-page-download-buttons span#front-page-github-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,gray,#ccc);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-github-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,gray,#ccc);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
 
 div#front-page-download-buttons span#front-page-github-button:hover,
 div#front-page-download-buttons span#download-button:hover,
