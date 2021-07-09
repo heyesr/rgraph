@@ -315,7 +315,7 @@
             // Replace the dataset/group of the tooltip
             text = text.replace(/%{dataset2}/g, specific.dataset2); // Used by the Bipolar
             text = text.replace(/%{dataset}/g, specific.dataset);
-            text = text.replace(/%{group2}/g, specific.dataset2);
+            text = text.replace(/%{group2}/g, specific.dataset2); // Used by the Bipolar
             text = text.replace(/%{group}/g, specific.dataset);
             
             // Replace the sequentialIndex of the tooltip
