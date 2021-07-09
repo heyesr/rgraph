@@ -7277,7 +7277,6 @@
 
 
 
-
         
 
 
@@ -7700,7 +7699,7 @@
             }
 
         } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
-            
+
             if (properties.xaxisLabelsPosition === 'edge') {
                 var section = (obj.canvas.width - properties.marginLeft - properties.marginRight - (properties.marginInner || 0) - (properties.marginInner || 0) ) / (properties.xaxisLabels.length - 1);
             } else {
