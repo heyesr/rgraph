@@ -56,7 +56,7 @@
     
     <pre class="code">
 ...
-tooltips: '%{function:getTooltip(%{group})}'
+tooltips: '%{function:getTooltip(%{dataset})}'
 ...
 </pre>
 
@@ -126,7 +126,7 @@ function getTooltip(group)
                 backgroundGridHlines: false,
                 backgroundGridVlinesCount: 18,
                 labelsAbove: true,
-                tooltips: '%{function:getTooltip(%{group})}',
+                tooltips: '%{function:getTooltip(%{dataset})}',
                 tooltipsCss: {
                     fontFamily: 'Arial',
                     fontSize: '14pt'

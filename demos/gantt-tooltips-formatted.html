@@ -61,7 +61,7 @@
         {
             var days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
             
-            return days[group] + " (indexes: index=" + index + ", group=" + group + ", seq=" + seq + ")";
+            return days[group] + " (indexes: index=" + index + ", dataset=" + group + ", seq=" + seq + ")";
         }
 
         data = [
@@ -94,7 +94,7 @@
                 titleSize: 18,
                 titleItalic: true,
                 myNames: ['Ken','John','Doug'],
-                tooltips: 'A summary of the template options that are available to you.<p /><table border="1" align="center" cellspacing="0"><tr><td>%%{index}</td><td>%{index}</td></tr><tr><td>%%{dataset}</td><td>%{dataset}</td></tr><tr><td>%%{group}</td><td>%{group}</td></tr><tr><td>%%{sequential_index}</td><td>%{sequential_index}</td></tr><tr><td>%%{seq}</td><td>%{seq}</td></tr><tr><td>%%{prop:title}</td><td>%{prop:title}</td></tr><tr><td> %%{prop:yaxisLabels[%{group}]} (auto-populated)</td><td>%{prop:yaxisLabels[%{group}]}</td></tr><tr><td>%%{function:getValue(%%{index}, %%{group}, %%{seq})}}</td><td>%{function:getValue(%{index}, %{group}, %{seq})}</td></tr></table>',
+                tooltips: 'A summary of the template options that are available to you.<p /><table border="1" align="center" cellspacing="0"><tr><td>%%{index}</td><td>%{index}</td></tr><tr><td>%%{dataset}</td><td>%{dataset}</td></tr><tr><td>%%{sequential_index}</td><td>%{sequential_index}</td></tr><tr><td>%%{seq}</td><td>%{seq}</td></tr><tr><td>%%{prop:title}</td><td>%{prop:title}</td></tr><tr><td> %%{prop:yaxisLabels[%{dataset}]} (auto-populated)</td><td>%{prop:yaxisLabels[%{dataset}]}</td></tr><tr><td>%%{function:getValue(%%{index}, %%{dataset}, %%{seq})}}</td><td>%{function:getValue(%{index}, %{dataset}, %{seq})}</td></tr></table>',
                 tooltipsPointer: false,
                 tooltipsPositionStatic: false,
                 tooltipsCss: {

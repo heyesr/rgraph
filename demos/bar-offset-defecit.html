@@ -35,44 +35,45 @@
 
         new RGraph.CSV('str:' + csv, function (csv)
         {
-            var labels   = csv.getCol(0),
-                data     = csv.getCol(1),
-                colors   = [],
-                tooltips = [];
-            
+            var labels      = csv.getCol(0),
+                data        = csv.getCol(1),
+                colors      = [],
+                xaxisLabels = [];
+
+            // Determine what the color shall be
             data.forEach(function (v,k,arr)
             {
                 colors[k] = v > 0 ? '#7CB5EC' : '#B03060';
             });
-            
-            var crlf = false;
 
-            labels.forEach(function (v,k,arr)
+            // Trim the labels down
+            data.forEach(function (v,k,arr)
             {
-                tooltips[k] = '<b>{2}</b><br /><br />Current account deficit: <b>{1}</b>'.format(
-                    data[k],
-                    labels[k]
-                );
-
-                // Reduce the amount of labels to one for every 8 data-pieces
-                if (k % 8 !== 0) {
-                    labels[k] = '';
-                }
+                xaxisLabels[k] = k % 10 === 0 ? labels[k] :  '';
             });
-                
 
+            // Create and show the chart
             new RGraph.Bar({
                 id: 'cvs',
                 data: data,
                 options: {
-                    tooltips: tooltips,
+
+                    // Custom properties used in formatted tooltips////////////
+                    tooltipsDefecits: data,
+                    tooltipsHeadings: labels,
+
+                    tooltips: '<b>%{property:tooltipsHeadings[%{dataset}]}</b><br /><br />Current account deficit: <b>%{property:tooltipsDefecits[%{dataset}]}</b>',
                     tooltipsEvent: 'mousemove',
                     tooltipsPointer: false,
                     tooltipsPositionStatic: false,
                     tooltipsCss: {
                         backgroundColor: 'white',
                         color: 'black',
-                        borderWidth: '3px'
+                        borderStyle:  'solid',
+                        borderWidth: '3px',
+                        borderColor: '%{property:colors[%{dataset}]}',
+                        textAlign: 'left',
+                        padding: '10px'
                     },
                     xaxisLabelsOffsety: 10,
                     xaxisLabelsAngle: 25,
@@ -84,7 +85,7 @@
                     colors: colors,
                     colorsSequential: true,
                     marginInner: 2,
-                    xaxisLabels: labels,
+                    xaxisLabels: xaxisLabels,
                     textColor: 'gray',
                     backgroundGridVlines: false,
                     backgroundGridBorder: false,
@@ -97,20 +98,7 @@
                     yaxisTitleBold: false,
                     yaxisLabelsOffsetx: -10
                 }
-            }).on('tooltip', function (obj)
-            {
-                var tooltip = RGraph.Registry.get('tooltip');
-                var index   = tooltip.__index__;
-
-                if (data[index] > 0) {
-                    tooltip.style.borderColor = 'blue';
-                }
-            }).grow({frames: 60});
-
-            RGraph.tooltips.style.textAlign       = 'left';
-            RGraph.tooltips.style.border          = '1px solid red';
-            RGraph.tooltips.style.backgroundColor = 'white';
-            RGraph.tooltips.style.padding         = '10px';
+            }).grow();
         });
     </script>
 

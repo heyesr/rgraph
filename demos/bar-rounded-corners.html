@@ -22,71 +22,24 @@
 
     
     <div style="padding: 15px; display: inline-block">
-        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs1" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs3" width="750" height="250">[No canvas support]</canvas>
     </div>
 
 
 
     <script>
-        window.roundedCorners = 10;
-
-
-
-
-        //
-        // This adds a roundedRect(x, y, width, height, radius) function to the drawing context.
-        // The radius argument dictates by how much the corners are rounded.
-        // 
-        // @param number x      The X coordinate
-        // @param number y      The Y coordinate
-        // @param number width  The width of the rectangle
-        // @param number height The height of the rectangle
-        // @param number radius The radius of the corners. Bigger values mean more rounded corners
-        //
-        CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
-        {
-            var radius = typeof window.roundedCorners === 'number' ? window.roundedCorners : 10;
-
-            // Because the function is added to the context prototype
-            // the 'this' variable is actually the context
-            
-            // Save the existing state of the canvas so that it can be restored later
-            this.save();
-            
-                // Translate to the given X/Y coordinates
-                this.translate(x, y);
-    
-                // Move to the center of the top horizontal line
-                this.moveTo(width / 2,0);
-                
-                // Draw the rounded corners. The connecting lines in between them are drawn automatically
-                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
-                this.arcTo(width, height, 0, height, Math.min(width / 2, 0));
-                this.arcTo(0, height, 0, 0, Math.min(height / 2, 0));
-                this.arcTo(0, 0, radius, 0, Math.min(width / 2, radius));
-    
-                // Draw a line back to the start coordinates
-                this.lineTo(width / 2,0);
-    
-            // Restore the state of the canvas to as it was before the save()
-            this.restore();
-        };
-
-
-
-
-
-
-
-
         new RGraph.Bar({
-            id: 'cvs',
+            id: 'cvs1',
             data: [12,18,10,9,6,20,18,5,9,13,15,11],
             options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 yaxisScaleUnitsPost: 'k',
                 shadow: false,
-                colors: ['red'],
+                colors: ['red','green','blue'],
                 colorsStroke: 'rgba(0,0,0,0)',
                 textSize: 14,
                 title: 'A Bar chart with rounded tops',
@@ -94,9 +47,58 @@
                 yaxisTickmarksCount: 5,
                 xaxis: false,
                 yaxis: false,
-                marginLeft: 50
+                corners: 'round',
+                marginLeft: 50,
+                marginInner: 5
             }
-        }).wave();
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs2',
+            data: [[4,6,8],[4,5,3],[9,8,5]],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['','',''],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red','green','blue'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A grouped Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                corners: 'round',
+                marginLeft: 50,
+                marginInner: 40
+            }
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs3',
+            data: [[4,6,8],[4,5,3],[9,8,5]],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['Roberta','Harry','Philomena'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red','green','blue'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A stacked Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                corners: 'round',
+                grouping: 'stacked',
+                marginLeft: 50,
+                marginInner: 80
+            }
+        }).grow();
     </script>
 
 
