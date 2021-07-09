@@ -580,9 +580,16 @@
                 }
 
                 for (var i=0; i<properties.xaxisLabels.length; ++i) {
-                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                
+                    if (typeof properties.xaxisLabels[i] === 'object' && properties.xaxisLabels[i].length === 2) {
+                        var label = properties.xaxisLabels[i][0];
+                    } else {
+                        var label = properties.xaxisLabels[i];
+                    }
+                
+                    label = RGraph.labelSubstitution({
                         object:    this,
-                        text:      properties.xaxisLabels[i],
+                        text:      label,
                         index:     i,
                         value:     this.data[0][i],
                         decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
@@ -591,6 +598,12 @@
                         thousand:  properties.xaxisLabelsFormattedThousand  || ',',
                         point:     properties.xaxisLabelsFormattedPoint     || '.'
                     });
+
+                    if (typeof properties.xaxisLabels[i] === 'object' && properties.xaxisLabels[i].length === 2) {
+                        properties.xaxisLabels[i][0] = label;
+                    } else {
+                        properties.xaxisLabels[i] = label;
+                    }
                 }
             }
 
@@ -635,7 +648,7 @@
                     }
                 }
             //}
-    
+
             // Reset the maximum value
             this.max = 0;
     
@@ -881,7 +894,7 @@
         // Draws the axes of the scatter graph
         //
         this.drawAxes = function ()
-        {            
+        {
             // Draw the X axis
             RGraph.drawXAxis(this);
             
