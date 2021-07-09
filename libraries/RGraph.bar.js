@@ -315,6 +315,8 @@
             combinedEffectOptions:  null,
             combinedEffectCallback: null,
 
+            corners: 'square',
+
             clearto:   'rgba(0,0,0,0)'
         }
 
@@ -472,6 +474,7 @@
             if (typeof properties.backgroundImage === 'string') {
                 RGraph.drawBackgroundImage(this);
             }
+
 
 
 
@@ -874,6 +877,24 @@
 
             var height;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Loop through the data
+            //
             for (i=0,len=this.data.length; i<len; i+=1) {
 
 
@@ -1032,7 +1053,7 @@
                                           y: y,
                                       width: barWidth,
                                      height: height,
-                                     radius: 3,
+                                     radius: 5,
                                     roundtl: this.data[i] > 0,
                                     roundtr: this.data[i] > 0,
                                     roundbl: this.data[i] < 0,
@@ -1044,25 +1065,37 @@
                                 // On 9th April 2013 these two were swapped around so that the stroke happens SECOND so that any
                                 // shadow that is cast by the fill does not overwrite the stroke
 
-                                this.path(
-                                    'b r % % % % f',
-                                    x + hmargin, y, barWidth, height
-                                );
+// Why is this here?
+//this.path(
+//    'b r % % % % f',
+//    x + hmargin, y, barWidth, height
+//);
+
 
                                 // Turn the shadow off so that the stroke doesn't cast any "extra" shadow
                                 // that would show inside the bar
                                 RGraph.noShadow(this);
 
-                                this.context.beginPath();
-                                this.context.lineJoin = 'miter';
-                                this.context.lineCap  = 'square';
-                                this.context.rect(
-                                    x + hmargin,
-                                    y,
-                                    barWidth,
-                                    height
-                                );
-                                this.context.stroke();
+                                if (properties.corners === 'round') {
+
+                                    this.context.rect = this.roundedCornersRect;
+                                    
+                                    this.context.beginPath();
+                                    this.context.lineCap  = 'miter';
+                                    this.context.lineJoin = 'square';
+                                    this.context.rect(x + hmargin,y,barWidth,height);
+                                    this.context.stroke();
+                                    this.context.fill();
+
+                                } else {
+
+                                    this.context.beginPath();
+                                    this.context.lineJoin = 'miter';
+                                    this.context.lineCap  = 'square';
+                                    this.context.rect(x + hmargin,y,barWidth,height);
+                                    this.context.stroke();
+                                    this.context.fill();
+                                }
                             }
 
                             // 3D effect
@@ -1177,7 +1210,12 @@ this.context.lineTo(
 
                                 this.context.beginPath();
                                 this.context.fillStyle = grad;
-                                this.context.fillRect(x + hmargin + 2,y + (this.data[i] > 0 ? 2 : 0),(barWidth / 2) - 2,height - 2);
+                                this.context.rect(
+                                    x + hmargin + 3,
+                                    y + (this.data[i] > 0 ? 3 : 0),
+                                    (barWidth / 2) - 2,
+                                    height - 2
+                                );
                                 this.context.fill();
                             }
 
@@ -1229,6 +1267,27 @@ this.context.lineTo(
                                 this.coords2[i] = [];
                             }
                             this.coords2[i].push([x + hmargin, y, width - (2 * hmargin), height]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     //
@@ -1302,10 +1361,25 @@ this.context.lineTo(
 
 
                             if (height > 0) {
-                                this.context.lineJoin = 'miter';
-                                this.context.lineCap  = 'square';
-                                this.context.strokeRect(x + hmargin, y, width - (2 * hmargin), height);
-                                this.context.fillRect(x + hmargin, y, width - (2 * hmargin), height);
+                                if (j === 0 && properties.corners === 'round') {
+                                    
+                                    this.context.roundedCornersRect = this.roundedCornersRect;
+
+                                    this.context.beginPath();
+                                    this.context.lineCap  = 'miter';
+                                    this.context.lineJoin = 'square';
+                                    this.context.roundedCornersRect(x + hmargin, y, width - (2 * hmargin), height);
+                                    this.context.stroke();
+                                    this.context.fill();
+                                } else {
+                                    this.path(
+                                        'b lj % lc % r % % % % s % f %',
+                                        'miter','square',
+                                        x + hmargin, y, width - (2 * hmargin), height,
+                                        this.context.strokeStyle,
+                                        this.context.fillStyle
+                                    );
+                                }
                             }
 
 
@@ -1411,6 +1485,28 @@ this.context.lineTo(
                             redrawCoords = [];
                         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     //
                     // Grouped bar
                     //
@@ -1470,10 +1566,28 @@ this.context.lineTo(
                                 }
 
                             }
-                            this.context.lineJoin = 'miter';
-                            this.context.lineCap  = 'square';
-                            this.context.strokeRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
-                            this.context.fillRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+
+                            if (properties.corners === 'round') {
+
+                                this.context.rect = this.roundedCornersRect;
+
+                                this.context.beginPath();
+                                this.context.lineCap  = 'miter';
+                                this.context.lineJoin = 'square';
+                                this.context.rect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+                                this.context.stroke();
+                                this.context.fill();
+
+                            } else {
+
+                                this.context.beginPath();
+                                this.context.lineJoin = 'miter';
+                                this.context.lineCap  = 'square';
+                                this.context.rect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+                                this.context.stroke();
+                                this.context.fill();
+                            }
+
                             y += height;
 
 
@@ -3326,6 +3440,53 @@ this.context.lineTo(
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = 5 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This adds a roundedRect(x, y, width, height, radius) function to the drawing context.
+        // The radius argument dictates by how much the corners are rounded.
+        // 
+        // @param number x      The X coordinate
+        // @param number y      The Y coordinate
+        // @param number width  The width of the rectangle
+        // @param number height The height of the rectangle
+        // @param number radius The radius of the corners. Bigger values mean more rounded corners
+        //
+        //CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
+        this.roundedCornersRect = function (x, y, width, height)
+        {
+            var radius = 10;
+
+            // Because the function is added to the context prototype
+            // the 'this' variable is actually the context
+            
+            // Save the existing state of the canvas so that it can be restored later
+            this.save();
+            
+                // Translate to the given X/Y coordinates
+                this.translate(x, y);
+    
+                // Move to the center of the top horizontal line
+                this.moveTo(width / 2,0);
+
+                // Draw the rounded corners. The connecting lines in between them are drawn automatically
+                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
+                this.arcTo(width, height, 0, height, 0);
+                this.arcTo(0, height, 0, 0, 0);
+                this.arcTo(0, 0, radius, 0, Math.min(height / 2, radius));
+    
+                // Draw a line back to the start coordinates
+                this.lineTo(width / 2,0);
+    
+            // Restore the state of the canvas to as it was before the save()
+            this.restore();
         };
 
 
