@@ -32,20 +32,14 @@
     <script>
         // The data
         data = [50,48,42,31,25,16,8];
-        
-        // Make the labels
-        labels = [];
-        data.forEach(function (v,k,arr)
-        {
-            labels[k] = 'Stage ' + (k+1) + ' (' + v + '%)';
-        });
 
         new RGraph.SVG.Funnel({
             id: 'chart-container',
             data: [50,48,42,31,25,16,8],
             options: {
+                stages: ['1','2','3','4','5','6','7'],
                 labelsPosition: 'edge',
-                labels: labels,
+                labels: 'Stage %{property:stages[%{index}]} (%{value}%)',
                 labelsHalign: 'left',
                 labelsSize: 20,
                 marginLeft: 200,

@@ -1,7 +1,7 @@
 <!DOCTYPE html >
 <html lang="en">
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
@@ -36,7 +36,7 @@
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
-    Threshold: <input type="text" onkeyup="update(event)" value="40" id="val" />
+    Threshold: <input type="text" onkeyup="update(event)" value="40" id="val" size="2" style="padding: 3px; font-size: 20pt"/>
 
     <p>
         <b>Update</b><br />
@@ -61,20 +61,20 @@
         }
 
 
-        d1  = [], d2  = [], val = 47, numvlines = null;
+        d1  = [],
+        d2  = [],
+        val = 25;
 
-        for (var i=0; i<90; ++i) {
-            d1.push(RGraph.random(45,50) *  Math.sin(i / 57.29));
-            d2.push(RGraph.random(35,45) * Math.sin(i / 57.29));
+        for (var i=0; i<70; ++i) {
+            d1.push(val + RGraph.random(3,5));
+            d2.push(val - RGraph.random(3,5));
+            
+            d1[i] = Math.min(d1[i], 50);
+            d2[i] = Math.max(d2[i], 0);
+            
+            val += RGraph.random(-5,5);
         }
 
-        for (var i=0; i<90; ++i) {
-            val = RGraph.random(-2,2) + val
-            val = Math.min(val, 50);
-
-            d1.push(val + 3);
-            d2.push(val - 3);
-        }
 
 
 
@@ -84,15 +84,16 @@
             options: {
                 filled: true,
                 filledRange: true,
-                filledRangeThreshold: 40,
+                filledRangeThreshold: 25,
                 filledRangeThresholdColors: ['rgba(255,0,0,0.5)', 'rgba(0,0,255,0.5)'],
                 filledColors: 'red',
                 colors: ['rgba(0,0,0,1)'],
-                backgroundGridVlinesCount: numvlines = 7,
-                xaxisTickmarksCount: numvlines,
-                linewidth: 0.0001,
+                backgroundGridVlines: false,
+                backgroundGridVlines: false,
+                xaxisTickmarksCount: 6,
+                linewidth: 0.001,
                 tickmarksStyle: null,
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Spare']
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
             }
         }).fadeIn({frames: 30})
         
