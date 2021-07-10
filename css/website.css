@@ -147,7 +147,7 @@ div#navigation-top-bar-links a{color:white;text-decoration:none;font-style:norma
 div#navigation-top-bar-links a span{display:inline-block;border-bottom:3px solid #999;line-height:25px;transform:translateY(7px);}
 div#navigation-top-bar-links a span::after{display:block;position:relative;top:3px;content:'';border-bottom:solid 3px #ddd;transform:scaleX(0);transition:transform .25s ease-in-out;}
 div#navigation-top-bar-links a span:hover::after{transform:scaleX(1);}
-img#navigation-top-bar-hamburger{position:absolute;top:0;right:15px;z-index:5;background-image:url(/images/navigation-icons/small/icons-combined.png);background-position: -146px -125px;cursor:pointer;}
+img#navigation-top-bar-hamburger{position:absolute;top:0;right:45px;z-index:5;background-image:url(/images/navigation-icons/small/icons-combined.png);background-position: -146px -125px;cursor:pointer;}
 img#navigation-top-bar-logo{float:left;margin-top:2px;}
 #navigation-top-bar a {font-weight:bold;}
 #navigation-top-bar a:hover {color:white !important}
