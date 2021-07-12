@@ -212,6 +212,27 @@
             labelsAboveItalic:     null,
             labelsAboveOffsetx:    0,
             labelsAboveOffsety:    0,
+            
+            labelsInbar:                  false,
+            labelsInbarHalign:            'center',
+            labelsInbarValign:            'center',
+            labelsInbarFont:              null,
+            labelsInbarSize:              null,
+            labelsInbarBold:              null,
+            labelsInbarItalic:            null,
+            labelsInbarColor:             null,
+            labelsInbarBackground:        null,
+            labelsInbarBackgroundPadding: 0,
+            labelsInbarUnitsPre:          null,
+            labelsInbarUnitsPost:         null,
+            labelsInbarPoint:             null,
+            labelsInbarThousand:          null,
+            labelsInbarFormatter:         null,
+            labelsInbarDecimals:          null,
+            labelsInbarOffsetx:           0,
+            labelsInbarOffsety:           0,
+            labelsInbarSpecific:          null,
+            labelsInbarFormatter:         null,
 
             contextmenu:            null,
             
@@ -611,6 +632,10 @@
             this.drawbars();
             this.drawAxes();
             this.drawLabels();
+            
+            
+            // Draw the labelsInbar
+            this.drawLabelsInbar();
     
     
             // Draw the key if necessary
@@ -2071,6 +2096,138 @@
     
                     RGraph.redrawCanvas(e.target);
                     RGraph.fireCustomEvent(this, 'onadjust');
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws the labelsInbar
+        //
+        this.drawLabelsInbar = function ()
+        {
+            // Go through the above labels
+            if (properties.labelsInbar) {
+            
+                // Default alignment
+                var valign = properties.labelsInbarValign,
+                    halign = properties.labelsInbarHalign;
+
+                // Get the text configuration for the labels
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'labelsInbar'
+                });
+
+                // Linearize the data using a custom function because the coords are
+                // stored in the wrong order
+                var linearize = function (data)
+                {
+                    var ret = [];
+                    
+                    for (var i=0; i<data.length; ++i) {
+                        if (typeof data[i] === 'number') {
+                            ret.push(data[i]);
+                        } else if (typeof data[i] === 'object' && !RGraph.isNull(data[i])) {
+                            for (var j=data[i].length-1; j>=0; j--) {
+                                ret.push(data[i][j]);
+                            }
+                        }
+                    }
+                    
+                    return ret;
+                };
+
+                // Linearize the data using the custom linearize function if stacked,
+                // if not stacked use the API function
+                if (properties.grouping === 'stacked') {
+                    data = linearize(this.data);
+                } else {
+                    data = RGraph.arrayLinearize(this.data);
+                }
+
+                for (var i=0; i<data.length; ++i) {
+                    if (RGraph.isNumber(data[i]) && !isNaN(data[i]) && this.coords[i][2] > 0) {
+
+                        var value   = data[i].toFixed(properties.labelsInbarDecimals);
+                        var indexes = RGraph.sequentialIndexToGrouped(i, this.data);
+
+                        var str = RGraph.numberFormat({
+                            object:    this,
+                            number:    Number(value).toFixed(properties.labelsInbarDecimals),
+                            unitspre:  properties.labelsInbarUnitsPre,
+                            unitspost: properties.labelsInbarUnitsPost,
+                            point:     properties.labelsInbarPoint,
+                            thousand:  properties.labelsInbarThousand,
+                            formatter: properties.labelsInbarFormatter
+                        });
+
+                        var dimensions = RGraph.measureText({
+                            text: str,
+                            bold: textConf.bold,
+                            font: textConf.font,
+                            size: textConf.size
+                        });
+
+                        var x      = this.coords[i][0] + (this.coords[i][2]  / 2) + properties.labelsInbarOffsetx,
+                            y      = this.coords[i][1] + (this.coords[i][3] / 2) + properties.labelsInbarOffsety,
+                            width  = dimensions[0],
+                            height = dimensions[1];
+
+                        //
+                        // Horizontal alignment
+                        //
+                        if (properties.labelsInbarHalign === 'left') {
+                            halign = 'left';
+                            x      = this.coords[i][0] + 5 + properties.labelsInbarOffsetx;
+                        } else if (properties.labelsInbarHalign === 'right') {
+                            halign = 'right';
+                            x      = this.coords[i][0] + this.coords[i][2] - 5 + properties.labelsInbarOffsetx;
+                        }
+
+                        //
+                        // Vertical alignment
+                        //
+                        if (properties.labelsInbarValign === 'bottom') {
+                            valign = 'bottom';
+                            y      = this.coords[i][1] - 5 + this.coords[i][3] + properties.labelsInbarOffsety;
+                        } else if (properties.labelsInbarValign === 'top') {
+                            valign = 'top';
+                            y      = this.coords[i][1] + 5 + properties.labelsInbarOffsety;
+                        }
+
+
+
+
+                        // Specific label given
+                        if (RGraph.isArray(properties.labelsInbarSpecific) && (RGraph.isString(properties.labelsInbarSpecific[i]) || RGraph.isNumber(properties.labelsInbarSpecific[i]))) {
+                            str = properties.labelsInbarSpecific[i];
+                        }
+
+                        RGraph.text({
+                       object:              this,
+                         font:              textConf.font,
+                         size:              textConf.size,
+                        color:              textConf.color,
+                         bold:              textConf.bold,
+                       italic:              textConf.italic,
+                            x:              x,
+                            y:              y,
+                            text:           str,
+                            valign:         valign,
+                            halign:         halign,
+                            tag:            'labels.above',
+                            bounding:       RGraph.isString(properties.labelsInbarBackground),
+                            boundingFill:   properties.labelsInbarBackground,
+                            boundingStroke: 'transparent'
+                        });
+                    }
                 }
             }
         };
