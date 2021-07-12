@@ -8981,7 +8981,7 @@
             
             // Restore the X/Y coords from localstorage
             if  (window.localStorage.rgraph_debug_textarea_x) this.rgraph_debug_textarea.style.left    = window.localStorage.rgraph_debug_textarea_x;
-            //if  (window.localStorage.rgraph_debug_textarea_y) this.rgraph_debug_textarea.style.top     = window.localStorage.rgraph_debug_textarea_y;
+            if  (window.localStorage.rgraph_debug_textarea_y) this.rgraph_debug_textarea.style.top     = window.localStorage.rgraph_debug_textarea_y;
             if  (window.localStorage.rgraph_debug_textarea_w) this.rgraph_debug_textarea.style.width   = window.localStorage.rgraph_debug_textarea_w;
             if  (window.localStorage.rgraph_debug_textarea_h) this.rgraph_debug_textarea.style.height  = window.localStorage.rgraph_debug_textarea_h;
 
