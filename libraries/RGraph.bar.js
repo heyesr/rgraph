@@ -315,7 +315,8 @@
             combinedEffectOptions:  null,
             combinedEffectCallback: null,
 
-            corners: 'square',
+            corners:            'square',
+            cornersRoundRadius: 10,
 
             clearto:   'rgba(0,0,0,0)'
         }
@@ -3462,7 +3463,10 @@ this.context.lineTo(
         //CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
         this.roundedCornersRect = function (x, y, width, height)
         {
-            var radius = 10;
+            var radius = properties.cornersRoundRadius;
+
+            radius = Math.min(width / 2, height / 2, radius);
+
 
             // Because the function is added to the context prototype
             // the 'this' variable is actually the context
