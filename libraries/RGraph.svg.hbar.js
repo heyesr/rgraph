@@ -266,6 +266,26 @@
             labelsAboveHalign:            null,
             labelsAboveValign:            'center',
             labelsAboveSpecific:          null,
+            
+            labelsInbar:                  false,
+            labelsInbarHalign:            'center',
+            labelsInbarValign:            'center',
+            labelsInbarFont:              null,
+            labelsInbarSize:              null,
+            labelsInbarBold:              null,
+            labelsInbarItalic:            null,
+            labelsInbarColor:             null,
+            labelsInbarBackground:        null,
+            labelsInbarBackgroundPadding: 0,
+            labelsInbarUnitsPre:          null,
+            labelsInbarUnitsPost:         null,
+            labelsInbarPoint:             null,
+            labelsInbarThousand:          null,
+            labelsInbarFormatter:         null,
+            labelsInbarDecimals:          null,
+            labelsInbarOffsetx:           0,
+            labelsInbarOffsety:           0,
+            labelsInbarSpecific:          null,
 
             linewidth:            1,
             grouping:             'grouped',
@@ -584,6 +604,10 @@
 
             // Draw the labelsAbove
             this.drawLabelsAbove();
+
+
+            // Draw the labelsInbar
+            this.drawLabelsInbar();
 
 
 
@@ -1518,6 +1542,112 @@
                         background: properties.labelsAboveBackground        || null,
                         padding:    properties.labelsAboveBackgroundPadding || 0
                     });
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws the labelsInbar
+        //
+        this.drawLabelsInbar = function ()
+        {
+            // Go through the above labels
+            if (properties.labelsInbar) {
+            
+                // Default alignment
+                var valign = properties.labelsInbarValign,
+                    halign = properties.labelsInbarHalign;
+
+                // Get the text configuration for the labels
+                var textConf = RGraph.SVG.getTextConf({
+                    object: this,
+                    prefix: 'labelsInbar'
+                });
+                
+                var data = RGraph.SVG.arrayLinearize(this.data);
+
+                for (var i=0; i<this.coords.length; ++i) {
+                    if (RGraph.SVG.isNumber(data[i]) && !isNaN(data[i]) ) {
+                        // The rect element that represents the bar
+                        var el      = this.coords[i].element;                    
+                        var value   = data[i].toFixed(properties.labelsInbarDecimals);
+                        var indexes = RGraph.SVG.sequentialIndexToGrouped(i, this.data);
+    
+    
+                        var dimensions = RGraph.SVG.measureText({
+                            text: str,
+                            bold: textConf.bold,
+                            font: textConf.font,
+                            size: textConf.size
+                        });
+    
+                        var x      = parseFloat(el.getAttribute('x')) + (parseFloat(el.getAttribute('width')) / 2) + properties.labelsInbarOffsetx,
+                            y      = parseFloat(el.getAttribute('y')) + (parseFloat(el.getAttribute('height')) / 2) + properties.labelsInbarOffsety,
+                            width  = dimensions[0],
+                            height = dimensions[1];
+                            
+                        //
+                        // Horizontal alignment
+                        //
+                        if (properties.labelsInbarHalign === 'left') {
+                            halign = 'left';
+                            x      = parseFloat(el.getAttribute('x')) + 5 + properties.labelsInbarOffsetx;
+                        } else if (properties.labelsInbarHalign === 'right') {
+                            halign = 'right';
+                            x      = parseFloat(el.getAttribute('x')) + parseFloat(el.getAttribute('width')) - 5 + properties.labelsInbarOffsetx;
+                        }
+
+                        //
+                        // Vertical alignment
+                        //
+                        if (properties.labelsInbarValign === 'bottom') {
+                            valign = 'bottom';
+                            y      = parseFloat(el.getAttribute('y')) - 5 + parseFloat(el.getAttribute('height')) + properties.labelsInbarOffsety;
+                        } else if (properties.labelsInbarValign === 'top') {
+                            valign = 'top';
+                            y      = parseFloat(el.getAttribute('y')) + 5 + properties.labelsInbarOffsety;
+                        }
+    
+                        var str = properties.labelsAboveSpecific ? properties.labelsAboveSpecific[i].toString() : RGraph.SVG.numberFormat({
+                            object:    this,
+                            num:       value,
+                            prepend:   typeof properties.labelsInbarUnitsPre  === 'string'   ? properties.labelsInbarUnitsPre  : null,
+                            append:    typeof properties.labelsInbarUnitsPost === 'string'   ? properties.labelsInbarUnitsPost : null,
+                            point:     typeof properties.labelsInbarPoint     === 'string'   ? properties.labelsInbarPoint     : null,
+                            thousand:  typeof properties.labelsInbarThousand  === 'string'   ? properties.labelsInbarThousand  : null,
+                            formatter: typeof properties.labelsInbarFormatter === 'function' ? properties.labelsInbarFormatter : null
+                        });
+                        
+                        // Specific label given
+                        if (RGraph.SVG.isArray(properties.labelsInbarSpecific) && (RGraph.SVG.isString(properties.labelsInbarSpecific[i]) || RGraph.SVG.isNumber(properties.labelsInbarSpecific[i]))) {
+                            str = properties.labelsInbarSpecific[i];
+                        }
+    
+                        var text = RGraph.SVG.text({
+                            object:     this,
+                            parent:     this.svg.all,
+                            tag:        'labels.inbar',
+                            text:       str,
+                            x:          x,
+                            y:          y,
+                            halign:     halign,
+                            valign:     valign,
+                            font:       textConf.font,
+                            size:       textConf.size,
+                            bold:       textConf.bold,
+                            italic:     textConf.italic,
+                            color:      textConf.color,
+                            background: properties.labelsInbarBackground        || null,
+                            padding:    properties.labelsInbarBackgroundPadding || 0
+                        });
+                    }
                 }
             }
         };
