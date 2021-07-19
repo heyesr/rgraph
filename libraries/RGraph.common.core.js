@@ -5319,8 +5319,8 @@
     //
     RGraph.Highlight.rect = function ()
     {
-        var args       = RGraph.getArgs(arguments, 'object,shape');
-        var properties = args.object.properties;
+        var args       = RGraph.getArgs(arguments, 'object,shape'),
+            properties = args.object.properties;
 
         if (properties.tooltipsHighlight) {
             
@@ -5336,7 +5336,7 @@
 
                 args.object.context.strokeStyle = properties.highlightStroke;
                 args.object.context.fillStyle   = properties.highlightFill;
-    
+
                 args.object.context.rect(
                     args.shape.x,
                     args.shape.y,
