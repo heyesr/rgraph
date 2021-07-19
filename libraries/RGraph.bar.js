@@ -1080,7 +1080,7 @@
                                 if (properties.corners === 'round') {
 
                                     this.context.rect = this.roundedCornersRect;
-                                    
+
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
@@ -1831,10 +1831,18 @@ this.context.lineTo(
                         left, this.marginTop, width, this.canvas.height - this.marginBottom
                     );
                 } else {
-                     this.path(
-                        'b r % % % %',
-                        left, top, width, height
-                    );
+                    var indexes = RGraph.sequentialIndexToGrouped(i, this.data);
+
+                    // Use the rounded rect function if the chart is stacked and the index is 0
+                    if (properties.grouping === 'stacked' && properties.corners === 'round' && indexes[1] === 0) {
+                        this.context.beginPath();
+                        this.roundedCornersRect.call(this.context, left, top, width, height);
+                    } else {
+                         this.path(
+                            'b r % % % %',
+                            left, top, width, height
+                        );
+                    }
                 }
 
                 if (this.context.isPointInPath(mouseX, mouseY)) {
@@ -2096,8 +2104,24 @@ this.context.lineTo(
                 }
                 
             } else {
-                // Add the new highlight
-                RGraph.Highlight.rect(this, shape);
+                if (properties.grouping === 'stacked' && shape.index === 0) {
+                
+                    this.context.beginPath();
+                    this.context.strokeStyle = properties.highlightStroke;
+                    this.context.fillStyle   = properties.highlightFill;
+                    this.roundedCornersRect.call(
+                        this.context,
+                        shape.x,
+                        shape.y,
+                        shape.width,
+                        shape.height
+                    );
+                    this.context.stroke();
+                    this.context.fill();
+                } else {
+                    // Add the new highlight
+                    RGraph.Highlight.rect(this, shape);
+                }
             }
         };
 
