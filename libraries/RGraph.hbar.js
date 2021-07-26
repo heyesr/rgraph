@@ -320,6 +320,9 @@
             adjustable:             false,
             adjustableOnly:        null,
 
+            corners:                'square',
+            cornersRoundRadius:     10,
+
             clearto:                'rgba(0,0,0,0)'
         }
 
@@ -942,7 +945,7 @@
                 this.context.beginPath();
 
                     // Standard (non-grouped and non-stacked) bars here
-                    if (typeof this.data[i] == 'number' || RGraph.isNull(this.data[i])) {
+                    if (typeof this.data[i] === 'number' || RGraph.isNull(this.data[i])) {
 
                         var barHeight = height - (2 * vmargin),
                             barWidth  = ((this.data[i] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * this.graphwidth,
@@ -989,12 +992,24 @@
                         }
 
 
+                        if (properties.corners === 'round') {
+                            this.context.rectOld = this.context.rect;
+                            this.context.rect    = this.roundedCornersRect;
+                        }
 
-                        this.context.strokeRect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
-                        this.context.fillRect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
+                        this.context.beginPath();
+                        this.context.lineJoin = 'miter';
+                        this.context.lineCap  = 'square';
+                        this.context.rect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
+                        this.context.stroke();
+                        this.context.fill();
 
+                        // Put the rect function back to what it was
+                        if (properties.corners === 'round' ) {
+                            this.context.rect    = this.context.rectOld;
+                            this.context.rectOld = null;
+                        }
 
-                            
 
 
 
@@ -1071,7 +1086,7 @@
                     //
                     // Stacked bar chart
                     //
-                    } else if (typeof this.data[i] == 'object' && properties.grouping == 'stacked') {
+                    } else if (typeof this.data[i] == 'object' && properties.grouping === 'stacked') {
 
                         if ( properties.yaxisPosition == 'center') {
                             alert('[HBAR] You can\'t have a stacked chart with the Y axis in the center, change it to grouped');
@@ -1130,8 +1145,35 @@
                             
 
 
-                            this.context.strokeRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-                            this.context.fillRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+
+
+
+
+
+
+
+
+
+                            if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
+                                this.context.rectOld = this.context.rect;
+                                this.context.rect    = this.roundedCornersRect;
+                            }
+                            
+                            this.context.beginPath();
+                            this.context.lineJoin = 'miter';
+                            this.context.lineCap  = 'square';
+                            this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                            this.context.stroke();
+                            this.context.fill();
+                            
+                            // Put the rect function back to what it was
+                            if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
+                                this.context.rect    = this.context.rectOld;
+                                this.context.rectOld = null;
+                            }
+
+                            //this.context.strokeRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                            //this.context.fillRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
 
 
                             //
@@ -1298,9 +1340,24 @@
                                 startX += width;
                                 width *= -1;
                             }
-    
-                            this.context.strokeRect(startX, startY, width, individualBarHeight);
-                            this.context.fillRect(startX, startY, width, individualBarHeight);
+                            
+                            if (properties.corners === 'round') {
+                                this.context.rectOld = this.context.rect;
+                                this.context.rect    = this.roundedCornersRect;
+                            }
+                            
+                            this.context.beginPath();
+                            this.context.lineJoin = 'miter';
+                            this.context.lineCap  = 'square';
+                            this.context.rect(startX, startY, width, individualBarHeight);
+                            this.context.stroke();
+                            this.context.fill();
+                            
+                            // Put the rect function back to what it was
+                            if (properties.corners === 'round') {
+                                this.context.rect    = this.context.rectOld;
+                                this.context.rectOld = null;
+                            }
 
 
 
@@ -1575,15 +1632,39 @@
             //
             for (var i=0,len=this.coords.length; i<len; i++) {
     
-                var mouseX = mouseXY[0],  // In relation to the canvas
-                    mouseY = mouseXY[1],  // In relation to the canvas
-                    left   = this.coords[i][0],
-                    top    = this.coords[i][1],
-                    width  = this.coords[i][2],
-                    height = this.coords[i][3],
-                    idx    = i;
+                var mouseX  = mouseXY[0],  // In relation to the canvas
+                    mouseY  = mouseXY[1],  // In relation to the canvas
+                    left    = this.coords[i][0],
+                    top     = this.coords[i][1],
+                    width   = this.coords[i][2],
+                    height  = this.coords[i][3],
+                    idx     = i,
+                    indexes = RGraph.sequentialIndexToGrouped(i, this.data);
 
+                //
+                // If the corners are rounded then change the rect function
+                //
+                if (properties.corners === 'round') {
+                    
+                    var isLast = indexes[1] === 0;
 
+                    if (properties.grouping === 'stacked' && isLast) {
+                        this.context.rectOld = this.context.rect;
+                        this.context.rect    = this.roundedCornersRect;
+                    
+                        var revert = true;
+                    
+                    } else if (properties.grouping === 'stacked') {
+                        // Do nothing for the main body bits of stacked bars
+                    
+                    } else {
+
+                        this.context.rectOld = this.context.rect;
+                        this.context.rect    = this.roundedCornersRect;
+                        
+                        var revert = true;
+                    }
+                }
 
                 // Recreate the path/rectangle so that it can be tested
                 //  ** DO NOT STROKE OR FILL IT **
@@ -1598,6 +1679,24 @@
                         left,top,width,height
                     );
                 }
+
+                //
+                // Put the rect function back to what it was
+                //
+                if (revert) {
+                    this.context.rect    = this.context.rectOld;
+                    this.context.rectOld = null;
+                    revert               = null;
+                }
+
+
+
+
+
+
+
+
+
 
                 if (this.context.isPointInPath(mouseX, mouseY)) {
 
@@ -2678,6 +2777,55 @@
             }
 
             return false;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This adds a roundedRect(x, y, width, height, radius) function to the drawing context.
+        // The radius argument dictates by how much the corners are rounded.
+        // 
+        // @param number x      The X coordinate
+        // @param number y      The Y coordinate
+        // @param number width  The width of the rectangle
+        // @param number height The height of the rectangle
+        // @param number radius The radius of the corners. Bigger values mean more rounded corners
+        //
+        this.roundedCornersRect = function (x, y, width, height)
+        {
+            var radius = properties.cornersRoundRadius;
+
+            radius = Math.min(width / 2, height / 2, radius);
+
+
+            // Because the function is added to the context prototype
+            // the 'this' variable is actually the context
+            
+            // Save the existing state of the canvas so that it can be restored later
+            this.save();
+            
+                // Translate to the given X/Y coordinates
+                this.translate(x, y);
+    
+                // Move to the center of the top horizontal line
+                this.moveTo(width / 2,0);
+
+                // Draw the rounded corners. The connecting lines in between them are drawn automatically
+                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
+                this.arcTo(width, height, 0, height, radius);
+                this.arcTo(0, height, 0, 0, 0);
+                this.arcTo(0, 0, radius, 0, Math.min(height / 2, 0));
+    
+                // Draw a line back to the start coordinates
+                this.lineTo(width / 2,0);
+    
+            // Restore the state of the canvas to as it was before the save()
+            this.restore();
         };
 
 
