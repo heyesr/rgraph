@@ -8969,7 +8969,7 @@
                 this.rgraph_debug_textarea.style.top      = '10px';
                 this.rgraph_debug_textarea.style.width    = width + 'px';
                 this.rgraph_debug_textarea.style.height   = height + 'px';
-                this.rgraph_debug_textarea.style.opacity  = '0.75';
+                this.rgraph_debug_textarea.style.opacity  = '0.25';
                 this.rgraph_debug_textarea.style.zIndex   = '99999';
                 this.rgraph_debug_textarea.style.border   = '2px solid black';
                 this.rgraph_debug_textarea.style.backgroundColor = 'yellow'
@@ -8979,53 +8979,28 @@
                 this.rgraph_debug_textarea.wrap = 'off';
             document.body.appendChild(this.rgraph_debug_textarea);
             
-            // Restore the X/Y coords from localstorage
-            if  (window.localStorage.rgraph_debug_textarea_x) this.rgraph_debug_textarea.style.left    = window.localStorage.rgraph_debug_textarea_x;
-            if  (window.localStorage.rgraph_debug_textarea_y) this.rgraph_debug_textarea.style.top     = window.localStorage.rgraph_debug_textarea_y;
+            // Restore the W/H coords from localstorage
             if  (window.localStorage.rgraph_debug_textarea_w) this.rgraph_debug_textarea.style.width   = window.localStorage.rgraph_debug_textarea_w;
             if  (window.localStorage.rgraph_debug_textarea_h) this.rgraph_debug_textarea.style.height  = window.localStorage.rgraph_debug_textarea_h;
 
-            this.rgraph_debug_textarea.onmouseover   = function (e) {setTimeout(function () {e.target.style.opacity = 1;},100)};
+            this.rgraph_debug_textarea.onmouseover   = function (e) {e.target.style.opacity = 1;};
             this.rgraph_debug_textarea.onmousedown   = function (e) {if (e.ctrlKey) {e.preventDefault();e.stopPropagation();this.mousedown = true;this.pickupX = e.offsetX;this.pickupY = e.offsetY; return false;}};
-            //this.rgraph_debug_textarea.onmouseout    = function (e) {this.style.opacity = 0.25;};
+            this.rgraph_debug_textarea.onmouseout    = function (e) {this.style.opacity = 0.25;};
             this.rgraph_debug_textarea.ondblclick = function (e)
             {
                 if (confirm('Clear the log?')) {
                     this.value = '';
                 }
             };
-            window.addEventListener('dblclick', function (e)
-            {
-                if (confirm('Reset the position of the debug window?')) {
-                    window.localStorage.rgraph_debug_textarea_x = '50px';
-                    window.localStorage.rgraph_debug_textarea_y = '50px';
-                    window.rgraph_debug_textarea.style.left     = '10px';
-                    window.rgraph_debug_textarea.style.top      = '10px';
-                }
-            }, false);
             
             window.onmouseup = function (e) {this.rgraph_debug_textarea.mousedown = false;};
             window.addEventListener('mousemove', function (e)
             {
-                var mouseX  = e.pageX;
-                var mouseY  = e.pageY;
-
                 if (this.rgraph_debug_textarea.mousedown) {
-                    this.rgraph_debug_textarea.style.top  = mouseY - this.rgraph_debug_textarea.pickupY + 'px';
-                    this.rgraph_debug_textarea.style.left = mouseX - this.rgraph_debug_textarea.pickupX + 'px';
-                    
-                    // Store the coordinates in localStorage for future use
-                    var saveCoordinates = function ()
-                    {
-                        window.localStorage.rgraph_debug_textarea_x = this.rgraph_debug_textarea.style.left;
-                        window.localStorage.rgraph_debug_textarea_y = this.rgraph_debug_textarea.style.top;
-                        window.localStorage.rgraph_debug_textarea_w = this.rgraph_debug_textarea.offsetWidth + 'px';
-                        window.localStorage.rgraph_debug_textarea_h = this.rgraph_debug_textarea.offsetHeight + 'px';
-                    };
-                    
-                    setInterval(saveCoordinates, 1000);
+                    window.localStorage.rgraph_debug_textarea_w = this.rgraph_debug_textarea.offsetWidth + 'px';
+                    window.localStorage.rgraph_debug_textarea_h = this.rgraph_debug_textarea.offsetHeight + 'px';
                 }
-            }, false)
+            }, false);
         }
         
         
@@ -9064,7 +9039,7 @@
         };
 
         // Add the message to the debug window
-        this.rgraph_debug_textarea.value = "[%1:%2:%3] %4\r\n\r\n%5".format(
+        this.rgraph_debug_textarea.value = "[%1:%2:%3] %4\r\n%5".format(
             hour,
             min,
             sec,
