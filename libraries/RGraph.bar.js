@@ -82,6 +82,7 @@
             labelsIngraphItalic:  null,
             labelsIngraphOffsetx: 0,
             labelsIngraphOffsety: 0,
+
             labelsAbove:           false,
             labelsAboveDecimals:  0,
             labelsAboveSize:      null,
@@ -154,7 +155,7 @@
             xaxisTickmarksLastLeft:  null,
             xaxisTickmarksLastRight: null,
             xaxisTickmarksCount:  null,
-            xaxisLabels:          null,           
+            xaxisLabels:          null,
             xaxisLabelsSize:      null,
             xaxisLabelsFont:      null,
             xaxisLabelsItalic:    null,
@@ -202,7 +203,7 @@
             titleY:                null,
             titleHalign:           null,
             titleValign:           null,
-            titleBackground:       null, // Gradients aren't supported for this color
+            titleBackground:       null,
             titleHpos:             null,
             titleVpos:             null,
             titleFont:             null,
@@ -228,8 +229,8 @@
             variantThreedOffsetx: 10,
             variantThreedOffsety: 5,
 
-            shadow:                 false,
-            shadowColor:           '#aaa',  // Gradients aren't supported for this color
+            shadow:                false,
+            shadowColor:           '#aaa',
             shadowOffsetx:         0,
             shadowOffsety:         0,
             shadowBlur:            15,
@@ -1075,16 +1076,17 @@
 
                                 // Turn the shadow off so that the stroke doesn't cast any "extra" shadow
                                 // that would show inside the bar
-                                RGraph.noShadow(this);
+                                //
+                                // 31/07/21 Removed as regular bar charts weren't showing shadows
+                                //
+                                //RGraph.noShadow(this);
 
                                 if (properties.corners === 'round') {
-
-                                    this.context.rect = this.roundedCornersRect;
 
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
-                                    this.context.rect(x + hmargin,y,barWidth,height);
+                                    this.roundedCornersRect(x + hmargin,y,barWidth,height);(x + hmargin,y,barWidth,height);
                                     this.context.stroke();
                                     this.context.fill();
 
@@ -1363,13 +1365,11 @@ this.context.lineTo(
 
                             if (height > 0) {
                                 if (j === 0 && properties.corners === 'round') {
-                                    
-                                    this.context.roundedCornersRect = this.roundedCornersRect;
 
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
-                                    this.context.roundedCornersRect(x + hmargin, y, width - (2 * hmargin), height);
+                                    this.roundedCornersRect(x + hmargin, y, width - (2 * hmargin), height);
                                     this.context.stroke();
                                     this.context.fill();
                                 } else {
@@ -1570,12 +1570,10 @@ this.context.lineTo(
 
                             if (properties.corners === 'round') {
 
-                                this.context.rect = this.roundedCornersRect;
-
                                 this.context.beginPath();
                                 this.context.lineCap  = 'miter';
                                 this.context.lineJoin = 'square';
-                                this.context.rect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+                                this.roundedCornersRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
                                 this.context.stroke();
                                 this.context.fill();
 
@@ -1836,7 +1834,7 @@ this.context.lineTo(
                     // Use the rounded rect function if the chart is stacked and the index is 0
                     if (properties.grouping === 'stacked' && properties.corners === 'round' && indexes[1] === 0) {
                         this.context.beginPath();
-                        this.roundedCornersRect.call(this.context, left, top, width, height);
+                        this.roundedCornersRect(left, top, width, height);
                     } else {
                          this.path(
                             'b r % % % %',
@@ -2109,13 +2107,13 @@ this.context.lineTo(
                     this.context.beginPath();
                     this.context.strokeStyle = properties.highlightStroke;
                     this.context.fillStyle   = properties.highlightFill;
-                    this.roundedCornersRect.call(
-                        this.context,
-                        shape.x,
-                        shape.y,
-                        shape.width,
-                        shape.height
-                    );
+                    
+                    if (properties.corners === 'round') {
+                        this.roundedCornersRect(shape.x,shape.y,shape.width,shape.height);
+                    } else {
+                        this.context.rect(shape.x, shape,y, shape.width, shape.height);
+                    }
+
                     this.context.stroke();
                     this.context.fill();
                 } else {
@@ -3496,25 +3494,25 @@ this.context.lineTo(
             // the 'this' variable is actually the context
             
             // Save the existing state of the canvas so that it can be restored later
-            this.save();
+            this.context.save();
             
                 // Translate to the given X/Y coordinates
-                this.translate(x, y);
+                this.context.translate(x, y);
     
                 // Move to the center of the top horizontal line
-                this.moveTo(width / 2,0);
+                this.context.moveTo(width / 2,0);
 
                 // Draw the rounded corners. The connecting lines in between them are drawn automatically
-                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
-                this.arcTo(width, height, 0, height, 0);
-                this.arcTo(0, height, 0, 0, 0);
-                this.arcTo(0, 0, radius, 0, Math.min(height / 2, radius));
+                this.context.arcTo(width,0,width,height, Math.min(height / 2, radius));
+                this.context.arcTo(width, height, 0, height, 0);
+                this.context.arcTo(0, height, 0, 0, 0);
+                this.context.arcTo(0, 0, radius, 0, Math.min(height / 2, radius));
     
                 // Draw a line back to the start coordinates
-                this.lineTo(width / 2,0);
+                this.context.lineTo(width / 2,0);
     
             // Restore the state of the canvas to as it was before the save()
-            this.restore();
+            this.context.restore();
         };
 
 
