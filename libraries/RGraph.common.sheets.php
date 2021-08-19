@@ -14,18 +14,22 @@
     {
         // The key of the spreadsheet
         public $key;
-        
+
+        // The data of the spreadsheet
+        public $data;
+
+        // Your OAuth ID
+        public $oauth;
+
         // The worksheet ID
-        public $worksheet = 1;
-        
+        public $worksheet = 'Sheet1';
+
         // Used for the columnn names.
         public $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
         // The URL of the sheet
-        public $url = 'https://spreadsheets.google.com/feeds/cells/[KEY]/[WORKSHEET]/public/full?alt=json-in-script&callback=__callback__';
-        
-        // The data of the spreadsheet
-        public $data;
+        public $url = 'https://sheets.googleapis.com/v4/spreadsheets/[KEY]/values/[WORKSHEET]?alt=json&key=[OAUTH_KEY]';
+
 
 
 
@@ -35,33 +39,36 @@
         // @param string $key The identifier of the spreadsheet. You can get this
         //                    out of the URL for the spreadsheetsheet.
         //
-        public function __construct ($key, $worksheet = 1)
+        public function __construct ($oauth, $key = '', $worksheet = 'Sheet1')
         {
+            $this->oauth     = $oauth;
             $this->key       = $key;
             $this->worksheet = $worksheet;
-            
+
             // Do this if the key is a file: URL
-            if (substr($this->key, 0, 5) === 'file:') {
-                $filename = substr($this->key, 5);
+            if (substr($this->oauth, 0, 5) === 'file:') {
+                $filename = substr($this->oauth, 5);
                 $this->json_raw = file_get_contents($filename);
+
             } else {
                 // Add the key and worksheet ID into the URL
+                $this->url = preg_replace('/\[OAUTH_KEY\]/', $this->oauth, $this->url);
                 $this->url = preg_replace('/\[KEY\]/', $this->key, $this->url);
-                $this->url = preg_replace('/\[WORKSHEET\]/', $this->worksheet, $this->url);
-    
+                $this->url = preg_replace('/\[WORKSHEET\]/', urlencode($this->worksheet), $this->url);
+
                 // Fetch the sheet
                 $this->json_raw = file_get_contents($this->url);
             }
 
             // Get rid of comments
-            $this->json = trim(preg_replace('|// API callback|m','',$this->json_raw));
+            //$this->json = trim(preg_replace('|// API callback|m','',$this->json_raw));
 
             // Get rid of the JSONP function call
-            $this->json = preg_replace('/^__callback__\(/','',$this->json);
-            $this->json = preg_replace('/\);$/','',$this->json);
+            //$this->json = preg_replace('/^__callback__\(/','',$this->json);
+            //$this->json = preg_replace('/\);$/','',$this->json);
 
             // Convert the JSON into a PHP object
-            $this->json = json_decode($this->json);
+            $this->json = json_decode($this->json_raw);
 
 
             // Pull the data out of the json variable
@@ -69,16 +76,10 @@
             $row  = 0;
             $col  = 0;
 
-            for ($i=0; $i<count($this->json->feed->entry); ++$i) {
-                
-                $row = $this->json->feed->entry[$i]->{'gs$cell'}->row - 1;
-                $col = $this->json->feed->entry[$i]->{'gs$cell'}->col - 1;
-
-                if (empty($grid[$row])) {
-                    $grid[$row] = [];
+            for ($row=0; $row<count($this->json->values); ++$row) { // Loop thru each row
+                for ($col=0;$col<count($this->json->values[$row]); $col++) {
+                    $grid[$row][$col] = $this->json->values[$row][$col];
                 }
-                
-                $grid[$row][$col] = $this->json->feed->entry[$i]->content->{'$t'};
             }
 
             //
@@ -116,6 +117,7 @@
                     }
                 }
             }
+
             $this->numcols = $maxcols;
             $this->numrows = count($grid);
             $this->data    = $grid;
