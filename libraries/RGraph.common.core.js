@@ -3946,6 +3946,7 @@
         // Mozilla, Safari, ...
         if (window.XMLHttpRequest) {
             var httpRequest = new XMLHttpRequest();
+            
 
         // MSIE
         } else if (window.ActiveXObject) {
@@ -3961,6 +3962,12 @@
         }
 
         httpRequest.open('GET', args.url, true);
+        
+        // Set a Cache-Control header
+        if (httpRequest && httpRequest.setRequestHeader) {
+            httpRequest.setRequestHeader('Cache-Control', 'no-cache');
+        }
+        
         httpRequest.send();
     };
 
