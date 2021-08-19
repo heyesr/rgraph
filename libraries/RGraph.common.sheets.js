@@ -17,38 +17,42 @@
 {
     RGraph.Sheets = function ()
     {
-        var args = RGraph.getArgs(arguments, 'key,worksheet,callback');
-        
-        // Allow two args to be given as well as three
-        if (arguments.length === 2) {
-            args.callback  = arguments[1];
-            args.worksheet = null;
+        var args = RGraph.Sheets.getArgs(arguments, 'oauth,key,worksheet,callback');
+
+        // Allow three args to be given as well as four
+        if (arguments.length === 1) {
+            // Nothing to do here
+            
+        } else if (arguments.length === 3) {
+            args.oauth     = args.oauth;
+            args.key       = args.key;
+            args.callback  = args.worksheet; // Need to set this because the order of the args is wrong
+            args.worksheet = 'Sheet1';
+
+        } else if (arguments.length === 4) {
+            args.worksheet = args.worksheet;
         }
 
-        var worksheet,
-            callback,
-            letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            key     = args.key;
+        var worksheet = args.worksheet,
+            callback  = args.callback,
+            letters   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            key       = args.key,
+            oauth     = args.oauth;
 
-        // 3 arguments
-        if (arguments.length === 3) {
-            worksheet = Number(args.worksheet);
-            callback  = args.callback;
-        
-        // 2 arguments
-        } else {
-            worksheet = 1;
-            callback  = args.worksheet;
-        }
-        
-        // Create a random numberfor use in the callback name
-        var rand = RGraph.random(0,999999999);
-        var url  = ('https://spreadsheets.google.com/feeds/cells/[KEY]/[WORKSHEET]/public/full?alt=json-in-script&callback=__rgraph_JSONPCallback' + rand).replace(/\[KEY\]/, key).replace(/\[WORKSHEET\]/, worksheet);
-        
+        var url = ('https://sheets.googleapis.com/v4/spreadsheets/[KEY]/values/[WORKSHEET]?alt=json&key=[OAUTH_KEY]')
+                   .replace(/\[KEY\]/, args.key)
+                   .replace(/\[WORKSHEET\]/, encodeURIComponent(args.worksheet))
+                   .replace(/\[OAUTH_KEY\]/, args.oauth)
+
+        // NEW URL (13/08/2021): https://sheets.googleapis.com/v4/spreadsheets/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/values/Bar+chart?alt=json&key=AIzaSyBi0yqC-vVwMwSxi4wn3_ctHmXSz9pPVRc
+
         //
-        // https://spreadsheets.google.com/feeds/cells/1q_BMjvKO_kKbAO3VjoaITSDyrLAk8f0SK5UFMmE3oRs/2/public/full?alt=json-in-script
+        // OLD URL: https://spreadsheets.google.com/feeds/cells/1q_BMjvKO_kKbAO3VjoaITSDyrLAk8f0SK5UFMmE3oRs/2/public/full?alt=json-in-script
         //
-    
+
+
+
+
 
         
         
@@ -59,57 +63,34 @@
         this.load = function(url, userCallback)
         {
             var obj = this;
-
-            // A global on purpose
-            window['__rgraph_JSONPCallback' + rand] = function (json)
+            
+            RGraph.Sheets.AJAX.getJSON(url, function (json)
             {
-                // Save the JSON on the RGraph.Sheets object
-                obj.json = json;
+                var grid  = json.values;
+                var rows  = grid.length;
+                var cells = 0;
 
-                //
-                // Put the entries in the JSON feed into a grid
-                //
-                var grid = [], row = 0, col = 0;
-
-                for (var i=0; i<json.feed.entry.length; ++i) {
-                    
-                    row = json.feed.entry[i].gs$cell.row - 1;
-                    col = json.feed.entry[i].gs$cell.col - 1;
-                    
-                    if (!grid[row]) {
-                        grid[row] = [];
-                    }
-                        
-                    grid[row][col] = json.feed.entry[i].content.$t;
-                }
-                
-                
                 //
                 // Determine the longest row
                 //
-                var maxcols = 0; // The max length of the rows
-                
                 for (var i=0; i<grid.length; ++i) {
-                    maxcols = grid[i] ? Math.max(maxcols, grid[i].length) : maxcols;
+                    cells = Math.max(cells, grid[i].length);
                 }
-
-
-            
+                
                 //
-                // Now go through the array and fill in any blank holes.
+                // Now that the max row length has been determined go through
+                // the grid and pad out each row
                 //
                 for (var i=0; i<grid.length; ++i) {
-                    
-                    if (typeof grid[i] === 'undefined') {
-                        grid[i] = new Array(maxcols);
+                    for (var j=grid[i].length; j<cells; ++j) {
+                        grid[i][j] = '';
                     }
-
-                    for (var j=0; j<maxcols; j++) {
-                        if (typeof grid[i][j] === 'undefined') {
-                            grid[i][j] = '';
-                        }
-                        
-                        // Convert numbers to real numbers and floats here too
+                }
+                
+                // Convert numerics strings to numbers
+                // eg "234"  =>  234
+                for (var i=0; i<grid.length; ++i) {
+                    for (var j=0; j<cells; ++j) {
                         if (grid[i][j].match(/^[0-9]+$/)) {
                             grid[i][j] = parseInt(grid[i][j]);
                         } else if (grid[i][j].match(/^[0-9.]+$/)) {
@@ -117,7 +98,7 @@
                         }
                     }
                 }
-                
+
                 //
                 // Save the grid on the object
                 //
@@ -131,20 +112,12 @@
                 // methods (better)
                 //
                 userCallback(obj);
-            };
-
-            // Add the new script tag to the document that pulls in the JSON
-            //
-            // With jQuery...
-            //
-            //$('body').append("<script src='" + url + "'></script>");
-            //
-            // And without jQuery...
-
-            var scriptNode = document.createElement('script');
-            scriptNode.src = url;
-            document.body.appendChild(scriptNode);
+            });
         };
+
+
+
+
 
 
 
@@ -188,9 +161,14 @@
 
             return row;
         };
-        
-        
-        
+
+
+
+
+
+
+
+
         //
         // Fetches a column of data and returns it
         //
@@ -228,9 +206,14 @@
 
             return col;
         };
-        
-        
-        
+
+
+
+
+
+
+
+
         //
         // Returns the index (zero index) of the given letters
         //
@@ -244,12 +227,15 @@
                 var idx = ((letters.indexOf(parts[0]) + 1) * 26) + (letters.indexOf(parts[1]) + 1);
                 return idx;
             }
-        }
+        };
 
 
 
 
-    
+
+
+
+
         //
         // The get method makes retrieving cells very straightforward,
         // for example: obj.get('B1');
@@ -374,11 +360,19 @@
 
 
 
+
+
+
+
         //
         // Load the data
         //
         this.load(url, args.callback);
     };
+
+
+
+
 
 
 
@@ -409,6 +403,142 @@
         
         return out;
     };
+
+
+
+
+
+
+
+
+    //
+    // This function allows both object based arguments to functions
+    // and also regular arguments as well.
+    //
+    // You can call it from inside a function like this:
+    //
+    // args = RGraph.Sheets.getArgs(arguments, 'object,id,foo,bar');
+    //
+    // So you're passing it the arguments object and a comma seperated list of names
+    // for the arguments.
+    //
+    // @param array args   The arguments object that you get when inside a function
+    // @param string names A comma seperated list of desired names for the arguments
+    //                     eg: 'object,color,size'
+    //
+    RGraph.Sheets.getArgs = function (args, names)
+    {
+        var ret   = {};
+        var count = 0;
+        names     = names.trim().split(/ *, */);
+
+        if (   args
+            && args[0]
+            && args.length === 1
+            && typeof args[0][names[0]] !== 'undefined') {
+            
+            for (var i=0; i<names.length; ++i) {
+                if (typeof args[0][names[i]] === 'undefined') {
+                    args[0][names[i]] = null;
+                }
+            }
+
+            return args[0];
+        } else {
+            for (var i in names) {
+                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
+                
+                count += 1;
+            }
+        }
+
+        return ret;
+    };
+
+
+
+
+
+
+
+
+    //
+    // Makes an AJAX call. It calls the given callback (a function) when ready
+    // 
+    // @param  args object An object consisting of:
+    //                      o url
+    //                      o callback
+    // OR
+    //
+    // @param string   url      The URL to retrieve
+    // @param function callback A function that is called when the response is ready,
+    //                          there's an example below called "myCallback".
+    //
+    RGraph.Sheets.AJAX = function ()
+    {
+        var args = RGraph.Sheets.getArgs(arguments, 'url,callback');
+
+        // Mozilla, Safari, ...
+        if (window.XMLHttpRequest) {
+            var httpRequest = new XMLHttpRequest();
+            
+
+        // MSIE
+        } else if (window.ActiveXObject) {
+            var httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        httpRequest.onreadystatechange = function ()
+        {
+            if (this.readyState == 4 && this.status == 200) {
+                this.__user_callback__ = args.callback;
+                this.__user_callback__(this.responseText);
+            }
+        }
+
+        httpRequest.open('GET', args.url, true);
+        
+        // Set a Cache-Control header
+        if (httpRequest && httpRequest.setRequestHeader) {
+            httpRequest.setRequestHeader('Cache-Control', 'no-cache');
+        }
+        
+        httpRequest.send();
+    };
+
+
+
+
+
+
+
+
+    //
+    // Uses the above function but calls the call back passing JSON (ie a JavaScript object ) as its argument
+    // 
+    // @param  args object An object consisting of:
+    //                      o url
+    //                      o callback
+    // OR
+    //
+    // @param url string The URL to fetch
+    // @param callback function Your callback function (which is passed the JSON object as an argument)
+    //
+    RGraph.Sheets.AJAX.getJSON = function ()
+    {
+        var args = RGraph.Sheets.getArgs(arguments, 'url,callback');
+
+        RGraph.Sheets.AJAX(args.url, function ()
+        {
+            var json = eval('(' + this.responseText + ')');
+
+            args.callback(json);
+        });
+    };
+
+
+
+
 
 
 
