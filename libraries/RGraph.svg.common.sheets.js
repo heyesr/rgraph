@@ -44,11 +44,6 @@
                    .replace(/\[WORKSHEET\]/, encodeURIComponent(args.worksheet))
                    .replace(/\[OAUTH_KEY\]/, args.oauth)
 
-        // NEW URL (13/08/2021): https://sheets.googleapis.com/v4/spreadsheets/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/values/Bar+chart?alt=json&key=AIzaSyBi0yqC-vVwMwSxi4wn3_ctHmXSz9pPVRc
-
-        //
-        // OLD URL: https://spreadsheets.google.com/feeds/cells/1q_BMjvKO_kKbAO3VjoaITSDyrLAk8f0SK5UFMmE3oRs/2/public/full?alt=json-in-script
-        //
 
 
 
