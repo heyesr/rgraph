@@ -42,13 +42,15 @@
     
     <p>
         It's actually using the data that's on the Bar worksheet (there are multiple buttons at the bottom of
-        the screen that allow you access to the other worksheets). The labels are coming from the spreadsheet too.
+        the screen that allow you access to the other worksheets). The labels are coming from the spreadsheet
+        too.
     </p>
     
     <p>
         The stroke color is set to white and the linewidth
         is 2. There's no other configuration so the Pie chart looks quite standard, though there is a
-        responsive configuration so that on smaller screens the labels disappear and tooltips are used instead.
+        responsive configuration so that on smaller screens the labels disappear and tooltips are used
+        instead.
     </p>
 
     
@@ -65,15 +67,20 @@
         //
         // 1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E
         //
-        // This, along with a callback function that creates the chart, are given to
-        // the Sheets object constructor. The optional 2nd argument for the Sheets
-        // constructor that specifies the worksheet to use has been omitted this time.
+        // This, along with a callback function that creates the chart and the OAuth ID,
+        // are given to the Sheets object constructor. The optional 3rd argument for the
+        // Sheets constructor specifies the worksheet to use and has been set to
+        // "Bar chart".
         //
         // Remember that the Google Sheets import tool can be used standalone - ie
         // without the RGraph core library. Along with the permissive MIT license,
         // this means that you are free to incorporate it into your own projects
         // or tools if you want to.
-        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        new RGraph.Sheets(
+            'AIzaSyBPofvjcDhOdet_U2Tr4-rSLItAgaCsMCM',
+            '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
+            'Bar chart', // Use the data from the "Bar chart" sheet
+        function (sheet)
         {
             // Get the data and the labels from the spreadsheet. Note that you can
             // use the familiar row and column names to get the data.

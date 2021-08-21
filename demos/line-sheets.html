@@ -34,14 +34,18 @@
     
     <p>
         The Sheets utility is created using the key of the spreadsheet - you can get this from the URL
-        of your spreadsheet. The <code>2</code> in the arguments to the Sheets import utility (see below)
-        is the number representing the worksheet to use.
+        of your spreadsheet. The <code>Line chart</code> in the arguments to the Sheets import utility (see
+        below) is the ID of the worksheet that's used.
     </p>
     
     <pre class="code">
-<span>// The constructor call to the Sheets import utility showing the use of the key along
-// with specifying the worksheet to use.</span>
-new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', 2, function (sheet) {<span>/* Create the chart here */</span>});
+<span>// The constructor call to the Sheets import utility showing the use of your OAuth ID, the key and
+// the worksheet to use.</span>
+new RGraph.Sheets(
+    'AIzaSyDCODMgxGo6q4qgkw8haCwXr__8d5r7IIg',
+    '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
+    'Line chart',
+    function (sheet) {<span>/* Create the chart here */</span>});
 </pre>
     
     <p>
@@ -68,11 +72,16 @@ new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', 2, function (s
     <script>
         // Create a new RGraph Sheets instance that allows you to connect
         // to your Google Sheet spreadsheet and retrieve data from it. The
-        // first argument is the key (ie the unique identifier) of the
-        // spreadsheet. This can be found in the URL of your spreadsheet.
-        // The second argument is the worksheet if you need to give one -
-        // this argument is optional
-        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', 2, function (sheet)
+        // first argument is the OAuth ID (see the Google Sheets documentation
+        // on the RGraph website). The second argument is the key (ie the
+        // unique identifier) of the spreadsheet. This can be found in the URL
+        // of your spreadsheet. The third argument is the worksheet if you
+        // need to give one - this argument is optional
+        new RGraph.Sheets(
+            'AIzaSyBPofvjcDhOdet_U2Tr4-rSLItAgaCsMCM',
+            '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
+            'Line chart',
+        function (sheet)
         {
             // Now, in the Sheets object callback, the Line chart can be created
             // as normal

@@ -20,7 +20,10 @@
 
 
     <h1>An SVG Waterfall chart using the Google Sheets connector</h1>
-    <p>A Waterfall chart that's being created using the Google Sheets connector. In this case only positive values are being displayed.</p>
+    <p>
+        A Waterfall chart that's being created using the Google Sheets connector. In this case only positive
+        values are being displayed.
+    </p>
 
     
     <div style="width: 1000px; height: 300px" id="chart-container"></div>
@@ -30,7 +33,11 @@
         
 
     <script>
-        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        new RGraph.Sheets(
+            'AIzaSyBPofvjcDhOdet_U2Tr4-rSLItAgaCsMCM',
+            '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
+            'Bar chart', // Use the data from the "Bar chart" sheet
+        function (sheet)
         {
             var data   = sheet.get('B2:B13'),
                 labels = sheet.get('A2:A13');
@@ -61,6 +68,7 @@
                     title: 'Cumulative total of widgets sold by Brian',
                     titleSubtitle: 'Numbers are sales by store only',
                     titleSubtitleItalic: true,
+                    titleSubtitleSize:10,
                     labelsAbove: true,
                     labelsAboveUnitsPost: 'pc'
                 }

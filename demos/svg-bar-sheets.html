@@ -30,11 +30,15 @@
 
         
     <script>
-        new RGraph.Sheets('1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E', function (sheet)
+        new RGraph.Sheets(
+            'AIzaSyBPofvjcDhOdet_U2Tr4-rSLItAgaCsMCM',
+            '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
+            'Bar chart',
+        function (sheet)
         {
             var data   = sheet.get('B2:B13'),
                 labels = sheet.get('A2:A13');
-            
+
             for (var i=0; i<labels.length; i+=2) {
                 labels[i] = "\u00A0\n" + labels[i];
             }
