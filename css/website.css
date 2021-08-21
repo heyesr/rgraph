@@ -10,7 +10,7 @@ src: url(/fonts/RobotoCondensed-Light.ttf);
 html{position:relative;}
 body{font-family:sans-serif;font-size:1.2em;color:#666;line-height:45px;padding-top:50px;overflow-x:hidden;}
 
-:target{position:relative;top:-50px;}
+:target{position:relative;top:-75px;}
 
 div#main-body-container{padding:30px;padding-bottom:5px;padding-top:0;text-align:left;}
 
@@ -105,7 +105,9 @@ div#front-page-download-buttons span#front-page-setup-introduction-button{displa
 div#front-page-download-buttons span#front-page-setup-donate-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#36A2EB,#66f);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-setup-download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#4BC0C0,#4BC0C0);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-github-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,gray,#ccc);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
+div#front-page-download-buttons span#front-page-interactive-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,blue,#ccc);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
 
+div#front-page-download-buttons span#front-page-interactive-button:hover,
 div#front-page-download-buttons span#front-page-github-button:hover,
 div#front-page-download-buttons span#download-button:hover,
 div#front-page-download-buttons span#front-page-setup-donate-button:hover,
@@ -159,12 +161,12 @@ img#navigation-top-bar-logo{float:left;margin-top:2px;}
 #download-page-poster-image-container img{position:absolute;top:0;left:0}
 #download-page-poster-image-container div{position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(90deg,white,rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0))}
 
-img#facebook-share{background:url(/images/sprite.png) -429px -82px;position:absolute;top:5px;left:calc(64% + 295px);transition:transform .5s ease-out}
-img#twitter-share{background:url(/images/sprite.png) -432px -48px;position:absolute;top:8px;left:calc(64% + 320px);transition:transform .5s ease-out}
-img#github-share{position:absolute;top:8px;left:calc(64% + 350px);transition:transform .5s ease-out}
-img#facebook-share:hover{transform:scale(1.25)}
-img#twitter-share:hover{transform:scale(1.25)}
-img#github-share:hover{transform:scale(1.25)}
+img#facebook-share{background:url(/images/sprite.png) -429px -82px;position:absolute;top:5px;left:calc(64% + 295px);transition:transform .5s ease-out;}
+img#twitter-share{background:url(/images/sprite.png) -432px -48px;position:absolute;top:8px;left:calc(64% + 320px);transition:transform .5s ease-out;}
+img#github-share{position:absolute;top:8px;left:calc(64% + 350px);transition:transform .5s ease-out;}
+img#facebook-share:hover{transform:scale(1.25);}
+img#twitter-share:hover{transform:scale(1.25);}
+img#github-share:hover{transform:scale(1.25);}
 
 #front-page-floated-data-import-methods{width:220px;float:right;padding:15px;background-color:#BBD4EB;border-radius:15px;margin-left:15px}
 #front-page-floated-data-import-methods img{transition:transform .25s ease-in}
