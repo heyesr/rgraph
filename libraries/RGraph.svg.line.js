@@ -1,4 +1,5 @@
     // o--------------------------------------------------------------------------------o
+    // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
     // |                         https://www.rgraph.net                                 |
@@ -351,7 +352,12 @@
             trendlineMargin:            25,
             trendlineDashed:            false,
             trendlineDotted:            false,
-            trendlineDashArray:         null
+            trendlineDashArray:         null,
+            
+            nullBridge:                 false,
+            nullBridgeLinewidth:        null,
+            nullBridgeColors:           null, // Can be null, a string or an object
+            nullBridgeDashArray:        [5,5]
         };
 
 
@@ -715,6 +721,15 @@
                 if (    (RGraph.SVG.isArray(properties.trendline) && properties.trendline[i])
                      || (!RGraph.SVG.isArray(properties.trendline) && properties.trendline)) {
                     this.drawTrendline({dataset: i});
+                }
+            }
+            
+            //
+            // Bridge the null gaps if requested
+            //
+            if (properties.nullBridge) {
+                for (var i=0; i<this.data.length; ++i) {
+                    this.nullBridge(i, this.data[i]);
                 }
             }
 
@@ -1573,6 +1588,10 @@
         {
             var y;
 
+            if (RGraph.SVG.isNull(value)) {
+                return null;
+            }
+
             if (value > this.scale.max) {
                 return null;
             }
@@ -2358,8 +2377,86 @@
             
             // Now re-add it immedately after the background grid
             grid.insertAdjacentElement('afterend', line);
-            
-            
+        };
+
+
+
+
+
+
+
+
+        //
+        // This is the code the adds lines across null gaps in the
+        // Line chart
+        //
+        // @param number datasetIdx The index of the dataset
+        // @param array  data       The dataset
+        //    
+        this.nullBridge = function (datasetIdx, data)
+        {
+$c(this.coords2)
+            var readData = false;
+
+            //
+            // Now add the connecting lines
+            //
+            for (var i=0; i<data.length; i++) {
+
+                var isNull   = false,
+                    start    = null,
+                    end      = null;
+
+                // This ensures that the first datapoint is not null
+                if (readData === false && RGraph.SVG.isNumber(data[i])) {
+                    readData = true;
+                }
+
+                if (RGraph.SVG.isNull(data[i]) && readData) {
+                    
+                    start = i - 1;
+
+                    for (var j=(i+1); j<data.length; ++j) {
+
+                        if (RGraph.SVG.isNull(data[j])) {
+                            continue;
+                        } else {
+                            end = j;
+                        }
+
+                        var path = 'M{1} {2} L{3} {4}'.format(
+                            this.coords2[datasetIdx][start][0], this.coords2[datasetIdx][start][1],
+                            this.coords2[datasetIdx][end][0], this.coords2[datasetIdx][end][1],
+                        );
+
+                        // Create the path and add it to the SVG document
+                        var node = RGraph.SVG.create({
+                            svg: this.svg,
+                            parent: this.svg.all,
+                            type: 'path',
+                            attr: {
+                                d: path,
+                                stroke: typeof properties.nullBridgeColors === 'string'
+                                            ? properties.nullBridgeColors
+                                            : ((typeof properties.nullBridgeColors === 'object' && !RGraph.SVG.isNull(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx]),
+                                'fill': 'transparent',
+                                'stroke-dasharray': properties.nullBridgeDashArray,
+                                'stroke-width':  typeof properties.nullBridgeLinewidth === 'number' ? properties.nullBridgeLinewidth : properties.linewidth,
+                                'stroke-linecap': 'round',
+                                'stroke-linejoin': 'round',
+                                'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                            }
+                        });
+
+
+
+                        start = null;
+                        end   = null;
+                        
+                        break;
+                    }
+                }
+            }
         };
         
 
