@@ -355,7 +355,12 @@
             trendlineMargin:            25,
             trendlineDashed:            false,
             trendlineDotted:            false,
-            trendlineDashArray:         null
+            trendlineDashArray:         null,
+            
+            nullBridge:                 false,
+            nullBridgeLinewidth:        null,
+            nullBridgeColors:           null, // Can be null, a string or an object
+            nullBridgeDashArray:        [5,5]
         }
 
         // Convert strings to numbers
@@ -1001,10 +1006,19 @@
         
         
             // Add trendlines if they have been enabled
-            for (let i=0; i<this.data.length; ++i) {
+            for (var i=0; i<this.data.length; ++i) {
                 if (    (RGraph.isArray(properties.trendline) && properties.trendline[i])
                      || (!RGraph.isArray(properties.trendline) && properties.trendline)) {
                     this.drawTrendline(i);
+                }
+            }
+            
+            //
+            // Bridge the null gaps if requested
+            //
+            if (properties.nullBridge) {
+                for (var i=0; i<this.data.length; ++i) {
+                    this.nullBridge(i, this.data[i]);
                 }
             }
     
@@ -3925,6 +3939,68 @@
             this.context.setLineDash([5,0]);
         };
 
+
+
+
+
+
+
+
+        //
+        // This is the code the adds lines across null gaps in the
+        // Line chart
+        //
+        // @param number datasetIdx The index of the dataset
+        // @param array  data       The dataset
+        //    
+        this.nullBridge = function (datasetIdx, data)
+        {
+            var readData = false;
+
+            //
+            // Now add the gray connecting lines
+            //
+            for (var i=0; i<data.length; i++) {
+
+                var isNull   = false,
+                    start    = null,
+                    end      = null;
+
+                // This ensures that the first datapoint is not null
+                if (readData === false && RGraph.isNumber(data[i])) {
+                    readData = true;
+                }
+
+                if (RGraph.isNull(data[i]) && readData) {
+                    start = i - 1;
+                    
+                    for (var j=(i+1); j<data.length; ++j) {
+                        if (RGraph.isNull(data[j])) {
+                            continue;
+                        } else {
+                            end = j;
+                        }
+
+                        this.context.setLineDash(properties.nullBridgeDashArray);
+
+                        this.path(
+                            'b lw % m % % l % % s %',
+                            typeof properties.nullBridgeLinewidth === 'number' ? properties.nullBridgeLinewidth : this.getLineWidth(datasetIdx),
+                            this.coords2[datasetIdx][start][0], this.coords2[datasetIdx][start][1],
+                            this.coords2[datasetIdx][end][0], this.coords2[datasetIdx][end][1],
+                            typeof properties.nullBridgeColors === 'string'
+                                ? properties.nullBridgeColors
+                                : ((typeof properties.nullBridgeColors === 'object' && !RGraph.isNull(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx])
+                        );
+                        
+                        start = null;
+                        end   = null;
+                        
+                        break;
+                    }
+                }
+            }
+        };
 
 
 
