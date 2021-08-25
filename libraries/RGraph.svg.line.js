@@ -2395,7 +2395,6 @@
         //    
         this.nullBridge = function (datasetIdx, data)
         {
-$c(this.coords2)
             var readData = false;
 
             //
@@ -2424,10 +2423,15 @@ $c(this.coords2)
                             end = j;
                         }
 
-                        var path = 'M{1} {2} L{3} {4}'.format(
-                            this.coords2[datasetIdx][start][0], this.coords2[datasetIdx][start][1],
-                            this.coords2[datasetIdx][end][0], this.coords2[datasetIdx][end][1],
-                        );
+                        // No idea why this if() condition is necessary but it
+                        // prevents an error occurring when the coordinate is
+                        // null
+                        if (this.coords2[datasetIdx][start][1]) {
+                            var path = 'M{1} {2} L{3} {4}'.format(
+                                this.coords2[datasetIdx][start][0], this.coords2[datasetIdx][start][1],
+                                this.coords2[datasetIdx][end][0], this.coords2[datasetIdx][end][1],
+                            );
+                        }
 
                         // Create the path and add it to the SVG document
                         var node = RGraph.SVG.create({
