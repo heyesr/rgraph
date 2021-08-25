@@ -910,6 +910,22 @@
 
             }
 
+            //
+            // Bridge the null gaps if requested
+            //
+            // This was moved on 25/028/2021 to be inside the clip()
+            // so that the trace() animation works
+            //
+            if (properties.nullBridge) {
+                for (var i=0; i<this.data.length; ++i) {
+                    this.nullBridge(i, this.data[i]);
+                }
+            }
+
+
+
+
+
 
         if (properties.outofboundsClip) {
             this.context.restore();
@@ -919,7 +935,8 @@
         // ???
         this.context.beginPath();
     
-    
+
+
     
     
             //
@@ -1013,14 +1030,6 @@
                 }
             }
             
-            //
-            // Bridge the null gaps if requested
-            //
-            if (properties.nullBridge) {
-                for (var i=0; i<this.data.length; ++i) {
-                    this.nullBridge(i, this.data[i]);
-                }
-            }
     
     
             //
