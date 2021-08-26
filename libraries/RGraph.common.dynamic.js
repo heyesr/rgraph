@@ -744,6 +744,11 @@
                                 case 'activity':  var shape = obj.getShape(e); break;
                                 default:          var shape = null;
                             }
+                            
+                            // Facilitate one click adjusting on the lline chart
+                            if (obj.type === 'line' && obj.properties.adjustableXonly) {
+                                var shape = obj.getShapeByX(e);
+                            }
 
                             //
                             // Added 30/9/2016

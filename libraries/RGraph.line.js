@@ -315,8 +315,9 @@
             backdropSize:          		30,
             backdropAlpha:         		0.2,
 
-            adjustable:             	false,
-            adjustableOnly:        		null,
+            adjustable:                 false,
+            adjustableOnly:             null,
+            adjustableXonly:            false,
 
             redraw:                     true,
 
@@ -356,6 +357,7 @@
             trendlineDashed:            false,
             trendlineDotted:            false,
             trendlineDashArray:         null,
+            trendlineClip:              true,
             
             nullBridge:                 false,
             nullBridgeLinewidth:        null,
@@ -2202,6 +2204,61 @@
 
 
         //
+        // The getShapeByX() method - used to get the point the mouse is currently over, if any
+        // but it ONLY considers the X coordinate - not the Y
+        // 
+        // @param object e The event object
+        // @param object   OPTIONAL You can pass in the bar object instead of the
+        //                          function getting it from the canvas
+        //
+        this.getShapeByX = function (e)
+        {
+            var obj     = this,
+                mouseXY = RGraph.getMouseXY(e),
+                mouseX  = mouseXY[0],
+                mouseY  = mouseXY[1];
+            
+            // This facilitates you being able to pass in the bar object as a parameter instead of
+            // the function getting it from the object
+            if (arguments[1]) {
+                obj = arguments[1];
+            }
+
+            for (var i=0; i<obj.coords.length; ++i) {
+            
+                var x = obj.coords[i][0],
+                    y = obj.coords[i][1],
+              dataset = 0,
+                  idx = i;
+
+                while ((idx + 1) > this.data[dataset].length) {
+                    idx -= this.data[dataset].length;
+                    dataset++;
+                }
+
+                if (mouseX <= (x + properties.tooltipsHotspotSize) && mouseX >= (x - properties.tooltipsHotspotSize)) {
+        
+                            return {
+                                object: obj,
+                                     x: x,
+                                     y: y,
+                               dataset: dataset,
+                                 index: idx,
+                       sequentialIndex: i,
+                                 label:  properties.xaxisLabels && typeof  properties.xaxisLabels[idx] === 'string' ?  properties.xaxisLabels[idx] : null
+                            };
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
         // Draws the above line labels
         //
         this.drawAboveLabels = function ()
@@ -2543,6 +2600,10 @@
         //
         this.getYCoord = function (value)
         {
+            if (arguments[1] === true) {
+                var allowOutOfBounds = true;
+            }
+
             if (typeof value != 'number') {
                 return null;
             }
@@ -2574,7 +2635,7 @@
     
             } else {
     
-                if ((value < this.min || value > this.max) && properties.outofbounds == false) {
+                if (!allowOutOfBounds && ((value < this.min || value > this.max) && properties.outofbounds == false) ) {
                     return null;
                 }
     
@@ -3796,156 +3857,175 @@
             var linewidth  = properties.trendlineLinewidth;
             var margin     = properties.trendlineMargin;
             
-            //
-            // Create the pseudo-data array
-            //
-            var data=[];
-
-            // Create the data array from the given data and an
-            // increasing X value
-            for (var i=0; i<this.data.length; ++i) {
-                
-                data[i] = [];
-
-                for (var j=0; j<this.data[i].length; ++j) {
-                    data[i].push([j, this.data[i][j]]);
+            // If clipping is enabled then draw a clip box the same as the graph area
+            // (just the chart area, not including the margins)
+            if (properties.trendlineClip) {
+                this.path(
+                    'b sa r % % % % cl',
+                    properties.marginLeft,
+                    properties.marginTop,
+                    this.canvas.width - properties.marginLeft - properties.marginRight,
+                    this.canvas.height - properties.marginTop - properties.marginBottom
+                );
+            }
+    
+                //
+                // Create the pseudo-data array
+                //
+                var data=[];
+    
+                // Create the data array from the given data and an
+                // increasing X value
+                for (var i=0; i<this.data.length; ++i) {
+                    
+                    data[i] = [];
+    
+                    for (var j=0; j<this.data[i].length; ++j) {
+                        data[i].push([j, this.data[i][j]]);
+                    }
                 }
-            }
-
-            // Allow for trendlineColors as well
-            if (RGraph.isArray(properties.trendlineColors)) {
-                color = properties.trendlineColors;
-            }
-
-
-
-            // handle the options being arrays
-            if (typeof color === 'object' && color[args.dataset]) {
-                color = color[args.dataset];
-            } else if (typeof color === 'object') {
-                color = 'gray';
-            }
-
-            if (typeof linewidth === 'object' && typeof linewidth[args.dataset] === 'number') {
-                linewidth = linewidth[args.dataset];
-            } else if (typeof linewidth === 'object') {
-                linewidth = 1;
-            }
-
-            if (typeof margin === 'object' && typeof margin[args.dataset] === 'number') {
-                margin = margin[args.dataset];
-            } else if (typeof margin === 'object'){
-                margin = 25;
-            }
-
-
-            // Step 1: Calculate the mean values of the X coords and the Y coords
-            for (var i=0,totalX=0,totalY=0; i<this.data[args.dataset].length; ++i) {
-                totalX += data[args.dataset][i][0];
-                totalY += data[args.dataset][i][1];
-            }
-
-            var averageX = totalX / data[args.dataset].length;
-            var averageY = totalY / data[args.dataset].length;
-
-            // Step 2: Calculate the slope of the line
-            
-            // a: The X/Y values minus the average X/Y value
-            for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[args.dataset].length; ++i) {
-                xCoordMinusAverageX[i] = data[args.dataset][i][0] - averageX;
-                yCoordMinusAverageY[i] = data[args.dataset][i][1] - averageY;
-
-                // b. Multiply the averages
-                valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
-                xCoordMinusAverageSquared[i] = xCoordMinusAverageX[i] * xCoordMinusAverageX[i];
-            }
-
-            var sumOfValuesMultiplied          = RGraph.arraySum(valuesMultiplied);
-            var sumOfXCoordMinusAverageSquared = RGraph.arraySum(xCoordMinusAverageSquared);
-
-            // Calculate m (???)
-            var m = sumOfValuesMultiplied / sumOfXCoordMinusAverageSquared;
-            var b = averageY - (m * averageX);
-
-            // y = mx + b
-            
-            coords =  [
-                [0, m * 0 + b],
-                [data[0].length - 1, m * (data[0].length - 1) + b]
-            ];
-
-            // Convert the X/Y numbers into coordinates
-            coords[0][0] = this.marginLeft;
-            coords[0][1] = this.getYCoord(coords[0][1]);
-            coords[1][0] = this.canvas.width - this.marginRight;
-            coords[1][1] = this.getYCoord(coords[1][1]);
-
-
-
-
-
-
-
-
-
-            //
-            // Draw the line
-            //
-            
-            // Set dotted, dash or a custom dash array
-            if (   properties.trendlineDashed === true
-                || (RGraph.isArray(properties.trendlineDashed) && properties.trendlineDashed[args.dataset]) ) {
-                this.context.setLineDash([4,4]);
-            }
-            
-            if (   properties.trendlineDotted === true
-                || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[args.dataset])) {
-                this.context.setLineDash([1,4]);
-            }
-            
-            // Set a lineDash array. It can be an array of two numbers, or it can be a
-            // multi-dimensional array, each of two numbers. One for each line on the
-            // chart.
-            if (RGraph.isArray(properties.trendlineDashArray)) {
-                if (   properties.trendlineDashArray.length === 2
-                    && typeof properties.trendlineDashArray[0] === 'number'
-                    && typeof properties.trendlineDashArray[1] === 'number'
-                   ) {
-                    this.context.setLineDash(properties.trendlineDashArray);
-                
-                } else if (   RGraph.isArray(properties.trendlineDashArray)
-                           && RGraph.isArray(properties.trendlineDashArray[args.dataset])) {
-                    this.context.setLineDash(properties.trendlineDashArray[args.dataset]);
+    
+                // Allow for trendlineColors as well
+                if (RGraph.isArray(properties.trendlineColors)) {
+                    color = properties.trendlineColors;
                 }
+    
+    
+    
+                // handle the options being arrays
+                if (typeof color === 'object' && color[args.dataset]) {
+                    color = color[args.dataset];
+                } else if (typeof color === 'object') {
+                    color = 'gray';
+                }
+    
+                if (typeof linewidth === 'object' && typeof linewidth[args.dataset] === 'number') {
+                    linewidth = linewidth[args.dataset];
+                } else if (typeof linewidth === 'object') {
+                    linewidth = 1;
+                }
+    
+                if (typeof margin === 'object' && typeof margin[args.dataset] === 'number') {
+                    margin = margin[args.dataset];
+                } else if (typeof margin === 'object'){
+                    margin = 25;
+                }
+    
+    
+                // Step 1: Calculate the mean values of the X coords and the Y coords
+                for (var i=0,totalX=0,totalY=0; i<this.data[args.dataset].length; ++i) {
+                    totalX += data[args.dataset][i][0];
+                    totalY += data[args.dataset][i][1];
+                }
+    
+                var averageX = totalX / data[args.dataset].length;
+                var averageY = totalY / data[args.dataset].length;
+    
+                // Step 2: Calculate the slope of the line
+                
+                // a: The X/Y values minus the average X/Y value
+                for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[args.dataset].length; ++i) {
+                    xCoordMinusAverageX[i] = data[args.dataset][i][0] - averageX;
+                    yCoordMinusAverageY[i] = data[args.dataset][i][1] - averageY;
+    
+                    // b. Multiply the averages
+                    valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
+                    xCoordMinusAverageSquared[i] = xCoordMinusAverageX[i] * xCoordMinusAverageX[i];
+                }
+    
+                var sumOfValuesMultiplied          = RGraph.arraySum(valuesMultiplied);
+                var sumOfXCoordMinusAverageSquared = RGraph.arraySum(xCoordMinusAverageSquared);
+    
+                // Calculate m (???)
+                var m = sumOfValuesMultiplied / sumOfXCoordMinusAverageSquared;
+                var b = averageY - (m * averageX);
+    
+                // y = mx + b
+                
+                var coords =  [
+                    [0, m * 0 + b],
+                    [data[0].length - 1, m * (data[0].length - 1) + b]
+                ];
+    
+                // Convert the X/Y numbers into coordinates
+                coords[0][0] = this.marginLeft;
+                coords[0][1] = this.getYCoord(coords[0][1], true);
+                coords[1][0] = this.canvas.width - this.marginRight;
+                coords[1][1] = this.getYCoord(coords[1][1], true);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                //
+                // Draw the line
+                //
+                
+                // Set dotted, dash or a custom dash array
+                if (   properties.trendlineDashed === true
+                    || (RGraph.isArray(properties.trendlineDashed) && properties.trendlineDashed[args.dataset]) ) {
+                    this.context.setLineDash([4,4]);
+                }
+                
+                if (   properties.trendlineDotted === true
+                    || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[args.dataset])) {
+                    this.context.setLineDash([1,4]);
+                }
+                
+                // Set a lineDash array. It can be an array of two numbers, or it can be a
+                // multi-dimensional array, each of two numbers. One for each line on the
+                // chart.
+                if (RGraph.isArray(properties.trendlineDashArray)) {
+                    if (   properties.trendlineDashArray.length === 2
+                        && typeof properties.trendlineDashArray[0] === 'number'
+                        && typeof properties.trendlineDashArray[1] === 'number'
+                       ) {
+                        this.context.setLineDash(properties.trendlineDashArray);
+                    
+                    } else if (   RGraph.isArray(properties.trendlineDashArray)
+                               && RGraph.isArray(properties.trendlineDashArray[args.dataset])) {
+                        this.context.setLineDash(properties.trendlineDashArray[args.dataset]);
+                    }
+                }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                // Draw the line
+                this.path(
+                    ' lc round lw % b m % % l % % s %',
+                    
+                    linewidth,
+    
+                    // moveTo
+                    Math.max(coords[0][0], this.coords2[args.dataset][0][0] - margin),
+                    coords[0][1],
+                    
+                    // lineTo
+                    Math.min(coords[1][0], this.coords2[args.dataset][this.coords2[args.dataset].length - 1][0] + margin),
+                    coords[1][1],
+                    
+                    // stroke color
+                    color
+                );
+                // Reset the line dash array
+                this.context.setLineDash([5,0]);
+
+            //
+            // Reset the clipping region
+            //
+            if (properties.trendlineClip) {
+                this.context.restore();
             }
-
-
-
-
-
-
-
-
-
-            // Draw the line
-            this.path(
-                ' lc round lw % b m % % l % % s %',
-                
-                linewidth,
-
-                // moveTo
-                Math.max(coords[0][0], this.coords2[args.dataset][0][0] - margin),
-                coords[0][1],
-                
-                // lineTo
-                Math.min(coords[1][0], this.coords2[args.dataset][this.coords2[args.dataset].length - 1][0] + margin),
-                coords[1][1],
-                
-                // stroke color
-                color
-            );
-            // Reset the line dash array
-            this.context.setLineDash([5,0]);
         };
 
 
