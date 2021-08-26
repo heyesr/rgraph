@@ -353,6 +353,7 @@
             trendlineDashed:            false,
             trendlineDotted:            false,
             trendlineDashArray:         null,
+            trendlineClip:              true,
             
             nullBridge:                 false,
             nullBridgeLinewidth:        null,
@@ -1586,17 +1587,23 @@
         //
         this.getYCoord = function (value)
         {
+            // You can now give a boolean true value to stipulate
+            // that outofbounds values are allowed
+            if (arguments[1] === true) {
+                var allowOutOfBounds = true;
+            }
+
             var y;
 
-            if (RGraph.SVG.isNull(value)) {
+            if (!allowOutOfBounds && RGraph.SVG.isNull(value)) {
                 return null;
             }
 
-            if (value > this.scale.max) {
+            if (!allowOutOfBounds && value > this.scale.max) {
                 return null;
             }
 
-            if (value < this.scale.min) {
+            if (!allowOutOfBounds && value < this.scale.min) {
                 return null;
             }
 
@@ -2213,7 +2220,36 @@
             var obj        = this,
                 color      = properties.trendlineColor,
                 linewidth  = properties.trendlineLinewidth,
-                margin     = properties.trendlineMargin;
+                margin     = properties.trendlineMargin,
+                clip       = properties.trendlineClip;
+
+            // Create the clipping region if necessary
+            if (clip) {
+            
+                // Create the clip area
+                var clippath = RGraph.SVG.create({
+                    svg: this.svg,
+                    parent: this.svg.defs,
+                    type: 'clipPath',
+                    attr: {
+                        id: 'trendline-clip'
+                    }
+                });
+            
+                var clippathrect = RGraph.SVG.create({
+                    svg: this.svg,
+                    parent: clippath,
+                    type: 'rect',
+                    attr: {
+                             x: properties.marginLeft,
+                             y: properties.marginTop,
+                         width: this.width - properties.marginLeft - properties.marginRight,
+                        height: this.height - properties.marginTop - properties.marginBottom
+                    }
+                });
+            }
+
+
 
             //
             // Create the pseudo-data array
@@ -2287,17 +2323,17 @@
             var b = averageY - (m * averageX);
 
             // y = mx + b
-            
-            coords =  [
+
+            var coords =  [
                 [0, m * 0 + b],
                 [data[0].length - 1, m * (data[0].length - 1) + b]
             ];
 
             // Convert the X/Y numbers into coordinates
             coords[0][0] = properties.marginLeft;
-            coords[0][1] = this.getYCoord(coords[0][1]);
+            coords[0][1] = this.getYCoord(coords[0][1], true);
             coords[1][0] = this.width - properties.marginRight;
-            coords[1][1] = this.getYCoord(coords[1][1]);
+            coords[1][1] = this.getYCoord(coords[1][1], true);
 
 
 
@@ -2364,7 +2400,8 @@
                     'class': 'rgraph_line_{1}_trendline_{2}'.format(
                         this.id,
                         opt.dataset
-                    )
+                    ),
+                    'clip-path': clip ? 'url(#trendline-clip)' : ''
                 }
             });
 
