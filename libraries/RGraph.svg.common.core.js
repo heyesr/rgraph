@@ -373,6 +373,8 @@
                             continue;
                         }
                         
+
+                        
                         // Don't draw a tick at the zero position (another case)
                         if (
                                 properties.yaxis
@@ -519,11 +521,11 @@
                         for (var i=0; i<len; ++i) {
 
                             var gap = ( (obj.graphWidth) / (len - 1));
-                            
+
                             if (properties.yaxisPosition === 'right') {
                                 x = properties.marginLeft + (i * gap);
-                                
-                                // If the X position is within 3 pizels of the X position of the Y
+
+                                // If the X position is within 3 pixels of the X position of the Y
                                 // axis then skip it
                                 if (properties.yaxis && x > (obj.width - properties.marginRight - 3) && x < (obj.width - properties.marginRight + 3)) {
                                     continue;
@@ -531,7 +533,12 @@
                             } else {
                                 x = properties.marginLeft + ((i+1) * gap);
                             }
-
+                            
+                            // For some reason a tickmark is being drawn in the right margin
+                            // so this prevents that.
+                            if ( (!properties.yaxisPosition || properties.yaxisPosition === 'left') && x > (obj.width - properties.marginRight)) {
+                                continue;
+                            }
                             RGraph.SVG.create({
                                 svg: obj.svg,
                                 parent: obj.svg.all,
