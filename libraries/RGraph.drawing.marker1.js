@@ -685,12 +685,12 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas),
-                x        = this.centerx;
+            var obj        = args.object,
+                e          = args.event,
+                tooltip    = args.tooltip,
+                index      = args.index,
+                canvasXY   = RGraph.getCanvasXY(obj.canvas),
+                x          = this.centerx;
                 
             if (properties.align == 'left') {
                 x = x - this.radius - this.radius;
@@ -710,7 +710,7 @@
                   canvasXY[1]                            // The Y coordinate of the canvas
                 - tooltip.offsetHeight                   // The height of the tooltip
                 + obj.properties.tooltipsOffsety         // Add any user defined offset
-                + this.centery                                 // Add the Y coordinate
+                + this.centery                           // Add the Y coordinate
                 - this.radius - this.radius - this.radius
                 - 15                                     // An arbitrary amount
             ) + 'px';
