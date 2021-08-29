@@ -589,11 +589,11 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas);
+            var obj        = args.object,
+                e          = args.event,
+                tooltip    = args.tooltip,
+                index      = args.index,
+                canvasXY   = RGraph.getCanvasXY(obj.canvas);
 
             // Calculate the minimum X coordinate
             for (var i=0,minx=this.coords[0][0],maxx=0,miny=this.coords[0][1],maxy=0; i<this.coords.length; ++i) {
