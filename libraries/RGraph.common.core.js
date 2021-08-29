@@ -1362,6 +1362,42 @@
     {
         var args = RGraph.getArgs(arguments, 'canvas');
 
+
+
+
+        // If the getBoundingClientRect function is available - use that
+        //
+        // This should be considered beta.
+        //
+        if (args.canvas.getBoundingClientRect) {
+            
+            var rect = args.canvas.getBoundingClientRect();
+
+            // Add the the current scrollTop and scrollLeft becuase the getBoundingClientRect()
+            // method is relative to the viewport - not the document
+            var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+                scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+            
+            return [rect.x + scrollLeft, rect.y + scrollTop];
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         var x  = 0;
         var y  = 0;
         var el = args.canvas; // !!!
