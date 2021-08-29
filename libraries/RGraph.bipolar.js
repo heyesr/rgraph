@@ -482,8 +482,10 @@
     
             this.drawLabels();
             this.drawTitles();
-    
-    
+            
+            // Call this so that 3D charts are redrawn (the bar faces)
+            this.redraw3Dfaces();
+
             //
             // Setup the context menu if required
             //
@@ -534,6 +536,95 @@
             func(this);
             
             return this;
+        };
+
+        //
+        // Redraws 3D faces of bars so they look OK
+        //
+        this.redraw3Dfaces = function ()
+        {
+            // Redraw the faces of the bars so that if 3D mode is enabled the
+            // faces appear over the sides of other bars
+            if (properties.variant === '3d') {
+
+
+
+
+                // LEFT HAND SIDE BARS //
+
+
+
+
+                // A regular chart
+                if (this.coordsLeft.length > 0 && this.coords2Left.length === 0) {
+
+                    for (var i=0; i<this.coordsLeft.length; ++i) {
+                        this.path(
+                            'b r % % % % f %',
+                            this.coordsLeft[i][0],
+                            this.coordsLeft[i][1],
+                            this.coordsLeft[i][2],
+                            this.coordsLeft[i][3],
+                            properties.colors[0]
+                        );
+                    }
+                
+                // A grouped or stacked chart
+                } else {
+                    
+                    for (var i=0; i<this.coords2Left.length; ++i) {
+                        for (var j=0; j<this.coords2Left[i].length; ++j) {
+                            this.path(
+                                'b r % % % % f %',
+                                this.coords2Left[i][j][0],
+                                this.coords2Left[i][j][1],
+                                this.coords2Left[i][j][2],
+                                this.coords2Left[i][j][3],
+                                properties.colors[j]
+                            );
+                        }
+                    }
+                }
+
+
+
+
+                // RIGHT HAND SIDE BARS //
+
+
+
+
+                // A regular chart
+                if (this.coordsRight.length > 0 && this.coords2Right.length === 0) {
+
+                    for (var i=0; i<this.coordsRight.length; ++i) {
+                        this.path(
+                            'b r % % % % f %',
+                            this.coordsRight[i][0],
+                            this.coordsRight[i][1],
+                            this.coordsRight[i][2],
+                            this.coordsRight[i][3],
+                            properties.colors[0]
+                        );
+                    }
+                
+                // A grouped or stacked chart
+                } else {
+                    
+                    for (var i=0; i<this.coords2Right.length; ++i) {
+                        for (var j=0; j<this.coords2Right[i].length; ++j) {
+                            this.path(
+                                'b r % % % % f %',
+                                this.coords2Right[i][j][0],
+                                this.coords2Right[i][j][1],
+                                this.coords2Right[i][j][2],
+                                this.coords2Right[i][j][3],
+                                properties.colors[j]
+                            );
+                        }
+                    }
+                }
+            }
         };
 
 
@@ -712,11 +803,11 @@
             this.context.lineWidth = properties.axesLinewidth + 0.001;
     
             var numDataPoints = this.left.length;
-            var barHeight     = ( (this.canvas.height - this.marginTop - this.marginBottom)- (this.left.length * (properties.marginInner * 2) )) / numDataPoints;
-    
+            var barHeight     = ( (this.canvas.height - this.marginTop - this.marginBottom) - (this.left.length * (properties.marginInner * 2) )) / numDataPoints;
+
             // Store this for later
             this.barHeight = barHeight;
-    
+
             // If no axes - no tickmarks
             if (!properties.axes) {
                 return;
@@ -1000,7 +1091,7 @@
                         width,
                         this.barHeight
                     ];
-        
+
                     
                     if (this.left[i] !== null) {
                         this.context.strokeRect(
@@ -1069,7 +1160,7 @@
                             coords[0] + coords[2], coords[1]
                         );
                     }
-                    
+
                     // Only store coordinates if this isn't a shadow iteration
                     if (!opt.shadow) {
 
@@ -3302,12 +3393,12 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
+            var obj        = args.object,
+                e          = args.event,
+                tooltip    = args.tooltip,
+                index      = args.index,
+                canvasXY   = RGraph.getCanvasXY(obj.canvas)
+                coords     = this.coords[args.index];
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
@@ -3331,21 +3422,13 @@
             // If the chart is a 3D version the tooltip Y position needs this
             // adjustment
             if (properties.variant === '3d') {
-                var left  = coords[0];
-                var top   = coords[1];
-                var angle = properties.variantThreedAngle;
                 
+                var left       = coords[0];
+                var top        = coords[1];
+                var angle      = properties.variantThreedAngle;
                 var adjustment = Math.tan(angle) * left;
 
-                args.tooltip.style.top = parseInt(args.tooltip.style.top) + adjustment - (properties.textAccessible ? 20 : 0) + 'px';
-            }
-
-
-
-            // If the top of the tooltip is off the top of the page
-            // then move the tooltip down
-            if(parseFloat(args.tooltip.style.top) < 0) {
-                args.tooltip.style.top = parseFloat(args.tooltip.style.top) + (coords[3] / 2) + 5 + 'px';
+                args.tooltip.style.top = parseInt(args.tooltip.style.top) + 10  + adjustment + 'px';
             }
         };
 
