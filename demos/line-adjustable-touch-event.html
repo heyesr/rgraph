@@ -7,6 +7,7 @@
     <meta name="description" content="An adjustable line chart using one-touch adjusting" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
 
@@ -20,6 +21,12 @@
 
     
     <h1>An adjustable Line chart using one-touch adjusting</h1>
+
+    <p>
+        Previously this involved a fair amount of code - though as of version 6.03 it's a case of
+        specifying a single option: <code>adjustableXonly</code> (and optionally increasing the
+        hotspot size with the <code>tooltipsHotspotSize</code> option)
+    </p>
 
     <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
 
@@ -48,112 +55,13 @@
                 labelsAboveSize: 9,
                 labelsAboveBold: true,
                 labelsAboveOffsety: -10,
-                shadow: false
+                shadow: false,
+                
+                adjustable: true,
+                adjustableXonly: true,
+                tooltipsHotspotSize: 20
             }
         }).draw();
-
-
-
-
-        //
-        // This is the function that handles adjusting the line when
-        // the chart is touched.
-        //
-        line.canvas.onmousedown = function(e)
-        {
-            var obj      = e.target.__object__,
-                newvalue = obj.getValue(e),
-                mouseXY  = RGraph.getMouseXY(e),
-                mouseX   = mouseXY[0],
-                mouseY   = mouseXY[1],
-                coords   = obj.coords2[0];
-
-            // Determine the closest point to the touch/click
-            var index = closest({
-                coords:    coords,
-                mousex:    mouseX,
-                tolerance: 10 // Pixels, default is 10
-            });
-
-
-
-
-            if (index >= 0) {
-                data[index] = newvalue;
-                
-                grow({
-                    object: obj,
-                    index: index,
-                    value: newvalue
-                })
-            }
-        };
-
-
-
-
-        //
-        // Finds the closest point to the given mouseX coordinate. It allows a
-        // tolerance of 10 (or so) pixels.
-        //
-        //  @param object opt An object consisting of;
-        //                     o coords The coordinates of all of the points
-        //                     o mousex The mouseX coordinate
-        //                     o tolerance The number of pixels leeway
-        //                       that's allowed. The default is 10
-        //
-        function closest (opt)
-        {
-            var coords    = opt.coords,
-                mouseX    = opt.mousex,
-                tolerance = (typeof opt.tolerance === 'number' ? opt.tolerance : 10),
-                point     = null;
-
-            // Loop through the coordinates looking for the closest
-            // (going by X coordinate)
-            for (var i=0,distance = null; i<coords.length; ++i) {
-                if (mouseX > coords[i][0] - tolerance && mouseX < coords[i][0] + tolerance) {
-                    point = i;
-                }
-            }
-            
-            return point;
-        }
-
-
-
-
-        // The animation function that makes the point grow to
-        // its new position.
-        function grow (opt)
-        {
-            var obj   = opt.object,
-                idx   = opt.index,
-                value = opt.value;
-                
-            
-            // Determine the original value or the point thats being adjusted
-            var original_value = line.original_data[0][idx];
-
-
-            var frames = 15,
-                delay  = 16.666;
-
-            for (var i=0; i<frames; i++) {
-                (function (i)
-                {
-                    setTimeout(function ()
-                    {
-                        line.original_data[0][idx] = ((value - original_value) * (i + 1) / frames) + original_value;
-                        
-                        // Update this so that the labelsAbove labels are correctly updated
-                        line.data_arr = RGraph.arrayLinearize(line.original_data);
-                        
-                        RGraph.redraw();
-                    }, delay * i);
-                })(i)
-            }
-        }
     </script>
 
 
