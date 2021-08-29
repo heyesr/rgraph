@@ -2936,51 +2936,22 @@
                   canvasXY[1]                    // The Y coordinate of the canvas
                 + coords[1]                      // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
-                - 15                             // An arbitrary amount
+                - 10                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
             ) + 'px';
 
 
 
+            // If the chart is a 3D version the tooltip Y position needs this
+            // adjustment
+            if (properties.variant === '3d') {
+                var left  = parseInt(args.tooltip.style.left);
+                var top   = coords[1];
+                var angle = properties.variantThreedAngle;
+            
+                var adjustment = Math.tan(angle) * left;
 
-
-
-
-
-
-
-
-
-// If the chart is a 3D version the tooltip Y position needs this
-// adjustment
-if (properties.variant === '3d') {
-    var left  = parseInt(args.tooltip.style.left);
-    var top   = coords[1];
-    var angle = properties.variantThreedAngle;
-
-    var adjustment = Math.tan(angle) * left;
-
-    args.tooltip.style.top = parseInt(args.tooltip.style.top) + adjustment - (properties.textAccessible ? 20 : 0) + 'px';
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // If the top of the tooltip is off the top of the page
-            // then move the tooltip down
-            if(parseFloat(args.tooltip.style.top) < 0) {
-                args.tooltip.style.top = parseFloat(args.tooltip.style.top) + (coords[3] / 2) + 5 + 'px';
+                args.tooltip.style.top = parseInt(args.tooltip.style.top) + adjustment + 'px';
             }
         };
 
