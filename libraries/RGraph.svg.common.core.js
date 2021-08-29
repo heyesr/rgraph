@@ -2738,7 +2738,8 @@
                 parent: link ? a : opt.parent,
                 type: 'text',
                 attr: {
-                    tag: opt.tag ? opt.tag : '',
+                    tag: opt.tag ? opt.tag : '',        // This is the same as the below
+                    'data-tag': opt.tag ? opt.tag : '', // This is the same as the above
                     fill: color,
                     x: x,
                     y: y,
@@ -4682,6 +4683,46 @@
             y  = 0,
             el = svg.parentNode; // !!!
 
+
+
+
+
+
+
+
+
+
+
+
+        // If the getBoundingClientRect function is available - use that
+        //
+        if (svg.getBoundingClientRect) {
+            
+            var rect = svg.getBoundingClientRect();
+
+            // Add the the current scrollTop and scrollLeft becuase the getBoundingClientRect()
+            // method is relative to the viewport - not the document
+            var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+                scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+
+            return [rect.x + scrollLeft, rect.y + scrollTop];
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
         do {
 
             x += el.offsetLeft;
@@ -4709,6 +4750,7 @@
         }
 
         return [x + paddingLeft + borderLeft, y + paddingTop + borderTop];
+*/
     };
 
 
