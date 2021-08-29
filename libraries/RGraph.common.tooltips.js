@@ -867,7 +867,7 @@
         //
         var mouseXY  = RGraph.getMouseXY(args.event);
         var canvasXY = RGraph.getCanvasXY(args.object.canvas);
-        
+
         // Set these properties to 0 (ie an integer) in case chart libraries are missing
         // default values for them
         args.object.properties.tooltipsOffsetx = args.object.properties.tooltipsOffsetx || 0;
@@ -904,7 +904,7 @@
 
         
         
-        
+
         //
         // Allow for static positioning.
         //
@@ -919,40 +919,62 @@
         }
 
 
-//
-// Move the tooltip and its pointer ifthey're off-screen LHS
-//
-if (parseInt(tooltipObj.style.left) < 0) {
-    var left  = parseInt(tooltipObj.style.left);
-    var width = parseInt(tooltipObj.style.width)
-    
-    left = left + (width * 0.1 * 4);
-    
-    tooltipObj.style.left = left + 'px';
-    var pointer = document.getElementById('RGraph_tooltipsPointer');
-    
-    if (pointer) {
-        pointer.style.left = 'calc(10% + 5px)';
-    }
 
-//
-// Move the tooltip and its pointer if they're off-screen LHS
-//
-//NB but only if the LHS checking was negative
-//
-} else if ( (parseInt(tooltipObj.style.left) + parseInt(tooltipObj.offsetWidth)) > document.body.offsetWidth) {
-    var left  = parseInt(tooltipObj.style.left);
-    var width = parseInt(tooltipObj.style.width)
-    
-    left = left - (width * 0.1 * 4);
-    
-    tooltipObj.style.left = left + 'px';
-    var pointer = document.getElementById('RGraph_tooltipsPointer');
 
-    if (pointer) {
-        pointer.style.left = 'calc(90% - 5px)';
-    }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+        //
+        // Move the tooltip and its pointer if they're off-screen LHS
+        //
+        if (parseInt(tooltipObj.style.left) < 0) {
+            var left  = parseInt(tooltipObj.style.left);
+            var width = parseInt(tooltipObj.style.width)
+            
+            left = left + (width * 0.1 * 4);
+            
+            tooltipObj.style.left = left + 'px';
+            var pointer = document.getElementById('RGraph_tooltipsPointer');
+            
+            if (pointer) {
+                pointer.style.left = 'calc(10% + 5px)';
+            }
+        
+        //
+        // Move the tooltip and its pointer if they're off-screen RHS
+        //
+        //NB but only if the LHS checking was negative
+        //
+        } else if ( (parseInt(tooltipObj.style.left) + parseInt(tooltipObj.offsetWidth)) > document.body.offsetWidth) {
+            var left  = parseInt(tooltipObj.style.left);
+            var width = parseInt(tooltipObj.style.width)
+            
+            left = left - (width * 0.1 * 4);
+            
+            tooltipObj.style.left = left + 'px';
+            var pointer = document.getElementById('RGraph_tooltipsPointer');
+        
+            if (pointer) {
+                pointer.style.left = 'calc(90% - 5px)';
+            }
+        }
+
+
+
+
+
+
+
+
 
 
 
@@ -968,10 +990,7 @@ if (parseInt(tooltipObj.style.left) < 0) {
         // If the canvas has fixed positioning then set the tooltip position to
         // fixed too
         if (RGraph.isFixed(args.object.canvas)) {
-            var scrollTop = window.scrollY || document.documentElement.scrollTop;
-
             tooltipObj.style.position = 'fixed';
-            tooltipObj.style.top = args.event.pageY - scrollTop - height - 10 + args.object.properties.tooltipsOffsety + 'px';
         }
         
         
