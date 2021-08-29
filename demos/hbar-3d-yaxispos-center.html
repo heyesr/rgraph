@@ -29,14 +29,16 @@
             id: 'cvs',
             data: [[1,7],[1,2],[5,4],[7,null],[-4,-3],[-8,-8],[4,6]],
             options: {
+                variant: '3d',
+                yaxisPosition: 'center',
+                tooltips: '<span style="font-size: 20pt"><b><i>%{property:names[%{index}]}</i></b> on %{property:yaxisLabels[%{dataset}]}: %{value}ppm</span>',
+                tooltipsOffsety: 10,
                 names:['Richard','Fred'],
                 colors: [
                     'gray',
                     '#bbb'
                 ],
                 grouping: 'grouped',
-                yaxisPosition: 'center',
-                variant: '3d',
                 marginLeft: 100,
                 //shadow: true,
                 //shadowOffsety:  5,
@@ -46,10 +48,9 @@
                 marginInner: 10,
                 xaxis: false,
                 yaxis: false,
-                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                tooltips: '<span style="font-size: 20pt"><b><i>%{property:names[%{index}]}</i></b> on %{property:yaxisLabels[%{dataset}]}: %{value}ppm</span>'
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
             }
-        }).grow();
+        }).draw();
     </script>
     
     
