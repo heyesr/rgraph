@@ -2111,7 +2111,7 @@ this.context.lineTo(
                     if (properties.corners === 'round') {
                         this.roundedCornersRect(shape.x,shape.y,shape.width,shape.height);
                     } else {
-                        this.context.rect(shape.x, shape,y, shape.width, shape.height);
+                        this.context.rect(shape.x, shape.y, shape.width, shape.height);
                     }
 
                     this.context.stroke();
@@ -3409,13 +3409,12 @@ this.context.lineTo(
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
-
+            var obj        = args.object,
+                e          = args.event,
+                tooltip    = args.tooltip,
+                index      = args.index,
+                canvasXY   = RGraph.getCanvasXY(obj.canvas)
+                coords     = this.coords[args.index];
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
@@ -3444,7 +3443,7 @@ this.context.lineTo(
                 
                 var adjustment = Math.tan(angle) * left;
             
-                args.tooltip.style.top = parseInt(args.tooltip.style.top) + adjustment - (properties.textAccessible ? 35 : 5) + 'px';
+                args.tooltip.style.top = parseInt(args.tooltip.style.top) + adjustment - 5 + 'px';
             }
 
 
@@ -3460,9 +3459,9 @@ this.context.lineTo(
             
             // If the top of the tooltip is off the top of the page
             // then move the tooltip down
-            if(parseFloat(args.tooltip.style.top) < 0) {
-                args.tooltip.style.top = 5 + 'px';
-            }
+            //if(parseFloat(args.tooltip.style.top) < 0) {
+                //args.tooltip.style.top = 5 + 'px';
+            //}
         };
 
 
