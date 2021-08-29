@@ -570,11 +570,11 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas);
+            var obj        = args.object,
+                e          = args.event,
+                tooltip    = args.tooltip,
+                index      = args.index,
+                canvasXY   = RGraph.getCanvasXY(obj.canvas);
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
