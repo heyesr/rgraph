@@ -1403,10 +1403,10 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
         //
         this.highlight = function (rect)
         {
-            var x      = rect.getAttribute('x'),
-                y      = rect.getAttribute('y'),
-                width  = rect.getAttribute('width'),
-                height = rect.getAttribute('height');
+            var x      = parseFloat(rect.getAttribute('x')) - 0.5,
+                y      = parseFloat(rect.getAttribute('y')) - 0.5,
+                width  = parseFloat(rect.getAttribute('width')) + 1,
+                height = parseFloat(rect.getAttribute('height')) + 1;
             
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
