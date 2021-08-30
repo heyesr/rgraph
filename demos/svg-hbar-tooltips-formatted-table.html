@@ -40,31 +40,30 @@
 
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
 
-    <title>RGraph demo: An SVG Line chart showing the new (version 5.25) formatted tooltips table feature</title>
-    <meta name="description" content="An SVG Line chart showing the new (version 5.25) formatted tooltips table feature" />
+    <title>RGraph demo: An SVG HBar chart showing the new (version 5.25) formatted tooltips table feature</title>
+    <meta name="description" content="An SVG HBar chart showing the new (version 5.25) formatted tooltips table feature" />
 
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
 
 
-    <h1>An SVG Line chart showing the new (version 5.25) formatted tooltips table feature</h1>
+    <h1>An SVG HBar chart showing the new (version 5.25) formatted tooltips table feature</h1>
     
     <div id="cc" style="width: 650px; height: 250px;"></div>
 
 
 
     <script>
-        new RGraph.SVG.Line({
+        new RGraph.SVG.HBar({
             id: 'cc',
             data: [4,8,6,4,3,9,8],
             options: {
 
                 tooltips: '<h2>Results for %{prop:days[%{index}]}</h2> %{table}',
-                tooltipsEffect: 'none',
                 tooltipsPointer: false,
                 tooltipsPositionStatic: false,
                 tooltipsCss: {
@@ -138,8 +137,7 @@
                 ],
 
                 // The rest of the chart configuration
-                marginInner: 25,
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 days: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 16,
                 backgroundGridVlines: false,
@@ -149,7 +147,7 @@
                 title: 'A demonstration of tooltip tables',
                 titleBold: true
             }
-        }).trace();
+        }).wave();
     </script>
 
 
