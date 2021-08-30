@@ -768,10 +768,10 @@
 
                         this.path(
                             'b m % % l % % l % % l % % c s % f %',
-                            coords[0], coords[1],
-                            coords[2], coords[3],
-                            coords[4], coords[5],
-                            coords[6], coords[7],
+                            coords[0] - 0.5, coords[1] - 0.5,
+                            coords[2] + 0.5, coords[3] - 0.5,
+                            coords[4] + 0.5, coords[5] + 0.5,
+                            coords[6] - 0.5, coords[7] + 0.5,
                             properties.highlightStroke,
                             properties.highlightFill
                         );
@@ -787,10 +787,10 @@
                 
                 this.path(
                     'b m % % l % % l % % l % % c s % f %',
-                    coords[0], coords[1],
-                    coords[2], coords[3],
-                    coords[4], coords[5],
-                    coords[6], coords[7],
+                    coords[0] - 0.5, coords[1] - 0.5,
+                    coords[2] + 0.5, coords[3] - 0.5,
+                    coords[4] + 0.5, coords[5] + 0.5,
+                    coords[6] - 0.5, coords[7] + 0.5,
                     properties.highlightStroke,
                     properties.highlightFill
                 );
@@ -981,10 +981,10 @@
                 this.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
                 
                 this.context.beginPath();
-                    this.context.moveTo(coords[0], coords[1]);
-                    this.context.lineTo(coords[2], coords[3]);
-                    this.context.lineTo(coords[4], coords[5]);
-                    this.context.lineTo(coords[6], coords[7]);
+                    this.context.moveTo(coords[0] - 0.5, coords[1] - 0.5);
+                    this.context.lineTo(coords[2] + 0.5, coords[3] - 0.5);
+                    this.context.lineTo(coords[4] + 0.5, coords[5] + 0.5);
+                    this.context.lineTo(coords[6] - 0.5, coords[7] + 0.5);
                 this.context.closePath();
                 this.context.fill();
                 this.context.stroke();
