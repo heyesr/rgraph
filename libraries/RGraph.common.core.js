@@ -3844,28 +3844,20 @@
     //                      o indent
     //                      o count
     //
-    RGraph.pr = function ()
+    RGraph.pr = function (obj)
     {
         var args = RGraph.getArgs(arguments, 'object,alert,indent,counter');
+
         var indent = (args.indent ? args.indent : '    ');
         var str    = '';
-        
-        // A recursion count
-        if (!RGraph.pr.counter) {
-            RGraph.pr.counter = 1;
-        } else if (RGraph.pr.counter >= 3) {
-            return;
-        }
-        
-        RGraph.pr.counter++;
 
         var counter = typeof args.counter == 'number' ? args.counter : 0;
         
-        if (counter >= 6) {
+        if (counter >= 3) {
             return '';
         }
-        
-        switch (typeof args.object) {
+
+        switch (typeof obj) {
             
             case 'string':    str += args.object + ' (' + (typeof args.object) + ', ' + args.object.length + ')'; break;
             case 'number':    str += args.object + ' (' + (typeof args.object) + ')'; break;
@@ -3877,10 +3869,10 @@
             case 'object':
                 // In case of null
                 if (RGraph.isNull(args.object)) {
-                    str += indent + 'null\n';
+                    str += 'null';
                 } else {
-                    str += indent + 'Object {' + '\n'
-                    for (var j in args.object) {
+                    str += 'Object {' + '\n'
+                    for (var j in obj) {
                         str += indent + '    ' + j + ' => ' + RGraph.pr(args.object[j], true, indent + '    ', counter + 1) + '\n';
                     }
                     str += indent + '}';
@@ -3889,15 +3881,15 @@
             
             
             default:
-                str += 'Unknown type: ' + typeof obj + '';
+                str += 'Unknown type: ' + typeof args.object + '';
                 break;
         }
 
 
-        //
-        // Finished, now either return if we're in a recursed call, or alert()
-        // if we're not.
-        //
+        /**
+        * Finished, now either return if we're in a recursed call, or alert()
+        * if we're not.
+        */
         if (!args.alert) {
             alert(str);
         }
