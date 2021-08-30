@@ -5381,10 +5381,10 @@
                 args.object.context.fillStyle   = properties.highlightFill;
 
                 args.object.context.rect(
-                    args.shape.x,
-                    args.shape.y,
-                    args.shape.width,
-                    args.shape.height
+                    args.shape.x - 0.5,
+                    args.shape.y - 0.5,
+                    args.shape.width + 1,
+                    args.shape.height + 1
                 );
                 //obj.context.fillRect(shape.x,shape.y,shape.width,shape.height);
             args.object.context.stroke();
