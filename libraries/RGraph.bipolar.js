@@ -538,6 +538,13 @@
             return this;
         };
 
+
+
+
+
+
+
+
         //
         // Redraws 3D faces of bars so they look OK
         //
@@ -592,19 +599,42 @@
                 // RIGHT HAND SIDE BARS //
 
 
-
+                var offsetx = properties.variantThreedOffsetx,
+                    offsety = properties.variantThreedOffsety;
 
                 // A regular chart
                 if (this.coordsRight.length > 0 && this.coords2Right.length === 0) {
 
                     for (var i=0; i<this.coordsRight.length; ++i) {
+                        
+                        var coords  = this.coordsRight[i];
+                        
                         this.path(
                             'b r % % % % f %',
-                            this.coordsRight[i][0],
-                            this.coordsRight[i][1],
-                            this.coordsRight[i][2],
-                            this.coordsRight[i][3],
+                            coords[0], coords[1], coords[2], coords[3],
                             properties.colors[0]
+                        );
+
+    
+                        // Draw the right hand side in the regular color
+                        this.path(
+                            'b m % % l % % l % % l % % f %',
+                            coords[0] + coords[2], coords[1],
+                            coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                            coords[0] + coords[2] + offsetx, coords[1] - offsety + coords[3],
+                            coords[0] + coords[2], coords[1] + coords[3],
+                            properties.colors[0]
+                        );
+
+    
+                        // Add the darker tint over thes top of the face to darken it
+                        this.path(
+                            'b m % % l % % l % % l % % f %',
+                            coords[0] + coords[2], coords[1],
+                            coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                            coords[0] + coords[2] + offsetx, coords[1] - offsety + coords[3],
+                            coords[0] + coords[2], coords[1] + coords[3],
+                            'rgba(0,0,0,0.3)'
                         );
                     }
                 
@@ -613,13 +643,34 @@
                     
                     for (var i=0; i<this.coords2Right.length; ++i) {
                         for (var j=0; j<this.coords2Right[i].length; ++j) {
+                        
+                            var coords = this.coords2Right[i][j];
+
                             this.path(
                                 'b r % % % % f %',
-                                this.coords2Right[i][j][0],
-                                this.coords2Right[i][j][1],
-                                this.coords2Right[i][j][2],
-                                this.coords2Right[i][j][3],
+                                coords[0], coords[1], coords[2], coords[3],
                                 properties.colors[j]
+                            );
+
+                            // Draw the right hand side in the regular color
+                            this.path(
+                                'b m % % l % % l % % l % % f %',
+                                coords[0] + coords[2],coords[1],
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety + coords[3],
+                                coords[0] + coords[2], coords[1] + coords[3],
+                                properties.colors[j]
+                            );
+
+        
+                            // Add the darker tint over thes top of the face to darken it
+                            this.path(
+                                'b m % % l % % l % % l % % f %',
+                                coords[0] + coords[2], coords[1],
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety + coords[3],
+                                coords[0] + coords[2], coords[1] + coords[3],
+                                'rgba(0,0,0,0.3)'
                             );
                         }
                     }
@@ -1642,7 +1693,7 @@
                                 color
                             );
         
-        
+
                             // Draw the right hand side
                             this.path(
                                 'b m % % l % % l % % l % % f %',
@@ -2671,7 +2722,7 @@
                     if (i !== shape.sequentialIndex) {
                         this.path(
                             'b r % % % % s % f %',
-                            this.coords[i][0],this.coords[i][1],this.coords[i][2],this.coords[i][3],
+                            this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
                             properties.highlightStroke,
                             properties.highlightFill
                         );
