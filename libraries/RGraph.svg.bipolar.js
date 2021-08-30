@@ -2122,10 +2122,10 @@
         //
         this.highlight = function (rect)
         {
-            var x      = parseInt(rect.getAttribute('x')),
-                y      = parseInt(rect.getAttribute('y')),
-                width  = parseInt(rect.getAttribute('width')),
-                height = parseInt(rect.getAttribute('height'));
+            var x      = parseFloat(rect.getAttribute('x')) - 0.5,
+                y      = parseFloat(rect.getAttribute('y')) - 0.5,
+                width  = parseFloat(rect.getAttribute('width')) + 1,
+                height = parseFloat(rect.getAttribute('height')) + 1;
 
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
@@ -2135,10 +2135,10 @@
                     'stroke-width': properties.highlightLinewidth,
                     stroke:         properties.highlightStroke,
                     fill:           properties.highlightFill,
-                    x:              x - 1,
-                    y:              y - 1,
-                    width:          width + 2,
-                    height:         height + 2
+                    x:              x,
+                    y:              y,
+                    width:          width,
+                    height:         height
                 },
                 style: {
                     pointerEvents: 'none'
