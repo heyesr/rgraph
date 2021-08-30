@@ -2439,10 +2439,10 @@ this.context.lineTo(
             {
                 if (typeof value[index] == 'object' && value[index]) {
 
-                    var x = value[index][0]
-                    var y = value[index][1]
-                    var w = value[index][2]
-                    var h = value[index][3]
+                    var x = value[index][0] - 0.5,
+                        y = value[index][1] - 0.5,
+                        w = value[index][2] + 1,
+                        h = value[index][3] + 1;
 
                     obj.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
                     obj.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
