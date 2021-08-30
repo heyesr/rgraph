@@ -926,7 +926,7 @@
                         this.path(
                             'b lw % r % % % % s % f %',
                             properties.highlightLinewidth,
-                            this.coords[i][0] + 1,this.coords[i][1],this.coords[i][2],this.coords[i][3],
+                            this.coords[i][0] - 0.5,this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
                             properties.highlightStroke,
                             properties.highlightFill
                         );
@@ -938,10 +938,10 @@
                 this.path('lw %', properties.highlightLinewidth);
 
                 this.drawCurvedBar({
-                    x:      shape.x,
-                    y:      shape.y,
-                    width:  shape.width,
-                    height: shape.height,
+                    x:      shape.x - 0.5,
+                    y:      shape.y - 0.5,
+                    width:  shape.width + 1,
+                    height: shape.height + 1,
                     stroke: properties.highlightStroke,
                     fill:   properties.highlightFill
                 });
@@ -1406,12 +1406,12 @@
                 this.context.lineWidth   = 2;
                 this.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
 
-                this.context.rect(coords[0], coords[1], coords[2], coords[3]);
+                this.context.rect(coords[0] - 0.5, coords[1] - 0.5, coords[2] + 1, coords[3] + 1);
             this.context.fill();
             this.context.stroke();
             
             // Reset the linewidth
-            this.context.lineWidth    = 1;
+            this.context.lineWidth = 1;
         };
 
 
