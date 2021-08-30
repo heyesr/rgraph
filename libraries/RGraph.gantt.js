@@ -869,7 +869,7 @@
                     if (i !== shape.sequentialIndex) {
                         this.path(
                             'b r % % % % s % f %',
-                            this.coords[i][0],this.coords[i][1],this.coords[i][2],this.coords[i][3],
+                            this.coords[i][0] - 0.5,this.coords[i][1] - 0.5,this.coords[i][2] + 1, this.coords[i][3] + 1,
                             properties.highlightStroke,
                             properties.highlightFill
                         );
