@@ -4214,6 +4214,9 @@
             var svg = div.__svg__;
         }
 
+        // Get rid of this reference
+        svg.parentNode.__svg__ = null;
+
         RGraph.SVG.clear(svg);
 
         // Make sure every element is removed from the SVG tag
@@ -4223,6 +4226,8 @@
 
         // Remove the SVG tag from the ObjectRegistry
         RGraph.SVG.OR.clear(svg);
+        
+        
     };
 
 
