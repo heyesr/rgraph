@@ -4227,7 +4227,8 @@
         // Remove the SVG tag from the ObjectRegistry
         RGraph.SVG.OR.clear(svg);
         
-        
+        // Get rid of the SVG tag itself
+        svg.parentNode.removeChild(svg);
     };
 
 
