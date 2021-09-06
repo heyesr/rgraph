@@ -249,6 +249,8 @@
             textItalic: false,
 
             linewidth: 1,
+            linejoin: 'round',
+            linecap: 'round',
 
             tooltips:                        null,
             tooltipsOverride:                null,
@@ -1100,8 +1102,8 @@
                         'fill':'none',
                         'stroke-width':  this.hasMultipleDatasets && properties.filled && properties.filledAccumulative ? 0.1 : (RGraph.SVG.isArray(properties.linewidth) ? properties.linewidth[index] : properties.linewidth + 0.01),
                         'stroke-dasharray': properties.dasharray,
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
+                        'stroke-linecap': this.getLinecap({index: index}),
+                        'stroke-linejoin': this.getLinejoin({index: index}),
                         filter: properties.shadow ? 'url(#dropShadow)' : '',
                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
@@ -1132,8 +1134,8 @@
                         'fill':'none',
                         'stroke-dasharray': properties.dasharray,
                         'stroke-width': this.hasMultipleDatasets && properties.filled && properties.filledAccumulative ? 0.1 : (RGraph.SVG.isArray(properties.linewidth) ? properties.linewidth[index]: properties.linewidth + 0.01),
-                        'stroke-linecap': 'round',
-                        'stroke-linejoin': 'round',
+                        'stroke-linecap': this.getLinecap({index: index}),
+                        'stroke-linejoin': this.getLinejoin({index: index}),
                         filter: properties.shadow ? 'url(#dropShadow)' : '',
                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
@@ -1491,8 +1493,8 @@
                             'fill':'none',
                             'stroke-dasharray': properties.dasharray,
                             'stroke-width':  linewidth + 0.01,
-                            'stroke-linecap': 'round',
-                            'stroke-linejoin': 'round',
+                            'stroke-linecap': this.getLinecap({index: i}),
+                            'stroke-linejoin': this.getLinejoin({index: i}),
                             filter: properties.shadow ? 'url(#dropShadow)' : '',
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
@@ -1552,8 +1554,8 @@
                             'fill':'none',
                             'stroke-dasharray': properties.dasharray,
                             'stroke-width':  linewidth + 0.01,
-                            'stroke-linecap': 'round',
-                            'stroke-linejoin': 'round',
+                            'stroke-linecap': this.getLinecap({index: i}),
+                            'stroke-linejoin': this.getLinejoin({index: i}),
                             filter: properties.shadow ? 'url(#dropshadow)' : '',
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
@@ -2483,8 +2485,8 @@
                                 'fill': 'transparent',
                                 'stroke-dasharray': properties.nullBridgeDashArray,
                                 'stroke-width':  typeof properties.nullBridgeLinewidth === 'number' ? properties.nullBridgeLinewidth : properties.linewidth,
-                                'stroke-linecap': 'round',
-                                'stroke-linejoin': 'round',
+                                'stroke-linecap': this.getLinecap({index: i}),
+                                'stroke-linejoin': this.getLinejoin({index: i}),
                                 'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                             }
                         });
@@ -2497,6 +2499,54 @@
                         break;
                     }
                 }
+            }
+        };
+
+
+
+
+
+
+        //
+        // Sets the linecap style
+        // Not always very noticeable, but these do have an effect
+        // with thick lines
+        //
+        // butt square round
+        //
+        this.getLinecap = function (opt)
+        {
+            if (typeof properties.linecap === 'object' && typeof properties.linecap[opt.index] === 'string') {
+                return properties.linecap[opt.index];
+            
+            } else if ( typeof properties.linecap === 'string' ) {
+                return properties.linecap;
+            
+            } else {
+                return 'round';
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Sets the linejoin style
+        //
+        // round miter bevel
+        //
+        this.getLinejoin = function (opt)
+        {
+            if (typeof properties.linejoin === 'object' && typeof properties.linejoin[opt.index] === 'string') {
+                return properties.linejoin[opt.index];
+            } else if ( typeof properties.linejoin === 'string' ) {
+                return properties.linejoin;
+            } else {
+                return 'round';
             }
         };
         
