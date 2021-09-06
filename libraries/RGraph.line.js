@@ -4097,7 +4097,12 @@
                 }
             }
         };
-        
+
+
+
+
+
+
         //
         // Sets the linecap style
         // Not always very noticeable, but these do have an effect
