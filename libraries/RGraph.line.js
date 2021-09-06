@@ -175,6 +175,8 @@
             labelsAboveOffsety:        0,
 
             linewidth:                  2.001,
+            linecap:                    'round',
+            linejoin:                   'round',
 
             colors:                     ['red', '#0f0', '#00f', '#f0f', '#ff0', '#0ff','green','pink','blue','black'],
             
@@ -1162,6 +1164,9 @@
             if (index > 0) {
                 var prevLineCoords = this.coords2[index - 1];
             }
+            
+            this.setLinecap({index: index});
+            this.setLinejoin({index: index});
 
 
             // Work out the X interval
@@ -1188,11 +1193,11 @@
                     yPos = null;
                 }
 
-                // Not always very noticeable, but it does have an effect
-                // with thick lines
-                this.context.lineCap  = 'round';
-                this.context.lineJoin = 'round';
-    
+
+
+
+
+
                 // Plot the line if we're at least on the second iteration
                 if (i > 0) {
                     xPos = xPos + xInterval;
@@ -1953,6 +1958,8 @@
                 return;
             }
 
+            this.setLinejoin({index: index});
+            this.setLinecap({index: index});
 
             this.context.beginPath();
     
@@ -4090,6 +4097,53 @@
                 }
             }
         };
+        
+        //
+        // Sets the linecap style
+        // Not always very noticeable, but these do have an effect
+        // with thick lines
+        //
+        // butt square round
+        //
+        this.setLinecap = function ()
+        {
+            var args = RGraph.getArgs(arguments, 'index');
+
+            if (RGraph.isArray(properties.linecap) && RGraph.isString(properties.linecap[args.index])) {
+                this.context.lineCap =  properties.linecap[args.index];
+            
+            } else if ( RGraph.isString(properties.linecap) ) {
+                this.context.lineCap =  properties.linecap;
+            } else {
+                this.context.lineCap = 'round';
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Sets the linejoin style
+        //
+        // round miter bevel
+        //
+        this.setLinejoin = function ()
+        {
+            var args = RGraph.getArgs(arguments, 'index');
+
+            if (RGraph.isArray(properties.linejoin) && RGraph.isString(properties.linejoin[args.index])) {
+                this.context.lineJoin = properties.linejoin[args.index];
+            } else if ( RGraph.isString(properties.linejoin) ) {
+                this.context.lineJoin =  properties.linejoin;
+            } else {
+                this.context.lineJoin = 'round';
+            }
+        };
+
 
 
 
