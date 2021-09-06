@@ -6140,7 +6140,7 @@
     //
     // @param mixed obj The variable to test
     //
-    RGraph.isArray =function ()
+    RGraph.isArray = function ()
     {
         var args = RGraph.getArgs(arguments, 'object');
 
@@ -8911,7 +8911,7 @@
     RGraph.isBool      =
     RGraph.isBoolean   = function (obj){return typeof obj === 'boolean';};
     //RGraph.isArray Defined above
-    RGraph.isObject    = function (obj){return typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0;};
+    RGraph.isObject    = function(obj){return (obj && typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0) ? true : false;};
     //RGraph.isNull  Defined above
     RGraph.isFunction  = function (obj){return typeof obj === 'function';};
     RGraph.isUndefined = function (obj){return typeof obj === 'undefined';};
