@@ -318,10 +318,34 @@
         this.row =
         this.getRow = function (index)
         {
-            var row   = [],
-                start = parseInt(arguments[1]) || 0;
+            var row    = [],
+                start  = parseInt(arguments[1]) || 0,
+                length = arguments[2];
 
-            row = this.data[index].slice(start);
+            if (start < 0) {
+                row = this.data[index].slice(this.data[index].length  - Math.abs(start));
+            } else {
+                row = this.data[index].slice(start);
+            }
+
+            // Zero length
+            if (typeof length === 'number' && length === 0) {
+                row = [];
+
+            }  else {
+                // Positive length
+                if (typeof length === 'number' && length > 0) {
+                    row = row.slice(0, length)
+                
+                // Negative length
+                } else if (typeof length === 'number' && length < 0) {
+                    for (var i=0; i<Math.abs(length); ++i) {
+                        row.pop();
+                    }
+                }
+            }
+            
+            
 
             return row;
         };
@@ -334,27 +358,53 @@
 
 
         //
-        // Returns a column of the CSV file
-        // 
-        // @param number index The index of the column to fetch
-        // @param        start OPTIONAL If desired you can specify a row to start at (which starts at 0 by default)
+        // This fuunction allows you to fetch a column
+        // of the HTML table data.
         //
-        this.col =
-        this.column =
-        this.getCol =
-        this.getColumn = function (index)
+        this.col       =
+        this.column    =
+        this.getColumn =
+        this.getCol    = function (index)
         {
-            var col   = [],
-                start = arguments[1] || 0;
+            var col    = [],
+                start  = arguments[1] || 0,
+                length = arguments[2];
 
-            for (var i=start; i<this.data.length; i+=1) {
-                if (this.data[i] && this.data[i][index]) {
-                    col.push(this.data[i][index]);
-                } else {
-                    col.push(null);
+            if (start >= 0) {
+                for (var i=start; i<this.data.length; i+=1) {
+                    if (this.data[i]) {
+                        col.push(this.data[i][index]);
+                    } else {
+                        col.push(null);
+                    }
+                }
+            } else {
+                for (var i=(this.data.length - Math.abs(start)); i<this.data.length; i+=1) {
+                    if (this.data[i]) {
+                        col.push(this.data[i][index]);
+                    } else {
+                        col.push(null);
+                    }
                 }
             }
-            
+
+            // Zero length
+            if (typeof length === 'number' && length === 0) {
+                col = [];
+
+            }  else {
+                // Positive length
+                if (typeof length === 'number' && length > 0) {
+                    col = col.slice(0, length)
+                
+                // Negative length
+                } else if (typeof length === 'number' && length < 0) {
+                    for (var i=0; i<Math.abs(length); ++i) {
+                        col.pop();
+                    }
+                }
+            }
+
             return col;
         };
 
