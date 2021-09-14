@@ -34,10 +34,10 @@
         new RGraph.CSV({url: '/sample.csv', callback: function (csv)
         {
             // Fetch the labels from the CSV file (the first column)
-            var labels = csv.getCol(0);
+            var labels = csv.column(0);
 
             // Fetch the second column of the CSV file
-            var data = csv.getCol(1);
+            var data = csv.column(1);
 
             var pie = new RGraph.Pie({
                 id: 'cvs',

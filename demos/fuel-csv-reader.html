@@ -36,7 +36,7 @@
     <script>
         new RGraph.CSV({url: '/sample.csv', callback: function (csv)
         {
-            var row   = csv.getRow(0),
+            var row   = csv.row(0),
                 value = row[1]; // The first cell is a label
 
             // Get the data and create the Fuel chart

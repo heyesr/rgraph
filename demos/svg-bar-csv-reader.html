@@ -29,13 +29,14 @@
     <script>
         new RGraph.CSV('/sample.csv', function (csv)
         {
-            var data = csv.getRow(0).slice(1,7),
-                labels = csv.getCol(0);
+            var data = csv.row(0).slice(1,7),
+                labels = csv.column(0);
 
             var bar = new RGraph.SVG.Bar({
                 id: 'chart-container',
                 data: data,
                 options: {
+                    marginInner: 15,
                     xaxis: false,
                     yaxis: false,
                     xaxisLabels: labels,

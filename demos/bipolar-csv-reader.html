@@ -34,9 +34,9 @@ w<!DOCTYPE html >
         new RGraph.CSV({url: '/sample.csv', callback: function (csv)
         {
             // Fetch the first three columns to use as labels and the left/right data
-            var labels = csv.getCol(0),
-                left   = csv.getCol(1),
-                right  = csv.getCol(2);
+            var labels = csv.column(0),
+                left   = csv.column(1),
+                right  = csv.column(2);
             
             var bipolar = new RGraph.Bipolar({
                 id: 'cvs',

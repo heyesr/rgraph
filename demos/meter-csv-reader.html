@@ -34,7 +34,7 @@
         new RGraph.CSV({url: '/sample.csv', callback: function (csv)
         {
             // Just fetch the first row of the CSV file
-            var row = csv.getRow(0);
+            var row = csv.row(0);
             
             new RGraph.Meter({
                 id: 'cvs',

@@ -42,13 +42,13 @@
             var data = [];
 
             // The first column is the labels
-            var labels = csv.getCol(0);
+            var labels = csv.column(0);
 
             // This is the number of rows in the CSV file
             var numrows = csv.numrows;
             
             for (var i=0; i<numrows; i+=1) {
-                data.push(csv.getRow(i, 1));
+                data.push(csv.row(i, 1));
             }
             
             new RGraph.Rose({

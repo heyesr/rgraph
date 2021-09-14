@@ -34,8 +34,8 @@
         {
             // Fetch the first row of the CSV file, starting at the second
             // column
-            row1 = csv.getRow(0, 1);
-            row2 = csv.getRow(1, 1);
+            row1 = csv.row(0, 1);
+            row2 = csv.row(1, 1);
             data = [];
             
             for (var i=0; i<row1.length; i+=1) {

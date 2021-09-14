@@ -56,12 +56,12 @@
             /**
             * Fetch the first row of the CSV file, starting at the second column
             */
-            var data = csv.getRow(0, 1);
+            var data = csv.row(0, 1);
             
             /**
             * Fetch the first column which become the labels
             */
-            var labels = csv.getCol(0)
+            var labels = csv.column(0)
                 labels.push('Fred')
 
 

@@ -47,7 +47,7 @@
         The data that's being fetched is done with this line-of-code:
     </p>
     
-    <pre class="code">var data = csv.getCol(2);</pre>
+    <pre class="code">var data = csv.column(2);</pre>
     
     <p>
         And what that does is fetch the whole of the third column (counting starts at zero). This column
@@ -55,7 +55,7 @@
         coded but they could quite easily be fetched from the first column of the CSV like this:
     </p>
     
-    <pre class="code">var labels = csv.getCol(0);</pre>
+    <pre class="code">var labels = csv.column(0);</pre>
     
     <p>
         The <code>responsive()</code> function reduces the size of the canvas tag, reduces the size of the text
@@ -72,7 +72,7 @@
         new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the third column from the CSV file (the numbering is zero-indexed)
-            var data = csv.getCol(2);
+            var data = csv.column(2);
 
             // Create the Line chart and give it the data that we just got from the
             // CSV file along with some hard-coded X axis labels.

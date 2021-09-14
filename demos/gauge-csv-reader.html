@@ -37,8 +37,8 @@
     <script>
         new RGraph.CSV({url: '/sample.csv', callback: function (csv)
         {
-            // Fetch the the first row, 
-            var row = csv.getRow(0, 1);
+            // Fetch the the first number on the first row, 
+            var row = csv.row(0, 1, 1);
 
             var gauge = new RGraph.Gauge({
                 id: 'cvs',

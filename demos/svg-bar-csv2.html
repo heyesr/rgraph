@@ -56,8 +56,8 @@
         
             for (var i=0; i<numrows; ++i) {
                 
-                var row   = csv.getRow(i, 1).slice(0,3);
-                var label = csv.getRow(i).slice(0,1)[0];
+                var row   = csv.row(i, 1).slice(0,3);
+                var label = csv.row(i).slice(0,1)[0];
 
                 rows.push(row);
                 labels.push(label);
