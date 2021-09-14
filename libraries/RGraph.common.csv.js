@@ -33,7 +33,7 @@
         httpRequest.onreadystatechange = function ()
         {
             if (this.readyState == 4 && this.status == 200) {
-                this.__user_callback__ = callback;
+                this.__user_callback__ = args.callback;
 
                 this.__user_callback__(this.responseText);
             }
@@ -82,6 +82,57 @@
             var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         });
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function allows both object based arguments to functions
+    // and also regular arguments as well.
+    //
+    // You can call it from inside a function like this:
+    //
+    // args = RGraph.HTMLTable.getArgs(arguments, 'object,id,foo,bar');
+    //
+    // So you're passing it the arguments object and a comma seperated list of names
+    // for the arguments.
+    //
+    // @param array args   The arguments object that you get when inside a function
+    // @param string names A comma seperated list of desired names for the arguments
+    //                     eg: 'object,color,size'
+    //
+    if (!RGraph.getArgs) RGraph.getArgs = function (args, names)
+    {
+        var ret   = {};
+        var count = 0;
+        names     = names.trim().split(/ *, */);
+
+        if (   args
+            && args[0]
+            && args.length === 1
+            && typeof args[0][names[0]] !== 'undefined') {
+            
+            for (var i=0; i<names.length; ++i) {
+                if (typeof args[0][names[i]] === 'undefined') {
+                    args[0][names[i]] = null;
+                }
+            }
+
+            return args[0];
+        } else {
+            for (var i in names) {
+                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
+                
+                count += 1;
+            }
+        }
+
+        return ret;
     };
 
 
