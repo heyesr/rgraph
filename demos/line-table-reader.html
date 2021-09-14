@@ -1,0 +1,235 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.table.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Line chart using imported table data</title>
+    <meta name="description" content="This is a simple example of a chart that uses the HTMLTable import utility." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Line chart using imported table data</h1>
+    
+    <div>
+        <canvas id="cvs" width="750" height="300">[No canvas support]</canvas>
+    </div>
+
+    <p>
+        This is a simple example of a chart that also use the HTMLTable utility.
+    </p>
+
+    <style>
+        table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}        
+        table tr th {padding: 5px;background-color: #ccc;}        
+        table tr:nth-child(1) th:nth-child(1),
+        table tr:nth-child(1) th:nth-child(6) {background-color: white;}
+        table tr th,
+        table tr td {text-align: center;}        
+        table tr:nth-child(2n+1) td {background-color: #eee;}        
+        table tfoot tr td {background-color: #ccc;}        
+        table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}
+    </style>
+
+
+
+
+
+
+
+
+    <table id="myTable">
+        <tr>
+            <th></th>
+            <th>Figure 1</th>
+            <th>Figure 2</th>
+            <th>Figure 3</th>
+            <th>Figure 4</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Richard</td>
+            <td>8</td>
+            <td>45</td>
+            <td>13.58</td>
+            <td>10</td>
+            <td>76.58</td>
+        </tr>
+        <tr>
+            <td>Julie</td>
+            <td>5</td>
+            <td>52</td>
+            <td>45.12</td>
+            <td>10.0</td>
+            <td>76.58</td>
+        </tr>
+        <tr>
+            <td>Gary</td>
+            <td>4</td>
+            <td>35</td>
+            <td>442.2</td>
+            <td>10.00</td>
+            <td>112.12</td>
+        </tr>
+        <tr>
+            <td>David</td>
+            <td>9</td>
+            <td>94</td>
+            <td>93.257</td>
+            <td>10.000</td>
+            <td>204.257</td>
+        </tr>
+        <tr>
+            <td>Charlie</td>
+            <td>6</td>
+            <td>53</td>
+            <td>45.277</td>
+            <td>10.0000</td>
+            <td>304.257</td>
+        </tr>
+        <tr>
+            <td>Jacky</td>
+            <td>1</td>
+            <td>46</td>
+            <td>53.787</td>
+            <td>10.0000</td>
+            <td>104.257</td>
+        </tr>
+        <tr>
+            <td>Nevil</td>
+            <td>8</td>
+            <td>99</td>
+            <td>91.852</td>
+            <td>10.00000</td>
+            <td>351.257</td>
+        </tr>
+    </table>
+
+    <br clear="both" />
+
+
+
+    <script>
+        RGraph.HTMLTable('myTable', function (table)
+        {
+            var bar = new RGraph.Line({
+                id: 'cvs',
+                data: table.column(3, 1),
+                options:{
+                    textSize: 14,
+                    xaxisLabels: table.column(0, 1),
+                    title: 'Statistics for: ' + table.column(3,0,1),
+                    titleBold: true,
+                    titleSize: 16,
+                    marginInner: 25,
+                    linewidth: 15,
+                    spline: true,
+                    xaxis: false,
+                    yaxis: false,
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false
+                }
+            }).trace();
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.table.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="padding: 15px"&gt;
+    &lt;canvas id="cvs" width="750" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+&lt;table id="myTable"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;&lt;/th&gt;
+        &lt;th&gt;Figure 1&lt;/th&gt;
+        &lt;th&gt;Figure 2&lt;/th&gt;
+        &lt;th&gt;Figure 3&lt;/th&gt;
+        &lt;th&gt;Figure 4&lt;/th&gt;
+        &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Richard&lt;/td&gt;
+        &lt;td&gt;8&lt;/td&gt;
+        &lt;td&gt;45&lt;/td&gt;
+        &lt;td&gt;13.58&lt;/td&gt;
+        &lt;td&gt;10&lt;/td&gt;
+        &lt;td&gt;76.58&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Julie&lt;/td&gt;
+        &lt;td&gt;5&lt;/td&gt;
+        &lt;td&gt;52&lt;/td&gt;
+        &lt;td&gt;45.12&lt;/td&gt;
+        &lt;td&gt;10.0&lt;/td&gt;
+        &lt;td&gt;76.58&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Gary&lt;/td&gt;
+        &lt;td&gt;4&lt;/td&gt;
+        &lt;td&gt;35&lt;/td&gt;
+        &lt;td&gt;442.2&lt;/td&gt;
+        &lt;td&gt;10.00&lt;/td&gt;
+        &lt;td&gt;112.12&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;David&lt;/td&gt;
+        &lt;td&gt;9&lt;/td&gt;
+        &lt;td&gt;94&lt;/td&gt;
+        &lt;td&gt;93.257&lt;/td&gt;
+        &lt;td&gt;10.000&lt;/td&gt;
+        &lt;td&gt;204.257&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Charlie&lt;/td&gt;
+        &lt;td&gt;6&lt;/td&gt;
+        &lt;td&gt;53&lt;/td&gt;
+        &lt;td&gt;45.277&lt;/td&gt;
+        &lt;td&gt;10.0000&lt;/td&gt;
+        &lt;td&gt;304.257&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Jacky&lt;/td&gt;
+        &lt;td&gt;1&lt;/td&gt;
+        &lt;td&gt;46&lt;/td&gt;
+        &lt;td&gt;53.787&lt;/td&gt;
+        &lt;td&gt;10.0000&lt;/td&gt;
+        &lt;td&gt;104.257&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;Nevil&lt;/td&gt;
+        &lt;td&gt;8&lt;/td&gt;
+        &lt;td&gt;99&lt;/td&gt;
+        &lt;td&gt;91.852&lt;/td&gt;
+        &lt;td&gt;10.00000&lt;/td&gt;
+        &lt;td&gt;351.257&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
