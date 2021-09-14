@@ -36,7 +36,7 @@
         httpRequest.onreadystatechange = function ()
         {
             if (this.readyState == 4 && this.status == 200) {
-                this.__user_callback__ = callback;
+                this.__user_callback__ = args.callback;
 
                 this.__user_callback__(this.responseText);
             }
