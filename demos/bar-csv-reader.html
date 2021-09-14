@@ -36,28 +36,28 @@
         new RGraph.CSV({url:'/sample.csv', callback: function (csv)
         {
             // Fetch the first row of the CSV file, starting at the second column
-            var data = csv.getRow(0, 1);
+            var data = csv.column(3);
 
             // Fetch the first column which becomes the labels
-            var labels = csv.getCol(0);
-            labels.push('Fred');
+            var labels = csv.column(0);
 
             new RGraph.Bar({
                 id: 'cvs',
                 data: data,
                 options: {
                     xaxisLabels: labels,
+                    xaxisTickmarks: false,
+                    xaxisLinewidth: 2,
                     yaxis: false,
                     shadowOffsetx: 2,
                     shadowOffsety: 2,
                     shadowBlur: 5,
                     marginInner: 15,
-                    backgroundGridVlinesCount: 7,
-                    colors: ['Gradient(#DDF:#01B4FF)'],
-                    linewidth: 2,
-                    colorsStroke: 'white'
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    colors: ['Gradient(#DDF:#01B4FF)']
                 }                    
-            }).draw();
+            }).grow();
         }});
     </script>
 
