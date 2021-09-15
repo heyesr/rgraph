@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>RGraph demo: A basic standalone example of the HTMLTable reader</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <!-- Include the RGraph library -->
+    <script src="../libraries/RGraph.common.table.js" ></script>
+    <script src="demos.js" ></script>
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+
+<body>
+
+    <h1>A basic standalone example of the HTMLTable reader</h1>
+
+    <p>
+        This is a basic example of using the HTMLTable reader. You don't need to add the RGraph common core
+        library to your page to use the HTNMLTable reader.
+    </p>
+
+
+    <style>
+        table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}        
+        table tr th {padding: 5px;background-color: #ccc;}        
+        table tr:nth-child(1) th:nth-child(1),
+        table tr:nth-child(1) th:nth-child(6) {background-color: white;}
+        table tr th,
+        table tr td {text-align: center;}        
+        table tr:nth-child(2n+1) td {background-color: #eee;}        
+        table tfoot tr td {background-color: #ccc;}        
+        table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}
+    </style>
+
+
+
+
+
+
+
+
+    <table id="myTable">
+        <tr>
+            <th></th>
+            <th>Figure 1</th>
+            <th>Figure 2</th>
+            <th>Figure 3</th>
+            <th>Figure 4</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Richard</td>
+            <td>8</td>
+            <td>45</td>
+            <td>13.58</td>
+            <td>10</td>
+            <td>76.58</td>
+        </tr>
+        <tr>
+            <td>Julie</td>
+            <td>5</td>
+            <td>52</td>
+            <td>45.12</td>
+            <td>10.0</td>
+            <td>76.58</td>
+        </tr>
+        <tr>
+            <td>Gary</td>
+            <td>4</td>
+            <td>35</td>
+            <td>442.2</td>
+            <td>10.00</td>
+            <td>112.12</td>
+        </tr>
+        <tr>
+            <td>David</td>
+            <td>9</td>
+            <td>94</td>
+            <td>93.257</td>
+            <td>10.000</td>
+            <td>204.257</td>
+        </tr>
+        <tr>
+            <td>Charlie</td>
+            <td>6</td>
+            <td>53</td>
+            <td>45.277</td>
+            <td>10.0000</td>
+            <td>304.257</td>
+        </tr>
+        <tr>
+            <td>Jacky</td>
+            <td>1</td>
+            <td>46</td>
+            <td>53.787</td>
+            <td>10.0000</td>
+            <td>104.257</td>
+        </tr>
+        <tr>
+            <td>Nevil</td>
+            <td>8</td>
+            <td>99</td>
+            <td>91.852</td>
+            <td>10.00000</td>
+            <td>351.257</td>
+        </tr>
+    </table>
+
+
+    <script>
+        RGraph.HTMLTable('myTable', function (table)
+        {
+            var row = table.row(1);
+            
+            console.log(table.data);
+            
+            alert(row);
+        });
+    </script>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.table.js"&gt;&lt;/script&gt;
+</pre>
+
+    This is the code that generates the chart:
+    <div id="dynamic-source-code"></div>
+    <pre class="code">
+&lt;script&gt;
+    RGraph.HTMLTable('myTable', function (table)
+    {
+        var row = table.row(1);
+        
+        console.log(table.data);
+        
+        alert(row);
+    });
+&lt;/script&gt;
+</pre>
+    
+</body>
+</html>
