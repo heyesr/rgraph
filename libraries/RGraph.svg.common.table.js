@@ -106,11 +106,25 @@
 
 
         //
-        // Parse the HTML table to get the data from it
+        // Parse the HTML table to get the data from it. If the <ID that we've been given is a
+        // string then first convert it to an HTML element using the HTML5 <template> tag
         //
         this.parseTable = function ()
         {
-            var table = doc.getElementById(this.id.replace(/^#/,''));
+            // Allow for string: <table>...</table>
+            if (this.id.substr(0, 7) === 'string:') {
+                
+                this.id = this.id.substr(7);
+                
+                var template       = doc.createElement('template');
+                html               = this.id.trim(); // Never return a text node of whitespace as the result
+                template.innerHTML = html;
+
+                var table = template.content.firstChild;
+            } else {
+                var table = doc.getElementById(this.id.replace(/^#/,''));
+            }
+
             var rows  = table.getElementsByTagName('tr');
 
             // Loop thru the rows
