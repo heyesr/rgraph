@@ -3522,6 +3522,37 @@ this.context.lineTo(
 
 
         //
+        // This function is NOT currently used - it installs an
+        // appropriate clipping region for the lower half of 3D
+        // Bar charts when the X axis is in the middle. It's
+        // used like this:
+        //
+        // this.context.save();
+        //     this.context.install3DAxisClip();
+        //     ...
+        // this.context.restore();
+        //
+        this.install3DAxisClip = function ()
+        {
+            this.path(
+                'b m % % l % % l % % l % % l % % l % % c cl',
+                this.marginLeft, this.getYCoord(0),
+                this.marginLeft, this.canvas.height - this.marginBottom,
+                this.canvas.width - this.marginRight, this.canvas.height - this.marginBottom,
+                this.canvas.width - this.marginRight + this.properties.variantThreedOffsetx, this.canvas.height - this.marginBottom - this.properties.variantThreedOffsety,
+                this.canvas.width - this.marginRight + this.properties.variantThreedOffsetx, this.getYCoord(0) - this.properties.variantThreedOffsety,
+                this.canvas.width - this.marginRight, this.getYCoord(0)
+            );
+        };
+
+
+
+
+
+
+
+
+        //
         // Register the object
         //
         RGraph.register(this);
