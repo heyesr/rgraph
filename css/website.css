@@ -12,7 +12,7 @@ body{font-family:sans-serif;font-size:1.2em;color:#666;line-height:45px;padding-
 
 :target{position:relative;top:-75px;}
 
-div#main-body-container{padding:30px;padding-bottom:5px;padding-top:0;text-align:left;}
+div#main-body-container{padding:20px;padding-bottom:5px;padding-top:0;text-align:left;}
 
 h1{}
 h1,h2,h3,h4{font-family:HeaderFont,sans-serif;line-height:100%;font-size:1.25em;color: black;margin:30px 0 45px 0;}
