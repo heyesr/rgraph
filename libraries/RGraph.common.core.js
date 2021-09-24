@@ -1367,8 +1367,6 @@
 
         // If the getBoundingClientRect function is available - use that
         //
-        // This should be considered beta.
-        //
         if (args.canvas.getBoundingClientRect) {
             
             var rect = args.canvas.getBoundingClientRect();
