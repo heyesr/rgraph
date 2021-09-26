@@ -17,18 +17,18 @@ but as my familiarity with GitHub grows it will become more and more tied to it 
 is intended.
 
 <p align="center">
-  <a href="https://www.rgraph.net/demos/bar-3d-effect-multi-row.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-3d-effect-multi-row.png"       align="left" width="230" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/bar-i-love-my-dog-de-bordeaux.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-i-love-my-dog-de-bordeaux.png" align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/bar-line-switch-effect.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-line-switch-effect.png"        align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/bar-segmented.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-segmented.png"                 align="left" width="250" height="125"/  ></a>
-  <a href="https://www.rgraph.net/demos/line-black-and-purple.html"><img src="https://www.rgraph.net/images/demo-thumbnails/line-black-and-purple.png"         align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/svg-line-nvd.html"><img src="https://www.rgraph.net/images/demo-thumbnails/svg-line-nvd.png"                  align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/bar-rotating-background-dual-canvas.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-rotating-background-dual-canvas.png"        align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/donut-3d.html"><img src="https://www.rgraph.net/images/demo-thumbnails/donut-3d.png"                      align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/donut-segments.html"><img src="https://www.rgraph.net/images/demo-thumbnails/donut-segments.png"                align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/meter-google.html"><img src="https://www.rgraph.net/images/demo-thumbnails/meter-google.png"                align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/effects-line-trace-sequential.html"><img src="https://www.rgraph.net/images/demo-thumbnails/effects-line-trace-sequential.png" align="left" width="250" height="125"/></a>
-  <a href="https://www.rgraph.net/demos/rose-3d.html"><img src="https://www.rgraph.net/images/demo-thumbnails/rose-3d.png"                       align="left" width="250" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/bar-3d-effect-multi-row.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-3d-effect-multi-row.png"       align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/bar-i-love-my-dog-de-bordeaux.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-i-love-my-dog-de-bordeaux.png" align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/bar-line-switch-effect.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-line-switch-effect.png"        align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/bar-segmented.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-segmented.png"                 align="left" width="225" height="125"/  ></a>
+  <a href="https://www.rgraph.net/demos/line-black-and-purple.html"><img src="https://www.rgraph.net/images/demo-thumbnails/line-black-and-purple.png"         align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/svg-line-nvd.html"><img src="https://www.rgraph.net/images/demo-thumbnails/svg-line-nvd.png"                  align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/bar-rotating-background-dual-canvas.html"><img src="https://www.rgraph.net/images/demo-thumbnails/bar-rotating-background-dual-canvas.png"        align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/donut-3d.html"><img src="https://www.rgraph.net/images/demo-thumbnails/donut-3d.png"                      align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/donut-segments.html"><img src="https://www.rgraph.net/images/demo-thumbnails/donut-segments.png"                align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/meter-google.html"><img src="https://www.rgraph.net/images/demo-thumbnails/meter-google.png"                align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/effects-line-trace-sequential.html"><img src="https://www.rgraph.net/images/demo-thumbnails/effects-line-trace-sequential.png" align="left" width="225" height="125"/></a>
+  <a href="https://www.rgraph.net/demos/rose-3d.html"><img src="https://www.rgraph.net/images/demo-thumbnails/rose-3d.png"                       align="left" width="225" height="125"/></a>
 </div>
 
 <br clear="all" />
