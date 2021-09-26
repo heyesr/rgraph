@@ -181,6 +181,22 @@
                 start  = parseInt(arguments[1]) || 0,
                 length = arguments[2];
 
+            // Convert a string based row name to a
+            // numeric index
+            if (RGraph.isString(index)) {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (this.data[i][0] === index) {
+                        var found = true;
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    return null;
+                }
+            }
+
             if (start < 0) {
                 row = this.data[index].slice(this.data[index].length  - Math.abs(start));
             } else {
@@ -228,6 +244,25 @@
             var col    = [],
                 start  = arguments[1] || 0,
                 length = arguments[2];
+
+
+            // Convert a string based column name to a
+            // numeric index
+            if (RGraph.isString(index)) {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (this.data[0][i] === index) {
+                        var found = true;
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    return null;
+                }
+            }
+
+
 
             if (start >= 0) {
                 for (var i=start; i<this.data.length; i+=1) {
