@@ -57,6 +57,12 @@
     {
         var args = RGraph.getArgs(arguments, 'object,text,x,y,index,event');
 
+        // Set the CSS transition effect on the tooltips default
+        // object if the effect is set to slide
+        if (args.object.properties.tooltipsEffect === 'slide') {
+            RGraph.tooltips.style.transition = 'left ease-out .25s, top ease-out .25s'
+        }
+
         if (RGraph.SHOW_TOOLTIP_TIMER) {
             clearTimeout(RGraph.SHOW_TOOLTIP_TIMER);
         }
@@ -157,7 +163,15 @@
             }
         }
 
-
+        // Set the initial values of the CSS left/top properties
+        // to the previously stored coordsof the left/top values
+        // (ie the last values of the previous tooltip). So when
+        // they're changed to the new values the transition will
+        // animate them
+        if (args.object.properties.tooltipsEffect === 'slide') {
+            tooltipObj.style.left = typeof RGraph.tooltip_slide_effect_previous_x_coordinate === 'string' ? RGraph.tooltip_slide_effect_previous_x_coordinate : 0;
+            tooltipObj.style.top  = typeof RGraph.tooltip_slide_effect_previous_y_coordinate === 'string' ? RGraph.tooltip_slide_effect_previous_y_coordinate : 0;
+        }
 
 
 
@@ -1044,6 +1058,14 @@
         // Keep a reference to the tooltip in the registry
         //
         RGraph.Registry.set('tooltip', tooltipObj);
+        
+        //
+        // Store the final X/Y coordinates so that sliding works
+        //
+        if (args.object.properties.tooltipsEffect === 'slide') {
+            RGraph.tooltip_slide_effect_previous_x_coordinate = tooltipObj.style.left;
+            RGraph.tooltip_slide_effect_previous_y_coordinate = tooltipObj.style.top;
+        }
 
         //
         // Fire the tooltip event
