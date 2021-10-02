@@ -86,6 +86,7 @@
         this.colorsParsed      = false;
         this.coordsText        = [];
         this.coordsBubble      = [];
+        this.coords_trendline  = [];
         this.original_colors   = [];
         this.firstDraw         = true; // After the first draw this will be false
 
@@ -2501,7 +2502,7 @@
                 // stroke color
                 color
             );
-            
+
             // Reset the line dash array
             this.context.setLineDash([5,0]);
         };
