@@ -1,3 +1,9 @@
+/*
+* 
+* Do not remove this: <!-- <RGRAPH_REMOVE> --> <!-- </RGRAPH_REMOVE> -->
+* 
+*/
+
 body {
     font-family: Arial;
 }
@@ -17,4 +23,8 @@ pre.code span {
 
 pre.code span span {
     color: red;
+}
+
+ul.bullets li{
+    list-style-image: url('/images/tick2.png');
 }
