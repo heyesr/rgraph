@@ -3,6 +3,8 @@
 //
 // REMEMBER THAT YOU MAY NEED TO EDIT DEMOS-ACTUAL.JS
 //
+// Do not remove this: <!-- <RGRAPH_REMOVE> --> <!-- </RGRAPH_REMOVE> -->
+//
 
 // This function gets the source code from a demo page and presents
 // it as a PRE section in the HTML page.
