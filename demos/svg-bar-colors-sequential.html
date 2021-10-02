@@ -36,6 +36,7 @@
             options: {
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun'],
                 marginLeft: 100,
+                marginInner: 25,
                 colors: ['red','blue','pink','green','rgb(255,67,169)','brown','#cfc'],
                 colorsSequential: true,
                 yaxisScaleUnitsPre: '$',
@@ -47,7 +48,7 @@
                 backgroundGridBorder: false,
                 title: 'A Bar chart with sequential colors'
             }
-        }).grow();
+        }).grow({frames:15});
     </script>
 
 
