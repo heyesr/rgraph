@@ -196,7 +196,7 @@
 
             borderInner:                    true,
 
-            bevelled:                       false,
+            beveled:                        false,
 
             clearto:                        'rgba(0,0,0,0)'
         }
@@ -253,6 +253,11 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+
+            // Some BC for the beveled property
+            if (name === 'bevelled') {
+                name = 'beveled';
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
@@ -405,7 +410,7 @@
             //
             // Draw the bevel effect if requested
             //
-            if (properties.bevelled) {
+            if (properties.beveled) {
                 this.drawBevel();
             }
     
