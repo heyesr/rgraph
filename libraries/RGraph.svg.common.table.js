@@ -186,6 +186,22 @@
                 start  = parseInt(arguments[1]) || 0,
                 length = arguments[2];
 
+            // Convert a string based row name to a
+            // numeric index
+            if (typeof index === 'string') {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (this.data[i][0].trim() === index.trim()) {
+                        var found = true;
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    return null;
+                }
+            }
+
             if (start < 0) {
                 row = this.data[index].slice(this.data[index].length  - Math.abs(start));
             } else {
@@ -233,6 +249,25 @@
             var col    = [],
                 start  = arguments[1] || 0,
                 length = arguments[2];
+
+
+
+            // Convert a string based column name to a
+            // numeric index
+            if (typeof index === 'string') {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (this.data[0][i].trim() === index.trim()) {
+                        var found = true;
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (!found) {
+                    return null;
+                }
+            }
+
 
             if (start >= 0) {
                 for (var i=start; i<this.data.length; i+=1) {
