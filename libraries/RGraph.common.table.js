@@ -183,9 +183,9 @@
 
             // Convert a string based row name to a
             // numeric index
-            if (RGraph.isString(index)) {
+            if (typeof index === 'string') {
                 for (var i=0; i<this.data.length; ++i) {
-                    if (this.data[i][0] === index) {
+                    if (this.data[i][0].trim() === index.trim()) {
                         var found = true;
                         index = i;
                         break;
@@ -248,9 +248,9 @@
 
             // Convert a string based column name to a
             // numeric index
-            if (RGraph.isString(index)) {
+            if (typeof index === 'string') {
                 for (var i=0; i<this.data.length; ++i) {
-                    if (this.data[0][i] === index) {
+                    if (this.data[0][i].trim() === index.trim()) {
                         var found = true;
                         index = i;
                         break;
