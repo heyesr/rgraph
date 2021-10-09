@@ -236,7 +236,7 @@
             shadowBlur:            15,
 
             tooltips:                   null,
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsEvent:              'onclick',
@@ -1620,18 +1620,29 @@ this.context.lineTo(
 
                                 // Draw the side section
                                 this.context.beginPath();
-                                    this.context.moveTo(startX + individualBarWidth - hmarginGrouped - 1, startY);
+                                    this.context.moveTo(
+                                        startX + individualBarWidth - hmarginGrouped - 1,
+                                        startY
+                                    );
+                                    
                                     this.context.lineTo(
                                         startX + individualBarWidth - hmarginGrouped + properties.variantThreedOffsetx,
-                                        this.data[i][j] < 0 ? (this.getYCoord(0) + Math.abs(height) - properties.variantThreedOffsety) : this.getYCoord(0) - height - properties.variantThreedOffsety
+                                        this.data[i][j] < 0
+                                            ? (this.getYCoord(0) + Math.abs(height) - properties.variantThreedOffsety) - (properties.xaxisPosition === 'center'
+                                                                                                                             ? 0
+                                                                                                                             : Math.abs(height) - this.properties.variantThreedOffsety)
+                                            : this.getYCoord(0) - height - properties.variantThreedOffsety
                                     );
 
                                     this.context.lineTo(
                                         startX + individualBarWidth - hmarginGrouped + properties.variantThreedOffsetx,
-                                        this.data[i][j] < 0 && (startY + height - properties.variantThreedOffsety) < (this.marginTop + this.halfgrapharea) ? (this.marginTop + this.halfgrapharea) : (startY + height - properties.variantThreedOffsety)
+                                        this.data[i][j] < 0 && (startY + height - properties.variantThreedOffsety) < this.getYCoord(0)
+                                            ? (this.getYCoord(0))
+                                            : (startY + height - properties.variantThreedOffsety)
                                     );
                                     this.context.lineTo(startX + individualBarWidth - hmarginGrouped - 1, startY + height);
                                 this.context.closePath();
+
                                 this.context.fill();
                                 this.context.stroke();
 
@@ -1659,8 +1670,9 @@ this.context.lineTo(
 
                                 // Draw the darker side section
                                 this.context.fillStyle = 'rgba(0,0,0,0.4)';
+                                
                                 this.context.beginPath();
-                                    // TL corner
+                                    
                                     this.context.moveTo(
                                         startX + individualBarWidth - hmarginGrouped,
                                         startY
@@ -1669,13 +1681,16 @@ this.context.lineTo(
 
                                     this.context.lineTo(
                                         startX + individualBarWidth + properties.variantThreedOffsetx - hmarginGrouped,
-                                        this.data[i][j] < 0 ? (this.getYCoord(0) + Math.abs(height) - properties.variantThreedOffsety) : this.getYCoord(0) - height - properties.variantThreedOffsety
+                                        this.data[i][j] < 0
+                                         ? (this.getYCoord(0) + Math.abs(height) - properties.variantThreedOffsety) - (properties.xaxisPosition === 'center' ? 0 : Math.abs(height) - this.properties.variantThreedOffsety)
+                                         : this.getYCoord(0) - height - properties.variantThreedOffsety
                                     );
 
-                                    // TR corner
                                     this.context.lineTo(
                                         startX + individualBarWidth + properties.variantThreedOffsetx - hmarginGrouped,
-                                        this.data[i][j] < 0 && (startY + height - 5) < (this.marginTop + this.halfgrapharea) ? (this.marginTop + this.halfgrapharea) : (startY + height - properties.variantThreedOffsety)
+                                        +this.data[i][j] < 0 && (startY + height - 5) < this.getYCoord(0)
+                                            ? ((height > this.properties.variantThreedOffsety) ? this.getYCoord(0) + height - this.properties.variantThreedOffsety : this.getYCoord(0))
+                                            : (startY + height - properties.variantThreedOffsety)
                                     );
 
                                     // TL corner
