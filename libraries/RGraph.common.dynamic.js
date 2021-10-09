@@ -31,7 +31,12 @@
                 //
                 if (navigator.userAgent.indexOf('Firefox') >= 0) win.event = e;
 
-                if (RGraph.hideTooltip && RGraph.Registry.get('tooltip')) {
+                var tooltip = RGraph.Registry.get('tooltip');
+
+                if (   RGraph.hideTooltip
+                    && tooltip
+                    && tooltip.__object__.get('tooltipsEffect') !== 'slide'
+                   ) {
                     RGraph.clear(RGraph.Registry.get('tooltip').__canvas__);
                     RGraph.redraw();
                     RGraph.hideTooltip();
@@ -787,9 +792,10 @@
                         }
                     }
     
-    
-                    RGraph.clear(obj.canvas);
-                    RGraph.redraw();
+                    if (obj.properties.tooltipsEffect !== 'slide') {
+                        RGraph.clear(obj.canvas);
+                        RGraph.redraw();
+                    }
                 }
             };
             obj.canvas.addEventListener('mousedown', obj.canvas.rgraph_mousedown_event_listener, false);
