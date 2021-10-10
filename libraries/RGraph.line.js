@@ -235,7 +235,7 @@
             tooltips:                   null,
             tooltipsHotspotXonly:       false,
             tooltipsHotspotSize:        5,
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsEvent:              'onmousemove',
