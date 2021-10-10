@@ -276,7 +276,7 @@
 
             tooltips:                   null,
             tooltipsEvent:              'onclick',
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
