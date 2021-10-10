@@ -134,7 +134,7 @@
             textAccessiblePointerevents:false,
             
             tooltips:                   [], // Default must be an empty array
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsEvent:              'onmousemove',
             tooltipsHotspot:            3,
             tooltipsCssClass:           'RGraph_tooltip',
