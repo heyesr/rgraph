@@ -98,6 +98,7 @@
             tooltipsHighlight:          true,
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
+            tooltipsEffect:             'slide',
             tooltipsEvent:              'onclick',
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
