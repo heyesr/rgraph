@@ -96,7 +96,7 @@
             adjustable:                         false,
 
             tooltips:                           null,
-            tooltipsEffect:                     'fade',
+            tooltipsEffect:                     'slide',
             tooltipsCssClass:                   'RGraph_tooltip',
             tooltipsCss:                        null,
             tooltipsHighlight:                  true,
