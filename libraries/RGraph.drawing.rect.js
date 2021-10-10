@@ -84,7 +84,7 @@
             highlightFill:   'rgba(255,255,255,0.7)',
             
             tooltips:                   null,
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsEvent:              'onclick',
