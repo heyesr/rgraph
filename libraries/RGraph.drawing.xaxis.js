@@ -124,7 +124,7 @@
             yaxisPosition:         'left',
             
             tooltips:                   null,
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsEvent:              'onclick',
