@@ -182,7 +182,7 @@
 
             tooltips:                   null,
             tooltipsEvent:              'mousemove',
-            tooltipsEffect:             'fade',
+            tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
