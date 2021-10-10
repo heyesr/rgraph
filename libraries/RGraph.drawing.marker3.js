@@ -94,6 +94,7 @@
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
+            tooltipsEffect:             'slide',
             tooltipsEvent:              'onclick',
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
