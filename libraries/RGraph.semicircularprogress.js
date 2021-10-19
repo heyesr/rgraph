@@ -42,6 +42,13 @@
         this.properties =
         {
             backgroundColor:            'rgba(0,0,0,0)',
+            backgroundGrid:             false,
+            backgroundGridMargin:       20,
+            backgroundGridColor:        '#ddd',
+            backgroundGridLinewidth:    1,
+            backgroundGridCircles:      true,
+            backgroundGridRadials:      true,
+            backgroundGridRadialsCount: 10,
 
             colors:                     ['#0c0'],
 
@@ -63,6 +70,9 @@
             anglesStart:                Math.PI,
             anglesEnd:                  (2 * Math.PI),
 
+            scale:                      false,
+            scaleMin:                   0,
+            scaleMax:                   null, // Defaults to the charts max value
             scaleDecimals:              0,
             scalePoint:                 '.',
             scaleThousand:              ',',
@@ -70,6 +80,13 @@
             scaleRound:                 false,
             scaleUnitsPre:              '',
             scaleUnitsPost:             '',
+            scaleLabelsCount:           10,
+            scaleLabelsFont:            null,
+            scaleLabelsSize:            null,
+            scaleLabelsColor:           null,
+            scaleLabelsBold:            null,
+            scaleLabelsItalic:          null,
+            scaleLabelsOffsetr:         0,
 
             shadow:                     false,
             shadowColor:                'rgba(220,220,220,1)',
@@ -87,6 +104,7 @@
             labelsCenterValign:         'bottom',
             labelsCenterOffsetx:        0,
             labelsCenterOffsety:        0,
+            labelsMin:                  true,
             labelsMinColor:             null,
             labelsMinFont:              null,
             labelsMinBold:              null,
@@ -95,6 +113,7 @@
             labelsMinOffsetAngle:       0,
             labelsMinOffsetx:           0,
             labelsMinOffsety:           5,
+            labelsMax:                  true,
             labelsMaxColor:             null,
             labelsMaxFont:              null,
             labelsMaxBold:              null,
@@ -313,6 +332,11 @@
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.width   === 'number') this.width   = properties.width;
+            
+            // Allow specify the radius as a string for adjustments
+            if (typeof properties.radius === 'string') {
+                this.radius += Number(properties.radius);
+            }
 
             this.coords = [];
 
@@ -322,16 +346,19 @@
             // Stop this growing uncontrollably
             //
             this.coordsText = [];
-
-
-
-
+            
+            
+            
+            
     
             //
             // Draw the meter
             //
+            this.drawBackgroundGrid();
             this.drawMeter();
             this.drawLabels();
+            this.drawScale();
+            
     
     
     
@@ -409,7 +436,7 @@
                 'scale.units.post':   properties.scaleUnitsPost
             }});
 
-            // Draw the backgrundColor
+            // Draw the backgroundColor
             if (properties.backgroundColor !== 'rgba(0,0,0,0)') {
                 this.path(
                     'fs % fr % % % %',
@@ -419,8 +446,9 @@
             }
 
 
-            // Draw the main semi-circle background and then lighten it by filling it again
-            // in semi-transparent white
+            // Draw the main semi-circle background and then
+            // lighten it by filling it again in semi-transparent
+            // white
             this.path(
                 'lw % b a % % % % % false a % % % % % true c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
                 properties.linewidth,
@@ -465,126 +493,134 @@
         //
         this.drawLabels = function ()
         {
-            var min = RGraph.numberFormat({
-                object:    this,
-                number:    this.scale2.min.toFixed(typeof properties.labelsMinDecimals === 'number'? properties.labelsMinDecimals : properties.scaleDecimals),
-                unitspre:  typeof properties.labelsMinUnitsPre  === 'string' ? properties.labelsMinUnitsPre  : properties.scaleUnitsPre,
-                unitspost: typeof properties.labelsMinUnitsPost === 'string' ? properties.labelsMinUnitsPost : properties.scaleUnitsPost,
-                point:     typeof properties.labelsMinPoint      === 'string' ? properties.labelsMinPoint      : properties.scalePoint,
-                thousand:  typeof properties.labelsMinThousand   === 'string' ? properties.labelsMinThousand   : properties.scaleThousand
-            });
-
-            var max = RGraph.numberFormat({
-                object:    this,
-                number:    this.scale2.max.toFixed(typeof properties.labelsMaxDecimals === 'number'? properties.labelsMaxDecimals : properties.scaleDecimals),
-                unitspre:  typeof properties.labelsMaxUnitsPre  === 'string' ? properties.labelsMaxUnitsPre  : properties.scaleUnitsPre,
-                unitspost: typeof properties.labelsMaxUnitsPost === 'string' ? properties.labelsMaxUnitsPost : properties.scaleUnitsPost,
-                point:     typeof properties.labelsMaxPoint      === 'string' ? properties.labelsMaxPoint      : properties.scalePoint,
-                thousand:  typeof properties.labelsMaxThousand   === 'string' ? properties.labelsMaxThousand   : properties.scaleThousand
-            });
-
-
-            // Determine the horizontal and vertical alignment for the text
-            if (properties.anglesStart === RGraph.PI) {
-                var halign = 'center';
-                var valign = 'top';
-            
-            } else if (properties.anglesStart <= RGraph.PI) {
-                var halign = 'left';
-                var valign = 'center';
-            
-            } else if (properties.anglesStart >= RGraph.PI) {
-                var halign = 'right';
-                var valign = 'center';
+            // Draw the labelsMin label
+            if (properties.labelsMin) {
+                var min = RGraph.numberFormat({
+                    object:    this,
+                    number:    this.scale2.min.toFixed(typeof properties.labelsMinDecimals === 'number'? properties.labelsMinDecimals : properties.scaleDecimals),
+                    unitspre:  typeof properties.labelsMinUnitsPre  === 'string' ? properties.labelsMinUnitsPre  : properties.scaleUnitsPre,
+                    unitspost: typeof properties.labelsMinUnitsPost === 'string' ? properties.labelsMinUnitsPost : properties.scaleUnitsPost,
+                    point:     typeof properties.labelsMinPoint      === 'string' ? properties.labelsMinPoint      : properties.scalePoint,
+                    thousand:  typeof properties.labelsMinThousand   === 'string' ? properties.labelsMinThousand   : properties.scaleThousand
+                });
+    
+    
+                // Determine the horizontal and vertical alignment for the text
+                if (properties.anglesStart === RGraph.PI) {
+                    var halign = 'center';
+                    var valign = 'top';
+                
+                } else if (properties.anglesStart <= RGraph.PI) {
+                    var halign = 'left';
+                    var valign = 'center';
+                
+                } else if (properties.anglesStart >= RGraph.PI) {
+                    var halign = 'right';
+                    var valign = 'center';
+                }
+    
+                // Get the X/Y for the min label
+                // cx, cy, angle, radius
+                var xy = RGraph.getRadiusEndPoint(
+                    this.centerx,
+                    this.centery,
+                    properties.anglesStart + properties.labelsMinOffsetAngle,
+                    this.radius - (this.width / 2)
+                );
+                
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'labelsMin'
+                });
+    
+    
+                // Draw the min label
+                RGraph.text({
+                    
+                    object: this,
+         
+                    font:   textConf.font,
+                    size:   textConf.size,
+                    color:  textConf.color,
+                    bold:   textConf.bold,
+                    italic: textConf.italic,
+    
+                    x: xy[0] + properties.labelsMinOffsetx,
+                    y: xy[1] + properties.labelsMinOffsety,
+                    valign: valign,
+                    halign: halign,
+                    text: min
+                });
             }
 
-            // Get the X/Y for the min label
-            // cx, cy, angle, radius
-            var xy = RGraph.getRadiusEndPoint(
-                this.centerx,
-                this.centery,
-                properties.anglesStart + properties.labelsMinOffsetAngle,
-                this.radius - (this.width / 2)
-            );
-            
-            var textConf = RGraph.getTextConf({
-                object: this,
-                prefix: 'labelsMin'
-            });
 
 
-            // Draw the min label
-            RGraph.text({
+
+
+
+
+
+
+            // Draw the labelsMax label
+            if (properties.labelsMax) {
+                // Determine the horizontal and vertical alignment for the text
+                if (properties.anglesEnd === RGraph.TWOPI) {
+                    var halign = 'center';
+                    var valign = 'top';
                 
-                object: this,
-     
-                font:   textConf.font,
-                size:   textConf.size,
-                color:  textConf.color,
-                bold:   textConf.bold,
-                italic: textConf.italic,
-
-                x: xy[0] + properties.labelsMinOffsetx,
-                y: xy[1] + properties.labelsMinOffsety,
-                valign: valign,
-                halign: halign,
-                text: min
-            });
-
-
-
-
-
-
-
-
-
-
-            // Determine the horizontal and vertical alignment for the text
-            if (properties.anglesEnd === RGraph.TWOPI) {
-                var halign = 'center';
-                var valign = 'top';
-            
-            } else if (properties.anglesEnd >= RGraph.TWOPI) {
-                var halign = 'right';
-                var valign = 'center';
-            
-            } else if (properties.anglesEnd <= RGraph.TWOPI) {
-                var halign = 'left';
-                var valign = 'center';
+                } else if (properties.anglesEnd >= RGraph.TWOPI) {
+                    var halign = 'right';
+                    var valign = 'center';
+                
+                } else if (properties.anglesEnd <= RGraph.TWOPI) {
+                    var halign = 'left';
+                    var valign = 'center';
+                }
+    
+    
+    
+                // Get the formatted max label number
+                var max = RGraph.numberFormat({
+                    object:    this,
+                    number:    this.scale2.max.toFixed(typeof properties.labelsMaxDecimals === 'number'? properties.labelsMaxDecimals : properties.scaleDecimals),
+                    unitspre:  typeof properties.labelsMaxUnitsPre  === 'string' ? properties.labelsMaxUnitsPre  : properties.scaleUnitsPre,
+                    unitspost: typeof properties.labelsMaxUnitsPost === 'string' ? properties.labelsMaxUnitsPost : properties.scaleUnitsPost,
+                    point:     typeof properties.labelsMaxPoint      === 'string' ? properties.labelsMaxPoint      : properties.scalePoint,
+                    thousand:  typeof properties.labelsMaxThousand   === 'string' ? properties.labelsMaxThousand   : properties.scaleThousand
+                });
+    
+                // Get the X/Y for the max label
+                // cx, cy, angle, radius
+                var xy = RGraph.getRadiusEndPoint(
+                    this.centerx,
+                    this.centery,
+                    properties.anglesEnd + properties.labelsMaxOffsetAngle,
+                    this.radius - (this.width / 2)
+                );
+    
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'labelsMax'
+                });
+    
+                // Draw the max label
+                RGraph.text({
+                    
+                    object: this,
+         
+                    font:   textConf.font,
+                    size:   textConf.size,
+                    color:  textConf.color,
+                    bold:   textConf.bold,
+                    italic: textConf.italic,
+    
+                    x: xy[0] + properties.labelsMaxOffsetx,
+                    y: xy[1] + properties.labelsMaxOffsety,
+                    valign: valign,
+                    halign: halign,
+                    text: max
+                });
             }
-            
-            // Get the X/Y for the max label
-            // cx, cy, angle, radius
-            var xy = RGraph.getRadiusEndPoint(
-                this.centerx,
-                this.centery,
-                properties.anglesEnd + properties.labelsMaxOffsetAngle,
-                this.radius - (this.width / 2)
-            );
-
-            var textConf = RGraph.getTextConf({
-                object: this,
-                prefix: 'labelsMax'
-            });
-
-            // Draw the max label
-            RGraph.text({
-                
-                object: this,
-     
-                font:   textConf.font,
-                size:   textConf.size,
-                color:  textConf.color,
-                bold:   textConf.bold,
-                italic: textConf.italic,
-
-                x: xy[0] + properties.labelsMaxOffsetx,
-                y: xy[1] + properties.labelsMaxOffsety,
-                valign: valign,
-                halign: halign,
-                text: max
-            });
 
 
 
@@ -638,9 +674,9 @@
                     ret.node.style.opacity = 0;
     
                     var delay = 25,
-                        incr  = 0.1;
+                        incr  = 0.05;
     
-                    for (var i=0; i<10; ++i) {
+                    for (var i=0; i<20; ++i) {
                         (function (index)
                         {
                             setTimeout(function  ()
@@ -660,6 +696,183 @@
                 null,
                 properties.titleSize
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws the background "grid"
+        //
+        this.drawBackgroundGrid = function ()
+        {
+            if (properties.backgroundGrid) {
+
+                var margin      = properties.backgroundGridMargin;
+                var outerRadius = this.radius + margin;
+                var innerRadius = this.radius - this.width - margin;
+
+                // Draw the background grid "circles"
+                if (properties.backgroundGridCircles) {
+                    
+                    // Draw the outer arc
+                    this.path(
+                        'b lw % a % % % % % false',
+                        properties.backgroundGridLinewidth,
+                        this.centerx, this.centery,
+                        outerRadius, RGraph.PI, RGraph.TWOPI
+                    );
+        
+                    // Draw the inner arc
+                    this.path(
+                        p = 'a % % % % % true c s %',
+                        this.centerx, this.centery,
+                        innerRadius, RGraph.TWOPI, RGraph.PI,
+                        properties.backgroundGridColor
+                    );
+                }
+                
+                //
+                // Draw the background grid radials
+                //
+                if (properties.backgroundGridRadials) {
+                
+                    // Calculate the radius increment
+                    var increment = RGraph.PI / properties.backgroundGridRadialsCount;
+                    var angle     = RGraph.PI;
+    
+                    for (var i=0; i<properties.backgroundGridRadialsCount; ++i) {
+
+                        this.path(
+                            ' b a % % % % % false a % % % % % false s %',
+                            this.centerx,this.centery,innerRadius,angle,angle,
+                            this.centerx,this.centery,outerRadius,angle,angle,
+                            properties.backgroundGridColor
+                        );
+
+                        angle += increment;
+
+                    }
+                }                
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function draws the scale
+        //
+        this.drawScale = function ()
+        {
+            if (properties.scale) {
+            
+                // Get the max value
+
+                this.scale2 = RGraph.getScale({
+                    object:              this,
+                    options: {
+                        'scale.max':         properties.scaleMax || this.max,
+                        'scale.strict':      true,
+                        'scale.min':         properties.scaleMin,
+                        'scale.thousand':    properties.scaleThousand,
+                        'scale.point':       properties.scalePoint,
+                        'scale.decimals':    properties.scaleDecimals,
+                        'scale.labels.count':properties.scaleLabelsCount,
+                        'scale.round':       false,
+                        'scale.units.pre':   properties.scaleUnitsPre,
+                        'scale.units.post':  properties.scaleUnitsPost,
+                        'scale.formatter':   properties.scaleFormatter
+                    }
+                });
+
+
+
+                //
+                // Loop thru the number of labels
+                //
+                for (var i=0; i<this.scale2.labels.length; ++i) {
+                    
+                    var textConf = RGraph.getTextConf({
+                        object: this,
+                        prefix: 'scaleLabels'
+                    });
+
+                    var xy = RGraph.getRadiusEndPoint({
+                        cx:     this.centerx,
+                        cy:     this.centery,
+                        angle:  RGraph.PI + (((i+1) / this.scale2.labels.length) * RGraph.PI),
+                        radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                    });
+
+                    // Draw the label
+                    RGraph.text({
+                        object: this,
+                        tag:    'scale',
+                        font:   textConf.font,
+                        size:   textConf.size,
+                        color:  textConf.color,
+                        bold:   textConf.bold,
+                        italic: textConf.italic,
+                        x: xy[0] + (properties.scaleLabelsOffsetx || 0),
+                        y: xy[1] + (properties.scaleLabelsOffsety || 0),
+                        valign: 'center',
+                        halign: 'center',
+                        text: this.scale2.labels[i]
+                    });
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Draw the zero label
+                //
+                var xy = RGraph.getRadiusEndPoint({
+                    cx:     this.centerx,
+                    cy:     this.centery,
+                    angle:  RGraph.PI,
+                    radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                });
+
+                RGraph.text({
+                    object: this,
+                    font:   textConf.font,
+                    size:   textConf.size,
+                    color:  textConf.color,
+                    bold:   textConf.bold,
+                    italic: textConf.italic,
+                    x:      xy[0] + (properties.scaleLabelsOffsetx || 0),
+                    y:      xy[1] + (properties.scaleLabelsOffsety || 0),
+                    valign: 'center',
+                    halign: 'center',
+                    text:   typeof properties.scaleFormatter === 'function'
+                              ? (properties.scaleFormatter)({
+                                    object:     this,
+                                    number:     0,
+                                    unitspre:   properties.scaleUnitsPre,
+                                    unitspost:  properties.scaleUnitsPost,
+                                    point:      properties.scalePoint,
+                                    thousand:   properties.scaleThousand,
+                                    formatter:  properties.scaleFormatter
+                                })
+                              : (properties.scaleUnitsPre || '') + properties.scaleMin.toFixed(properties.scaleDecimals).replace(/\./, properties.scalePoint) + (properties.scaleUnitsPost || '')
+                });
+            }
         };
 
 
