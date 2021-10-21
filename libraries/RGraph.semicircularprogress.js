@@ -50,7 +50,7 @@
             backgroundGridRadials:      true,
             backgroundGridRadialsCount: 10,
 
-            colors:                     ['#0c0'],
+            colors:                     ['#0c0', '#f66', '#66f', 'yellow', 'pink','#ccc','#cc0','#0cc','#c0c'],
 
             linewidth:                  2,
 
@@ -77,7 +77,6 @@
             scalePoint:                 '.',
             scaleThousand:              ',',
             scaleFormatter:             null,
-            scaleRound:                 false,
             scaleUnitsPre:              '',
             scaleUnitsPost:             '',
             scaleLabelsCount:           10,
@@ -87,6 +86,8 @@
             scaleLabelsBold:            null,
             scaleLabelsItalic:          null,
             scaleLabelsOffsetr:         0,
+            scaleLabelsOffsetx:         0,
+            scaleLabelsOffsety:         0,
 
             shadow:                     false,
             shadowColor:                'rgba(220,220,220,1)',
@@ -95,6 +96,8 @@
             shadowOffsety:              2,
 
             labelsCenter:               true,
+            labelsCenterSpecific:       null,
+            labelsCenterIndex:          0,
             labelsCenterFade:           false,
             labelsCenterSize:           40,
             labelsCenterColor:          null,
@@ -104,6 +107,7 @@
             labelsCenterValign:         'bottom',
             labelsCenterOffsetx:        0,
             labelsCenterOffsety:        0,
+
             labelsMin:                  true,
             labelsMinColor:             null,
             labelsMinFont:              null,
@@ -113,6 +117,7 @@
             labelsMinOffsetAngle:       0,
             labelsMinOffsetx:           0,
             labelsMinOffsety:           5,
+
             labelsMax:                  true,
             labelsMaxColor:             null,
             labelsMaxFont:              null,
@@ -143,27 +148,28 @@
 
             contextmenu:                null,
 
-            tooltips:                   null,
-            tooltipsEffect:             'slide',
-            tooltipsCssClass:           'RGraph_tooltip',
-            tooltipsCss:                null,
-            tooltipsHighlight:          true,
-            tooltipsEvent:              'onclick',
-            tooltipsCoordsPage:         true,
-            tooltipsFormattedThousand:  ',',
-            tooltipsFormattedPoint:     '.',
-            tooltipsFormattedDecimals:  0,
-            tooltipsFormattedUnitsPre:  '',
-            tooltipsFormattedUnitsPost: '',
-            tooltipsFormattedKeyColors: null,
+
+            tooltips:                        null,
+            tooltipsEffect:                  'slide',
+            tooltipsCssClass:                'RGraph_tooltip',
+            tooltipsCss:                     null,
+            tooltipsEvent:                   'onclick',
+            tooltipsHighlight:               true,
+            tooltipsHotspotXonly:            false,
+            tooltipsFormattedThousand:       ',',
+            tooltipsFormattedPoint:          '.',
+            tooltipsFormattedDecimals:       0,
+            tooltipsFormattedUnitsPre:       '',
+            tooltipsFormattedUnitsPost:      '',
+            tooltipsFormattedKeyColors:      null,
             tooltipsFormattedKeyColorsShape: 'square',
-            tooltipsFormattedKeyLabels: [],
-            tooltipsFormattedListType:  'ul',
-            tooltipsFormattedListItems: null,
-            tooltipsFormattedTableHeaders: null,
-            tooltipsFormattedTableData: null,
-            tooltipsPointer:            true,
-            tooltipsPositionStatic:     true,
+            tooltipsFormattedKeyLabels:      [],
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
+            tooltipsFormattedTableHeaders:   null,
+            tooltipsFormattedTableData:      null,
+            tooltipsPointer:                 true,
+            tooltipsPositionStatic:          true,
 
             highlightStroke:            'rgba(0,0,0,0)',
             highlightFill:              'rgba(255,255,255,0.7)',
@@ -171,10 +177,6 @@
             annotatable:                false,
             annotatebleColor:           'black',
             annotatebleLinewidth:       1,
-
-            resizable:                  false,
-            resizableHandleAdjust:      [0,0],
-            resizableHandleBackground:  null,
 
             adjustable:                 false,
 
@@ -333,10 +335,10 @@
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.width   === 'number') this.width   = properties.width;
             
-            // Allow specify the radius as a string for adjustments
-            if (typeof properties.radius === 'string') {
-                this.radius += Number(properties.radius);
-            }
+            // Allow specify the centerx/centery/radius as a string for adjustments
+            if (RGraph.isString(properties.centerx)) this.centerx += Number(properties.centerx);
+            if (RGraph.isString(properties.centery)) this.centery += Number(properties.centery);
+            if (RGraph.isString(properties.radius))  this.radius  += Number(properties.radius);
 
             this.coords = [];
 
@@ -414,6 +416,11 @@
         //
         this.drawMeter = function ()
         {
+            // Reset the .coords array
+            this.coords = [];
+
+
+
             //
             // The start/end angles
             //
@@ -421,7 +428,7 @@
                 end   = properties.anglesEnd;
 
             //
-            // Calculate a scale (though only two labels are shown)
+            // Calculate a scale
             //
 
             this.scale2 = RGraph.getScale({object: this, options: {
@@ -455,30 +462,62 @@
                 this.centerx, this.centery, this.radius, start, end,
                 this.centerx, this.centery, this.radius - this.width, end, start,
                 properties.colorsStroke,
-                typeof properties.colors[1] !== 'undefined' ? properties.colors[1] : properties.colors[0],
+                properties.colors[0],
                 properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
-                typeof properties.colors[1] !== 'undefined' ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.85)'
+                'rgba(255,255,255,0.85)'
             );
 
-            var angle = start + ((end - start) * ((this.value - this.scale2.min) / (this.max - this.scale2.min)));
 
-            // Draw the meter
-            this.path(
-                'b a % % % % % false a % % % % % true c f %',
-                this.centerx, this.centery, this.radius, start, angle,
-                this.centerx, this.centery, this.radius - this.width, start + ((end - start) * ((this.value - this.scale2.min) / (this.max - this.scale2.min))), start,
-                properties.colors[0]
-            );
+            // Draw a single value on the meter
+            if (RGraph.isNumber(this.value)) {
+                
+                var angle = ((end - start) * ((this.value - this.scale2.min) / (this.max - this.scale2.min)));
+                
+                this.path(
+                    'b a % % % % % false a % % % % % true c f %',
+                    this.centerx, this.centery, this.radius, start, start + angle,
+                    this.centerx, this.centery, this.radius - this.width, start + angle, start,
+                    properties.colors[0]
+                );
+            
+                this.coords = [[
+                    this.centerx,
+                    this.centery,
+                    this.radius,
+                    start,
+                    start + angle,
+                    this.width,
+                    angle
+                ]];
+            
+            // Draw multiple values on the meter
+            } else if (RGraph.isArray(this.value)) {
 
-            this.coords = [[
-                this.centerx,
-                this.centery,
-                this.radius,
-                start,
-                end,
-                this.width,
-                angle
-            ]];
+                for (var i=0; i<this.value.length; ++i) {
+
+                    var angle = ((properties.anglesEnd - properties.anglesStart) * ((this.value[i] - this.scale2.min) / (this.max - this.scale2.min)));
+
+                    this.path(
+                        'b a % % % % % false a % % % % % true c f %',
+                        this.centerx, this.centery, this.radius, start, start + angle,
+                        this.centerx, this.centery, this.radius - this.width, start + angle, start,
+                        properties.colors[i]
+                    );
+
+                    // Store the coordinates of this segment
+                    this.coords.push([
+                        this.centerx,
+                        this.centery,
+                        this.radius,
+                        start,
+                        start + angle,
+                        this.width,
+                        angle
+                    ]);
+                    
+                    start += angle;
+                }
+            }
         };
 
 
@@ -495,14 +534,22 @@
         {
             // Draw the labelsMin label
             if (properties.labelsMin) {
-                var min = RGraph.numberFormat({
-                    object:    this,
-                    number:    this.scale2.min.toFixed(typeof properties.labelsMinDecimals === 'number'? properties.labelsMinDecimals : properties.scaleDecimals),
-                    unitspre:  typeof properties.labelsMinUnitsPre  === 'string' ? properties.labelsMinUnitsPre  : properties.scaleUnitsPre,
-                    unitspost: typeof properties.labelsMinUnitsPost === 'string' ? properties.labelsMinUnitsPost : properties.scaleUnitsPost,
-                    point:     typeof properties.labelsMinPoint      === 'string' ? properties.labelsMinPoint      : properties.scalePoint,
-                    thousand:  typeof properties.labelsMinThousand   === 'string' ? properties.labelsMinThousand   : properties.scaleThousand
-                });
+                //
+                // Allow for a specific label
+                //
+                if (!RGraph.isNull(properties.labelsMinSpecific)) {
+                    var text = properties.labelsMinSpecific;
+                } else {
+    
+                    var text = RGraph.numberFormat({
+                        object:    this,
+                        number:    this.scale2.min.toFixed(typeof properties.labelsMinDecimals === 'number'? properties.labelsMinDecimals : properties.scaleDecimals),
+                        unitspre:  properties.labelsMinUnitsPre,
+                        unitspost: properties.labelsMinUnitsPost,
+                        point:     properties.labelsMinPoint,
+                        thousand:  properties.labelsMinThousand
+                    });
+                }
     
     
                 // Determine the horizontal and vertical alignment for the text
@@ -535,21 +582,18 @@
     
     
                 // Draw the min label
-                RGraph.text({
-                    
-                    object: this,
-         
+                RGraph.text({                    
+                    object: this,         
                     font:   textConf.font,
                     size:   textConf.size,
                     color:  textConf.color,
                     bold:   textConf.bold,
-                    italic: textConf.italic,
-    
-                    x: xy[0] + properties.labelsMinOffsetx,
-                    y: xy[1] + properties.labelsMinOffsety,
+                    italic: textConf.italic,    
+                    x:      xy[0] + properties.labelsMinOffsetx,
+                    y:      xy[1] + properties.labelsMinOffsety,
                     valign: valign,
                     halign: halign,
-                    text: min
+                    text:   text
                 });
             }
 
@@ -563,6 +607,7 @@
 
             // Draw the labelsMax label
             if (properties.labelsMax) {
+                
                 // Determine the horizontal and vertical alignment for the text
                 if (properties.anglesEnd === RGraph.TWOPI) {
                     var halign = 'center';
@@ -580,14 +625,22 @@
     
     
                 // Get the formatted max label number
-                var max = RGraph.numberFormat({
-                    object:    this,
-                    number:    this.scale2.max.toFixed(typeof properties.labelsMaxDecimals === 'number'? properties.labelsMaxDecimals : properties.scaleDecimals),
-                    unitspre:  typeof properties.labelsMaxUnitsPre  === 'string' ? properties.labelsMaxUnitsPre  : properties.scaleUnitsPre,
-                    unitspost: typeof properties.labelsMaxUnitsPost === 'string' ? properties.labelsMaxUnitsPost : properties.scaleUnitsPost,
-                    point:     typeof properties.labelsMaxPoint      === 'string' ? properties.labelsMaxPoint      : properties.scalePoint,
-                    thousand:  typeof properties.labelsMaxThousand   === 'string' ? properties.labelsMaxThousand   : properties.scaleThousand
-                });
+
+                //
+                // Allow for a specific label
+                //
+                if (!RGraph.isNull(properties.labelsMaxSpecific)) {
+                    var text = properties.labelsMaxSpecific;
+                } else {
+                    var text = RGraph.numberFormat({
+                        object:    this,
+                        number:    this.scale2.max.toFixed(typeof properties.labelsMaxDecimals === 'number'? properties.labelsMaxDecimals : properties.scaleDecimals),
+                        unitspre:  properties.labelsMaxUnitsPre,
+                        unitspost: properties.labelsMaxUnitsPost,
+                        point:     properties.labelsMaxPoint,
+                        thousand:  properties.labelsMaxThousand
+                    });
+                }
     
                 // Get the X/Y for the max label
                 // cx, cy, angle, radius
@@ -618,7 +671,7 @@
                     y: xy[1] + properties.labelsMaxOffsety,
                     valign: valign,
                     halign: halign,
-                    text: max
+                    text: text
                 });
             }
 
@@ -637,11 +690,34 @@
 
             // Draw the big label in the center
             if (properties.labelsCenter) {
-
                 var textConf = RGraph.getTextConf({
                     object: this,
                     prefix: 'labelsCenter'
                 });
+                
+                //
+                // Allow for a specific label
+                //
+                if (!RGraph.isNull(properties.labelsCenterSpecific)) {
+                    var text = properties.labelsCenterSpecific;
+                } else {
+
+                    var text = RGraph.numberFormat({
+                        object:    this,
+                        number:
+                                   RGraph.isNumber(this.value)
+                                       ? this.value.toFixed(   RGraph.isNumber(properties.labelsCenterDecimals) ? properties.labelsCenterDecimals : properties.scaleDecimals    )
+                                       : this.value[properties.labelsCenterIndex].toFixed(
+                                             RGraph.isNumber(properties.labelsCenterDecimals)
+                                                 ? properties.labelsCenterDecimals
+                                                 : properties.scaleDecimals
+                                         ),
+                        unitspre:  properties.labelsCenterUnitsPre,
+                        unitspost: properties.labelsCenterUnitsPost,
+                        point:     properties.labelsCenterPoint,
+                        thousand:  properties.labelsCenterThousand
+                    })
+                }
 
                 var ret = RGraph.text({
                     
@@ -658,15 +734,7 @@
 
                     valign:     properties.labelsCenterValign,
                     halign:     'center',
-                    
-                    text: RGraph.numberFormat({
-                        object:    this,
-                        number:    this.value.toFixed(typeof properties.labelsCenterDecimals === 'number' ? properties.labelsCenterDecimals : properties.scaleDecimals),
-                        unitspre:  typeof properties.labelsCenterUnitsPre  === 'string' ? properties.labelsCenterUnitsPre  : properties.scaleUnitsPre,
-                        unitspost: typeof properties.labelsCenterUnitsPost === 'string' ? properties.labelsCenterUnitsPost : properties.scaleUnitsPost,
-                        point:     typeof properties.labelsCenterPoint      === 'string' ? properties.labelsCenterPoint      : properties.scalePoint,
-                        thousand:  typeof properties.labelsCenterThousand   === 'string' ? properties.labelsCenterThousand   : properties.scaleThousand
-                    })
+                    text:       text
                 });
                 
                 // Allows the center label to fade in
@@ -724,14 +792,15 @@
                         'b lw % a % % % % % false',
                         properties.backgroundGridLinewidth,
                         this.centerx, this.centery,
-                        outerRadius, RGraph.PI, RGraph.TWOPI
+                        outerRadius,
+                        properties.anglesStart, properties.anglesEnd
                     );
         
                     // Draw the inner arc
                     this.path(
                         p = 'a % % % % % true c s %',
                         this.centerx, this.centery,
-                        innerRadius, RGraph.TWOPI, RGraph.PI,
+                        innerRadius, properties.anglesEnd, properties.anglesStart,
                         properties.backgroundGridColor
                     );
                 }
@@ -742,8 +811,8 @@
                 if (properties.backgroundGridRadials) {
                 
                     // Calculate the radius increment
-                    var increment = RGraph.PI / properties.backgroundGridRadialsCount;
-                    var angle     = RGraph.PI;
+                    var increment = (properties.anglesEnd - properties.anglesStart) / properties.backgroundGridRadialsCount;
+                    var angle     = properties.anglesStart;
     
                     for (var i=0; i<properties.backgroundGridRadialsCount; ++i) {
 
@@ -809,7 +878,7 @@
                     var xy = RGraph.getRadiusEndPoint({
                         cx:     this.centerx,
                         cy:     this.centery,
-                        angle:  RGraph.PI + (((i+1) / this.scale2.labels.length) * RGraph.PI),
+                        angle:  properties.anglesStart + (((i+1) / this.scale2.labels.length) * (properties.anglesEnd - properties.anglesStart) ),
                         radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
                     });
 
@@ -845,7 +914,7 @@
                 var xy = RGraph.getRadiusEndPoint({
                     cx:     this.centerx,
                     cy:     this.centery,
-                    angle:  RGraph.PI,
+                    angle:  properties.anglesStart,
                     radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
                 });
 
@@ -893,36 +962,50 @@
                 mouseX  = mouseXY[0],
                 mouseY  = mouseXY[1]
 
-            // Draw the meter here but don't stroke or fill it
-            // so that it can be tested with isPointInPath()
-            this.path(
-                'b a % % % % % false a % % % % % true',
-                this.coords[0][0], this.coords[0][1], this.coords[0][2], this.coords[0][3], this.coords[0][6],
-                this.coords[0][0], this.coords[0][1], this.coords[0][2] - this.coords[0][5], this.coords[0][6], this.coords[0][3]
-            );
-
-
-
-            if (this.context.isPointInPath(mouseX, mouseY)) {
-
-                if (RGraph.parseTooltipText) {
-                    var tooltip = RGraph.parseTooltipText(properties.tooltips, 0);
+            // Loop through the coordinates checking for a match
+            for (var i=0; i<this.coords.length; ++i) {
+                
+                // Draw the meter here but don't stroke or fill it
+                // so that it can be tested with isPointInPath()
+                this.path(
+                    'b a % % % % % false a % % % % % true',
+                    
+                    this.coords[i][0],
+                    this.coords[i][1],
+                    this.coords[i][2],
+                    this.coords[i][3],
+                    this.coords[i][4],
+                    
+                    this.coords[i][0],
+                    this.coords[i][1],
+                    this.coords[i][2] - this.coords[i][5],
+                    this.coords[i][4],
+                    this.coords[i][3]
+                );
+    
+    
+    
+                if (this.context.isPointInPath(mouseX, mouseY)) {
+    
+                    if (RGraph.parseTooltipText) {
+                        var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
+                    }
+    
+                    return {
+                        object: this,
+                             x: this.coords[i][0],
+                             y: this.coords[i][1],
+                   radiusOuter: this.coords[i][2],
+                   radiusInner: this.coords[i][2] - this.coords[i][5],
+                         width: this.coords[i][5],
+                    angleStart: this.coords[i][3],
+                      angleEnd: this.coords[i][4],
+                         index: i,
+                       dataset: 0,
+               sequentialIndex: i,
+                       tooltip: typeof tooltip === 'string' ? tooltip : null
+                    };
                 }
-
-                return {
-                    object: this,
-                         x: this.coords[0][0],
-                         y: this.coords[0][1],
-               radiusOuter: this.coords[0][2],
-               radiusInner: this.coords[0][2] - this.width,
-                     width: this.coords[0][5],
-                angleStart: this.coords[0][3],
-                  angleEnd: this.coords[0][6],
-                     index: 0,
-                   dataset: 0,
-           sequentialIndex: 0,
-                   tooltip: typeof tooltip === 'string' ? tooltip : null
-                };
             }
         };
 
@@ -1288,13 +1371,31 @@
         this.grow = function ()
         {
             var obj           = this,
-                initial_value = this.currentValue,
                 opt           = arguments[0] || {},
                 numFrames     = opt.frames || 30,
                 frame         = 0,
-                callback      = arguments[1] || function () {},
-                diff          = this.value - Number(this.currentValue),
-                increment     = diff  / numFrames;
+                callback      = arguments[1] || function () {};
+            
+            // Do this if showing a single number
+            if (RGraph.isNumber(this.value)) {
+                
+                var initial_value = this.currentValue,
+                    diff          = this.value - Number(this.currentValue),
+                    increment     = diff  / numFrames;
+            
+            // Do this if showing multiple numbers
+            } else {
+            
+                var initial_value = [],
+                    diff          = [],
+                    increment     = [];
+                
+                for (var i=0; i<this.value.length; ++i) {
+                    initial_value[i] = RGraph.isNull(this.currentValue) ? 0 : this.currentValue[i];
+                    diff[i]          = this.value[i] - Number(RGraph.isNull(this.currentValue) ? 0 : this.currentValue[i]);
+                    increment[i]     = diff[i]  / numFrames;
+                }
+            }
 
 
 
@@ -1304,7 +1405,13 @@
     
                 if (frame <= numFrames) {
     
-                    obj.value = initial_value + (increment * frame);
+                    if (RGraph.isNumber(obj.value)) {
+                        obj.value = initial_value + (increment * frame);
+                    } else {
+                        for (var i=0; i<obj.value.length; ++i) {
+                            obj.value[i] = initial_value[i] + (increment[i] * frame);
+                        }
+                    }
     
                     RGraph.clear(obj.canvas);
                     RGraph.redrawCanvas(obj.canvas);
@@ -1333,9 +1440,9 @@
         this.tooltipSubstitutions = function (opt)
         {
             return {
-                  index: 0,
+                  index: opt.index,
                 dataset: 0,
-        sequentialIndex: 0,
+        sequentialIndex: opt.index,
                   value: this.value,
                  values: [this.value]
             };
@@ -1356,12 +1463,15 @@
         //
         this.tooltipsFormattedCustom = function (specific, index)
         {
-            var color = (properties.tooltipsFormattedKeyColors && properties.tooltipsFormattedKeyColors[0]) ? properties.tooltipsFormattedKeyColors[0] : properties.colors[0];
-            var label = (properties.tooltipsFormattedKeyLabels && properties.tooltipsFormattedKeyLabels[0]) ? properties.tooltipsFormattedKeyLabels[0] : '';
+            var color = (properties.tooltipsFormattedKeyColors && properties.tooltipsFormattedKeyColors[specific.index]) ? properties.tooltipsFormattedKeyColors[specific.index] : properties.colors[specific.index];
+            var label = (properties.tooltipsFormattedKeyLabels && properties.tooltipsFormattedKeyLabels[specific.index]) ? properties.tooltipsFormattedKeyLabels[specific.index] : '';
+            var value = specific.values[0][specific.index]
+
 
             return {
                 label: label,
-                color: color
+                color: color,
+                value: value
             };
         };
 
