@@ -167,6 +167,7 @@
 
             tooltips:                        null,
             tooltipsEffect:                  'slide',
+            tooltipsOverride:                null,
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'onclick',
@@ -179,14 +180,19 @@
             tooltipsFormattedUnitsPost:      '',
             tooltipsFormattedKeyColors:      null,
             tooltipsFormattedKeyColorsShape: 'square',
+            tooltipsFormattedKeyColorsCss:   null,
             tooltipsFormattedKeyLabels:      [],
             tooltipsFormattedListType:       'ul',
             tooltipsFormattedListItems:      null,
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
             tooltipsPointer:                 true,
+            tooltipsPointerCss:              null,
             tooltipsPositionStatic:          true,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
+            highlightStyle:             null,
             highlightStroke:            'rgba(0,0,0,0)',
             highlightFill:              'rgba(255,255,255,0.7)',
 
