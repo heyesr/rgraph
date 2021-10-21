@@ -96,7 +96,6 @@
             shadowOffsety:              2,
 
             labelsCenter:               true,
-            labelsCenterSpecific:       null,
             labelsCenterIndex:          0,
             labelsCenterFade:           false,
             labelsCenterSize:           40,
@@ -107,6 +106,12 @@
             labelsCenterValign:         'bottom',
             labelsCenterOffsetx:        0,
             labelsCenterOffsety:        0,
+            labelsCenterThousand:       ',',
+            labelsCenterPoint:          '.',
+            labelsCenterDecimals:       0,
+            labelsCenterUnitsPost:      '',
+            labelsCenterUnitsPre:       '',
+            labelsCenterSpecific:       null,
 
             labelsMin:                  true,
             labelsMinColor:             null,
@@ -117,6 +122,12 @@
             labelsMinOffsetAngle:       0,
             labelsMinOffsetx:           0,
             labelsMinOffsety:           5,
+            labelsMinThousand:       ',',
+            labelsMinPoint:          '.',
+            labelsMinDecimals:       0,
+            labelsMinUnitsPost:      '',
+            labelsMinUnitsPre:       '',
+            labelsMinSpecific:       null,
 
             labelsMax:                  true,
             labelsMaxColor:             null,
@@ -127,7 +138,13 @@
             labelsMaxOffsetAngle:       0,
             labelsMaxOffsetx:           0,
             labelsMaxOffsety:           5,
-            
+            labelsMaxThousand:       ',',
+            labelsMaxPoint:          '.',
+            labelsMaxDecimals:       0,
+            labelsMaxUnitsPost:      '',
+            labelsMaxUnitsPre:       '',
+            labelsMaxSpecific:       null,
+
             title:                      '',
             titleBold:                  null,
             titleItalic:                null,
