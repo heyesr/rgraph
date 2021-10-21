@@ -22,11 +22,11 @@
     <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     
     <script>
-        new RGraph.SemiCircularProgress ({
+        scp = new RGraph.SemiCircularProgress ({
             id: 'cvs',
             min: 0,
-            max: 100,
-            value: 12,
+            max: 50,
+            value: [12.5,12.5,12.5,12.5],
             options: {
                 backgroundGrid: true,
                 backgroundGridRadialsCount: 20,
@@ -42,7 +42,16 @@
                 labelsMin: false,
                 labelsMax: false
             }
-        }).draw();
+        }).grow();
+        
+        setTimeout(func = function ()
+        {
+            var value = RGraph.arrayRandom(4,1,12.5);
+            scp.value = value;
+            scp.grow({frames: 60})
+            
+            setTimeout(func, 3000);
+        }, 3000);
     </script>
 
     <p></p>
