@@ -165,7 +165,6 @@
 
             contextmenu:                null,
 
-
             tooltips:                        null,
             tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
