@@ -364,7 +364,31 @@
             nullBridge:                 false,
             nullBridgeLinewidth:        null,
             nullBridgeColors:           null, // Can be null, a string or an object
-            nullBridgeDashArray:        [5,5]
+            nullBridgeDashArray:        [5,5],
+
+            labelsAngled:           false,
+            labelsAngledSpecific:   null,
+            labelsAngledAccessible: null,
+            labelsAngledFont:       null,
+            labelsAngledColor:      null,
+            labelsAngledSize:       null,
+            labelsAngledBold:       null,
+            labelsAngledItalic:     null,
+            labelsAngledUpFont:     null,
+            labelsAngledUpColor:    null,
+            labelsAngledUpSize:     null,
+            labelsAngledUpBold:     null,
+            labelsAngledUpItalic:   null,
+            labelsAngledDownFont:   null,
+            labelsAngledDownColor:  null,
+            labelsAngledDownSize:   null,
+            labelsAngledDownBold:   null,
+            labelsAngledDownItalic: null,
+            labelsAngledLevelFont:  null,
+            labelsAngledLevelColor: null,
+            labelsAngledLevelSize:  null,
+            labelsAngledLevelBold:  null,
+            labelsAngledILeveltalic:null
         }
 
         // Convert strings to numbers
@@ -1428,6 +1452,7 @@
 
 
 
+
                 // Now redraw the lines with the correct line width
                 this.setShadow(index);
                 this.redrawLine(lineCoords, color, linewidth, index);
@@ -1439,8 +1464,7 @@
 
 
 
-    
-            // Draw the tickmarks
+                // Draw the tickmarks
                 for (var i=0; i<lineCoords.length; ++i) {
         
                     i = Number(i);
@@ -1487,9 +1511,16 @@
                         );
                     }
                 }
-            
+
             this.context.restore();
-    
+
+
+            //
+            // Draw the undulating labels that follow
+            // the line up and down
+            //
+            this.drawAngledLabels();
+
             // Draw something off canvas to skirt an annoying bug
             this.context.beginPath();
             this.context.arc(this.canvas.width + 50000, this.canvas.height + 50000, 2, 0, 6.38, 1);
@@ -4097,6 +4128,126 @@
                 }
             }
         };
+
+
+
+
+
+
+
+
+        //
+        // Draws the angled labels that follow
+        // the line up and down. Bit similar to
+        // labelsAbove, but they're positioned
+        // above the line and not the points
+        // on the line.
+        //
+        this.drawAngledLabels = function ()
+        {
+            if (properties.labelsAngled) {
+    
+                // Turn off any lingering shadow
+                RGraph.noShadow(this);
+    
+                // This is the first lines coordinates
+                var coords = this.coords;
+
+
+
+
+
+
+
+
+                // This function gets the relevant text
+                // configuration from all (12) of the text
+                // configuration properties
+                var getTextConfiguration = function (dir)
+                {
+                    // Init the textConf object
+                    var textConf = {};
+                
+                    // Get the up text configuration
+                    var prefixes       = ['text', 'labelsAngled', 'labelsAngled' + dir];
+                    var textProperties = ['Font','Color','Size','Bold','Italic'];
+                
+                    for (var prefix in prefixes) {
+                        for (var prop in textProperties) {
+                            
+                            var name = prefixes[prefix] + textProperties[prop];
+                
+                            if (name) {
+                                if (   RGraph.isString(properties[name])
+                                    || RGraph.isNumber(properties[name])
+                                    || RGraph.isBoolean(properties[name])
+                                   ) {
+                                    textConf[textProperties[prop].toLowerCase()] = properties[name];
+                                }
+                            }
+                        }
+                    }
+                    
+                    return textConf;
+                };
+
+
+
+
+
+
+                // Loop thru the coordinates for the line (but not
+                // the last one)
+                for (var i=0; i<(coords.length) - 1; ++i) {
+                    
+                    // Work out the horizontal and vertical distance to the next point
+                    var dx = (coords[i + 1][0] - coords[i][0]) / 2,
+                        dy = (coords[i + 1][1] - coords[i][1]) / 2;
+
+                    
+                    // Work out the direction that the line is going so
+                    // that the correct label can be used
+
+                    if (coords[i + 1][1] < coords[i][1]) {
+                        var direction = 0; // Up
+                        var textConf = getTextConfiguration('Up');
+                    } else if (coords[i + 1][1] > coords[i][1]) {
+                        var direction = 1; // Down
+                        var textConf = getTextConfiguration('Down');
+                    } else {
+                        var direction = 2; // Level
+                        var textConf = getTextConfiguration('Level');
+                    }
+
+                    // Work out the angle that the text should be drawn at
+                    var angle = RGraph.getAngleByXY({
+                        cx: coords[i][0],
+                        cy: coords[i][1],
+                        x:  coords[i + 1][0],
+                        y:  coords[i + 1][1],
+                    });
+
+                    // Use the API function to add the text to the chart
+                    RGraph.text({
+                        object:     this,
+                        accessible: properties.adjustable ? false : (RGraph.isBoolean(properties.labelsAngledAccessible) ? properties.labelsAngledAccessible : true),
+                        font:       textConf.font,
+                        color:      textConf.color,
+                        size:       textConf.size,
+                        bold:       textConf.bold,
+                        italic:     textConf.italic,
+                        x:          coords[i][0] + dx,
+                        y:          coords[i][1] + dy - 5,
+                        text:       (properties.labelsAngledSpecific && (RGraph.isString(properties.labelsAngledSpecific[i]) || RGraph.isNumber(properties.labelsAngledSpecific[i]))) ? properties.labelsAngledSpecific[i] : properties.labelsAngled[direction],
+                        halign:     'center',
+                        valign:     'bottom',
+                        angle:      angle * (180 / Math.PI)
+                    });
+                }
+            }
+        };
+
+
 
 
 
