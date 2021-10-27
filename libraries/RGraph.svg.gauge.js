@@ -261,6 +261,11 @@
         this.responsive = RGraph.SVG.responsive;
 
 
+        //  Add the create function to the object. The create()
+        // function is defined in the SVG core library
+        RGraph.SVG.addCreateFunction(this);
+
+
 
 
         var properties = this.properties;
