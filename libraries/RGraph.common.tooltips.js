@@ -326,7 +326,7 @@
                         unitspre:  args.object.properties.tooltipsFormattedUnitsPre  || '',
                         unitspost: args.object.properties.tooltipsFormattedUnitsPost || ''
                     });
-                    
+
                     //
                     // If the tooltipsFormattedKeyColorsShape property is set to circle then add
                     // some border-radius to the DIV tag
