@@ -6116,6 +6116,45 @@
 
 
 
+    //
+    // A shortcut for the create function that gets added to
+    // each object
+    //
+    // @param obj The object
+    //
+    RGraph.SVG.addCreateFunction = function (obj)
+    {
+        //
+        // This is the function that's appended to
+        // each object
+        //
+        // @param string type   The type of node to create
+        // @param object parent The parent node
+        // @param object attr   Attributes to add to the new node
+        // @param object style  Style properties to add to the new
+        //                      node
+        //
+        obj.create = function (type, parent, attr)
+        {
+            var style = arguments[3] ? arguments[3] : {};
+
+            return RGraph.SVG.create({
+                svg: this.svg,
+                parent: parent,
+                type: type,
+                attr: attr,
+                style: style
+            });
+        };
+    };
+
+
+
+
+
+
+
+
 // End module pattern
 })(window, document);
 
