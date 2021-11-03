@@ -47,26 +47,28 @@
     //
     RGraph.SVG.tooltip = function (opt)
     {
-        var obj = opt.object;
+        var obj        = opt.object;
+        var properties = obj.properties;
 
         // Fire the beforetooltip event
         RGraph.SVG.fireCustomEvent(obj, 'onbeforetooltip');
 
 
         if (!opt.text || typeof opt.text === 'undefined' || RGraph.SVG.trim(opt.text).length === 0) {
-            return;
+            if (typeof properties.tooltipsOverride !== 'function') {
+                return;
+            }
         }
 
 
 
-        var properties = obj.properties;
 
 
 
         //
         // chart.tooltip.override allows you to totally take control of rendering the tooltip yourself
         //
-        if (typeof properties.tooltipsOverride === 'function') {
+        if (RGraph.SVG.isFunction(properties.tooltipsOverride)) {
 
             // Add the body click handler that clears the highlight if necessary
             //
