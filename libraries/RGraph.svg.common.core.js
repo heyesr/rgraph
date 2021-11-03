@@ -6138,13 +6138,25 @@
         {
             var style = arguments[3] ? arguments[3] : {};
 
-            return RGraph.SVG.create({
-                svg: this.svg,
-                parent: parent,
-                type: type,
-                attr: attr,
-                style: style
-            });
+            // Special case for arcPaths
+            if (type.toLowerCase() === 'arcpath') {
+                return RGraph.SVG.TRIG.getArcPath(attr);
+            
+            } else if (type.toLowerCase() === 'arcpath2') {
+                return RGraph.SVG.TRIG.getArcPath2(attr);
+            
+            } else if (type.toLowerCase() === 'arcpath3') {
+                return RGraph.SVG.TRIG.getArcPath3(attr);
+                
+            } else {
+                return RGraph.SVG.create({
+                    svg: this.svg,
+                    parent: parent,
+                    type: type,
+                    attr: attr,
+                    style: style
+                });
+            }
         };
     };
 
