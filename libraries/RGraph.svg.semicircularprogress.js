@@ -30,13 +30,18 @@
                         
                         name  = ret.name;
                         value = ret.value;
+                        
+                        if (name === 'backgroundColor')        {name = 'backgroundFill';}
+                        if (name === 'backgroundColorOpacity') {name = 'backgroundFillOpacity';}
 
                         this.set(name, value);
                     }
                 }
             } else {
 
-                    
+                if (name === 'backgroundColor')        {name = 'backgroundFill';}
+                if (name === 'backgroundColorOpacity') {name = 'backgroundFillOpacity';}
+
                 var ret = RGraph.SVG.commonSetter({
                     object: this,
                     name:   name,
@@ -102,6 +107,7 @@
         this.originalColors  = {};
         this.gradientCounter = 1;
         this.nodes           = {};
+        this.coords          = [];
         this.shadowNodes     = [];
         this.firstDraw       = true; // After the first draw this will be false
 
@@ -134,12 +140,20 @@
             marginTop:     35,
             marginBottom:  35,
 
-            backgroundStrokeLinewidth: 0.25,
-            backgroundStroke:          'gray',
-            backgroundFill:            'Gradient(white:#aaa)',
-            backgroundFillOpacity:     0.25,
+            backgroundStrokeLinewidth:  0.25,
+            backgroundStroke:           'gray',
+            backgroundFill:             null,
+            backgroundFillOpacity:      0.15,
+            backgroundGrid:             false,
+            backgroundGridMargin:       20,
+            backgroundGridColor:        '#ddd',
+            backgroundGridLinewidth:    1,
+            backgroundGridCircles:      true,
+            backgroundGridRadials:      true,
+            backgroundGridRadialsCount: 10,
 
-            colors: ['#0c0'],
+            colors: ['#6d6','#FFA5A5','#A0A2F8','yellow','gray','pink','orange','cyan','green'],
+            colorsStroke: 'transparent',
 
             textColor:      'black',
             textFont:       'Arial, Verdana, sans-serif',
@@ -147,24 +161,36 @@
             textBold:       false,
             textItalic:     false,
 
-            scaleUnitsPre:  '',
-            scaleUnitsPost: '',
-            scalePoint:     '.',
-            scaleThousand:  ',',
-            scaleDecimals:  0,
-            scaleFormatter: null,
+            scale:                      false,
+            scaleMin:                   null, // Defaults to the charts min value
+            scaleMax:                   null, // Defaults to the charts max value
+            scaleDecimals:              0,
+            scalePoint:                 '.',
+            scaleThousand:              ',',
+            scaleFormatter:             null,
+            scaleUnitsPre:              '',
+            scaleUnitsPost:             '',
+            scaleLabelsCount:           10,
+            scaleLabelsFont:            null,
+            scaleLabelsSize:            null,
+            scaleLabelsColor:           null,
+            scaleLabelsBold:            null,
+            scaleLabelsItalic:          null,
+            scaleLabelsOffsetr:         0,
+            scaleLabelsOffsetx:         0,
+            scaleLabelsOffsety:         0,
             
             labelsMin:          true,
             labelsMinSpecific:  null,
             labelsMinPoint:     null,
             labelsMinThousand:  null,
+            labelsMinDecimals:  null,
             labelsMinFormatter: null,
             labelsMinFont:      null,
             labelsMinSize:      null,
             labelsMinBold:      null,
             labelsMinItalic:    null,
             labelsMinColor:     null,
-            labelsMinDecimals:  null,
             labelsMinUnitsPre:  null,
             labelsMinUnitsPost: null,
             
@@ -183,6 +209,7 @@
             labelsMaxUnitsPost: null,
             
             labelsCenter:          true,
+            labelsCenterIndex:     0,
             labelsCenterSpecific:  null,
             labelsCenterPoint:     null,
             labelsCenterThousand:  null,
@@ -196,7 +223,7 @@
             labelsCenterUnitsPre:  null,
             labelsCenterUnitsPost: null,
             
-            linewidth: 0,
+            linewidth: 1,
 
             tooltips:                        null,
             tooltipsOverride:                null,
@@ -328,7 +355,7 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )   this.radius  += parseFloat(properties.radius);
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
             if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
             if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
             
@@ -345,57 +372,58 @@
 
 
 
-            // Draw the segments
-            this.path = this.drawMeter();
+            
+            this.drawBackground(); // Draw the background "grid"
+            this.drawMeter(); // Draw the segments
+            RGraph.SVG.drawTitle(this);   // Draw the title and subtitle
+            this.drawLabels();            // Draw the labels
+            this.drawScale();             // Draw the scale
 
 
 
-            // Draw the title and subtitle
-            RGraph.SVG.drawTitle(this);
-
-
-
-            // Draw the labels
-            this.drawLabels();
-
-
+            var obj = this;
 
             // Add the tooltip event listener
-            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips[0] || typeof properties.tooltips === 'string') ) {
+            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips.length || RGraph.isString(properties.tooltips)) ) {
 
-                var obj = this;
-
-                //
-                // Add tooltip event listeners
-                //
-                this.path.addEventListener(properties.tooltipsEvent, function (e)
-                {
-                    obj.removeHighlight();
                 
-                    // Show the tooltip
-                    RGraph.SVG.tooltip({
-                        object: obj,
-                        index:  0,
-                        group:  null,
-               sequentialIndex: 0,
-                        text:   typeof properties.tooltips === 'string' ? properties.tooltips : properties.tooltips[0],
-                        event:  e
-                    });
+                for (var i=0; i<this.coords.length; ++i) {
+                    (function (index)
+                    {
+                        if (RGraph.isString(properties.tooltips) || (RGraph.isArray(properties.tooltips) && properties.tooltips[index])) {
+                            obj.coords[index].element.addEventListener(properties.tooltipsEvent.replace(/^on/, ''), function (e)
+                            {
+                                obj.removeHighlight();
+    
+                                // Show the tooltip
+                                RGraph.SVG.tooltip({
+                                    object: obj,
+                                    index:  index,
+                                    group:  null,
+                           sequentialIndex: index,
+                                    text:   RGraph.isString(properties.tooltips) ? properties.tooltips : properties.tooltips[index],
+                                    event:  e
+                                });
+                                
+                                // Highlight the rect that has been clicked on
+                                obj.highlight(e.target);
+                            }, false);
                     
-                    // Highlight the rect that has been clicked on
-                    obj.highlight(e.target);
-                }, false);
-                
-                this.path.addEventListener('mousemove', function (e)
-                {
-                    e.target.style.cursor = 'pointer'
-                }, false);
+                            // Add the mousemove listener that changes the
+                            // mouse pointer
+                            obj.coords[index].element.addEventListener('mousemove', function (e)
+                            {
+                                e.target.style.cursor = 'pointer';
+                            }, false);
+                        }
+                    })(i);
+                }
             }
 
 
             // Add the event listener that clears the highlight if
-            // there is any. Must be MOUSEDOWN (ie before the click event)
-            var obj = this;
+            // there is any. Must be MOUSEDOWN (ie before the click
+            // event)
             document.body.addEventListener('mousedown', function (e)
             {
                 obj.removeHighlight();
@@ -431,23 +459,124 @@
 
 
         //
+        // Draw the background "grid"
+        //
+        this.drawBackground = function ()
+        {
+            if (properties.backgroundGrid) {
+
+                var margin      = properties.backgroundGridMargin;
+                var outerRadius = this.radius + margin;
+                var innerRadius = this.radius - properties.width - margin;
+
+                // Draw the background grid "circles"
+                if (properties.backgroundGridCircles) {
+
+                    // Create the path for the outer line of the grid
+                    var arcPath1 = this.create('arcPath3', null,{
+                        cx: this.centerx,
+                        cy: this.centery,
+                        r:  outerRadius,
+                        start: -RGraph.SVG.TRIG.HALFPI,
+                        end: RGraph.SVG.TRIG.HALFPI,
+                        anticlockwise: false,
+                        lineto: false,
+                        moveto: true
+                    });
+        
+                    // Create the path for the inner line of the grid
+                    var arcPath2 = this.create('arcPath3', null,{
+                        cx: this.centerx,
+                        cy: this.centery,
+                        r:  innerRadius,
+                        start: RGraph.SVG.TRIG.HALFPI,
+                        end: -RGraph.SVG.TRIG.HALFPI,
+                        anticlockwise: true,
+                        lineto: true
+                    });
+
+                    this.create('path', this.svg.all, {
+                        d: arcPath1 + ' ' + arcPath2 + ' z',
+                        stroke: properties.backgroundGridColor,
+                        fill: 'transparent'
+                    });
+                }
+                
+
+                //
+                // Draw the background grid radials
+                //
+                if (properties.backgroundGridRadials) {
+                
+                    // Calculate the radius increment
+                    var increment = (RGraph.SVG.TRIG.HALFPI - (0 - RGraph.SVG.TRIG.HALFPI) ) / properties.backgroundGridRadialsCount;
+                    var angle     = -RGraph.SVG.TRIG.HALFPI;
+    
+                    for (var i=0,path=''; i<properties.backgroundGridRadialsCount; ++i) {
+
+                        path += this.create('arcPath3', null, {
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  outerRadius,
+                            start: -RGraph.SVG.TRIG.HALFPI + (i * increment),
+                            end: -RGraph.SVG.TRIG.HALFPI + (i * increment),
+                            anticlockwise: true,
+                            lineto: false,
+                            moveto: true
+                        });
+
+                        path += this.create('arcPath3', null, {
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  innerRadius,
+                            start: -RGraph.SVG.TRIG.HALFPI + (i * increment),
+                            end: -RGraph.SVG.TRIG.HALFPI + (i * increment),
+                            anticlockwise: true,
+                            lineto: true
+                        });
+
+                        path += ' ';
+                        angle += increment;
+                    }
+
+                    this.create('path', this.svg.all, {
+                        d: path + ' z',
+                        stroke: properties.backgroundGridColor,
+                        fill: 'transparent',
+                        'stroke-width': properties.backgroundGridLinewidth
+                    });
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
         // Draws the meter
         //
         this.drawMeter = function ()
         {
-            //
-            // Draw the background to the meter
-            //
-            var path = RGraph.SVG.TRIG.getArcPath({
+            // Reset this
+            this.coords = [];
+
+
+
+            var path = this.create('arcPath', null, {
                 cx: this.centerx,
                 cy: this.centery,
-                r:  this.radius,
-                start: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
-                end: RGraph.SVG.TRIG.HALFPI,
-                anticlockwise: false
-            }); 
+                 r: this.radius,
+             start: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
+               end: RGraph.SVG.TRIG.HALFPI,
+     anticlockwise: false
+            });
+
             
-            var path2 = RGraph.SVG.TRIG.getArcPath({
+            var path2 = this.create('arcPath', null, {
                 cx: this.centerx,
                 cy: this.centery,
                 r:  this.radius - this.progressWidth,
@@ -459,18 +588,13 @@
 
             // This element is repeated AFTER the green bar that indicates
             // the value so that the stroke appears AFTER the indicator bar
-            var background = RGraph.SVG.create({
-                svg: this.svg,
-                type: 'path',
-                parent: this.svg.all,
-                attr: {
-                    d: path + " L " + (this.centerx + this.radius - this.progressWidth)  + " " + this.centery + path2 + " L " + (this.centerx - this.radius) + " " + this.centery,
-                    fill:           properties.backgroundFill || properties.colors[0],
-                    'stroke-width': 0,
-                    'fill-opacity': properties.backgroundFillOpacity
-                }
+            var background = this.create('path', this.svg.all, {
+                d: path + " L " + (this.centerx + this.radius - this.progressWidth)  + " " + this.centery + path2 + " L " + (this.centerx - this.radius) + " " + this.centery,
+                fill:           properties.backgroundFill || properties.colors[0],
+                'stroke-width': 0,
+                'fill-opacity': properties.backgroundFillOpacity
             });
-            
+
             // Store a reference to the background
             this.nodes.background = background;
 
@@ -479,100 +603,152 @@
             //
             // This draws the bar that indicates the value
             //
-            var angle = ((this.value - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
-
-            // Take off half a pi because our origin is the north axis
-            angle -= RGraph.SVG.TRIG.HALFPI;
             
-            // Store the angle for later use
-            this.angle = angle;
+            // A single number
+            if (typeof this.value === 'number') {
 
-
-            // Now get the path of the inner indicator bar
-            var path = RGraph.SVG.TRIG.getArcPath({
-                cx: this.centerx,
-                cy: this.centery,
-                r:  this.radius,
-                start: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
-                end: angle,
-                anticlockwise: false
-            });
-            
-            var path2 = RGraph.SVG.TRIG.getArcPath({
-                cx: this.centerx,
-                cy: this.centery,
-                r:  this.radius - this.progressWidth,
-                start: angle,
-                end: angle,
-                anticlockwise: false,
-                array: true
-            });
-
-            var path3 = RGraph.SVG.TRIG.getArcPath({
-                cx: this.centerx,
-                cy: this.centery,
-                r:  this.radius - this.progressWidth,
-                start: angle,
-                end: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
-                anticlockwise: true,
-                moveto: false
-            });
-            
-
-            // Create a group for the indicator bar. At a later point any
-            //highlight can be also appended to this group
-            var group = RGraph.SVG.create({
-                svg: this.svg,
-                type: 'g',
-                parent: this.svg.all,
-                attr: {
-                    id: 'indicator-bar-group'
-                }
-            });
-
-            // Now draw the path
-            var path = RGraph.SVG.create({
-                svg: this.svg,
-                type: 'path',
-                parent: group,
-                attr: {
+                var angle = ((this.value - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
+    
+                // Take off half a pi because our origin is the north axis
+                angle -= RGraph.SVG.TRIG.HALFPI;
+                
+                // Store the angle for later use
+                this.angle = angle;
+    
+    
+                // Now get the path of the inner indicator bar
+                var path = RGraph.SVG.TRIG.getArcPath({
+                    cx: this.centerx,
+                    cy: this.centery,
+                    r:  this.radius,
+                    start: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
+                    end: angle,
+                    anticlockwise: false
+                });
+                
+                var path2 = RGraph.SVG.TRIG.getArcPath({
+                    cx: this.centerx,
+                    cy: this.centery,
+                    r:  this.radius - this.progressWidth,
+                    start: angle,
+                    end: angle,
+                    anticlockwise: false,
+                    array: true
+                });
+    
+                var path3 = RGraph.SVG.TRIG.getArcPath({
+                    cx: this.centerx,
+                    cy: this.centery,
+                    r:  this.radius - this.progressWidth,
+                    start: angle,
+                    end: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
+                    anticlockwise: true,
+                    moveto: false
+                });
+                
+    
+                // Create a group for the indicator bar. At a later point any
+                // highlight can be also appended to this group
+                var group = RGraph.SVG.create({
+                    svg: this.svg,
+                    type: 'g',
+                    parent: this.svg.all,
+                    attr: {
+                        id: 'indicator-bar-group'
+                    }
+                });
+    
+                // Now draw the path
+                var path = this.create('path',group, {
                     d: path + " L{1} {2} ".format(
                         path2[1],
                         path2[2]
                     ) + path3 + ' z',
                     fill: properties.colors[0],
-                    stroke: 'black',
+                    stroke: properties.colorsStroke,
                     'stroke-width': properties.linewidth
-                }
-            });
+                });
+    
+                // Store a reference to the bar in the nodes array and the
+                // group as well. If necessary any highlight thats later
+                // added can be appended to this group
+                this.nodes.barGroup = group;
+                this.nodes.bar      = path;
 
-            // Store a reference to the bar in the nodes array and the
-            // group as well. If necessary any highlight thats later
-            // added can be appended to this group
-            this.nodes.barGroup = group;
-            this.nodes.bar      = path;
-            
-            // This node is added so that the background stroke appears
-            // ABOVE the coloured indicator bar
-            var backgroundStroke = RGraph.SVG.create({
-                svg: this.svg,
-                type: 'path',
-                parent: this.svg.all,
-                attr: {
-                    d:              this.nodes.background.getAttribute('d'),
-                    stroke:         properties.backgroundStroke,
-                    fill:           'rgba(0,0,0,0)',
-                    'stroke-width':  properties.backgroundStrokeLinewidth,
-                    'stroke-linecap': 'square'
-                },
-                style: {
-                    pointerEvents: 'none'
-                }
-            });
-            
-            this.nodes.backgroundStroke = backgroundStroke;
+                this.coords.push({
+                    cx:             this.centerx,
+                    cy:             this.centery,
+                    radiusOuter:    this.radius,
+                    radiusInner:    this.radius - this.progressWidth,
+                    start:          -RGraph.SVG.TRIG.HALFPI,
+                    end:            angle,
+                    element:        path
+                });
 
-            return path;
+            //
+            // Multiple values
+            //
+            } else if (RGraph.isArray(this.value)) {
+
+
+                
+    
+                // Create a group for the indicator bars. At a later point any
+                // highlight can be also appended to this group
+                var group = this.create('g', this.svg.all,
+                {
+                    id: 'indicator-bar-group'
+                });
+
+                for (var i=0,start=-RGraph.SVG.TRIG.HALFPI; i<this.value.length; ++i) {
+                    
+                    var angle = ((this.value[i] - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
+        
+                    var path1 = this.create('arcPath', null, {
+                        cx: this.centerx,
+                        cy: this.centery,
+                        r:  this.radius, // - this.progressWidth,
+                        start: start,
+                        end: start + angle,
+                        anticlockwise: false,
+                        lineto: false,
+                        moveto: true
+                    });
+
+                    var path2 = this.create('arcPath3', null, {
+                        cx: this.centerx,
+                        cy: this.centery,
+                        r:  this.radius - this.progressWidth,
+                        start: start + angle,
+                        end: start,
+                        anticlockwise: true
+                    });
+
+
+                    var el = this.create('path', group, {
+                        d: '{1} {2} z'.format(path1, path2),
+                        stroke: properties.colorsStroke,
+                        'stroke-width': properties.linewidth,
+                        fill: properties.colors[i]
+                    });
+                    
+                    // Store the angle for later use
+                    this.coords.push({
+                        cx:             this.centerx,
+                        cy:             this.centery,
+                        radiusOuter:    this.radius,
+                        radiusInner:    this.radius - this.progressWidth,
+                        start:          start,
+                        end:            start + angle,
+                        element:        el
+                    });
+                    
+                    // Increment the start angle
+                    //
+                    // DO THIS LAST
+                    start += angle;
+                }
+            }
         };
 
 
@@ -592,12 +768,12 @@
 
                 var min = RGraph.SVG.numberFormat({
                     object:    this,
-                    num:       this.min.toFixed(typeof properties.labelsMinDecimals === 'number' ? properties.labelsMinDecimals : properties.scaleDecimals),
-                    prepend:   typeof properties.labelsMinUnitsPre  === 'string'   ? properties.labelsMinUnitsPre  : properties.scaleUnitsPre,
-                    append:    typeof properties.labelsMinUnitsPost === 'string'   ? properties.labelsMinUnitsPost : properties.scaleUnitsPost,
-                    point:     typeof properties.labelsMinPoint     === 'string'   ? properties.labelsMinPoint     : properties.scalePoint,
-                    thousand:  typeof properties.labelsMinThousand  === 'string'   ? properties.labelsMinThousand  : properties.scaleThousand,
-                    formatter: typeof properties.labelsMinFormatter === 'function' ? properties.labelsMinFormatter : properties.scaleFormatter
+                    num:       this.min.toFixed(properties.labelsMinDecimals),
+                    prepend:   properties.labelsMinUnitsPre,
+                    append:    properties.labelsMinUnitsPost,
+                    point:     properties.labelsMinPoint,
+                    thousand:  properties.labelsMinThousand,
+                    formatter: properties.labelsMinFormatter
                 });
                 
                 // Get the text configuration
@@ -637,12 +813,12 @@
 
                 var max = RGraph.SVG.numberFormat({
                     object:    this,
-                    num:       this.max.toFixed(typeof properties.labelsMaxDecimals === 'number' ? properties.labelsMaxDecimals : properties.scaleDecimals),
-                    prepend:   typeof properties.labelsMaxUnitsPre  === 'string'   ? properties.labelsMaxUnitsPre  : properties.scaleUnitsPre,
-                    append:    typeof properties.labelsMaxUnitsPost === 'string'   ? properties.labelsMaxUnitsPost : properties.scaleUnitsPost,
-                    point:     typeof properties.labelsMaxPoint     === 'string'   ? properties.labelsMaxPoint     : properties.scalePoint,
-                    thousand:  typeof properties.labelsMaxThousand  === 'string'   ? properties.labelsMaxThousand  : properties.scaleThousand,
-                    formatter: typeof properties.labelsMaxFormatter === 'function' ? properties.labelsMaxFormatter : properties.scaleFormatter
+                    num:       this.max.toFixed(properties.labelsMaxDecimals),
+                    prepend:   properties.labelsMaxUnitsPre,
+                    append:    properties.labelsMaxUnitsPost,
+                    point:     properties.labelsMaxPoint,
+                    thousand:  properties.labelsMaxThousand,
+                    formatter: properties.labelsMaxFormatter
                 });
 
                 
@@ -657,13 +833,10 @@
                     parent: this.svg.all,
                     tag:    'labels.max',
                     text:   typeof properties.labelsMaxSpecific === 'string' ? properties.labelsMaxSpecific : max,
-                    
                     x:      this.centerx + this.radius - (this.progressWidth / 2),
                     y:      this.centery + 5 + properties.backgroundStrokeLinewidth,
-                    
                     valign: 'top',
                     halign: 'center',
-
                     font:   textConf.font,
                     size:   textConf.size,
                     bold:   textConf.bold,
@@ -686,12 +859,12 @@
 
                 var center = RGraph.SVG.numberFormat({
                     object:    this,
-                    num:       this.value.toFixed(typeof properties.labelsCenterDecimals === 'number' ? properties.labelsCenterDecimals : properties.scaleDecimals),
-                    prepend:   typeof properties.labelsCenterUnitsPre  === 'string' ? properties.labelsCenterUnitsPre  : properties.scaleUnitsPre,
-                    append:    typeof properties.labelsCenterUnitsPost === 'string' ? properties.labelsCenterUnitsPost : properties.scaleUnitsPost,
-                    point:     typeof properties.labelsCenterPoint     === 'string' ? properties.labelsCenterPoint     : properties.scalePoint,
-                    thousand:  typeof properties.labelsCenterThousand  === 'string' ? properties.labelsCenterThousand  : properties.scaleThousand,
-                    formatter: typeof properties.labelsCenterFormatter === 'function' ? properties.labelsCenterFormatter : properties.scaleFormatter
+                    num:       (typeof this.value === 'number' ? this.value : this.value[properties.labelsCenterIndex]).toFixed(properties.labelsCenterDecimals),
+                    prepend:   properties.labelsCenterUnitsPre,
+                    append:    properties.labelsCenterUnitsPost,
+                    point:     properties.labelsCenterPoint,
+                    thousand:  properties.labelsCenterThousand,
+                    formatter: properties.labelsCenterFormatter
                 });
 
                 
@@ -705,15 +878,11 @@
                     object: this,
                     parent: this.svg.all,
                     tag:    'labels.center',
-                    
                     text:   typeof properties.labelsCenterSpecific === 'string' ? properties.labelsCenterSpecific : center,
-                    
                     x:      this.centerx,
                     y:      this.centery,
-                    
                     valign: 'bottom',
                     halign: 'center',
-
                     font:   textConf.font,
                     size:   textConf.size,
                     bold:   textConf.bold,
@@ -723,6 +892,103 @@
                 
                 // Store a reference to the center label
                 this.nodes.labelsCenter = text;
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draw the scale if necessary
+        //
+        this.drawScale = function ()
+        {
+            if (properties.scale) {
+
+                //
+                // Generate an appropiate scale
+                //
+                this.scale = RGraph.SVG.getScale({
+                    object:    this,
+                    numlabels: properties.scaleLabelsCount,
+                    unitsPre:  properties.scaleUnitsPre,
+                    unitsPost: properties.scaleUnitsPost,
+                    max:       typeof properties.scaleMax === 'number' ? properties.scaleMax : this.max,
+                    min:       typeof properties.scaleMin === 'number' ? properties.scaleMin : this.min,
+                    point:     properties.scalePoint,
+                    round:     false,
+                    thousand:  properties.scaleThousand,
+                    decimals:  properties.scaleDecimals,
+                    strict:    true,
+                    formatter: properties.scaleFormatter
+                });
+
+                //
+                // Loop thru the number of labels
+                //
+                var textConf = RGraph.SVG.getTextConf({
+                    object: this,
+                    prefix: 'scaleLabels'
+                });
+
+                for (var i=0; i<this.scale.labels.length; ++i) {
+
+                    var xy = RGraph.SVG.TRIG.getRadiusEndPoint({
+                        angle:  (-RGraph.SVG.TRIG.PI) + (((i+1) / this.scale.labels.length) * (RGraph.SVG.TRIG.HALFPI - (-RGraph.SVG.TRIG.HALFPI)) ),
+                        r: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                    });
+
+                    // Draw the label
+                    RGraph.SVG.text({
+                        object: this,
+                        parent: this.svg.all,
+                        tag:    'scale',
+                        font:   textConf.font,
+                        size:   textConf.size,
+                        color:  textConf.color,
+                        bold:   textConf.bold,
+                        italic: textConf.italic,
+                        x: xy[0] + this.centerx + (properties.scaleLabelsOffsetx || 0),
+                        y: xy[1] + this.centery + (properties.scaleLabelsOffsety || 0),
+                        valign: 'center',
+                        halign: ((i+1) / this.scale.labels.length === 0.5)     ? 'center' : (((i+1) > (this.scale.labels.length / 2)) ? 'left' : 'right'),
+                        text: this.scale.labels[i]
+                    });
+                }
+
+
+
+                // Draw the zero label
+                //
+                // Draw the zero label
+                //
+                var xy = RGraph.SVG.TRIG.getRadiusEndPoint({
+                    angle:  -RGraph.SVG.TRIG.PI,
+                    r: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                });
+
+                RGraph.SVG.text({
+                    object: this,
+                    parent: this.svg.all,
+                    tag:    'scale',
+                    font:   textConf.font,
+                    size:   textConf.size,
+                    color:  textConf.color,
+                    bold:   textConf.bold,
+                    italic: textConf.italic,
+                    x: xy[0] + this.centerx + (properties.scaleLabelsOffsetx || 0),
+                    y: xy[1] + this.centery + (properties.scaleLabelsOffsety || 0),
+                    valign: 'center',
+                    halign: 'right',
+                      text:   (typeof properties.scaleFormatter === 'function') ?
+                                  properties.scaleFormatter(this, this.min)
+                                  :
+                                  properties.scaleUnitsPre + (typeof properties.scaleMin === 'number' ? properties.scaleMin : this.min).toFixed(properties.scaleDecimals).replace(/\./, properties.scalePoint) + properties.scaleUnitsPost,
+                });
             }
         };
 
@@ -749,7 +1015,7 @@
                 type: 'path',
                 parent: this.nodes.barGroup,
                 attr: {
-                    d: this.path.getAttribute('d'),
+                    d: segment.getAttribute('d'),
                     fill: properties.highlightFill,
                     stroke: properties.highlightStroke,
                     'stroke-width': properties.highlightLinewidth
@@ -810,7 +1076,7 @@
                 this.originalColors = {
                     colors:          RGraph.SVG.arrayClone(properties.colors),
                     highlightFill:   RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor: RGraph.SVG.arrayClone(properties.backgroundColor)
+                    backgroundFill:  RGraph.SVG.arrayClone(properties.backgroundFill)
                 }
             }
 
@@ -842,9 +1108,9 @@
             // Background color
 
             // Background color
-            properties.backgroundColor = RGraph.SVG.parseColorLinear({
+            properties.backgroundFill = RGraph.SVG.parseColorLinear({
                 object: this,
-                color: properties.backgroundColor,
+                color: properties.backgroundFill,
                 start: properties.marginLeft,
                   end: this.width - properties.marginRight,
                   direction: 'horizontal'
@@ -866,23 +1132,26 @@
             var opt      = arguments[0] || {},
                 frames   = opt.frames || 30,
                 frame    = 0,
-                obj      = this,
-                value    = opt.value;
+                obj      = this;
 
             //
             // Copy the data
             //
-            value = this.value;
+            value = RGraph.SVG.arrayClone(this.value);
 
             this.draw();
 
             var iterate = function ()
             {
-                var   multiplier = frame / frames
-                    // RGraph.SVG.FX.getEasingMultiplier(frames, frame)
-                    // RGraph.SVG.FX.getEasingMultiplier(frames, frame);
+                var multiplier = frame / frames;
 
-                obj.value = value * multiplier;
+                if (typeof obj.value === 'object') {
+                    for (var i=0; i<obj.value.length; ++i) {
+                        obj.value[i] = value[i] * multiplier;
+                    }
+                } else {
+                    obj.value = value * multiplier;
+                }
                 
                 RGraph.SVG.redraw();
 
@@ -977,12 +1246,15 @@
         //
         this.tooltipSubstitutions = function (opt)
         {
+            var value  = RGraph.isArray(this.value) ? this.value[opt.index] : this.value;
+            var values = RGraph.isArray(this.value) ? this.value : [this.value];
+
             return {
-                  index: 0,
+                  index: opt.index,
                 dataset: 0,
-        sequentialIndex: 0,
-                  value: this.value,
-                 values: [this.value]
+        sequentialIndex: opt.index,
+                  value: value,
+                 values: values
             };
         };
 
@@ -1001,8 +1273,8 @@
         //
         this.tooltipsFormattedCustom = function (specific, index, colors)
         {
-            var color = colors[0];
-            var label = ( (typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[0] === 'string') ? properties.tooltipsFormattedKeyLabels[0] : '');
+            var color = colors[index];
+            var label = ( (typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[0] === 'string') ? properties.tooltipsFormattedKeyLabels[index] : '');
 
             return {
                 label: label,
@@ -1032,9 +1304,11 @@
             var coords = RGraph.SVG.TRIG.toCartesian({
                 cx: this.centerx,
                 cy: this.centery,
-             angle: this.angle - RGraph.SVG.TRIG.HALFPI - ((this.angle + RGraph.SVG.TRIG.HALFPI) / 2),
+             //angle: this.angle - RGraph.SVG.TRIG.HALFPI - ((this.angle + RGraph.SVG.TRIG.HALFPI) / 2),
+             angle: this.coords[index].start - RGraph.SVG.TRIG.HALFPI + ((this.coords[index].end - this.coords[index].start) / 2),
                  r: this.radius - (this.progressWidth / 2)
             });
+
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
