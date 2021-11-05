@@ -384,13 +384,13 @@
             var obj = this;
 
             // Add the tooltip event listener
-            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips.length || RGraph.isString(properties.tooltips)) ) {
+            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips.length || RGraph.SVG.isString(properties.tooltips)) ) {
 
                 
                 for (var i=0; i<this.coords.length; ++i) {
                     (function (index)
                     {
-                        if (RGraph.isString(properties.tooltips) || (RGraph.isArray(properties.tooltips) && properties.tooltips[index])) {
+                        if (RGraph.SVG.isString(properties.tooltips) || (RGraph.SVG.isArray(properties.tooltips) && properties.tooltips[index])) {
                             obj.coords[index].element.addEventListener(properties.tooltipsEvent.replace(/^on/, ''), function (e)
                             {
                                 obj.removeHighlight();
@@ -401,7 +401,7 @@
                                     index:  index,
                                     group:  null,
                            sequentialIndex: index,
-                                    text:   RGraph.isString(properties.tooltips) ? properties.tooltips : properties.tooltips[index],
+                                    text:   RGraph.SVG.isString(properties.tooltips) ? properties.tooltips : properties.tooltips[index],
                                     event:  e
                                 });
                                 
@@ -688,7 +688,7 @@
             //
             // Multiple values
             //
-            } else if (RGraph.isArray(this.value)) {
+            } else if (RGraph.SVG.isArray(this.value)) {
 
 
                 
@@ -1137,7 +1137,7 @@
             //
             // Copy the data
             //
-            value = RGraph.SVG.arrayClone(this.value);
+            var value = RGraph.SVG.arrayClone(this.value);
 
             this.draw();
 
@@ -1246,8 +1246,8 @@
         //
         this.tooltipSubstitutions = function (opt)
         {
-            var value  = RGraph.isArray(this.value) ? this.value[opt.index] : this.value;
-            var values = RGraph.isArray(this.value) ? this.value : [this.value];
+            var value  = RGraph.SVG.isArray(this.value) ? this.value[opt.index] : this.value;
+            var values = RGraph.SVG.isArray(this.value) ? this.value : [this.value];
 
             return {
                   index: opt.index,
