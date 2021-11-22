@@ -4,7 +4,7 @@
 
 <h1 align="center">RGraph: Beautiful javascript charts for websites</h1>
 
-RGraph is an Open Source JavaScript charts library for websites. It was started in 2008 and was initially
+RGraph is an Open Source JavaScript charts library built for websites. It was started in 2008 and was initially
 canvas only.
 
 Now it has support for over 60 responsive chart types across SVG and canvas, multiple data source import
