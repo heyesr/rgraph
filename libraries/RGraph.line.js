@@ -2311,8 +2311,9 @@
                        typeof properties.labelsAboveBorder === 'boolean'
                     || typeof properties.labelsAboveBorder === 'number'
                 ) ? properties.labelsAboveBorder : true),
-                offsety  = properties.labelsAboveOffsety,
-                specific = properties.labelsAboveSpecific;
+                offsety    = properties.labelsAboveOffsety,
+                specific   = properties.labelsAboveSpecific,
+                formatter  = properties.labelsAboveFormatter;
 
 
                 var textConf = RGraph.getTextConf({
@@ -2363,7 +2364,8 @@
                                         unitspre:  units_pre,
                                         unitspost: units_post,
                                         point:     point,
-                                        thousand:  thousand
+                                        thousand:  thousand,
+                                        formatter: formatter
                                     })),
 
                     valign:         'center',
