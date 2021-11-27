@@ -2361,11 +2361,14 @@
                     text:           (specific && specific[i]) ? specific[i] : (specific ? '' : RGraph.numberFormat({
                                         object:    this,
                                         number:    typeof decimals === 'number' ? this.data_arr[i].toFixed(decimals) : this.data_arr[i],
+                                        value:     typeof decimals === 'number' ? this.data_arr[i].toFixed(decimals) : this.data_arr[i],
                                         unitspre:  units_pre,
                                         unitspost: units_post,
                                         point:     point,
                                         thousand:  thousand,
-                                        formatter: formatter
+                                        formatter: formatter,
+                                        index:     index,
+                                        dataset:   dataset
                                     })),
 
                     valign:         'center',

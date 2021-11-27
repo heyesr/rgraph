@@ -2582,12 +2582,15 @@ this.context.lineTo(
                             y:    coords2[i][0][1] - offsety,
                             text: specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                 object:    this,
-                                number:    Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
+                                number:    Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
+                                value:     Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
                                 thousand:  thousand,
-                                formatter: formatter
+                                formatter: formatter,
+                                dataset:   0,
+                                index:     i
                             }),
                             halign:            halign,
                             valign:            valign,
@@ -2628,12 +2631,15 @@ this.context.lineTo(
                             y:              coords2[i][0][1] + coords2[i][0][3] + offsety,
                             text: specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                 object:    this,
-                                number:    Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
+                                number:    Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
+                                value:     Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
                                 thousand:  thousand,
-                                formatter: formatter
+                                formatter: formatter,
+                                dataset:   0,
+                                index:     i,
                             }),
                             halign:         halign,
                             valign:         valign,
@@ -2677,12 +2683,15 @@ this.context.lineTo(
                                     y:                  properties.xaxisPosition === 'top' ? coords2[i][j][1] + coords2[i][j][3] + 5 : coords2[i][j][1] + (data[i][j] < 0 ? coords2[i][j][3] + offsety : -offsety),
                                     text:               specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                             object:    this,
-                                                            number:    Number(data[i][j]).toFixed(decimals),
+                                                            number:    Number(Number(data[i][j]).toFixed(decimals)),
+                                                            value:     Number(Number(data[i][j]).toFixed(decimals)),
                                                             unitspre:  unitsPre,
                                                             unitspost: unitsPost,
                                                             point:     point,
                                                             thousand:  thousand,
-                                                            formatter: formatter
+                                                            formatter: formatter,
+                                                            dataset:   i,
+                                                            index:     j
                                                         }),
                                     halign:             halign,
                                     valign:             properties.xaxisPosition === 'top' ? 'top' : valign,
@@ -2727,12 +2736,14 @@ this.context.lineTo(
                             y:              coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety,
                             text:           specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                 object:    this,
-                                                number:    Number(RGraph.arraySum(data[i])).toFixed(decimals),
+                                                number:    Number(Number(RGraph.arraySum(data[i])).toFixed(decimals)),
+                                                value:     Number(Number(RGraph.arraySum(data[i])).toFixed(decimals)),
                                                 unitspre:  unitsPre,
                                                 unitspost: unitsPost,
                                                 point:     point,
                                                 thousand:  thousand,
-                                                formatter: formatter
+                                                formatter: formatter,
+                                                dataset:   i
                                             }),
                             halign:         halign,
                             valign:         valign,
@@ -2769,12 +2780,14 @@ this.context.lineTo(
                             y:                  coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety,
                             text:               specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                     object:    this,
-                                                    number:    Number(data[i]).toFixed(decimals),
+                                                    number:    Number(Number(data[i]).toFixed(decimals)),
+                                                    value:     Number(Number(data[i]).toFixed(decimals)),
                                                     unitspre:  unitsPre,
                                                     unitspost: unitsPost,
                                                     point:     point,
                                                     thousand:  thousand,
-                                                    formatter: formatter
+                                                    formatter: formatter,
+                                                    dataset:   i
                                                 }),
                             halign:             halign,
                             valign:             valign,
