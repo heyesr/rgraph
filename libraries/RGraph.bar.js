@@ -1091,7 +1091,11 @@
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
-                                    this.roundedCornersRect(x + hmargin,y,barWidth,height);(x + hmargin,y,barWidth,height);
+
+                                    (this.data[i] < 0)
+                                        ? this.roundedCornersRectNegative(x + hmargin,y,barWidth,height)
+                                        : this.roundedCornersRect(x + hmargin,y,barWidth,height);
+
                                     this.context.stroke();
                                     this.context.fill();
 
@@ -1578,7 +1582,11 @@ this.context.lineTo(
                                 this.context.beginPath();
                                 this.context.lineCap  = 'miter';
                                 this.context.lineJoin = 'square';
-                                this.roundedCornersRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+
+                                (this.data[i][j]  < 0)
+                                    ? this.roundedCornersRectNegative(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height)
+                                    : this.roundedCornersRect(startX + groupedMargin, startY, individualBarWidth - (2 * groupedMargin), height);
+
                                 this.context.stroke();
                                 this.context.fill();
 
@@ -3520,16 +3528,12 @@ this.context.lineTo(
         // @param number height The height of the rectangle
         // @param number radius The radius of the corners. Bigger values mean more rounded corners
         //
-        //CanvasRenderingContext2D.prototype.rect = function (x, y, width, height)
         this.roundedCornersRect = function (x, y, width, height)
         {
             var radius = properties.cornersRoundRadius;
 
             radius = Math.min(width / 2, height / 2, radius);
 
-
-            // Because the function is added to the context prototype
-            // the 'this' variable is actually the context
             
             // Save the existing state of the canvas so that it can be restored later
             this.context.save();
@@ -3545,6 +3549,63 @@ this.context.lineTo(
                 this.context.arcTo(width, height, 0, height, 0);
                 this.context.arcTo(0, height, 0, 0, 0);
                 this.context.arcTo(0, 0, radius, 0, Math.min(height / 2, radius));
+    
+                // Draw a line back to the start coordinates
+                this.context.lineTo(width / 2,0);
+    
+            // Restore the state of the canvas to as it was before the save()
+            this.context.restore();
+        };
+
+
+
+
+
+
+
+
+        //
+        // This adds a roundedRectNegative(x, y, width, height, radius) function to the drawing context.
+        // The radius argument dictates by how much the corners are rounded.
+        // This function handles negative bars whereas the above
+        // function handles positive ones.
+        // 
+        // @param number x      The X coordinate
+        // @param number y      The Y coordinate
+        // @param number width  The width of the rectangle
+        // @param number height The height of the rectangle
+        // @param number radius The radius of the corners. Bigger values mean more rounded corners
+        //
+        this.roundedCornersRectNegative = function (x, y, width, height)
+        {
+            if (height < 0) {
+                height = Math.abs(height);
+                y     -= height;
+            }
+
+            var radius = properties.cornersRoundRadius;
+
+            radius = Math.min(
+                Math.abs(width / 2),
+                Math.abs(height / 2),
+                Math.abs(radius)
+            );
+
+            // Save the existing state of the canvas so that it can be restored later
+            this.context.save();
+
+                // Translate to the given X/Y coordinates
+                this.context.translate(x, y);
+    
+                // Move to the center of the top horizontal line
+                this.context.moveTo(width / 2,0);
+
+                // Draw the rounded corners. The connecting lines in
+                // between them are drawn automatically
+                this.context.arcTo(width,0,width,height, 0);
+                this.context.arcTo(width, height, 0, height, radius);
+                this.context.arcTo(0, height, 0, 0, radius);
+                this.context.arcTo(0, 0, width, 0, 0);
     
                 // Draw a line back to the start coordinates
                 this.context.lineTo(width / 2,0);
