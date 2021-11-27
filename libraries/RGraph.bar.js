@@ -2526,6 +2526,7 @@ this.context.lineTo(
                 unitsPost   = properties.labelsAboveUnitsPost,
                 point       = properties.labelsAbovePoint,
                 thousand    = properties.labelsAboveThousand,
+                formatter   = properties.labelsAboveFormatter,
                 coords      = this.coords,
                 coords2     = this.coords2,
                 data        = this.data,
@@ -2585,7 +2586,8 @@ this.context.lineTo(
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
-                                thousand:  thousand
+                                thousand:  thousand,
+                                formatter: formatter
                             }),
                             halign:            halign,
                             valign:            valign,
@@ -2630,7 +2632,8 @@ this.context.lineTo(
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
-                                thousand:  thousand
+                                thousand:  thousand,
+                                formatter: formatter
                             }),
                             halign:         halign,
                             valign:         valign,
@@ -2678,7 +2681,8 @@ this.context.lineTo(
                                                             unitspre:  unitsPre,
                                                             unitspost: unitsPost,
                                                             point:     point,
-                                                            thousand:  thousand
+                                                            thousand:  thousand,
+                                                            formatter: formatter
                                                         }),
                                     halign:             halign,
                                     valign:             properties.xaxisPosition === 'top' ? 'top' : valign,
@@ -2727,7 +2731,8 @@ this.context.lineTo(
                                                 unitspre:  unitsPre,
                                                 unitspost: unitsPost,
                                                 point:     point,
-                                                thousand:  thousand
+                                                thousand:  thousand,
+                                                formatter: formatter
                                             }),
                             halign:         halign,
                             valign:         valign,
@@ -2768,7 +2773,8 @@ this.context.lineTo(
                                                     unitspre:  unitsPre,
                                                     unitspost: unitsPost,
                                                     point:     point,
-                                                    thousand:  thousand
+                                                    thousand:  thousand,
+                                                    formatter: formatter
                                                 }),
                             halign:             halign,
                             valign:             valign,
