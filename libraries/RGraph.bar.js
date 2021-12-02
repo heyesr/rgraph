@@ -1401,8 +1401,9 @@ this.context.lineTo(
 
 
                             if (height > 0) {
+                                
+                                // TODO Handle xaxisPosition=top here
                                 if (j === 0 && properties.corners === 'round') {
-
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
@@ -3660,7 +3661,7 @@ this.context.lineTo(
         //     ...
         // this.context.restore();
         //
-        this.install3DAxisClip = function ()
+        this.install3DAxisNegativeClip = function ()
         {
             this.path(
                 'b m % % l % % l % % l % % l % % l % % c cl',
