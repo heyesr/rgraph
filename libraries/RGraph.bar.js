@@ -485,6 +485,34 @@
 
 
 
+
+
+
+
+            //
+            // If the X axis is at the top then all the
+            // data-points should be negative
+            //
+            if (properties.xaxisPosition === 'top') {
+                for (var i=0; i<this.data.length; ++i) {
+                    if (typeof this.data[i] === 'object' && properties.grouping === 'grouped') {
+                        for (var j=0;j<this.data[i].length; ++j) {
+                            this.data[i][j] = Math.abs(this.data[i][j]) * -1;
+                        }
+                    } else if (typeof this.data[i] === 'number') {
+                        this.data[i] = Math.abs(this.data[i]) * -1;
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
             //
             // If the chart is 3d then angle it
             //
