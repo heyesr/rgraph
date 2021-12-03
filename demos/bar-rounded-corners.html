@@ -25,6 +25,9 @@
         <canvas id="cvs1" width="750" height="250">[No canvas support]</canvas>
         <canvas id="cvs2" width="750" height="250">[No canvas support]</canvas>
         <canvas id="cvs3" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs4" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs5" width="750" height="250">[No canvas support]</canvas>
+        <canvas id="cvs6" width="750" height="250">[No canvas support]</canvas>
     </div>
 
 
@@ -97,6 +100,78 @@
                 grouping: 'stacked',
                 marginLeft: 50,
                 marginInner: 90
+            }
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs4',
+            data: [[8,-6,-8],[8,5,-3],[-9,-8,5]],
+            options: {
+                xaxisPosition: 'center',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['Roberta','Harry','Philomena'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red','green','blue'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A stacked Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                yaxis: false,
+                corners: 'round',
+                marginLeft: 50,
+                marginInner: 40
+            }
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs5',
+            data: [[8,6,8],[8,5,3],[9,8,5]],
+            options: {
+                xaxisPosition: 'top',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['Roberta','Harry','Philomena'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red','green','blue'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A stacked Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                corners: 'round',
+                grouping: 'stacked',
+                marginLeft: 50,
+                marginInner: 90
+            }
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs6',
+            data: [[8,6,8],[8,5,3],[9,8,5]],
+            options: {
+                xaxisPosition: 'top',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['Roberta','Harry','Philomena'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red','green','blue'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A stacked Bar chart with rounded tops',
+                titleSize: 14,
+                yaxisTickmarksCount: 5,
+                xaxis: false,
+                yaxis: false,
+                corners: 'round',
+                marginLeft: 50,
+                marginInner: 40
             }
         }).grow();
     </script>
