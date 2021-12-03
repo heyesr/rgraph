@@ -1403,13 +1403,22 @@ this.context.lineTo(
                             if (height > 0) {
                                 
                                 // TODO Handle xaxisPosition=top here
-                                if (j === 0 && properties.corners === 'round') {
+                                if (j === 0 && properties.corners === 'round' && properties.xaxisPosition === 'bottom') {
                                     this.context.beginPath();
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
                                     this.roundedCornersRect(x + hmargin, y, width - (2 * hmargin), height);
                                     this.context.stroke();
                                     this.context.fill();
+                                
+                                } else if (j === (dataset.length - 1) && properties.corners === 'round' && properties.xaxisPosition === 'top') {
+                                    this.context.beginPath();
+                                    this.context.lineCap  = 'miter';
+                                    this.context.lineJoin = 'square';
+                                    this.roundedCornersRectNegative(x + hmargin, y, width - (2 * hmargin), height);
+                                    this.context.stroke();
+                                    this.context.fill();
+                                
                                 } else {
                                     this.path(
                                         'b lj % lc % r % % % % s % f %',
@@ -2159,7 +2168,7 @@ this.context.lineTo(
                 }
                 
             } else {
-                if (properties.grouping === 'stacked' && shape.index === 0) {
+                if (properties.grouping === 'stacked' && shape.index === 0 && properties.xaxisPosition === 'bottom') {
                 
                     this.context.beginPath();
                     this.context.strokeStyle = properties.highlightStroke;
