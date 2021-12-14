@@ -5056,6 +5056,11 @@
             context.textBaseline = 'top';
 
             var boundingY = y - 2;
+        
+        } else if (valign == 'alphabetic') {
+            context.textBaseline = 'alphabetic';
+
+            var boundingY = y - size_pixels + 5;
 
         } else {
 
@@ -5247,6 +5252,39 @@
     
     // Create the DEFAULTS object
     RGraph.text.defaults = {};
+
+
+
+
+
+
+
+
+    //
+    //
+    // Adds custom text to the chart based on whats
+    // in the objects text: property.
+    //
+    //@param object obj The chart object
+    //
+    RGraph.addCustomText = function (obj)
+    {
+        if (RGraph.isArray(obj.properties.text) && obj.properties.text.length) {
+            for (var i=0; i<obj.properties.text.length; ++i) {
+                var conf = obj.properties.text[i];
+                
+                // Add the object to the config
+                conf.object = obj;
+                
+                // Set the color to black if it's not set
+                if (typeof conf.color !== 'string' || !conf.color.length) {
+                    conf.color = 'black';
+                }
+                
+                RGraph.text(conf);
+            }
+        }
+    };
 
 
 
@@ -8888,6 +8926,36 @@
 
 
         return text.toString();
+    };
+
+
+
+
+
+
+
+
+    //
+    // This splits a basic comma separated value string
+    // into JSON.
+    //
+    // @param  string str The string to split
+    // @return object     The resulting JSON object
+    //
+    RGraph.splitString = function (str)
+    {
+        var re = new RegExp('(["\'a-z0-9]+) *= *', 'ig');
+        str = str.replace(re, '"$1":');
+
+        str = str.replace(/""/g, '"');
+        str = str.replace(/''/g, '"');
+        str = str.replace(/:'/g, ':"');
+        str = str.replace(/' *,/g, '",');
+        str = str.trim().replace(/,$/, '');
+;
+        var ret = JSON.parse('{' + str + '}');
+
+        return ret;
     };
 
 
