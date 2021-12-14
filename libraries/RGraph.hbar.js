@@ -662,6 +662,20 @@
             //
             RGraph.drawInGraphLabels(this);
 
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
+
     
     
             //

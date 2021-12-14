@@ -292,6 +292,18 @@
             RGraph.drawBackgroundImage(this);
             RGraph.Background.draw(this);
 
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+
             //
             // This installs the event listeners
             //

@@ -381,6 +381,20 @@
             }
     
             this.drawCenterpin();
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
     
     
             //

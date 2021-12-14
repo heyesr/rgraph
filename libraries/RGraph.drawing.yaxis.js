@@ -305,6 +305,18 @@
     
             // DRAW Y AXIS HERE
             this.drawYAxis();
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
     
             //

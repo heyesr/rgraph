@@ -380,6 +380,20 @@
             // Reset the strokestyle to black
             //
             this.context.strokeStyle = 'black';
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
     
     
     

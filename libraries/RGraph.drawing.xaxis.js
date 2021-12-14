@@ -272,6 +272,18 @@
     
             // DRAW X AXIS HERE
             this.drawXAxis();
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
 
             // This installs the event listeners

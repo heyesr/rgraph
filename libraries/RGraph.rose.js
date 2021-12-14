@@ -476,6 +476,20 @@
             if (properties.adjustable) {
                 RGraph.allowAdjusting(this);
             }
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
     
     
             //

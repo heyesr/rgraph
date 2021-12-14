@@ -318,6 +318,18 @@
                 2: ret.width,  width:  ret.width,
                 3: ret.height, height: ret.height
             });
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
     
     

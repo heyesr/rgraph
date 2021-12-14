@@ -856,6 +856,20 @@
             // Draw the "in graph" labels, using the member function, NOT the shared function in RGraph.common.core.js
             //
             this.drawInGraphLabels(this);
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
     
     
             //

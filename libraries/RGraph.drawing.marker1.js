@@ -330,6 +330,18 @@
                 halign: 'center',
                 tag:    'labels'
             });
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
             //
             // This installs the event listeners

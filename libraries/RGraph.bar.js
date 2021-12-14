@@ -651,6 +651,16 @@
             }
 
 
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
             //
             // This installs the event listeners
             //

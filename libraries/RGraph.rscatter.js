@@ -580,6 +580,20 @@
                     properties.titleSize ? properties.titleSize : properties.textSize + 2
                 );
             }
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
+    
+    
     
     
             //

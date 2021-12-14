@@ -253,6 +253,18 @@
             
             this.context.lineWidth = properties.linewidth;
             RGraph.noShadow(this);
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
     
     

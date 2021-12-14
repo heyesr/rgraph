@@ -367,6 +367,18 @@
             // Reset the testBaseline
             //
             this.context.textBaseline = 'alphabetic';
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
     
             //

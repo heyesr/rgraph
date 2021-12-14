@@ -272,6 +272,18 @@
             RGraph.noShadow(this);
 
             this.path('s %', properties.colorsStroke);
+
+
+
+
+            //
+            // Add custom text thats specified
+            //
+            RGraph.addCustomText(this);
+
+
+
+
     
     
             //
