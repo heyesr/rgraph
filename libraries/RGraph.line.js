@@ -173,6 +173,7 @@
             labelsAboveSpecific:        null,
             labelsAboveOffsetx:        0,
             labelsAboveOffsety:        0,
+            labelsAboveFormatter:      null,
 
             linewidth:                  2.001,
             linecap:                    'round',
@@ -209,6 +210,7 @@
             textAccessible:             true,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
+            text:                       null,
             
             title:                      '',
             titleBackground:            null,
