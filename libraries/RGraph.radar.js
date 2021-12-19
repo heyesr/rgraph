@@ -128,6 +128,7 @@
             textAccessible:               true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
 
             title:                 '',
             titleBackground:      null,

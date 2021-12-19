@@ -95,6 +95,7 @@
             textAccessible:              true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
 
             tooltips:                   null,
             tooltipsHighlight:          true,

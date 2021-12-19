@@ -65,6 +65,7 @@
             textAccessible:               true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
 
             marginLeft:            75,
             marginRight:           35,

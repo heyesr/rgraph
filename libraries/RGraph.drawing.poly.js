@@ -99,6 +99,9 @@
             shadowOffsety:           3,
             shadowBlur:              5,
 
+
+            text:                    null,
+
             clearto:                 'rgba(0,0,0,0)'
         }
 

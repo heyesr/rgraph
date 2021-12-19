@@ -81,6 +81,7 @@
             textAccessible:                        true,
             textAccessibleOverflow:                'visible',
             textAccessiblePointerevents:           false,
+            text:                                  null,
 
             labelsCenterFont:                          null,
             labelsCenterSize:                          null,

@@ -106,6 +106,8 @@
 
             linewidth:         1,
 
+            text:              null,
+
             clearto:           'rgba(0,0,0,0)'
         }
 

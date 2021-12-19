@@ -76,6 +76,7 @@
             textAccessible:               		false,
             textAccessibleOverflow:      		'visible',
             textAccessiblePointerevents: 		false,
+            text:                               null,
             
             labels:                             true,
             labelsCount:                        10,

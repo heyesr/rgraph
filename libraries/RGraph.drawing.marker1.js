@@ -91,6 +91,7 @@
             textAccessible:     true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
             
             shadow:             true,
             shadowColor:        '#aaa',

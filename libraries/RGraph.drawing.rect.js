@@ -80,6 +80,9 @@
             shadowOffsety:   3,
             shadowBlur:      5,
             
+
+            text:              null,
+
             highlightStroke:   'black',
             highlightFill:   'rgba(255,255,255,0.7)',
             

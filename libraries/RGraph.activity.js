@@ -109,6 +109,7 @@
             textAccessible:                        true,
             textAccessibleOverflow:                'visible',
             textAccessiblePointerevents:           false,
+            text:                                  null,
 
             labelsCenter:                              false,
             labelsCenterIndex:                         0,

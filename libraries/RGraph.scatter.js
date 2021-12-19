@@ -132,6 +132,7 @@
             textAccessible:             true,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
+            text:                       null,
             
             tooltips:                   [], // Default must be an empty array
             tooltipsEffect:             'slide',

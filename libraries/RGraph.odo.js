@@ -88,6 +88,7 @@
             textAccessible:            false,
             textAccessibleOverflow:    'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
 
             colorsGreenMax:            max * 0.75,
             colorsGreenColor:          'Gradient(white:#0c0)',

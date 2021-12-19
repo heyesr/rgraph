@@ -127,7 +127,8 @@
             textFont:                   'Arial, Verdana, sans-serif',
             textAccessible:             true,
             textAccessibleOverflow:     'visible',
-            textAccessiblePointerevents: false,
+            textAccessiblePointerevents:false,
+            text:                       null,
             
             titleLeft:                  null,
             titleLeftFont:              null,

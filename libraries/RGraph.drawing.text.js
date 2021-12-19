@@ -65,10 +65,11 @@
         // Some example background properties
         this.properties =
         {
-            textSize:                    12,
-            textFont:                    'Arial, Verdana, sans-serif',
-            textBold:                    false,
-            textItalic:                  false,
+            textSize:                12,
+            textFont:                'Arial, Verdana, sans-serif',
+            textBold:                false,
+            textItalic:              false,
+            text:                    null,
 
             angle:                   0,
 

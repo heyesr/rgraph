@@ -109,6 +109,7 @@
             textAccessible:              true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
 
             clearto:                     'rgba(0,0,0,0)'
         }

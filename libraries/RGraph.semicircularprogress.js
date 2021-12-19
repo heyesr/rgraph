@@ -162,6 +162,7 @@
             textAccessible:             true,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
+            text:                       null,
 
             contextmenu:                null,
 

@@ -153,6 +153,7 @@
             textAccessible:                         true,
             textAccessibleOverflow:                 'visible',
             textAccessiblePointerevents:            false,
+            text:                                   null,
 
             key:                                    null,
             keyBackground:                          'white',

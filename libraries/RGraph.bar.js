@@ -99,6 +99,7 @@
             labelsAboveOffsety:   0,
             labelsAboveUnitsPre: '',
             labelsAboveUnitsPost:'',
+            labelsAboveFormatter:null,
 
             yaxis:                    true,
             yaxisLinewidth:           1,
@@ -196,6 +197,7 @@
             textAccessible:               true,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
+            text:                        null,
             
             
             title:                  '',
@@ -601,7 +603,6 @@
                 this.drawbars();
                 this.drawAxes();
             //}
-
             this.drawLabels();
 
 
@@ -655,7 +656,7 @@
 
             //
             // Add custom text thats specified
-            //
+            //  
             RGraph.addCustomText(this);
 
 

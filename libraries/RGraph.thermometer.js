@@ -61,6 +61,7 @@
             textAccessible:             true,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
+            text:                       null,
 
             scaleVisible:               false,
             scaleUnitsPre:              '',
