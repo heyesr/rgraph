@@ -6167,6 +6167,40 @@
 
 
 
+    //
+    //
+    // Adds custom text to the chart based on whats
+    // in the objects text: property.
+    //
+    //@param object obj The chart object
+    //
+    RGraph.SVG.addCustomText = function (obj)
+    {
+        if (RGraph.SVG.isArray(obj.properties.text) && obj.properties.text.length) {
+            for (var i=0; i<obj.properties.text.length; ++i) {
+                
+                var conf = obj.properties.text[i];
+                
+                // Add the object to the config
+                conf.object = obj;
+
+                // Set the color to black if it's not set
+                if (typeof conf.color !== 'string' || !conf.color.length) {
+                    conf.color = 'black';
+                }
+
+                RGraph.SVG.text(conf);
+            }
+        }
+    };
+
+
+
+
+
+
+
+
 // End module pattern
 })(window, document);
 
