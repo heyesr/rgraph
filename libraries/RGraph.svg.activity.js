@@ -148,6 +148,7 @@
             textColor:                             '#aaa',
             textBold:                              false,
             textItalic:                            false,
+            text:                                  null,
 
             labelsCenter:                              false,
             labelsCenterIndex:                         0,
@@ -451,6 +452,27 @@
                 obj.removeHighlight();
             
             }, false);
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 

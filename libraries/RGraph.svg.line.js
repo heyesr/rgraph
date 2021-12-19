@@ -246,6 +246,7 @@
             textSize:   12,
             textBold:   false,
             textItalic: false,
+            text:       null,
 
             linewidth: 1,
             linejoin: 'round',
@@ -774,6 +775,27 @@
                 RGraph.SVG.removeHighlight(obj);
 
             }, false);
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 

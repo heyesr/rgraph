@@ -133,6 +133,7 @@
             textColor:             'black',
             textBold:              false,
             textItalic:            false,
+            text:                  null,
 
             labelsCenter:          true,
             labelsCenterFont:      null,
@@ -356,6 +357,27 @@
                 
                 this.adjusting_event_listeners_installed = true;
             }
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 

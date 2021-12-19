@@ -239,6 +239,7 @@
             textSize:             12,
             textBold:             false,
             textItalic:           false,
+            text:                 null,
 
             linewidth:            1,
             grouping:             'grouped',
@@ -547,6 +548,27 @@
             } else if (!RGraph.SVG.isNull(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 

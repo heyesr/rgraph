@@ -160,6 +160,7 @@
             textSize:       12,
             textBold:       false,
             textItalic:     false,
+            text:           null,
 
             scale:                      false,
             scaleMin:                   null, // Defaults to the charts min value
@@ -428,6 +429,27 @@
             {
                 obj.removeHighlight();
             }, false);
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 

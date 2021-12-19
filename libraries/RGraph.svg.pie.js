@@ -146,6 +146,8 @@
             textSize: 12,
             textBold: false,
             textItalic: false,
+            text:       null,
+            
             labels: [],
             labelsSticks: true,
             labelsSticksOffset: 50,
@@ -449,6 +451,27 @@
             {
                 RGraph.SVG.removeHighlight(obj);
             }, false);
+
+
+
+
+
+
+
+
+            //
+            // Allow the addition of custom text via the
+            // text: property.
+            //
+            RGraph.SVG.addCustomText(this);
+
+
+
+
+
+
+
+
 
 
 
