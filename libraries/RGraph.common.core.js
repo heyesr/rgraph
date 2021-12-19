@@ -1483,6 +1483,29 @@
     {
         var args = RGraph.getArgs(arguments, 'object');
 
+        // Allow the registration of functions
+        if (typeof args.object === 'function') {
+            
+            var func = args.object;
+            
+            // Register a shell object
+            var temp = function ()
+            {
+                this.id            = null;
+                this.isFunction    = true;
+                this.canvas        = {id: null};
+                this.getObjectByXY = function (){return false;};
+                this.get           = function (){};
+                this.set           = function (){};
+                this.draw          = function (){func();};
+            };
+            
+            args.object = new temp();
+        }
+
+
+
+
         // Checking this property ensures the object is only registered once
         if (!args.object.get('noregister') && args.object.get('register') !== false) {
             RGraph.ObjectRegistry.add(args.object);
@@ -4494,6 +4517,7 @@
                     span.style.whiteSpace = 'nowrap';
                     span.style.lineHeight = RGraph.ISIE ? 'normal' : 'initial'; // Also see font-size setting a few lines up
                     span.tag              = args.tag;
+                    span.setAttribute('data-tag', args.tag);
 
 
                     // CSS angled text. This should be conasidered BETA quality code at the moment,
@@ -8952,7 +8976,7 @@
         str = str.replace(/:'/g, ':"');
         str = str.replace(/' *,/g, '",');
         str = str.trim().replace(/,$/, '');
-;
+
         var ret = JSON.parse('{' + str + '}');
 
         return ret;
