@@ -12,7 +12,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: An SVG Line with a simple look</title>
+    <title>RGraph demo: A simple SVG Line</title>
     
     
     <meta name="description" content="An SVG Line chart with three datasets and a simple look and feel. This page also shows you how to get transparent tickmarks." />
@@ -34,14 +34,16 @@
         </li>
     </ul>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div id="cc" style="width:700px; height: 300px; float: right; background-color: black"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         Here is a simple Line chart that has three separate datasets. The labels
-        for the chart (on the X axis) are not a scale - they're just regular labels
+        for the chart (on the X-axis) are not a scale - they're just regular labels
         as you would normally give to a Line chart but they're numbers instead
         of words - that's all. The Line doesn't have the facility to show
-        a scale across the X axis - for that you'll need to use a Scatter chart
+        a scale across the X-axis - for that you'll need to use a Scatter chart
         with the <code>line</code> option enabled.
     </p>
     
@@ -56,7 +58,7 @@
         <code>trace()</code> effect.
     </p>
     
-    <script>
+    <script id="rgraph-demo-source-code">
         line = new RGraph.SVG.Line({
             id: 'cc',
             data: [
@@ -101,7 +103,7 @@
 &lt;div id="cc" style="width:700px; height: 300px"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <pre class="code">
 &lt;script&gt;
     line = new RGraph.SVG.Line({
@@ -175,7 +177,7 @@
     </p>
     
     <p>
-        So there's two canvas tags being utilised here (positioned one in front of
+        So there are two canvas tags being utilised here (positioned one in front of
         the other) - one on to which the background is drawn and a second on to
         which the lines are drawn. When the insides of the tickmarks are cleared
         to transparency then the canvas at the back shows through. And that
@@ -205,7 +207,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <pre class="code">
 &lt;script&gt;
     line1 = new RGraph.Line({

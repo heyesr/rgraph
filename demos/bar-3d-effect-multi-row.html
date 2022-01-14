@@ -8,10 +8,10 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script> 
     
-    <title>RGraph demo: A 3D Bar chart with multiple rows</title>
+    <title>RGraph demo: A multiple-row 3D Bar chart</title>
     
     
-    <meta name="description" content="RGraph can make realistic looking 3D Bar charts. This demo is a multi-row example of such a chart. There are three rows of bars which are animated sequentially." />
+    <meta name="description" content="RGraph can make realistic-looking 3D Bar charts. This demo is a multi-row example of such a chart. There are three rows of bars that are animated sequentially." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -34,7 +34,7 @@
     </p>
     
     <p>
-        First some variables are defined which are used in the configuration - this is so that they're
+        First, some variables are defined that are used in the configuration - this is so that they're
         easier for you to edit and manage.
     </p>
     
@@ -50,13 +50,13 @@
     </p>
     
     <p>
-        The margins are set to those defined in the variables along with the Y axis scale max value. The Y
+        The margins are set to those defined in the variables along with the Y-axis scale max value. The Y
         axis labels are turned off.
     </p>
     
     <p>
-        Finally a drawing API Y axis object is used to draw a Y axis on the right-hand-side. The color of
-        this Y axis is transparent so the only part of it that you can see is the labels.
+        Finally, a drawing API Y-axis object is used to draw a Y-axis on the right-hand side. The color of
+        this Y-axis is transparent so the only part of it that you can see is the labels.
     </p>
     
     <p>
@@ -67,12 +67,12 @@
     
     <p>
         Like the code for the rest of this chart, the responsive section is not inconsiderable. It
-        reduces the size of the canvas, changes the X axis labels to the three-letter variations of
+        reduces the size of the canvas, changes the X-axis labels to the three-letter variations of
         the weekday names, changes the margin sizes on all three objects and changes the
-        <code>textSize</code> on the main Bar chart and the Y axis object.
+        <code>textSize</code> on the main Bar chart and the Y-axis object.
     </p>
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Some default variables. These margins are not all hard-and-fast
         // values - some are increased and some are reduced for each chart.
         marginLeft    = 60;
@@ -105,7 +105,7 @@
             'Gradient(#669:blue:blue)'
         ];
         
-        // And the X axis labels for the chart
+        // And the X-axis labels for the chart
         xaxisLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
 
@@ -237,7 +237,7 @@
                     colorsStroke: 'rgba(0,0,0,0)',
                     colors: [colors[0]],
                     
-                    // Now that we're drawing the chart that's "at the front" the X axis labels can be drawn
+                    // Now that we're drawing the chart that's "at the front" the X-axis labels can be drawn
                     xaxisLabels: xaxisLabels,
 
                     backgroundGrid: false,
@@ -279,13 +279,13 @@
 
         // Initiate the drawing of the first chart. The second and then the
         // third charts are initiated by the prior charts animation callback
-        // function. This has to be placed before the Y axis.
+        // function. This has to be placed before the Y-axis.
         draw1();
 
 
 
 
-        // This drawing API Y axis is used to show the Y axis labels on the
+        // This drawing API Y-axis is used to show the Y-axis labels on the
         // right-hand-side - though the actual axis is not shown - just the labels.
         state.yaxisObj = new RGraph.Drawing.YAxis({
             id: 'cvs',
@@ -321,7 +321,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

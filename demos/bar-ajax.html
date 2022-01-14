@@ -9,7 +9,7 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Bar chart using AJAX</title>
+    <title>RGraph demo: A Bar chart that uses AJAX to fetch data</title>
 
     
     <meta name="description" content="RGraph has AJAX functionality that makes integration with your existing scripts easy and painless." />
@@ -54,11 +54,11 @@
     
     <p>
         If you view the AJAX script you'll see that it just outputs the numbers and nothing
-        else - so no labels or title. So on the chart the labels are just hard coded.
+        else - so no labels or title. So on the chart, the labels are just hardcoded.
     </p>
     
     <p>
-        The rest of the configuration is pretty straight-forward - and you can see it below.
+        The rest of the configuration is pretty straightforward - and you can see it below.
     </p>
 
     <p>
@@ -66,7 +66,7 @@
         reduced and the <code>textSize</code> is reduced as well.
     </p>
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Use the RGraph.AJAX.getCSV() function to fetch some CSV data from the server.
         // This example fetches the URL https://www.rgraph.net/getdata.html which just
         // outputs a set of CSV values. The second argument is a function which is
@@ -133,7 +133,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

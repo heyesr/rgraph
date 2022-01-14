@@ -7,7 +7,7 @@
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: An SVG Pie chart configured to look like a Meter</title>
+    <title>RGraph demo: An SVG Pie chart that looks like a Meter</title>
 
     
     <meta name="description" content="A set of concentric SVG Pie charts that have been configured to look like a Meter that could represent your figures." />
@@ -19,7 +19,7 @@
 
 </head>
 <body>
-    <h1>An SVG Pie chart configured to look like a Meter</h1>
+    <h1>A Meter-esque SVG Pie chart</h1>
 
     <div class="warning" style="margin-bottom: 25px">
         There's a dedicated canvas chart type that looks similar to this called
@@ -31,7 +31,9 @@
         </a> (which have the prefix <code>activity-</code> and <code>svg-activity-</code>).
     </div>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         Here's a set of Pie objects that have been configured so that
@@ -64,7 +66,7 @@
     
     
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // These global settings are applied to all objects that are created
         // subsequently. If you're creating multiple charts that use the same
         // properties and settings you can use the RGraph.SVG.GLOBALS object
@@ -247,7 +249,7 @@
 &lt;div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

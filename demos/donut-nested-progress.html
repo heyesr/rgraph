@@ -7,7 +7,7 @@
     <script src="../libraries/RGraph.activity.js" ></script>
     <script src="demos.js" ></script>
 
-    <title>RGraph demo: A nested Donut chart progress bar</title>
+    <title>RGraph demo: A nested Donut chart progress meter</title>
     <meta name="description" content="A nested Donut chart using the RGraph.Activity class." />
     
     <!-- <RGRAPH_REMOVE> -->
@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <h1>A nested Donut chart progress bar</h1>
+    <h1>A nested Donut chart</h1>
     
     <canvas id="cvs" width="450" height="450" style="background-color: black; float: right">[No canvas support]</canvas>
     
@@ -29,13 +29,13 @@
     </p>
     
     <p>
-        The colors and quantity of the rings is specified by you and the icons are configurable (or can be
+        The colors and quantity of the rings are specified by you and the icons are configurable (or can be
         replaced with text if you prefer. The chart can be animated using the <code>grow</code> effect, adjusted and can now also have tooltips.
     </p>
 
     
     
-    <script>
+    <script id="rgraph-demo-source-code">
         activity = new RGraph.Activity({
             id: 'cvs',
             min: 0,
@@ -79,7 +79,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     

@@ -9,7 +9,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A mock-up of a Google Analytics style dashboard</title>
+    <title>RGraph demo: A Google Analytics-style dashboard</title>
     
     
     <meta name="description" content="A mock-up of a Google Analytics style dashboard. It looks similar to Google Analytics but in doing so needs more code than a simple chart." />
@@ -25,7 +25,7 @@
 
     <h1>A mock-up of a Google Analytics style dashboard</h1>
 
-
+    <RGRAPH_BASIC_DEMO_HTML>
     <style>
         div#cc1 {
             width: 600px;
@@ -48,7 +48,7 @@
         }
     </style>
 
-    <div style="width: 600px; height: 350px; float: right">
+    <div style="width: 615px; height: 350px; float: right">
         <div id="cc1"></div>
         <div id="cc2"></div>
         <div id="cc3"></div>
@@ -57,6 +57,7 @@
         <div id="cc6"></div>
         <div id="cc7"></div>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         This is a mock-up of the Google analytics dashboard with 7 Line charts.
@@ -70,18 +71,18 @@
     </p>
     
     <p>
-        As you can see from the code shown below there's some CSS code as well as JavaScript to control the
+        As you can see from the code shown below, there's some CSS code as well as JavaScript to control the
         layout and formatting of the individual <code>&lt;div&gt;</code> tags
     </p>
     
     <p>
         For the six smaller charts the configuration is set on the <code>RGraph.SVG.GLOBALS</code> object.
         Any configuration parameters that are set on this object can be considered as "default values" and
-        thus the configuration does not have to be set on each individual Line chart object.
+        thus the configuration does not have to be set on each Line chart object.
     </p>
     
     <p>
-        The large text that appears on the left-hand-side of the smaller charts is added by using the
+        The large text that appears on the left-hand side of the smaller charts is added by using the
         <code>RGraph.SVG.text()</code> function. You too can use this function if you wish to add text
         to your own charts. If you're using canvas though the function is called <code>RGraph.text()</code>
         and you might need to use the <code>draw</code> event to add it like this:
@@ -125,7 +126,7 @@ new RGraph.Bar({
 
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the main, larger Line chart. The configuration makes
         // it look like Google Analytics.
         l1 = new RGraph.SVG.Line({
@@ -149,7 +150,7 @@ new RGraph.Bar({
                 yaxisLabelsCount: 2,
                 xaxis:false,
                 
-                // The X axis labels for the chart
+                // The X-axis labels for the chart
                 xaxisLabels: [
                     '00:00','','','','04:00','',
                     '','','08:00','','','',
@@ -262,7 +263,7 @@ new RGraph.Bar({
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

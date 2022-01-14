@@ -9,7 +9,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A Line chart with a highlighted section</title>
+    <title>RGraph demo: A highlighted Line chart</title>
     
     
     <meta name="description" content="A Line chart with a highlighted section. The highlight is achieved by covering two sides of the chart with a semi-transparent gray rectangle." />
@@ -22,10 +22,12 @@
 
     <h1>A Line chart with a highlighted section</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 450px; height: 200px; display: inline-block; background-color: black; float: right" id="cc"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
-        Here we have an example of a dark themed SVG Line chart that has a section of
+        Here we have an example of a dark-themed SVG Line chart that has a section of
         it highlighted. The standard Line is a filled Line object that does NOT
         use the <code>filledAccumulative</code> option
         - it uses transparency in the colors instead so that you can see datasets at
@@ -34,15 +36,15 @@
     
     <p>
         The thing that differentiates this demo is the fact that once rendered there
-        are two rectangles placed over the chart - one on the left-hand-side and one
-        on the right-hand-side. This leaves a section in the middle of those two
-        rectangles that has a highlighted appearance.
+        are two rectangles placed over the chart - one on the left-hand side and one
+        on the right-hand side. This leaves a section in the middle of those two
+        rectangles, that has a highlighted appearance.
     </p>
     
     <p>
         As it is on this chart, the section that's highlighted has no real meaning -
         but this doesn't have to be the case and it could highlight certain entries
-        or a range on the chart (for example it could be a horizontal highlight
+        or a range on the chart (for example, it could be a horizontal highlight
         rectangle).
     </p>
     
@@ -61,7 +63,7 @@
     
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
         new RGraph.SVG.Line({
             id: 'cc',
             data: [
@@ -143,7 +145,7 @@
 &lt;div style="width: 600px; height: 250px; display: inline-block; background-color: black"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

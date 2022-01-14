@@ -7,8 +7,8 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="./demos.js" ></script>
     
-    <title>RGraph demo: A Line chart using sequential tracing</title>
-    <meta name="description" content="A Line chart with multiple datasets which are tracing sequentially from the left-hand-side." />
+    <title>RGraph demo: A Line chart that uses sequential tracing effects</title>
+    <meta name="description" content="A Line chart with multiple datasets that are tracing sequentially from the left-hand side." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -26,15 +26,15 @@
     </p>
     
     <p>
-        There's three Line chart objects and each one uses the
-        <code>trace()</code> effect - however the
+        There are three Line chart objects and each one uses the
+        <code>trace()</code> effect - however, the
         second is delayed until the first is finished. And then the third, again using
         the <code>trace()</code> effect, is delayed until the second is finished.
     </p>
     
     <p>
-        Each Line object is passed all three datasets, however in each chart two of the
-        datasets are set to use <code>transparent</code> as their color - so only one dataset can be
+        Each Line object is passed all three datasets, however in each chart, two of the
+        datasets are set to use <code>transparent</code> as the color - so only one dataset can be
         seen. In the first Line chart it's the first dataset, in the second Line chart it's the
         second and in the third Line chart it's the third dataset.
     </p>
@@ -53,7 +53,7 @@
     
     <p>
         That demo also uses the <code>animationTraceCenter</code>
-        option - and this changes the <code>trace()</code> effect from tracing from the left hand side to
+        option - and this changes the <code>trace()</code> effect from tracing from the left-hand side to
         tracing from the center of the chart outwards in both directions.
     </p>
     
@@ -68,7 +68,7 @@
     </p>
     
     <p>
-        It should also be noted that the responsive functionality isn't added until the animation effects
+        It should also be noted that the responsive functionality isn't added until all of the animation effects
         have completed. This is done by simply using the standard <code>setTimout()</code> function.
     </p>
     
@@ -77,7 +77,7 @@
 
     
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // The data for the charts. All of the datasets are passed to
         // each of the three chart objects but the colors are set such
         // that two of datasets are invisible.
@@ -229,7 +229,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

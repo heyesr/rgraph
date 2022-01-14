@@ -7,8 +7,8 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A black Line chart</title>
-    <meta name="description" content="A black and green Line chart that has two datasets and which uses the trace() effect to quickly animate the Lines." />
+    <title>RGraph demo: A black-and-white Line chart</title>
+    <meta name="description" content="A black and green Line chart that has two datasets and uses the trace() effect to quickly animate the Lines." />
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
     <!-- </RGRAPH_REMOVE> -->
@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    <h1>A black Line chart</h1>
+    <h1>A canvas-based black Line chart</h1>
     
     <canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc; float: right">[No canvas support]</canvas>
     
@@ -35,7 +35,7 @@
     <p>
         Before drawing commences, using the <code>beforedraw</code> event, the canvas
         is cleared
-        to a plain black color. You might find this as a performance enhancing tip
+        to a plain black color. You might find this as a performance-enhancing tip
         on various canvas performance articles though by the second frame you'll
         not be drawing on a transparent canvas - so it might be a redundant
         action.
@@ -53,14 +53,14 @@
     <p>
         The <code>responsive()</code> function changes the size of the text and the margins, changes the
         CSS <code>float</code> to <code>none</code> and a <code>callback</code> function updates a global
-        variable which controls the size of the custom tickmarks. The <code>callback</code> function runs <b>after</b>
+        variable that controls the size of the custom tickmarks. The <code>callback</code> function runs <b>after</b>
         the chart has been redrawn so if you change anything here (as we're doing) then you need to redraw
         the chart. That can be done by calling the <code>RGraph.redraw()</code> function.
     </p>
 
     
     
-    <script>
+    <script id="rgraph-demo-source-code">
         tickmarkRadius = 6;
 
         line = new RGraph.Line({
@@ -118,7 +118,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

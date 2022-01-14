@@ -25,8 +25,8 @@
         scp = new RGraph.SemiCircularProgress ({
             id: 'cvs',
             min: 0,
-            max: 50,
-            value: [12.5,12.5,12.5,12.5],
+            max: 100,
+            value: [25,25,25,25],
             options: {
                 backgroundGrid: true,
                 backgroundGridRadialsCount: 20,
@@ -46,7 +46,7 @@
         
         setTimeout(func = function ()
         {
-            var value = RGraph.arrayRandom(4,1,12.5);
+            var value = RGraph.arrayRandom(4,1,25);
             scp.value = value;
             scp.grow({frames: 60})
             
@@ -69,7 +69,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

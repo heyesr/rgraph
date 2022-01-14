@@ -10,10 +10,10 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A Line chart based dashboard</title>
+    <title>RGraph demo: A demo of a Line chart-based dashboard</title>
     
     
-    <meta name="description" content="A predominantly Line chart based status dashboard. The dashboard is made from 4 Line charts, a Pie chart and some text." />
+    <meta name="description" content="A predominantly Line chart-based status dashboard. The dashboard is made from 4 Line charts, a Pie chart and some text." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -22,10 +22,10 @@
 </head>
 <body>
 
-    <h1>A Line chart based dashboard</h1>
+    <h1>A Line chart-based dashboard</h1>
 
     <p>
-        This is a darker dashboard which shows multiple Line charts and also a Pie
+        This is a darker dashboard that shows multiple Line charts and also a Pie
         (which uses the <code>donut</code> option). Lots of code and CSS for this demo as
         it goes far beyond the normal single chart demos. It does show what you
         can achieve when you build several objects into one page though. 
@@ -38,25 +38,25 @@
     </p>
     
     <p>
-        You can combine any number of charts like this in order to create your own
+        You can combine any number of charts like this to create your own
         tailored dashboard that shows you whatever information you want to see.
         It's effectively just a webpage with many charts on it.
     </p>
 
-   
+
+    <RGRAPH_BASIC_DEMO_HTML>
     <style>
         div#cc1,
         div#cc2 {
             width: 295px;
             height: 200px;
             background-color: black;
-            float:left;
         }
         div#cc3 {
             width: 190px;
             height: 200px;
             background-color: black;
-            float:left;
+            display: inline-block;
             position: relative;
         }
 
@@ -74,7 +74,6 @@
             width: 195px;
             height: 200px;
             background-color: black;
-            float:left;
         }
         
         div#cc5,
@@ -82,7 +81,6 @@
             width: 490px;
             height: 200px;
             background-color: black;
-            float:left;
         }
         
         div#cc1,
@@ -91,6 +89,7 @@
         div#cc4,
         div#cc5,
         div#cc6 {
+            font-family: Arial;
             float: left;
         }
         
@@ -106,6 +105,14 @@
             top: 0;
             left: 5px;
         }
+        
+        div#cc3 span:nth-child(1) {
+            color: cyan;
+            font-size: 50pt;
+            position: absolute;
+            top: calc(50% - 40px);
+            left: calc(50% - 50px);
+        }
     </style>
 
     <div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818">
@@ -113,10 +120,9 @@
             <span>Searches over time by query type</span>
         </div>
         <div id="cc2">
-        <span>Search capacity by query type</span>
+            <span>Search capacity by query type</span>
         </div>
         <div id="cc3">
-            <span>Searches</span>
             <span>260</span>
         </div>
         <div id="cc4">
@@ -131,13 +137,14 @@
         
         <div style="clear: both"></div>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
 
 
 
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
         l1 = new RGraph.SVG.Line({
             id: 'cc1',
             data: [
@@ -431,7 +438,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

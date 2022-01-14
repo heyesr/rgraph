@@ -7,10 +7,10 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A demo of a logarithmic Bar chart</title>
+    <title>RGraph demo: A logarithmic Bar chart</title>
     
     
-    <meta name="description" content="When you have a dataset which has wildly different values in it a logarithmic chart like this may be the answer." />
+    <meta name="description" content="When you have a dataset that has wildly different values in it a logarithmic chart like this may be the answer." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -25,19 +25,19 @@
     <canvas id="cvs" width="600" height="300" style="float: right">[No canvas support]</canvas>
     
     <p>
-        At first look you may think that this looks like a regular, basic Bar chart. And you'd not be far
-        wrong. The Y axis has six labels instead of five (not including zero) but apart from that what's
+        At first look, you may think that this looks like a regular, basic Bar chart. And you'd not be far
+        wrong. The Y-axis has six labels instead of five (not including zero) but apart from that what's
         different?
     </p>
     
     <p>
         The scale - that's what. Notice that instead of being a linear progression of (for example)
-        [0, 2, 4, 6, 8, 10] it's a logarithmic scale which has the numbers
+        [0, 2, 4, 6, 8, 10] it's a logarithmic scale that has the numbers
         [0,10,100,1000,10000,100000,1000000].
     </p>
     
     <p>
-        This can make it easier to show datasets which have one or more data points that are significantly
+        This can make it easier to show datasets that have one or more data points that are significantly
         higher than the rest - as is shown here (the first value is 1,000,000 and the second value is 5.
         The entire dataset is:
     </p>
@@ -45,19 +45,19 @@
     <pre class="code">[1000000,5,6,4,6,8012,12,7]</pre>
     
     <p>
-        Before the chart is created the data is converted to a smaller numbers by using the
-        <code>RGraph.log()</code> API function. It's these smaller numbers which are then plotted on the
+        Before the chart is created the data is converted to smaller numbers by using the
+        <code>RGraph.log()</code> API function. It's these smaller numbers that are then plotted on the
         chart.
     </p>
     
     <p>
         For smaller screens the size of the chart shrinks, the CSS <code>float</code> is removed, the
-        size of the text reduces and the X axis labels are changed to be angled.
+        size of the text reduces and the X-axis labels are changed to be angled.
     </p>
 
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Some raw data
         data = [1000000,5,6,4,6,8012,12,7];
 
@@ -114,7 +114,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

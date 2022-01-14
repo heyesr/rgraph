@@ -7,7 +7,7 @@
     <script src="../libraries/RGraph.rose.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A basic Rose chart</title>
+    <title>RGraph demo: A basic, responsive Rose chart</title>
 
 
     
@@ -27,7 +27,7 @@
     <canvas id="cvs" width="600" height="400" style="float: right">[No canvas support]</canvas>
     
     <p>
-        Here's a simple Rose chart which can be quite easily used as a traditional Wind Rose chart
+        Here's a simple Rose chart that can be quite easily used as a traditional Wind Rose chart
         (ie based on a compass with larger segments indicating stronger winds).
     </p>
     
@@ -52,12 +52,12 @@
     </p>
     
     <p>
-        For smaller screens the text is smaller and there's no CSS <code>float</code> applied to the SVG tag.
+        For smaller screens, the text is smaller and there's no CSS <code>float</code> applied to the SVG tag.
     </p>
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // This is a simple example of the Rose chart that's been configured
         // with some labels that are positioned around the Rose chart.
         rose = new RGraph.Rose({
@@ -94,7 +94,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>    
 

@@ -8,7 +8,7 @@
     <script src="../libraries/RGraph.rscatter.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Radial Scatter chart using the CSV reader</title>
+    <title>RGraph demo: An RScatter chart using RGraphs CSV reader</title>
 
     
     
@@ -75,7 +75,7 @@ console.log(arr);
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the CSV reader with the URL of the CSV file and the
         // callback function.
         new RGraph.CSV('/sample.csv', function (csv)
@@ -131,7 +131,7 @@ console.log(arr);
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

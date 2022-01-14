@@ -10,7 +10,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A Bar chart with negative horizontal margin</title>
+    <title>RGraph demo: A Bar chart with an overlap effect</title>
     
     
     <meta name="description" content="A combined Bar and Line chart using a negative horizontal margin. This gives the bars on the chart an overlapping appearance." />
@@ -23,7 +23,7 @@
 <body>
 
 
-    <h1>A Bar chart with negative horizontal margin</h1>
+    <h1>A Bar chart with a negative horizontal margin</h1>
 
     
     <div style="padding: 25px; display: inline-block; margin:20px;float: right">
@@ -37,29 +37,29 @@
     </p>
     
     <p>
-        It has dual Y axes by utilising the drawing API Y axis and the colors have been specifically set
-        to what they are in order to link the bars and lines together.
+        It has dual Y axes by utilising the drawing API Y-axis and the colors have been specifically set
+        to what they are to link the bars and lines together.
     </p>
     
     <p>
-        The Lines also have slightly larger than normal tickmarks for a nicer aesthetic and the whole
-        chart uses slightly-larger-than-the-default text.
+        The Lines also have slightly larger-than-normal tickmarks for a nicer aesthetic and the whole
+        chart uses slightly larger-than-the-default text.
     </p>
     
     <p>
-        In terms of responsiveness there's not much done by the Line chart - though there's a lot done
-        by the Bar chart - particularly to accommodate the Y axis objects. To make it easier to understand
-        you will do well to "unminify" it and spread it across multiple lines.
+        In terms of responsiveness, there's not much done by the Line chart - though there's a lot done
+        by the Bar chart - particularly to accommodate the Y-axis objects. To make it easier to understand
+        you will do well to "un-minify" it and spread it across multiple lines.
     </p>
     
     <br clear="all" />
 
 
 
-    <script>
+    <script id="rgraph-demo-source-code">
         marginLeft = 25;
 
-        // Draw the Y axis that's positioned on the right-hand-side. It's colored
+        // Draw the Y-axis that's positioned on the right-hand-side. It's colored
         // red so that it matches the color of the Line and it's therefore easier
         // to read the chart.
         axes = new RGraph.Drawing.YAxis({
@@ -88,8 +88,8 @@
             }
         }).draw();
         
-        // Create the Y axis that appears on the left-hand-side of the chart. It
-        // has a different scale to the other Y axis. It's colored gray so that
+        // Create the Y-axis that appears on the left-hand-side of the chart. It
+        // has a different scale to the other Y-axis. It's colored gray so that
         // it's easier to tally with the correct Line and Bars.
         axes2 = new RGraph.Drawing.YAxis({
             id: 'cvs',
@@ -184,7 +184,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

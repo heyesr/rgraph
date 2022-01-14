@@ -8,7 +8,7 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Bar chart showing Google's power usage</title>
+    <title>RGraph demo: Google's power usage on a Bar chart</title>
 
     
     <meta name="description" content="An example of a stacked Bar chart that's been configured to look quite different to a standard Bar chart. It uses custom labels so that the top label has custom text added." />
@@ -26,13 +26,13 @@
     <canvas id="cvs" width="600" height="350" style="float: right">[No canvas support]</canvas>
     
     <p>
-        Here's a chart that was recently shown on Googles blog and I decided it would be a great one to
+        Here's a chart that was recently shown on Google's blog and I decided it would be a great one to
         recreate with RGraph. It uses the canvas library but it should be equally as simple to use the
         SVG libraries.
     </p>
     
     <p>
-        It's a stacked Bar chart which uses the <code>labelsAboveSpecific</code> option so that the
+        It's a stacked Bar chart that uses the <code>labelsAboveSpecific</code> option so that the
         <code>labelsAbove</code> labels can be specified explicitly.
     </p>
     
@@ -41,12 +41,12 @@
     </p>
     
     <p>
-        There's a key that's positioned on the left-hand-side and also a title that's positioned
+        There's a key that's positioned on the left-hand side and also a title that's positioned
         in the same place.
     </p>
     
     <p>
-        Also the Y axis is disabled, the X axis is colored gray and its tickmarks are disabled.
+        Also, the Y-axis is disabled, the X-axis is colored gray and its tickmarks are disabled.
     </p>
     
     <p>
@@ -55,7 +55,7 @@
         key a semi-transparent white background too so that it's easier to read.
     </p>
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the bar chart. The data is such that we have
         // "end point values" for each segment, and not the
         // magnitude value of the segment itself. So the
@@ -82,7 +82,7 @@
                 labelsAboveColor: 'green',
                 labelsAboveSpecific: ['34%','', '35%','', '37%','', '48%','', '61%','', '100%','', '100%',''],
                 
-                // The Y axis is positioned on the right-hand-side and uses
+                // The Y-axis is positioned on the right-hand-side and uses
                 // specific labels. This is because the top-most label has
                 // 'terawatts' appended to the number.
                 yaxisPosition: 'right',
@@ -111,7 +111,7 @@
             }
         }).draw().exec(function (obj)
         {
-            // This draws the custom X axis. Instead of using the draw
+            // This draws the custom X-axis. Instead of using the draw
             // event an exec() function is used because dynamic features
             // aren't being used and the chart isn't being redrawn so it
             // only needs to be done once.
@@ -150,7 +150,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

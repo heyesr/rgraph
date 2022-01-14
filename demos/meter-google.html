@@ -9,9 +9,9 @@
     <script src="demos.js" ></script>
     
     
-    <meta name="description" content="A Meter chart customised to look like Google charts. It's been made to be dynamically adjustable so you can click on the chart to set the value." />
+    <meta name="description" content="A Meter chart that's customised to look like Google charts. It's been made to be dynamically adjustable so you can click on the chart to set the value." />
      
-     <title>RGraph demo: A Meter chart that looks like Google charts</title>
+    <title>RGraph demo: A Meter chart that looks like Google charts</title>
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -22,12 +22,14 @@
 
     
 
-    <h1>A Meter chart that looks like Google charts</h1>
+    <h1>A customised Meter chart</h1>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="float: right; width: 500px; text-align: center">
         <canvas id="cvs" width="500" height="250">[No canvas support]</canvas><br />
         <button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         Here's a customised Meter chart that looks a little bit like the Google Charts meter chart. The
@@ -43,7 +45,7 @@
     
     <p>
         The normal Meter chart is a semi-circle, starting on the left and going 180 degrees around to the
-        right. Here though the start and end points have been altered by using the <code>anglesStart</code>
+        right. Here though the start and endpoints have been altered by using the <code>anglesStart</code>
         and <code>anglesEnd</code> properties.
     </p>
     
@@ -73,7 +75,7 @@ RGraph.toDegrees = function (radians)
     
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         defaultColors = [
             [0,10,'#f20'],
             [10,20,'#f30'],
@@ -177,7 +179,7 @@ RGraph.toDegrees = function (radians)
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

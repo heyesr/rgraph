@@ -8,7 +8,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A simple SVG Line chart</title>
+    <title>RGraph demo: A basic SVG Line chart</title>
 
     
     <meta name="description" content="An SVG Line chart showing revenue over time. This example shows that a chart doesn't have to be complicated to be attractive." />
@@ -22,29 +22,35 @@
 
     <h1>A simple SVG Line chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width:650px; height: 250px; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
-        Here's a nice, simply-presented SVG Line chart. It has no background grid, a large <code>marginInner</code>
-        setting (which was, until version 5.01, called <code>hmargin</code>) larger than usual text
-        and an extra little bit of text that's added after the chart has been drawn. Because it's an SVG based
-        chart this does not need to be added in the <code>draw</code> event.
+        Here's a nice, simply-presented SVG Line chart. It has no
+        background grid, a large <code>marginInner</code>
+        setting (which was, until version 5.01, called <code>hmargin</code>),
+        larger than usual text
+        and an extra little bit of text that's added after the chart
+        has been drawn. Because it's an SVG-based
+        chart this does not need to be added in the <code>draw</code>
+        event.
     </p>
     
     <p>
-        Even if it was canvas based, because there's no dynamic features (like tooltips) the chart is not
+        Even if it was canvas-based because there are no dynamic features (like tooltips) the chart is not
         redrawn at all so technically, even with canvas, the <code>draw</code> event would not need to be
         used.
     </p>
     
     <p>
-        The chart has a responsive section which reduces the size of a few properties and also removes the
+        The chart has a responsive section that reduces the size of a few properties and also removes the
         CSS <code>float:</code> from the SVG tag.
     </p>
     
     <br clear="all" />
 
-    <script>    
+    <script id="rgraph-demo-source-code">    
         // This is the data for the Line chart. A simple JavaScript array.
         data = [500,600,800,720,900,1100];
 
@@ -56,7 +62,7 @@
             options: {
                 colors: ['#00AD4B'],
                 backgroundGrid: false,
-                xaxisLabels: ['Febuary','March','April','May','June','July'],
+                xaxisLabels: ['February','March','April','May','June','July'],
                 xaxisTickmarks: false,
                 yaxisTickmarks: false,
                 backgroundGridColor: '#999',
@@ -123,7 +129,7 @@
 &lt;div style="width: 650px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

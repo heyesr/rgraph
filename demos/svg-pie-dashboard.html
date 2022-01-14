@@ -9,7 +9,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: SVG Pie charts configured to look like meters</title>
+    <title>RGraph demo: SVG Pie charts that look like meters</title>
     <meta name="description" content="Three SVG Pie charts that have been configured to look like meters along with three horizontal Progress bars." />
 
     <!-- <RGRAPH_REMOVE> -->
@@ -21,43 +21,13 @@
 
     <h1>SVG Pie charts configured to look like meters</h1>
 
-    <div id="meters">
-        <div id="chart-container1"></div>
-        <div id="chart-container2"></div>
-        <div id="chart-container3"></div>
-        <div id="chart-container4"></div>
-        <div id="chart-container5"></div>
-        <div id="chart-container6"></div>
-    </div>
-
-    <p>
-        Here we have three Pie charts that have been configured to look like gauges
-        showing percentages. They're regular Pie charts with two colors but then a
-        big black circle is added over the top which makes them look like donut
-        charts (somewhat). And finally the text is added to the center in the <code>draw</code>
-        event.
-    </p>
-    
-    <p>
-        There's also three Horizontal Progress bars placed at the bottom of the SVG
-        drawing area. These progress bars are actually Horizontal Bar charts that
-        are configured with just a single data point so that there's just one bar -
-        which effectively makes it a progress bar. You can make Vertical Progress
-        bars in a similar manner by using the regular Bar chart.
-    </p>
-    
-    <p>
-        Like the canvas chart libraries you can make other types of charts using
-        the regular SVG chart libraries and combining them. Eg a combined Bar
-        and Line chart.
-    </p>
-
+    <RGRAPH_BASIC_DEMO_HTML>
     <style>
         div#meters{
             position: relative;
             background-color: black;
             height: 325px;
-            width: 600px;
+            width: 610px;
             float: left;
             margin: 25px;
         }
@@ -83,11 +53,44 @@
         div#chart-container6 {top: 240px !important;}
     </style>
 
+    <div id="meters">
+        <div id="chart-container1"></div>
+        <div id="chart-container2"></div>
+        <div id="chart-container3"></div>
+        <div id="chart-container4"></div>
+        <div id="chart-container5"></div>
+        <div id="chart-container6"></div>
+    </div>
+    </RGRAPH_BASIC_DEMO_HTML>
+
+    <p>
+        Here are three Pie charts that have been configured to look like gauges
+        showing percentage values. They're all regular Pie charts with two colors but then a
+        big black circle is added over the top of them which makes them look like donut
+        charts. And finally, the text is added to the center using the <code>draw</code>
+        event.
+    </p>
+    
+    <p>
+        There are also three Horizontal Progress bars placed at the bottom of the SVG
+        drawing area. These progress bars are actually Horizontal Bar charts that
+        are configured with just a single data point so that there's just one bar -
+        which makes them look like progress bars. You can make Vertical Progress
+        bars in the same way by using the regular Bar chart.
+    </p>
+    
+    <p>
+        Like the canvas chart libraries, you can make other types of
+        charts using the regular SVG chart libraries and combining
+        them together. Eg a combined Bar and Line chart.
+    </p>
+
+
 
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the first Pie chart. It uses the roundRobin() effect and is
         // configured to appear as a donut chart. With there being only two
         // values given to the chart it makes the donut chart look like a
@@ -381,7 +384,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

@@ -8,7 +8,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Line chart using the Google Sheets connector</title>
+    <title>RGraph demo: A Line chart importing data from Google Sheets</title>
 
     
     <meta name="description" content="A Line chart using the Google Sheets connector. If you use Google Sheets to store your data then RGraph can connect directly to Google to retrieve your data." />
@@ -69,7 +69,7 @@ new RGraph.Sheets(
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create a new RGraph Sheets instance that allows you to connect
         // to your Google Sheet spreadsheet and retrieve data from it. The
         // first argument is the OAuth ID (see the Google Sheets documentation
@@ -97,7 +97,7 @@ new RGraph.Sheets(
                     tickmarksStyle: null,
                     
                     // Use the sheets object again to retrieve some data from the
-                    // spreadsheet that acts as the X axis labels on the chart
+                    // spreadsheet that acts as the X-axis labels on the chart
                     xaxisLabels: sheet.get('B1:M1'),
 
                     xaxisLabelsOffsety: 10,
@@ -146,7 +146,7 @@ new RGraph.Sheets(
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>    
 

@@ -8,7 +8,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Line chart using the CSV reader</title>
+    <title>RGraph demo: A Line chart fetching data using the CSV reader</title>
 
     
     <meta name="description" content="A simple Line chart that's using the CSV reader to get the data that's shown on the chart." />
@@ -51,8 +51,8 @@
     
     <p>
         And what that does is fetch the whole of the third column (counting starts at zero). This column
-        of data is then given to the chart as its data. The X axis labels for the chart are simply hard
-        coded but they could quite easily be fetched from the first column of the CSV like this:
+        of data is then given to the chart as its data. The X-axis labels for the chart are simply
+        hardcoded but they could quite easily be fetched from the first column of the CSV like this:
     </p>
     
     <pre class="code">var labels = csv.column(0);</pre>
@@ -65,7 +65,7 @@
 
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create a new CSV connector object passing it the URL of the CSV file and a
         // function that creates the chart. Due to AJAX restrictions the URL must be
         // relative to the current website/domain.
@@ -75,7 +75,7 @@
             var data = csv.column(2);
 
             // Create the Line chart and give it the data that we just got from the
-            // CSV file along with some hard-coded X axis labels.
+            // CSV file along with some hardcoded X-axis labels.
             var line = new RGraph.Line({
                 id: 'cvs',
                 data: data,
@@ -118,7 +118,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

@@ -10,7 +10,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: An SVG Pie chart using the Google Sheets connector</title>
+    <title>RGraph demo: An SVG Pie chart using Google Sheets data</title>
 
 
     <meta name="description" content="An SVG Pie chart using the Google Sheets connector. The Pie chart gets its data and labels from the spreadsheet." />
@@ -26,7 +26,9 @@
 
     <h1>An SVG Pie chart using the Google Sheets connector</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 650px; height: 300px; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         This is a demo of a chart being created by using the Google Sheets connector that's bundled with
@@ -34,16 +36,17 @@
         <a href="https://docs.google.com/spreadsheets/d/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/edit?usp=sharing">
             You can see the Google Sheet that RGraph is fetching data from here</a>
         
-        and there's documentation for
+        and the documentation for
         
         <a href="/canvas/sheets.html">
             the Google Sheets Connector</a> here.
     </p>
     
     <p>
-        It's actually using the data that's on the Bar worksheet (there are multiple buttons at the bottom of
-        the screen that allow you access to the other worksheets). The labels are coming from the spreadsheet
-        too.
+        It's using the data that's on the Bar worksheet (there are
+        multiple buttons at the bottom of the screen that allows
+        you access to the other worksheets). The labels are coming
+        from the spreadsheet too.
     </p>
     
     <p>
@@ -59,7 +62,7 @@
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // A pretty basic Pie chart that doesn't do anything particularly magical.
         // The only thing that's worthy of note here is the fact that it gets its
         // data via the Google Sheets import tool. The key for the spreadsheet
@@ -121,7 +124,7 @@
 &lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

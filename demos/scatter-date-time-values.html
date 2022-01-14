@@ -7,8 +7,8 @@
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Scatter chart using date/time values</title>
-    <meta name="description" content="A Scatter chart which uses date/times as the X axis values. The date/time parsing in RGraph is quite versatile and can handle a wide variety of formats." />
+    <title>RGraph demo: A Scatter chart using DateTime values</title>
+    <meta name="description" content="A Scatter chart that uses DateTimes as the X-axis values. The DateTime parsing in RGraph is quite versatile and can handle a wide variety of formats." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -19,7 +19,7 @@
 
     
 
-    <h1>A Scatter chart using date/time values</h1>
+    <h1>A DateTime Scatter chart</h1>
 
     <canvas id="cvs" width="600" height="200" style="float: right">[No canvas support]</canvas>
     
@@ -41,12 +41,12 @@
     </p>
     
     <p>
-        For smaller screens the text size is reduced and the CSS <code>float</code> is reduced.
+        For smaller screens, the text size is reduced and the CSS <code>float</code> is reduced.
     </p>
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // The first dataset - the set of points that are drawn on
         // to the chart. Note the different formats of the date/time
         // values.
@@ -125,7 +125,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

@@ -3,11 +3,11 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
-    <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
-    <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Bar chart with post-processing</title>
+    <title>RGraph demo: A Bar chart with a post-processing effect added</title>
     
     
     <meta name="description" content="A Bar chart that shows you that by using the draw event along with the coordinates you can do post-processing on your charts" />
@@ -26,14 +26,14 @@
     
     <p>
         This Bar chart uses the custom RGraph <code>draw</code> event to add
-        highlight to each bar.<br />
+        some highlighting to each bar.<br />
         
         There's an SVG version of this chart in
         <a href="https://www.rgraph.net/download.html">the download archive</a>.
     </p>
     
     <p>
-        The highlight is added using the <code>draw</code> event (which is triggered at the end of the
+        The highlighting is added using the <code>draw</code> event (which is triggered at the end of the
         <code>draw()</code> function) so the coordinates of the bars are available.
     </p>
     
@@ -61,7 +61,7 @@
 
     
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the bar chart just like a normal grouped bar chart
         new RGraph.Bar({
             id: 'cvs',
@@ -80,8 +80,8 @@
             }
         
         // Now use the draw event and the coordinates that were created when
-        // the chart was drawn to add a highlight to the left side of each
-        // bar. The highlight is graduated from semi-opaque white at the top
+        // the chart was drawn to add highlighting to the left side of each
+        // bar. The highlighting is graduated from semi-opaque white at the top
         // to fully transparent white at the bottom.
         }).on('draw', function (obj)
         {
@@ -134,7 +134,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     

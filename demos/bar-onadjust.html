@@ -9,7 +9,7 @@
      <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A customised, adjustable Bar chart</title>
+    <title>RGraph demo: An adjustable Bar chart</title>
     
     <meta name="description" content="A customised adjustable Bar chart. On this chart when one bar is updated the other bars are also altered so that the combined total of the bars is equal to 300." />
     
@@ -33,13 +33,13 @@
     </p>
     
     <p>
-        Shown below, the code to do this is not a lot and is added in the configuration using the
+        As shown below, the code to do this is not a lot and is added in the configuration using the
         <code>on()</code> function after the <code>draw()</code> call.
     </p>
     
     <p>
         The first thing the code does is get the <code>shape</code> object for the bar that's being adjusted
-        from RGraph registry. It gets the new value of the bar, takes it off the specified maximum value
+        from the RGraph registry. It gets the new value of the bar, takes it off the specified maximum value
         (which is 300 in this example) and then shares the remainder out between the other bars and sets
         their values.
     </p>
@@ -50,7 +50,7 @@
     
     <p>
         It should be feasible to maintain the differences between the bars so that instead of the rest of
-        the bars being set to the exact same value they would be set to their original value + their bit
+        the bars being set to the same value they would be set to their original value + their bit
         of the adjusted bar - be it a plus or a negative.
     </p>
     <p>
@@ -64,13 +64,13 @@
     
     <p>
         The <code>responsive()</code> function reduces the size of the canvas, reduces the size of the
-        text on the canvas and moves the X axis labels down a little bit. The CSS <code>float</code> is
+        text on the canvas and moves the X-axis labels down a little bit. The CSS <code>float</code> is
         also removed. The dynamic nature of the chart is not altered.
     </p>
 
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // This is the combined maximum value of all of the bars on the chart.
         combinedMax = 300;
 
@@ -137,7 +137,7 @@
 &lt;canvas id="cvs" width="800" height="300"&gt;[No canvas support]&lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

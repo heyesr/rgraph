@@ -8,10 +8,10 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: An infographic SVG Horizontal Bar chart</title>
+    <title>RGraph demo: An infographic which uses the SVG HBar</title>
     
     
-    <meta name="description" content="An SVG Horizontal Bar chart that might be used in an infographic. It's basically a Horizontal Bar chart with circles drawn at the end of the bars." />
+    <meta name="description" content="An SVG Horizontal Bar chart that could be used in an infographic. It's a Horizontal Bar chart with circles drawn at the end of the bars." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -24,7 +24,9 @@
 
     <h1>An infographic SVG Horizontal Bar chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 350px; height: 300px; display: inline-block; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         Here's a small Horizontal Bar chart that has had some extra work done to it so that it appears
@@ -33,9 +35,9 @@
     
     <p>
         It's just a case of sorting the data
-        so that the data-pieces appear in the correct order and the bars also have a bulb at the end
+        so that the data pieces appear in the correct order and the bars also have a bulb at the end
         indicating the position in the results (assuming that there was a competition of some kind).
-        The chart is SVG based so this bulb doesn't have to be drawn in the <code>draw</code>
+        The chart is SVG-based so this bulb doesn't have to be drawn in the <code>draw</code>
         event.
     </p>
 
@@ -62,7 +64,7 @@ data.sort(function (a, b)
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // The "raw" data. This array contains the data, the label and the color.
         data = [
             [4,'John', 'red'],
@@ -170,7 +172,7 @@ data.sort(function (a, b)
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

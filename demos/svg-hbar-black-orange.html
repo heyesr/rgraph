@@ -8,10 +8,10 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A black and orange SVG Horizontal Bar chart</title>
+    <title>RGraph demo: An SVG Horizontal Bar chart</title>
     
     
-    <meta name="description" content="A black and orange SVG Horizontal Bar chart which uses two Horizontal Bar objects in order to provide the gray backgrounds to the bars." />
+    <meta name="description" content="A black and orange SVG Horizontal Bar chart that uses two Horizontal Bar objects  to provide the gray backgrounds to the bars." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -22,11 +22,13 @@
 
     <h1>A black and orange SVG Horizontal Bar chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 500px; height: 300px; display: inline-block; background-color: black; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
-        This is a Horizontal Bar that is actually made up of two separate objects. The
-        first is the gray backgrounds for the bars that you can see. Then the
+        This is a Horizontal Bar that's made up of two separate objects. The
+        first is the gray background for the bars that you can see. Then the
         orange Horizontal Bar is overlaid on top. The labels on the right are
         made up from the <code>labelsAbove</code> option (on the first, background Horizontal Bar). As
         you can see the chart uses the <code>wave()</code> effect (the <code>wave()</code> effect is not just a Bar
@@ -49,7 +51,7 @@
 
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // The data for the chart
         data   = [70,80,60,50,40,80];
         
@@ -138,7 +140,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

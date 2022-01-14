@@ -19,9 +19,11 @@
 </head>
 <body>
 
-    <h1>An SVG Line chart using transparency</h1>
+    <h1>A red and green SVG Line chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 750px; height: 300px; background-color: black; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         This is a Line chart that has some custom values applied to it. It's a
@@ -53,7 +55,7 @@
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         new RGraph.SVG.Line({
             id: 'chart-container',
             data: [
@@ -128,7 +130,7 @@
 &lt;div style="width: 750px; height: 300px; background-color: black" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

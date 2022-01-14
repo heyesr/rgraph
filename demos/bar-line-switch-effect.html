@@ -9,11 +9,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: Bar and Line charts with a switch effect</title>
+    <title>RGraph demo: A pair of charts with a switch effect</title>
     
     
     <meta name="description" content="There are numerous ways of switching between charts - some of which have examples in the download archive. Here's a nice example of a CSS transition." />
 
+    
+    <RGRAPH_BASIC_DEMO_CSS>
     <style>
         div#container {
             position: relative;
@@ -41,6 +43,7 @@
             transform: rotate(90deg);
         }
     </style>
+    </RGRAPH_BASIC_DEMO_CSS>
 
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -54,10 +57,12 @@
 
     <span style="font-weight: bold; color: red;">Requires jQuery</span>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div id="container" style="float: right">
         <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         Note that this effect doesn't use the <code>textAccessible</code> option. This is because the
@@ -66,13 +71,13 @@
     
     <p>
         It's a nice transition effect where one chart blends into another with a "folding-away" type motion.
-        The other chart is shown in the reverse direction. The effect is not animated by using JavaScript
-        based animation but by using JavaScript to apply CSS properties. The CSS transitions which are also
+        The other chart is shown in the reverse direction. The effect is not animated by using JavaScript-based
+        animation but by using JavaScript to apply CSS properties. The CSS transitions that are also
         specified on the canvas then take care of doing the animating.
     </p>
     
     <p>
-        The charts themselves are quite straight-forward - with the Line chart having a larger linewidth
+        The charts themselves are quite straightforward - with the Line chart having a larger linewidth
         and bigger tickmarks than normal.
     </p>
         
@@ -84,7 +89,7 @@
 
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // First create the Bar chart but don't call the draw() function.
         bar = new RGraph.Bar({
             id: 'cvs1',
@@ -114,7 +119,7 @@
 
         }).draw();
 
-        // Create the Line chart with no X axis
+        // Create the Line chart with no X-axis
         line = new RGraph.Line({
             id: 'cvs2',
             data: [
@@ -267,7 +272,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

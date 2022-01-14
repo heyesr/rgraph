@@ -10,7 +10,7 @@
     
     <meta name="description" content="A variant of the Bar chart is to have it drawn in a sketchy, freehand style. Here's an example depicting bad things to release at a wedding!" />
     
-    <title>RGraph demo: A sketchy Bar chart</title>
+    <title>RGraph demo: A sketch-effect Bar chart</title>
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -27,7 +27,7 @@
     </div>
     
     <p>
-        Here's a nice, amusing chart that's rather different to the other charts that are shown on
+        Here's a nice, amusing chart that's rather different from the other charts that are shown on
         this site.
     </p>
     
@@ -38,7 +38,7 @@
     </p>
 
     <p>
-        The Y axis labels are done using the <code>yaxisLabelsSpecific</code> option with just two labels - 
+        The Y-axis labels are done using the <code>yaxisLabelsSpecific</code> option with just two labels - 
         so one appears at the top and one at the bottom.
     </p>
     
@@ -55,14 +55,14 @@
     </p>
     
     <p>
-        With smaller screens the chart looks much the same - just smaller. This is done by changing sizes of
+        With smaller screens, the chart looks much the same - just smaller. This is done by changing sizes of
         text (eg the labels and the title), the size of the canvas is reduced and the parent elements CSS
         <code>float</code> is removed.
     </p>
     
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the Bar chart and give it some data. This chart is
         // made to look sketchy by supplying the variant property and
         // setting it to 'sketch'
@@ -122,7 +122,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     

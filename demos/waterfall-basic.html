@@ -23,9 +23,9 @@
     <h1>A basic Waterfall chart</h1>
 
     <canvas id="cvs" width="900" height="250">[No canvas support]</canvas><br />
-    <button onclick="waterfall.set('xaxisPosition', 'bottom'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X axis position at bottom</button>
-    <button onclick="waterfall.set('xaxisPosition', 'center'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X axis position at center</button>
-    <button onclick="waterfall.set('xaxisPosition', 'top'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X axis position at top</button>
+    <button onclick="waterfall.set('xaxisPosition', 'bottom'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at bottom</button>
+    <button onclick="waterfall.set('xaxisPosition', 'center'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at center</button>
+    <button onclick="waterfall.set('xaxisPosition', 'top'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at top</button>
 
     <script>
         waterfall = new RGraph.Waterfall({
@@ -58,12 +58,12 @@
     <pre class="code">
 &lt;canvas id="cvs" width="600" height="250" &gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
 
-&lt;button onclick="waterfall.set('xaxisPosition', 'bottom'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X axis position at bottom&lt;/button&gt;
-&lt;button onclick="waterfall.set('xaxisPosition', 'center'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X axis position at center&lt;/button&gt;
-&lt;button onclick="waterfall.set('xaxisPosition', 'top'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X axis position at top&lt;/button&gt;
+&lt;button onclick="waterfall.set('xaxisPosition', 'bottom'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X-axis position at bottom&lt;/button&gt;
+&lt;button onclick="waterfall.set('xaxisPosition', 'center'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X-axis position at center&lt;/button&gt;
+&lt;button onclick="waterfall.set('xaxisPosition', 'top'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer"&gt;Set X-axis position at top&lt;/button&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

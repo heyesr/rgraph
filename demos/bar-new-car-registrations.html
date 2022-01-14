@@ -10,7 +10,7 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A grouped Bar chart</title>
+    <title>RGraph demo: A Bar chart showing new car registrations</title>
     
     
     <meta name="description" content="A grouped Bar chart showing motor vehicle sales which has three bars per group along with a turquoise color theme." />
@@ -30,22 +30,22 @@
     </div>
     
     <p>
-        A straight-forward Bar chart with a nice aesthetic to it. This style (ie the colors) of chart is frequently used
+        A straightforward Bar chart with a nice aesthetic to it. This style (ie the colors) of chart is frequently used
         by the BBC news website.
     </p>
     
     <p>
-        It's a grouped Bar chart with three data-pieces per segment (the third data-pieces are quite
+        It's a grouped Bar chart with three data pieces per segment (the third data pieces are quite
         small when compared to the other two).
     </p>
     
     <p>
         The background grid vertical lines are disabled (there's still a border around the edge of
-        the grid) and there's a key that's positioned in the margin, on the left hand side.
+        the grid) and there's a key that's positioned in the margin, on the left-hand side.
     </p>
 
     <p>
-        If you like this style of chart then you could also try a slightly larger  font size.
+        If you like this style of chart, then you could also try a slightly larger  font size.
     </p>
 
     <p>
@@ -62,7 +62,7 @@
     
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create a Bar chart with a 2D array as the data. Each group
         // has three elements even though the chart gives the
         // impression that there's only two values.
@@ -85,7 +85,7 @@
                 backgroundGridVlines: false,
                 backgroundGridHlinesCount: 7,
                 
-                // The Y axis on this chart has seven values (eight if you
+                // The Y-axis on this chart has seven values (eight if you
                 // include zero) instead of five and the maximum value is
                 // specifically set to 1,400,000
                 yaxisLabelsCount: 7,
@@ -109,7 +109,7 @@
                 // Use formatted tooltips to show tooltips
                 tooltips: '<i>Results for <b style="font-size: 14pt">%{property:key[%{index}]}</b> in <b style="font-size: 14pt">%{property:xaxisLabels[%{dataset}]}</b>:</i><br /><span style="font-size: 20pt">$%{value_formatted}</span>',
                 
-                // Add some CSS values which are applied to the tooltip
+                // Add some CSS values that are applied to the tooltip
                 tooltipsCss: {
                     textAlign: 'center'
                 },
@@ -147,7 +147,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

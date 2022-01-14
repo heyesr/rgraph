@@ -8,7 +8,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A "Who wants to be a millionaire?" style Bar chart</title>
+    <title>RGraph demo: A Bar chart styled like a popular game-show</title>
     <meta name="description" content="A Bar chart customised to look like the 'Who wants to be a millionaire?' 'Ask the audience' bar chart." />
     
     <!-- <RGRAPH_REMOVE> -->
@@ -27,15 +27,15 @@
         This is an example of a Bar chart that has been customised to have an
         appearance similar to the "Who wants to be a millionaire?" "Ask the
         audience" results bar chart. It uses the <code>draw</code> event in conjunction with
-        the API in order to draw the text above the bars. The background gradient
-        is done with a CSS linear-gradient - it's not drawn on the canvas. The
+        the API to draw the text above the bars. The background gradient
+        is done with a CSS linear gradient - it's not drawn on the canvas. The
         background grid is customised in linewidth and color, the axes are disabled
         and the text color is customised too.
     </p>
     
     <p>
         The CSS gradient that's used in the canvas tag's <code>style</code> attribute is a
-        straight-forward linear gradient but achieves a nice effect for the
+        straightforward linear gradient but achieves a nice effect for the
         background of the chart. The relevant CSS is this:
     </p>
     
@@ -59,7 +59,7 @@
 
 
 
-    <script>
+    <script id="rgraph-demo-source-code">
         
         // These are the labels that are placed above the Bar chart
         labels = [50,20,15,15];
@@ -138,7 +138,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

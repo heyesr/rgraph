@@ -7,10 +7,10 @@
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A dynamically updating SVG Line chart</title>
+    <title>RGraph demo: A dynamic SVG Line chart</title>
     
     
-    <meta name="description" content="A dynamically updating SVG Line chart. It's aesthetically quite simple in order to keep the frame up and the movement smooth." />
+    <meta name="description" content="A dynamically updating SVG Line chart. It's aesthetically quite simple to keep the frame up and the movement smooth." />
     
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -23,9 +23,11 @@
 
     <h1>A dynamically updating SVG Line chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="float: right" id="outer-container">
         <div style="width: 650px; height: 250px" id="cc"></div>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         This is an SVG version of an older dynamic canvas Line chart. There are
@@ -35,12 +37,12 @@
     
     <p>
         It's purposefully not a complicated chart so that there's not much to do on each redraw. So there's
-        no vertical grid lines or border, no X axis and no shadow.
+        no vertical grid lines or grid border, no X-axis and no shadows.
     </p>
     
     <p>
         The chart is created only once inside the <code>drawGraph()</code> function and then on each
-        iteration a new value is added to the <code>line.originalData</code> variable.
+        iteration, a new value is added to the <code>line.originalData</code> variable.
     </p>
     
     <p>
@@ -61,7 +63,7 @@
     
     
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Define some variables
         var div       = document.getElementById("cc"),
             obj       = null,
@@ -170,7 +172,7 @@
 &lt;div style="width: 650px; height: 250px" id="cc"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

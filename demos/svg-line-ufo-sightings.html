@@ -8,10 +8,10 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A black and gray SVG Line chart</title>
+    <title>RGraph demo: A simple looking SVG Line chart</title>
     
     
-    <meta name="description" content="An SVG Line chart showing UFO sightings over the past century. As you can see peoples imagination is increasing!" />
+    <meta name="description" content="An SVG Line chart showing UFO sightings over the past century. As you can see, people's imagination is increasing!" />
 
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -24,31 +24,34 @@
 
     <h1>A black and gray SVG Line chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="text-align: none">
         <div style="width: 600px; height: 250px; float: right" id="chart-container"></div>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     
     <p>
-        A straight-forward Line chart that's showing UFO sightings over the past century.
-        As you can see - people's creativity is clearly on the increase - particularly
-        since the 1990s!
+        A straightforward Line chart that's showing UFO sightings
+        over the past century. As you can see - people's creativity
+        is clearly on the increase - particularly since the 1990s!
     </p>
 
     <p>
-        The background grid is customised to have a white color and an increased amount
-        of vertical lines.
+        The background grid is customised with white and
+        an increased number of vertical lines.
     </p>
     
     <p>
-        The X axis labels are just years, the axes have been turned off and the tickmarks for the line
-        are filled circles.
+        The X-axis labels are just years, the axes have been
+        turned off and the tickmarks for the line are filled circles.
     </p>
     
     <p>
-        On the whole it's a pretty regular Line chart. The responsive configuration just shrinks the size
-        of the chart and reduces the size of the <code>linewidth</code> and the <code>tickmarksSize</code>
-        options.
+        On the whole, it's a pretty regular Line chart. The
+        responsive configuration just shrinks the size of the chart
+        and reduces the size of the <code>linewidth</code> and the
+        <code>tickmarksSize</code> options.
     </p>
     
     
@@ -61,7 +64,7 @@
 
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // A Line chart that shows the increase over the years
         // of UFO sightings. The background color and the grid
         // have been color inverted with the grid being
@@ -107,7 +110,7 @@
 &lt;div style="width: 750px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

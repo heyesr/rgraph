@@ -9,7 +9,7 @@
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Horizontal Bar chart using formatted tooltips</title>
+    <title>RGraph demo: A demonstration of formatted tooltips</title>
     
     
     
@@ -27,25 +27,25 @@
     <canvas id="cvs" width="600" height="275" style="float: right">[No canvas support]</canvas>
     
     <p>
-        Here's a Horizontal Bar chart clearly indicating the 2016 UK referendum results. Let's not dwell on the
-        disastrous nature of the vote though and look at the chart shall we?
+        Here's a Horizontal Bar chart indicating the 2016 UK referendum results. Let's not dwell on the
+        disastrous nature of the vote though and look at the chart, shall we?
     </p>
     
     <p>
         It has a high <code>marginInner</code> setting - though the bars are still quite thick
-        due to the height of the chart and the fact that there's only two values that are being
+        due to the height of the chart and the fact that there are only two values that are being
         represented.
     </p>
     
     <p>
-        It uses the <code>labelsAbove</code> setting, has <code>tooltips</code> and the number of X axis
+        It uses the <code>labelsAbove</code> setting, has <code>tooltips</code> and the number of X-axis
         labels has been increased. The number of vertical background grid lines has been increased to match
         the number of labels.
     </p>
     
     <p>
         The <code>responsive()</code> function reduces the size of the chart, the text that's on the chart,
-        slightly reduces the <code>marginInner</code> and reduces the number of X axis labels that you see.
+        slightly reduces the <code>marginInner</code> and reduces the number of X-axis labels that you see.
         It also removes  the CSS <code>float</code> on the canvas tag.
     </p>
     
@@ -90,7 +90,7 @@ function getTooltip(group)
         And finally, it's animated using the <code>grow()</code> effect - which is a linear growing effect.
     </p>
     
-    <script>
+    <script id="rgraph-demo-source-code">
         //
         // This the function that builds and returns the
         // correct tooltip based on the group ID that is
@@ -180,7 +180,7 @@ function getTooltip(group)
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>    
 

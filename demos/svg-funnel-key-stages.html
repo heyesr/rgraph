@@ -10,7 +10,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A customised SVG Funnel chart</title>
+    <title>RGraph demo: An SVG Funnel chart with custom tooltips</title>
     
     
     <meta name="description" content="An SVG Funnel chart showing the key stages of plan CD1. It takes a little bit of configuration to get the default Funnel to look like this - but it's all on this page." />
@@ -26,12 +26,14 @@
 
     <h1>A customised SVG Funnel chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 650px; height: 500px; border: 1px solid #ddd; float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         A demonstration of the SVG Funnel chart. This chart is customised using custom tooltips, a key, the
         labels are positioned in the middle of each "segment" and the background bars are set to use a
-        gradient that goes towards white on the right-hand-side. The font size of the labels has been
+        gradient that goes towards white on the right-hand side. The font size of the labels has been
         increased too.
     </p>
     
@@ -69,7 +71,7 @@
     </p>
     
     <p>
-        When the screen size is smaller not much changes - the size of the labels and the margins.
+        When the screen size is smaller, not much changes - the size of the labels and the margins.
     </p>
     
     <br clear="all" />
@@ -77,7 +79,7 @@
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the Funnel chart and configure it so that it has a large
         // left margin (enough space for the labels),
         funnel = new RGraph.SVG.Funnel({
@@ -101,7 +103,7 @@
                 // of the labels
                 labelsPosition: 'section',
 
-                // Tooltips for the chart which are using the new formatted tooltips feature
+                // Tooltips for the chart that use the new formatted tooltips feature
                 tooltips: '%{property:labels[%{index}]}',
 
                 // These are CSS styles for the tooltips that are displayed.
@@ -134,7 +136,7 @@
 &lt;div style="width: 500px; height: 400px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

@@ -7,7 +7,7 @@
     <script src="../libraries/RGraph.gauge.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A customised Gauge chart</title>
+    <title>RGraph demo: An example of a customised Gauge chart</title>
     
     
     <meta name="description" content="A Gauge chart that has been customised to look quite different from what is the default appearance." />
@@ -45,7 +45,7 @@
     </ul>
     
     <p>
-        As you can see - there are far more canvas based meters than SVG ones. Though you can quite easily
+        As you can see - there are far more canvas-based meters than SVG ones. Though you can quite easily
         configure the vertical and horizontal SVG Bar charts to appear as progress bars. There are demos
         of this being done in <a href="/download.html">the download archive</a>. There's also a demo available
         <a href="https://www.rgraph.net/demos/pie-horseshoe.html">
@@ -62,7 +62,7 @@
     
     <p>
         Regarding this chart, the top and bottom titles are being configured, the colors for the banding
-        around the Gauge is being set with specific ranges, there are multiple needles - each with its
+        around the Gauge are being set with specific ranges, there are multiple needles - each with its
         own color and the tickmarks are being configured.
     </p>
 
@@ -78,7 +78,7 @@
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         new RGraph.Gauge({
             id: 'cvs',
             min: 0,
@@ -147,7 +147,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

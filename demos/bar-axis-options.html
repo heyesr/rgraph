@@ -7,7 +7,7 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Bar chart with the X axis in the middle</title>
+    <title>RGraph demo: A Bar chart with the X-axis in the middle</title>
     
     
     <meta name="description" content="A bar chart that is showing the various axis options that are available to you" />
@@ -30,13 +30,13 @@
         }
     </style>
 
-    <button onclick="obj = getObject(); obj.set('xaxisPosition', obj.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();">Toggle the X axis position</button>
-    <button onclick="obj = getObject(); obj.set('yaxisPosition', obj.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();">Toggle the Y axis position</button>
-    <button onclick="obj = getObject(); obj.set('yaxisScale', obj.get('yaxisScale') ? false : true); RGraph.redraw();">Toggle the Y axis labels</button>
-    <button onclick="obj = getObject(); obj.set('yaxisLabelsSpecific', obj.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();">Toggle specific Y axis labels</button>
+    <button onclick="obj = getObject(); obj.set('xaxisPosition', obj.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();">Toggle the X-axis position</button>
+    <button onclick="obj = getObject(); obj.set('yaxisPosition', obj.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();">Toggle the Y-axis position</button>
+    <button onclick="obj = getObject(); obj.set('yaxisScale', obj.get('yaxisScale') ? false : true); RGraph.redraw();">Toggle the Y-axis labels</button>
+    <button onclick="obj = getObject(); obj.set('yaxisLabelsSpecific', obj.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();">Toggle specific Y-axis labels</button>
     <button onclick="obj = getObject(); obj.set('yaxisScaleMin', obj.get('yaxisScaleMin') ? 0 : 50); RGraph.redraw();">Toggle Y min (50) setting</button>
-    <button onclick="obj = getObject(); obj.set('xaxisLabels', obj.get('xaxisLabels') ? null : ['Q1','Q2','Q3','Q4']); RGraph.redraw();">Toggle X axis labels</button>
-    <button onclick=" obj = getObject(); obj.set('xaxis', obj.get('xaxis') ? false : true); RGraph.redraw();">Toggle X axis</button>
+    <button onclick="obj = getObject(); obj.set('xaxisLabels', obj.get('xaxisLabels') ? null : ['Q1','Q2','Q3','Q4']); RGraph.redraw();">Toggle X-axis labels</button>
+    <button onclick=" obj = getObject(); obj.set('xaxis', obj.get('xaxis') ? false : true); RGraph.redraw();">Toggle X-axis</button>
     
     <br />
 
@@ -80,20 +80,20 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;button onclick="obj = getObject(); obj.set('xaxisPosition', obj.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();"&gt;Toggle the X axis position&lt;/button&gt;
-&lt;button onclick="obj = getObject(); obj.set('yaxisPosition', obj.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();"&gt;Toggle the Y axis position&lt;/button&gt;
-&lt;button onclick="obj = getObject(); obj.set('yaxisLabels', obj.get('yaxisLabels') ? false : true); RGraph.redraw();"&gt;Toggle the Y axis labels&lt;/button&gt;
-&lt;button onclick="obj = getObject(); obj.set('yaxisLabelsSpecific', obj.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();"&gt;Toggle specific Y axis labels&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('xaxisPosition', obj.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();"&gt;Toggle the X-axis position&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('yaxisPosition', obj.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();"&gt;Toggle the Y-axis position&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('yaxisLabels', obj.get('yaxisLabels') ? false : true); RGraph.redraw();"&gt;Toggle the Y-axis labels&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('yaxisLabelsSpecific', obj.get('yaxisLabelsSpecific') ? false : ['High','Medium','Low']); RGraph.redraw();"&gt;Toggle specific Y-axis labels&lt;/button&gt;
 &lt;button onclick="obj = getObject(); obj.set('yaxisScaleMin', obj.get('yaxisScaleMin') ? 0 : 50); RGraph.redraw();"&gt;Toggle Y min (50) setting&lt;/button&gt;
-&lt;button onclick="obj = getObject(); obj.set('xaxisLabels', obj.get('xaxisLabels') ? null : ['Q1','Q2','Q3','Q4']); RGraph.redraw();"&gt;Toggle X axis labels&lt;/button&gt;
-&lt;button onclick="obj = getObject(); obj.set('xaxis', obj.get('xaxis') ? true : false); RGraph.redraw();"&gt;Toggle X axis&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('xaxisLabels', obj.get('xaxisLabels') ? null : ['Q1','Q2','Q3','Q4']); RGraph.redraw();"&gt;Toggle X-axis labels&lt;/button&gt;
+&lt;button onclick="obj = getObject(); obj.set('xaxis', obj.get('xaxis') ? true : false); RGraph.redraw();"&gt;Toggle X-axis&lt;/button&gt;
 
 &lt;canvas id="cvs" width="600" height="400"&gt;
     [No canvas support]
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

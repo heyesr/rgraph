@@ -9,10 +9,10 @@
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
 
-    <title>RGraph demo: A gray Pie chart</title>
+    <title>RGraph demo: A gray Pie chart with small, bold labels</title>
     
     
-    <meta name="description" content="A Pie chart using a gray theme and the responsive() functionality. Here, the labels have the value of each segment added before they're assigned to the chart - but only when you're viewing the larger version of the chart. For the smaller version the figures are removed from the labels." />
+    <meta name="description" content="A Pie chart using a gray theme and the responsive() functionality. Here, the labels have the value of each segment added before they're assigned to the chart - but only when you're viewing the larger version of the chart. For the smaller version, the figures are removed from the labels." />
      
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -28,7 +28,7 @@
     <canvas id="cvs" width="550" height="250" style="float: right">[No canvas support]</canvas>
     
     <p>
-        Here's a gray themed Pie chart. It uses the responsive function in order to allow for smaller
+        Here's a gray-themed Pie chart. It uses the responsive function to allow for smaller
         screens, the labels are bold and the text is slightly smaller than usual.
     </p>
     
@@ -40,7 +40,7 @@
     </p>
     
     <p>
-        Initially the labels are simple strings that consist of operating system  names (like this:
+        Initially, the labels are simple strings that consist of operating system  names (like this:
         <code>['Symbian','Blackberry','Android','iOS','Windows','Others']</code>)
         But these labels then have the relevant percentage that is being represented appended to them
         (for larger screens only).
@@ -63,7 +63,7 @@
     
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Here's the data, the labels and the tooltips that have been separated
         // out from the configuration in order to aid clarity
         data         = [41.2,18.2,17.2,14.2,5,4.2];
@@ -151,7 +151,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

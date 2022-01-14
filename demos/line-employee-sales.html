@@ -9,7 +9,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Line chart showing employee sales</title>
+    <title>RGraph demo: A Line chart showing sales information</title>
     <meta name="description" content="A Line chart showing multiple datasets and which has a dark color scheme. It also has a key and clears the canvas before it starts drawing." />
 
     <!-- <RGRAPH_REMOVE> -->
@@ -35,7 +35,7 @@
         A Line chart showing the employee sales by department. Since this chart is
         a copy of a chart found on the Internet it uses the Line chart - though a
         stacked or grouped Bar chart may represent the data better because the types
-        of furniture aren't really related to each other.
+        of furniture aren't related to each other.
     </p>
     
     <p>
@@ -46,7 +46,7 @@
 
     <br clear="all" />
     
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the Line chart
         new RGraph.Line({
             id: 'cvs',
@@ -128,7 +128,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <pre class="code">
 &lt;script&gt;
     <span>// Create the Line chart</span>
@@ -203,7 +203,7 @@
 
     <p>
         Here's a version of the above Line chart but using a grouped Bar chart instead
-        of a Line chart. Personally I think the Bar chart makes the interpretation of the
+        of a Line chart. Personally, I think the Bar chart makes the interpretation of the
         data easier and makes the intent easier to read.
     </p>
 
@@ -274,7 +274,7 @@
     <p></p>
 
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
 <pre class="code">
 &lt;script&gt;
     <span>// A Bar chart version of the Line chart that's shown above. With

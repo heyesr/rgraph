@@ -9,7 +9,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: An SVG Line and Bar chart</title>
+    <title>RGraph demo: An SVG combined Line and Bar chart</title>
     
     
     <meta name="description" content="Here's a demo of a mixed Line and a Bar chart (with dummy data). There's a spline and also an angular line on the chart." />
@@ -25,7 +25,9 @@
 
     <h1>An SVG Line and Bar chart</h1>
     
+    <RGRAPH_BASIC_DEMO_HTML>
     <div id="cc" style="width: 600px; height: 250px; float: right"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         This is an example of a mixed Line/spline and also a Bar chart.
@@ -34,8 +36,8 @@
     </p>
     
     <p>
-        There's three chart objects - one for the red Line, one
-        for the gray line and one for the Bar chart.
+        There are three chart objects - one for the red Line chart,
+        one for the gray Line chart and one for the Bar chart.
     </p>
     
     <p>
@@ -45,12 +47,14 @@
     </p>
     
     <p>
-        The second Line chart along with the Bar chart have their axes and Y axis labels turned off as these are
-        drawn by the first Line chart. Similarly the X axis labels are drawn by the first Line chart only.
+        The second Line chart along with the Bar chart have their
+        axes and Y-axis labels turned off as these are drawn by the
+        first Line chart. Similarly, the X-axis labels are also
+        drawn by the first Line chart.
     </p>
     
     <p>
-        There's a responsive configuration which simply reduces the size of the chart and removes the CSS
+        There's a responsive configuration that simply reduces the size of the chart and removes the CSS
         <code>float</code> that is applied to the canvas tag.
     </p>
 
@@ -60,7 +64,7 @@
 
         
 
-    <script>
+    <script id="rgraph-demo-source-code">
     
         // This is the data for the red angled Line. A single array
         // of lots of datapoints.
@@ -117,7 +121,7 @@
             }
         }).draw();
         
-        // The Bar chart. The backgroundGrid, the axes and the Y axis
+        // The Bar chart. The backgroundGrid, the axes and the Y-axis
         // scale are disabled. The maximum value, like the Line charts
         // above, is set to 15.
         new RGraph.SVG.Bar({
@@ -166,7 +170,7 @@
 &lt;div id="cc" style="width: 700px; height: 250px"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

@@ -8,7 +8,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A segmented Bar chart</title>
+    <title>RGraph demo: A Bar chart with the bars split into segments</title>
     
     
     <meta name="description" content="A Bar chart that demonstrates the RGraph.SegmentedBar custom class that's a part of the RGraph.bar.js file. There are two canvas tags in use but the code side of things is done by the custom class." />
@@ -23,13 +23,15 @@
 
     <h1>A segmented Bar chart</h1>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="display: inline-block; position: relative; width: 600px; height: 250px; float: left">
         <canvas id="cvs1" width="600" height="250" style="position:absolute; top: 0; left: 0">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="250" style="position:absolute; top: 0; left: 0">[No canvas support]</canvas>
     </div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
-        Previously this type of chart was achievable, but required custom coding. Now however (as of
+        Previously this type of chart was achievable but required custom coding. Now, however, (as of
         version 5.23) there is a custom class that does all of the necessary customisation for you. All
         you need to do is add the display customisations (as shown below).
     </p>
@@ -41,7 +43,7 @@
     <p>
         The front canvas draws the Bar
         chart - and then a custom <code>draw</code> event uses the standard canvas <code>clearRect()</code>
-        function to return bits of the top canvas back to transparency. So
+        function to return bits of the top canvas to transparency. So
         the grid on the rear canvas then shows through.
     </p>
     
@@ -58,7 +60,7 @@
 
 
 
-    <script>
+    <script id="rgraph-demo-source-code">
 
         seg = new RGraph.SegmentedBar({
             id: ['cvs1', 'cvs2'],
@@ -105,7 +107,7 @@
 &lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

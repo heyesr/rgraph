@@ -10,7 +10,7 @@
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
 
-    <title>RGraph demo: A Pie chart using AJAX and JSON</title>
+    <title>RGraph demo: A dynamic Pie chart</title>
 
     <meta name="description" content="A Pie chart that retrieves JSON data via AJAX. JSON data is easy to use when successfully retrieved and fits in well with the RGraph configuration." />
     
@@ -43,7 +43,7 @@
     </p>
     
     <p>
-        Since the responses to AJAX calls start off as strings this function handily converts the response
+        Since the responses to AJAX calls start as strings this function handily converts the response
         into a JavaScript object automatically for you.
     </p>
     
@@ -54,7 +54,7 @@
     
     <p>
         This demo page is intended to show the AJAX+JSON functionality that RGraph has so the rest of
-        the Pie chart configuration is pretty straight forward.
+        the Pie chart configuration is pretty straightforward.
     </p>
     
     <p>
@@ -70,7 +70,7 @@
     
     <br clear="all" />
 
-    <script>
+    <script id="rgraph-demo-source-code">
         // Use the AJAX function RGraph.AJAX.getJSON() to fetch some JSON from the server.
         // When you make an AJAX request to the server the reponse is a string - so RGraph
         // will convert the response to JSON for you automatically. The function is given
@@ -120,7 +120,7 @@
 &lt;/canvas&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

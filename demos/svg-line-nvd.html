@@ -8,7 +8,7 @@
     <script src="demos.js" ></script>
     
 
-    <title>RGraph demo: A pastel colored floating SVG Line chart</title>
+    <title>RGraph demo: A pastel-colored SVG filled Line chart</title>
     <meta name="description" content="An SVG Line chart that was inspired by a chart on the NVD website. The 'floating' appearance is done by setting the color for the first dataset to transparent." />
     
     <!-- <RGRAPH_REMOVE> -->
@@ -20,9 +20,11 @@
 
 
 
-    <h1>A pastel colored floating SVG Line chart</h1>
+    <h1>A floating Line chart</h1>
 
+    <RGRAPH_BASIC_DEMO_HTML>
     <div style="width: 600px; height: 250px;float: right" id="chart-container"></div>
+    </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
         This is a demo of a Line chart that was inspired by an example that was
@@ -42,9 +44,9 @@
     
     <p>
         The rest of the configuration
-        is quite straight-forward - the vertical grid lines are turned  off and the
-        colors are a custom set. There's also labels specified (the labels are numbers
-        - though this does NOT make it a scale. The Line chart X axis is NOT scaled).
+        is quite straightforward - the vertical grid lines are turned  off and the
+        colors are a custom set. There are also labels specified (the labels are numbers
+        - though this does NOT make it a scale. The Line chart X-axis is NOT scaled).
     </p>
     
     <p>
@@ -54,14 +56,14 @@
     <p>
         <b>Note:</b>
         There's a canvas version of this chart in the download (called <i>demos/line-nvd.html</i>) where
-        the datasets are traced sequentially (so the datasets are traced one-at-a-time and when one
+        the datasets are traced sequentially (so the datasets are traced one at a time and when one
         dataset finishes tracing the next starts).
     </p>
 
 
 
         
-    <script>
+    <script id="rgraph-demo-source-code">
         // Create the Line chart and give it all of the data that's to be shown
         // on the chart. There's four datasets but so that the lines appear to
         // be 'floating' the first dataset has a transparent color. The first
@@ -118,7 +120,7 @@
 &lt;div style="width: 950px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
 </pre>
 
-    This is the code that generates the chart:
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
     <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 

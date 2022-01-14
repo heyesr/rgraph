@@ -4,45 +4,52 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.horseshoe.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.activity.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Horseshoe meter using label templates</title>
+    <title>RGraph demo: The Activity meter chart with tooltips</title>
     
-    <meta name="description" content="A Horseshoe meter using label templates" />
-     
+    
+    <meta name="description" content="The Activity meter chart with tooltips" />
+    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-    <h1>A Horseshoe meter using label templates</h1>
+    
 
-    <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+    <h1>The Activity meter chart with tooltips</h1>
+
+    <br />
+    <br />
+
+    <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
     
     <script>
-        new RGraph.Horseshoe({
+        activity = new RGraph.Activity({
             id: 'cvs',
             min: 0,
-            max: 100,
-            value: 57,
+            max: 10,
+            value: [9,7,5],
             options: {
-                labelsCenterSize: 50,
-                labelsCenterSpecific: '%{value_formatted} sold'
+                tooltips: ['Bobs result','Gemmas result','Lucys result'],
+                tooltipsCss: {
+                    fontSize: '25pt'
+                },
+                width: 45
             }
         }).draw();
     </script>
-
-
-
-
 
     <p></p>
 
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.horseshoe.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
 </pre>
     
     Put this where you want the chart to show up:
