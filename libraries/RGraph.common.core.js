@@ -31,6 +31,9 @@
     RGraph.cursor         = [];
     RGraph.Effects        = RGraph.Effects || {};
     RGraph.cache          = [];
+    RGraph.QS             =
+    RGraph.GET            = {};
+    RGraph.GET.__parts__  = null;
 
     RGraph.ObjectRegistry                    = {};
     RGraph.ObjectRegistry.objects            = {};
@@ -8980,6 +8983,183 @@
         var ret = JSON.parse('{' + str + '}');
 
         return ret;
+    };
+
+
+
+
+
+
+
+
+    //
+    // A set of functions which help you get data from the GET
+    // string (the query string).
+    //
+    RGraph.GET.raw = function ()
+    {
+        return location.search;
+    };
+
+
+
+
+
+
+
+
+    RGraph.GET.parse = function ()
+    {
+        if (!RGraph.isNull(RGraph.GET.__parts__)) {
+            return RGraph.GET.__parts__;
+        }
+
+        var raw   = RGraph.GET.raw().replace(/^\?/, '');
+        var parts = raw.split(/\&/);
+        
+        // Loop thru each part splitting it
+        for (var i=0; i<parts.length; ++i) {
+            var tmp = parts[i].split('=');
+
+            parts[tmp[0]] = decodeURI(tmp[1]);
+        }
+        
+        // Store the parsed query-string
+        RGraph.GET.__parts__ = parts;
+        
+        return parts;
+    };
+
+
+
+
+
+
+
+
+    //
+    // Get a string of text from the query string. No special
+    // processing is done here.
+    //
+    // @param string key The part to get
+    //
+    RGraph.GET.text =
+    RGraph.GET.string = function (key)
+    {
+        var parts = RGraph.GET.parse();
+        
+        if (!parts[key]) {
+            return null;
+        }
+
+        return String(parts[key]);
+    };
+
+
+
+
+
+
+
+
+    //
+    //  This fetches a number from the query string. It
+    // trims leading zeros and reurns a number (not a
+    // string).
+    //
+    // @param string key The part to get 
+    //
+    RGraph.GET.number = function (key)
+    {
+        var parts = RGraph.GET.parse();
+        
+        if (!parts[key]) {
+            return null;
+        }
+
+        return Number(parts[key]);
+    };
+
+
+
+
+
+
+
+
+    //
+    // Fetches a JSON object from the query string. It must be
+    // valid JSON and is an easy way to pass multiple values
+    //using the query string. For example:
+    //
+    // /foo.html?json={"data":[4,8,6],"labels":["John","Luis","Bob"]}
+    // 
+    // @param string key The part to get
+    //
+    RGraph.GET.json =
+    RGraph.GET.object = function (key)
+    {
+        var parts = RGraph.GET.parse();
+        
+        if (!parts[key]) {
+            return null;
+        }
+
+        return JSON.parse(parts[key]);
+    };
+
+
+
+
+
+
+
+
+    //
+    // This allows you to easily pass a  list of numbers over the
+    // query string. For example:
+    //
+    // /test.html?data=5,8,6,3,5,4,6
+    //
+    // @param string key      The part to get
+    // @param string OPTIONAL The seperator to use (defaults to a
+    //                        comma)
+    //
+    RGraph.GET.list  =
+    RGraph.GET.array = function (key)
+    {
+        var parts = RGraph.GET.parse();
+        
+        if (!parts[key]) {
+            return null;
+        }
+        
+        
+        if (!arguments[1]) {
+            var sep = ',';
+        } else {
+            var sep = arguments[1];
+        }
+        
+        var arr = parts[key].split(sep);
+        
+        // Remove any starting or trailing square brackets
+        arr[0] = arr[0].replace(/^\[/, '');
+        arr[arr.length - 1] = arr[arr.length - 1].replace(/\]$/, '');
+
+        // Convert strings to numbers
+        for (var i=0; i<arr.length; ++i) {
+            
+            // Get rid of surrounding quotes
+            arr[i] = arr[i].replace(/^('|")/,'');
+            arr[i] = arr[i].replace(/('|")$/,'');
+
+            if (Number(arr[i])) {
+                arr[i] = Number(arr[i]);
+            }
+        }
+
+        return arr;
     };
 
 
