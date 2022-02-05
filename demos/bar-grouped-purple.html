@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A turqoise and purple grouped Bar chart</title>
+    <meta name="description" content="This is an example of a Bar chart that illustrates the new (in version 5.25) style available to tooltips. This style has since been made the default." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing the new style of tooltips</h1>
+    
+    <div>
+        <canvas id="cvs" width="850" height="250">[No canvas support]</canvas>
+    </div>
+
+    <br clear="both" />
+
+
+
+    <script>
+        labels = [
+            '0 to 4','5 to 9','10 to 14','15 to 19','20 to 24','25 to 29','30 to 34',
+            '35 to 39','40 to 44','45 to 49','50 to 54','55 to 59','60 to 64',
+            '65 to 69','70 to 74','75 to 79','80 to 84','85 to 89','90+'
+        ];
+        
+        myData = [
+            [750,650],[850,800],[900,850],[1500,2800],[4000,7000],
+            [6300,11500],[7000,11200],[6800,9800],[6800,9500],
+            [7500,11200],[8500,12300],[8500,11000],[7500,7800],
+            [6050,4500],[6900,5000],[8000,6400],[9000,8900],
+            [8000,10000],[5900,11850]
+        ];
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: myData,
+            options: {
+                tooltips: '%{global:labels[%{group}]} %{key}',
+                tooltipsFormattedKeyColorsCss: {
+                    border: '1px solid #ccc'
+                },
+                tooltipsFormattedKeyLabels: ['Male','Female'],
+                tooltipsCss:{
+                    textAlign: 'left'
+                },
+                colors: ['#5C1955','#62A3B3'],
+                marginLeft: 75,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: labels,
+                xaxisLabelsAngle: 45,
+                xaxisLabelsOffsety: 5,
+                yaxisScaleMax: 15000,
+                backgroundGridVlines: false
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="850" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
