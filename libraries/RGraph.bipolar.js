@@ -180,6 +180,8 @@
             colors:                     ['red','blue','yellow','#afa','#faa','#aaf','#aff','#ffa','#faf','cyan','brown','gray','black','pink','#afa','#faa','#aaf','#aff','#ffa','#faf','cyan','brown','gray','black','pink'],
             //colors:                     ['#afa','#faa','#aaf','#aff','#ffa','#faf','cyan','brown','gray','black','pink','#afa','#faa','#aaf','#aff','#ffa','#faf','cyan','brown','gray','black','pink'],
             colorsSequential:           false,
+            colorsLeft:                 null,
+            colorsRight:                null,
 
             contextmenu:                null,
 
@@ -563,6 +565,7 @@
         //
         this.redraw3Dfaces = function ()
         {
+//return;
             // Redraw the faces of the bars so that if 3D mode is enabled the
             // faces appear over the sides of other bars
             if (properties.variant === '3d') {
@@ -571,7 +574,21 @@
 
 
                 // LEFT HAND SIDE BARS //
-
+                
+                
+                
+                //
+                // If the colorsLeft option is set then change
+                // the colors option to that.
+                //
+                if (!RGraph.isNull(properties.colorsLeft)) {
+                    
+                    // Save the initial colors value
+                    properties.colorsInitial = properties.colors;
+    
+                    // Set the new value
+                    properties.colors = properties.colorsLeft;
+                }
 
 
 
@@ -608,8 +625,34 @@
 
 
 
+                // If the colorsLeft option is set then change
+                // the colors option back to what it was.
+                //
+                if (!RGraph.isNull(properties.colorsLeft)) {
+                    properties.colors = properties.colorsInitial;
+                }
+
+
+
 
                 // RIGHT HAND SIDE BARS //
+
+
+
+                //
+                // If the colorsRight option is set then change
+                // the colors option to that.
+                //
+                if (!RGraph.isNull(properties.colorsRight)) {
+                    
+                    // Save the initial colors value
+                    properties.colorsInitial = properties.colors;
+    
+                    // Set the new value
+                    properties.colors = properties.colorsRight;
+                }
+
+
 
 
                 var offsetx = properties.variantThreedOffsetx,
@@ -665,6 +708,26 @@
                                 properties.colors[j]
                             );
 
+                            // Draw the top side in the regular color
+                            this.path(
+                                'b m % % l % % l % % l % % f %',
+                                coords[0],coords[1],
+                                coords[0] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2], coords[1],
+                                properties.colors[j]
+                            );
+                            
+                            // Draw the Lighter tint over the top 
+                            this.path(
+                                'b m % % l % % l % % l % % f rgba(255,255,255,0.6)',
+                                coords[0],coords[1],
+                                coords[0] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2] + offsetx, coords[1] - offsety,
+                                coords[0] + coords[2], coords[1]
+                            );
+
+
                             // Draw the right hand side in the regular color
                             this.path(
                                 'b m % % l % % l % % l % % f %',
@@ -688,6 +751,15 @@
                         }
                     }
                 }
+
+
+                // If the colorsRight option is set then change
+                // the colors option back to what it was.
+                //
+                if (!RGraph.isNull(properties.colorsRight)) {
+                    properties.colors = properties.colorsInitial;
+                }
+
             }
         };
 
@@ -1110,7 +1182,26 @@
             
             // Set the linewidth
             this.context.lineWidth = properties.linewidth;
-    
+
+
+
+
+            //
+            // If the colorsLeft option is set then change
+            // the colors option to that.
+            //
+            if (!RGraph.isNull(properties.colorsLeft)) {
+                
+                // Save the initial colors value
+                properties.colorsInitial = properties.colors;
+
+                // Set the new value
+                properties.colors = properties.colorsLeft;
+            }
+
+
+
+
             for (var i=0,sequentialColorIndex=0; i<this.left.length; ++i) {
 
                 //
@@ -1136,9 +1227,9 @@
                     
                         // If there's only two colors then use them in the format of
                         // one for each side. This facilitates easy coloring.
-                        if (properties.colors.length === 2) {
-                            this.context.fillStyle = properties.colors[0];
-                        }
+                        //if (properties.colors.length === 2) {
+                        //    this.context.fillStyle = properties.colors[0];
+                        //}
                     }
     
     
@@ -1561,6 +1652,14 @@
                 // over the bars
                 this.draw3DLeftVerticalAxis();
             }
+            
+            //
+            // If the colorsLeft option is set then change
+            // the colors option back to what it was.
+            //
+            if (!RGraph.isNull(properties.colorsLeft)) {
+                properties.colors = properties.colorsInitial;
+            }
     
             //
             // Turn off any shadow
@@ -1618,21 +1717,34 @@
                 this.context.shadowOffsetY = properties.shadowOffsety;
             }
 
+
+            //
+            // If the colorsLeft option is set then change
+            // the colors option to that.
+            //
+            if (!RGraph.isNull(properties.colorsRight)) {
+                
+                // Save the initial colors value
+                properties.colorsInitial = properties.colors;
+
+                // Set the new value
+                properties.colors = properties.colorsRight;
+            }
+
+
+
+
             for (var i=0,sequentialColorIndex=RGraph.arrayLinearize(this.left).length; i<this.right.length; ++i) {
 
                 if (typeof this.right[i] === 'number') {
+                        
                         // If colorsSequential is specified - handle that
                         if (properties.colorsSequential) {
                             this.context.fillStyle = properties.colors[sequentialColorIndex];
                         } else {
                             this.context.fillStyle = properties.colors[0];
-
-                            // If there's only two colors then use them in the format of
-                            // one for each side. This facilitates easy coloring.
-                            if (properties.colors.length === 2) {
-                                this.context.fillStyle = properties.colors[1];
-                            }
                         }
+
         
             
                         var width = (((this.right[i] - this.min) / (this.max - this.min)) * this.axisWidth);
@@ -1669,14 +1781,15 @@
         
         
         
+
         
-        
-        
+
                         // Draw the 3D sides if required
                         if (properties.variant === '3d' && this.right[i] !== null) {
+
         
                             var color = this.context.fillStyle;
-                            
+
         
                             // If the shadow is enabled draw the backface for
                             // (that we don't actually see
@@ -2142,7 +2255,12 @@
 
 
 
-
+            // If the colorsRight option is set then change
+            // the colors option back to what it was.
+            //
+            if (!RGraph.isNull(properties.colorsRight)) {
+                properties.colors = properties.colorsInitial;
+            }
 
 
             //

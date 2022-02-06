@@ -142,11 +142,13 @@
 
         this.properties =
         {
-            marginLeft:   35,
-            marginRight:  35,
-            marginTop:    35,
-            marginBottom: 35,
-            marginCenter: null,
+            marginLeft:         35,
+            marginRight:        35,
+            marginTop:          35,
+            marginBottom:       35,
+            marginCenter:       null,
+            marginInner:        3,
+            marginInnerGrouped: 2,
 
             backgroundColor:            null,
             backgroundGrid:             true,
@@ -212,9 +214,8 @@
             ],
             colorsSequential:     false,
             colorsStroke:          'rgba(0,0,0,0)',
-            
-            marginInner:              3,
-            marginInnerGrouped:       2,
+            colorsLeft:            null,
+            colorsRight:           null,
 
             labelsAbove:                  false,
             labelsAboveFont:              null,
@@ -1295,7 +1296,21 @@
                         x       = properties.marginLeft + this.graphWidth - width,
                         height  = (this.graphHeight / this.left.length) - properties.marginInner - properties.marginInner;
                         
-        
+                    //
+                    // If the colorsLeft option is set then change
+                    // the colors option to that.
+                    //
+                    if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        
+                        // Save the initial colors value
+                        properties.colorsInitial = properties.colors;
+                    
+                        // Set the new value
+                        properties.colors = properties.colorsLeft;
+                    }
+
+
+
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
                         parent: this.svg.all,
@@ -1361,7 +1376,13 @@
                     this.sequentialIndex++;
 
 
-
+                    //
+                    // If the colorsLeft option is set then change
+                    // the colors option back to what it was.
+                    //
+                    if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        properties.colors = properties.colorsInitial;
+                    }
 
 
 
@@ -1383,8 +1404,18 @@
 
 
 
-
-
+                        //
+                        // If the colorsLeft option is set then change
+                        // the colors option to that.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                            
+                            // Save the initial colors value
+                            properties.colorsInitial = properties.colors;
+                        
+                            // Set the new value
+                            properties.colors = properties.colorsLeft;
+                        }
 
 
 
@@ -1512,6 +1543,14 @@
                             sequentialIndex: this.sequentialIndex
                         });
                         
+
+                        //
+                        // If the colorsLeft option is set then change
+                        // the colors option back to what it was.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                            properties.colors = properties.colorsInitial;
+                        }
                         
                         this.sequentialIndex++;
                     }
@@ -1536,7 +1575,21 @@
                             width    = this.getWidth(this.left[i][j]),
                             x        = properties.marginLeft + this.graphWidth - width;
 
-            
+
+                        //
+                        // If the colorsLeft option is set then change
+                        // the colors option to that.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                            
+                            // Save the initial colors value
+                            properties.colorsInitial = properties.colors;
+                        
+                            // Set the new value
+                            properties.colors = properties.colorsLeft;
+                        }
+
+
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
                             parent: this.svg.all,
@@ -1619,6 +1672,14 @@
                             sequentialIndex: this.sequentialIndex
                         });
 
+                        //
+                        // If the colorsLeft option is set then change
+                        // the colors option back to what it was.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                            properties.colors = properties.colorsInitial;
+                        }
+
                         this.sequentialIndex++;
                     }
                 }
@@ -1654,7 +1715,20 @@
                         x       = properties.marginLeft + this.graphWidth + properties.marginCenter,
                         height  = (this.graphHeight / this.right.length) - properties.marginInner - properties.marginInner;
                         
-        
+                    //
+                    // If the colorsRight option is set then change
+                    // the colors option to that.
+                    //
+                    if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        
+                        // Save the initial colors value
+                        properties.colorsInitial = properties.colors;
+                    
+                        // Set the new value
+                        properties.colors = properties.colorsRight;
+                    }
+
+
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
                         parent: this.svg.all,
@@ -1703,7 +1777,15 @@
                         index: i,
                         sequentialIndex: this.sequentialIndex
                     });
-                    
+
+                    //
+                    // If the colorsRight option is set then change
+                    // the colors option back to what it was.
+                    //
+                    if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        properties.colors = properties.colorsInitial;
+                    }
+
                     this.sequentialIndex++;
 
 
@@ -1726,6 +1808,18 @@
 
 
 
+                        //
+                        // If the colorsRight option is set then change
+                        // the colors option to that.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                            
+                            // Save the initial colors value
+                            properties.colorsInitial = properties.colors;
+                        
+                            // Set the new value
+                            properties.colors = properties.colorsRight;
+                        }
 
 
 
@@ -1857,6 +1951,14 @@
                             sequentialIndex: this.sequentialIndex
                         });
 
+                        //
+                        // If the colorsRight option is set then change
+                        // the colors option back to what it was.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                            properties.colors = properties.colorsInitial;
+                        }
+
                         this.sequentialIndex++;
                     }
 
@@ -1884,7 +1986,21 @@
                             width    = this.getWidth(this.right[i][j]),
                             x        = properties.marginLeft + this.graphWidth + properties.marginCenter;
 
-            
+                        //
+                        // If the colorsRight option is set then change
+                        // the colors option to that.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                            
+                            // Save the initial colors value
+                            properties.colorsInitial = properties.colors;
+                        
+                            // Set the new value
+                            properties.colors = properties.colorsRight;
+                        }
+
+
+
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
                             parent: this.svg.all,
@@ -1985,6 +2101,16 @@
                             index: i,
                             sequentialIndex: this.sequentialIndex
                         });
+
+                        //
+                        // If the colorsRight option is set then change
+                        // the colors option back to what it was.
+                        //
+                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                            properties.colors = properties.colorsInitial;
+                        }
+
+
 
                         this.sequentialIndex++;
                     }
