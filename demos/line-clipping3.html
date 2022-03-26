@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script> 
+    
+    <title>RGraph demo: A red Line chart that uses the API function RGraph.clipTo.start()</title>
+    
+    
+    <meta name="description" content="" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A red Line chart that uses clipping to restrict drawing to a circle</h1>
+
+
+    <div style="text-align: center">
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        opt = {
+            textSize: 15,
+            xaxisPosition: 'center',
+            yaxis: false,
+            backgroundGridHlinesCount: 10,
+            backgroundGridVlines: false,
+            backgroundGridBorder: false,
+            shadow: false,
+            linewidth: 0.5,
+            colors: ['red'],
+            filled: true,
+            filledColors:['rgba(255,128,128,0.25)'],
+            marginInner: 15,
+            spline: true,
+            xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            xaxisTickmarksCount: 12,
+            //textAccessible: false // Uncomment this to hide the
+                                    // X axis labels and the Y axis
+                                    // scale.
+        };
+        
+        data = [
+            4,10,10,3,2,4,-5,-4,-5,-6,-1,9,1,2,3,5,7,4,-2,-2,6,2,3,4,
+            4,8,6,2,3,5,1,4,9,5,6,4,-3,-8,-10,-5,6,4,5,1,2,3,4,6
+        ];
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,  
+            options: opt
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clipTo.start(obj, 'b a 200 150 100 0 6.29 false s #aaa');
+
+        }).on('draw', function (obj)
+        {
+            RGraph.clipTo.end();
+        }).draw();
+    </script>
+
+
+
+
+    <p />
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="900" height="300"&gt;[No canvas support]lt/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script> 
+    
+    <title>RGraph demo: A dual-color Line chart that uses RGraph events</title>
+    
+    
+    <meta name="description" content="This is a dual-color canvas Line chart that uses clipping and the RGraph events." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A dual-color Line chart that uses RGraph events to install clipping</h1>
+    
+    <p>
+        This chart also uses the ES6 spread operator so that there's
+        no repetition of the configuration.
+    </p>
+
+
+    <div style="text-align: center">
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        // The first line chart is clipped to the top half of the
+        // canvas so you only see the top half of the chart. The
+        // clipping is installed by the beforedraw event and then
+        // removed by the draw event. As a result you only see the
+        // top half of the chart (which is red)
+        new RGraph.Line({
+            id: 'cvs',
+            data: data = [
+                4,8,6,3,2,4,-5,-4,5,6,-1,-9,1,2,-3,-5,-7,-4,-2,-2,6,2,3,4,
+                4,8,6,2,3,5,1,4,9,5,6,4,3,8,7,5,6,4,5,1,2,3,4,6
+            ],
+            options: opt = {
+                textSize: 15,
+                xaxisPosition: 'center',
+                yaxis: false,
+                backgroundGridHlinesCount: 10,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                linewidth: 0.5,
+                colors: ['red'],
+                filled: true,
+                filledColors:['rgba(255,128,128,0.25)'],
+                marginInner: 15,
+                spline: true,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisTickmarksCount: 12,
+                xaxisColor: 'gray'
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clipTo.start(obj, 'tophalf');
+
+        }).on('draw', function (obj)
+        {
+            RGraph.clipTo.end();
+        }).trace();
+
+
+
+
+
+
+
+
+
+
+
+
+        // This the chart object that shows the bottom half of the
+        // chart. Again, clipping is used to accomplish this and is again
+        // installed by the beforedraw and removed by the draw events.
+        // This chart uses blue colors instead instead of red.
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                ...opt, // Use the ES6 spread operator to combine
+                        // the options from above
+                colors: ['blue'],
+                filledColors: ['rgba(128,128,255,0.25)'],
+                yaxisLabels: false,
+                xaxisLabels: null
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clipTo.start(obj, 'bottomhalf');
+
+        }).on('draw', function (obj)
+        {
+            RGraph.clipTo.end();
+        }).trace();
+    </script>
+
+
+
+
+    <p />
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="900" height="300"&gt;[No canvas support]lt/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

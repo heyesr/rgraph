@@ -9169,6 +9169,157 @@
 
 
 
+    //
+    // Start clipping the canvas. You can give various
+    // different arguments to the function in order to
+    // clip the canvas to suit your needs See the API
+    //documentation for examples of all possibilities:
+    //
+    //      https://www.rgraph.net/canvas/api.html
+    //
+    // @param object obj        The chart object
+    // @param mixed  dimensions The dimensions to clip to
+    //
+    RGraph.clipTo = {};
+    RGraph.clipTo.start = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'object,dimensions');
+        
+        RGraph.clipTo.object = args.object;
+
+        if (typeof args.dimensions === 'string') {
+            if (args.dimensions === 'tophalf') {
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    0,
+                    args.object.canvas.width,
+                    args.object.canvas.height / 2
+                );
+            
+            } else if (args.dimensions === 'bottomhalf') {
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    args.object.canvas.height / 2,
+                    args.object.canvas.width,
+                    args.object.canvas.height / 2
+                );
+            
+            } else if (args.dimensions === 'lefthalf') {
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    0,
+                    args.object.canvas.width / 2,
+                    args.object.canvas.height
+                );
+            
+            } else if (args.dimensions === 'righthalf') {
+                args.object.path(
+                    'sa b r % % % % cl',
+                    args.object.canvas.width / 2,
+                    0,
+                    args.object.canvas.width / 2,
+                    args.object.canvas.height
+                );
+            
+            //
+            // Clip to a section of the canvas
+            //
+            } else if (args.dimensions.match(/^((?:h|v)bar) +([-.0-9]+) ?- ?([-.0-9]+)$/i)) {
+
+                var type         = RegExp.$1.toLowerCase(),
+                    start        = parseFloat(RegExp.$2),
+                    end          = parseFloat(RegExp.$3),
+                    marginTop    = args.object.properties.marginTop,
+                    marginBottom = args.object.properties.marginBottom,
+                    marginLeft   = args.object.properties.marginLeft,
+                    marginRight  = args.object.properties.marginRight,
+                    graphWidth   = args.object.canvas.width - marginLeft - marginRight,
+                    graphHeight  = args.object.canvas.height - marginTop - marginBottom;
+
+                if (type === 'hbar') {
+                    args.object.path(
+                        'sa b r % % % % cl',
+                        0,
+                        marginTop + (graphHeight * start),
+                        args.object.canvas.width,
+                        (end - start) * (args.object.canvas.height - marginTop - marginBottom)
+                    );
+
+                } else if (type === 'vbar') {
+
+                    args.object.path(
+                        'sa b r % % % % cl',
+                        marginLeft + (graphWidth * start),
+                        0,
+                        (end - start) * (args.object.canvas.width - marginLeft - marginRight),
+                        args.object.canvas.height
+                    );
+                }
+
+            // Clip to an RGraph path
+            } else {
+                args.object.path('sa');
+                args.object.path(args.dimensions);
+                args.object.path('cl');
+            }
+        
+        // Clip to an array of coordinates eg:
+        // [[0,0],[0,250],[600,250],[600,0]]
+        } else if (RGraph.isArray(args.dimensions) && RGraph.isArray(args.dimensions[0])) {
+
+            for (var i=0,path=[]; i<args.dimensions.length; ++i) {
+                path.push('%1 %2 %3'.format(
+                        i === 0 ? 'm' : 'l',
+                        args.dimensions[i][0],
+                        args.dimensions[i][1]
+                    )
+                );
+            }
+            
+            // Build the string path
+            path = 'sa b ' + path.join(' ') + ' cl';
+            
+            // Run the path
+            args.object.path(path);
+
+        // Clip to a singledimension array of four coordinates
+        // (x/y/w/h)
+        } else if (RGraph.isArray(args.dimensions)) {
+            args.object.path(
+                'sa b r % % % % cl',
+                args.dimensions[0],
+                args.dimensions[1],
+                args.dimensions[2],
+                args.dimensions[3]
+            );
+        }
+    };
+
+
+
+
+
+
+
+    //
+    // Ends clipping that has been started by the
+    // RGraph.clipTo.start() function
+    //
+    RGraph.clipTo.end = function ()
+    {
+        RGraph.path(RGraph.clipTo.object, 'rs');
+    };
+
+
+
+
+
+
+
+
     // Some utility functions that help identify the type of an object
     //
     // Note that isUndefined() should be used like this or you'll get an
@@ -9390,6 +9541,16 @@
             }
 
             return s;
+        }
+        
+        
+        //
+        // If called with just a single array, then handle that
+        //
+        //eg '%1 %2 %3'.format(['A','B','C']);
+        //
+        if (arguments.length === 1 && RGraph.isArray(arguments[0])) {
+            return this.format.apply(this, arguments[0]);
         }
 
 
