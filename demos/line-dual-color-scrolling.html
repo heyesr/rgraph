@@ -114,15 +114,13 @@
             /**
             * Clip the canvas tag and draw the upper half
             */
-            graph.context.save();
-                graph.context.beginPath();                
-                graph.context.rect(0,0,600, boundary);
-                graph.context.clip();
-                
-                // Set the color
-                graph.set('filledColors', 'rgba(255,0,0,0.5)');
-                graph.draw();
-            graph.context.restore();
+            RGraph.clipTo.start(graph, [0,0,600, boundary]);                
+            
+            // Set the color
+            graph.set('filledColors', 'rgba(255,0,0,0.5)');
+            graph.draw();
+
+            RGraph.clipTo.end();
 
 
 
@@ -132,15 +130,13 @@
             /**
             * Clip the canvas tag and draw the lower half
             */
-            graph.context.save();
-                graph.context.beginPath();                
-                graph.context.rect(0,boundary,600,250 - boundary);
-                graph.context.clip();
+            RGraph.clipTo.start(graph, [0,boundary,600,250 - boundary]);
                 
-                // Set the color
-                graph.set('filledColors', 'rgba(0,255,0,0.5)');
-                graph.draw();
-            graph.context.restore();
+            // Set the color
+            graph.set('filledColors', 'rgba(0,255,0,0.5)');
+            graph.draw();
+            
+            RGraph.clipTo.end();
 
 
 
