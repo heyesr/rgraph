@@ -1,0 +1,196 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script> 
+    
+    <title>RGraph demo: A dual-color Line chart that uses RGraph events to clip to a given scale value</title>
+    
+    
+    <meta name="description" content="A dual-color Line chart that uses RGraph events to clip to a scale value" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A tri-color Line chart that clips to scale values</h1>
+    
+    <p>
+        This Line chart uses the RGraph clipping functions
+        along with the firstdraw event in order to clip to
+        preset scale values.
+    </p>
+
+
+    <div style="text-align: center">
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        // These are the values that seperate the three colors on the chart
+        scaleValue1 = 20;
+        scaleValue2 = 10;
+
+        line1 = new RGraph.Line({
+            id: 'cvs',
+            data: data = [
+                4,8,6,3,2,4,5,4,5,6,1,9,1,2,3,5,7,4,2,2,6,2,3,4,
+                4,8,6,2,3,5,18,14,19,25,26,24,23,18,7,5,6,4,5,1,2,3,4,6
+            ],
+            options: {
+                textSize: 15,
+                yaxis: false,
+                backgroundGridHlinesCount: 6,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridDashed: true,
+                backgroundGridColor: 'gray',
+                shadow: false,
+                linewidth: 3,
+                colors: ['red'],
+                filled: true,
+                filledColors:['#fdd'],
+                marginInner: 15,
+                spline: true,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisTickmarksCount: 12,
+                xaxisColor: 'gray',
+                yaxisLabelsCount: 3,
+                yaxisScaleUnitsPost: '%',
+                textSize: 16
+            }
+
+        // Install the beforedraw and draw events within the
+        // firstdraw event. This means that we can get the
+        // point that the scale value is from object once
+        // it has been drawn
+        }).on('firstdraw', function (obj)
+        {
+            var boundary = obj.getYCoord(scaleValue1);
+
+            obj.on('beforedraw', function (obj)
+            {
+                RGraph.clipTo.start(obj, [0,0,obj.canvas.width, boundary]);
+
+            }).on('draw', function (obj)
+            {
+                RGraph.clipTo.end(obj);
+            });
+            
+            RGraph.redraw();
+        }).trace();
+
+
+
+
+
+
+
+
+        line2 = new RGraph.Line({
+            id: 'cvs',
+            data: line1.data,
+            options: {
+                ...line1.properties,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: false,
+                yaxisLabels: false,
+                colors: ['#cc0'],
+                filledColors: ['#ffc']
+            }
+
+        // Install the beforedraw and draw events within the
+        // firstdraw event. This means that we can get the
+        // point that the scale value is from object once
+        // it has been drawn
+        }).on('firstdraw', function (obj)
+        {
+            var boundary1 = obj.getYCoord(scaleValue1);
+            var boundary2 = obj.getYCoord(scaleValue2);
+
+            obj.on('beforedraw', function (obj)
+            {
+                RGraph.clipTo.start(obj, [0,boundary1,obj.canvas.width, boundary2 - boundary1]);
+
+            }).on('draw', function (obj)
+            {
+                RGraph.clipTo.end(obj);
+            });
+            
+            RGraph.redraw();
+        }).trace();
+
+
+
+
+
+
+
+
+        line3 = new RGraph.Line({
+            id: 'cvs',
+            data: line1.data,
+            options: {
+                ...line1.properties,
+                xaxis: false,
+                xaxisLabels: false,
+                yaxis: false,
+                yaxisLabels: false,
+                colors: ['green'],
+                filledColors: ['#cfc'],
+                title: 'A tri-color Line chart',
+                titleSize: 20
+            }
+
+        // Install the beforedraw and draw events within the
+        // firstdraw event. This means that we can get the
+        // point that the scale value is from object once
+        // it has been drawn
+        }).on('firstdraw', function (obj)
+        {
+            var boundary = obj.getYCoord(scaleValue2);
+
+            obj.on('beforedraw', function (obj)
+            {
+                RGraph.clipTo.start(obj, [0,boundary,obj.canvas.width, 500 /* Just an arbitrary value*/]);
+
+            }).on('draw', function (obj)
+            {
+                RGraph.clipTo.end(obj);
+            });
+            
+            RGraph.redraw();
+        }).trace();
+    </script>
+
+
+
+
+    <p />
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+        &lt;canvas id="cvs" width="900" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
