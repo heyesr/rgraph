@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <h1>A dark background on a Bar chart</h1>
+    <h1>An animated Bar chart</h1>
     
     <canvas id="cvs" width="500" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999; float: right">[No canvas support]</canvas>
 
@@ -57,7 +57,7 @@
     </p>
     
     <p>
-        The tooltips have no fade effect and are positioned at the top left of the canvas tag by using
+        The tooltips have no fade effect and are positioned at the top right of the canvas tag by using
         the <code>tooltip</code> event. This runs a snippet of code that gets the canvas tag x/y
         coordinates and sets the position of the tooltip accordingly.
     </p>
@@ -130,6 +130,9 @@
         // and on the left of, the canvas.
         ]).on('tooltip', function (obj)
         {
+            // Get a reference to ths canvas
+            var canvas = obj.canvas;
+
             // Use the RGraph API to get the canvas coordinates
             var canvasXY = RGraph.getCanvasXY(obj.canvas);
             
@@ -137,8 +140,8 @@
             var tooltip  = RGraph.Registry.get('tooltip');
             
             // Set the x/y coordinates of the tooltip DIV tag
-            tooltip.style.top  = canvasXY[1] - tooltip.offsetHeight - 5 + 'px';
-            tooltip.style.left = canvasXY[0] + 'px';
+            tooltip.style.top  = canvasXY[1] - (tooltip.offsetHeight / 2) - 5 + 'px';
+            tooltip.style.left = canvasXY[0] + canvas.width - tooltip.offsetWidth - 5 + 'px';
         });
     </script>
 
@@ -153,6 +156,8 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
 </pre>
     
@@ -164,10 +169,12 @@
 
 <span>&lt;!-- Center align the tooltip key --&gt;</span>
 &lt;style&gt;
-    <span>//.RGraph_tooltip table {
-    //    margin-left: auto;
-    //    margin-right: auto;
-    //}</span>
+    <span>/*
+    * .RGraph_tooltip table {
+    *    margin-left: auto;
+    *    margin-right: auto;
+    * }
+    */</span>
 &lt;/style&gt;
 </pre>
 
