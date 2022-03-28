@@ -1,0 +1,360 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A demo of a multiple chart CSS expand effect</title>
+    <meta name="description" content="This is a simple example of a Bar chart that illustrates a basic configuration. RGraph has many basic examples of charts in the download archive." />
+    
+    <!-- <RGRAPH_REMOVE> -->
+    <meta name="robots" content="noindex, nofollow" />
+    <!-- </RGRAPH_REMOVE> -->
+
+</head>
+<body>
+
+
+    <h1>A CSS expand effect</h1>
+
+    <p>
+        This is a demo page that accompanies
+        <a href="https://www.rgraph.net/canvas/howto-space.html">the HOWTO document</a>
+        that shows you how you can use CSS transitions to get
+        lots of miniature charts shown on your page that
+        expand and get bigger when clicked.
+    </p>
+
+<style>
+
+    #container {
+        position: relative;
+        width: 900px;
+        height: 375px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #container canvas {
+        outline: none;
+        position: absolute;
+        transition: top .5s, left .5s, width .5s, height .5s, z-index .5s, transform .25s, box-shadow .5s;
+        transition-delay: .25s;
+        z-index: 0;
+        background-color: rgba(255,255,255,0.9);
+        width: 300px;
+        height: 125px;
+    }
+
+    #container canvas#cvs1 {top: 0;     left: 0;}
+    #container canvas#cvs2 {top: 0;     left: 300px;}
+    #container canvas#cvs3 {top: 125px; left: 0;}
+    #container canvas#cvs4 {top: 125px; left: 300px;}
+    #container canvas#cvs5 {top: 0;     left: 600px;}
+    #container canvas#cvs6 {top: 125px; left: 600px;}
+    #container canvas#cvs7 {top: 250px; left: 0;}
+    #container canvas#cvs8 {top: 250px; left: 300px;}
+    #container canvas#cvs9 {top: 250px; left: 600px;}
+
+    #container canvas#cvs1:focus,
+    #container canvas#cvs2:focus,
+    #container canvas#cvs3:focus,
+    #container canvas#cvs4:focus,
+    #container canvas#cvs5:focus,
+    #container canvas#cvs6:focus,
+    #container canvas#cvs7:focus,
+    #container canvas#cvs8:focus,
+    #container canvas#cvs9:focus {
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        z-index: 999;
+        box-shadow: 0 0 25px #ccc;
+    }
+
+    @media screen and (max-width: 700px) {
+        #container {width: 600px; height: 625px}
+        #container canvas#cvs1 {top: 0;     left: 0;}
+        #container canvas#cvs2 {top: 0;     left: 300px;}
+        #container canvas#cvs3 {top: 125px; left: 0;}
+        #container canvas#cvs4 {top: 125px; left: 300px;}
+        #container canvas#cvs5 {top: 250px; left: 0px;}
+        #container canvas#cvs6 {top: 250px; left: 300px;}
+        #container canvas#cvs7 {top: 375px; left: 0;}
+        #container canvas#cvs8 {top: 375px; left: 300px;}
+        #container canvas#cvs9 {top: 500px; left: 0px;}
+
+        #container canvas#cvs1:focus,
+        #container canvas#cvs2:focus,
+        #container canvas#cvs3:focus,
+        #container canvas#cvs4:focus,
+        #container canvas#cvs5:focus,
+        #container canvas#cvs6:focus,
+        #container canvas#cvs7:focus,
+        #container canvas#cvs8:focus,
+        #container canvas#cvs9:focus {
+            left: 0;
+            width: 600px;
+            height: 250px;
+            z-index: 999;
+            box-shadow: 0 0 25px #ccc;
+        }
+
+        #container canvas#cvs1:focus, #container canvas#cvs2:focus {top:-62.5px;}
+        #container canvas#cvs3:focus, #container canvas#cvs4:focus {top:62.5px;}
+        #container canvas#cvs5:focus, #container canvas#cvs6:focus {top:187.5px;}
+        #container canvas#cvs7:focus, #container canvas#cvs8:focus {top:312.5px;}
+        #container canvas#cvs9:focus {top:437.5px;}
+    }
+</style>
+    
+    <div id="container">
+        <canvas id="cvs1" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs2" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs3" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs4" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs5" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs6" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs7" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs8" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+        <canvas id="cvs9" width="900" height="375" tabindex="1">[No canvas support]</canvas>
+    </div>
+
+ 
+
+    <br clear="both" />
+
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs1',
+            data: [4,5,3,1,2,6,5,4,8],
+            options: {
+                xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Cuthbert'],
+                textSize: 14,
+                textAccessible: false
+            }
+        }).draw();
+
+        new RGraph.Bar({
+            id: 'cvs5',
+            data: [4,7,9,5,3,7,6],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textAccessible: false,
+                marginInner: 20
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs2',
+            data: [1,3,5,2,6,4,7,8,9],
+            options: {
+                xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Cuthbert'],
+                textSize: 14,
+                textAccessible: false,
+                spline: true
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs6',
+            data: [3,7,8,4,4,2,7],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textSize: 14,
+                textAccessible: false,
+                marginInner: 25,
+                spline: true
+            }
+        }).draw();
+
+        new RGraph.Waterfall({
+            id: 'cvs3',
+            data: [45,-2,-9,4,6,3,-23,2,4],
+            options: {
+                xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Total'],
+                textSize: 14,
+                textAccessible: false
+            }
+        }).draw();
+
+        new RGraph.Waterfall({
+            id: 'cvs4',
+            data: [4,5,3,1,2,6,5,4,-8],
+            options: {
+                xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Total'],
+                textSize: 14,
+                textAccessible: false
+            }
+        }).draw();
+
+        new RGraph.HBar({
+            id: 'cvs7',
+            data: [8,3,7,4,6,9,8],
+            options: {
+                yaxisLabels: ['Jolly','Wolly','Lolly','Colly','Dolly','Molly','Polly'],
+                textSize: 14,
+                textAccessible: false,
+                marginLeft: 75,
+                marginLeftAuto: false,
+                marginInner: 10
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs8',
+            data: [8,3,7,4,6,9,8],
+            options: {
+                xaxisLabels: ['Jolly','Wolly','Lolly','Colly','Dolly','Molly','Polly'],
+                textSize: 14,
+                textAccessible: false,
+                marginInner: 25,
+                spline: true,
+                linewidth: 20,
+                shadow: true,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                textSize: 20
+            }
+        }).draw();
+
+        new RGraph.Bar({
+            id: 'cvs9',
+            data: [7,3,9,7,4,8,3],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textAccessible: false,
+                marginInner: 25
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.line.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.hbar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.waterfall.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="container"&gt;
+    &lt;canvas id="cvs1" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs2" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs3" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs4" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs5" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs6" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs7" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs8" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+    &lt;canvas id="cvs9" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+    #container {
+        position: relative;
+        width: 900px;
+        height: 375px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #container canvas {
+        outline: none;
+        position: absolute;
+        transition: top .5s, left .5s, width .5s, height .5s, z-index .5s, transform .25s, box-shadow .5s;
+        transition-delay: .25s;
+        z-index: 0;
+        background-color: rgba(255,255,255,0.9);
+        width: 300px;
+        height: 125px;
+    }
+
+    #container canvas#cvs1 {top: 0;     left: 0;}
+    #container canvas#cvs2 {top: 0;     left: 300px;}
+    #container canvas#cvs3 {top: 125px; left: 0;}
+    #container canvas#cvs4 {top: 125px; left: 300px;}
+    #container canvas#cvs5 {top: 0;     left: 600px;}
+    #container canvas#cvs6 {top: 125px; left: 600px;}
+    #container canvas#cvs7 {top: 250px; left: 0;}
+    #container canvas#cvs8 {top: 250px; left: 300px;}
+    #container canvas#cvs9 {top: 250px; left: 600px;}
+
+    #container canvas#cvs1:focus,
+    #container canvas#cvs2:focus,
+    #container canvas#cvs3:focus,
+    #container canvas#cvs4:focus,
+    #container canvas#cvs5:focus,
+    #container canvas#cvs6:focus,
+    #container canvas#cvs7:focus,
+    #container canvas#cvs8:focus,
+    #container canvas#cvs9:focus {
+        top: 5%;
+        left: 5%;
+        width: 90%;
+        height: 90%;
+        z-index: 999;
+        box-shadow: 0 0 25px #ccc;
+    }
+
+    @media screen and (max-width: 700px) {
+        #container {width: 600px; height: 625px}
+        #container canvas#cvs1 {top: 0;     left: 0;}
+        #container canvas#cvs2 {top: 0;     left: 300px;}
+        #container canvas#cvs3 {top: 125px; left: 0;}
+        #container canvas#cvs4 {top: 125px; left: 300px;}
+        #container canvas#cvs5 {top: 250px; left: 0px;}
+        #container canvas#cvs6 {top: 250px; left: 300px;}
+        #container canvas#cvs7 {top: 375px; left: 0;}
+        #container canvas#cvs8 {top: 375px; left: 300px;}
+        #container canvas#cvs9 {top: 500px; left: 0px;}
+
+        #container canvas#cvs1:focus,
+        #container canvas#cvs2:focus,
+        #container canvas#cvs3:focus,
+        #container canvas#cvs4:focus,
+        #container canvas#cvs5:focus,
+        #container canvas#cvs6:focus,
+        #container canvas#cvs7:focus,
+        #container canvas#cvs8:focus,
+        #container canvas#cvs9:focus {
+            left: 0;
+            width: 600px;
+            height: 250px;
+            z-index: 999;
+            box-shadow: 0 0 25px #ccc;
+        }
+
+        #container canvas#cvs1:focus, #container canvas#cvs2:focus {top:-62.5px;}
+        #container canvas#cvs3:focus, #container canvas#cvs4:focus {top:62.5px;}
+        #container canvas#cvs5:focus, #container canvas#cvs6:focus {top:187.5px;}
+        #container canvas#cvs7:focus, #container canvas#cvs8:focus {top:312.5px;}
+        #container canvas#cvs9:focus {top:437.5px;}
+    }
+&lt;/style&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
