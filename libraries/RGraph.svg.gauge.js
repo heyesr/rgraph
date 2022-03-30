@@ -685,7 +685,7 @@
             });
 
 
-            for (var i=0; i<=numticks; ++i) {
+            for (var i=0; i<=properties.scaleOuterLabelsCount; ++i) {
 
                 if (properties.scaleOuter) {
                     
@@ -776,6 +776,7 @@
                     });
                     
                     textnode.style.pointerEvents = 'none';
+
                 } else {
 
 
@@ -854,16 +855,15 @@
                             'stroke-linecap':  'square'
                         }
                     });
-
                 }
-    
-    
-    
-    
-    
-    
-    
-    
+            }
+
+
+
+
+            // Draw the inner labels
+            for(var i=0; i<=properties.scaleInnerLabelsCount; ++i) {
+
                 // Draw the INNER tickmarks
 
 
