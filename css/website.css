@@ -1,12 +1,7 @@
 @viewport{width:extend-to-zoom;zoom:1.0;}
 @viewport{width:extend-to-zoom;zoom:1.0;}
 @-ms-viewport{width:extend-to-zoom;zoom:1.0;}
-@font-face {
-font-family: HeaderFont;
--font-display:block;
-src: url(/fonts/RobotoCondensed-Light.ttf);
-}
-
+@font-face {font-family: HeaderFont;src: url('/fonts/RobotoCondensed-Light.ttf');}
 html{position:relative;}
 body{font-family:sans-serif;font-size:1.2em;color:#666;line-height:45px;padding-top:50px;overflow-x:hidden;}
 
@@ -73,7 +68,7 @@ p#copyright a:hover{font-weight:bold;}
 
 #text-only-link{position:absolute;right:100px;top:5px;z-index:2;font-size:70%;font-weight:bold;color:#aaf;background-color:rgba(255,255,255,0.75);padding:5px;}
 
-p#summary{background-color:#eee;padding:15px;font-style:italic;}
+p#summary{background-color:#eee;padding:15px;font-style:italic;box-shadow:3px 3px 3px #ddd;}
 
 div#notify_container{background-color:#cfc;padding:15px;margin-top:15px;margin-bottom:15px;}
 input#notify_email{padding:5px;font-size:18pt;width:80%;}
