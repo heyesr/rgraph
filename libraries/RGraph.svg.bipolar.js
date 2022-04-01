@@ -2095,7 +2095,6 @@
 
 
 
-
                         this.installTooltipsEventListeners({
                             rect: rect,
                             index: i,
@@ -2771,22 +2770,18 @@
                 // LOOP THROUGH THE LEFT DATA
                 for (var i=0,seq=0,len=obj.coordsLeft.length; i<len; ++i, ++seq) {
 
-                    var   multiplier = (frame / frames)
-                        // RGraph.SVG.FX.getEasingMultiplier(frames, frame)
-                        // RGraph.SVG.FX.getEasingMultiplier(frames, frame);
-                
-                
-
+                    var multiplier = (frame / frames);
 
                     // The main loop through the data
+                    
                     // LEFT REGULAR
                     if (typeof left[i] === 'number') {
 
-                        width   = Math.abs(obj.getLeftXCoord(left[i]) - obj.getLeftXCoord(0));
+                        var width = Math.abs(obj.getLeftXCoord(left[i]) - obj.getLeftXCoord(0));
                         left[i] = obj.left[i] * multiplier;
 
                         // Set the new height on the rect
-                        obj.coordsLeft[i].element.setAttribute(
+                        obj.coords[seq].element.setAttribute(
                             'width',
                             width
                         );
@@ -2808,7 +2803,7 @@
 
                         for (var j=0,len2=left[i].length; j<len2; ++j, ++seq) {
 
-                            width      = Math.abs(obj.getLeftXCoord(left[i][j]) - obj.getLeftXCoord(0));
+                            var width  = Math.abs(obj.getLeftXCoord(left[i][j]) - obj.getLeftXCoord(0));
                             left[i][j] = obj.left[i][j] * multiplier;
 
                             obj.coords[seq].element.setAttribute(
@@ -2850,7 +2845,7 @@
                         // Loop thru the group
                         for (var j=0,len2=left[i].length; j<len2; ++j, ++seq) {
 
-                            width      = Math.abs(obj.getLeftXCoord(left[i][j]) - obj.getLeftXCoord(0));
+                            var width  = obj.getLeftXCoord(0) - obj.getLeftXCoord(left[i][j]);
                             left[i][j] = obj.left[i][j] * multiplier;
 
                             obj.coords[seq].element.setAttribute(
@@ -3004,7 +2999,7 @@
 
 
         //
-        // HBar chart Wave effect.
+        // Bipolar chart Wave effect.
         // 
         // @param object OPTIONAL An object map of options. You specify 'frames'
         //                        here to give the number of frames in the effect
@@ -3028,18 +3023,50 @@
                 original_left   = RGraph.SVG.arrayClone(this.left),
                 original_right  = RGraph.SVG.arrayClone(this.right);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             for (var i=0,len=this.left.length,seq=0; i<len; i+=1,++seq) {
-
+            
                 startFrames_left[seq]  = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.left).length - 1)) * i;
-                startFrames_right[seq] = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.right).length - 1)) * i;
                 counters_left[seq]     = 0;
-                counters_right[seq]    = 0;
-
+            
                 if (RGraph.SVG.isArray(this.left[i])) {
                     for (var j=0; j<this.left[i].length; ++j,seq++) {
                         startFrames_left[seq]  = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.left).length - 1)) * seq;
-                        startFrames_right[seq] = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.right).length - 1)) * seq;
                         counters_left[seq]     = 0;
+                    }
+                    
+                    --seq;
+                }
+            }
+            
+            
+            
+            
+            
+            for (var i=0,len=this.right.length,seq=0; i<len; i+=1,++seq) {
+            
+                startFrames_right[seq] = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.right).length - 1)) * i;
+                counters_right[seq]    = 0;
+            
+                if (RGraph.SVG.isArray(this.right[i])) {
+                    for (var j=0; j<this.right[i].length; ++j,seq++) {
+                        startFrames_right[seq] = ((frames / 3) / (RGraph.SVG.arrayLinearize(this.right).length - 1)) * seq;
                         counters_right[seq]    = 0;
                     }
                     
@@ -3050,28 +3077,89 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // This stops the chart from jumping
             this.draw();
 
 
-            // Zero all of the data and set all of the rect widths to zero
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Zero all of the data for the left side
             for (var i=0,len=this.left.length; i<len; i+=1) {
                 if (typeof this.left[i] === 'number') {
                     this.left[i]  = 0;
-                    this.right[i] = 0;
-
-                    if (this.coordsLeft[i] && this.coordsLeft[i].element) this.coordsLeft[i].element.setAttribute('width', 0);
-                    if (this.coordsRight[i] && this.coordsRight[i].element) this.coordsRight[i].element.setAttribute('width', 0);
-
                 } else if (typeof this.left[i] === 'object' && !RGraph.SVG.isNull(this.left[i])) {
                     for (var j=0; j<this.left[i].length; ++j) {
                         this.left[i][j]  = 0;
-                        this.right[i][j] = 0;
-                        this.coords2Left[i][j].element.setAttribute('width', 0);
-                        this.coords2Right[i][j].element.setAttribute('width', 0);
                     }
                 }
             }
+
+            // Zero all of the bar-lengths for the left side
+            for (var i=0; i<this.coordsLeft.length; i+=1) {
+                this.coordsLeft[i].element.setAttribute('width', 0);
+            }
+
+
+
+
+            // Zero all of the data for the right side
+            for (var i=0; i<this.right.length; i+=1) {
+                if (RGraph.SVG.isNumber(this.right[i])) {
+                    this.right[i] = 0;
+                } else if (RGraph.SVG.isArray(this.right[i])) {
+                    for (var j=0; j<this.right[i].length; ++j) {
+                        this.right[i][j]  = 0;
+                    }
+                }
+            }
+            
+            // Zero all of the bar-lengths for the right side
+            for (var i=0; i<this.coordsRight.length; i+=1) {
+                this.coordsRight[i].element.setAttribute('width', 0);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //
             // Iterate over the left side
@@ -3088,25 +3176,26 @@
 
                         // Regular bars
                         if (typeof obj.left[i] === 'number') {
-                            
+
                             obj.left[i] = Math.min(
                                 Math.abs(original_left[i]),
                                 Math.abs(original_left[i] * ( (counters_left[i]++) / framesperbar))
                             );
-                            
-                            var rect_left = obj.coords[i].element;
-                            
+
+                            var rect_left = obj.coords[seq].element;
+
                             rect_left.setAttribute(
                                 'width',
                                 parseFloat(rect_left.getAttribute('data-original-width')) * (obj.left[i] / rect_left.getAttribute('data-value'))
                             );
+                            
                             
                             rect_left.setAttribute(
                                 'x',
                                 obj.properties.marginLeft + obj.graphWidth - (parseFloat(rect_left.getAttribute('data-original-width')) * (obj.left[i] / rect_left.getAttribute('data-value')))
                             );
 
-
+ 
                         // Stacked or grouped bars
                         } else if (RGraph.SVG.isArray(obj.left[i])) {
 
@@ -3128,7 +3217,7 @@
                                     'x',
                                     obj.properties.marginLeft + obj.graphWidth - (parseFloat(rect_left.getAttribute('data-original-width')) * (obj.left[i][j] / rect_left.getAttribute('data-value'))) - accWidth
                                 );
-                                
+
                                 // Only update this for stacked charts
                                 if (obj.properties.grouping === 'stacked') {
                                     accWidth += parseFloat(rect_left.getAttribute('width'));
@@ -3164,88 +3253,86 @@
 
 
 
-            //
-            // Iterate over the right side
-            //
-            function iteratorRight ()
-            {
-                ++frame_right;
+//
+// Iterate over the right side
+//
+function iteratorRight ()
+{
+    ++frame_right;
 
-                for (var i=0,len=obj.right.length,seq=0; i<len; i+=1,seq+=1) {
+    for (var i=0,len=obj.right.length,seq=0; i<len; i+=1,seq+=1) {
 
-                    if (frame_right >= startFrames_right[seq]) {
+        if (frame_right >= startFrames_right[seq]) {
 
-                        var isNull = RGraph.SVG.isNull(obj.right[i]);
+            var isNull = RGraph.SVG.isNull(obj.right[i]);
 
-                        // Regular bars
-                        if (typeof obj.right[i] === 'number') {
+            // Regular bars
+            if (typeof obj.right[i] === 'number') {
 
-                            obj.right[i] = Math.min(
-                                Math.abs(original_right[i]),
-                                Math.abs(original_right[i] * ( (counters_right[i]++) / framesperbar))
-                            );
+                obj.right[i] = Math.min(
+                    Math.abs(original_right[i]),
+                    Math.abs(original_right[i] * ( (counters_right[i]++) / framesperbar))
+                );
 
-                            var rect_right = obj.coords[i + obj.left.length].element;
+                var rect_right = obj.coordsRight[seq].element;
 
-                            rect_right.setAttribute(
-                                'width',
-                                parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i] / rect_right.getAttribute('data-value'))
-                            );
-                            
-                            rect_right.setAttribute(
-                                'x',
-                                obj.properties.marginLeft + obj.graphWidth + properties.marginCenter
-                            );
-
-                        // Stacked or grouped bars
-                        } else if (RGraph.SVG.isArray(obj.right[i])) {
-
-                            for (var j=0,accWidth=0; j<obj.right[i].length; ++j,++seq) {
-
-                                obj.right[i][j] = Math.min(
-                                    Math.abs(original_right[i][j]),
-                                    Math.abs(original_right[i][j] * ( (counters_right[seq]++) / framesperbar))
-                                );
-
-                                var rect_right = obj.coordsRight[seq].element;
-
-                                rect_right.setAttribute(
-                                    'width',
-                                    parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i][j] / rect_right.getAttribute('data-value'))
-                                );
-
-                                rect_right.setAttribute(
-                                    'x',
-                                    obj.properties.marginLeft + obj.graphWidth + properties.marginCenter + accWidth
-                                );
+                rect_right.setAttribute(
+                    'width',
+                    parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i] / rect_right.getAttribute('data-value'))
+                );
+                
+                
+                rect_right.setAttribute(
+                    'x',
+                    properties.marginLeft + obj.graphWidth + properties.marginCenter
+                );
 
 
-                                
-                                // Only update this for stacked charts
-                                if (obj.properties.grouping === 'stacked') {
-                                    accWidth += parseFloat(rect_right.getAttribute('width'));
-                                }
-                            }
-                            
-                            seq--;
-                        }
-                            
-                        if (isNull) {
-                            obj.right[i] = null;
-                        }
-                    } else {
-                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
+            // Stacked or grouped bars
+            } else if (RGraph.SVG.isArray(obj.right[i])) {
+
+                for (var j=0,accWidth=0; j<obj.right[i].length; ++j,++seq) {
+
+                    obj.right[i][j] = Math.min(
+                        Math.abs(original_right[i][j]),
+                        Math.abs(original_right[i][j] * ( (counters_right[seq]++) / framesperbar))
+                    );
+
+                    var rect_right = obj.coordsRight[seq].element;
+
+                    rect_right.setAttribute(
+                        'width',
+                        parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i][j] / rect_right.getAttribute('data-value'))
+                    );
+
+                    rect_right.setAttribute(
+                        'x',
+                        obj.properties.marginLeft + obj.graphWidth + properties.marginCenter + accWidth
+                    );
+
+                    // Only update this for stacked charts
+                    if (obj.properties.grouping === 'stacked') {
+                        accWidth += parseFloat(rect_right.getAttribute('width'));
                     }
                 }
-
-
-                // Call the callback if necessary
-                if (frame_right <= frames) {
-                    RGraph.SVG.FX.update(iteratorRight);
-                } else {
-                    // Fini - call the callback
-                }
+                
+                seq--;
             }
+                
+            if (isNull) {
+                obj.right[i] = null;
+            }
+        } else {
+            obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
+        }
+    }
+
+
+    // No callback here - only called by the right function
+    if (frame_right <= frames) {
+        RGraph.SVG.FX.update(iteratorRight);
+    }
+}
 
 
 
@@ -3374,7 +3461,7 @@
             }
         }
     };
-            
+
     return this;
 
 // End module pattern
