@@ -932,6 +932,14 @@
                 var x       = this.getXCoord(0);
                 var y       = this.marginTop + (i * height);
                 var vmargin = properties.marginInner;
+                
+                //
+                // Edge case: When X axis min is greater than 0
+                //            eg min=1 and max=2.5
+                //
+                if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                    x = this.getXCoord(properties.xaxisScaleMin);
+                }
 
                 // Account for the Y axis being on the right hand side
                 if ( properties.yaxisPosition === 'right') {
@@ -965,7 +973,7 @@
                         var barHeight = height - (2 * vmargin),
                             barWidth  = ((this.data[i] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * this.graphwidth,
                             barX      = x;
-                        
+
                         // Accommodate an offset Y axis
                         if (this.scale2.min < 0 && this.scale2.max > 0 &&  properties.yaxisPosition === 'left') {
                             barWidth = (this.data[i] / (this.max -  properties.xaxisScaleMin)) * this.graphwidth;
@@ -1335,15 +1343,21 @@
     
     
                             var startY = this.marginTop + (height * i) + (individualBarHeight * j) + vmargin + (vmarginGrouped * j);
-                            var width = ((this.data[i][j] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight );
-                            var startX = this.marginLeft;
+                            
+                            if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                                var width = ((this.data[i][j] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight );
+                                var startX = this.getXCoord((properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) ? properties.xaxisScaleMin : 0);//this.marginLeft;
+                            } else {
+                                var width = (this.data[i][j] / (this.max - properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight);
+                                var startX = this.getXCoord(0);
+                            }
 
     
 
                             // Account for the Y axis being in the middle
                             if ( properties.yaxisPosition == 'center') {
                                 width  /= 2;
-                                startX += halfwidth;
+                                //startX += halfwidth;
                             
                             // Account for the Y axis being on the right
                             } else if ( properties.yaxisPosition == 'right') {
@@ -2456,7 +2470,7 @@
         {
             // Callback
             var opt         = arguments[0] || {},
-                frames      = opt.frames || 30,
+                frames      = opt.frames || 120,
                 frame       = 0,
                 callback    = arguments[1] || function () {},
                 obj         = this,
@@ -2473,7 +2487,7 @@
             if ( properties.xaxisScaleMax == 0) {
 
                 var xmax = 0;
-    
+
                 for (var i=0; i<obj.data.length; ++i) {
                     if (RGraph.isArray(obj.data[i]) && properties.grouping == 'stacked') {
                         xmax = Math.max(xmax, RGraph.arraySum(obj.data[i]));
@@ -2489,8 +2503,8 @@
             }
 
 
-            // Go through the data and change string arguments of the format +/-[0-9]
-            // to absolute numbers
+            // Go through the data and change string arguments of
+            // the format +/-[0-9] to absolute numbers
             if (RGraph.isArray(opt.data)) {
 
                 var xmax = 0;
@@ -2586,10 +2600,16 @@
 
                 // Alter the Bar chart data depending on the frame
                 for (var j=0,len=obj.original_data.length; j<len; ++j) {
+
                     if (typeof obj.data[j] === 'object' && !RGraph.isNull(obj.data[j])) {
                         for (var k=0,len2=obj.data[j].length; k<len2; ++k) {
                             if (obj.firstDraw || !opt.data) {
-                                obj.data[j][k] = easingMultiplier * obj.original_data[j][k];
+                                if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                                    obj.data[j][k] = (easingMultiplier * (obj.original_data[j][k] - properties.xaxisScaleMin)) + properties.xaxisScaleMin;
+                                } else {
+                                    obj.data[j][k] = easingMultiplier * obj.original_data[j][k];
+                                }
+                            
                             } else if (opt.data && opt.data.length === obj.original_data.length) {
                                 var diff    = opt.data[j][k] - obj.original_data[j][k];
                                 obj.data[j][k] = (easingMultiplier * diff) + obj.original_data[j][k];
@@ -2598,7 +2618,12 @@
                     } else {
 
                         if (obj.firstDraw || !opt.data) {
-                            obj.data[j] = easingMultiplier * obj.original_data[j];
+                            if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                                obj.data[j] = (easingMultiplier * (obj.original_data[j] - properties.xaxisScaleMin)) + properties.xaxisScaleMin;
+                            } else {
+                                obj.data[j] = easingMultiplier * obj.original_data[j];
+                            }
+                        
                         } else if (opt.data && opt.data.length === obj.original_data.length) {
                             var diff    = opt.data[j] - obj.original_data[j];
                             obj.data[j] = (easingMultiplier * diff) + obj.original_data[j];
@@ -2681,7 +2706,7 @@
         {
             var obj = this,
                 opt = arguments[0] || {};
-                opt.frames      = opt.frames || 60;
+                opt.frames      = opt.frames || 120;
                 opt.startFrames = [];
                 opt.counters    = [];
 
@@ -2702,7 +2727,7 @@
                         opt.counters[i][j] = 0;
                     }
                 } else {
-                    opt.counters[i]    = 0;
+                    opt.counters[i] = 0;
                 }
             }
 
@@ -2720,23 +2745,33 @@
                 for (var i=0,len=obj.data.length; i<len; i+=1) {
                     if (frame > opt.startFrames[i]) {
                         if (typeof obj.data[i] === 'number') {
-                            
+
                             obj.data[i] = Math.min(
                                 Math.abs(original[i]),
-                                Math.abs(original[i] * ( (opt.counters[i]++) / framesperbar))
+                                Math.abs(
+                                    original[i] * (opt.counters[i]++ / framesperbar)
+                                )
                             );
-                            
+
+
                             // Make the number negative if the original was
                             if (original[i] < 0) {
                                 obj.data[i] *= -1;
                             }
                         } else if (!RGraph.isNull(obj.data[i])) {
                             for (var j=0,len2=obj.data[i].length; j<len2; j+=1) {
-                                
-                                obj.data[i][j] = Math.min(
-                                    Math.abs(original[i][j]),
-                                    Math.abs(original[i][j] * ( (opt.counters[i][j]++) / framesperbar))
-                                );
+
+                                if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                                    obj.data[i][j] = Math.min(
+                                        Math.abs(original[i][j]),
+                                        Math.abs(((original[i][j] - properties.xaxisScaleMin) * ( (opt.counters[i][j]++) / framesperbar)) + properties.xaxisScaleMin)
+                                    );
+                                } else {
+                                    obj.data[i][j] = Math.min(
+                                        Math.abs(original[i][j]),
+                                        Math.abs(original[i][j] * (opt.counters[i][j]++ / framesperbar))
+                                    );
+                                }
 
                                 // Make the number negative if the original was
                                 if (original[i][j] < 0) {
@@ -2745,7 +2780,7 @@
                             }
                         }
                     } else {
-                        obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNull(obj.data[i]) ? null : 0);
+                        obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0)) : (RGraph.isNull(obj.data[i]) ? null : (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0));
                     }
                 }
 
@@ -2760,6 +2795,7 @@
                     callback(obj);
                 } else {
                     RGraph.redrawCanvas(obj.canvas);
+
                     RGraph.Effects.updateCanvas(iterator);
                 }
             }

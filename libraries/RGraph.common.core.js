@@ -8074,6 +8074,11 @@
         // Calculate the X coordinate for the Y axis
         if ( (obj.type === 'hbar' || obj.type === 'gantt') && properties.yaxisPosition === 'left') {
             var x = obj.getXCoord(0);
+            
+            if (obj.type === 'hbar' && properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                var x = obj.getXCoord(properties.xaxisScaleMin);
+            }
+            
 
         } else if ( (obj.type === 'hbar' || obj.type === 'gantt') && properties.yaxisPosition === 'right') {
             var x = obj.canvas.width - properties.marginRight;
