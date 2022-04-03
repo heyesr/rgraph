@@ -1,0 +1,67 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Horizontal Bar chart with a scale range of 1 - 2.5</title>
+    <meta name="description" content="A Horizontal Bar chart with a scale range of 1 - 2.5" />     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Horizontal Bar chart with a non-zero minimum</h1>
+
+    <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [1.6,1.9,1.6,2.2,2.5,2.1,1.6],
+            options: {
+                xaxisScaleMin: 1,
+                xaxisScaleMax: 2.5,
+                xaxisScaleDecimals: 1,
+                tooltips: '%{property:yaxisLabels[%{dataset}]}: %{value}%',
+                tooltipsCss: {
+                    fontSize: '18pt'
+                },
+                yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer'],
+                marginInner: 10,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="450"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
