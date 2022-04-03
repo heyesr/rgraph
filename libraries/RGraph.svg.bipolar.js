@@ -3253,86 +3253,86 @@
 
 
 
-//
-// Iterate over the right side
-//
-function iteratorRight ()
-{
-    ++frame_right;
-
-    for (var i=0,len=obj.right.length,seq=0; i<len; i+=1,seq+=1) {
-
-        if (frame_right >= startFrames_right[seq]) {
-
-            var isNull = RGraph.SVG.isNull(obj.right[i]);
-
-            // Regular bars
-            if (typeof obj.right[i] === 'number') {
-
-                obj.right[i] = Math.min(
-                    Math.abs(original_right[i]),
-                    Math.abs(original_right[i] * ( (counters_right[i]++) / framesperbar))
-                );
-
-                var rect_right = obj.coordsRight[seq].element;
-
-                rect_right.setAttribute(
-                    'width',
-                    parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i] / rect_right.getAttribute('data-value'))
-                );
-                
-                
-                rect_right.setAttribute(
-                    'x',
-                    properties.marginLeft + obj.graphWidth + properties.marginCenter
-                );
-
-
-            // Stacked or grouped bars
-            } else if (RGraph.SVG.isArray(obj.right[i])) {
-
-                for (var j=0,accWidth=0; j<obj.right[i].length; ++j,++seq) {
-
-                    obj.right[i][j] = Math.min(
-                        Math.abs(original_right[i][j]),
-                        Math.abs(original_right[i][j] * ( (counters_right[seq]++) / framesperbar))
-                    );
-
-                    var rect_right = obj.coordsRight[seq].element;
-
-                    rect_right.setAttribute(
-                        'width',
-                        parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i][j] / rect_right.getAttribute('data-value'))
-                    );
-
-                    rect_right.setAttribute(
-                        'x',
-                        obj.properties.marginLeft + obj.graphWidth + properties.marginCenter + accWidth
-                    );
-
-                    // Only update this for stacked charts
-                    if (obj.properties.grouping === 'stacked') {
-                        accWidth += parseFloat(rect_right.getAttribute('width'));
+            //
+            // Iterate over the right side
+            //
+            function iteratorRight ()
+            {
+                ++frame_right;
+            
+                for (var i=0,len=obj.right.length,seq=0; i<len; i+=1,seq+=1) {
+            
+                    if (frame_right >= startFrames_right[seq]) {
+            
+                        var isNull = RGraph.SVG.isNull(obj.right[i]);
+            
+                        // Regular bars
+                        if (typeof obj.right[i] === 'number') {
+            
+                            obj.right[i] = Math.min(
+                                Math.abs(original_right[i]),
+                                Math.abs(original_right[i] * ( (counters_right[i]++) / framesperbar))
+                            );
+            
+                            var rect_right = obj.coordsRight[seq].element;
+            
+                            rect_right.setAttribute(
+                                'width',
+                                parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i] / rect_right.getAttribute('data-value'))
+                            );
+                            
+                            
+                            rect_right.setAttribute(
+                                'x',
+                                properties.marginLeft + obj.graphWidth + properties.marginCenter
+                            );
+            
+            
+                        // Stacked or grouped bars
+                        } else if (RGraph.SVG.isArray(obj.right[i])) {
+            
+                            for (var j=0,accWidth=0; j<obj.right[i].length; ++j,++seq) {
+            
+                                obj.right[i][j] = Math.min(
+                                    Math.abs(original_right[i][j]),
+                                    Math.abs(original_right[i][j] * ( (counters_right[seq]++) / framesperbar))
+                                );
+            
+                                var rect_right = obj.coordsRight[seq].element;
+            
+                                rect_right.setAttribute(
+                                    'width',
+                                    parseFloat(rect_right.getAttribute('data-original-width')) * (obj.right[i][j] / rect_right.getAttribute('data-value'))
+                                );
+            
+                                rect_right.setAttribute(
+                                    'x',
+                                    obj.properties.marginLeft + obj.graphWidth + properties.marginCenter + accWidth
+                                );
+            
+                                // Only update this for stacked charts
+                                if (obj.properties.grouping === 'stacked') {
+                                    accWidth += parseFloat(rect_right.getAttribute('width'));
+                                }
+                            }
+                            
+                            seq--;
+                        }
+                            
+                        if (isNull) {
+                            obj.right[i] = null;
+                        }
+                    } else {
+                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
                     }
                 }
-                
-                seq--;
+            
+            
+                // No callback here - only called by the right function
+                if (frame_right <= frames) {
+                    RGraph.SVG.FX.update(iteratorRight);
+                }
             }
-                
-            if (isNull) {
-                obj.right[i] = null;
-            }
-        } else {
-            obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
-        }
-    }
-
-
-    // No callback here - only called by the right function
-    if (frame_right <= frames) {
-        RGraph.SVG.FX.update(iteratorRight);
-    }
-}
 
 
 
