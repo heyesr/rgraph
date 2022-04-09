@@ -1189,6 +1189,10 @@
                             this.context.stroke();
                             this.context.fill();
                             
+                            // This avoids a "double fill"bug by resetting
+                            // the path
+                            this.context.beginPath();
+                            
                             // Put the rect function back to what it was
                             if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
                                 this.context.rect    = this.context.rectOld;
