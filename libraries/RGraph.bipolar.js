@@ -682,7 +682,7 @@
                             properties.colors[0]
                         );
 
-    
+
                         // Add the darker tint over thes top of the face to darken it
                         this.path(
                             'b m % % l % % l % % l % % f %',
@@ -696,10 +696,10 @@
                 
                 // A grouped or stacked chart
                 } else {
-                    
+
                     for (var i=0; i<this.coords2Right.length; ++i) {
-                        for (var j=0; j<this.coords2Right[i].length; ++j) {
-                        
+                        for (var j=(this.coords2Right[i].length - 1); j>=0; --j) {
+
                             var coords = this.coords2Right[i][j];
 
                             this.path(
@@ -718,7 +718,7 @@
                                 properties.colors[j]
                             );
                             
-                            // Draw the Lighter tint over the top 
+                            // Draw the lighter tint over the top 
                             this.path(
                                 'b m % % l % % l % % l % % f rgba(255,255,255,0.6)',
                                 coords[0],coords[1],
@@ -739,7 +739,7 @@
                             );
 
         
-                            // Add the darker tint over thes top of the face to darken it
+                            // Add the darker tint over the top of the face to darken it
                             this.path(
                                 'b m % % l % % l % % l % % f %',
                                 coords[0] + coords[2], coords[1],
@@ -748,6 +748,7 @@
                                 coords[0] + coords[2], coords[1] + coords[3],
                                 'rgba(0,0,0,0.3)'
                             );
+
                         }
                     }
                 }
@@ -2987,12 +2988,26 @@
                 this.original_colors.highlightFill   = RGraph.arrayClone(properties.highlightFill);
                 this.original_colors.axesColor       = RGraph.arrayClone(properties.axesColor);
                 this.original_colors.colorsStroke    = RGraph.arrayClone(properties.colorsStroke);
+                this.original_colors.colorsLeft      = RGraph.arrayClone(properties.colorsLeft);
+                this.original_colors.colorsRight     = RGraph.arrayClone(properties.colorsRight);
             }
 
             var colors = properties.colors;
     
             for (var i=0; i<colors.length; ++i) {
                 colors[i] = this.parseSingleColorForGradient(colors[i]);
+            }
+
+            if (RGraph.isArray(properties.colorsLeft)) {
+                for (var i=0; i<properties.colorsLeft.length; ++i) {
+                    properties.colorsLeft[i] = this.parseSingleColorForGradient(properties.colorsLeft[i]);
+                }
+            }
+
+            if (RGraph.isArray(properties.colorsRight)) {
+                for (var i=0; i<properties.colorsRight.length; ++i) {
+                    properties.colorsRight[i] = this.parseSingleColorForGradient(properties.colorsRight[i]);
+                }
             }
             
             properties.highlightStroke = this.parseSingleColorForGradient(properties.highlightStroke);
