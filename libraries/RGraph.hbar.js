@@ -1361,7 +1361,6 @@
                             // Account for the Y axis being in the middle
                             if ( properties.yaxisPosition == 'center') {
                                 width  /= 2;
-                                //startX += halfwidth;
                             
                             // Account for the Y axis being on the right
                             } else if ( properties.yaxisPosition == 'right') {
@@ -2750,12 +2749,8 @@
                     if (frame > opt.startFrames[i]) {
                         if (typeof obj.data[i] === 'number') {
 
-                            obj.data[i] = Math.min(
-                                Math.abs(original[i]),
-                                Math.abs(
-                                    original[i] * (opt.counters[i]++ / framesperbar)
-                                )
-                            );
+                            obj.data[i] = Math.min(Math.abs(original[i]),Math.abs(original[i] * (opt.counters[i] / framesperbar)));
+                            opt.counters[i] += 1;
 
 
                             // Make the number negative if the original was
@@ -2768,13 +2763,18 @@
                                 if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
                                     obj.data[i][j] = Math.min(
                                         Math.abs(original[i][j]),
-                                        Math.abs(((original[i][j] - properties.xaxisScaleMin) * ( (opt.counters[i][j]++) / framesperbar)) + properties.xaxisScaleMin)
+                                        Math.abs(((original[i][j] - properties.xaxisScaleMin) * ( opt.counters[i][j] / framesperbar)) + properties.xaxisScaleMin)
                                     );
+                                    opt.counters[i][j] += 1;
                                 } else {
                                     obj.data[i][j] = Math.min(
                                         Math.abs(original[i][j]),
-                                        Math.abs(original[i][j] * (opt.counters[i][j]++ / framesperbar))
+                                        Math.abs(original[i][j] * (opt.counters[i][j] / framesperbar))
                                     );
+              
+                                    // Having this here seems to skirt a
+                                    // minification bug              
+                                    opt.counters[i][j] += 1;
                                 }
 
                                 // Make the number negative if the original was
