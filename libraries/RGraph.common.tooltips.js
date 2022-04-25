@@ -340,30 +340,59 @@
                     }
 
 
-                    // Facilitate the  property that allows CSS to be added to
-                    // the tooltip key color blob
-                    var tooltipsFormattedKeyColorsCss = '';
-                    if (properties.tooltipsFormattedKeyColorsCss) {
-                        for(property in properties.tooltipsFormattedKeyColorsCss) {
-                            if (typeof property === 'string') {
-                                tooltipsFormattedKeyColorsCss += '{1}: {2};'.format(property.replace(/[A-Z]/, function (match)
-                                {
-                                    return '-' + match.toLowerCase();
-                                }), String(properties.tooltipsFormattedKeyColorsCss[property]));
-                            }
-                        }
-                    }
 
-                    str[i] = '<tr><td><div class="RGraph_tooltipsFormattedKeyColor" style="text-align: left; background-color: '
-                        + color + '; color: transparent; pointer-events: none; border-radius: '
-                        + borderRadius + ';' + tooltipsFormattedKeyColorsCss + '">Ml</div></td><td style="text-align: left">'
+                    str[i] = '<tr><td><div id="RGraph_tooltipsFormattedKeyColor_' + i + '" class="RGraph_tooltipsFormattedKeyColor">Ml</div></td><td id="RGraph_tooltipsFormattedKeyLabel_' + i + '">'
                         + '<span>{1}</span>'.format(label)
                         + ' ' + value + '</td></tr>';
+                    
+                    
+                    // Now that styles can't be applied inline
+                    // (due to the CSP header) then apply them with
+                    // JavaScript after a small delay.
+                    (function (index, color, borderRadius)
+                    {
+                        setTimeout(function ()
+                        {
+                            var obj = document.getElementById('RGraph_tooltipsFormattedKeyLabel_' + index);
+
+                            // Align the label left
+                            if (obj && obj.style) {
+                                obj.style.textAlign = 'left';
+                            }
+                            
+                            // Add some styles to the color blob
+                            var colorBlob = document.getElementById('RGraph_tooltipsFormattedKeyColor_' + index);
+
+                            if (colorBlob) {
+                                colorBlob.style.textAlign       = 'left';
+                                colorBlob.style.backgroundColor = color;
+                                colorBlob.style.color           = 'transparent';
+                                colorBlob.style.pointerEvents   = 'none';
+                                colorBlob.style.borderRadius    = borderRadius;
+                            }
+                            
+                            // Add user specified styles from the
+                            // tooltipsFormattedKeyColorsCss property
+                            for (var property in properties.tooltipsFormattedKeyColorsCss) {
+                                if (typeof property === 'string') {
+                                    colorBlob.style[property] = properties.tooltipsFormattedKeyColorsCss[property];
+                                }
+                            }
+                        }, 5);
+                    })(i, color, borderRadius);
                 }
                 str = str.join('');
             
                 // Add the key to the tooltip text - replacing the placeholder
-                text = text.replace('%{key}', '<table style="color: inherit" id="rgraph_tooltip_key" class="rgraph_tooltip_key RGraph_tooltip_key">' + str + '</table>');
+                text = text.replace('%{key}', '<table id="rgraph_tooltip_key" class="rgraph_tooltip_key RGraph_tooltip_key">' + str + '</table>');
+                setTimeout(function ()
+                {
+                    var obj = document.getElementById('rgraph_tooltip_key');
+                    
+                    if (obj && obj.style) {
+                        obj.style.color = 'inherit';
+                    }
+                }, 1);
             })();
 
 
@@ -712,7 +741,12 @@
         // tooltip further down.
         if (args.object.properties.tooltipsPointer) {
             
-            args.text += '<div id="RGraph_tooltipsPointer" style="background-color:black; color: transparent;position:absolute;bottom:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px"></div>';
+            // Styles are applied to the pointer below to
+            // circumvent a Content-Security-Policy header
+            // problem
+            args.text += '<div id="RGraph_tooltipsPointer"></div>';
+
+
 
             //
             // If the tooltipsPointerCss property is populated then do the
@@ -812,6 +846,28 @@
         tooltipObj.__object__  = args.object;
         tooltipObj.id          = '__rgraph_tooltip_' + args.object.canvas.id + '_' + args.object.uid + '_'+ args.index;
 
+
+
+    // Set styles on the pointer. It's done this way
+    // (not adding the style to the HTML above) to
+    // prevent an error bein thrown should a
+    // Content-Security-Policy header using style-src
+    // be in place
+    setTimeout(function ()
+    {
+        var pointerObj = document.getElementById('RGraph_tooltipsPointer');
+        var styles     = window.getComputedStyle(tooltipObj, false);
+
+        pointerObj.style.backgroundColor = styles.backgroundColor;
+        pointerObj.style.color           = 'transparent';
+        pointerObj.style.position        = 'absolute';
+        pointerObj.style.bottom          = '-5px';
+        pointerObj.style.left            = '50%';
+        pointerObj.style.transform       = 'translateX(-50%) rotate(45deg)';
+        pointerObj.style.width           = '10px';
+        pointerObj.style.height          = '10px';
+    }, 16.666);
+
         if (typeof args.index === 'number') {
             tooltipObj.__index__ = args.index;
             origIdx = args.index;
@@ -844,7 +900,7 @@
 
 
 
-        //
+//
         // Now that the tooltip pointer has been added, determine the background-color and update
         // the color of the pointer
         if (args.object.properties.tooltipsPointer) {
@@ -853,7 +909,7 @@
             var pointer = document.getElementById('RGraph_tooltipsPointer');
 
             pointer.style.backgroundColor = styles['background-color'];
-            
+
             // Add the pointer to the tooltip as a property
             tooltipObj.__pointer__ = pointer;
 
@@ -958,10 +1014,16 @@
             
             tooltipObj.style.left = left + 'px';
             var pointer = document.getElementById('RGraph_tooltipsPointer');
-            
-            if (pointer) {
-                pointer.style.left = 'calc(10% + 5px)';
-            }
+
+            (function (pointer)
+            {
+                setTimeout(function ()
+                {
+                    if (pointer) {
+                        pointer.style.left = 'calc(10% + 5px)';
+                    }
+                }, 25);
+            })(pointer)
         
         //
         // Move the tooltip and its pointer if they're off-screen RHS
@@ -976,10 +1038,16 @@
             
             tooltipObj.style.left = left + 'px';
             var pointer = document.getElementById('RGraph_tooltipsPointer');
-        
-            if (pointer) {
-                pointer.style.left = 'calc(90% - 5px)';
-            }
+
+            (function (pointer)
+            {
+                setTimeout(function ()
+                {
+                    if (pointer) {
+                        pointer.style.left = 'calc(90% - 5px)';
+                    }
+                }, 25)
+            })(pointer);
         }
 
 
