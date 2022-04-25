@@ -395,11 +395,11 @@
             menuitem.className       = 'RGraph_contextmenu_item';
             
             if (menuitems[i]) {
-                menuitem.style.padding = '2px 5px 2px 23px';
+                menuitem.style.padding    = '2px 5px 2px 23px';
                 menuitem.style.fontFamily = 'Arial';
-                menuitem.style.fontSize = '10pt';
+                menuitem.style.fontSize   = '10pt';
                 menuitem.style.fontWeight = 'normal';
-                menuitem.style.textAlign = 'left';
+                menuitem.style.textAlign  = 'left';
                 menuitem.innerHTML = menuitems[i][0];
         
                 if (menuitems[i][1]) {
@@ -530,8 +530,21 @@
         //
         // Add the HTML text inputs
         //
-        div.innerHTML += '<div style="position: absolute; margin-left: 10px; top: ' + canvas.height + 'px; width: ' + (canvas.width - 50) + 'px; height: 25px"><span style="font-size: 12pt;display: inline; display: inline-block; width: 65px; text-align: right">URL:</span><textarea style="float: right; overflow: hidden; height: 20px; width: ' + (canvas.width - obj.gutterLeft - obj.gutterRight - 80) + 'px" onclick="this.select()" readonly="readonly" id="__rgraph_dataurl__">' + canvas.toDataURL() + '</textarea></div>';
-        div.innerHTML += '<div style="position: absolute; top: ' + (canvas.height + 25) + 'px; left: ' + (obj.gutterLeft - 65 + (canvas.width / 2)) + 'px; width: ' + (canvas.width - obj.gutterRight) + 'px; font-size: 65%">A link using the URL: <a href="' + canvas.toDataURL() + '">View</a></div>'
+        div.innerHTML += '<div id="rgraph_showpng_div_container"><textarea onclick="this.select()" readonly="readonly" id="__rgraph_dataurl__">' + canvas.toDataURL() + '</textarea></div>';
+
+            var nestedTextarea = document.getElementById('__rgraph_dataurl__');
+                nestedTextarea.style.overflow = 'hidden';
+                nestedTextarea.style.height   = '20px';
+                nestedTextarea.style.width    = (canvas.width - obj.marginLeft - obj.marginRight) + 'px';
+                nestedTextarea.style.position = 'relative';
+                nestedTextarea.style.left     = obj.marginLeft + 'px';
+
+            var nestedDiv = document.getElementById('rgraph_showpng_div_container');
+                nestedDiv.style.position   = 'absolute';
+                //nestedDiv.style.marginLeft = '10px';
+                nestedDiv.style.top        = canvas.height + 'px';
+                nestedDiv.style.width      = canvas.width + 'px';
+                nestedDiv.style.height     = '25px';
 
         
         
