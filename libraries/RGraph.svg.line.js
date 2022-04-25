@@ -1321,7 +1321,7 @@
                                         cursor: 'pointer'
                                     }
                                 });
-                                
+
                                 // Set the highlight in the registry
                                 RGraph.SVG.REG.set('highlight', [
                                     outer_highlight1,
@@ -1329,7 +1329,7 @@
                                     inner_highlight1,
                                     inner_highlight2
                                 ]);
-                                
+
                             }, false);
                         })(this.tooltipsSequentialIndex);
     
@@ -1675,21 +1675,23 @@
         //
         this.removeHighlight = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
+            //var highlight = RGraph.SVG.REG.get('highlight');
 
-            if (highlight && highlight.parentNode) {
-                highlight.parentNode.removeChild(highlight);
+            //if (highlight && highlight.parentNode) {
+            //    highlight.parentNode.removeChild(highlight);
+            //
+            //// The highlight is an array
+            //} else if (highlight && RGraph.SVG.isArray(highlight)) {
+            //    for (var i=0; i<highlight.length; ++i) {
+            //        if (highlight[i] && highlight[i].parentNode) {
+            //            highlight[i].parentNode.removeChild(highlight[i]);
+            //        }
+            //    }
+            //}
             
-            } else if (highlight) {
-                // The highlight is an array
-                for (var i=0; i<highlight.length; ++i) {
-                    if (highlight[i] && highlight[i].parentNode) {
-                        highlight[i].parentNode.removeChild(highlight[i]);
-                    }
-                }
-            }
+            //RGraph.SVG.REG.set('highlight', null);
             
-            RGraph.SVG.REG.set('highlight', null);
+            RGraph.SVG.removeHighlight();
         };
 
 
