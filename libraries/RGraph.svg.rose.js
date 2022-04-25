@@ -2008,16 +2008,7 @@
         this.removeHighlight =
         this.hideHighlight   = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
-
-            if (highlight) { // && this.highlight_node
-
-                highlight.setAttribute('fill','transparent');
-                highlight.setAttribute('stroke','transparent');
-                highlight = null;
-                
-                RGraph.SVG.REG.set('highlight', null);
-            }
+            RGraph.SVG.removeHighlight();
         };
 
 
