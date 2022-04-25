@@ -1019,19 +1019,6 @@
             });
 
 
-            //if (properties.tooltipsEvent === 'mousemove') {
-                
-                //var obj = this;
-                
-                //highlight.addEventListener('mouseout', function (e)
-                //{
-                //    obj.removeHighlight();
-                //    RGraph.SVG.hideTooltip();
-                //    RGraph.SVG.REG.set('highlight', null);
-                //}, false);
-            //}
-
-
             // Store the highlight rect in the rebistry so
             // it can be cleared later
             RGraph.SVG.REG.set('highlight', highlight);
@@ -1286,12 +1273,7 @@
         //
         this.removeHighlight = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
-            if (highlight && highlight.parentNode) {
-                highlight.parentNode.removeChild(highlight);
-            }
-            
-            RGraph.SVG.REG.set('highlight', null);
+            RGraph.SVG.removeHighlight();
         };
 
 
