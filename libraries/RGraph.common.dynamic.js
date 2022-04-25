@@ -1353,7 +1353,12 @@
                     yCoord = (properties.crosshairsCoordsFormatterY)({object: obj, value: parseInt(yCoord)});
                 }
 
-                div.innerHTML = '<span style="color: #666">' + properties.crosshairsCoordsLabelsX + ':</span> ' + xCoord + '<br><span style="color: #666">' + properties.crosshairsCoordsLabelsY + ':</span> ' + yCoord;
+                div.innerHTML = '<span id="rgraph_crosshairsCoordsLabelsX">' + properties.crosshairsCoordsLabelsX + ':</span> ' + xCoord + '<br><span id="rgraph_crosshairsCoordsLabelsY">' + properties.crosshairsCoordsLabelsY + ':</span> ' + yCoord;
+                
+                // Change the color of the labels - don't use
+                // inline styles because of CSP security errors
+                document.getElementById('rgraph_crosshairsCoordsLabelsX').style.color = '#666';
+                document.getElementById('rgraph_crosshairsCoordsLabelsY').style.color = '#666';
 
                 obj.canvas.addEventListener('mouseout', RGraph.hideCrosshairCoords, false);
 
