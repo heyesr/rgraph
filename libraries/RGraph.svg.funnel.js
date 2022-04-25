@@ -979,14 +979,16 @@
         this.hideHighlight   = function ()
         {
 
-            var highlight = RGraph.SVG.REG.get('highlight');
+            //var highlight = RGraph.SVG.REG.get('highlight');
 
-            if (highlight) {
-                highlight.setAttribute('fill','transparent');
-                highlight.setAttribute('stroke','transparent');
-                
-                RGraph.SVG.REG.set('highlight', null);
-            }
+            //if (highlight) {
+            //    highlight.setAttribute('fill','transparent');
+            //    highlight.setAttribute('stroke','transparent');
+            //    
+            //    RGraph.SVG.REG.set('highlight', null);
+            //}
+            
+            RGraph.SVG.removeHighlight();
         };
 
 
