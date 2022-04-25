@@ -928,13 +928,18 @@
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape.
         // 
         // @param object shape The shape to highlight
         //
         this.highlight = function (shape)
         {
             var last = shape.index === this.coords.length - 1;
+
+            if (!properties.tooltipsHighlight) {
+                return;
+            }
 
             // Call a function to highlight the chart
             if (typeof properties.highlightStyle === 'function') {
