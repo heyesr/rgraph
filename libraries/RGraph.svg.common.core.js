@@ -78,7 +78,7 @@
         }
 
         var svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-            svg.setAttribute('style', 'top: 0; left: 0; position: absolute');
+            //svg.setAttribute('style', 'top: 0; left: 0; position: absolute');
             svg.setAttribute('width', container.offsetWidth);
             svg.setAttribute('height', container.offsetHeight);
             svg.setAttribute('version', '1.1');
@@ -86,6 +86,12 @@
             svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
             svg.__object__    = obj;
             svg.__container__ = container;
+            
+            // Set some style
+            svg.style.top      = 0;
+            svg.style.left     = 0;
+            svg.style.position = 'absolute';
+
         container.appendChild(svg);
 
         container.__svg__    = svg;
@@ -6205,6 +6211,36 @@
 
 
     //
+    // This function sets CSS styles on a DOM element
+    //
+    // @param element    mixed  This can either be a string or a DOM
+    //                          object
+    // @param properties object This should be an object map of
+    //                          the CSS properties to set.
+    //                          JavaScript property names should
+    //                          be used.
+    //
+    RGraph.SVG.setCSS = function (element, properties)
+    {
+        if (typeof element === 'string') {
+            element = document.getElementById(element);
+        }
+
+        for (i in properties) {
+            if (typeof i === 'string') {
+                element.style[i] = properties[i];
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+    //
     // A set of functions which help you get data from the GET
     // string (the query string).
     //
@@ -6372,6 +6408,40 @@
         }
 
         return arr;
+    };
+
+
+
+
+
+
+
+
+    //
+    // Removes the tooltip highlight from the chart. This
+    // function is called by each objects .removeHighlight()
+    // function.
+    //
+    RGraph.SVG.removeHighlight = function ()
+    {
+        var highlight = RGraph.SVG.REG.get('highlight');
+
+        // The highlight is an array
+        if (RGraph.SVG.isArray(highlight)) {
+            for (var i=0; i<highlight.length; ++i) {
+                if (highlight[i] && highlight[i].parentNode) {
+                    highlight[i].parentNode.removeChild(highlight[i]);
+                }
+            }
+
+        } else if (highlight) {
+
+            if (highlight && highlight.parentNode) {
+                highlight.parentNode.removeChild(highlight);
+            }
+        }
+            
+        RGraph.SVG.REG.set('highlight', null);
     };
 
 
