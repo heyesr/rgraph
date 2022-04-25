@@ -1096,40 +1096,42 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            // Highlight all of the rects except this one - essentially an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b lw % r % % % % s % f %',
-                            properties.highlightLinewidth,
-                            this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+            if (properties.tooltipsHighlight) {
+                if (typeof properties.highlightStyle === 'function') {
+                    (properties.highlightStyle)(shape);
+                
+                // Highlight all of the rects except this one - essentially an inverted highlight
+                } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
+                    for (var i=0; i<this.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            this.path(
+                                'b lw % r % % % % s % f %',
+                                properties.highlightLinewidth,
+                                this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
+                                properties.highlightStroke,
+                                properties.highlightFill
+                            );
+                        }
                     }
+    
+                } else {
+                
+                    var last = shape.index === this.coords.length - 1;
+                    
+                    this.path('lw %', properties.highlightLinewidth);
+    
+                    this.drawCurvedBar({
+                             x: shape.x - 0.5,
+                             y: shape.y - 0.5,
+                         width: shape.width + 1,
+                        height: shape.height + 1,
+                        stroke: properties.highlightStroke,
+                          fill: properties.highlightFill
+                    });
+                    
+                    // Reset the linewidth
+                    this.path('lw %', 1);
                 }
-
-            } else {
-            
-                var last = shape.index === this.coords.length - 1;
-                
-                this.path('lw %', properties.highlightLinewidth);
-
-                this.drawCurvedBar({
-                         x: shape.x - 0.5,
-                         y: shape.y - 0.5,
-                     width: shape.width + 1,
-                    height: shape.height + 1,
-                    stroke: properties.highlightStroke,
-                      fill: properties.highlightFill
-                });
-                
-                // Reset the linewidth
-                this.path('lw %', 1);
             }
         };
 
