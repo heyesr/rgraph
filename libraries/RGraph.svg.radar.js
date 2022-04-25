@@ -557,7 +557,7 @@
             var obj = this;
             document.body.addEventListener('mousedown', function (e)
             {
-                obj.hideHighlight(obj);
+                obj.removeHighlight();
             }, false);
 
 
@@ -1218,14 +1218,35 @@
         // @param object circle The circle to highlight
         //
         this.highlight = function (circle)
-        {                
-            circle.setAttribute('fill', properties.highlightFill);
-            circle.setAttribute('stroke', properties.highlightStroke);
-            circle.setAttribute('stroke-width', properties.highlightLinewidth);
-                
-            this.highlight_node = circle;
+        {
 
-            RGraph.SVG.REG.set('highlight', circle);
+            var cx     = parseFloat(circle.getAttribute('cx')),
+                cy     = parseFloat(circle.getAttribute('cy')),
+                radius = parseFloat(circle.getAttribute('r')) + 1;
+
+            var highlight = RGraph.SVG.create({
+                svg: this.svg,
+                parent: this.svg.all,
+                type: 'circle',
+                attr: {
+                    'stroke-width': properties.highlightLinewidth,
+                    stroke:         properties.highlightStroke,
+                    fill:           properties.highlightFill,
+                    cx:             cx,
+                    cy:             cy,
+                    r:              radius
+                },
+                style: {
+                    pointerEvents: 'none'
+                }
+            });
+            
+            RGraph.SVG.REG.set('highlight', highlight);
+            
+            //this.highlight_node = circle;
+            this.highlight_node = highlight;
+            
+            RGraph.SVG.REG.set('highlight', highlight);
         };
 
 
@@ -1383,7 +1404,7 @@
                                 {
                                     var tooltip = RGraph.SVG.REG.get('tooltip');
     
-                                    //obj.hideHighlight();
+                                    //obj.removeHighlight();
                                     
                                     if (tooltip && tooltip.__sequentialIndex__ === seq) {
                                         return;
@@ -1477,15 +1498,9 @@
         //
         this.removeHighlight =
         this.hideHighlight   = function ()
-        {
-            var highlight = RGraph.SVG.REG.get('highlight');
-
-            if (highlight && this.highlight_node) {
-                this.highlight_node.setAttribute('fill','transparent');
-                this.highlight_node.setAttribute('stroke','transparent');
-                
-                RGraph.SVG.REG.set('highlight', null);
-            }
+        {            
+            RGraph.SVG.removeHighlight();
+            this.highlight_node = null;
         };
 
 
