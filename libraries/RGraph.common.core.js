@@ -8700,6 +8700,36 @@
 
 
     //
+    // This function sets CSS styles on a DOM element
+    //
+    // @param element    mixed  This can either be a string or a DOM
+    //                          object
+    // @param properties object This should be an object map of
+    //                          the CSS properties to set.
+    //                          JavaScript property names should
+    //                          be used.
+    //
+    RGraph.setCSS = function (element, properties)
+    {
+        if (typeof element === 'string') {
+            element = document.getElementById(element);
+        }
+
+        for (i in properties) {
+            if (typeof i === 'string') {
+                element.style[i] = properties[i];
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+    //
     // Label substitution. This allows you to use dynamic
     // labels if you want like this:
     //
