@@ -866,7 +866,7 @@
                             height: ret.size,
                             fill: 'transparent',
                             stroke: 'transparent',
-                            'stroke-width': 0
+                            'stroke-width': 3
                         },
                         style: {
                             cursor: 'pointer'
@@ -882,7 +882,7 @@
                         {
                             var tooltip = RGraph.SVG.REG.get('tooltip');
 
-                            if (tooltip && tooltip.__dataset__ === dataset && tooltip.__index__ === index) {
+                            if (tooltip && tooltip.__dataset__ === dataset && tooltip.__index__ === index && tooltip.__object__.uid === obj.uid) {
                                 return;
                             }
                 
@@ -1469,13 +1469,42 @@
         //
         this.highlight = function (rect)
         {
-            rect.setAttribute('stroke', properties.highlightStroke);
-            rect.setAttribute('stroke-width', properties.highlightLinewidth);
-            rect.setAttribute('fill', properties.highlightFill);
+            var cx      = parseFloat(rect.getAttribute('x')) + (parseFloat(rect.getAttribute('width')) / 2),
+                cy      = parseFloat(rect.getAttribute('y')) + (parseFloat(rect.getAttribute('height')) / 2),
+                radius  = parseFloat(rect.getAttribute('width')) + 1;
+            
+            var highlight = RGraph.SVG.create({
+                svg: this.svg,
+                type: 'circle',
+                parent: this.svg.all,
+                attr: {
+                    stroke: properties.highlightStroke,
+                    fill: properties.highlightFill,
+                    cx: cx,
+                    cy: cy,
+                    r: radius,
+                    'stroke-width': properties.highlightLinewidth
+                },
+                style: {
+                    pointerEvents: 'none'
+                }
+            });
+
+
+            // Store the highlight rect in the rebistry so
+            // it can be cleared later
+            RGraph.SVG.REG.set('highlight', highlight);
+            
+            
+            
+            
+            //rect.setAttribute('stroke', properties.highlightStroke);
+            //rect.setAttribute('stroke-width', properties.highlightLinewidth);
+            //rect.setAttribute('fill', properties.highlightFill);
 
             // Store the highlight rect in the registry so
             // it can be reset later
-            RGraph.SVG.REG.set('highlight', rect);
+            //RGraph.SVG.REG.set('highlight', rect);
         };
 
 
@@ -1663,12 +1692,7 @@
         //
         this.removeHighlight = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
-            
-            if (highlight) {
-                highlight.setAttribute('fill', 'transparent');
-                RGraph.SVG.REG.set('highlight', null);
-            }
+            RGraph.SVG.removeHighlight();
         };
 
 
