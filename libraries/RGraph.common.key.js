@@ -767,63 +767,115 @@
 
         
         //
-        // Create the table that becomes the key
+        // Create the table that becomes the key. CSS Styles for
+        // the table, the color blobs and the labels are set below
+        // using the RGraph.setCSS() function.
         //
-        var str = '<table border="0" cellspacing="0" cellpadding="0" id="rgraph_key_' + uid + '" style="display: inline;' + (function ()
-            {
-                var style = ''
-                for (i in properties.tableCss) {
-                    if (typeof i === 'string') {
-                        style = style + i + ': ' + properties.tableCss[i] + ';';
-                    }
-                }
-                return style;
-            })() + '" ' + (properties.tableClass ? 'class="' + properties.tableClass + '"' : '') + '>';
-
+        var str = '<table border="0" cellspacing="0" cellpadding="0" id="rgraph_key_' + uid + '" ' + (properties.tableClass ? 'class="' + properties.tableClass + '"' : '') + '>';
+        // 
 
 
         //
         // Add the individual key elements
         //
         for (var i=0; i<properties.labels.length; i+=1) {
-            str += '<tr><td><div style="' + (function ()
-            {
-                var style = '';
-
-                for (var j in properties.blobCss) {
-                    if (typeof j === 'string') {
-                        style = style + j + ': ' + properties.blobCss[j] + ';';
-                    }
-                }
-
-                return style;
-            })() + 'display: inline-block; margin-right: 5px; margin-top: 4px; width: 15px; height: 15px; background-color: ' + properties.colors[i] + '"' + (properties.blobClass ? 'class="' + properties.blobClass + '"' : '') + '>&nbsp;</div><td>' + (properties.links && properties.links[i] ? '<a href="' + properties.links[i] + '">' : '') + '<span ' + (properties.labelClass ? 'class="' + properties.labelClass + '"' : '') + '" style="' + (function ()
-            {
-                var style = '';
-
-                for (var j in properties.labelCss) {
-                    if (typeof j === 'string') {
-                        style = style + j + ': ' + properties.labelCss[j] + ';';
-                    }
-                }
-
-                return style;
-            })() + ' ' + (function ()
-            {
-                var style = '';
-
-                if (properties['labelCss_' + i]) {
-
-                    for (var j in properties['labelCss_' + i]) {
-                        style = style + j + ': ' + properties['labelCss_' + i][j] + ';';
-                    }
-                }
-
-                return style ? style + '"' : '"';
-            })() + '>' + properties.labels[i] + '</span>' + (properties.links && properties.links[i] ? '</a>' : '') + '</td></tr>';
+            str += '<tr><td><div id="rgraph_html_key_blob_' + i + '"     ' + (properties.blobClass ? 'class="rgraph_html_key_blob ' + properties.blobClass + '"' : 'rgraph_html_key_blob') + '>&nbsp;</div><td>' + (properties.links && properties.links[i] ? '<a href="' + properties.links[i] + '">' : '') + '<span ' + (properties.labelClass ? 'class="' + properties.labelClass + '"' : '') + '" id="rgraph_html_key_label_' + i + '">' + properties.labels[i] + '</span>' + (properties.links && properties.links[i] ? '</a>' : '') + '</td></tr>';
         }
 
         div.innerHTML += (str + '</table>');
+
+        for (var i=0; i<properties.labels.length; i+=1) {
+            var n = document.getElementById('rgraph_html_key_blob_' + i);
+            n.style.width  = '20px';
+            n.style.height = '20px';
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Set CSS for the whole table that has been specified
+        RGraph.setCSS(doc.getElementById('rgraph_key_' + uid),
+        {
+            display: 'inline',
+            ...properties.tableCss
+        });
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        // Set the CSS for each entry in the key
+        for (var i=0; i<properties.labels.length; i+=1) {
+            // Set Styles on each color blob
+            RGraph.setCSS(doc.getElementById('rgraph_html_key_blob_' + i),
+            {
+                display: 'inline-block',
+                marginRight: '5px',
+                marginTop: '4px',
+                width: '15px',
+                height: '15px',
+                backgroundColor: properties.colors[i],
+                ...properties.blobCss
+            });
+
+
+
+
+
+
+
+
+            // Set the CSS that comes from the labelCss property
+            RGraph.setCSS(
+                doc.getElementById('rgraph_html_key_label_' + i),
+                properties.labelCss
+            );
+
+
+
+
+
+
+
+
+            // If there are styles set for a particular label,
+            // apply those too
+            if (properties['labelCss_' + i]) {
+                RGraph.setCSS(
+                    doc.getElementById('rgraph_html_key_label_' + i),
+                    properties['labelCss_' + i]
+                );
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Return the TABLE object that is the HTML key
         return doc.getElementById('rgraph_key_' + uid);
