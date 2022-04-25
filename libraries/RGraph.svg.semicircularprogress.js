@@ -1073,12 +1073,7 @@
         //
         this.removeHighlight = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
-
-            if (highlight) {
-                highlight.parentNode.removeChild(highlight);
-                highlight = null;
-            }
+            RGraph.SVG.removeHighlight();
         };
 
 
@@ -1248,12 +1243,7 @@
         //
         this.removeHighlight = function ()
         {
-            var highlight = RGraph.SVG.REG.get('highlight');
-            if (highlight && highlight.parentNode) {
-                highlight.parentNode.removeChild(highlight);
-            }
-            
-            RGraph.SVG.REG.set('highlight', null);
+            RGraph.SVG.removeHighlight();
         };
 
 
