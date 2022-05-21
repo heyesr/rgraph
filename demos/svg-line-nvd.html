@@ -23,7 +23,9 @@
     <h1>A floating Line chart</h1>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 600px; height: 250px;float: right" id="chart-container"></div>
+    <div>
+        <div style="width: 600px; height: 250px;float: right" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -100,7 +102,7 @@
         // accommodate both large and small screens
         }).trace().responsive([
             {maxWidth:null,width:600,height:250,css:{'float':'right'}},
-            {maxWidth:800, width:450,height:200,css:{'float':'none'}}
+            {maxWidth:800, width:450,height:200,css:{'float':'none'},parentCss:{textAlign:'center'}}
             
         ]);
     </script>
