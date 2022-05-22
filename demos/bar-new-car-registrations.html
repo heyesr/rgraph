@@ -25,7 +25,7 @@
 
     <h1>A grouped Bar chart</h1>
 
-    <div style="display: inline-block; margin: 35px; float: right">
+    <div style="margin: 35px">
         <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     </div>
     
@@ -120,8 +120,8 @@
             RGraph.clear(obj.canvas, 'white');
 
         }).responsive([
-            {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right'}},
-            {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 50}, parentCss: {'float':'none'}}
+            {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right',textAlign:'none'}},
+            {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 50}, parentCss: {'float':'none',textAlign:'center'}}
         ]);
     </script>
 
