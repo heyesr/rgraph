@@ -25,7 +25,9 @@
 
     <h1>An example of an interactive key</h1>
 
-    <canvas id="cvs" width="600" height="250" style="float: right; margin-bottom: 50px">[No canvas support]</canvas>
+    <div>
+        <canvas id="cvs" width="600" height="250" style="float: right; margin-bottom: 50px">[No canvas support]</canvas>
+    </div>
     
     <p>
         The interactive key was updated in June 2013 and added to
@@ -107,8 +109,8 @@
                 xaxisLabelsAngle: 25
             }
         }).wave().responsive([
-            {maxWidth: null, width:600,height:250, options: {textSize:18,marginInner:10},css: {marginBottom: 0,'float': 'right'}},
-            {maxWidth: 900,width: 400,height: 150,options: {textSize: 10,marginInner:5},css: {marginBottom: '35px','float': 'none'}}
+            {maxWidth: null, width:600,height:250, options: {textSize:18,marginInner:10},css: {marginBottom: 0,'float': 'right'},parentCss:{textAlign:'none'}},
+            {maxWidth: 900,width: 400,height: 150,options: {textSize: 10,marginInner:5},css: {marginBottom: '35px','float': 'none'},parentCss:{textAlign:'center'}}
         ]);
     </script>
 
