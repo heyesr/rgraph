@@ -22,7 +22,9 @@
         
     <h1>Post-processing on a Bar chart</h1>
     
-    <canvas id="cvs" width="600" height="250" style="float: left">[No canvas support]</canvas>
+    <div style="float: left">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         This Bar chart uses the custom RGraph <code>draw</code> event to add
@@ -107,8 +109,8 @@
                 obj.context.fillRect(x,y,w,h)
             }
         }).draw().responsive([
-            {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, css: {'float': 'left'}},
-            {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, css: {'float': 'none'}}
+            {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, parentCss: {'float': 'left',textAlign:'none'}},
+            {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, parentCss: {'float': 'none',textAlign:'center'}}
         ], {delay: 0});
     </script>
 
