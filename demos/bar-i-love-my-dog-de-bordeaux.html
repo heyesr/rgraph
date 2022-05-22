@@ -21,7 +21,9 @@
 
     <h1>A Bar chart of my favourite dog breeds</h1>
 
-    <canvas id="cvs" width="600 " height="250" style="float: right">[No canvas support]</canvas>
+    <div>
+        <canvas id="cvs" width="600 " height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         How could you resist such a <i>gorgeous</i> face?! Here's an amusing chart that shows you exactly
@@ -96,8 +98,8 @@
                 yaxisScaleUnitsPost: '%'
             }
         }).draw().responsive([
-            {maxWidth: null, width: 600, height: 250,options:{marginLeft: 150,marginBottom: 60,marginInner: 45,labelsAboveSize: 24,textSize: 20,backgroundImageW: 600,backgroundImageH: 250},css:{'float':'right'}},
-            {maxWidth: 800, width: 400, height: 200,options:{marginLeft: 50,marginBottom: 40,marginInner: 15,labelsAboveSize: 16,textSize: 10,backgroundImageW: 400,backgroundImageH: 200},css:{'float':'none'}}
+            {maxWidth: null, width: 600, height: 250,options:{marginLeft: 150,marginBottom: 60,marginInner: 45,labelsAboveSize: 24,textSize: 20,backgroundImageW: 600,backgroundImageH: 250},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 800, width: 400, height: 200,options:{marginLeft: 50,marginBottom: 40,marginInner: 15,labelsAboveSize: 16,textSize: 10,backgroundImageW: 400,backgroundImageH: 200},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
