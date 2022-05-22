@@ -22,7 +22,9 @@
 
     <h1>A demo of a logarithmic Bar chart</h1>
     
-    <canvas id="cvs" width="600" height="300" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    </div>
     
     <p>
         At first look, you may think that this looks like a regular, basic Bar chart. And you'd not be far
@@ -88,8 +90,8 @@
                 shadow: false
             }
         }).draw().responsive([
-            {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},css:{'float':'right'}},
-            {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:5,xaxisLabelsAngle:45,textSize: 10},css:{'float':'none'}}
+            {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:5,xaxisLabelsAngle:45,textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
