@@ -26,7 +26,7 @@
     <h1>Negative horizontal margin on a Bar chart</h1>
 
     
-    <div style="padding: 25px; display: inline-block; margin:20px;float: right">
+    <div style="padding: 25px; display: inline-block; margin:20px">
         <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
     </div>
 
@@ -135,6 +135,10 @@
             {maxWidth: 900,width: 300,height: 150,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],marginInnerGrouped: -5,marginInner: 15,textSize: 8},callback: function () {axes.x = 315;axes.set('textSize', 8);axes.set('linewidth', 2);axes2.set('textSize', 8);axes2.set('linewidth', 2);axes2.canvas.parentNode.parentNode.style.cssFloat = 'none';axes.x = 270;}}
         ]);
 
+
+
+
+
         // Create the Line chart (both lines are added by this Line chart).
         // It's a spline chart so that its curvy.
         line = new RGraph.Line({
@@ -179,8 +183,8 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="padding: 15px"&gt;
-    &lt;canvas id="cvs" width="750" height="500"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;div style="padding: 25px; display: inline-block; margin:20px"&gt;
+    &lt;canvas id="cvs" width="650" height="250"&gt;[No canvas support]&lt;/canvas&gt;
 &lt;/div&gt;
 </pre>
 
