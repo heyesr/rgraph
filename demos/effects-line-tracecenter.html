@@ -23,7 +23,9 @@
 
     <h1>A Line chart using the animation option</h1>
 
-    <canvas id="cvs" width="600" height="250" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         This is a canvas  based demonstration of the Line chart <code>animationTraceCenter</code> option
@@ -154,8 +156,8 @@
         // Add some responsiveness to the charts. This is added to the first chart but since all three
         // are being drawn on the same canvas it doesn't need to be added to each chart object.
         l1.responsive([
-            {maxWidth:null,width: 600,height:250,options:{textSize: 10},css:{'float':'right'}},
-            {maxWidth:900, width: 400,height:200,options:{textSize: 8},css:{'float':'none'}}
+            {maxWidth:null,width: 600,height:250,options:{textSize: 10},parentCss:{'float':'right', textAlign: 'none'}},
+            {maxWidth:900, width: 400,height:200,options:{textSize: 8},parentCss:{'float':'none', textAlign: 'center'}}
         ]);
     </script>
 
@@ -175,9 +177,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="700" height="300"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
