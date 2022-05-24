@@ -158,10 +158,10 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="900" height="250" style="background-color: #555; border: 5px solid black; border-radius: 7px; box-shadow: 2px 2px 3px gray"&gt;
-    [No canvas support]
-&lt;/canvas&gt;&lt;br /&gt;
-&lt;button style="border-radius: 5px; font-size: 20px; margin: 10px; padding: 7px" onclick="line.set('spline', !line.get('spline')); RGraph.redraw()"&gt;Toggle spline&lt;/button&gt;
+&lt;div style="float: right; display: inline-block; margin: 25px"&gt;
+    &lt;canvas id="cvs" width="750" height="250" style="background-color: #555; border: 5px solid black; border-radius: 7px; box-shadow: 2px 2px 3px gray"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
+    &lt;button style="border-radius: 5px; font-size: 20px; margin: 10px; padding: 7px" onclick="line.set('spline', !line.get('spline')); RGraph.redraw()"&gt;Toggle spline&lt;/button&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
