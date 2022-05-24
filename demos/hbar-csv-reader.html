@@ -29,7 +29,10 @@
         view the demos on the RGraph website here:
         <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
     </div>
-    <canvas id="cvs" width="500" height="250" style="float: right">[No canvas support]</canvas>
+    
+    <div style="float: right">
+        <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
          Here we have a very simple example of the CSV Reader that is bundled with RGraph. This is in
@@ -73,7 +76,10 @@
                     yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                     marginLeft: 95
                 }
-            }).draw();
+            }).draw().responsive([
+                {maxWidth: null,parentCss:{'float':'right',textAlign:'none'}},
+                {maxWidth: 750,parentCss:{'float':'none',textAlign:'center'}}
+            ]);
         }});
     </script>
 
@@ -92,9 +98,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div  style="float: right"&gt;
+    &lt;canvas id="cvs" width="500" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
