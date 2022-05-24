@@ -25,7 +25,9 @@
 
     <h1>A gray Pie chart</h1>
 
-    <canvas id="cvs" width="550" height="250" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="550" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         Here's a gray-themed Pie chart. It uses the responsive function to allow for smaller
@@ -125,8 +127,8 @@
                 titleSize: 18
             }
         }).draw().responsive([
-            {maxWidth: null, width: 550, height: 250, options: {labelsList: true, labels: labels_large,textSize:10},css:{'float':'right'}},
-            {maxWidth: 900, width: 350, height: 250, options: {labelsList: false, labels: labels_small,textSize:8},css:{'float':'none'}}
+            {maxWidth: null, width: 550, height: 250, options: {labelsList: true, labels: labels_large,textSize:10},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 900, width: 350, height: 250, options: {labelsList: false, labels: labels_small,textSize:8},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
