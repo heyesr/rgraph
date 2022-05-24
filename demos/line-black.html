@@ -18,7 +18,9 @@
 
     <h1>A canvas-based black Line chart</h1>
     
-    <canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc; float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc">[No canvas support]</canvas>
+    </div>
     
     <p>
         This is quite an old demo of a Line chart but it has stood up through the years
@@ -91,8 +93,8 @@
             RGraph.clear(obj.canvas, 'black');
 
         }).trace({frames: 15}).responsive([
-            {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},css:{'float':'right'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
-            {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},css:{'float':'none'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
+            {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},parentCss:{'float':'right',textAlign:'none'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
+            {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},parentCss:{'float':'none',textAlign:'center'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
         ]);
     </script>
 
@@ -113,9 +115,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
