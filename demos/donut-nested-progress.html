@@ -19,7 +19,9 @@
 
     <h1>A nested Donut chart</h1>
     
-    <canvas id="cvs" width="450" height="450" style="background-color: black; float: right">[No canvas support]</canvas>
+    <div style="float: right; display: inline-block">
+        <canvas id="cvs" width="450" height="450" style="background-color: black;">[No canvas support]</canvas>
+    </div>
     
     <p>
         This is an example of the new (in version 5.28) <code>RGraph.Activity</code> class.
@@ -54,8 +56,8 @@
                 marginRight: 5
             }
         }).grow().responsive([
-            {maxWidth: null, width: 450, height: 450, options: {width: null}, css: {'float':'right'}},
-            {maxWidth: 650,  width: 250, height: 250, options: {width: 25}, css: {'float':'none'}}
+            {maxWidth: null, width: 450, height: 450, options: {width: null}, parentCss: {'float':'right', textAlign:'none',width:''}},
+            {maxWidth: 750,  width: 250, height: 250, options: {width: 25}, parentCss: {'float':'none', textAlign:'center',width:'100%'}}
         ]);
     </script>
 
@@ -74,9 +76,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="450" height="450"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right; display: inline-block"&gt;
+    &lt;canvas id="cvs" width="450" height="450" style="background-color: black;"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
