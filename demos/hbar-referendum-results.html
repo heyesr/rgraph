@@ -24,7 +24,9 @@
 
     <h1>A Horizontal Bar chart with formatted tooltips</h1>
 
-    <canvas id="cvs" width="600" height="275" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="275">[No canvas support]</canvas>
+    </div>
     
     <p>
         Here's a Horizontal Bar chart indicating the 2016 UK referendum results. Let's not dwell on the
@@ -146,8 +148,8 @@ function getTooltip(group)
 
         // Use the grow() animation effect
         }).grow().responsive([
-            {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},css:{'float':'right'}},
-            {maxWidth: 700, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},css:{'float':'none'}}
+            {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 700, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},parentCss:{'float':'none',textAlign:'center'}}
         
         ])
         
@@ -175,9 +177,9 @@ function getTooltip(group)
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="275"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="600" height="275"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
