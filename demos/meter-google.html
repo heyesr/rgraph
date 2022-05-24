@@ -25,7 +25,7 @@
     <h1>A customised Meter chart</h1>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right; !width: 500px; text-align: center">
+    <div style="float: right; text-align: center">
         <canvas id="cvs" width="500" height="250">[No canvas support]</canvas><br />
         <button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>
     </div>
@@ -131,7 +131,10 @@ RGraph.toDegrees = function (radians)
                 // new value of the chart.
                 adjustable: true
             }
-        }).draw();
+        }).draw().responsive([
+            {maxWidth:null,parentCss: {'float':'right'}},
+            {maxWidth:700,parentCss: {'float':'none'}}
+        ]);
         
         
         //
@@ -173,7 +176,7 @@ RGraph.toDegrees = function (radians)
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="float: right; width: 500px; text-align: center"&gt;
+&lt;div style="float: right; text-align: center"&gt;
     &lt;canvas id="cvs" width="500" height="250">[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
     &lt;button onclick="toggleGradient()" style="font-size: 20pt"&gt;Toggle gradient&lt;/button&gt;
 &lt;/div&gt;
