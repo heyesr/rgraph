@@ -36,7 +36,9 @@
         }
     </script>
     
-    <canvas id="cvs" width="500" height="250" style="float:right">[No canvas support]</canvas>
+    <div style="float:right">
+        <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         A Line chart that's serving as a basic example of using the CSV Reader in conjunction with the CSV
@@ -88,8 +90,8 @@
                     yaxis: false,
                 }
             }).draw().responsive([
-                {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12},css: {marginBottom: 0,cssFloat: 'right'}},
-                {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 45,textSize: 10},css: {marginBottom: '35px',cssFloat: 'none'}}
+                {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
+                {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 45,textSize: 10},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
             ]);
         });
     </script>
@@ -113,9 +115,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float:right"&gt;
+    &lt;canvas id="cvs" width="500" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
