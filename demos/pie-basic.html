@@ -22,7 +22,9 @@
 
     <h1>A basic Pie chart</h1>
 
-    <canvas id="cvs" width="550" height="250" style="float: right">[No canvas support]</canvas>
+    <div>
+        <canvas id="cvs" width="550" height="250">[No canvas support]</canvas>
+    </div>
     
     <p>
         A simple Pie chart that shows off the label sticks to good effect. As far as the Pie chart
@@ -93,8 +95,8 @@
         // Draw the chart and add responsive capabilities. On smaller screens the width
         // is reduced and the labels are changed to a key. This takes up less space.
         }).draw().responsive([
-            {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},css:{'float':'right'}},
-            {maxWidth: 600,width:420,height:250,options: {centerx: 150,key:labels, labels: []},css:{'float':'none'}}
+            {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 750,width:420,height:250,options: {centerx: 150,key:labels, labels: []},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -114,9 +116,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="350" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div&gt;
+    &lt;canvas id="cvs" width="350" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
