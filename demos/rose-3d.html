@@ -26,7 +26,9 @@
 
     <h1>A 3D Rose chart</h1>
 
-    <canvas id="cvs" width="600" height="300" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    </div>
     
     <p>
         Here's a novel version of the more traditional 2D Rose chart - the 3D Rose chart. It doesn't add
@@ -88,8 +90,8 @@
                 textAccessible: false
             }
         }).grow({frames: 15}).responsive([
-            {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},css: {'float':'right'}},
-            {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},css: {'float':'none'}}
+            {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},parentCss: {'float':'right',textAlign: 'center'}},
+            {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},parentCss: {'float':'none',textAlign: 'center'}}
         ]);
     </script>
 
@@ -109,9 +111,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="300" style="float: right"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float:right"&gt;
+    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
