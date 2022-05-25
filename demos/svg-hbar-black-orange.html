@@ -23,7 +23,9 @@
     <h1>A black and orange SVG Horizontal Bar chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 500px; height: 300px; display: inline-block; background-color: black; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 500px; height: 300px; display: inline-block; background-color: black" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -87,8 +89,8 @@
                 labelsAboveSpecific: data
             }
         }).draw().responsive([
-            {maxWidth: null, width: 500, height: 300, options: {textSize: 12},css:{'float':'right'}},
-            {maxWidth: 700, width: 400,  height: 250, options: {textSize: 10},css:{'float':'none'}}
+            {maxWidth: null, width: 500, height: 300, options: {textSize: 12},parentCss:{'float':'right', textAlign:'none'}},
+            {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10},parentCss:{'float':'none', textAlign:'center'}}
         ]);
 
 
@@ -135,8 +137,8 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="padding: 15px"&gt;
-    &lt;div style="width: 500px; height: 300px; float: right" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 500px; height: 300px; display: inline-block; background-color: black" id="chart-container"&gt;&lt;/div&gt;
 &lt;/div&gt;
 </pre>
 
