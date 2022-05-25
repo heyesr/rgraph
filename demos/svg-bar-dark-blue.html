@@ -21,7 +21,9 @@
     <h1>A dark and graduated blue Bar chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 600px; height: 300px; background-color: black; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 600px; height: 300px; background-color: black" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -70,12 +72,15 @@
                 backgroundGridColor: '#999',
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
-                colors: ['Gradient(#6969FF:#6969FF:#000)']
+                colors: ['Gradient(#6969FF:#6969FF:#000)'],
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textColor:'white',
+                textSize:16
             }
         // Draw the chart and add some responsive capabilities
         }).draw().responsive([
-            {maxWidth: null,width:600, height: 300,options: {marginInner:15},css:{'float':'right'}},
-            {maxWidth: 800, width:400, height: 200,options: {marginInner:10},css:{'float':'none'}}
+            {maxWidth: null,width:600, height: 300,options: {marginInner:15},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 800, width:400, height: 200,options: {marginInner:10},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -91,7 +96,9 @@
     
     Put this where you want the graphic to show up:
     <pre class="code">
-&lt;div style="width: 600px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 600px; height: 300px; background-color: black" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
