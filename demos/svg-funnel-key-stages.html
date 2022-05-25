@@ -27,7 +27,9 @@
     <h1>A customised SVG Funnel chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 650px; height: 500px; border: 1px solid #ddd; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 650px; height: 500px; border: 1px solid #ddd" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -116,8 +118,8 @@
                 key: ['Introduction','Site visit','Finalisation']
             }
         }).draw().responsive([
-            {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300}},
-            {maxWidth: 700,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
+            {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -135,7 +137,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 500px; height: 400px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 650px; height: 500px; border: 1px solid #ddd" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
