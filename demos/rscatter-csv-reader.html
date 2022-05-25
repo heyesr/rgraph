@@ -39,7 +39,9 @@
         }
     </script>
 
-    <canvas id="cvs" width="500" height="450" style="float: right">[No canvas support]</canvas>
+    <div style="float: right">
+        <canvas id="cvs" width="500" height="450">[No canvas support]</canvas>
+    </div>
     
     <p>
         Here's a Radial Scatter chart - a circular Scatter chart. It's a variation on the regular Scatter
@@ -104,9 +106,16 @@ console.log(arr);
                 id: 'cvs',
                 data: data,
                 options: {
-                    labelsAxes: 'n'
+                    labelsAxes: 'n',
+                    marginTop: 5,
+                    marginBottom: 5,
+                    marginLeft: 5,
+                    marginRight: 5
                 }
-            }).draw()
+            }).draw().responsive([
+                {maxWidth:null,width:500,height:450,parentCss:{'float':'right',textAlign:'none'}},
+                {maxWidth:800,width:400,height:300,parentCss: {'float':'none',textAlign:'center'}}
+            ]);
         });
     </script>
 
@@ -126,9 +135,9 @@ console.log(arr);
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="450"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="500" height="450"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
