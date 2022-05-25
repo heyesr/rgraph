@@ -24,17 +24,15 @@
     <RGRAPH_BASIC_DEMO_HTML>
     <style>
         div#chart-container {
-            float: right;
-            width: 650px;
-            height: 300px;
-            display: inline-block;
             background-image: linear-gradient(45deg, #000049,#0000CB);
             border-bottom-right-radius: 25px;
             border-top-left-radius: 25px;
         }
     </style>
 
-    <div id="chart-container"></div>
+    <div style="float: right">
+        <div id="chart-container" style="width: 650px;height: 300px"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -110,8 +108,8 @@
         // Draw the chart and add a responsive configuration that resizes the chart when you use a
         // smaller screen
         }).draw().responsive([
-            {maxWidth:null,width:650,height:300},
-            {maxWidth:800, width:400,height:250}
+            {maxWidth:null,width:650,height:300,parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:800, width:400,height:250,parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -130,21 +128,21 @@
 &lt;style&gt;
     <span>/*
     * Here's some CSS to configure the appearance of the DIV tag
-    * that the chart is added to. There's positioning and sizing
-    * information as well as two of the corners being rounded.
+    * that the chart is added to. There's the background gradient
+    * as well as two of the corners being rounded.
     */</span>
     div#chart-container {
-        float: right;
-        width: 650px;
-        height: 300px;
-        display: inline-block;
-        background-image: linear-gradient(45deg, #000049,#0000CB);
-        border-bottom-right-radius: 25px;
-        border-top-left-radius: 25px;
+        div#chart-container {
+            background-image: linear-gradient(45deg, #000049,#0000CB);
+            border-bottom-right-radius: 25px;
+            border-top-left-radius: 25px;
+        }
     }
 &lt;/style&gt;
 
-&lt;div id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
