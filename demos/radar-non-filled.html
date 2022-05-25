@@ -23,8 +23,10 @@
     
     <h1>A non-filled Radar chart</h1>
 
-    <canvas id="cvs" width="500" height="400" style="float: right">[No canvas support]</canvas>
-    
+    <div style="float: right">
+        <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+    </div>
+
     <p>
         Here's a Radar chart that happens to have two datasets. By default, Radar charts look a little
         different, with a fill color applied. This can be set to transparent though, as is the case
@@ -66,8 +68,8 @@
                 textSize: 16
             }
         }).trace().responsive([
-            {maxWidth: null, width: 500, height: 400,css:{'float':'right'}},
-            {maxWidth: 600,  width: 300, height: 300,css:{'float':'none'}}
+            {maxWidth: null, width: 500, height: 400,parentCss:{'float':'right', textAlign:'center'}},
+            {maxWidth: 700,  width: 300, height: 300,parentCss:{'float':'none', textAlign:'center'}}
         ]);
     </script>
 
@@ -85,9 +87,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="400"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="float: right"&gt;
+    &lt;canvas id="cvs" width="500" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
