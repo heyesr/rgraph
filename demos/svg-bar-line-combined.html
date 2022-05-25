@@ -26,7 +26,9 @@
     <h1>A combined Bar and Line chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 650px; height: 250px; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 650px; height: 250pt" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -61,6 +63,13 @@
     <br clear="both" />
 
     <script id="rgraph-demo-source-code">
+        responsiveConf = [
+            {maxWidth:null,width:650,height:250,options: {textSize: 12,labelsAboveSize: 10},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:900, width:400,height:200,options: {textSize: 8,labelsAboveSize: 8},parentCss:{'float':'none',textAlign:'center'}}
+        ];
+
+
+
         // Create a Bar chart which has the X-axis positioned in the center. Because
         // it's created first the Bar chart will appear at the back of the Line chart.
         // Here the maximum and minimum Y values are set to 100 and -100 manually.
@@ -74,15 +83,17 @@
                 marginInner: 10,
                 colors: ['rgba(255,0,0,0.2)','rgba(0,200,200,0.2)'],
                 marginLeft: 50,
-                labelsAbove: true,
-                labelsAboveSize: 8
+                labelsAbove: true
             }
         // Draw the chart and add a responsive configuration that resizes the chart when you use a
         // smaller screen
-        }).draw().responsive([
-            {maxWidth:null,options: {textSize: 10}},
-            {maxWidth:800, options: {textSize: 8}}
-        ]);
+        }).draw().responsive(responsiveConf);
+
+
+
+
+
+
 
 
         // Create the Line chart that's drawn on top of the Bar chart. The minimum
@@ -108,15 +119,11 @@
                 colors: ['#0bb'],
                 linewidth: 3,
                 tickmarksStyle: 'filledcircle',
-                labelsAbove: true,
-                labelsAboveSize: 8
+                labelsAbove: true
             }
         // Draw the chart and add a responsive configuration that resizes the chart when you use a
         // smaller screen
-        }).draw().responsive([
-            {maxWidth:null,width:650,height:250,options: {textSize: 10},css:{'float':'right'}},
-            {maxWidth:800, width:400,height:200,options: {textSize: 8},css:{'float':'none'}}
-        ]);
+        }).draw().responsive(responsiveConf);
     </script>
 
 
@@ -132,7 +139,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 650px; height: 250pt" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
