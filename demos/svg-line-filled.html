@@ -26,7 +26,9 @@
     <h1>An SVG filled and stacked Line chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 600px; height: 300px; float: right" id="cc"></div>
+    <div style="float: right">
+        <div style="width: 600px; height: 300px" id="cc"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -113,8 +115,8 @@
         
         // Use the trace() effect to show the chart and add some responsive capability
         }).trace().responsive([
-            {maxWidth:null,width:600,height:300,options:{textSize: 12},css:{'float':'right'}},
-            {maxWidth:800,width:450,height:250,options:{textSize: 10},css:{'float':'none'}}
+            {maxWidth:null,width:600,height:300,options:{textSize: 12},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:900,width:450,height:250,options:{textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -131,7 +133,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 600px; height: 300px" id="cc"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 600px; height: 300px" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
