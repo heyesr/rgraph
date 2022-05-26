@@ -23,7 +23,9 @@
     <h1>A Line chart with a highlighted section</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 450px; height: 200px; display: inline-block; background-color: black; float: right" id="cc"></div>
+    <div style="float: right">
+        <div style="width: 450px; height: 200px; display: inline-block; background-color: black" id="cc"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -83,11 +85,14 @@
                 ],
                 backgroundGridColor: '#666',
                 textColor: 'white',
-                xaxisLabels: ['Rich','Terry','Fay','Hoolio','Bob','Carl','Pob','Neil','Matt','Kev','Jill','Lou','Luis','Pete','John'],
+                xaxisLabels: ['Rich','\nTerry','Fay','\nHoolio','Bob','\nCarl','Pob','\nNeil','Matt','\nKev','Jill','\nLou','Luis','\nPete','John'],
                 key: ['H67','JK89','GB88','SX95'],
                 keyLabelsColor: 'white',
                 keyLabelsBackground: 'black',
-                textSize: 8
+                textSize: 10,
+                //xaxisLabelsAngle: 45,
+                marginBottom:45,
+                marginTop:25
             }
         }).on('draw', function (obj)
         {
@@ -124,8 +129,8 @@
                 }
             });
         }).draw().responsive([
-            {maxWidth: null,css: {'float':'right'}},
-            {maxWidth: 700,css: {'float':'none'}}
+            {maxWidth: null,parentCss: {'float':'right',textAlign:'none'}},
+            {maxWidth: 700,parentCss: {'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -142,7 +147,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 600px; height: 250px; display: inline-block; background-color: black"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 450px; height: 200px; display: inline-block; background-color: black" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
