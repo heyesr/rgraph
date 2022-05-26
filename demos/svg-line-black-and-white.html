@@ -22,7 +22,9 @@
     <h1>An SVG black and white Line chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div id="cc" style="width:600px; height: 250px; float: left"></div>
+    <div style="float: right">
+        <div id="cc" style="width:600px; height: 250px"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -150,8 +152,8 @@ RGraph.SVG.create({
         // Use the trace() effect to draw the chart setting the number of
         // frames used by the animation to 60
         .trace({frames: 60}).responsive([
-            {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7},css: {'float':'right'}},
-            {maxWidth: 900,width: 400,height: 150,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5},css: {'float':'none'}}
+            {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7},parentCss: {'float':'right', textAlign:'center'}},
+            {maxWidth: 900,width: 500,height: 175,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5},parentCss: {'float':'none', textAlign:'center'}}
         ]);
     </script>
 
@@ -171,7 +173,9 @@ RGraph.SVG.create({
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div id="cc" style="width:600px; height: 250px"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div id="cc" style="width:600px; height: 250px"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
