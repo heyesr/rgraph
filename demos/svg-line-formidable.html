@@ -35,7 +35,9 @@
     </ul>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div id="cc" style="width:700px; height: 300px; float: right; background-color: black"></div>
+    <div style="float: right">
+        <div id="cc" style="width:700px; height: 300px; background-color: black"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -79,8 +81,8 @@
                 tickmarksLinewidth: 3
             }
         }).trace().responsive([
-            {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},css:{'float':'right'}},
-            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},css:{'float':'none'}}
+            {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:900,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -100,7 +102,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div id="cc" style="width:700px; height: 300px"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div id="cc" style="width:700px; height: 300px; background-color: black"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
