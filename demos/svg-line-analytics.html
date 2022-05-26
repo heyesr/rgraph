@@ -48,14 +48,16 @@
         }
     </style>
 
-    <div style="width: 615px; height: 350px; float: right; display: inline-block">
-        <div id="cc1"></div>
-        <div id="cc2"></div>
-        <div id="cc3"></div>
-        <div id="cc4"></div>
-        <div id="cc5"></div>
-        <div id="cc6"></div>
-        <div id="cc7"></div>
+    <div style="text-align: center">
+        <div style="width: 615px; height: 350px; float: right; display: inline-block">
+            <div id="cc1"></div>
+            <div id="cc2"></div>
+            <div id="cc3"></div>
+            <div id="cc4"></div>
+            <div id="cc5"></div>
+            <div id="cc6"></div>
+            <div id="cc7"></div>
+        </div>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
@@ -189,7 +191,10 @@ new RGraph.Bar({
         l4 = new RGraph.SVG.Line({id: 'cc4',data: [3,6,8,4,2,3,8,9,4,6,5,6,7,8,8,8,6,5,0,0,0,0,0,0]}).draw();
         l5 = new RGraph.SVG.Line({id: 'cc5',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0]}).draw();
         l6 = new RGraph.SVG.Line({id: 'cc6',data: [1,2,3,4,5,2,3,4,6,3,5,2,3,5,4,2,4,5,0,0,0,0,0,0]}).draw();
-        l7 = new RGraph.SVG.Line({id: 'cc7',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0]}).draw();
+        l7 = new RGraph.SVG.Line({id: 'cc7',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0]}).draw().responsive([
+            {maxWidth: null,parentCss: {'float': 'right',textAlign:'none'}},
+            {maxWidth: 850,parentCss: {'float':'none',textAlign:'center'}}
+        ])
 
         // Add some text to the smaller charts. Because the smaller charts
         // each have their own SVG tags the coordinates can be the same.
@@ -252,14 +257,16 @@ new RGraph.Bar({
     }
 &lt;/style&gt;
 
-&lt;div style="width: 600px; height: 350px"&gt;
-    &lt;div id="cc1"&gt;&lt;/div&gt;
-    &lt;div id="cc2"&gt;&lt;/div&gt;
-    &lt;div id="cc3"&gt;&lt;/div&gt;
-    &lt;div id="cc4"&gt;&lt;/div&gt;
-    &lt;div id="cc5"&gt;&lt;/div&gt;
-    &lt;div id="cc6"&gt;&lt;/div&gt;
-    &lt;div id="cc7"&gt;&lt;/div&gt;
+&lt;div style="text-align: center"&gt;
+    &lt;div style="width: 600px; height: 350px"&gt;
+        &lt;div id="cc1"&gt;&lt;/div&gt;
+        &lt;div id="cc2"&gt;&lt;/div&gt;
+        &lt;div id="cc3"&gt;&lt;/div&gt;
+        &lt;div id="cc4"&gt;&lt;/div&gt;
+        &lt;div id="cc5"&gt;&lt;/div&gt;
+        &lt;div id="cc6"&gt;&lt;/div&gt;
+        &lt;div id="cc7"&gt;&lt;/div&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 </pre>
 
