@@ -106,11 +106,13 @@
                         marginRight: 40,
                         backgroundGrid: false,
                         xaxisTickmarks: 0,
-                        yaxisTickmarks: 0
+                        xaxisLinewidth: 2,
+                        yaxisTickmarks: 0,
+                        yaxisLinewidth: 2
                     }
                 }).responsive([
-                    {maxWidth: null,width:650,height:250,options:{textSize:16},css:{'float':'right'},parentCss:{'text-align':'none'}},
-                    {maxWidth: 800, width:400,height:150,options:{textSize:12},css:{'float':'none'},parentCss:{'text-align':'center',width:'100%'}}
+                    {maxWidth: null,width:650,height:250,options:{textSize:16},parentCss:{textAlign:'none','float':'right'}},
+                    {maxWidth: 900, width:400,height:150,options:{textSize:12},parentCss:{textAlign:'center','float':'none'}}
                 ]);
             
             // If the chart has already been created then clear the SVG
@@ -169,7 +171,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 650px; height: 250px" id="cc"&gt;&lt;/div&gt;
+&lt;div style="float: right" id="outer-container"&gt;
+    &lt;div style="width: 650px; height: 250px" id="cc"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
