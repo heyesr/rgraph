@@ -32,7 +32,9 @@
     </div>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 350px; height: 350px; background-color: black; border-radius: 5px" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -89,7 +91,10 @@
             data: [100],
             options: {
             }
-        }).draw();
+        }).draw().responsive([
+            {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:700,parentCss:{'float':'none',textAlign:'center'}}
+        ]);
 
         // Create the outer Donut. This chart shows the real values.
         pi1b = new RGraph.SVG.Pie({
@@ -246,7 +251,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 350px; height: 350px; background-color: black; float: right; border-radius: 5px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 350px; height: 350px; background-color: black; border-radius: 5px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
