@@ -22,7 +22,7 @@
 
     <RGRAPH_BASIC_DEMO_HTML>
     <div style="float: right">
-        <div id="cc" style="width: 800px; height: 300px; background-color: black"></div>
+        <div id="cc" style="width: 700px; height: 275px; background-color: black"></div>
         <br />
         <button onclick="toggleSpline()" style="font-size:16pt">Toggle the spline option</button>
     </div>
@@ -62,18 +62,19 @@ Gradient({colors: ["red","white"], gradientUnits: "objectBoundingBox"}) <span>//
             id: 'cc',
             data: [3,3.6,3.2,4.2,3.4,4,3,5,4.1,4.7,4,4.9,3.1],
             options: {
-                linewidth:7,
                 colors: ['white'],
                 filled: true,
                 filledColors: ['Gradient(red:rgba(255,0,0,0.75):rgba(255,0,0,0.35):rgba(0,0,0,0.25))'],
                 backgroundGridColor: '#666',
                 textColor: 'white',
                 yaxisColor: 'gray',
-                xaxisColor: 'gray',
-                xaxisLabels: ['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018'],
-                textSize: 16
+                xaxisColor: 'gray'
             }
-        }).trace();
+        }).trace().responsive([
+            {maxWidth:null,width:700,height:275,options:{linewidth:7,textSize:14,xaxisLabels: ['2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018']},parentCss:{'float':'right',textAlign:'left'}},
+            {maxWidth:800,width:400,height:200,options:{linewidth:5,textSize:10,xaxisLabels: ['`06','`07','`08','`09','`10','`11','`12','`13','`14','`15','`16','`17','`18'],},parentCss:{'float':'none',textAlign:'center'}}
+        
+        ]);
         
         function toggleSpline ()
         {
@@ -98,8 +99,8 @@ Gradient({colors: ["red","white"], gradientUnits: "objectBoundingBox"}) <span>//
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="float: right; width: 800px"&gt;
-    &lt;div id="cc" style="width: 800px; height: 300px; background-color: black"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div id="cc" style="width: 700px; height: 275px; background-color: black"&gt;&lt;/div&gt;
     &lt;br /&gt;
     &lt;button onclick="toggleSpline()" style="font-size:16pt"&gt;Toggle the spline option&lt;/button&gt;
 &lt;/div&gt;
