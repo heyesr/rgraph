@@ -5,6 +5,7 @@
 
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="demos.js" ></script>
     
@@ -26,7 +27,9 @@
     <h1>An SVG Pie chart using Google Sheets</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width: 650px; height: 300px; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 650px; height: 300px" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
@@ -96,13 +99,16 @@
                     labels: labels,
                     colorsStroke: 'white',
                     linewidth: 2,
-                    textSize: 10
+                    textSize: 10,
+                    tooltipsCss: {
+                        fontSize:'16pt'
+                    }
                 }
             
             // Draw the chart and add some responsive accommodation
             }).draw().responsive([
-                {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},css:{'float':'right'}},
-                {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},css: {'float': 'none'}}
+                {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},parentCss:{'float':'right',textAlign:'none'}},
+                {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},parentCss: {'float':'none',textAlign:'center'}}
             ]);
         });
     </script>
@@ -120,7 +126,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
