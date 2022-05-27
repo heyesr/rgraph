@@ -23,8 +23,8 @@
     <h1>A floating Line chart</h1>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div>
-        <div style="width: 600px; height: 250px;float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 600px; height: 250px" id="chart-container"></div>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
 
@@ -101,8 +101,8 @@
         // Animate the chart with the trace() effect and add some responsive capability to
         // accommodate both large and small screens
         }).trace().responsive([
-            {maxWidth:null,width:600,height:250,css:{'float':'right'}},
-            {maxWidth:800, width:450,height:200,css:{'float':'none'},parentCss:{textAlign:'center'}}
+            {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign: 'none'}},
+            {maxWidth:850, width:450,height:200,parentCss:{'float':'none',textAlign:'center'}}
             
         ]);
     </script>
@@ -119,7 +119,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 950px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 600px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
