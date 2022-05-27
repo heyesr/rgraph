@@ -24,8 +24,8 @@
     <h1>A non-equi-angular stacked Rose</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div>
-        <div style="width: 450px; height: 400px; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 450px; height: 400px" id="chart-container"></div>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
@@ -102,8 +102,8 @@
                 tooltipsPointer: false
             }
         }).draw().responsive([
-            {maxWidth: null, width: 450, height: 400, css: {'float': 'right'},parentCss:{textAlign:'none'}},
-            {maxWidth: 750,  width: 350, height: 300, css: {'float': 'none'},parentCss:{textAlign:'center'}}
+            {maxWidth: null, width: 450, height: 400,options:{labelsSize:16},parentCss: {'float': 'right',textAlign:'none'}},
+            {maxWidth: 750,  width: 350, height: 300,options:{labelsSize:12},parentCss: {'float': 'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -120,7 +120,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 600px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 450px; height: 400px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
