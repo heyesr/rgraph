@@ -26,7 +26,9 @@
     <h1>An SVG Line and Bar chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div id="cc" style="width: 600px; height: 250px; float: right"></div>
+    <div style="float: right">
+        <div id="cc" style="width: 600px; height: 250px"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -149,8 +151,8 @@
         
         // Draw the chart and add some responsive capability
         }).draw().responsive([
-            {maxWidth:null,width:600,height:250,css:{'float':'right'}},
-            {maxWidth:900,width:400,height:200,css:{'float':'none'}}
+            {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:900,width:400,height:200,parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
@@ -167,7 +169,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div id="cc" style="width: 700px; height: 250px"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div id="cc" style="width: 600px; height: 250px"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
