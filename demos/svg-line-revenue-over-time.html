@@ -23,7 +23,9 @@
     <h1>A simple SVG Line chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="width:650px; height: 250px; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width:650px; height: 250px" id="chart-container"></div>
+    </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
@@ -70,8 +72,8 @@
                 marginLeft: 75
             }
         }).responsive([
-            {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20},css:{'float':'right'}},
-            {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14},css:{'float':'none'}}
+            {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14},parentCss:{'float':'none',textAlign:'center'}}
         ]).on('draw', function (obj)
         {
             var textsize = obj.get('data-textsize');
@@ -126,7 +128,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 650px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width:650px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
