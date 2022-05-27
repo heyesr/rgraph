@@ -25,8 +25,8 @@
     <h1>A black and gray SVG Line chart</h1>
     
     <RGRAPH_BASIC_DEMO_HTML>
-    <div style="text-align: none">
-        <div style="width: 600px; height: 250px; float: right" id="chart-container"></div>
+    <div style="float: right">
+        <div style="width: 600px; height: 250px" id="chart-container"></div>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
@@ -90,8 +90,8 @@
         
         // Use the trace() animation to show the chart and add some responsive capability
         }).trace().responsive([
-            {maxWidth: null,width:600,height:250,options:{linewidth: 3,tickmarksSize: 6}, css: {'float':'right'}, parentCss: {textAlign:'none'}, options:{xaxisLabelsAngle: 0}},
-            {maxWidth: 700, width:400,height:200,options:{linewidth: 2,tickmarksSize: 5}, css: {'float':'none'}, parentCss: {textAlign:'center'}, options:{xaxisLabelsAngle: 45}}
+            {maxWidth: null,width:600,height:250,parentCss: {'float':'right',textAlign:'none'},options:{xaxisLabelsAngle: 0,linewidth:2,tickmarksSize:6}},
+            {maxWidth: 850, width:400,height:200,parentCss: {'float':'none',textAlign:'center'}, options:{xaxisLabelsAngle: 45,linewidth:2,tickmarksSize:5}}
         ]);
     </script>
 
@@ -107,7 +107,9 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="width: 750px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;div style="float: right"&gt;
+    &lt;div style="width: 600px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
+&lt;/div&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
