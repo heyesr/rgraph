@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
@@ -87,7 +87,8 @@
                 marginLeft: 50,
                 yaxisScaleMax: combinedMax,
                 labelsAbove: true,
-                labelsAboveDecimals: 1
+                labelsAboveDecimals: 1,
+                textAccessible: false
             }
         
         // Here's the adjust event that changes the bars based on the one thats being
@@ -118,8 +119,8 @@
         
         // Add some responsive capability to the chart so it works well on smaller devices
         bar.responsive([
-            {maxWidth: null,width:600,height:300,options: {labelsAboveSize: 14,xaxisLabelsOffsety:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900,width:400,height:200,options: {labelsAboveSize: 10,xaxisLabelsOffsety:5,textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
+            {maxWidth: null,width:600,height:300,options: {labelsAboveSize: 14,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
+            {maxWidth: 900,width:400,height:200,options: {labelsAboveSize: 10,textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
