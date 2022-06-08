@@ -1,5 +1,5 @@
 <!DOCTYPE html > 
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -68,6 +68,8 @@
             id: 'cvs',
             data: [86,75,71,65,60,55,53,51,45],
             options: {
+                textAccessible: false,
+                textSize: 14,
                 backgroundGrid: false,
                 xaxis: false,
                 yaxis: false,
@@ -104,7 +106,8 @@
                     y:      coords[i][1] + (coords[i][3] / 2),
                     valign: 'center',
                     bold:   true,
-                    color:  'white'
+                    color:  'white',
+                    size: obj.get('textSize')
                 });
             }
         }).grow().responsive([
