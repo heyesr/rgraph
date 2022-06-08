@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -73,7 +73,11 @@
                 labelsSticksLength: 15,
                 labelsSticksLinewidth: 2,
                 textAccessible: false,
-                colorsStroke: 'transparent'
+                colorsStroke: 'transparent',
+                teextAccessible: false,
+                tooltipsCss:{
+                    fontSize:'16pt'
+                }
             }
         }).draw().responsive([
             {maxWidth: null,width:600,height:350,options:{radius: 100,labelsList: true, labels:labels,title:'',tooltips:null}},
