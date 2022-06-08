@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -86,6 +86,7 @@
                 // Comic sans MS. This style of font fits well with the
                 // sketchy drawing style.
                 textFont: 'Comic sans MS',
+                textAccessible: false,
 
                 linewidth: 1,
                 backgroundGrid: false,
@@ -93,6 +94,7 @@
                 
                 // The labelsAbove labels serve as the labels for the chart
                 labelsAbove: true,
+                labelsAboveOffsety: 10,
                 labelsAboveSpecific: ['Butterflies', 'Doves', 'Pidgeons', 'Wasps', 'Prisoners', 'The Kraken']
             }
         }).draw().responsive([
