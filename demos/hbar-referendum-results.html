@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -118,12 +118,11 @@ function getTooltip(group)
             id: 'cvs',
             data: [408,242],
             options: {
-                xaxisLabelsSize: 8,
+                xaxisLabelsSize: 10,
                 yaxisLabels: ['Leave','Remain'],
-                marginTop: 50,
+                marginTop: 70,
                 xaxis: false,
                 yaxisColor: '#ccc',
-                textColor: '#666',
                 backgroundGridBorder: false,
                 backgroundGridHlines: false,
                 backgroundGridVlinesCount: 18,
@@ -143,7 +142,9 @@ function getTooltip(group)
                 titleBold: true,
                 titleY: '-10',
                 titleHalign: 'center',
-                titleColor: 'gray'
+                titleColor: 'gray',
+                
+                textAccessible: false
             }
 
         // Use the grow() animation effect
