@@ -1,5 +1,5 @@
-<!DOCTYPE html >
-<html lang="en">
+    <!DOCTYPE html >
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -72,10 +72,11 @@
             data: [8,6,4,8,9,5,3,2,5],
             options: {
                 adjustable: true,
-                xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John']
+                xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John'],
+                textAccessible: false
             }
         }).draw().responsive([
-            {maxWidth: null,width: 600,height: 250,options:{textSize:10},parentCss: {'float':'right'}},
+            {maxWidth: null,width: 600,height: 250,options:{textSize:14},parentCss: {'float':'right'}},
             {maxWidth: 800,width: 350,height: 200,options:{textSize:10},parentCss: {'float':'none', textAlign: 'center'}}
         ]);
     </script>
