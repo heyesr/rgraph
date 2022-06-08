@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -73,7 +73,7 @@
                 [10 - 10, 10]
             ],
             options: {
-                marginRight: 75,
+                marginRight: 80,
                 colors: ['#ddd', 'green'],
                 
                 // Add the green labelsAbove. One above label is possible
@@ -107,7 +107,9 @@
                 titleHalign: 'left',
                 titleX: 50,
                 titleY: '+25',
-                titleBold: true
+                titleBold: true,
+                
+                textAccessible: false
             }
         }).draw().exec(function (obj)
         {
