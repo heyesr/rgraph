@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -100,7 +100,7 @@ new RGraph.Sheets(
                     // spreadsheet that acts as the X-axis labels on the chart
                     xaxisLabels: sheet.get('B1:M1'),
 
-                    xaxisLabelsOffsety: 10,
+                    xaxisLabelsOffsety: 5,
                     colors: ['#f66'],
                     shadowOffsetx: 2,
                     shadowOffsety: 2,
@@ -109,7 +109,7 @@ new RGraph.Sheets(
                     yaxis: false,
                     backgroundGridVlines: false,
                     backgroundGridBorder: false,
-                    textSize: 10,
+                    textAccessible: false,
                     marginLeft: 35,
                     marginInner: 10,
                     spline: true
@@ -118,8 +118,8 @@ new RGraph.Sheets(
             // Animate the chart using the trace() effect and add some responsive capability
             // to accommodate smaller screens
             }).trace().responsive([
-                {maxWidth: null,width:600,height:250},
-                {maxWidth: 900,width:400,height:200}
+                {maxWidth: null,width:600,height:250,options:{textSize: 12}},
+                {maxWidth: 900,width:400,height:200,options:{textSize: 10}}
             ]);;
         });
     </script>
