@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -74,7 +74,8 @@
                 data: data,
                 options: {
                     yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                    marginLeft: 95
+                    marginLeft: 95,
+                    textAccessible: false
                 }
             }).draw().responsive([
                 {maxWidth: null,parentCss:{'float':'right',textAlign:'none'}},
