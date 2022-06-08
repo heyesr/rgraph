@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -128,7 +128,8 @@
                 marginTop: 15,
                 marginBottom: 15,
                 marginLeft: 40,
-                marginRight: 15
+                marginRight: 15,
+                textAccessible: false
             }
         }).trace({frames: frms}, drawChart2);
 
@@ -154,17 +155,19 @@
                     backgroundGrid: false,
                     xaxis: false,
                     yaxis: false,
+                    yaxisScaleMax: 35,
+                    yaxisScale: false,
                     
                     // Set the colors so that we can only see the second dataset
                     filledColors: ['transparent', colorsFill[1], 'transparent'],
                     
                     spline: true,
                     filled: true,
-                    yaxisScaleMax: 35,
                     marginTop: 15,
                     marginBottom: 15,
                     marginLeft: 40,
-                    marginRight: 15
+                    marginRight: 15,
+                    textAccessible: false
                 }
             }).trace({frames: frms}, drawChart3);
         }
@@ -188,17 +191,19 @@
                     backgroundGrid: false,
                     xaxis: false,
                     yaxis: false,
+                    yaxisScaleMax: 35,
+                    yaxisScale: false,
                     
                     // Set the colors so that we can only see the third dataset
                     filledColors: ['transparent', 'transparent', colorsFill[2]],
                     
                     spline: true,
                     filled: true,
-                    yaxisScaleMax: 35,
                     marginTop: 15,
                     marginBottom: 15,
                     marginLeft: 40,
-                    marginRight: 15
+                    marginRight: 15,
+                    textAccessible: false
                 }
             // Add the responsive function after the last chart has finished animating
             }).trace({frames: frms});
