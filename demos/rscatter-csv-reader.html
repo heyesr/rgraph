@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -106,11 +106,12 @@ console.log(arr);
                 id: 'cvs',
                 data: data,
                 options: {
+                    textAccessible: false,
                     labelsAxes: 'n',
-                    marginTop: 5,
-                    marginBottom: 5,
-                    marginLeft: 5,
-                    marginRight: 5
+                    marginTop: 15,
+                    marginBottom: 15,
+                    marginLeft: 15,
+                    marginRight: 15
                 }
             }).draw().responsive([
                 {maxWidth:null,width:500,height:450,parentCss:{'float':'right',textAlign:'none'}},
