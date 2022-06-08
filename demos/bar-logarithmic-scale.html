@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -84,14 +84,16 @@
                 xaxisLabels: ['Pob','Libby','June','Hoolio','Jane','Daz','Luis','John'],
                 xaxisTickmarksCount: 8,
                 marginLeft: 95,
+                marginBottom: 45,
                 backgroundGridHlinesCount: 6,
                 backgroundGridVlinesCount: 7,
                 colorsStroke: 'transparent',
-                shadow: false
+                shadow: false,
+                textAccessible: false
             }
         }).draw().responsive([
             {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:5,xaxisLabelsAngle:45,textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
+            {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{'float':'none',textAlign:'center'}}
         ]);
     </script>
 
