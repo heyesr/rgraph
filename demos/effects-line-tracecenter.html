@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -90,7 +90,8 @@
                 filled: true,
                 colors: ['Gradient(#fcc:red)'],
                 yaxisScaleMax: 35,
-                xaxisLabels:['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00']
+                xaxisLabels:['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm'],
+                textAccessible: false
             }
         }).trace(null, function ()
         {
@@ -118,7 +119,9 @@
                     colors: ['transparent', 'Gradient(white:green)'],
                     spline: true,
                     filled: true,
-                    yaxisScaleMax: 35
+                    yaxisScaleMax: 35,
+                    yaxisScale: false,
+                    textAccessible: false
                 }
             }).trace(null, function ()
             {
@@ -147,7 +150,9 @@
                         colors: ['transparent', 'transparent', 'Gradient(white:blue)'],
                         spline: true,
                         filled: true,
-                        yaxisScaleMax: 35
+                        yaxisScaleMax: 35,
+                        yaxisScale: false,
+                        textAccessible: false
                     }
                 }).trace();
             });
@@ -156,8 +161,8 @@
         // Add some responsiveness to the charts. This is added to the first chart but since all three
         // are being drawn on the same canvas it doesn't need to be added to each chart object.
         l1.responsive([
-            {maxWidth:null,width: 600,height:250,options:{textSize: 10},parentCss:{'float':'right', textAlign: 'none'}},
-            {maxWidth:900, width: 400,height:200,options:{textSize: 8},parentCss:{'float':'none', textAlign: 'center'}}
+            {maxWidth:null,width: 600,height:250,options:{textSize: 14},parentCss:{'float':'right', textAlign: 'none'}},
+            {maxWidth:900, width: 400,height:200,options:{textSize: 10},parentCss:{'float':'none', textAlign: 'center'}}
         ]);
     </script>
 
