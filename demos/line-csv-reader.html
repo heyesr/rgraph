@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
@@ -88,10 +88,11 @@
                     backgroundGridVlines: false,
                     xaxis: false,
                     yaxis: false,
+                    textAccessible: false
                 }
             }).draw().responsive([
-                {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
-                {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 45,textSize: 10},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
+                {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12,marginLeft: 35},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
+                {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 20,textSize: 10,marginLeft: 45},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
             ]);
         });
     </script>
