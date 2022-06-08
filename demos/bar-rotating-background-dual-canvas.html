@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
@@ -105,6 +105,10 @@
             id: 'cvs_foreground',
             data: data,
             options: {
+                marginTop: 15,
+                marginLeft: 15,
+                marginRRight: 15,
+                marginBottom: 15,
                 xaxisLinewidth: 3,
                 xaxisTickmarksCount: 0,
                 yaxis: false,
@@ -123,13 +127,13 @@
                 labelsAboveBold: true,
                 labelsAboveItalic: true,
                 labelsAboveOffsetx: -2,
-                textAccessiblePointerevents: false
+                textAccessible: false
             }
         // The responsive function for this chart, because it has the StarBurst behind it,
         // is quite large
         }).wave().responsive([
-            {maxWidth: null,width: 650,height: 250,options: {marginInner:25,labelsAboveSize: 10,labelsAboveOffsety: -35},callback: function (){sb.canvas.width = 650,sb.canvas.height = 250;sb.set('centerx', 200);sb.set('centery', 50);document.getElementById('cvs_foreground').parentNode.parentNode.style.width = '650px';document.getElementById('cvs_foreground').parentNode.parentNode.style.height = '250px';RGraph.redraw();}},
-            {maxWidth: 900,width: 400,height: 150,options: {marginInner:10, labelsAboveSize:7, labelsAboveOffsety:-25},callback: function (){sb.canvas.width = 400,sb.canvas.height = 150;sb.set('centerx', 150);sb.set('centery', 30);document.getElementById('cvs_foreground').parentNode.parentNode.style.width = '400px';document.getElementById('cvs_foreground').parentNode.parentNode.style.height = '150px';document.getElementById('cvs_foreground').__object__.draw();}}
+            {maxWidth: null,width: 650,height: 250,options: {marginInner:25,labelsAboveSize: 10,labelsAboveOffsety: -35},callback: function (){sb.canvas.width = 650,sb.canvas.height = 250;sb.set('centerx', 200);sb.set('centery', 50);document.getElementById('cvs_foreground').parentNode.style.width = '650px';document.getElementById('cvs_foreground').parentNode.style.height = '250px';RGraph.redraw();}},
+            {maxWidth: 900,width: 400,height: 150,options: {marginInner:10, labelsAboveSize:7, labelsAboveOffsety:-25},callback: function (){sb.canvas.width = 400,sb.canvas.height = 150;sb.set('centerx', 150);sb.set('centery', 30);document.getElementById('cvs_foreground').parentNode.style.width = '400px';document.getElementById('cvs_foreground').parentNode.style.height = '150px';document.getElementById('cvs_foreground').__object__.draw();}}
         ]);
     </script>
 
