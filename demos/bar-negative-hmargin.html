@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
@@ -26,8 +26,8 @@
     <h1>Negative horizontal margin on a Bar chart</h1>
 
     
-    <div style="padding: 25px; display: inline-block; margin:20px">
-        <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
+    <div style="padding: 25px; display: block; margin:20px; text-align:center">
+        <canvas id="cvs" width="650" height="250" !style="border: 1px solid gray">[No canvas support]</canvas>
     </div>
 
     <p>
@@ -57,16 +57,22 @@
 
 
     <script id="rgraph-demo-source-code">
-        marginLeft = 25;
+        marginLeft   = 55;
+        marginBottom = 35;
+        marginRight  = 75;
+        marginTop    = 45;
+        
+        canvas = document.getElementById('cvs');
 
         // Draw the Y-axis that's positioned on the right-hand-side. It's colored
         // red so that it matches the color of the Line and it's therefore easier
         // to read the chart.
         axes = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 625,
+            x: canvas.width - marginRight,
             options: {
                 textSize: 16,
+                textAccessible: false,
                 yaxisScaleMax: 10,
                 yaxisPosition: 'right',
 
@@ -83,19 +89,22 @@
                 yaxisColor: 'red',
                 yaxisLinewidth: 3,
                 yaxisTickmarksLength: 5,
-                marginBottom: 5,
-                marginLeft:marginLeft
+                marginBottom: marginBottom
             }
         }).draw();
-        
+
+
+
+
         // Create the Y-axis that appears on the left-hand-side of the chart. It
         // has a different scale to the other Y-axis. It's colored gray so that
         // it's easier to tally with the correct Line and Bars.
         axes2 = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 25,
+            x: marginLeft,
             options: {
                 textSize: 16,
+                textAccessible: false,
                 yaxisScaleMax: 20,
                 
                 // This is not just a normal space character - it comes from
@@ -110,9 +119,13 @@
                 yaxisColor: 'gray',
                 yaxisLinewidth: 3,
                 yaxisTickmarksLength: 5,
-                marginBottom: 5
+                marginBottom: marginBottom,
+                marginTop: marginTop,
             }
         }).draw();
+
+
+
 
         // Create the Bar chart. The marginInnerGrouped setting is set to
         // -15 and this is what gives the chart the overlapping appearance.
@@ -120,8 +133,11 @@
             id: 'cvs',
             data: [[4,8],[6,5],[5,4],[1,9],[4,8],[8,6]],
             options: {
-                marginBottom: 5,
+                textAccessible: false,
+                marginBottom: marginBottom,
                 marginLeft:marginLeft,
+                marginRight:marginRight,
+                marginTop:marginTop,
                 colors: ['red','gray'],
                 backgroundGrid: false,
                 yaxisScale: false,
@@ -131,8 +147,8 @@
                 yaxisScaleUnitsPost: '%'
             }
         }).wave({frames: 30}).responsive([
-            {maxWidth: null, width: 650, height: 250, options: {xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback: function () {axes.x = 625;axes.set('textSize', 16);axes.set('linewidth', 2);axes2.set('textSize', 16);axes2.set('linewidth', 2);axes2.canvas.parentNode.parentNode.style.cssFloat = 'right';axes.x = 625;}},
-            {maxWidth: 900,width: 300,height: 150,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],marginInnerGrouped: -5,marginInner: 15,textSize: 8},callback: function () {axes.x = 315;axes.set('textSize', 8);axes.set('linewidth', 2);axes2.set('textSize', 8);axes2.set('linewidth', 2);axes2.canvas.parentNode.parentNode.style.cssFloat = 'none';axes.x = 270;}}
+            {maxWidth: null, width: 650, height: 250, options: {xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
+            {maxWidth: 750,width: 450,height: 250,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],marginInnerGrouped: -5,marginInner: 15,textSize: 12}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}}
         ]);
 
 
@@ -155,7 +171,10 @@
                 shadow: false,
                 linewidth: 5,
                 marginLeft:marginLeft, 
-                marginBottom: 5,
+                marginBottom: marginBottom,
+                marginLeft:marginLeft,
+                marginRight:marginRight,
+                marginTop:marginTop,
                 xaxis: false,
                 yaxis: false,
                 yaxisLabels: false,
@@ -165,7 +184,7 @@
             }
         }).trace().responsive([
             {maxWidth: null, options: {linewidth: 5,tickmarksSize: 7,marginInner: 55}},
-            {maxWidth: 900, options: {linewidth: 3,tickmarksSize: 3,marginInner: 30}}
+            {maxWidth: 750, options: {linewidth: 3,tickmarksSize: 3,marginInner: 30}}
         ]);
     </script>
 
