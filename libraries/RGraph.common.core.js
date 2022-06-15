@@ -7773,28 +7773,29 @@
                             tag:    'xaxis.labels'
                         });
                 }
-                
-                
-
-                //
-                // Draw the minimum label
-                //
-                var str = ((properties.xaxisScaleUnitsPre || '') + (properties.xaxisScaleMin || 0).toFixed(properties.xaxisScaleDecimals).replace(/\./, properties.xaxisScalePoint) + (properties.xaxisScaleUnitsPost || ''));
-                str     = str.replace(/^(.+)-(\d)/, '-$1$2');
-
-                RGraph.text({
-                  object:   obj,
-          textConfPrefix:   'xaxisLabels',
-                    x:      properties.yaxisPosition === 'right' ? obj.canvas.width - properties.marginRight + properties.xaxisLabelsOffsetx : (properties.yaxisPosition === 'center' ? obj.getXCoord(0) + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx),
-                    y:      y,
-                    text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: 0}) : str,
-                    valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign)),
-                    halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
-                    marker: false,
-                    angle:  angle,
-                    tag:    'xaxis.labels'
-                });
             }
+
+
+
+
+            //
+            // Draw the minimum label
+            //
+            var str = ((properties.xaxisScaleUnitsPre || '') + (properties.xaxisScaleMin || 0).toFixed(properties.xaxisScaleDecimals).replace(/\./, properties.xaxisScalePoint) + (properties.xaxisScaleUnitsPost || ''));
+            str     = str.replace(/^(.+)-(\d)/, '-$1$2');
+
+            RGraph.text({
+              object:   obj,
+      textConfPrefix:   'xaxisLabels',
+                x:      properties.yaxisPosition === 'right' ? obj.canvas.width - properties.marginRight + properties.xaxisLabelsOffsetx : (properties.yaxisPosition === 'center' ? obj.getXCoord(0) + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx),
+                y:      y,
+                text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: 0}) : str,
+                valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign)),
+                halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
+                marker: false,
+                angle:  angle,
+                tag:    'xaxis.labels'
+            });
 
         } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
 
