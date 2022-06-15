@@ -858,14 +858,16 @@
         var pointerObj = document.getElementById('RGraph_tooltipsPointer');
         var styles     = window.getComputedStyle(tooltipObj, false);
 
-        pointerObj.style.backgroundColor = styles.backgroundColor;
-        pointerObj.style.color           = 'transparent';
-        pointerObj.style.position        = 'absolute';
-        pointerObj.style.bottom          = '-5px';
-        pointerObj.style.left            = '50%';
-        pointerObj.style.transform       = 'translateX(-50%) rotate(45deg)';
-        pointerObj.style.width           = '10px';
-        pointerObj.style.height          = '10px';
+        if (pointerObj) {
+            pointerObj.style.backgroundColor = styles.backgroundColor;
+            pointerObj.style.color           = 'transparent';
+            pointerObj.style.position        = 'absolute';
+            pointerObj.style.bottom          = '-5px';
+            pointerObj.style.left            = '50%';
+            pointerObj.style.transform       = 'translateX(-50%) rotate(45deg)';
+            pointerObj.style.width           = '10px';
+            pointerObj.style.height          = '10px';
+        }
     }, 16.666);
 
         if (typeof args.index === 'number') {
