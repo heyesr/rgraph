@@ -9225,6 +9225,7 @@
 
         if (typeof args.dimensions === 'string') {
             if (args.dimensions === 'tophalf') {
+
                 args.object.path(
                     'sa b r % % % % cl',
                     0,
