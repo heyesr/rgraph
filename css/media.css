@@ -1,0 +1,68 @@
+@media screen and (max-width: 1100px) {
+h1{font-size:2.5em;}
+h2{font-size:2em;}
+h3{font-size:1.5em;}
+img#github-share{display:none;}
+}
+@media only screen and (max-width: 950px) {#sidebar-background-images-first,#sidebar-background-images-second,#sidebar-background-images-third,#sidebar-background-images-fourth,#sidebar-background-images-fifth{background-attachment:scroll;}}
+
+@media screen and (max-width: 1000px){
+
+p#floated-para{display:none;}
+
+body{line-height:45px;font-size:1.3em;}
+
+div#navigation-top-bar-links{display:none;}
+a#navigation-top-bar-link{display: none;}
+img#navigation-top-bar-hamburger{display:inline;}
+div#navigation-icons-images{display:none;}
+
+#aboutpage img#author-photo{display:none;}
+#aboutpage img#author-photo-smallscreen{display:inline!important;}
+
+div.api-properties-large-screen,table.api-properties-large-screen{display:none;}
+div.api-properties-small-screen{display:block;}
+div.api-properties-small-screen b{font-style:italic;}
+div#social-sharing-left-fixed-container{display:none;}
+
+div#main-body-container{margin-left:0;margin-right:0;}
+div#main-body-container img#front-page-how-do-i{display:none;}
+}
+@media screen and (max-width: 875px){
+br#front-page-import-methods-break{display:inline !important;}
+}
+@media screen and (min-width: 700px){
+#advantages-smallscreen{display:none;}
+#advantages-largescreen{display:inline;}
+}
+@media screen and (max-width: 700px) {
+#advantages-smallscreen{display:inline;}
+#advantages-largescreen{display:none;}
+}
+
+
+@media screen and (max-width: 650px) {
+#header-image {display: none;}
+#advantages-purple-box{background-color:white !important;}
+}
+@media screen and (max-width: 600px){
+div#frontpage-latest-version-large{display:none;}
+}
+@media screen and (max-width: 600px){
+.news-item-images{margin-right:none;float:none;}
+}
+
+@media screen and (max-width: 500px){
+#aboutpage img#author-photo-smallscreen{display:none!important;}
+#aboutpage img#rgraph-logo {float:none !important;}
+#aboutpage img#html5-logo {float:none !important;}
+
+}
+@media screen and (max-width: 450px){
+img#front-page-rgraph-logo-text{display:none;}
+img#front-page-rgraph-logo-text-small{display:inline !important;}
+}
+@media screen and (max-width: 400px){
+}
+@media screen and (max-width: 350px){
+}

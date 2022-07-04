@@ -39,6 +39,11 @@ td.chart{text-align:center;}
 
 .example_boxout{background-color:#eee;padding:3px;border:1px solid #aaa;}
 
+#advantages-purple-box-container{text-align:center}
+#advantages-purple-box{background-color:#cccdfe;color:#333;z-index:997; max-width:1000px;padding:15px;margin-left:auto;margin-right:auto}
+
+#examples-container{margin-left:auto;margin-right:auto;text-align:center;max-width:1000px}
+
 div.list-item{width:220px;display:inline-block;}
 div.list-item.label{width:170px;}
 
@@ -94,7 +99,33 @@ footer div#footer ul li:nth-child(1){list-style-image: none; position: relative;
 footer div#footer a{font-size:90%;color:#ddd;text-decoration:none;font-style:normal;font-weight:normal;}
 footer div#footer a:hover{color:#fff;}
 
-div#front-page-download-buttons{display:inline-block;text-align:center;font-weight: bold;font-style:italic;}
+ul#demopage-screenshots li{display:inline;}
+
+div#front-page-heading h1{font-size:2.25em;margin:10px 0 10px 0;}
+div#front-page-heading h1 span{font-family:Arial;}
+div#front-page-heading span#subheading{color:#aaa;font-style:italic;}
+div#easily-connect-to-and-import-your-data-container > div{display:flex;flex-wrap:wrap;justify-content:center;margin: 0 auto 0 auto;text-align:center;max-width:900px}
+div#front-page-background-banner{padding:25px;position:relative;}
+div#front-page-header-text{position:relative;z-index:1;font-size:1.25em}
+div#front-page-header-text div:first-child{margin-left:auto;margin-right:auto;max-width:1000px;}
+img#front-page-chart-image{margin-top:50px;}
+
+
+ul#front-page-data-import-tools-list{display:inline;margin:0;padding:0;}
+ul#front-page-data-import-tools-list li{display:inline;margin:0;padding:0;}
+ul#front-page-data-import-tools-list li > div{width:32%;min-width:240px;text-align:center;display:inline-block;margin-top:20px;}
+ul#front-page-data-import-tools-list li img{background-image:url(/images/sprite.png)}
+ul#front-page-data-import-tools-list li > div div{min-height:75px;line-height:20px!important}
+
+ul#front-page-howto-guide-examples{display:inline;margin:0;padding:0;}
+ul#front-page-howto-guide-examples li{display:inline;margin:0;padding:0;}
+ul#front-page-howto-guide-examples li > a > div{margin-top:20px;margin-bottom:10px;margin-left:10px;margin-right:10px;display:inline-block;width:250px;text-align:center}
+ul#front-page-howto-guide-examples li > a > div > img{border: 1px solid #eee; transition: transform .25s}
+
+div#front-page-download-buttons{display:inline-block;font-weight:bold;font-style:italic;text-align:left;}
+div#front-page-download-buttons div:first-child{display:inline-block;}
+div#front-page-download-buttons ul{margin:0;padding-left:0;}
+div#front-page-download-buttons ul li{display:inline;}
 div#front-page-download-buttons span#download-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:-10px 10px 10px 10px;background-image:linear-gradient(225deg,#8AD092,#0a0);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-setup-introduction-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#FF5757,#f66);transition:transform linear .25s;width:200px;box-shadow:1px 1px 3px gray;}
 div#front-page-download-buttons span#front-page-setup-donate-button{display:inline-block;padding:15px;border-radius:20px;color:white;z-index:1;position:relative;margin:10px 10px 10px 10px;background-image:linear-gradient(225deg,#36A2EB,#66f);transition:transform linear .25s;width:150px;box-shadow:1px 1px 3px gray;}
@@ -108,6 +139,15 @@ div#front-page-download-buttons span#download-button:hover,
 div#front-page-download-buttons span#front-page-setup-donate-button:hover,
 div#front-page-download-buttons span#front-page-setup-introduction-button:hover{transform:scale(1.05);}
     
+div#front-page-50-howto-guides-container {max-width:1000px;margin-left:auto;margin-right:auto}
+div#front-page-50-howto-guides-container p#floated-para{float:left;shape-outside:circle(50%);width:230px;height:300px;margin:10px;overflow:hidden;padding-right:120px;}
+div#front-page-50-howto-guides-container p#floated-para img{float:left;}
+div#front-page-50-howto-guides-container div#ygyufjyu{margin:0 auto 0 auto;text-align:left;display:inline-block;width:100%;}
+div#front-page-50-howto-guides-container div#bjfdtr{text-align:center;}
+div#front-page-50-howto-guides-container div#ugyufybgjgvffdhyhd{text-align:center;max-width:900px;display:inline-block;}
+
+ul#front-page-advantages-list{float:left;list-style-image:url(/images/tick-large.png);}
+
 span#download-button,span.front-page-setup-documentation-button,span#front-page-setup-introduction-button{display:inline-block;z-index:1;position:relative;margin:25px;text-align:center;padding:15px;border-radius:20px;color:#666;}
 span#download-button{background-color: #afa;}
 
@@ -140,10 +180,14 @@ ul.dropdown-menu-smallscreen li a{color:white;text-decoration:none;font-style:no
 img#navigation-top-bar-hamburger{display:none;white-space:nowrap;}
 div#navigation-top-bar{position:fixed;left:0;top:0;z-index:1000;width:100%;line-height:25px;box-shadow: 0px 0px 3px 2px #999;}
 div#navigation-top-bar-image{background-color:black;z-index:5;overflow:hidden;padding:0;height:55px;}
+
 div#navigation-top-bar-links a{color:white;text-decoration:none;font-style:normal;font-family:Segoe UI,sans-serif;text-align:center;font-size:.8em;width:8%;display:inline-block;padding-top:4px;}
 div#navigation-top-bar-links a span{display:inline-block;border-bottom:3px solid #999;line-height:25px;transform:translateY(7px);}
 div#navigation-top-bar-links a span::after{display:block;position:relative;top:3px;content:'';border-bottom:solid 3px #ddd;transform:scaleX(0);transition:transform .25s ease-in-out;}
 div#navigation-top-bar-links a span:hover::after{transform:scaleX(1);}
+div#navigation-top-bar-links ul{margin: 0}
+div#navigation-top-bar-links ul li{display:inline;}
+
 img#navigation-top-bar-hamburger{position:absolute;top:0;right:45px;z-index:5;background-image:url(/images/navigation-icons/small/icons-combined.png);background-position: -146px -125px;cursor:pointer;}
 img#navigation-top-bar-logo{float:left;margin-top:2px;}
 #navigation-top-bar a {font-weight:bold;}
@@ -155,6 +199,8 @@ img#navigation-top-bar-logo{float:left;margin-top:2px;}
 #download-page-poster-image-container{display:inline-block;z-index:-1;opacity:.2;float:right;position:relative;width:670px;height:300px}
 #download-page-poster-image-container img{position:absolute;top:0;left:0}
 #download-page-poster-image-container div{position:absolute;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(90deg,white,rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0),rgba(255,255,255,0))}
+
+ul#dropdown-menu-smallscreen-social-container li {display: inline}
 
 img#facebook-share{background:url(/images/sprite.png) -429px -82px;position:absolute;top:5px;left:calc(64% + 295px);transition:transform .5s ease-out;}
 img#twitter-share{background:url(/images/sprite.png) -432px -48px;position:absolute;top:8px;left:calc(64% + 320px);transition:transform .5s ease-out;}
@@ -183,9 +229,13 @@ ul#advantages-list li{background: url(/images/tick-black.png) no-repeat 0 0;padd
 #back-to-top {transition: transform .25s ease-out;}
 #back-to-top:hover {transform:scale(1.1);}
 
-#infobox-container{text-align:center;display:flex;justify-content:center;flex-wrap:wrap;}
-#infobox-container div{max-width: 250px; text-align: center;margin: 0 0 20px 0}
-#infobox-container div span {font-weight:bold;}
+div#infobox-container{text-align:center;display:flex;justify-content:center;flex-wrap:wrap;}
+div#infobox-container div{max-width: 250px; text-align: center;margin: 0 0 20px 0}
+div#infobox-container div  span {font-weight:bold;}
+div#infobox-container ul{display:inline;margin:0;padding:0;}
+div#infobox-container ul li{display:inline;margin:0;padding:0;}
+div#infobox-container ul li div{display:inline-block;}
+div#infobox-container ul li div div{line-height:20px;}
 
 div#front-page-download-buttons{margin-top: 20px;}
 
