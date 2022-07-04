@@ -57,7 +57,7 @@
 
 
     <script id="rgraph-demo-source-code">
-        marginLeft   = 55;
+        marginLeft   = 75;
         marginBottom = 35;
         marginRight  = 75;
         marginTop    = 45;
@@ -144,11 +144,12 @@
                 xaxis: false,
                 yaxis: false,
                 yaxisScaleMax: 20,
-                yaxisScaleUnitsPost: '%'
+                yaxisScaleUnitsPost: '%',
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat']
             }
         }).wave({frames: 30}).responsive([
-            {maxWidth: null, width: 650, height: 250, options: {xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
-            {maxWidth: 750,width: 450,height: 250,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],marginInnerGrouped: -5,marginInner: 15,textSize: 12}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}}
+            {maxWidth: null, width: 650, height: 250, options: {marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
+            {maxWidth: 750,width: 450,height: 250,options: {marginInnerGrouped: -5,marginInner: 15,textSize: 12}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}}
         ]);
 
 
