@@ -28,7 +28,7 @@
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
 
     <script>
-        line = new RGraph.Line({
+        new RGraph.Line({
             id:'cvs',
             data: [
                 [4,5,8,7,6,4,3],
@@ -47,7 +47,7 @@
                 backgroundGridBorder: false,
                 xaxis: false,
                 yaxis: false,
-                xaxisLabels: ['Kev','Matt','Rich','Dave','Iggy','Polly','Fiona'],
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 marginBottom: 35,
                 linewidth: 2,
                 shadow: true,
@@ -58,7 +58,7 @@
                 tickmarksStyle: 'endcircle',
                 tickmarksSize: 5,
                 textAccessible: false,
-                key: ['Richard','Bertie','Charlie'],
+                key: ['Bob','David','Gary'],
                 keyBackground: 'white'
             }
         }).draw().on('tooltip', function (obj)
