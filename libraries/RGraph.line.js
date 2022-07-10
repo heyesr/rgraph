@@ -3792,25 +3792,47 @@
                         if (    e.type === 'click'
                             || (e.type === 'mousemove' && obj.properties.tooltipsDatasetEvent === 'mousemove' && (!RGraph.Registry.get('tooltip') || i != RGraph.Registry.get('tooltip').__dataset__))
                            ) {
-                            
+
                             RGraph.hideTooltip();
                             RGraph.redraw();
+                            
+                            // Set the tooltip positioning
+                            obj.set('tooltipsPositionStatic', false);
+                            obj.set('tooltipsEffect', 'fade');
+
+                            // Add the dataset index to the object
+                            obj.tooltipsDatasetIndex = i;
 
                             RGraph.tooltip({
                                 object: obj,
                                 text: typeof obj.properties.tooltipsDataset === 'string'
                                           ? obj.properties.tooltipsDataset
                                           : obj.properties.tooltipsDataset[i],
-                                x: mouseXY[0],
-                                y: mouseXY[1],
+                                x: 0,
+                                y: 0,
                                 index: i,
                                 event: e
                             });
+
+
+
+
+                            //
+                            // Position the tooltip
+                            //
+                            var x        = obj.coords2[i][Math.floor(obj.coords2[i].length / 2)][0],
+                                y        = obj.coords2[i][Math.floor(obj.coords2[i].length / 2)][1],
+                                canvasXY = RGraph.getCanvasXY(obj.canvas),
+                                tooltip  = RGraph.Registry.get('tooltip'),
+                                width    = tooltip.offsetWidth,
+                                height   = tooltip.offsetHeight;
                             
-                            RGraph.Registry.get('tooltip').__index__   = 0;
-                            RGraph.Registry.get('tooltip').__index2__  = 0;
-                            RGraph.Registry.get('tooltip').__dataset__ = i;
-                            
+                            tooltip.style.left = (canvasXY[0] + x - (width / 2)) + 'px';
+                            tooltip.style.top  = (canvasXY[1] + y - height - 20) + 'px';
+
+
+
+
                             // Highlight the dataset.
                             // Start a path and redraw the line
                             var path = 'b lw %1 m %2 %3'.format(
@@ -3847,7 +3869,7 @@
                         obj.canvas.style.cursor = 'default';
                     }
                 }
-                
+
                 e.stopPropagation();
             };
             
