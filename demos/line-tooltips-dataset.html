@@ -4,6 +4,7 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
+
     <script src="demos.js" ></script>
     
     <title>RGraph demo: A Line chart with dataset tooltips</title>
@@ -34,16 +35,18 @@
                 [8,4,6,5,9,9,8]
             ],
             options: {
+
                 tooltipsDataset: '<span style="font-style: italic">Results for <b>%{property:names[%{dataset}]}</b>:</span><br /><span style="font-size: 30pt">%{property:values[%{dataset}]}%</span>',
+
                 values: [58.3,42.5,62.7],
                 names: ['Bob','David','Gary'],
-                tooltipsPointer: false,
-                tooltipsPositionStatic: false,
+                
+                //tooltipsPointer: false,
                 tooltipsCss: {
-                    fontSize: '16pt',
-                    backgroundColor: 'rgba(255,255,255,0.85)',
-                    border: '5px solid %{property:colors[%{dataset}]}',
-                    color: 'black'
+                    //fontSize: '16pt',
+                    //backgroundColor: 'rgba(255,255,255,0.85)',
+                    //border: '5px solid %{property:colors[%{dataset}]}',
+                    //color: 'black'
                 },
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
@@ -58,9 +61,16 @@
                 titleSize: 16,
                 spline: true,
                 tickmarksStyle: 'endcircle',
-                tickmarksSize: 5
+                tickmarksSize: 5,
+                textAccessible: false
             }
-        }).draw();
+        }).draw().on('tooltip', function (obj)
+        {
+            // You can get the dataset index by using this
+            // property:
+            //
+            //alert('Dataset index: ' + index)
+        });
     </script>
 
 
