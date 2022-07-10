@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
 
@@ -35,19 +36,13 @@
                 [8,4,6,5,9,9,8]
             ],
             options: {
-
-                tooltipsDataset: '<span style="font-style: italic">Results for <b>%{property:names[%{dataset}]}</b>:</span><br /><span style="font-size: 30pt">%{property:values[%{dataset}]}%</span>',
-
+                
+                // Some custom properties that are used in the
+                // tooltips
                 values: [58.3,42.5,62.7],
                 names: ['Bob','David','Gary'],
                 
-                //tooltipsPointer: false,
-                tooltipsCss: {
-                    //fontSize: '16pt',
-                    //backgroundColor: 'rgba(255,255,255,0.85)',
-                    //border: '5px solid %{property:colors[%{dataset}]}',
-                    //color: 'black'
-                },
+                tooltipsDataset: '<span style="font-style: italic">Results for <b>%{property:names[%{dataset}]}</b>:</span><br /><span style="font-size: 30pt">%{property:values[%{dataset}]}%</span>',
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
@@ -62,14 +57,34 @@
                 spline: true,
                 tickmarksStyle: 'endcircle',
                 tickmarksSize: 5,
-                textAccessible: false
+                textAccessible: false,
+                key: ['Richard','Bertie','Charlie'],
+                keyBackground: 'white'
             }
         }).draw().on('tooltip', function (obj)
         {
-            // You can get the dataset index by using this
-            // property:
             //
-            //alert('Dataset index: ' + index)
+            // You can get the dataset index and the coordinates
+            // of the key entry by using these properties. This
+            // also fetches the appropriate color from the RGraph
+            // object properties (using the index).
+            //
+            // If you're not bothered about highlighting the key
+            // then you can omit this entire ontooltip event
+            //
+            var index  = obj.tooltipsDatasetIndex;
+            var coords = obj.coords.key[index];
+            var color  = obj.get('colors')[index];
+            
+            //
+            // Highlight the key
+            //
+            obj.path(
+                'ga 0.25 b r % % % % f % ga 1',
+                coords[0], coords[1],
+                coords[2], coords[3],
+                color
+            );
         });
     </script>
 
@@ -84,6 +99,7 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
 </pre>
