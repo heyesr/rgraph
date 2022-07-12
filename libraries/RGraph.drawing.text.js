@@ -113,7 +113,7 @@
             linkTarget:             '_self',
             linkOptions:            '',
 
-            textAccessible:                true,
+            textAccessible:                false,
             textAccessibleOverflow:       'visible',
             textAccessiblePointerevents:  false,
 
