@@ -194,7 +194,7 @@
             textColor:                    'black',
             textSize:                     12,
             textFont:                     'Arial, Verdana, sans-serif',
-            textAccessible:               true,
+            textAccessible:               false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
