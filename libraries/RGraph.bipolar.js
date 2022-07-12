@@ -125,7 +125,7 @@
             textSize:                   12,
             textColor:                  'black',
             textFont:                   'Arial, Verdana, sans-serif',
-            textAccessible:             true,
+            textAccessible:             false,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
             text:                       null,
