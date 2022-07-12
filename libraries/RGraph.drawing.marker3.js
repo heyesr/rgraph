@@ -106,7 +106,7 @@
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
 
-            textAccessible:              true,
+            textAccessible:              false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
