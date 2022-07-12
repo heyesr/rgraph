@@ -91,7 +91,7 @@
             textBold:             false,
             textItalic:           false,
             textHalign:           'left',
-            textAccessible:               true,
+            textAccessible:               false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
