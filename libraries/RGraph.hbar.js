@@ -103,7 +103,7 @@
             textBold:              false,
             textItalic:            false,
             textAngle:             0,
-            textAccessible:               true,
+            textAccessible:               false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
