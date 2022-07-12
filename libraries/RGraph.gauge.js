@@ -81,7 +81,7 @@
             textColor:                    '#666',
             textBold:                     false,
             textItalic:                   false,
-            textAccessible:               true,
+            textAccessible:               false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
