@@ -35,7 +35,7 @@
     <h1>A Radar chart with a list in the tooltips</h1>
     
     <div>
-        <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
     </div>
 
     <script>
@@ -69,7 +69,8 @@
                 shadow: false,
                 colors: ['transparent'],
                 colorsStroke: 'red',
-                linewidth: 3
+                linewidth: 3,
+                marginTop: 50
             }
         }).draw();
     </script>
@@ -88,7 +89,7 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
 
 &lt;style&gt;
     .RGraph_tooltip li {

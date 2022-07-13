@@ -86,7 +86,6 @@
                         // the options from above
                 colors: ['yellow'],
                 filledColors: ['rgba(255,255,128,0.5)'],
-                yaxisLabels: false,
                 xaxisLabels: null
             }
         }).on('beforedraw', function (obj)
@@ -117,12 +116,11 @@
                         // the options from above
                 colors: ['#0f0'],
                 filledColors: ['rgba(128,255,128,0.25)'],
-                yaxisLabels: false,
                 xaxisLabels: null
             }
         }).on('beforedraw', function (obj)
         {
-            RGraph.clipTo.start(obj, 'hbar 0.666-1..05');
+            RGraph.clipTo.start(obj, 'hbar 0.666-1.05');
 
         }).on('draw', function (obj)
         {

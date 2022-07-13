@@ -35,7 +35,7 @@
     <h1>A Rose chart with a list in the tooltips</h1>
     
     <div>
-        <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
     </div>
 
     <script>
@@ -66,7 +66,8 @@
                 title: 'A demonstration of a tooltip list',
                 titleBold: true,
                 titleY: '-15',
-                shadow: false
+                shadow: false,
+                radius: 125
             }
         }).draw();
     </script>
@@ -85,7 +86,7 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="500" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
 
 &lt;style&gt;
     .RGraph_tooltip li {
