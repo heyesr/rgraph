@@ -20,7 +20,7 @@
 
     <h1>A 3D Horizontal Bar chart with a right Y-axis</h1>
 
-    <canvas id="cvs" width="400" height="550">[No canvas support]</canvas>
+    <canvas id="cvs" width="400" height="550" style=""border: 1px solid gray">[No canvas support]</canvas>
     
     <script>
         new RGraph.HBar({
@@ -37,13 +37,15 @@
                 yaxisLabelsOffsetx: 15,
                 variant: '3d',
                 marginLeft: 5,
-                marginRight: 100,
+                marginRight: 120,
+                marginInner: 10,
+                marginLeftAuto: false,
+                marginBottom: 100,
                 shadow: true,
                 shadowOffsety:  3,
                 shadowOffsetx: -1,
                 shadowBlur: 10,
-                shadowColor: '#ddd',
-                marginInner: 10
+                shadowColor: '#ddd'
             }
         }).draw();
     </script>

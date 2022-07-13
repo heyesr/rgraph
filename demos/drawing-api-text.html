@@ -36,14 +36,15 @@
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 tooltips: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 marginLeft: 35,
-                marginRight: 35
+                marginRight: 35,
+                marginTop: 55
             }
         }).grow();
 
         new RGraph.Drawing.Text({
             id: 'cvs',
             x: bar.canvas.width / 2,
-            y: 22,
+            y: 40,
             text: 'A custom title using the drawing API text object',
             options: {
                 tooltips: ['A custom title using the drawing API text object'],

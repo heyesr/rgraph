@@ -25,7 +25,7 @@
     <h1>An example of the drawing API circle object being used as a tooltip hotspot</h1>
 
     <div style="height: 320px">
-        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
     </div>
 
     <script>
@@ -33,6 +33,8 @@
             id: 'cvs',
             data: [5,8,6,4,3,5,2],
             options: {
+                marginLeft: 75,
+                marginBottom: 125,
                 marginInner: 5,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 20,
@@ -81,7 +83,7 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
+&lt;canvas id="cvs" width="600" height="350"&gt;
     [No canvas support]
 &lt;/canvas&gt;
 </pre>

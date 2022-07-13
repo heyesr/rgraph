@@ -166,18 +166,16 @@
             data: defaults.data,
             options: {
                 xaxisScaleMax: defaults.max,
-                marginLeft: 100,
                 marginRight: 50,
                 xaxisLabels: defaults.labels,
                 backgroundGridVlinesCount: 12,
                 borders: false,
                 textSize: 18,
-                adjustable: true,
-                textAccessiblePointerevents: false
+                adjustable: true
             }
         }).on('firstdraw', function (obj)
         {
-            var marginLeft = getLongestLabel(obj);
+            var marginLeft = getLongestLabel(obj) + 25;
             
             obj.set('marginLeft', marginLeft);
             RGraph.cache = [];

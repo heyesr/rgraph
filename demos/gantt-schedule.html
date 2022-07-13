@@ -208,14 +208,13 @@
                 backgroundGridVlinesCount: 12,
                 borders: false,
                 textSize: 18,
-                adjustable: true,
-                textAccessiblePointerevents: false
+                adjustable: true
             }
         }).on('firstdraw', function (obj)
         {
             var marginLeft = getLongestLabel(obj);
             
-            obj.set('marginLeft', marginLeft);
+            obj.set('marginLeft', marginLeft + 20);
             RGraph.cache = [];
             setTimeout(function ()
             {

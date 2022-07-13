@@ -63,11 +63,7 @@
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        Note that this effect doesn't use the <code>textAccessible</code> option. This is because the
-        effect moves the whole canvas around - not just what's on it.
-    </p>
+
     
     <p>
         It's a nice transition effect where one chart blends into another with a "folding-away" type motion.
@@ -79,12 +75,6 @@
     <p>
         The charts themselves are quite straightforward - with the Line chart having a larger linewidth
         and bigger tickmarks than normal.
-    </p>
-        
-    <p>
-        If rewritten
-        it might be possible by applying the CSS to the <code>textAccessible</code> container DIV instead of the canvas tag.
-        This way the DIV and everything in it (ie the canvas and the text) is animated.
     </p>
 
     <br clear="all" />
@@ -109,12 +99,7 @@
                 title: 'A Bar chart (click to switch to the Line chart)',
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
-                xaxisLabels: ['John','Fred','Lucy'],
-                
-                // Set this to false so that instead of using DOM text that's
-                // positioned over the canvas, regular canvas text is used
-                // instead. This means it gets animated with the canvas tag.
-                textAccessible: false
+                xaxisLabels: ['John','Fred','Lucy']
             }
 
         }).draw();
@@ -153,11 +138,7 @@
                 textSize: 16,
                 textColor: '#000',
                 titleSize: 12,
-                yaxisColor: '#999',
-                
-                // As detailed above this option is set so that the chart uses normal
-                // canvas text
-                textAccessible: false
+                yaxisColor: '#999'
             }
         }).draw();
 

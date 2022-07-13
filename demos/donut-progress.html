@@ -68,11 +68,7 @@
             if (window.text) {
                 text.text = parseInt(target * obj.get('effectRoundrobinMultiplier')) + '%';
             }
-        }).roundRobin(null, function ()
-        {
-            text.set('textAccessible', true);
-            RGraph.redraw();
-        })
+        }).roundRobin();
 
 
 
