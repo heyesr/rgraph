@@ -253,3 +253,36 @@ div#front-page-download-buttons{margin-top: 20px;}
 
 img.example_images{border: 1px solid transparent;transition:transform.25s ease-in-out;}
 img.example_images:hover{transform:scale(1.05);}
+
+
+
+
+
+
+
+div#page-demos-index #header-image{width:100%;height:200px;}
+div#page-demos-index div{text-align:center;}
+div#page-demos-index ul{display:inline;margin-left:0;padding-left:0;}
+div#page-demos-index ul li{display:inline;}
+div#page-demos-index ul li img{border:1px solid transparent;margin:0 20px 0 20px;}
+div#page-demos-index ul li img:hover{border:1px solid #ddd;}
+
+div#page-canvas-responsive div#responsive-example-demos{text-align:center;}
+div#page-canvas-responsive div#responsive-example-demos{max-width: 800px;margin-left: auto;margin-right: auto;}
+div#page-canvas-responsive div#responsive-example-demos img{display: inline;transition: transform .25s ease-in-out;}
+div#page-canvas-responsive div#responsive-example-demos img:hover{transform: scale(1.05);}
+div#page-canvas-responsive div#responsive-example-demos ul{display:inline;padding-left:0;}
+div#page-canvas-responsive div#responsive-example-demos ul li{display:inline;}
+
+div#page-svg-index div#chart-types{text-align:center;}
+div#page-svg-index div#chart-types ul{display:inline;padding-left:0;}
+div#page-svg-index div#chart-types ul li{display:inline;}
+div#page-svg-index div#chart-types img{margin-bottom: 10px;}
+div#page-svg-index div.chart-type-container{margin-bottom: 25px;transition:transform .5s;width:250px;display:inline-block;text-align:center;line-height:25px;}
+div#page-svg-index div.chart-type-container:hover{transform:scale(1.1);}
+
+div#page-canvas-charts div#chart-types-list{text-align:center;line-height: 25px;}
+div#page-canvas-charts div#chart-types-list-container ul{display:inline;padding:0;}
+div#page-canvas-charts div#chart-types-list-container li{display:inline;text-align:center;}
+div#page-canvas-charts div#chart-types-list-container li div{transition:transform .5s;display:inline-block;width:250px;margin:0 0 50px 0;text-align:center;}
+div#page-canvas-charts div#chart-types-list-container li div:hover{transform:scale(1.2);}
