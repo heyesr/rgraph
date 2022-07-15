@@ -266,7 +266,7 @@ This is the code that generates the chart - it should be placed AFTER the <code>
 
 
     <script>
-        var line1 = new RGraph.Line({
+        line1 = new RGraph.Line({
             id: 'cvs1',
             data: [null,null,null,null,null],
             options: {
@@ -278,7 +278,7 @@ This is the code that generates the chart - it should be placed AFTER the <code>
         }).draw();
 
 
-        var line2 = new RGraph.Line({
+        line2 = new RGraph.Line({
             id: 'cvs2',
             data: [
                 [9,9,0,9,0],
@@ -310,8 +310,8 @@ This is the code that generates the chart - it should be placed AFTER the <code>
                 tickmarkSize: 6
             }
         }).draw().responsive([
-            {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
-            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
+            {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
+            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
         ]);
     </script>
 
