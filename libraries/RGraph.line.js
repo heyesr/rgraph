@@ -2108,13 +2108,16 @@
         this.drawBackdrop = function (coords, color)
         {
             var size = properties.backdropSize;
-            this.context.lineWidth = size;
-            this.context.globalAlpha = properties.backdropAlpha;
-            this.context.strokeStyle = color;
+            
+            this.path(
+                'lw % ga % ss %',
+                size, properties.backdropAlpha, color
+            );
+
             var yCoords = [];
     
             this.context.beginPath();
-                if (properties.spline && !RGraph.ISOLD) {
+                if (properties.spline) {
                     
                     // The DrawSpline function only takes the Y coords so extract them from the coords that have
                     // (which are X/Y pairs)
@@ -2127,7 +2130,14 @@
                 } else {
                     this.context.moveTo(coords[0][0], coords[0][1]);
                     for (var j=1; j<coords.length; ++j) {
-                        this.context.lineTo(coords[j][0], coords[j][1]);
+                        if (
+                            RGraph.isNull(coords[j][1])
+                            || (coords[j - 1] && RGraph.isNull(coords[j-1][1]))
+                           ) {
+                            this.context.moveTo(coords[j][0], coords[j][1]);
+                        } else {
+                            this.context.lineTo(coords[j][0], coords[j][1]);
+                        }
                     }
                 }
             this.context.stroke();
