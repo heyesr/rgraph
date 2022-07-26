@@ -2820,3 +2820,146 @@
         //
         RGraph.parseObjectStyleConfig(this, conf.options);
     };
+
+
+
+
+
+
+
+
+    //
+    // This is a shortcut-style function that makes making
+    // drilldown chart much easier for the user.
+    //
+    RGraph.Scatter.drilldown = function (opt)
+    {
+        var original = {
+            xaxisScaleMin: opt.options.xaxisScaleMin,
+            xaxisScaleMax: opt.options.xaxisScaleMax
+        };
+
+        //
+        // Set the initial max and min for the scale
+        //
+        opt.options.xaxisScaleMin = opt.options.xaxisScaleMin;
+        opt.options.xaxisScaleMax = opt.options.xaxisScaleMax;
+
+        // Create the Scatter chart (it's actually an XY line chart
+        var obj = new RGraph.Scatter({
+            id: opt.id,
+            data: RGraph.arrayClone(opt.data),
+            options: opt.options
+        });
+
+        if (opt.options.animation && typeof obj[opt.options.animation] === 'function') {
+            obj[opt.options.animation]();
+        } else {
+            obj.draw();
+        }
+
+        state = {};
+
+        // The mousedown listener
+        obj.canvas.onmousedown = function (e)
+        {
+            if (e.button === 0 && obj.getXValue(e)) {
+                var x = obj.getXValue(e);
+                
+                state.start = x;
+            }
+        };
+
+        // The mouseup listener. This is where the magic
+        // happens and the chart is updated.
+        obj.canvas.onmouseup = function (e)
+        {
+            if (e.button === 0) {
+                var x = obj.getXValue(e),
+                    min = Math.min(state.start, x),
+                    max = Math.max(state.start, x);
+
+                state.end = x;
+                
+                obj.set({
+                    xaxisScaleMin: min,
+                    xaxisScaleMax: max
+                });
+
+                obj.data[0].forEach(function (v, k, arr)
+                {
+                    if (v[0] < min || v[0] > max) {
+                        arr[k] = [];
+                    }
+                });
+                
+                obj.set({
+                    contextmenu: [['Reset', function ()
+                    {
+                        obj.set({
+                            xaxisScaleMin: original.xaxisScaleMin,
+                            xaxisScaleMax: original.xaxisScaleMax,
+                            xaxisLabels: RGraph.arrayClone(opt.options.xaxisLabels)
+                        });
+                
+                        obj.data[0] = RGraph.arrayClone(opt.data);
+                        
+                        RGraph.redraw();
+                    }]]
+                });
+
+                // Set the labels
+                var newlabels = [];
+
+                opt.options.xaxisLabels.forEach(function (v, k, arr)
+                {
+                    if (v[1] > min && v[1] < max) {
+                        newlabels.push(v);
+                    }
+                });
+                obj.set('xaxisLabels', newlabels);
+
+                RGraph.redraw();
+    
+                state = {};
+            }
+        };
+
+        // The mousemove handler. This simply highlights from
+        // the mousedown start point to the current position.
+        obj.canvas.onmousemove = function (e)
+        {
+            if (typeof state.start === 'number' && !state.end) {
+                
+                var coordX1 = obj.getXCoord(state.start);
+                var coordX2 = obj.getXCoord(obj.getXValue(e));
+                
+                RGraph.redraw();
+
+                obj.context.fillStyle = 'rgba(0,0,0,0.15)';
+                obj.context.fillRect(
+                    coordX1,
+                    obj.properties.marginTop,
+                    coordX2 - coordX1,
+                    obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom
+                );
+            }
+        };
+        
+        return obj;
+    };
+
+
+
+
+
+
+
+
+    //
+    // This is a place holder - it doesn't do anything
+    //
+    RGraph.Scatter.drilldown.draw = function (options)
+    {
+        return RGraph.Scatter.drilldown(options);
+    };
