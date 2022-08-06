@@ -3391,7 +3391,7 @@
 
 
         //
-        // Trace2
+        // Trace
         // 
         // This is a new version of the Trace effect which no longer requires jQuery and is more compatible
         // with other effects (eg Expand). This new effect is considerably simpler and less code.
@@ -3437,6 +3437,107 @@
 
 
         //
+        // A wave effect - like the Bar chart Wave effect
+        //
+        this.wave = function ()
+        {
+            this.draw();
+
+            // If there's only one bar call the grow function instead
+            if (this.original_data[0].length === 1) {
+                this.unfold(arguments[0]);
+                return;
+            }
+
+            var obj = this,
+                opt = arguments[0] || {},
+                labelsAbove = this.get('labelsAbove');
+
+            opt.frames      =  opt.frames || 60;
+            opt.startFrames = [];
+            opt.counters    = [];
+
+            var framesperpoint = opt.frames / 3,
+                frame          = -1,
+                callback       = arguments[1] || function () {},
+                original       = RGraph.arrayClone(this.original_data);
+
+            //
+            // turn off the labelsAbove option whilst animating
+            //
+            this.set('labelsAbove', false);
+
+            for (var dataset=0; dataset<obj.original_data.length; ++dataset) {
+                for (var i=0; i<obj.original_data[dataset].length; ++i) {
+                    opt.startFrames[i] = ((opt.frames / 2) / (obj.original_data[0].length - 1)) * i;
+                    opt.counters[i] = 0;
+                    obj.original_data[dataset][i] = 0;
+                }
+            }
+
+            //
+            // This stops the chart from jumping
+            //
+            //obj.draw();
+            obj.set('yaxisScaleMax', obj.scale2.max);
+            RGraph.clear(obj.canvas);
+
+
+
+            function iterator ()
+            {
+                ++frame;
+
+//
+// TODO Loop thru all datasets here
+//      This is the main loop incrementing the data values
+//
+                for (var dataset=0; dataset<obj.original_data.length; ++dataset) {
+                    for (var i=0,len=obj.original_data[dataset].length; i<len; i+=1) {
+                        if (frame > opt.startFrames[i]) {
+    
+                            obj.original_data[dataset][i] = Math.min(
+                                Math.abs(original[dataset][i]),
+                                Math.abs(original[dataset][i] * ( (opt.counters[i]++) / framesperpoint))
+                            );
+    
+    
+                            // Make the number negative if the original was
+                            if (original[dataset][i] < 0) {
+                                obj.original_data[dataset][i] *= -1;
+                            }
+                        }
+                    }
+                }
+
+
+                if (frame >= opt.frames) {
+
+                    if (labelsAbove) {
+                        obj.set('labelsAbove', true);
+                        RGraph.redraw();
+                    }
+
+                    callback(obj);
+                } else {
+                    RGraph.redrawCanvas(obj.canvas);
+                    RGraph.Effects.updateCanvas(iterator);
+                }
+            }
+
+            iterator();
+
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
         // FoldToCenter
         // 
         // Line chart  FoldTocenter
@@ -3459,9 +3560,9 @@
             
             function iterator ()
             {
-                for (var i=0,len=obj.data.length; i<len; ++i) {
-                    if (obj.data[i].length) {
-                        for (var j=0,len2=obj.data[i].length; j<len2; ++j) {
+                for (var i=0,len=obj.original_data.length; i<len; ++i) {
+                    if (obj.original_data[i].length) {
+                        for (var j=0,len2=obj.original_data[i].length; j<len2; ++j) {
                             
                             var dataset = obj.original_data[i];
 
