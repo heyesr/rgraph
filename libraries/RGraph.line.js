@@ -2343,7 +2343,8 @@
                 ) ? properties.labelsAboveBorder : true),
                 offsety    = properties.labelsAboveOffsety,
                 specific   = properties.labelsAboveSpecific,
-                formatter  = properties.labelsAboveFormatter;
+                formatter  = properties.labelsAboveFormatter,
+                data_arr = RGraph.arrayLinearize(this.original_data);;
 
 
                 var textConf = RGraph.getTextConf({
@@ -2390,8 +2391,8 @@
 
                     text:           (specific && specific[i]) ? specific[i] : (specific ? '' : RGraph.numberFormat({
                                         object:    this,
-                                        number:    typeof decimals === 'number' ? this.data_arr[i].toFixed(decimals) : this.data_arr[i],
-                                        value:     typeof decimals === 'number' ? this.data_arr[i].toFixed(decimals) : this.data_arr[i],
+                                        number:    typeof decimals === 'number' ? data_arr[i].toFixed(decimals) : data_arr[i],
+                                        value:     typeof decimals === 'number' ? data_arr[i].toFixed(decimals) : data_arr[i],
                                         unitspre:  units_pre,
                                         unitspost: units_post,
                                         point:     point,
@@ -3443,7 +3444,7 @@
         {
             this.draw();
 
-            // If there's only one bar call the grow function instead
+            // If there's only one point call the grow function instead
             if (this.original_data[0].length === 1) {
                 this.unfold(arguments[0]);
                 return;
@@ -3471,9 +3472,17 @@
                 for (var i=0; i<obj.original_data[dataset].length; ++i) {
                     opt.startFrames[i] = ((opt.frames / 2) / (obj.original_data[0].length - 1)) * i;
                     opt.counters[i] = 0;
-                    obj.original_data[dataset][i] = 0;
+                    
+                    if (!opt.reverse) {
+                        obj.original_data[dataset][i] = 0;
+                    }
                 }
             }
+            
+            if (opt.reverse) {
+               opt.startFrames = RGraph.arrayReverse(opt.startFrames); 
+            }
+
 
             //
             // This stops the chart from jumping
@@ -3488,23 +3497,41 @@
             {
                 ++frame;
 
-//
-// TODO Loop thru all datasets here
-//      This is the main loop incrementing the data values
-//
+                // Loop thru each dataset
                 for (var dataset=0; dataset<obj.original_data.length; ++dataset) {
-                    for (var i=0,len=obj.original_data[dataset].length; i<len; i+=1) {
-                        if (frame > opt.startFrames[i]) {
+                    
+                    //Loop thru the data in reverse direction
+                    if (opt.reverse) {
+                        
+                        // Loop thru all of the points in each dataset
+                        for (var i=(obj.original_data[dataset].length - 1); i>=0; i-=1) {
+                            
+                            if (frame > opt.startFrames[i]) {
+                                obj.original_data[dataset][i] = Math.max(
+                                    0,
+                                    original[dataset][i] - (Math.abs(original[dataset][i] * ( (opt.counters[i]++) / framesperpoint)))
+                                );        
+        
+                                // Make the number negative if the original was
+                                if (original[dataset][i] < 0) {
+                                    obj.original_data[dataset][i] *= -1;
+                                }
+                            }
+                        }
+                    } else {
+                        for (var i=0,len=obj.original_data[dataset].length; i<len; i+=1) {
+                            if (frame > opt.startFrames[i]) {
     
-                            obj.original_data[dataset][i] = Math.min(
-                                Math.abs(original[dataset][i]),
-                                Math.abs(original[dataset][i] * ( (opt.counters[i]++) / framesperpoint))
-                            );
-    
-    
-                            // Make the number negative if the original was
-                            if (original[dataset][i] < 0) {
-                                obj.original_data[dataset][i] *= -1;
+                                obj.original_data[dataset][i] = Math.min(
+                                    Math.abs(original[dataset][i]),
+                                    Math.abs(original[dataset][i] * ( (opt.counters[i]++) / framesperpoint))
+                                );
+        
+        
+                                // Make the number negative if the original was
+                                if (original[dataset][i] < 0) {
+                                    obj.original_data[dataset][i] *= -1;
+                                }
                             }
                         }
                     }
