@@ -3402,14 +3402,19 @@
         //
         this.trace = function ()
         {
-            var obj       = this,
-                callback  = arguments[2],
-                opt       = arguments[0] || {},
-                frames    = opt.frames || 30,
-                frame     = 0,
+            var obj      = this,
+                opt      = arguments[0] || {},
+                frames   = opt.frames || 30,
+                frame    = 0,
                 callback = arguments[1] || function () {};
 
-            obj.set('animationTraceClip', 0);
+            obj.set('animationTraceClip', opt.reverse ? 1 : 0);
+            
+            // Disable the labelsAbove option
+            if (obj.properties.labelsAbove) {
+                obj.set('labelsAbove', false);
+                var enableLabelsAbove = true;
+            }
     
             function iterator ()
             {
@@ -3418,9 +3423,16 @@
                 RGraph.redrawCanvas(obj.canvas);
 
                 if (frame++ < frames) {
-                    obj.set('animationTraceClip', frame / frames);
+                    obj.set('animationTraceClip', opt.reverse ? (1 - (frame / frames)) : (frame / frames));
                     RGraph.Effects.updateCanvas(iterator);
                 } else {
+                    if (enableLabelsAbove) {
+                        setTimeout(function ()
+                        {
+                            obj.set('labelsAbove', true);
+                            RGraph.redraw();
+                        }, 500);
+                    }
                     callback(obj);
                 }
             }
@@ -3541,8 +3553,11 @@
                 if (frame >= opt.frames) {
 
                     if (labelsAbove) {
-                        obj.set('labelsAbove', true);
-                        RGraph.redraw();
+                        setTimeout(function ()
+                        {
+                            obj.set('labelsAbove', true);
+                            RGraph.redraw();
+                        }, 500);
                     }
 
                     callback(obj);
