@@ -1,0 +1,110 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Line chart showing 120,000 points</title>
+    
+    
+    <meta name="description" content="A Line chart showing 120,000 points" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Line chart showing 120,000 points</h1>
+    
+    <p>
+        This is a basic Line chart - basic except for the fact
+        that it's showing 120,000 points. When you're showing
+        this much data you have to bear in mind how many pixels
+        there are that are available for the line to render on.
+    </p>
+    
+    <p>
+        For example, if your canvas is 800 pixels wide and the left
+        and right margins are the default 35 pixels, this leaves
+        730 pixels for the data points For all 120,000 points. So
+        you'll be rendering approximately 137 points per pixel...
+        If you consider that a "wide view" and provide options to
+        drill down into the data you can provide a more detailed
+        look at the data. Much like zooming in on a large image
+        to see more detail.
+    </p>
+
+    <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    
+    <script>
+        //
+        // Create the dataset
+        //
+        for (var i=0,d=[],v=5; i<120000; ++i) {
+            
+            v = v + ((Math.random()*2) - 1);
+            
+            if (v < 0) {
+                v = 0;
+            }
+
+            d[d.length] = v;
+        }
+        
+        //
+        // Create the chart
+        //
+        new RGraph.Line({
+            id: 'cvs',
+            data: d,
+            options: {
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisLabelsOffsety: 3,
+                xaxisTickmarksCount: 11,
+                yaxis: false,
+                shadow: false,
+                linewidth: 1,
+                marginLeft: 50,
+                title: 'A Line chart showing 120,000 points',
+                titleBold: true,
+                titleSize: 16
+            }
+        }).reveal();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

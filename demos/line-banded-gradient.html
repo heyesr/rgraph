@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
@@ -33,69 +34,71 @@
 
     <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
     
-    <script>
-        // The configuration for the charts - separated out because it's used
-        // multiple times.
-        config = {
-            xaxisLabels: [
-                '','Q1\n2014','',       '','Q2\n2014','',
-                '','Q3\n2014','',       '','Q4\n2014','',
-                '','Q1\n2015','',       '','Q2\n2015','',
-                '','Q3\n2015','',       '','Q4\n2015',''
-            ],
-            filled: true,
-            backgroundGridColor: '#eee',
-            backgroundGridVlines: false,
-            backgroundGridBorder: false,
-            backgroundGridHlinesCount: 4,
-            xaxis: false,
-            yaxis: false,
-            spline: true,
-            yaxisScaleUnitsPost: '%',
-            marginLeft: 50,
-            xaxisTickmarksCount: 7,
-            yaxisLabelsCount: 4,
-            textColor: 'gray',
-            colors: ['black'],
-            linewidth: 5,
-            shadow: false
-        };
-        
+    <script>        
         // The data for both of the Line chart objects
-        data = [80,90,70,90,80,80,70,20,10,60,95,97,90,50,20,85,70,80,80,70,90,80,90,90];
+        data = [8,4,6,2,1,5,3,3,4,8,9,8,4,1,3,4,7,8,8,5,6,4,1,2,3,4,2,3,1,5,3,5,1,5,6,8,7,9];
 
         // Draw a Line chart that shows the fill of the chart
         line = new RGraph.Line({
             id: 'cvs',
             data: data,
-            options: config
+            options: config = {
+                xaxisLabels: [
+                    '','Q1\n2014','',       '','Q2\n2014','',
+                    '','Q3\n2014','',       '','Q4\n2014','',
+                    '','Q1\n2015','',       '','Q2\n2015','',
+                    '','Q3\n2015','',       '','Q4\n2015',''
+                ],
+                filled: true,
+                backgroundGridColor: '#eee',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridHlinesCount: 4,
+                xaxis: false,
+                yaxis: false,
+                spline: true,
+                yaxisScaleUnitsPost: '%',
+                marginLeft: 50,
+                marginBottom: 50,
+                xaxisTickmarksCount: 7,
+                yaxisLabelsCount: 4,
+                textColor: 'gray',
+                colors: ['transparent'],
+                linewidth: 3,
+                shadow: false,
+                tickmarksStyle: 'dot',
+                tickmarksSize: 7,
+                key: ['Very Low','Normal','High','Very high'],
+                keyColors: ['blue','green','orange','red'],
+                keyPosition: 'margin',
+                keyPositionX: 65,
+                keyColorShape: 'circle',
+                keyLabelsSize: 14
+            }
         });
 
         // Create the gradient that is used as the stroke color
         grad = line.context.createLinearGradient(0,25,0,325);
-        grad.addColorStop(0, 'rgb(255,0,0)');
-        grad.addColorStop(0.2, 'rgb(255,0,0)');
-        grad.addColorStop(0.2, 'rgb(255,255,0)');
-        grad.addColorStop(0.4, 'rgb(255,255,0)');
-        grad.addColorStop(0.4, 'rgb(0,255,0)');
-        grad.addColorStop(0.6, 'rgb(0,255,0)');
-        grad.addColorStop(0.6, 'rgb(0,0,255)');
-        grad.addColorStop(0.8, 'rgb(0,0,255)');
-        grad.addColorStop(0.8, 'rgb(0,0,0)');
-        grad.addColorStop(1, 'rgb(0,0,0)');
+        grad.addColorStop(0, '#FF642C');
+        grad.addColorStop(0.25, '#FF642C');
+        grad.addColorStop(0.25, 'orange');
+        grad.addColorStop(0.5, 'orange');
+        grad.addColorStop(0.5, '#5ADDAA');
+        grad.addColorStop(0.75, '#5ADDAA');
+        grad.addColorStop(0.75, '#2BB3FF');
+        grad.addColorStop(1.0, '#2BB3FF');
+
 
         // Create the gradient that is used as the fill color
         gradFill = line.context.createLinearGradient(0,25,0,325);
-        gradFill.addColorStop(0, 'rgba(255,0,0,0.3)');
-        gradFill.addColorStop(0.2, 'rgba(255,0,0,0.3)');
-        gradFill.addColorStop(0.2, 'rgba(255,255,0,0.3)');
-        gradFill.addColorStop(0.4, 'rgba(255,255,0,0.3)');
-        gradFill.addColorStop(0.4, 'rgba(0,255,0,0.3)');
-        gradFill.addColorStop(0.6, 'rgba(0,255,0,0.3)');
-        gradFill.addColorStop(0.6, 'rgba(0,0,255,0.3)');
-        gradFill.addColorStop(0.8, 'rgba(0,0,255,0.3)');
-        gradFill.addColorStop(0.8, 'rgba(0,0,0,0.3)');
-        gradFill.addColorStop(1, 'rgba(0,0,0,0.3)');
+        gradFill.addColorStop(0, '#F8D3D7');
+        gradFill.addColorStop(0.25, '#F8D3D7');
+        gradFill.addColorStop(0.25, '#FFE1D8');
+        gradFill.addColorStop(0.5, '#FFE1D8');
+        gradFill.addColorStop(0.5, '#E0F9EE');
+        gradFill.addColorStop(0.75, '#E0F9EE');
+        gradFill.addColorStop(0.75, '#DAF0FF');
+        gradFill.addColorStop(1.0, '#DAF0FF');
 
         // Apply the gradient to the charts fill
         line.set({
@@ -104,22 +107,21 @@
 
 
 
-
-        // Modify the configuration for the second chart - the unfilled Line chart
-        config.filled         = false;
-        config.labels         = null;
-        config.xaxis          = false;
-        config.yaxis          = false;
-        config.yaxisLabels    = false;
-        config.backgroundGrid = false;
-        config.colors         = [grad];
-
         // Now create and draw the second, non-filled line that sits on
         // top of the fill.
         line2 = new RGraph.Line({
             id: 'cvs',
             data: data,
-            options: config
+            options: {
+                ...config,
+                filled: false,
+                labels: null,
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: false,
+                backgroundGrid: false,
+                colors: [grad]
+            }
         }).draw();
     </script>
 

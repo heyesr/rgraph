@@ -50,7 +50,7 @@
         // need to assign the chart object to a variable - like it isn't here.
         new RGraph.Bar({
             id: 'cvs',
-            data: '12,18,10,9,6,20,18'.split(','),
+            data: '12,18,10,9,6,20,18',
             options: {
                 
                 // Add some X-axis labels - you can use a newline character (\n) to make
@@ -69,7 +69,7 @@
                     fontSize: '26pt'
                 },
                 tooltipsFormattedKeyLabels: ['Dave','John'],
-            //tooltipsEvent: 'mousemove'
+                //tooltipsEvent: 'mousemove'
             }
         }).draw().responsive([
             {maxWidth:null,width:750,height:250,options: {textSize:14,xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'],marginInner: 20}, parentCss: {textAlign: 'center'}},
@@ -97,7 +97,7 @@
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
+    <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

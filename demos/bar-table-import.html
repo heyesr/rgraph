@@ -1,0 +1,140 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.table.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A Bar chart importing data from an HTML table</title>
+    <meta name="description" content="This is a simple example of a chart that uses the HTMLTable import utility." />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart importing data from an HTML table</h1>
+    
+    <div style="text-align: center">
+        <canvas id="cvs" width="950" height="300">[No canvas support]</canvas>
+    </div>
+
+    <table id="myTable" border="1" style="margin-left: auto; margin-right: auto">
+        <tr>
+            <td></td>
+            <td>Monday</td>
+            <td>Tuesday</td>
+            <td>Wednesday</td>
+            <td>Thursday</td>
+            <td>Friday</td>
+            <td>Saturday</td>
+            <td>Sunday</td>
+        </tr>
+        <tr>
+            <td>Richard</td>
+            <td>432.11</td>
+            <td>486.56</td>
+            <td>378.12</td>
+            <td>446.18</td>
+            <td>199.55</td>
+            <td>268.65</td>
+            <td>411.12</td>
+        </tr>
+    </table>
+
+    <br clear="both" />
+
+
+
+    <script>
+        RGraph.HTMLTable('myTable', function (table)
+        {
+            var data         = table.row(1,1);
+            var labels       = table.row(0,1);
+            var labels_short = [];
+
+            labels.forEach(function (v, k, a)
+            {
+                labels_short.push(v.substr(0,3));
+            });
+
+            var bar = new RGraph.Bar({
+                id: 'cvs',
+                data: data,
+                options:{
+                    backgroundGrid: false,
+                    xaxisColor: '#666',
+                    yaxisScaleUnitsPre: '£',
+                    
+                    corners: 'round',
+                    shadow: true,
+                    shadowBlur: 7,
+                    shadowOffsetx: 5,
+                    shadowOffsety: 5,
+                    colors: ['Gradient(#f99:red)'],
+                    tooltips: '<i>%{property:xaxisLabels[%{dataset}]}\'s sales income:</i><br /> <span style="font-size:28pt">£%{value}</span>'
+                }
+            }).wave().responsive([
+                {maxWidth: null, width: 950, height: 300, options:{textSize: 16,marginLeft: 75,marginInner: 35,xaxisLabels: labels}},
+                {maxWidth: 950, width: 600, height: 200, options:{textSize: 12,marginLeft: 50,marginInner: 15,xaxisLabels: labels_short}}
+            ]);
+        });
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.table.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.tooltips.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="750" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+
+&lt;table id="mytable" border="1" style="margin-left: auto; margin-right: auto"&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;/td&gt;
+        &lt;td&gt;monday&lt;/td&gt;
+        &lt;td&gt;tuesday&lt;/td&gt;
+        &lt;td&gt;wednesday&lt;/td&gt;
+        &lt;td&gt;thursday&lt;/td&gt;
+        &lt;td&gt;friday&lt;/td&gt;
+        &lt;td&gt;saturday&lt;/td&gt;
+        &lt;td&gt;sunday&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;richard&lt;/td&gt;
+        &lt;td&gt;432.11&lt;/td&gt;
+        &lt;td&gt;486.56&lt;/td&gt;
+        &lt;td&gt;378.12&lt;/td&gt;
+        &lt;td&gt;446.18&lt;/td&gt;
+        &lt;td&gt;199.55&lt;/td&gt;
+        &lt;td&gt;268.65&lt;/td&gt;
+        &lt;td&gt;411.12&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>

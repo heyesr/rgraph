@@ -1,0 +1,187 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A switch effect using the Line chart wave() and trace() effects</title>
+    
+    
+    
+    <meta name="description" content="A switch effect using the Line chart wave() and trace() effects" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart switch effect</h1>
+
+    <div id="example-canvas-container">
+        <canvas id="cvs" width="700" height="300">[No canvas support]</canvas><BR />
+        <button id="changeData" onclick="change()" style="font-size: 20pt; cursor: pointer">Change data</button>
+    </div>
+    
+    <script>
+        //
+        // This is the initial data that's shown on the chart
+        //
+        data = [
+            [8,7,6,4,9,5,6,7,9],
+            [1,3,4,2,5,0,3,1,1]
+        ];
+
+        //
+        // X-axis labels for the chart
+        //
+        xaxisLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+    
+        //
+        // Create the chart
+        //
+        myLine = new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                tooltips: '%{key}',
+                tooltipsFormattedUnitsPost: '%',
+                tooltipsFormattedKeyColors: ['red','blue','#0f0'],
+                tooltipsFormattedKeyLabels: ['John','Richard','Luis'],
+                tooltipsCss: {
+                    fontSize: '16pt',
+                    textAlign: 'left'
+                },
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                colors: ['red','blue','green'],
+                linewidth: 2,
+                spline: true,
+                tickmarksStyle: 'dot',
+                tickmarksSize: 6,
+                xaxisLabels: xaxisLabels,
+                xaxis: false,
+                yaxis: false,
+                marginLeft: 40,
+                marginInner: 15,
+                shadow: false,
+                labelsAbove: true,
+                labelsAboveSize: 10,
+                labelsAboveUnitsPost: '%',
+                labelsAboveOffsety: -5,
+                textSize: 16
+            }
+        }).draw();
+
+
+
+
+        //
+        // This function switches the dataset. First it uses the
+        // wave and trace effects with the reverse option to hide
+        // the data, then sets the new data on the chart object and
+        // finally shows the new data with the wave and trace effects
+        // again (this time NOT using the reverse option). Whilst the
+        // animation runs the labelsAbove option is disabled and
+        // then enabled when the animations complete.
+        //
+        function change ()
+        {
+            //
+            // Get a reference to the change button
+            //
+            butChange = document.getElementById('changeData');
+            
+            //
+            // Because this is a composite animation - turn
+            // off the labelsAbove option ourselves
+            //
+            myLine.set('labelsAbove', false);
+
+            //
+            // If the chart is currently animating - don't do
+            // anything
+            //
+            if (!myLine.animating) {
+                
+                myLine.animating       = true;
+                butChange.disabled     = true;
+                butChange.style.cursor = 'default';
+                
+                //
+                // Call the reverse wave() and trace() functions
+                //
+                myLine.wave({frames: 75, reverse: true})
+                     .trace({frames: 75, reverse: true}, function ()
+                     {
+
+                         //
+                         // Change the data
+                         //
+                         myLine.original_data =
+                         [
+                             RGraph.arrayRandom(9, 0, 10),
+                             RGraph.arrayRandom(9, 0, 10)
+                         ];
+                        
+                         //
+                         // Show the new data by animating with the
+                         // wave and trace effects after a
+                         // half-second delay
+                         //
+                         setTimeout(function ()
+                         {
+                            myLine.trace({frames: 90})
+                             myLine.wave({frames: 150}, function ()
+                             {
+                                //
+                                // Now that all animation is complete
+                                // re-enable the button and put the
+                                // pointer (when hovering over the
+                                // button) back to pointer
+                                //
+                                 myLine.animating       = false;
+                                 butChange.disabled     = false;
+                                 butChange.style.cursor = 'pointer';
+                                
+                                 //
+                                 // Re-enable labelsAbove
+                                 //
+                                 myLine.set('labelsAbove', true);
+                                
+                                 //
+                                 // Do a final redraw of the chart
+                                 //
+                                 RGraph.redraw();
+                             });
+                         }, 500);
+                    });
+            }
+        }
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
