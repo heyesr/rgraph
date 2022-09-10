@@ -206,7 +206,7 @@
             textItalic:                 false,
             textSize:                   12,
             textColor:                  'black',
-            textFont:                   'Arial, Verdana, sans-serif',
+            textFont:                   "Arial, Verdana, sans-serif",
             textAccessible:             false,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,

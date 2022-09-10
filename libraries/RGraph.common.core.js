@@ -3910,10 +3910,10 @@
         }
 
 
-        /**
-        * Finished, now either return if we're in a recursed call, or alert()
-        * if we're not.
-        */
+        //
+        // Finished, now either return if we're in a recursed call, or alert()
+        // if we're not.
+        //
         if (!args.alert) {
             alert(str);
         }
@@ -6796,7 +6796,7 @@
         {
             var ret = [], buffer = '', inquote = false, quote = '', substitutionIndex = 0;
 
-            // p ia string - not an array
+            // p is a string - not an array
             for (var i=0; i<p.length; i+=1) {
                 
                 var chr = p[i],
