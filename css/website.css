@@ -62,9 +62,11 @@ div#social{display:inline;display:inline-block;}
 div.testimonial{font-size:80%;padding:6px;}
 span.javascript-comment{color:#090;}
 
-ul{list-style: none;}
-ul.bullets li{list-style-image: url('/images/tick2.png');}
+ul{list-style-type: disc;line-height:30px;}
+ol{line-height:30px;}
 ul.anchor-list li.anchor-list-item{list-style-type:disc;}
+ul.main-contents-list{list-style-type:none;border-left:5px solid blue;padding:0 0 0 15px;margin-left:40px;line-height:30px;}
+ul.main-contents-list ul{list-style-type:none;}
 
 .documentation_header{border:1px solid #aaa;background-color:#eee;font-style:italic;padding:5px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
 span#byline{position:relative;top:-15px;}
@@ -93,7 +95,7 @@ div.api-properties-small-screen{display:none;}
 footer div#footer {background-color:black;color:white;margin:-30px -30px;z-index:1000;position:relative;}
 footer div#footer p{position:absolute;right:50px;}
 footer div#footer ul{margin-right:10px;min-height: 200px;min-width:200px;}
-footer div#footer ul li{text-align:left;list-style-type:none;}
+footer div#footer ul li{text-align:left;list-style-type:none;line-height:45px;}
 footer div#footer ul li::before{content:''}
 footer div#footer ul li:nth-child(1){list-style-image: none; position: relative; left: -10px;list-style-type:none;}
 footer div#footer a{font-size:90%;color:#ddd;text-decoration:none;font-style:normal;font-weight:normal;}
@@ -112,13 +114,13 @@ img#front-page-chart-image{margin-top:50px;}
 
 
 ul#front-page-data-import-tools-list{display:inline;margin:0;padding:0;}
-ul#front-page-data-import-tools-list li{display:inline;margin:0;padding:0;}
+ul#front-page-data-import-tools-list li{display:inline;margin:0;padding:0;line-height:45px;}
 ul#front-page-data-import-tools-list li > div{width:32%;min-width:240px;text-align:center;display:inline-block;margin-top:20px;}
 ul#front-page-data-import-tools-list li img{background-image:url(/images/sprite.png)}
 ul#front-page-data-import-tools-list li > div div{min-height:75px;line-height:20px!important}
 
 ul#front-page-howto-guide-examples{display:inline;margin:0;padding:0;}
-ul#front-page-howto-guide-examples li{display:inline;margin:0;padding:0;}
+ul#front-page-howto-guide-examples li{display:inline;margin:0;padding:0;line-height:45px;}
 ul#front-page-howto-guide-examples li > a > div{margin-top:20px;margin-bottom:10px;margin-left:10px;margin-right:10px;display:inline-block;width:250px;text-align:center}
 ul#front-page-howto-guide-examples li > a > div > img{border: 1px solid #eee; transition: transform .25s}
 
@@ -146,7 +148,7 @@ div#front-page-50-howto-guides-container div#ygyufjyu{margin:0 auto 0 auto;text-
 div#front-page-50-howto-guides-container div#bjfdtr{text-align:center;}
 div#front-page-50-howto-guides-container div#ugyufybgjgvffdhyhd{text-align:center;max-width:900px;display:inline-block;}
 
-ul#front-page-advantages-list{float:left;list-style-image:url(/images/tick-large.png);}
+ul#front-page-advantages-list{float:left;list-style-image:url(/images/tick-large.png);line-height:45px;}
 
 span#download-button,span.front-page-setup-documentation-button,span#front-page-setup-introduction-button{display:inline-block;z-index:1;position:relative;margin:25px;text-align:center;padding:15px;border-radius:20px;color:#666;}
 span#download-button{background-color: #afa;}
@@ -222,7 +224,7 @@ img#social-sharing-left-fixed-container-twitter-icon{float:left;border:1px solid
 
 #advantages-list-smallscreen{display:none;}
 #advantages-list-largescreen{display:block;}
-ul#advantages-list li{background: url(/images/tick-black.png) no-repeat 0 0;padding: 3px 0 3px 30px;-margin: 0;text-align:left;}
+ul#advantages-list li{list-style-type:none;line-height:45px;background: url(/images/tick-black.png) no-repeat 0 0;padding:3px 0 3px 30px;text-align:left;}
 #advantages-container-outer{display:flex;}
 .advantages-container-inner{margin-left:auto;margin-right:auto;}
 
@@ -274,6 +276,10 @@ div#page-canvas-responsive div#responsive-example-demos img:hover{transform: sca
 div#page-canvas-responsive div#responsive-example-demos ul{display:inline;padding-left:0;}
 div#page-canvas-responsive div#responsive-example-demos ul li{display:inline;}
 
+div#page-install-index ul{line-height:45px;}
+div#page-canvas-index ul{line-height:45px;}
+div#page-canvas-howtos ul{line-height:45px;}
+
 div#page-svg-index div#chart-types{text-align:center;}
 div#page-svg-index div#chart-types ul{display:inline;padding-left:0;}
 div#page-svg-index div#chart-types ul li{display:inline;}
@@ -286,3 +292,10 @@ div#page-canvas-charts div#chart-types-list-container ul{display:inline;padding:
 div#page-canvas-charts div#chart-types-list-container li{display:inline;text-align:center;}
 div#page-canvas-charts div#chart-types-list-container li div{transition:transform .5s;display:inline-block;width:250px;margin:0 0 50px 0;text-align:center;}
 div#page-canvas-charts div#chart-types-list-container li div:hover{transform:scale(1.2);}
+
+div#page-blog-index div#blog-years-list-horizontal{margin-top:20px;display:inline-block;position:relative;left:50%;transform:translateX(-50%);padding:20px;}
+div#page-blog-index div#blog-years-list-horizontal ul{display:inline-block;margin: 0;padding: 0;}
+div#page-blog-index div#blog-years-list-horizontal ul li{display:inline;margin:0;padding:0;}
+
+div#page-canvas-line div#example-canvas-container{text-align:center}
+div#page-canvas-line div#example-canvas-container button{font-size:20pt;cursor:pointer}
