@@ -1108,6 +1108,7 @@
                                 this.context.stroke();
                                 this.context.fill();
                             } else {
+
                                 // On 9th April 2013 these two were swapped around so that the stroke happens SECOND so that any
                                 // shadow that is cast by the fill does not overwrite the stroke
 
@@ -1131,7 +1132,7 @@
                                     this.context.lineCap  = 'miter';
                                     this.context.lineJoin = 'square';
 
-                                    (this.data[i] < 0)
+                                    (this.data[i] < 0 || properties.xaxisPosition === 'top')
                                         ? this.roundedCornersRectNegative(x + hmargin,y,barWidth,height)
                                         : this.roundedCornersRect(x + hmargin,y,barWidth,height);
 
@@ -1139,7 +1140,9 @@
                                     this.context.fill();
 
                                 } else {
-
+if (properties.xaxisPosition === 'top') {
+    y += height;
+}
                                     this.context.beginPath();
                                     this.context.lineJoin = 'miter';
                                     this.context.lineCap  = 'square';
