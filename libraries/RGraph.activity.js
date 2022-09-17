@@ -179,7 +179,7 @@
 
         // Check for support
         if (!this.canvas) {
-            alert('[SDONUT] No canvas support');
+            alert('[ACTIVITY] No canvas support');
             return;
         }
 
