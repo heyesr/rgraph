@@ -167,6 +167,7 @@
             colors:           ['red', '#0f0', 'blue', '#ff0', '#0ff', 'green'],
             
             filled:             false,
+            filledDualColor:    false,
             filledColors:       [],
             filledClick:        null,
             filledOpacity:      1,
@@ -347,6 +348,8 @@
             dasharray: [1,0],
             dashed: false,
             dotted: false,
+            
+            highlightFill: null,
             
             trendline:                  false,
             trendlineColors:            ['#666'],
@@ -1315,7 +1318,7 @@
                                         cx: obj.coords2[dataset][index][0],
                                         cy: obj.coords2[dataset][index][1],
                                         r: 5,
-                                        fill: obj.properties.colors[dataset]
+                                        fill: typeof obj.properties.highlightFill === 'string' ? obj.properties.highlightFill : obj.properties.colors[dataset]
                                     },
                                     style: {
                                         cursor: 'pointer'
