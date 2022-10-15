@@ -26,8 +26,12 @@
 
     <RGRAPH_BASIC_DEMO_HTML>
     <div style="float: right; text-align: center">
-        <canvas id="cvs" width="500" height="250">[No canvas support]</canvas><br />
-        <button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>
+        <canvas id="cvs" width="500" height="250" data-image-src="page-demos-meter-google.png">[No canvas support]</canvas><br />
+        <script>
+            if (location.href.indexOf('demo-basic.html') !== -1) {
+                document.write('<button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>');
+            }
+        </script>
     </div>
     </RGRAPH_BASIC_DEMO_HTML>
     
