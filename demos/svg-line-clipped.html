@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
     
@@ -19,37 +20,80 @@
     <h1>An SVG clipped red and black Line chart</h1>
     
     <p>
-        This is an SVG chart that uses a different color for the top half
-        compared to the bottom half. You could use it to show a financial
-        chart where the top half is black and the bottom half is red.
-        <a href="https://www.rgraph.net/svg/docs/howto-make-a-dual-color-line-chart.html">
-            There's a HOWTO document available of this technique.
-        </a>
+        Strictly-speaking clipping isn't used - two SVG charts are
+        drawn - both different colors - and HTML/CSS positioning
+        and visibility is used to ensure the relevant portion of
+        each is visible.
     </p>
 
-    <div style="position: relative; width: 700px; height: 300px">
-        <div id="cc1" style="width: 700px; height: 300px; position: absolute; top: 0; left: 0"></div>
-        <div id="cc2" style="width: 700px; height: 300px; position: absolute; top: 0; left: 0"></div>
+    <style>
+        #container {
+            position: relative;
+            width: 700px;
+            height: 300px;
+        }
+        
+        #wrapper1 {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            width: 700px;
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        #wrapper2 {
+            position: absolute;
+            top: 150px;
+            left: 0;
+            width: 700px;
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        #cc1 {
+            width: 700px;
+            height: 300px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        #cc2 {
+            width: 700px;
+            height: 300px;
+            position: absolute;
+            top: -150px;
+            left: 0;
+        }
+    </style>
+
+    <div id="container">
+        <div id="wrapper1">   <div id="cc1"></div>   </div>
+        <div id="wrapper2">   <div id="cc2"></div>   </div>
     </div>
 
     <script>
         // The data for both of the charts and some things that we want to
         // make easy to change if necessary
-        data            = [4,8,6,5,-3,-2,-1,-5,-6,8,9,4,6,7,5,1,3,5,6,-8,-4,-5,-2,3];
-        fills           = ['rgba(0,192,0,0.25)', 'rgba(255,0,0,0.25)' ];
+        data            = [4,5,5,5,-3,-2,-1,-5,-5,5,5,4,5,5,5,1,3,5,5,-5,-4,-5,-2,3];
+        fills           = ['rgba(0,255,0,0.25)', 'rgba(255,0,0,0.25)' ];
         marginLeft      = 50;
         yaxisScaleMin   = -10;
         yaxisScaleMax   = 10;
-        linewidth       = 3;
-        
-        
+        linewidth       = 2;
+
+
+
+
         // Create the green part of the line
         line = new RGraph.SVG.Line({
             id: 'cc1',
             data: data,
             options: {
+                textSize: 16,
                 marginLeft: marginLeft,
-                colors: ['#0c0'],
+                colors: ['green'],
                 linewidth: linewidth,
                 filled: true,
                 filledColors: [fills[0]],
@@ -60,113 +104,53 @@
                 backgroundGridVlines: false,
                 yaxis: false,
                 spline: true,
-                xaxisColor: '#666'
+                xaxisColor: '#666',
+                tickmarksStyle:'circle',
+                tickmarksSize:4,
+                yaxisLabelsCount:10,
+                tooltips: 'Quantity of sales: %{value}',
+                tooltipsCss: {
+                    fontSize: '16pt'
+                }
             }
-        }).draw();
-        
+        }).trace();
+
+
+
+
         // Create the red part of the line
         line2 = new RGraph.SVG.Line({
             id: 'cc2',
             data: data,
             options: {
+                textSize: 16,
                 yaxis: false,
                 yaxisScaleMax: yaxisScaleMax,
                 yaxisScaleMin: yaxisScaleMin,
-                xaxisColor: '#666',
+                xaxisLinewidth: 5,
                 marginLeft: marginLeft,
                 linewidth: linewidth,
                 filled: true,
                 filledColors: [fills[1]],
                 xaxisTickmarks: false,
-                
-                // Labels only need to be shown on the bottom chart
                 xaxisLabels: [
-                    '', 'Jan', '',
-                    '', 'Feb', '',
-                    '', 'Mar', '',
-                    '', 'Apr', '',
-                    '', 'May', '',
-                    '', 'Jun', '',
-                    '', 'Jul', '',
-                    '', 'Aug', '',
-                    '', 'Sep', '',
-                    '', 'Oct', '',
-                    '', 'Nov', '',
-                    '', 'Dec', ''
+                    '','Jan','','','Feb','','','Mar','',
+                    '','Apr','','','May','','','Jun','',
+                    '','Jul','','','Aug','','','Sep','',
+                    '','Oct','','','Nov','','','Dec',''
                 ],
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
-                spline: true
+                spline: true,
+                tickmarksStyle:'circle',
+                tickmarksSize:4,
+                yaxisLabelsCount:10,
+                tooltips: 'Quantity of sales: %{value}',
+                tooltipsCss: {
+                    fontSize: '16pt'
+                }
             }
-        }).draw();
-
-
-
-
-
-        // Create the  clipPath element that sits inside the <def> tag
-        clip = RGraph.SVG.create({
-            svg: line.svg,
-            type: 'clipPath', // This is case sensitive!
-            parent: line.svg.defs,
-            attr: {
-                id: 'myClip'
-            }
-        });
-        
-        // Create the shape element for the clip area
-        RGraph.SVG.create({
-            svg: line.svg,
-            parent: clip,
-            type: 'rect',
-            attr: {
-                // These coordinates create a <rect> that is the same size as the top half of the SVG tag
-                x: 0,
-                y: 0,
-                width: 900,
-                height: 150
-            }
-        });
-        
-        // Now set the clip-path attribute on the first Line charts all-elements group
-        line.svg.all.setAttribute(
-            'clip-path',
-            'url(#myClip)'
-        );
-
-
-
-
-
-        // Create the  clipPath element that sits inside the <def> tag *** for the bottom half of the chart ***
-        clip2 = RGraph.SVG.create({
-            svg: line2.svg,
-            type: 'clipPath', // This is case sensitive!
-            parent: line2.svg.defs,
-            attr: {
-                id: 'myClip2'
-            }
-        });
-        
-        // Create the shape element for the clip area
-        RGraph.SVG.create({
-            svg: line2.svg,
-            parent: clip2,
-            type: 'rect',
-            attr: {
-                // These coordinates create a <rect> that is the same size as the bottom half of the SVG tag
-                x: 0,
-                y: 150,
-                width: 900,
-                height: 150
-            }
-        });
-        
-        // Now set the clip-path attribute on the second Line charts all-elements group
-        line2.svg.all.setAttribute(
-            'clip-path',
-            'url(#myClip2)'
-        );
+        }).trace();
     </script>
 
     <p></p>
@@ -174,14 +158,57 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
 </pre>
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div style="position: relative; width: 700px; height: 300px"&gt;
-    &lt;div id="cc1" style="width: 700px; height: 300px; position: absolute; top: 0; left: 0"&gt;&lt;/div&gt;
-    &lt;div id="cc2" style="width: 700px; height: 300px; position: absolute; top: 0; left: 0"&gt;&lt;/div&gt;
+&lt;style&gt;
+    #container {
+        position: relative;
+        width: 700px;
+        height: 300px;
+    }
+    
+    #wrapper1 {
+        position: absolute;
+        top: 0px;
+        left: 0;
+        width: 700px;
+        height: 150px;
+        overflow: hidden;
+    }
+    
+    #wrapper2 {
+        position: absolute;
+        top: 150px;
+        left: 0;
+        width: 700px;
+        height: 150px;
+        overflow: hidden;
+    }
+    
+    #cc1 {
+        width: 700px;
+        height: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    
+    #cc2 {
+        width: 700px;
+        height: 300px;
+        position: absolute;
+        top: -150px;
+        left: 0;
+    }
+&lt;/style&gt;
+
+&lt;div id="container"&gt;
+    &lt;div id="wrapper1"&gt;   &lt;div id="cc1"&gt;&lt;/div&gt;   &lt;/div&gt;
+    &lt;div id="wrapper2"&gt;   &lt;div id="cc2"&gt;&lt;/div&gt;   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
 
