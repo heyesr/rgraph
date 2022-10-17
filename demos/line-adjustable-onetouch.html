@@ -1,0 +1,82 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Line chart that uses the growPoint() method</title>
+    <meta name="description" content="This is a simple example of a Line chart that uses the growPoint() method" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Line chart that uses the growPoint() method to facilitate one-touch adjusting</h1>
+    
+    <canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br />
+    <button style="font-size: 20pt; cursor: pointer" onclick="line.set('spline', !line.get('spline')); RGraph.redraw();">Toggle spline</button>
+    
+    <p>
+        This Line chart uses custom adjusting that should work
+        well with touch-based devices (eg tablets) - which the normal
+        Line chart adjusting doesn't.
+    </p>
+
+    <script id="rgraph-demo-source-code">
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: '12,18,10,9,6,20,18',
+            options: {
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 5,
+                shadow: false,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false
+            }
+        }).draw();
+        
+        line.canvas.onclick = function (e)
+        {
+            var indexes = line.closest({event:e,xonly:true,tolerance: 50});
+            var value = line.getValue(e);
+
+            if (indexes) {
+                line.growPoint(
+                    indexes.index,
+                    value
+                );
+            }
+        };
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+
+&lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;button style="font-size: 20pt; cursor: pointer" onclick="line.set('spline', !line.get('spline')); RGraph.redraw();"&gt;Toggle spline&lt;/button&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
