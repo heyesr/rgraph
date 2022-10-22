@@ -174,8 +174,95 @@
     //
     RGraph.SVG.create = function (opt)
     {
-        var ns  = "http://www.w3.org/2000/svg",
-            tag = doc.createElementNS(ns, opt.type);
+        var ns  = "http://www.w3.org/2000/svg";
+        
+            //
+        // Handle the format:
+        //     obj.create('rect,x:0,y:0,width:100,y:100'[, parent[, style]])
+        if (typeof opt === 'string') {
+
+            //
+            // First, determine the separator character by seeing what
+            // the first non-alnum character is
+            opt.match(/^([a-z0-9]+)([^a-z0-9])/);
+            var tagName   = RegExp.$1,
+                separator = RegExp.$2,
+                parts     = opt.split(separator),
+                attr      = {};
+
+            opt = {type: tagName,svg:this.svg};
+
+
+
+
+            //
+            // Add any attributes that have been given
+            //
+            for (let i=1; i<parts.length; ++i) {
+                if (parts[i]) {
+                    var [name,value] = [...parts[i].split('=')];
+                    attr[name] = value;
+                }
+            }
+            opt.attr = attr;
+
+
+
+
+            //
+            // Add any styles that have been given as the
+            // second arg
+            //
+            if (typeof arguments[1] === 'string') {
+                
+                opt.style = {};
+                parts     = arguments[1].split(separator);
+
+                for (let i=0; i<parts.length; ++i) {
+                    var [name,value] = [...parts[i].split('=')];
+                    opt.style[name] = value;
+                }
+            
+            //
+            // Style given as third arg
+            //
+            } else if (typeof arguments[2] === 'string') {
+                
+                opt.style = {};
+                parts     = arguments[2].split(separator);
+
+                for (let i=0; i<parts.length; ++i) {
+                    var [name,value] = [...parts[i].split('=')];
+                    opt.style[name] = value;
+                }
+            }
+
+            // The parentNode can be given as the second argument
+            if (typeof arguments[1] === 'object' && !RGraph.SVG.isNull(arguments[1])) {
+                var parentNode = arguments[1];
+            }
+            
+            // Parent node was given as the third argument
+            if (typeof arguments[2] === 'object' && !RGraph.SVG.isNull(arguments[2])) {
+                var parentNode = arguments[2];
+            }
+
+            // Set the parent node on the opt object
+            if (parentNode) {
+                opt.parent = parentNode;
+            }
+        }
+
+
+
+
+
+
+
+
+
+        
+        var tag = doc.createElementNS(ns, opt.type);
 
         // Add the attributes
         for (var o in opt.attr) {
@@ -6126,57 +6213,6 @@
 
 
     //
-    // A shortcut for the create function that gets added to
-    // each object
-    //
-    // @param obj The object
-    //
-    RGraph.SVG.addCreateFunction = function (obj)
-    {
-        //
-        // This is the function that's appended to
-        // each object
-        //
-        // @param string type   The type of node to create
-        // @param object parent The parent node
-        // @param object attr   Attributes to add to the new node
-        // @param object style  Style properties to add to the new
-        //                      node
-        //
-        obj.create = function (type, parent, attr)
-        {
-            var style = arguments[3] ? arguments[3] : {};
-
-            // Special case for arcPaths
-            if (type.toLowerCase() === 'arcpath') {
-                return RGraph.SVG.TRIG.getArcPath(attr);
-            
-            } else if (type.toLowerCase() === 'arcpath2') {
-                return RGraph.SVG.TRIG.getArcPath2(attr);
-            
-            } else if (type.toLowerCase() === 'arcpath3') {
-                return RGraph.SVG.TRIG.getArcPath3(attr);
-                
-            } else {
-                return RGraph.SVG.create({
-                    svg: this.svg,
-                    parent: parent,
-                    type: type,
-                    attr: attr,
-                    style: style
-                });
-            }
-        };
-    };
-
-
-
-
-
-
-
-
-    //
     //
     // Adds custom text to the chart based on whats
     // in the objects text: property.
@@ -6451,6 +6487,112 @@
 
 
 
+    //
+    // This function is very similar to the canvas clipTo()
+    // function and helps make clipping SVG tags easy.
+    //
+    // @param object obj        The RGraph chart object
+    // @param object dimensions The area that you want to clip to
+    //
+    RGraph.SVG.clipTo = function (obj, dimensions)
+    {
+        // A counter that is used in the clip ID
+        if (!RGraph.SVG.clipTo.counter) {
+            RGraph.SVG.clipTo.counter = 1;
+        } else {
+            RGraph.SVG.clipTo.counter++;
+        }
+        
+        var id = 'rgraph_clip_' + RGraph.SVG.clipTo.counter;
+
+        if (typeof dimensions === 'string') {
+            
+            if (dimensions === 'tophalf') {
+            
+                // Create the  clipPath element that sits
+                // inside the <def> tag
+                var clip = RGraph.SVG.create({
+                    svg: obj.svg,
+                    type: 'clipPath', // This is case sensitive!
+                    parent: obj.svg.defs,
+                    attr: {
+                        id: id
+                    }
+                });
+                
+                // Create the shape element for the clip area
+                RGraph.SVG.create({
+                    svg: obj.svg,
+                    parent: clip,
+                    type: 'rect',
+                    attr: {
+                        // These coordinates create a <rect>
+                        // that is the same size as the top
+                        // half of the SVG tag
+                        x: 0,
+                        y: 0,
+                        width: obj.width,
+                        height: (obj.height / 2)
+                    }
+                });
+                
+                // Now set the clip-path attribute on the first
+                // Line charts all-elements group
+                obj.svg.all.setAttribute(
+                    'clip-path',
+                    'url(#' + id + ')'
+                );
+            
+            
+            
+            
+            } else if (dimensions === 'bottomhalf') {
+
+
+                // Create the  clipPath element that sits
+                // inside the <def> tag
+                var clip = RGraph.SVG.create({
+                    svg: obj.svg,
+                    type: 'clipPath', // This is case sensitive!
+                    parent: obj.svg.defs,
+                    attr: {
+                        id: id
+                    }
+                });
+                
+                // Create the shape element for the clip area
+                RGraph.SVG.create({
+                    svg: obj.svg,
+                    parent: clip,
+                    type: 'rect',
+                    attr: {
+                        // These coordinates create a <rect>
+                        // that is the same size as the top
+                        // half of the SVG tag
+                        x: 0,
+                        y: (obj.height / 2),
+                        width: obj.width,
+                        height: (obj.height / 2)
+                    }
+                });
+                
+                // Now set the clip-path attribute on the first
+                // Line charts all-elements group
+                obj.svg.all.setAttribute(
+                    'clip-path',
+                    'url(#' + id + ')'
+                );
+            }
+        }
+    };
+
+
+
+
+
+
+
+
 // End module pattern
 })(window, document);
 
@@ -6554,13 +6696,37 @@ window.$cl = function (v)
 
 
 
-//
-// A basic string formatting function. Use it like this:
-// 
-// var str = '{1} {2} {3}'.format('a', 'b', 'c');
-//
-// Outputs: a b c
-//
+    //
+    // Polyfill for the String.protfotype.substr() method which may not be included on some devices
+    //
+    // @param  number start  The start index. Zero-indexed and can also be negtive - in which case
+    //                       the counting starts from the end of the string
+    // @param  number length The length of the string to extract
+    // @return string        The new string
+    //
+    if (typeof ''.substr !== 'function') {
+        String.prototype.substr = function (start, length)
+        {
+            start = start >=0 ? start : this.length + start;
+            return this.substring(start, start + length);
+ 
+        };
+    }
+
+
+
+
+
+
+
+
+    //
+    // A basic string formatting function. Use it like this:
+    // 
+    // var str = '{1} {2} {3}'.format('a', 'b', 'c');
+    //
+    // Outputs: a b c
+    //
     String.prototype.format = function()
     {
 
