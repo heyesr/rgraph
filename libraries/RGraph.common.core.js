@@ -9549,6 +9549,30 @@
 
 
     //
+    // Polyfill for the String.protfotype.substr() method which may not be included on some devices
+    //
+    // @param  number start  The start index. Zero-indexed and can also be negtive - in which case
+    //                       the counting starts from the end of the string
+    // @param  number length The length of the string to extract
+    // @return string        The new string
+    //
+    if (typeof ''.substr !== 'function') {
+        String.prototype.substr = function (start, length)
+        {
+            start = start >=0 ? start : this.length + start;
+            return this.substring(start, start + length);
+ 
+        };
+    }
+
+
+
+
+
+
+
+
+    //
     // A basic string formatting function. Use it like this:
     // 
     // var str = '{0} {1} {2}'.format('a', 'b', 'c');
