@@ -200,7 +200,7 @@
             text:                        null,
             
             
-            title:                  '',
+            title:                 '',
             titleX:                null,
             titleY:                null,
             titleHalign:           null,
@@ -215,6 +215,14 @@
             titleItalic:           null,
             titleOffsetx:          0,
             titleOffsety:          0,
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
 
             colorsStroke:          'rgba(0,0,0,0)',
             colors:                 ['red','#0f0','blue','pink','orange','cyan','black','white','green','magenta'],
