@@ -116,7 +116,15 @@
             titleValign:               null,
             titleOffsetx:              0,
             titleOffsety:              0,
-            
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
+
             contextmenu:               null,
 
             linewidth:                 1,
