@@ -88,13 +88,23 @@
 
             titleTop:          '',
             titleTopFont:     null,
-            titleTopSize:     null,
-            titleTopColor:    null,
-            titleTopBold:     null,
+            titleTopSize:     16,
+            titleTopColor:    'black',
+            titleTopBold:     true,
             titleTopItalic:   null,
             titleTopPos:      null,
             titleTopOffsetx:  0,
             titleTopOffsety:  0,
+
+            titleTopSubtitle:         null,
+            titleTopSubtitleFont:     null,
+            titleTopSubtitleSize:     null,
+            titleTopSubtitleColor:    '#666',
+            titleTopSubtitleBold:     null,
+            titleTopSubtitleItalic:   null,
+            titleTopSubtitlePos:      null,
+            titleTopSubtitleOffsetx:  0,
+            titleTopSubtitleOffsety:  0,
             
             titleBottom:          '',
             titleBottomFont:      null,
@@ -895,6 +905,29 @@
             var x = this.centerx;
             var y = this.centery - 25;
             
+            if (typeof properties.titleTopSubtitle === 'string') {
+                y -= 20.
+            }
+
+
+
+
+            // Move the Y coord up if there's a subtitle
+            if (typeof properties.titleTopSubtitle === 'string' || typeof properties.titleTopSubtitle === 'number') {
+                var titleTopSubtitleDim = RGraph.measureText({
+                    bold:   properties.titleTopSubtitleBold,
+                    italic: properties.titleTopSubtitleItalic,
+                    size:   properties.titleTopSubtitleSize,
+                    font:   properties.titleTopSubtitleFont,
+                    text:   'Mg'
+                });
+            
+                y -= titleTopSubtitleDim[1];
+            }
+
+
+
+
             // Totally override the calculated positioning
             if (typeof properties.titleTopPos == 'number') {
                 y = this.centery - (this.radius * properties.titleTopPos);
@@ -911,22 +944,52 @@
                 if (typeof properties.titleTopOffsety === 'number') y += properties.titleTopOffsety;
             
                 this.context.fillStyle = properties.titleTopColor;
-                RGraph.text({
-                
-               object: this,
 
+                RGraph.text({
+               object: this,
                  font: textConf.font,
                  size: textConf.size,
                 color: textConf.color,
                  bold: textConf.bold,
                italic: textConf.italic,
-
                     x:      x,
                     y:      y,
                     text:   String(properties.titleTop),
                     halign: 'center',
                     valign: 'bottom',
-                    tag:    'title.top'
+                    tag:    'title.top',
+                    marker: false
+                });
+            }
+
+            // Draw the subtitle
+            var text = properties.titleTopSubtitle;
+            
+            if (typeof text === 'string') {
+
+                // Get the size of the title
+                var titleSize = textConf.size;
+
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'titleTopSubtitle'
+                });
+
+                // Draw the subtitle
+                var ret = RGraph.text({
+                    object:  this,
+                    font:    textConf.font,
+                    size:    textConf.size,
+                    color:   textConf.color,
+                    bold:    textConf.bold,
+                    italic:  textConf.italic,
+                    x:       x + properties.titleTopSubtitleOffsetx,
+                    y:       y + 5 + properties.titleTopSubtitleOffsety,
+                    text:    text,
+                    valign:  'top',
+                    halign:  'center',
+                    tag:     'subtitle.top',
+                    marker:  false
                 });
             }
         };
