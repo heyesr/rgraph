@@ -295,10 +295,6 @@
         this.responsive = RGraph.SVG.responsive;
 
 
-        //  Add the create function to the object. The create()
-        // function is defined in the SVG core library
-        RGraph.SVG.addCreateFunction(this);
-
 
 
 
@@ -481,6 +477,37 @@
 
 
         //
+        // New create() shortcut function
+        //eg:
+        //    this.create('rect,x:0,y:0,width:100,height:100'[,parent]);
+        //
+        // @param mixed definition This can either be an object
+        //                         which holds details of the object
+        //                         that you want to make or a string
+        //                         that holds the same information.
+        // @param mixed            This can be either a string that
+        //                         holds style information to be
+        //                         applied to the new node or it
+        //                         can be the parent node that the
+        //                         new node is to be added to.
+        // @param string           If used, this can be a string
+        //                         that holds the style information
+        //                         that is to be applied to the new
+        //                         node.
+        //
+        this.create = function (definition)
+        {
+            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
+        };
+
+
+
+
+
+
+
+
+        //
         // Draw the background "grid"
         //
         this.drawBackground = function ()
@@ -495,7 +522,7 @@
                 if (properties.backgroundGridCircles) {
 
                     // Create the path for the outer line of the grid
-                    var arcPath1 = this.create('arcPath3', null,{
+                    var arcPath1 = RGraph.SVG.TRIG.getArcPath3({
                         cx: this.centerx,
                         cy: this.centery,
                         r:  outerRadius,
@@ -507,7 +534,7 @@
                     });
         
                     // Create the path for the inner line of the grid
-                    var arcPath2 = this.create('arcPath3', null,{
+                    var arcPath2 = RGraph.SVG.TRIG.getArcPath3({
                         cx: this.centerx,
                         cy: this.centery,
                         r:  innerRadius,
@@ -517,10 +544,15 @@
                         lineto: true
                     });
 
-                    this.create('path', this.svg.all, {
-                        d: arcPath1 + ' ' + arcPath2 + ' z',
-                        stroke: properties.backgroundGridColor,
-                        fill: 'transparent'
+                    RGraph.SVG.create({
+                        svg:    this.svg,
+                        type:   'path',
+                        parent: this.svg.all,
+                        attr: {
+                            d: arcPath1 + ' ' + arcPath2 + ' z',
+                            stroke: properties.backgroundGridColor,
+                            fill: 'transparent'
+                        }
                     });
                 }
                 
@@ -536,7 +568,7 @@
     
                     for (var i=0,path=''; i<properties.backgroundGridRadialsCount; ++i) {
 
-                        path += this.create('arcPath3', null, {
+                        path += RGraph.SVG.TRIG.getArcPath3({
                             cx: this.centerx,
                             cy: this.centery,
                             r:  outerRadius,
@@ -547,7 +579,7 @@
                             moveto: true
                         });
 
-                        path += this.create('arcPath3', null, {
+                        path += RGraph.SVG.TRIG.getArcPath3({
                             cx: this.centerx,
                             cy: this.centery,
                             r:  innerRadius,
@@ -561,11 +593,16 @@
                         angle += increment;
                     }
 
-                    this.create('path', this.svg.all, {
-                        d: path + ' z',
-                        stroke: properties.backgroundGridColor,
-                        fill: 'transparent',
-                        'stroke-width': properties.backgroundGridLinewidth
+                    RGraph.SVG.create({
+                        svg: this.svg,
+                        type: 'path',
+                        parent: this.svg.all,
+                        attr: {
+                            d: path + ' z',
+                            stroke: properties.backgroundGridColor,
+                            fill: 'transparent',
+                            'stroke-width': properties.backgroundGridLinewidth
+                        }
                     });
                 }
             }
@@ -588,7 +625,7 @@
 
 
 
-            var path = this.create('arcPath', null, {
+            var path = RGraph.SVG.TRIG.getArcPath({
                 cx: this.centerx,
                 cy: this.centery,
                  r: this.radius,
@@ -598,7 +635,7 @@
             });
 
             
-            var path2 = this.create('arcPath', null, {
+            var path2 = RGraph.SVG.TRIG.getArcPath({
                 cx: this.centerx,
                 cy: this.centery,
                 r:  this.radius - this.progressWidth,
@@ -610,11 +647,16 @@
 
             // This element is repeated AFTER the green bar that indicates
             // the value so that the stroke appears AFTER the indicator bar
-            var background = this.create('path', this.svg.all, {
-                d: path + " L " + (this.centerx + this.radius - this.progressWidth)  + " " + this.centery + path2 + " L " + (this.centerx - this.radius) + " " + this.centery,
-                fill:           properties.backgroundFill || properties.colors[0],
-                'stroke-width': 0,
-                'fill-opacity': properties.backgroundFillOpacity
+            var background = RGraph.SVG.create({
+                svg: this.svg,
+                type: 'path',
+                parent: this.svg.all,
+                attr: {
+                    d: path + " L " + (this.centerx + this.radius - this.progressWidth)  + " " + this.centery + path2 + " L " + (this.centerx - this.radius) + " " + this.centery,
+                    fill:           properties.backgroundFill || properties.colors[0],
+                    'stroke-width': 0,
+                    'fill-opacity': properties.backgroundFillOpacity
+                }
             });
 
             // Store a reference to the background
@@ -681,14 +723,19 @@
                 });
     
                 // Now draw the path
-                var path = this.create('path',group, {
-                    d: path + " L{1} {2} ".format(
-                        path2[1],
-                        path2[2]
-                    ) + path3 + ' z',
-                    fill: properties.colors[0],
-                    stroke: properties.colorsStroke,
-                    'stroke-width': properties.linewidth
+                var path = RGraph.SVG.create({
+                    svg: this.svg,
+                    type: 'path',
+                    parent: group,
+                    attr: {
+                        d: path + " L{1} {2} ".format(
+                            path2[1],
+                            path2[2]
+                        ) + path3 + ' z',
+                        fill: properties.colors[0],
+                        stroke: properties.colorsStroke,
+                        'stroke-width': properties.linewidth
+                    }
                 });
     
                 // Store a reference to the bar in the nodes array and the
@@ -717,16 +764,20 @@
     
                 // Create a group for the indicator bars. At a later point any
                 // highlight can be also appended to this group
-                var group = this.create('g', this.svg.all,
-                {
-                    id: 'indicator-bar-group'
+                var group = RGraph.SVG.create({
+                    svg: this.svg,
+                    type:'g',
+                    parent: this.svg.all,
+                    attr: {
+                        id: 'indicator-bar-group'
+                    }
                 });
 
                 for (var i=0,start=-RGraph.SVG.TRIG.HALFPI; i<this.value.length; ++i) {
                     
                     var angle = ((this.value[i] - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
         
-                    var path1 = this.create('arcPath', null, {
+                    var path1 = RGraph.SVG.TRIG.getArcPath({
                         cx: this.centerx,
                         cy: this.centery,
                         r:  this.radius, // - this.progressWidth,
@@ -737,7 +788,7 @@
                         moveto: true
                     });
 
-                    var path2 = this.create('arcPath3', null, {
+                    var path2 = RGraph.SVG.TRIG.getArcPath3({
                         cx: this.centerx,
                         cy: this.centery,
                         r:  this.radius - this.progressWidth,
@@ -747,11 +798,16 @@
                     });
 
 
-                    var el = this.create('path', group, {
-                        d: '{1} {2} z'.format(path1, path2),
-                        stroke: properties.colorsStroke,
-                        'stroke-width': properties.linewidth,
-                        fill: properties.colors[i]
+                    var el = RGraph.SVG.create({
+                        svg: this.svg,
+                        type: 'path',
+                        parent: group,
+                        attr: {
+                            d: '{1} {2} z'.format(path1, path2),
+                            stroke: properties.colorsStroke,
+                            'stroke-width': properties.linewidth,
+                            fill: properties.colors[i]
+                        }
                     });
                     
                     // Store the angle for later use
