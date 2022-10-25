@@ -138,6 +138,14 @@
             titleValign:                    null,
             titleOffsetx:                   0,
             titleOffsety:                   0,
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
 
             shadow:                         true,
             shadowColor:                    '#aaa',
@@ -401,16 +409,10 @@
 
 
 
-            //
-            // Draw the title
-            //
-            RGraph.drawTitle(
-                this,
-                properties.title,
-                (this.canvas.height / 2) - this.radius - 5,
-                this.centerx,
-                properties.titleSize ? properties.titleSize : properties.textSize
-            );
+//
+// Draw the title
+//
+this.drawTitle();
 
             //
             // The total of the array of values
@@ -634,6 +636,106 @@
             func(this);
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws the title
+        //
+        this.drawTitle = function ()
+        {
+            var x = this.centerx;
+            var y = this.centery - this.radius;
+
+
+
+
+            // Move the Y coord up if there's a subtitle
+            if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+                var titleSubtitleDim = RGraph.measureText({
+                    bold:   properties.titleSubtitleBold,
+                    italic: properties.titleSubtitleItalic,
+                    size:   properties.titleSubtitleSize,
+                    font:   properties.titleSubtitleFont,
+                    text:   'Mg'
+                });
+            
+                y -= titleSubtitleDim[1];
+            }
+
+
+
+
+            // Totally override the calculated positioning
+            if (typeof properties.titlePos == 'number') {
+                y = this.centery - (this.radius * properties.titlePos);
+            }
+
+            var textConf = RGraph.getTextConf({
+                object: this,
+                prefix: 'title'
+            });
+
+            if (properties.title) {
+            
+                if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
+                if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
+            
+                this.context.fillStyle = properties.titleColor;
+
+                RGraph.text({
+               object: this,
+                 font: textConf.font,
+                 size: textConf.size,
+                color: textConf.color,
+                 bold: textConf.bold,
+               italic: textConf.italic,
+                    x:      x,
+                    y:      y,
+                    text:   String(properties.title),
+                    halign: 'center',
+                    valign: 'bottom',
+                    tag:    'title',
+                    marker: false
+                });
+            }
+
+            // Draw the subtitle
+            var text = properties.titleSubtitle;
+            
+            if (typeof text === 'string') {
+
+                // Get the size of the title
+                var titleSize = textConf.size;
+
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'titleSubtitle'
+                });
+
+                // Draw the subtitle
+                var ret = RGraph.text({
+                    object:  this,
+                    font:    textConf.font,
+                    size:    textConf.size,
+                    color:   textConf.color,
+                    bold:    textConf.bold,
+                    italic:  textConf.italic,
+                    x:       x + properties.titleSubtitleOffsetx,
+                    y:       y + 5 + properties.titleSubtitleOffsety,
+                    text:    text,
+                    valign:  'top',
+                    halign:  'center',
+                    tag:     'subtitle',
+                    marker:  false
+                });
+            }
         };
 
 
@@ -1384,6 +1486,12 @@
                 this.radius = properties.radius;
             } else {
                 this.radius = Math.min(this.graph.width, this.graph.height) / 2;
+            }
+            
+            // If the radius property is a string treat it
+            // as an adjustment
+            if (typeof properties.radius === 'string') {
+                this.radius = this.radius + parseFloat(properties.radius);
             }
     
             return this.radius;
