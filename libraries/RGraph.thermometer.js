@@ -78,7 +78,14 @@
             titleItalic:                null,
             titleOffsetx:               0,
             titleOffsety:               0,
-
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
             titleSide:                  '',
             titleSideBold:              null,
             titleSideFont:              null,
@@ -662,26 +669,83 @@
                 object: this,
                 prefix: 'title'
             });
+            
+            //
+            // The coordinates for the title. The Y is modified
+            // if the subtitle is specified.
+            //
+            var x = this.marginLeft + (this.width / 2) + properties.titleOffsetx;
+            var y = this.marginTop - 3 + properties.titleOffsety;
 
+            // Move the Y coord up if there's a subtitle
+            if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+                var titleSubtitleDim = RGraph.measureText({
+                    bold:   properties.titleSubtitleBold,
+                    italic: properties.titleSubtitleItalic,
+                    size:   properties.titleSubtitleSize,
+                    font:   properties.titleSubtitleFont,
+                    text:   'Mg'
+                });
+            
+                y -= titleSubtitleDim[1];
+            }
 
             RGraph.text({
-                    
              object: this,
-
                font:   textConf.font,
                size:   textConf.size,
                color:  textConf.color,
                bold:   textConf.bold,
                italic: textConf.italic,
-
-                x:      this.marginLeft + (this.width / 2) + properties.titleOffsetx,
-                y:      this.marginTop - 3 + properties.titleOffsety,
+                x:      x,
+                y:      y,
                 text:   String(properties.title),
                 valign: 'bottom',
                 halign: 'center',
-                bold:   true,
                 tag:   'title'
             });
+
+
+
+
+
+
+
+
+
+
+
+            // Draw the subtitle
+            var text = properties.titleSubtitle;
+
+            if (typeof text === 'string') {
+            
+                // Get the size of the title
+                var titleSize = textConf.size;
+            
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'titleSubtitle'
+                });
+            
+                // Draw the subtitle
+                var ret = RGraph.text({
+                    object:  this,
+                    font:    textConf.font,
+                    size:    textConf.size,
+                    color:   textConf.color,
+                    bold:    textConf.bold,
+                    italic:  textConf.italic,
+                    x:       x + properties.titleSubtitleOffsetx,
+                    y:       y + 2 + properties.titleSubtitleOffsety,
+                    text:    String(properties.titleSubtitle),
+                    valign:  'top',
+                    halign:  'center',
+                    tag:     'subtitle'
+                });
+            }
+
+
         };
 
 
