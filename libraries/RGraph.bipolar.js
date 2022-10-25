@@ -165,7 +165,15 @@
             titleValign:                null,
             titleOffsetx:               0,
             titleOffsety:               0,
-            
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
+
             marginCenter:               0,
             marginCenterAuto:           true,
             marginLeft:                 35,
@@ -253,7 +261,8 @@
 
 
         //
-        // Create the dollar objects so that functions can be added to them
+        // Create the dollar objects so that functions can be
+        // added to them
         //
         var linear_data = RGraph.arrayLinearize(this.left, this.right);
 
