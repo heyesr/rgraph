@@ -75,6 +75,14 @@
             titleValign:                        null,
             titleOffsetx:                       0,
             titleOffsety:                       0,
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
 
             textSize:                           12,
             textColor:                          'black',
@@ -1360,7 +1368,7 @@
         this.drawTitle = function ()
         {
             // Draw the title text
-            if (properties.title.length) {
+            if (properties.title && properties.title.length) {
     
                 var x    = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
                 var text = properties.title;
@@ -1382,7 +1390,35 @@
     
                 x = typeof properties.titleX === 'number' ? properties.titleX : x;
                 y = typeof properties.titleY === 'number' ? properties.titleY : y;
+
+
+
+
+
+
+
+
+
+                // Move the Y coord up if there's a subtitle
+                if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+                    var titleSubtitleDim = RGraph.measureText({
+                        bold:   properties.titleSubtitleBold,
+                        italic: properties.titleSubtitleItalic,
+                        size:   properties.titleSubtitleSize,
+                        font:   properties.titleSubtitleFont,
+                        text:   'Mg'
+                    });
                 
+                    y -= titleSubtitleDim[1];
+                }
+
+
+
+
+
+
+
+
                 // Add any use specified offset
                 if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
                 if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
@@ -1405,6 +1441,49 @@
                     bounding:     properties.titleBackground ? true : false,
                     boundingFill: properties.titleBackground,
                     tag:          'title'
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Draw the subtitle
+            var text = properties.titleSubtitle;
+            
+            if (typeof text === 'string') {
+
+                // Get the size of the title
+                var titleSize = textConf.size;
+
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'titleSubtitle'
+                });
+
+                // Draw the subtitle
+                var ret = RGraph.text({
+                    object:  this,
+                    font:    textConf.font,
+                    size:    textConf.size,
+                    color:   textConf.color,
+                    bold:    textConf.bold,
+                    italic:  textConf.italic,
+                    x:       x + properties.titleSubtitleOffsetx,
+                    y:       y + 5 + properties.titleSubtitleOffsety,
+                    text:    text,
+                    valign:  'top',
+                    halign:  'center',
+                    tag:     'subtitle.top',
+                    marker:  false
                 });
             }
         };
