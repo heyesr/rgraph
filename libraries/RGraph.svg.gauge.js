@@ -262,10 +262,6 @@
         this.responsive = RGraph.SVG.responsive;
 
 
-        //  Add the create function to the object. The create()
-        // function is defined in the SVG core library
-        RGraph.SVG.addCreateFunction(this);
-
 
 
 
@@ -487,6 +483,37 @@
 
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // New create() shortcut function
+        //eg:
+        //    this.create('rect,x:0,y:0,width:100,height:100'[,parent]);
+        //
+        // @param mixed definition This can either be an object
+        //                         which holds details of the object
+        //                         that you want to make or a string
+        //                         that holds the same information.
+        // @param mixed            This can be either a string that
+        //                         holds style information to be
+        //                         applied to the new node or it
+        //                         can be the parent node that the
+        //                         new node is to be added to.
+        // @param string           If used, this can be a string
+        //                         that holds the style information
+        //                         that is to be applied to the new
+        //                         node.
+        //
+        this.create = function (definition)
+        {
+            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
         };
 
 
