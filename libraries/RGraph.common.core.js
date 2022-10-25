@@ -1140,7 +1140,7 @@
             var size   = textConf.size,
                 bold   = textConf.bold,
                 italic = textConf.italic;
-                
+
                 // Set bold to true for the title if it hasn't been set by
                 // the user 
                 if (RGraph.isNull(bold)) {
@@ -1197,6 +1197,21 @@
             centerx = hpos * canvas.width;
         }
 
+        // Move the Y coord up if there's a subtitle
+        if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+            var titleSubtitleDim = RGraph.measureText({
+                bold:   properties.titleSubtitleBold,
+                italic: properties.titleSubtitleItalic,
+                size:   properties.titleSubtitleSize,
+                font:   properties.titleSubtitleFont,
+                text:   'Mg'
+            });
+        
+            vpos -= titleSubtitleDim[1];
+        }
+
+
+
         //
         // Now the titleX and titleY settings override (if set) the above
         //
@@ -1207,7 +1222,7 @@
         
         if (typeof x === 'string') centerx += parseFloat(x);
         if (typeof y === 'string') vpos    += parseFloat(y);
-        
+
         if (typeof properties.titleOffsetx === 'number') centerx += properties.titleOffsetx;
         if (typeof properties.titleOffsety === 'number') vpos += properties.titleOffsety;
 
@@ -1262,6 +1277,46 @@
             tag:     'title',
             marker:  false
         });
+
+
+
+
+
+        // Draw the subtitle
+        var text = properties.titleSubtitle;
+        
+        if (typeof text === 'string') {
+        
+            // Get the size of the title
+            var titleSize = textConf.size;
+        
+            var textConf = RGraph.getTextConf({
+                object: args.object,
+                prefix: 'titleSubtitle'
+            });
+
+            // Draw the subtitle
+            var ret = RGraph.text({
+                object:  args.object,
+                font:    textConf.font,
+                size:    textConf.size,
+                color:   textConf.color,
+                bold:    textConf.bold,
+                italic:  textConf.italic,
+                x:       centerx + properties.titleSubtitleOffsetx,
+                y:       vpos + (titleSize * 1.5) + properties.titleSubtitleOffsety,
+                text:    text,
+                valign:  valign,
+                halign:  halign,
+                tag:     'subtitle',
+                marker:  false
+            });
+        }
+
+
+
+
+
 
         // Reset the fill colour
         context.fillStyle = oldColor;
@@ -4270,6 +4325,7 @@
     //
     RGraph.measureText = function ()
     {
+        var args = RGraph.getArgs(arguments, 'text,bold,font,size');
         var args = RGraph.getArgs(arguments, 'text,bold,font,size');
 
         // Add the sizes to the cache as adding DOM elements is costly and causes slow downs
