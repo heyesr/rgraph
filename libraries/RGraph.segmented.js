@@ -101,7 +101,7 @@
             labelsCenterSpecificFormattedUnitsPost:    '',
             labelsCenterOffsetx:                       0,
             labelsCenterOffsety:                       0,
-            
+
             radialsCount:                       36,
 
             contextmenu:                        null,
