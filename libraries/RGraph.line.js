@@ -227,7 +227,15 @@
             titleValign:                null,
             titleOffsetx:               0,
             titleOffsety:               0,
-            
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
+
             shadow:                     true,
             shadowOffsetx:              2,
             shadowOffsety:              2,
@@ -4472,6 +4480,143 @@
                 this.context.lineCap =  properties.linecap;
             } else {
                 this.context.lineCap = 'round';
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Finds the closest point to the given mouseX coordinate. It allows a
+        // tolerance of 10 (or so) pixels.
+        //
+        //  @param object opt An object consisting of;
+        //                     o coords The coordinates of the points
+        //                     o mousex The mouseX coordinate
+        //                     o tolerance The number of pixels leeway
+        //                       that is allowed. Default is 10
+        //
+        this.closest = function (opt)
+        {
+            var DEFAULT_TOLERANCE = 25,
+                ret               = [];
+    
+            // custom object given
+            if (typeof opt === 'object' && typeof opt.event === 'object' && !opt.event.type) {
+                if (typeof opt.tolerance !== 'number') {
+                    opt.tolerance = DEFAULT_TOLERANCE;
+                }
+    
+            // Event object
+            } else if (typeof opt === 'object' && typeof opt.pageX === 'number') {
+                var e = opt;
+                opt = {event: e, tolerance: DEFAULT_TOLERANCE};
+            }
+
+            var coords    = this.coords2,
+                mouseXY   = RGraph.getMouseXY(opt.event),
+                tolerance = (typeof opt.tolerance === 'number' ? opt.tolerance : DEFAULT_TOLERANCE);
+    
+            // Loop through the coordinates looking for the closest
+            // (going by X coordinate)
+            for (var dataset=0; dataset<coords.length; ++dataset) {
+                for (var index=0; index<coords[dataset].length; ++index) {
+                    
+                    //
+                    // Only go by the x coordinate
+                    //
+                    if (opt.xonly) {
+                        if (   mouseXY[0] > (coords[dataset][index][0] - tolerance)
+                            && mouseXY[0] < (coords[dataset][index][0] + tolerance)) {
+                            
+                            ret.push({dataset: dataset, index: index, distance: Math.abs(mouseXY[0] - coords[dataset][index][0])});
+                        }
+
+                    //
+                    // Go by both the X and Y coordinates
+                    //
+                    } else {
+    
+    
+                        var hyp = RGraph.getHypLength({
+                            x1: coords[dataset][index][0],
+                            y1: coords[dataset][index][1],
+                            x2: mouseXY[0],
+                            y2: mouseXY[1]
+                        });
+                        
+                        if (hyp <= tolerance) {
+                            ret.push({dataset: dataset, index: index,distance: hyp});
+                        }
+                    } // End else clause
+                } // End for loop
+            }// End for loop
+
+            //
+            // Sort the ret array in order of the distance
+            //
+            ret.sort(function (a, b)
+            {
+                return a.distance - b.distance;
+            });
+            
+            // Return the point closest to the click
+            return ret[0];
+        };
+
+
+
+
+
+
+
+
+        //
+        // The animation function that makes the point grow to
+        // a new position. Give it the index, the new value and
+        // optionally the dataset too (this defaults to zero).
+        //
+        // @param number dataset The dataset of the point OPTIONAL
+        // @param number index   The index of the point
+        // @param number value   The value to grow the point to
+        // @param number frames  The number of frames to use whilst
+        //                       animating to the new position OPTIONAL
+        //
+        this.growPoint = function ()
+        {
+            var args = RGraph.getArgs(arguments, 'index,value'),
+                obj  = this;
+            
+            
+            // args.dataset should default to zero if not given
+            if (typeof args.dataset !== 'number') {
+                args.dataset = 0;
+            }
+            
+            // Determine the original value or the point that's being adjusted
+            var original_value = this.original_data[args.dataset][args.index];
+    
+    
+            var frames = typeof args.frames === 'number' ? args.frames : 15,
+                delay  = 16.666;  
+    
+            for (var i=0; i<frames; i++) {
+                (function (i)
+                {
+                    setTimeout(function ()
+                    {
+                        obj.original_data[args.dataset][args.index] = ((args.value - original_value) * (i + 1) / frames) + original_value;
+                        
+                        // Update this so that the above labels are correctly updated
+                        obj.data_arr = RGraph.arrayLinearize(obj.original_data);
+                        
+                        RGraph.redraw();
+                    }, delay * i);
+                })(i)
             }
         };
 
