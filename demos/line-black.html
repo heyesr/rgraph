@@ -30,31 +30,31 @@
     <p>
         It's a black Line chart with two datasets that both use custom tickmarks.
         These custom tickmarks are drawn by utilising the <code>RGraph.path()</code> API
-        function. This is a function that makes drawing with the canvas API
+        function. This is a function that makes drawing with the <code>canvas</code> API
         far less verbose than it usually is.
     </p>
     
     <p>
-        Before drawing commences, using the <code>beforedraw</code> event, the canvas
+        Before drawing commences, using the <code>beforedraw</code> event, the <code>canvas</code>
         is cleared
         to a plain black color. You might find this as a performance-enhancing tip
-        on various canvas performance articles though by the second frame you'll
-        not be drawing on a transparent canvas - so it might be a redundant
+        on various <code>canvas</code> performance articles though by the second frame you'll
+        not be drawing on a transparent <code>canvas</code> - so it might be a redundant
         action.
     </p>
     
     <p>
-        The <code>trace()</code> Line chart effect is used here - but an options
+        The <code>trace</code> Line chart effect is used here - but an options
         object is passed
-        to the effects function call. This is just a regular JavaScript object which
+        to the effects function call. This is just a regular <code>JavaScript</code> object which
         contains a single property: <code>frames</code>
         As the name suggests this stipulates the number of frames in the animation.
         Lower numbers make for quicker animations that finish sooner.
     </p>
     
     <p>
-        The <code>responsive()</code> function changes the size of the text and the margins, changes the
-        CSS <code>float</code> to <code>none</code> and a <code>callback</code> function updates a global
+        The <code>responsive</code> function changes the size of the text and the margins, changes the
+        <code>CSS</code> <code>float</code> to <code>none</code> and a <code>callback</code> function updates a global
         variable that controls the size of the custom tickmarks. The <code>callback</code> function runs <b>after</b>
         the chart has been redrawn so if you change anything here (as we're doing) then you need to redraw
         the chart. That can be done by calling the <code>RGraph.redraw()</code> function.
@@ -120,7 +120,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

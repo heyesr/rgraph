@@ -28,9 +28,9 @@
         looks very different from the default Meter. The start
         and end angles have
         been adjusted as well as the radius of the black part in the center
-        having been increased. Before starting to draw, the canvas is cleared to black. And the
+        having been increased. Before starting to draw, the <code>canvas</code> is cleared to black. And the
         Meter is adjustable by way of some custom code that utilises the
-        <code>grow()</code> effect. This type of adjusting is custom - the default adjusting
+        <code>grow</code> effect. This type of adjusting is custom - the default adjusting
         feature in RGraph is not animated.
     </p>
     
@@ -45,10 +45,10 @@
     
     <p>
         The custom code that facilitates the adjusting just consists of an event
-        listener added to the canvas tag, the
+        listener added to the <code>canvas</code> tag, the
         <code>getValue()</code> function to get
         the new value based on the click and then the
-        <code>grow()</code> effect that moves
+        <code>grow</code> effect that moves
         the pointer to the new position.
     </p>
 
@@ -120,7 +120,7 @@
 &lt;canvas id="cvs" width="300" height="300" style="background-color: black; border-radius: 15px; box-shadow:3px 3px 3px gray; float: right"&gt;[No canvas support]&lt;/canvas&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

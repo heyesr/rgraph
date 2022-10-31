@@ -41,7 +41,7 @@
     </div>
     
     <p>
-        A Line chart that's serving as a basic example of using the CSV Reader in conjunction with the CSV
+        A Line chart that's serving as a basic example of using the <code>CSV</code> Reader in conjunction with the <code>CSV</code>
         reader. 
     </p>
     
@@ -53,16 +53,16 @@
     
     <p>
         And what that does is fetch the whole of the third column (counting starts at zero). This column
-        of data is then given to the chart as its data. The X-axis labels for the chart are simply
-        hardcoded but they could quite easily be fetched from the first column of the CSV like this:
+        of data is then given to the chart as its data. The <code>X-axis</code> labels for the chart are simply
+        hardcoded but they could quite easily be fetched from the first column of the <code>CSV</code> like this:
     </p>
     
     <pre class="code">var labels = csv.column(0);</pre>
     
     <p>
-        The <code>responsive()</code> function reduces the size of the canvas tag, reduces the size of the text
-        and rotates the X labels to an angle of 45 degrees. It also adds a bottom CSS <code>margin</code>
-        and removes the CSS <code>float</code>.
+        The <code>responsive</code> function reduces the size of the <code>canvas</code> tag, reduces the size of the text
+        and rotates the <code>X-axis</code> labels to an angle of 45 degrees. It also adds a bottom <code>CSS</code> <code>margin</code>
+        and removes the<code> CSS</code> <code>float</code>.
     </p>
 
     <br clear="all" />
@@ -120,7 +120,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

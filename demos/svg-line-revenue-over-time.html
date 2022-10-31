@@ -29,7 +29,7 @@
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
-        Here's a nice, simply-presented SVG Line chart. It has no
+        Here's a nice, simply-presented <code>svg</code> Line chart. It has no
         background grid, a large <code>marginInner</code>
         setting (which was, until version 5.01, called <code>hmargin</code> -
         but is now called <code>marginInner</code>)
@@ -37,19 +37,19 @@
         and an extra little bit of text that's added using the
         <code>labelsAboveSpecific</code> property. The previous way
         of adding this text was to use the RGraph API,
-        and because it's an SVG-based
+        and because it's an <code>SVG</code>
         chart it did not need to be added in the <code>draw</code>
         event. Now though, it's added using the much simpler
         <code>labelsAboveSpecific</code> property and the label is
         styled using the <code>labelsAbove*</code> properties. Using
         the RGraph properties also makes the text easier to
         manipulate when you're making use of the
-        <code>responsive()</code> function.
+        <code>responsive</code> function.
     </p>
     
     <p>
-        The chart has a <code>responsive()</code> section that reduces the size of a few properties and also removes the
-        CSS <code>float:</code> from the SVG tag.
+        The chart has a <code>responsive</code> section that reduces the size of a few properties and also removes the
+        <code>CSS</code> <code>float</code> from the <code>svg</code> tag.
     </p>
     
     <br clear="all" />
@@ -104,7 +104,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

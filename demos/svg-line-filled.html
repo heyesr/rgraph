@@ -32,25 +32,25 @@
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
-        This is an SVG version of an older canvas-based demo that has been updated to be a bit more
+        This is an <code>svg</code> version of an older <code>canvas</code> demo that has been updated to be a bit more
         up-to-date style-wise.
     </p>
 
     <p>
-        The vertical lines on the grid have been removed, the X and Y-axes
-        have been removed and instead of being angular the line is now a spline (ie it's curvy).
+        The vertical lines on the grid have been removed, the <code>X-axis</code> and <code>Y-axis</code>
+        have been removed and instead of being angular the line is now a <code>spline</code> (ie it's curvy).
     </p>
     
     <p>
-        Also, it now uses the <code>trace()</code> animation effect. The chart is filled and the
+        Also, it now uses the <code>trace</code> animation effect. The chart is filled and the
         <code>filledAccumulative</code> option is set to true so that the three datasets are
         stacked on top of each other.
     </p>
     
     <p>
         Other than this there's a key, a title and the <code>yaxisScaleUnitsPost</code> has been set. The
-        chart is also responsive and on smaller screens, the size of the SVG tag is reduced, text size is
-        reduced and the CSS <code>float</code> is removed.
+        chart is also <code>responsive</code> and on smaller screens, the size of the <code>svg</code> tag is reduced, text size is
+        reduced and the <code>CSS</code> <code>float</code> is removed.
     </p>
 
     
@@ -113,7 +113,7 @@
                 yaxis: false
             }
         
-        // Use the trace() effect to show the chart and add some responsive capability
+        // Use the trace effect to show the chart and add some responsive capability
         }).trace().responsive([
             {maxWidth:null,width:600,height:300,options:{textSize: 12},parentCss:{'float':'right',textAlign:'none'}},
             {maxWidth:900,width:450,height:250,options:{textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
@@ -138,7 +138,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

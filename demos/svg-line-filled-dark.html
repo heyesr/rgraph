@@ -32,7 +32,7 @@
         filled chart and is also using the <code>filledAccumulative</code> option so the datasets
         are stacked one on top of the other. Gradients have been given to the fills
         and different colors given to the strokes. It's also using the
-        <code>trace()</code> effect.
+        <code>trace</code> effect.
     </p>
     
     <p>
@@ -42,14 +42,14 @@
     </p>
     
     <p>
-        There's a canvas version of this chart (<code>line-filled-dark-trace-sequential.html</code>)
+        There's a <code>canvas</code> version of this chart (<code>line-filled-dark-trace-sequential.html</code>)
         in <a href="https://www.rgraph.net/download.html">the download archive</a>
         where the datasets are traced individually and sequentially.
     </p>
 
     <p>
-        The <code>responsive()</code> function changes the size of the text, reduces the size of the
-        SVG tag and removes the CSS <code>float</code>.
+        The <code>responsive</code> function changes the size of the text, reduces the size of the
+        <code>svg</code> tag and removes the <code>CSS</code> <code>float</code>.
     </p>
     
 
@@ -109,7 +109,7 @@
                 ]
             }
         
-        // Use the trace() effect to show the chart and add some responsive capability that shrinks the
+        // Use the trace effect to show the chart and add some responsive capability that shrinks the
         // chart for a smaller screen
         }).trace().responsive([
             {maxWidth: null,width: 700,height:250,options: {textSize: 16,marginLeft:70},parentCss:{'float':'right',textAlign:'none'}},
@@ -134,7 +134,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

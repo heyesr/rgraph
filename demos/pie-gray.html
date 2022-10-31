@@ -12,7 +12,7 @@
     <title>Demo: A gray Pie chart with small, bold labels</title>
     
     
-    <meta name="description" content="A Pie chart using a gray theme and the responsive() functionality. Here, the labels have the value of each segment added before they're assigned to the chart - but only when you're viewing the larger version of the chart. For the smaller version, the figures are removed from the labels." />
+    <meta name="description" content="A Pie chart using a gray theme and the responsive functionality. Here, the labels have the value of each segment added before they're assigned to the chart - but only when you're viewing the larger version of the chart. For the smaller version, the figures are removed from the labels." />
      
     <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
@@ -30,13 +30,13 @@
     </div>
     
     <p>
-        Here's a gray-themed Pie chart. It uses the responsive function to allow for smaller
+        Here's a gray-themed Pie chart. It uses the <code>responsive</code> function to allow for smaller
         screens, the labels are bold and the text is slightly smaller than usual.
     </p>
     
     <p>
         In terms of
-        responsiveness, when the screen/browser is smaller the labels are changed to not have
+        <code>responsive</code> features, when the screen/browser is smaller the labels are changed to not have
         the percentage appended to them, reduced in size and the <code>labelsSticks</code>
         option is disabled.
     </p>
@@ -58,7 +58,7 @@
         The tooltips are created in the same way - just a little more verbosely. They're triggered
         using the <code>mouseover</code> event. The <code>tooltipsCss</code> property is used to
         set styles on the tooltips (ie the <code>font-size</code> <code>text-align</code> and
-        <code>pointer-events</code> properties). The <code>pointer-events</code> CSS property is turned
+        <code>pointer-events</code> properties). The <code>pointer-events</code> <code>CSS</code> property is turned
         off so that you can move the mouse pointer around and still see the correct tooltip even if another
         tooltip is in the way.
     </p>
@@ -153,7 +153,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

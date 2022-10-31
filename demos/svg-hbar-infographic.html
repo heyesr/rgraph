@@ -39,15 +39,15 @@
         It's just a case of sorting the data
         so that the data pieces appear in the correct order and the bars also have a bulb at the end
         indicating the position in the results (assuming that there was a competition of some kind).
-        The chart is SVG-based so this bulb doesn't have to be drawn in the <code>draw</code>
+        The chart is using <code>SVG</code> so this bulb doesn't have to be drawn in the <code>draw</code>
         event.
     </p>
 
     <p>
-        The raw data for the chart is sorted using the JavaScript array function <code>sort()</code> so
+        The raw data for the chart is sorted using the <code>JavaScript</code> array function <code>sort</code> so
         that the highest number is at the top. Since the array is two-dimensional a custom sort function
         has to be used so that the action of sorting can be stipulated. This is the call to the
-        <code>sort()</code> function:
+        <code>sort</code> function:
     </p>
     
     <pre class="code">
@@ -177,7 +177,7 @@ data.sort(function (a, b)
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

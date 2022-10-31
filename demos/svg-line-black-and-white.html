@@ -28,7 +28,7 @@
     </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
-        This is an SVG version of a canvas Line chart which you can see in
+        This is an <code>svg</code> version of a<code>canvas</code> Line chart which you can see in
         <a href="https://www.rgraph.net/download.html#stable">the download archive</a>.
     </p>
     
@@ -38,8 +38,8 @@
     </p>
     
     <p>
-        The <code>linewidth</code> has been increased (and also the linewidth of the X and Y axes), the
-        tickmarks on the axes have been disabled, the number of Y-axis labels has been reduced
+        The <code>linewidth</code> has been increased (and also the <code>linewidth</code> of the <code>X-axis</code> and <code>Y-axis</code>), the
+        tickmarks on the axes have been disabled, the number of <code>Y-axis</code> labels has been reduced
         (and units appended), the
         margins have been tweaked, the background grid has been disabled and the size and font of the text
         on the chart has been altered.
@@ -47,8 +47,8 @@
     
     <p>
         However, this is not all! There's also a <code>draw</code> event listener that draws the overhang
-        at the end of the axes. This is done using the <code>RGraph.SVG.create()</code> function (because the
-        chart is SVG the <code>draw</code> event
+        at the end of the axes. This is done using the <code>RGraph.SVG.create</code> function (because the
+        chart is<code>svg</code> the <code>draw</code> event
         doesn't have to be used - you could just place the code that draws the overhangs after the main
         chart code if you wanted to). The function that does this is:
     </p>
@@ -178,7 +178,7 @@ RGraph.SVG.create({
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

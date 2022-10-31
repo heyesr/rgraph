@@ -29,7 +29,7 @@
     </RGRAPH_BASIC_DEMO_HTML>
 
     <p>
-        Here we have an example of a dark-themed SVG Line chart that has a section of
+        Here we have an example of a dark-themed <code>svg</code> Line chart that has a section of
         it highlighted. The standard Line is a filled Line object that does NOT
         use the <code>filledAccumulative</code> option
         - it uses transparency in the colors instead so that you can see datasets at
@@ -38,8 +38,8 @@
     
     <p>
         The thing that differentiates this demo is the fact that once rendered there
-        are two rectangles placed over the chart - one on the left-hand side and one
-        on the right-hand side. This leaves a section in the middle of those two
+        are two rectangles placed over the chart - one on the left-hand-side and one
+        on the right-hand-side. This leaves a section in the middle of those two
         rectangles, that has a highlighted appearance.
     </p>
     
@@ -51,12 +51,12 @@
     </p>
     
     <p>
-        The <code>responsive()</code> function simply changes the SVG tag from being floated right to not
-        having any <code>float:</code> at all.
+        The <code>responsive</code> function simply changes the <code>svg</code> tag from being floated right to not
+        having any <code>float</code> at all.
     </p>
     
     <p>
-        Because adding the <code>responsive()</code> function means that the chart is redrawn
+        Because adding the <code>responsive</code> function means that the chart is redrawn
         whenever the window size changes (ie when you resize the browser) the two covers are drawn in the
         <code>draw</code> event and the nodes are assigned to global variables. These coverings are removed
         before the chart is redrawn so they don't accumulate on top of each other.
@@ -152,7 +152,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

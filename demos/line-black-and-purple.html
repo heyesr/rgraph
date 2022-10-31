@@ -30,21 +30,21 @@
 
     <p>
         This demo is an example of a combined Bar and Line. In this case, the
-        Line is a spline but it doesn't have to be. In fact there's a button
-        beneath the chart that you can use to toggle whether it's a spline (curvy) or
+        Line is a <code>spline</code> but it doesn't have to be. In fact there's a button
+        beneath the chart that you can use to toggle whether it's a <code>spline</code> (curvy) or
         a regular angular Line. All this button does is toggle the
-        <code>spline</code> setting and then redraw the canvas.
+        <code>spline</code> setting and then redraw the <code>canvas</code>.
     </p>
     
     <p>
-        In RGraph combining a Bar chart and a Line chart is made easy by the
+        In RGraph, combining a Bar chart and a Line chart is made easy by the
         <code>CombinedChart</code> class. You can see
         this being used in the code below. It simply takes the Bar and the Line
         objects and sets the correct settings on them and then draws the chart. But
         normally you would want only one set of labels (ie the Bar or the
         Line) drawn, however here the Bar charts labels are on one side
         and the Line chart labels are on the other. So after the combo class has
-        been drawn, the Y labels are turned back on for the Line chart object and
+        been drawn, the <code>Y-axis</code> labels are turned back on for the Line chart object and
         everything is redrawn. You can see how this is done in the code below.
     </p>
     
@@ -62,7 +62,7 @@
     </p>
     
     <p>
-        The <code>responsive()</code> function reduces the size of the chart, the size of the text on the
+        The <code>responsive</code> function reduces the size of the chart, the size of the text on the
         chart and the margins. The function is added to both the Bar and the Line chart and the Line chart
         version also reduces its <code>linewidth</code>.
     </p>
@@ -164,7 +164,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

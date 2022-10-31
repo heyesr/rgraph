@@ -33,25 +33,25 @@
     </p>
     
     <p>
-        The <code>grow()</code> effect is employed to animate the chart.
+        The <code>grow</code> effect is employed to animate the chart.
     </p>
     
     <p>
         If the <code>draw</code> event wasn't used and the labels were simply
         added after the chart had been drawn then they would
-        disappear when the canvas is cleared for the second frame of the
+        disappear when the <code>canvas</code> is cleared for the second frame of the
         animation. And that happens so fast that it would seem like they
         just aren't being drawn.
     </p>
     
     <p>
-        The <code>responsive()</code> function doesn't do much - it simply changes the width and height of
-        the canvas tag and changes the CSS <code>float</code> that's applied to the container of the canvas.
+        The <code>responsive</code> function doesn't do much - it simply changes the width and height of
+        the <code>canvas</code> tag and changes the <code>CSS</code> <code>float</code> that's applied to the container of the <code>canvas</code>.
     </p>
     
     <p>
         This chart has been updated in March 2020 to add tooltips that use formatting and the highlighting
-        color has been updated to a gradient so that the labels on the left-hand side are unobscured.
+        color has been updated to a gradient so that the labels on the left-hand-side are unobscured.
     </p>
     
     <div style="clear: both"></div>
@@ -62,7 +62,7 @@
         labels = ['PHP','Python','C#','Java','MySQL','Oracle','JSP','MS SQL Server','Ruby'];
 
         // Create the Horizontal Bar chart and configure it. With there
-        // being no labels on the left-hand side the margin autofit
+        // being no labels on the left-hand-side the margin autofit
         // will make the left margin zero
         new RGraph.HBar({
             id: 'cvs',
@@ -88,7 +88,7 @@
                 highlightStroke: 'Gradient(rgba(255,255,255,0):white)'
             }
         
-        // Use the draw event to add the labels on the left-hand side
+        // Use the draw event to add the labels on the left-hand-side
         }).on('draw', function (obj)
         {
             var coords = obj.coords;
@@ -97,7 +97,7 @@
             for (var i=0; i<coords.length; ++i) {
             
                 // For each of the coordinates add a text label
-                // on the left-hand side of the bar
+                // on the left-hand-side of the bar
                 RGraph.text({
                     object: obj,
                     text:   labels[i],
@@ -136,7 +136,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>    
 

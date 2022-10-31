@@ -30,15 +30,15 @@
         appearance similar to the "Who wants to be a millionaire?" "Ask the
         audience" results bar chart. It uses the <code>draw</code> event in conjunction with
         the API to draw the text above the bars. The background gradient
-        is done with a CSS linear gradient - it's not drawn on the canvas. The
-        background grid is customised in linewidth and color, the axes are disabled
+        is done with a <code>CSS</code> linear gradient - it's not drawn on the <code>canvas</code>. The
+        background grid is customised in <code>linewidth</code> and <code>colors</code>, the axes are disabled
         and the text color is customised too.
     </p>
     
     <p>
-        The CSS gradient that's used in the canvas tag's <code>style</code> attribute is a
+        The <code>CSS</code> gradient that's used in the <code>canvas</code> tag's <code>style</code> attribute is a
         straightforward linear gradient but achieves a nice effect for the
-        background of the chart. The relevant CSS is this:
+        background of the chart. The relevant <code>CSS</code> is this:
     </p>
     
     <pre class="code">background-image: linear-gradient(45deg, black, blue, black);</pre>
@@ -47,13 +47,13 @@
         It's made up of three parts - an angle for the gradient (which in this case is
         45 degrees) and the colors that the gradient uses.
         <a href="https://www.rgraph.net/canvas/howto-gradients.html">
-            There's a whole HOWTO document about CSS gradients here
+            There's a whole HOWTO document about <code>CSS</code> gradients here
         </a>
         that shows you the various options that are available to you.
     </p>
 
     <p>
-        There's also an SVG version of this chart in
+        There's also an <code>svg</code> version of this chart in
         <a href="https://www.rgraph.net/download.html">the download archive</a>.
     </p>
 
@@ -138,7 +138,7 @@
 &lt;canvas id="cvs" width="300" height="250" style="border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px; float: right"&gt;[No canvas support]&lt;/canvas&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

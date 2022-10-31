@@ -37,14 +37,14 @@
     </p>
 
     <p>
-        The rear canvas shows a Bar chart just as the front one does but
+        The rear <code>canvas</code> shows a Bar chart just as the front one does but
         without any data - so you can just see the grid.
     </p>
     <p>
-        The front canvas draws the Bar
-        chart - and then a custom <code>draw</code> event uses the standard canvas <code>clearRect()</code>
-        function to return bits of the top canvas to transparency. So
-        the grid on the rear canvas then shows through.
+        The front <code>canvas</code> draws the Bar
+        chart - and then a custom <code>draw</code> event uses the standard <code>canvas</code> <code>clearRect</code>
+        function to return bits of the top <code>canvas</code> to transparency. So
+        the grid on the rear <code>canvas</code> then shows through.
     </p>
     
     <p>
@@ -53,8 +53,8 @@
     </p>
     
     <p>
-        The <code>responsive()</code> function on the object just resizes the canvas tag and the parent
-        container DIV tag.
+        The <code>responsive</code> function on the object just resizes the <code>canvas</code> tag and the parent
+        container <code>div</code> tag.
     </p>    
 
 
@@ -107,7 +107,7 @@
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

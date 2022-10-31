@@ -30,9 +30,9 @@
     
     </p>
     <p>
-        Since the advent of the <code>RGraph.text()</code> function, which saves the
-        coordinates of the text that is added to the canvas, you have been able to use
-        those coordinates to draw an image onto the canvas. You could even use the coordinates
+        Since the advent of the <code>RGraph.text</code> function, which saves the
+        coordinates of the text that is added to the <code>canvas</code>, you have been able to use
+        those coordinates to draw an image onto the <code>canvas</code>. You could even use the coordinates
         of the bar itself if you wished (if you wanted to add an image above the bar for
         example)
     </p>
@@ -49,7 +49,7 @@
     
     <p>
         The next bit of code is where the coordinates of the text are looped through and the images are
-        added in place of the text. With canvas charts, the coordinates of the text that's added to the canvas
+        added in place of the text. With <code>canvas</code> charts, the coordinates of the text that's added to the <code>canvas</code>
         are saved in the
         <code>obj.coordsText</code> variable so you can use them to add the images in place of the text.
         Remember that the text labels are actually just empty strings - this is so that the coordinates of
@@ -57,7 +57,7 @@
     </p>
     
     <p>
-        Instead of just using the canvas API function <code>drawImage()</code> -
+        Instead of just using the <code>canvas</code> API function <code>drawImage</code> -
         <a href="/canvas/drawing-api-image.html">
             drawing API Image objects
         </a>
@@ -159,7 +159,7 @@
 &lt;canvas id="cvs" width="400" height="250" style="float: right"&gt;[No canvas support]&lt;/canvas&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

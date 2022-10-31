@@ -32,12 +32,12 @@
     <p>
         This is another simple yet aesthetically pleasing chart. It's a Line
         chart, which doesn't use the <code>spline</code> option so it isn't curved, and which uses a
-        gradient as the fill color. It also uses the <code>trace()</code> animation effect.
+        gradient as the fill color. It also uses the <code>trace</code> animation effect.
     </p>
     
     <p>
         There's not a lot else to say about this chart - though this is a good point
-        at which to tell you that the gradient handling code is due an upgrade.
+        at which to tell you that the <code>svg</code> gradient handling code is due an upgrade.
         Currently you can pass a gradient like this:
         <code>Gradient(red:white)</code> and this is nice
         and simple - but it doesn't afford you a lot of control over the gradient.
@@ -45,7 +45,7 @@
     
     <p>
         The code that parses the gradient can handle more values than that, so what
-        I'm thinking is a JSON variation so that many more values are possible
+        I'm thinking is a <code>JSON</code> variation so that many more values are possible
         and there's plenty of room for future options. Here's what it might look
         like:
     </p>
@@ -106,7 +106,7 @@ Gradient({colors: ["red","white"], gradientUnits: "objectBoundingBox"}) <span>//
 &lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 

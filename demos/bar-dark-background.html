@@ -29,26 +29,26 @@
         This is a grouped Bar chart with two bars per group which uses red and blue
         graduated fills. The background grid has been customised and the background
         itself is a dark color (so the text has been changed to white). Also, the
-        chart is using the Bar chart <code>wave()</code> effect. This grows sequentially from
-        the left-hand side with a small delay between each group of bars.
+        chart is using the Bar chart <code>wave</code> effect. This grows sequentially from
+        the left-hand-side with a small delay between each group of bars.
     </p>
     
     <p>
         The two gradients that are used here  (<code>Gradient(white:#ccf:#ccf:#ccf:#ccf)</code>
         and <code>Gradient(white:#faa:#faa:#faa:#faa)</code>)
         are created by using the RGraph specific gradient syntax. This is an easy way
-        to produce gradients (it's certainly easier than the canvas API method!) and
+        to produce gradients (it's certainly easier than the <code>canvas</code> API method!) and
         can be utilised to produce gradients for your own charts.
     </p>
     
     <p>
         If you wanted to add further information to the chart to identify
-        the meaning of the two bars you could add a key in either the graph or margin
+        the meaning of the two bars you could add a key in either the <code>graph</code> or <code>margin</code>
         modes or you could perhaps use the <code>labelsAbove</code> option.
     </p>
     
     <p>
-        For smaller screens, the <code>responsive()</code> function reduces the size of the chart,
+        For smaller screens, the <code>responsive</code> function reduces the size of the chart,
         reduces the size of the text on the chart and reduces the size of the margins.
     </p>
     
@@ -59,8 +59,8 @@
     </p>
     
     <p>
-        The tooltips have no fade effect and are positioned at the top right of the canvas tag by using
-        the <code>tooltip</code> event. This runs a snippet of code that gets the canvas tag x/y
+        The tooltips have no fade effect and are positioned at the top right of the <code>canvas</code> tag by using
+        the <code>tooltip</code> event. This runs a snippet of code that gets the <code>canvas</code> tag x/y
         coordinates and sets the position of the tooltip accordingly.
     </p>
 
@@ -178,7 +178,7 @@
 &lt;/style&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
     <pre class="code" id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
