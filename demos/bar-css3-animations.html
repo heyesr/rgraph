@@ -76,7 +76,8 @@
         // The swap function
         function swap ()
         {
-            $('#cvs').parent().addClass('animated bounceOutLeft');
+            $('#cvs').addClass('animated bounceOutLeft');
+
             setTimeout(function ()
             {
                 RGraph.reset(document.getElementById("cvs"));
@@ -89,8 +90,8 @@
                     chart = 2;
                 }
 
-                $('#cvs').parent().removeClass('bounceOutLeft');
-                $('#cvs').parent().addClass('bounceInLeft');
+                $('#cvs').removeClass('bounceOutLeft');
+                $('#cvs').addClass('bounceInLeft');
             }, 750)
         }
         
@@ -99,7 +100,7 @@
         chart = 1;
     </script>
     
-    <button onclick="swap()">Click me</button>
+    <button onclick="swap()" style="font-size: 26pt; cursor:pointer">Click me</button>
 
 
 
