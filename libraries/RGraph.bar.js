@@ -57,6 +57,7 @@
             backgroundGridHlinesCount:  5,
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
+            backgroundGridThreedYaxis:  true,
             backgroundImage:            null,
             backgroundImageStretch:     true,
             backgroundImageX:           null,
@@ -238,6 +239,8 @@
             variantThreedAngle:   0.1,
             variantThreedOffsetx: 10,
             variantThreedOffsety: 5,
+            variantThreedXaxisColor: '#ddd',
+            variantThreedYaxisColor: '#ddd',
 
             shadow:                false,
             shadowColor:           '#aaa',
