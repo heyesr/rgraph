@@ -2093,6 +2093,17 @@
                         for (y=marginTop; y<=height; y+=hsize) {
                             cacheContext.moveTo(marginLeft, Math.round(y));
                             cacheContext.lineTo(args.object.canvas.width - marginRight, Math.round(y));
+
+                            if (   args.object.properties.variant === '3d'
+                                && args.object.type === 'bar'
+                                && args.object.properties.backgroundGridThreedYaxis) {
+
+                                cacheContext.moveTo(marginLeft, Math.round(y));
+                                cacheContext.lineTo(
+                                    marginLeft - args.object.properties.variantThreedOffsetx,
+                                    Math.round(y) + args.object.properties.variantThreedOffsety
+                                );
+                            }
                         }
                     }
         
@@ -2719,11 +2730,12 @@
         if (xaxis) {
             if (xaxispos === 'center') {
                 args.object.path(
-                    'b m % % l % % l % % l % % c s #aaa f #ddd',
+                    'b m % % l % % l % % l % % c s #aaa f %',
                     marginLeft,marginTop + halfGraphArea,
                     marginLeft + offsetx,marginTop + halfGraphArea - offsety,
                     args.object.canvas.width - marginRight + offsetx,marginTop + halfGraphArea - offsety,
-                    args.object.canvas.width - marginRight,marginTop + halfGraphArea
+                    args.object.canvas.width - marginRight,marginTop + halfGraphArea,
+                    properties.variantThreedXaxisColor
                 );
 
             } else {
@@ -2735,11 +2747,12 @@
                 }
 
                 args.object.path(
-                    'm % % l % % l % % l % % c s #aaa f #ddd',
+                    'm % % l % % l % % l % % c s #aaa f %',
                     marginLeft,xaxisYCoord,
                     marginLeft + offsetx,xaxisYCoord - offsety,
                     args.object.canvas.width - marginRight + offsetx,xaxisYCoord - offsety,
-                    args.object.canvas.width - marginRight,xaxisYCoord
+                    args.object.canvas.width - marginRight,xaxisYCoord,
+                    properties.variantThreedXaxisColor
                 );
             }
         }
@@ -2774,7 +2787,8 @@
             graphArea     = args.object.canvas.height - marginTop - marginBottom,
             halfGraphArea = graphArea / 2,
             offsetx       = properties.variantThreedOffsetx,
-            offsety       = properties.variantThreedOffsety;
+            offsety       = properties.variantThreedOffsety,
+            yaxisFill     = properties.variantThreedYaxisColor || '#ddd';
 
         
         
@@ -2791,11 +2805,12 @@
             }
 
             args.object.path(
-                'b m % % l % % l % % l % % s #aaa f #ddd',
+                'b m % % l % % l % % l % % s #aaa f % b', // Don't know the b at the end is needed
                 x,marginTop,
-                x + offsetx,marginTop - offsety,
-                x + offsetx,args.object.canvas.height - marginBottom - offsety,
-                x,args.object.canvas.height - marginBottom
+                x + offsetx, marginTop - offsety,
+                x + offsetx, args.object.canvas.height - marginBottom - offsety,
+                x,args.object.canvas.height - marginBottom,
+                properties.variantThreedYaxisColor
             );
         //}
     };
