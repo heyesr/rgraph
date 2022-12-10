@@ -1,0 +1,100 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: Menu choices at Christmas</title>
+    
+    
+    <meta name="description" content="A Bar chart showing Christmas menu choices for people" />
+    
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>Various menu choices popularity at Christmas</h1>
+
+
+    <div style="display: inline-block; margin: 5px">
+        <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[37,31],[45,24],[15,36],[28,25]],
+            options: {
+                colors: ['#eab904','#ca6053'],
+                variant: '3d',
+                variantThreedAngle: 0,
+                variantThreedYaxisColor: 'rgba(216,216,216,0.7)',
+                variantThreedOffsetx:15,
+                variantThreedOffsety:10,
+                backgroundGridVlines: false,
+                backgroundGridHlinesCount: 10,
+                backgroundGridBorder: false,
+                backgroundGridColor: 'gray',
+                variantThreedYaxisColor: 'rgba(0,0,0,0.15)',                
+                marginInner: 30,
+                marginLeft: 55,
+                marginBottom: 100,
+                marginTop: 95,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels:['Haddock &\r\nchips','Beef madras\r\nwith rice','Vegetable\r\nlasagne','Roast turkey &\r\ntrimmings'],
+                xaxisLabelsOffsety: 3,
+                yaxisLabelsBold: true,
+                xaxisLabelsBold: true,
+                yaxisTitle: 'Number of people',
+                yaxisTitleBold: true,
+                yaxisScaleMax: 50,
+                yaxisLabelsCount: 10,
+                key: ['Male','Female'],
+                keyPosition: 'margin',
+                keyPositionOffsetx: 10,
+                keyPositionOffsety: -15,
+                keyLabelsOffsety: 2,
+                keyColorShape: 'circle',
+                title: 'Menu choices',
+                titleOffsety: -15,
+                titleSize: 20
+            }
+        }).wave();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="display: inline-block; margin: 35px"&gt;
+    &lt;canvas id="cvs" width="700" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
