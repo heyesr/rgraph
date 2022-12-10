@@ -4494,9 +4494,10 @@
                     obj.canvas.style.display       = 'inline';
                     obj.canvas.style.cssFloat      = 'none';
 
-
+                    // This now (10/12/2022) skews ro the same
+                    // angle as the variantThreedAngle property
                     if ((obj.type === 'bar' || obj.type === 'bipolar' || obj.type === 'hbar') && obj.properties.variant === '3d') {
-                        wrapper.style.transform = 'skewY(5.7deg)';
+                        wrapper.style.transform = 'skewY(' + obj.properties.variantThreedAngle + 'rad)';
                     }
 
                 obj.canvas.parentNode.insertBefore(wrapper, obj.canvas);
