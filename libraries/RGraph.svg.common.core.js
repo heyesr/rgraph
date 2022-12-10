@@ -208,7 +208,6 @@
 
 
 
-
             //
             // Add any styles that have been given as the
             // second arg
@@ -219,10 +218,10 @@
                 parts     = arguments[1].split(separator);
 
                 for (let i=0; i<parts.length; ++i) {
-                    var [name,value] = [...parts[i].split('=')];
+                    var [name,value] = [...parts[i].split(/=|:/)];
                     opt.style[name] = value;
                 }
-            
+
             //
             // Style given as third arg
             //
@@ -230,7 +229,6 @@
                 
                 opt.style = {};
                 parts     = arguments[2].split(separator);
-
                 for (let i=0; i<parts.length; ++i) {
                     var [name,value] = [...parts[i].split('=')];
                     opt.style[name] = value;
