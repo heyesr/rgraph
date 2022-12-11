@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>    
+
+    <title>RGraph demo: A Bar chart showing rainfall in London and Bristol</title>
+    <meta name="description" content="This is a simple example of a Bar chart that shows rainfall in two UK cities" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing rainfall in London and Bristol</h1>
+    
+    <div style="text-align: center">
+        <canvas id="cvs" width="750" height="300">[No canvas support]</canvas>
+    </div>
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[43,46],[20,17],[30,31],[40,42],[12,10]],
+            options: {
+                colors: [
+                    'gradient(#009:blue:blue)',
+                    'gradient(#dc6c20:#ed7d31:#ed7d31)'
+                ],
+                marginInner: 30,
+                marginInnerGrouped: 5,
+                yaxisTitle: 'Rainfall(mm)',
+                yaxisTitleBold: true,
+                marginTop: 45,
+                marginLeft: 60,
+                marginBottom: 60,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxisLabels: ['January','Februay','March','April','May'],
+                xaxisLabelsOffsety: 3,
+                xaxisTitle: 'Month',
+                xaxisTitleBold: true,
+                xaxisTitleOffsety: 5,
+                xaxis: false,
+                yaxis: false,
+                title: 'Rainfall in London and Bristol',
+                titleSize: 16,
+                titleBold: true,
+                titleOffsety: -3,
+                key: ['London','Bristol'],
+                keyPosition: 'margin'
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="750" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
