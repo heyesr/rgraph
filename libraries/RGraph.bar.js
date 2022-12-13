@@ -2908,8 +2908,7 @@ this.context.lineTo(
         {
             // If there's only one bar call the grow function instead
             if (this.data.length === 1) {
-                this.grow(arguments[0], arguments[1]);
-                return;
+                return this.grow(arguments[0], arguments[1]);
             }
 
             var obj = this,
