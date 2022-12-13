@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Bar chart showing rejects (?)</title>
+    <meta name="description" content="This is a simple example of a Bar chart that's combined with a Line chart. Each chart has own scale" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart combined with a Line chart</h1>
+    
+    <div style="text-align: center">
+        <canvas id="cvs" width="750" height="500">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script id="rgraph-demo-source-code">
+        bar = new RGraph.Bar({ 
+            id: 'cvs',
+            data: [710,590,400,385,203,195,120,70],
+            options: {
+                colors: ['#4F81BD'],
+                textSize: 14,
+                title: 'Rejects',
+                titleSize: 20,
+                titleBold: true,
+                xaxisLabels: ['Blurred code','Torn pouch','Weak seal','Pleats','Fold','Leaks','Underweight','Overweight'],
+                xaxisLabelsAngle: 45,
+                xaxisLabelsOffsety: 5,
+                marginInner: 15,
+                marginBottom: 100,
+                marginTop: 50,
+                marginLeft: 50,
+                marginRight: 200,
+                yaxisScaleMax: 800,
+                yaxisLabelsCount: 8,
+                yaxisTickmarksLastBottom: true,
+                xaxisTickmarksLastLeft: true,
+                xaxisTickmarksLength: 7,
+                yaxisTickmarksLength: 7,
+                backgroundGridHlinesCount: 8,
+                backgroundGridColor: 'gray',
+                backgroundGridVlines: false,
+                yaxisColor: 'gray',
+                xaxisColor: 'gray',
+                key: ['Quantity','% Reduction'],
+                keyColors: ['#4F81BD','orange'],
+                keyPositionGraphBoxed: false,
+                keyPositionX: 610,
+                keyPositionY: 200
+            }
+        });
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [11,20,5,9,15,4,5,7.5],
+            options: {
+                textSize: 14,
+                xaxis: false,
+                yaxisPosition: 'right',
+                backgroundGrid: false,
+                linewidth: 7,
+                shadow: false,
+                yaxisScaleMax: 25,
+                yaxisScaleDecimals: 1,
+                yaxisScaleUnitsPost: '%',
+                yaxisTickmarksLength: 7,
+                yaxisColor: 'gray',
+                colors: ['orange']
+            }
+        });
+        
+        // Draw the chart using the CombinedChart class
+        combo = new RGraph.CombinedChart([bar, line]);
+        combo.draw();
+        
+        // Turn the Y axis back on
+        line.set('yaxis', true);
+        line.set('yaxisScale', true);
+        
+        RGraph.redraw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="750" height="500"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
