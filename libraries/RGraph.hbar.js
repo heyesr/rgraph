@@ -325,6 +325,8 @@
             variantThreedOffsety: 5,
             variantThreedXaxis:   true,
             variantThreedYaxis:   true,
+            variantThreedXaxisColor: '#ddd',
+            variantThreedYaxisColor: '#ddd',
             
             adjustable:             false,
             adjustableOnly:        null,
