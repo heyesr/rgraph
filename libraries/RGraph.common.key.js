@@ -779,7 +779,7 @@
         // Add the individual key elements
         //
         for (var i=0; i<properties.labels.length; i+=1) {
-            str += '<tr><td><div id="rgraph_html_key_blob_' + i + '"     ' + (properties.blobClass ? 'class="rgraph_html_key_blob ' + properties.blobClass + '"' : 'rgraph_html_key_blob') + '>&nbsp;</div><td>' + (properties.links && properties.links[i] ? '<a href="' + properties.links[i] + '">' : '') + '<span ' + (properties.labelClass ? 'class="' + properties.labelClass + '"' : '') + '" id="rgraph_html_key_label_' + i + '">' + properties.labels[i] + '</span>' + (properties.links && properties.links[i] ? '</a>' : '') + '</td></tr>';
+            str += '<tr><td valign="top"><div id="rgraph_html_key_blob_' + i + '"     ' + (properties.blobClass ? 'class="rgraph_html_key_blob ' + properties.blobClass + '"' : 'rgraph_html_key_blob') + '>&nbsp;</div><td>' + (properties.links && properties.links[i] ? '<a href="' + properties.links[i] + '">' : '') + '<span ' + (properties.labelClass ? 'class="' + properties.labelClass + '"' : '') + '" id="rgraph_html_key_label_' + i + '">' + properties.labels[i] + '</span>' + (properties.links && properties.links[i] ? '</a>' : '') + '</td></tr>';
         }
 
         div.innerHTML += (str + '</table>');
