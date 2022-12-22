@@ -88,8 +88,7 @@
                 yaxisColor: 'red',
                 yaxisLinewidth: 3,
                 yaxisTickmarksLength: 5,
-                marginBottom: marginBottom,
-                textAccessible: true
+                marginBottom: marginBottom
             }
         }).draw();
 
@@ -119,8 +118,7 @@
                 yaxisLinewidth: 3,
                 yaxisTickmarksLength: 5,
                 marginBottom: marginBottom,
-                marginTop: marginTop,
-                textAccessible: true
+                marginTop: marginTop
             }
         }).draw();
 
@@ -144,8 +142,7 @@
                 yaxis: false,
                 yaxisScaleMax: 20,
                 yaxisScaleUnitsPost: '%',
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],
-                textAccessible: true
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat']
             }
         }).wave({frames: 30}).responsive([
             {maxWidth: null, width: 650, height: 250, options: {marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
