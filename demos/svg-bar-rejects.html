@@ -1,0 +1,113 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: An SVG Bar chart showing rejects (?)</title>
+    <meta name="description" content="This is an SVG version of a canvas example of a Bar chart that's combined with a Line chart. Each chart has own scale" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A SVG Bar chart combined with a Line chart</h1>
+    
+    <div style="width: 700px; height: 500px" id="chart-container"></div>
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.SVG.Bar({ 
+            id: 'chart-container',
+            data: [710,590,400,385,203,195,120,70],
+            options: {
+                backgroundGridLinewidth:0.5,
+                backgroundGridBorder: false,
+                colors: ['#4F81BD'],
+                textSize: 14,
+                title: 'Rejects',
+                titleSize: 20,
+                titleBold: true,
+                xaxisLabels: ['Blurred code','Torn pouch','Weak seal','Pleats','Fold','Leaks','Underweight','Overweight'],
+                xaxisLabelsAngle: 45,
+                xaxisLabelsOffsety: 5,
+                marginInner: 15,
+                marginBottom: 100,
+                marginTop: 50,
+                marginLeft: 50,
+                marginRight: 55,
+                yaxisScaleMax: 800,
+                yaxisLabelsCount: 8,
+                xaxisTickmarksLength: 7,
+                yaxisLinewidth: 1.5,
+                xaxisLinewidth: 1.5,
+                yaxisTickmarksLength: 7,
+                backgroundGridHlinesCount: 8,
+                backgroundGridColor: 'gray',
+                backgroundGridVlines: false,
+                key: ['Quantity','% Reduction'],
+                keyColors: ['#4F81BD','orange'],
+                tooltips: '<span style="font-style: italic">Quantity:</span><br /><div style="text-align: center; font-size: 3rem">%{value_formatted}</div>'
+            }
+        }).draw();
+
+
+
+
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [11,20,5,9,15,4,5,7.5],
+            options: {
+                marginInner: 40,
+                marginBottom: 100,
+                marginTop: 50,
+                marginLeft: 50,
+                marginRight: 55,
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisPosition: 'right',
+                yaxisScaleMax: 25,
+                yaxisScaleUnitsPost: '%',
+                yaxisScaleDecimals: 1,
+                colors: ['orange','#4F81BD'],
+                linewidth: 5,
+                tooltips: '<span style="font-style: italic">Reduction in rejects:</span><br /><div style="text-align: center; font-size: 3rem">%{value_formatted}</div>',
+                tooltipsFormattedUnitsPost: '%'
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 700px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
