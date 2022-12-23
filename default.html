@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     
     <meta name="robots" content="noindex, follow">
 
     <title>RGraph: Free HTML5 charts and graphs for your website</title>
-
+    
     <link rel="stylesheet" href="css/website.css" type="text/css" media="screen" />
     
     <style>    
         body {
             text-align: left;
+            padding-top: 10px;
         }
 
         ul {
@@ -25,22 +26,28 @@
     <script src="libraries/RGraph.common.dynamic.js" ></script>
     <script src="libraries/RGraph.common.tooltips.js" ></script>
     <script src="libraries/RGraph.bar.js" ></script>
+    <script src="js/jquery.min.351.js"></script>
 
 </head>
-<body  style="margin: 8px !important">
+<body>
 
-    <!-- image -->
+    <!--
+        Images - using two links - one around each image prevents 
+        a spurious underline being shown.
+    -->
     <div style="text-align: center">
         <a href="https://www.rgraph.net" target="_blank">
-            <img src="./images/logo-250x250.png" width="125" height="125" alt="The RGraph logo" />
-            <img src="./images/rgraph-text-only.png" width="305" height="83" alt="RGraph: Beautiful Javascript charts for the web" style="transform:translateY(-5px)" id="front-page-rgraph-logo-text"/>
-        </a>
+            <img src="./images/logo-250x250.png" width="125" height="125" alt="The RGraph logo" /></a>
+        <a href="https://www.rgraph.net" target="_blank">
+            <img src="./images/rgraph-text-only.png" width="305" height="83" alt="RGraph: Beautiful Javascript charts for the web" style="transform:translateY(-5px)" id="front-page-rgraph-logo-text"/></a>
     </div>
-    
-    <br clear="all" />
 
 
-
+    <ul class="main-contents-list">
+        <li><a href="#demos-of-charts-local">Demos of charts (local)</a></li>
+        <li><a href="#demos-of-charts-online">Demos of charts (online)</a></li>
+        <li><a href="#other-pages-on-rgraph-net">Other pages on rgraph.net</a></li>
+    </ul>
 
 
 
@@ -54,6 +61,7 @@
 
 
 
+    <a name="demos-of-charts-local"></a>
     <h2 style="margin-top:  0 ">Demos <span>of charts (local)</span></h2>
     
     
@@ -63,7 +71,7 @@
     </p>
     
     <p align="left">
-        <a href="./demos/"><b>Go to the demos (local) &raquo;</b></a>
+        <a href="./demos/">Go to the demos (local) &raquo;</a>
     </p>
 
 
@@ -76,18 +84,18 @@
 
 
 
-
+    <a name="demos-of-charts-online"></a>
     <h2>Demos <span>of charts (online)</span></h2>
     
     
     <p>
         The same demos as above are also available on rgraph.net. Due to browser security
-		the AJAX demos will not work locally
+		the <code>AJAX</code> demos will not work locally
         so you can see these if you go online.
     </p>
     
     <p align="left">
-        <a href="https://www.rgraph.net/demos/index.html" target="_blank"><b>Go to the demos (online) &raquo;</b></a>
+        <a href="https://www.rgraph.net/demos/index.html" target="_blank">Go to the demos (online) &raquo;</a>
     </p>
 
 
@@ -180,7 +188,7 @@
 
 
 
-
+    <a name="other-pages-on-rgraph-net"></a>
     <h2>Other <span>pages on rgraph.net</span></h2>
     
     
@@ -204,7 +212,7 @@
             <ul>
                 <li>
                     <a href="https://www.rgraph.net/svg/index.html" target="_blank">Examples and documentation</a><br />
-                    Examples of and documentation for the types of SVG charts that are
+                    Examples of and documentation for the types of <code>SVG</code> charts that are
 					supported by RGraph.<br /><br />
                 </li>
             </ul>
@@ -219,7 +227,7 @@
             <ul>
                 <li>
                     <a href="https://www.rgraph.net/demos/index.html" target="_blank">Examples</a><br />
-                    Examples of the types of charts that are supported by RGraph.<br /><br />
+                    Examples of the types of <code>canvas</code> charts that are supported by RGraph.<br /><br />
                 </li>
                 <li>
                     <a href="https://www.rgraph.net/canvas/index.html" target="_blank">Documentation</a><br />
@@ -291,7 +299,35 @@
             {maxWidth: null, width: 600, height: 300, options: {marginInner: 7, textSize: 12}, css:{float: 'right'}},
             {maxWidth: 700, width: 450, height: 200, options: {marginInner: 3, textSize: 10}, css:{float: 'none'}}
         ]);
-    </script>
 
+
+
+
+        //
+        // Make all anchor links scroll to the anchors
+        // instead of jumping to them.
+        //
+        // IMPORTANT: THIS IS REPEATED IN THE PAGE
+        //            HEADER FOR THE WEBSITE
+        //
+        function scrollToAnchor(name)
+        {
+            var tag = $("a[name='" + name + "']");
+            
+            $("html,body").animate({
+                scrollTop: tag.offset().top - 60
+            },"slow");
+        }
+
+        $("a").on('mousedown', function()
+        {
+            var href = this.getAttribute("href");
+    
+            if (href.substr(0,1) === "#") {
+                var target = href.substr(1).replace(/'/i,'');
+                scrollToAnchor(target);
+            }
+        });
+    </script>
 </body>
 </html>
