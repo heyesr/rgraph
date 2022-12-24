@@ -306,6 +306,29 @@
 
 
     //
+    // The function that creates the path string
+    //
+    // @param coords array The array that contains X/Y pair coordinates
+    //
+    RGraph.SVG.create.pathString = function (coords)
+    {
+        var path = 'M {1} {2}'.format(coords[0][0], coords[0][1]);
+
+        for (var i=0; i<coords.length; ++i) {
+            path += ` L ${coords[i][0]} ${coords[i][1]}`;
+        }
+
+        return path;
+    };
+
+
+
+
+
+
+
+
+    //
     // Function that adds up all of the offsetLeft and offsetTops to get
     // X/Y coords for the mouse
     //
