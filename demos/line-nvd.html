@@ -47,9 +47,11 @@
             backgroundGridBorder: false,
             xaxis: false,
             yaxis: false,
-            textSize: 10,
+            textSize: 15,
             shadow: false,
-            linewidth: 0.00001
+            linewidth: 0.00001,
+            yaxisScale: false,
+            marginLeft: 45
         };
 
         frames = 30;
@@ -66,7 +68,10 @@
         new RGraph.Line({
             id: 'cvs',
             data: data,
-            options: options
+            options: {
+                ...options,
+                yaxisScale: true
+            }
         }).trace({frames: frames}, draw2);
 
 
@@ -78,7 +83,7 @@
         function draw2()
         {
             options.colors         = ['transparent', 'transparent', '#C4D6ED', 'transparent'];
-            options.backgroundGrid =  false;
+            options.backgroundGrid =  false
 
             new RGraph.Line({
                 id: 'cvs',
