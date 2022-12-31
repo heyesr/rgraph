@@ -673,6 +673,14 @@
 
 
 
+
+            // Draw any custom lines that have been defined
+            RGraph.drawCustomLines(this);
+
+
+
+
+
             //
             // This installs the event listeners
             //
