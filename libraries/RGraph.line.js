@@ -398,7 +398,9 @@
             labelsAngledLevelColor: null,
             labelsAngledLevelSize:  null,
             labelsAngledLevelBold:  null,
-            labelsAngledILeveltalic:null
+            labelsAngledILeveltalic:null,
+
+            lines:                  null // Used to show an average line indicator (for example)
         }
 
         // Convert strings to numbers
@@ -1099,6 +1101,9 @@
             if (properties.tooltipsDataset) {
                 this.addDatasetTooltip();
             }
+            
+            // Draw any custom lines that have been defined
+            RGraph.drawCustomLines(this);
             
             
 
@@ -2834,11 +2839,13 @@
             // This is necessary for some reason
             //var properties = this.properties;
 
-            // Save the original colors so that they can be restored when the canvas is reset
+            // Save the original colors so that they can be 
+            // restored when the canvas is reset
             if (this.original_colors.length === 0) {
                 this.original_colors.colors                = RGraph.arrayClone(properties.colors);
                 this.original_colors.fillledColors         = RGraph.arrayClone(properties.filledColors);
                 this.original_colors.keyColors             = RGraph.arrayClone(properties.keyColors);
+                this.original_colors.backgroundHbars       = RGraph.arrayClone(properties.backgroundHbars);
                 this.original_colors.backgroundBarsColor1  = properties.backgroundBarsColor1;
                 this.original_colors.backgroundBarsColor2  = properties.backgroundBarsColor2;
                 this.original_colors.backgroundGridColor   = properties.backgroundGridColor;
@@ -2847,8 +2854,8 @@
                 this.original_colors.crosshairsColor       = properties.crosshairsColor;
                 this.original_colors.annotatableColor      = properties.annotatableColor;
                 this.original_colors.titleColor            = properties.titleColor;
-                this.original_colors.xaxisTitleColor       =  properties.xaxisTitleColor;
-                this.original_colors.yaxisTitleColor       =  properties.yaxisTitleColor;
+                this.original_colors.xaxisTitleColor       = properties.xaxisTitleColor;
+                this.original_colors.yaxisTitleColor       = properties.yaxisTitleColor;
                 this.original_colors.keyBackground         = properties.keyBackground;
                 this.original_colors.axesColor             = properties.axesColor;
                 this.original_colors.highlightFill         = properties.highlightFill;
@@ -2884,6 +2891,15 @@
             if (!RGraph.isNull(properties.keyColors)) {
                 for (var i=0; i<properties.keyColors.length; ++i) {
                     properties.keyColors[i] = this.parseSingleColorForGradient(properties.keyColors[i]);
+                }
+            }
+
+            //
+            // Background horizontal bars colors
+            //
+            if (!RGraph.isNull(properties.backgroundHbars)) {
+                for (var i=0; i<properties.backgroundHbars.length; ++i) {
+                    properties.backgroundHbars[i][2] = this.parseSingleColorForGradient(properties.backgroundHbars[i][2]);
                 }
             }
     
