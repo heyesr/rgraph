@@ -6845,7 +6845,7 @@
                 case 'tf':context.transform(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]),parseFloat(p[i+5]),parseFloat(p[i+6]));i+=6;break;
                 case 'stf':context.setTransform(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]),parseFloat(p[i+5]),parseFloat(p[i+6]));i+=6;break;
                 case 'cr':context.clearRect(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]));i+=4;break;
-                case 'ld':var parts = p[i+1];context.setLineDash(parts);i+=1;break;
+                case 'ld':var parts = eval(p[i+1]);context.setLineDash(parts);i+=1;break;
                 case 'ldo':context.lineDashOffset=p[i+1];i++;break;
                 case 'fo':context.font=p[i+1];i++;break;
                 case 'ft':context.fillText(p[i+1], parseFloat(p[i+2]), parseFloat(p[i+3]));i+=3;break;
@@ -9420,6 +9420,242 @@
     RGraph.clipTo.end = function ()
     {
         RGraph.path(RGraph.clipTo.object, 'rs');
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function allows the drawing of custom lines
+    //
+    RGraph.drawCustomLines = function (obj)
+    {
+        var lines = obj.properties.lines,
+            avg,x,y,label,halign,valign,hmargin = 10,vmargin = 5,
+            position,textFont,textSize,textColor,textBold,textItalic,
+            data,linewidth;
+
+        if (lines) {
+
+            //
+            // Set some defaults for the configuration of
+            // each line
+            //
+            var defaults = {
+                dotted:        false,
+                dashed:        true,
+                color:         '#666', // Same as labelColor property below
+                linewidth:     1,
+                label:         'Average (%{value})',
+                labelPosition: 'top right',
+                labelColor:    '#666', // Same as color property above
+                labelValueDecimals: 2
+            };
+        
+        
+            // Loop through each line to be drawn
+            for (let i=0; i<obj.properties.lines.length; ++i) {
+
+                var conf       = lines[i],
+                    textFont   = conf.labelFont  || obj.properties.textFont,
+                    textColor  = conf.labelColor || defaults.labelColor,
+                    textSize   = conf.labelSize  || obj.properties.textSize - 4,
+                    textBold   = typeof conf.labelBold   === 'boolean' ? conf.labelBold   : obj.properties.textBold,
+                    textItalic = typeof conf.labelItalic === 'boolean' ? conf.labelItalic : obj.properties.textItalic;
+
+
+
+
+
+
+
+
+
+                switch (obj.type) {
+                    case 'line':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+                        
+                        } else if(conf.value === 'average') {
+                            avg        = RGraph.arraySum(obj.original_data[0]) /  obj.original_data[0].length;
+                            y          = obj.getYCoord(avg);
+                        }
+                        break;
+                        
+                    
+                    
+                    case 'bar':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+
+                        } else if (conf.value === 'average') {
+
+                            // Calculate the average value of all
+                            // of the
+                            // values. Grouped charts are treated
+                            // slightly differently to stacked
+                            // charts.
+                            var total = 0;
+                            obj.data.map(v => {
+
+                                if (RGraph.isNumber(v)) {
+                                    total += v;
+                                } else if (RGraph.isArray(v)) {
+                                    total += RGraph.arraySum(v);
+                                }
+                            });
+
+
+                            var num = 0;
+                            for (let i=0; i<obj.data.length; ++i) {
+                                if (obj.properties.grouping === 'grouped') {
+                                    num += RGraph.isArray(obj.data[i]) ? obj.data[i].length : 1 ;
+                                } else if (obj.properties.grouping === 'stacked') {
+                                    ++num;
+                                }
+                            }
+
+                            avg        = total / num;
+                            y          = obj.getYCoord(avg);
+
+
+                        }
+                        break;
+                }
+
+
+
+
+
+
+
+
+
+
+
+                //
+                // Dotted or dashed lines
+                //
+                linedash = '[1,1]';
+
+                if (conf.dotted === true) {
+                    linedash = '[1,3]';
+                }
+                
+                if (conf.dashed === true || (typeof conf.dashed === 'undefined' && typeof conf.dotted === 'undefined') ) {
+                    linedash = '[6,6]';
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Draw the line
+                //
+                obj.path(
+                    'lw % ld % b m % % l % % s %',
+                    typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                    linedash,
+                    obj.properties.marginLeft,y,
+                    obj.canvas.width - obj.properties.marginRight,y,
+                    conf.color || defaults.color
+                );
+
+
+
+
+
+                //
+                // Draw the label
+                //
+
+
+
+
+                // These chart types only
+                if (['bar','line','scatter'].includes(obj.type)) {
+                    
+                    
+                    // Default pos for the label
+                    if (!conf.labelPosition) {
+                        conf.labelPosition = defaults.labelPosition;
+                    }
+
+
+
+                    if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('left') >= 0) {
+                        textX  = obj.marginLeft + hmargin;
+                        halign = 'left';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('center') >= 0) {
+                        textX  = ((obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight) / 2) + obj.properties.marginLeft;
+                        halign = 'center';
+                    } else {
+                        textX  = obj.canvas.width - obj.marginRight - hmargin;
+                        halign = 'right';
+                    }
+
+
+                    if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('bottom') >= 0) {
+                        textY  = y + vmargin;
+                        valign = 'top';
+                    } else {
+                        textY  = y - vmargin;
+                        valign = 'bottom';
+                    }
+                }
+                
+                // Account for linewidth
+                linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
+
+                var num = RGraph.numberFormat({
+                    object:    obj,
+                    number:    (typeof conf.value === 'number' ? conf.value : avg).toFixed(typeof conf.labelValueDecimals === 'number' ? conf.labelValueDecimals : defaults.labelValueDecimals),
+                    unitspre:  conf.labelValueUnitsPre,
+                    unitspost: conf.labelValueUnitsPost,
+                    thousand:  conf.labelValueThousand,
+                    point:     conf.labelValuePoint,
+                    formatter: conf.labelValueFormatter,
+                    decimals:  conf.labelValueDecimals
+                });
+
+
+
+
+                //
+                // Draw the label
+                //
+                RGraph.text({
+                    object: obj,
+                    text: (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
+                    x: textX,
+                    y: textY - (linewidth / 2),
+                    valign: valign,
+                    halign: halign,
+                    size:   textSize,
+                    font:   textFont,
+                    color:  textColor,
+                    italic: textItalic,
+                    bold:   textBold,
+                    bounding: true,
+                    boundingFill: 'rgba(255,255,255,0.75)',
+                    boundingStroke: 'transparent'
+                });
+            }
+        }
     };
 
 
