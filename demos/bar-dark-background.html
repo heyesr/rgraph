@@ -16,12 +16,21 @@
     <meta name="robots" content="noindex, nofollow" />
     <!-- </RGRAPH_REMOVE> -->
 
+    <style>
+        @media screen and (max-width: 800px) {
+            div#canvas-container {
+                float: none !important;
+                text-align: center;
+            }
+        }
+    </style>
+
 </head>
 <body>
 
     <h1>An animated Bar chart</h1>
     
-    <div style="float: right">
+    <div style="float: right" id="canvas-container">
         <canvas id="cvs" width="500" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999" data-image-src="page-demos-bar-dark-background.png">[No canvas support]</canvas>
     </div>
 
