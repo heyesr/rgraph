@@ -17,13 +17,13 @@
     
     <RGRAPH_BASIC_DEMO_CSS>
     <style>
-        div#container {
+        div#canvas-container {
             position: relative;
             width: 600px;
             height: 250px;
         }
         
-        div#container canvas {
+        div#canvas-container canvas {
             position: absolute;
             top: 0;
             left: 0;
@@ -34,7 +34,7 @@
             opacity: 1;
         }
         
-        div#container canvas#cvs1 {
+        div#canvas-container canvas#cvs1 {
             top: 125px;
             left: 300px;
             width: 0;
@@ -58,7 +58,7 @@
     <span style="font-weight: bold; color: red;">Requires jQuery</span>
 
     <RGRAPH_BASIC_DEMO_HTML>
-    <div id="container" style="display: inline-block; float: right">
+    <div id="canvas-container" style="display: inline-block; float: right">
         <canvas id="cvs1" width="600" height="250" data-image-src="page-demos-bar-line-switch-effect.png">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
     </div>
@@ -217,13 +217,13 @@
 &lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
 
 &lt;style&gt;
-    div#container {
+    div#canvas-container {
         position: relative;
         width: 600px;
         height: 250px;
     }
     
-    div#container canvas {
+    div#canvas-container canvas {
         position: absolute;
         top: 0;
         left: 0;
@@ -234,7 +234,7 @@
         opacity: 1;
     }
     
-    div#container canvas#cvs1 {
+    div#canvas-container canvas#cvs1 {
         top: 125px;
         left: 300px;
         width: 0;
@@ -247,7 +247,7 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;div id="container" style="display: inline-block; float: right"&gt;
+&lt;div id="canvas-container" style="display: inline-block; float: right"&gt;
     &lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
     &lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
 &lt;/div&gt;
