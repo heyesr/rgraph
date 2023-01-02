@@ -285,6 +285,7 @@
             keyShadowOffsetx:           2,
             keyShadowOffsety:           2,
             keyPositionMarginBoxed:     false,
+            keyPositionMarginHSpace:   0,
             keyPositionX:               null,
             keyPositionY:               null,
             keyColorShape:              'square',
@@ -1101,9 +1102,14 @@
             if (properties.tooltipsDataset) {
                 this.addDatasetTooltip();
             }
-            
+
+
+
+
+
+
             // Draw any custom lines that have been defined
-            RGraph.drawCustomLines(this);
+            RGraph.drawHorizontalLines(this);
             
             
 
