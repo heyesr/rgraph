@@ -418,8 +418,12 @@
                 length += blob_size;
                 length += hmargin;
                 length += args.object.context.measureText(key[i]).width;
+                length += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
             }
             length += hmargin;
+            
+            // Don't why we need this but here it is...
+            length += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
     
 
     
@@ -537,6 +541,8 @@
                     var blob_shape = 'square';
                 }
 
+                // Allow for the keyPositionMarginHSpace property
+                pos  += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
 
                 //
                 // Draw the blob of color - line
@@ -603,14 +609,11 @@
                     args.object.context.fillStyle = (typeof text_color === 'object') ? text_color[i] : text_color;
 
                     var ret = RGraph.text({
-                    
                         object:     args.object,
-                        
                         font:       text_font,
                         bold:       text_bold,
                         size:       text_size,
                         italic:     text_italic,
-                        
                         x:          pos +  + (properties.keyLabelsOffsetx || 0),
                         y:          vpos + text_size + 1 +  + (properties.keyLabelsOffsety || 0),
                         text:       key[i],
