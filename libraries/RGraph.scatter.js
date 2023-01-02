@@ -393,7 +393,9 @@
             outofbounds:                false,
 
             animationTrace:             false,
-            animationTraceClip:         1
+            animationTraceClip:         1,
+            
+            horizontalLines:            null
         }
 
         //
@@ -874,6 +876,14 @@
             //
             RGraph.addCustomText(this);
 
+
+
+
+
+
+
+            // Draw any custom lines that have been defined
+            RGraph.drawHorizontalLines(this);
 
 
 
