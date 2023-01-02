@@ -9432,9 +9432,9 @@
     //
     // This function allows the drawing of custom lines
     //
-    RGraph.drawCustomLines = function (obj)
+    RGraph.drawHorizontalLines = function (obj)
     {
-        var lines = obj.properties.lines,
+        var lines = obj.properties.horizontalLines,
             avg,x,y,label,halign,valign,hmargin = 10,vmargin = 5,
             position,textFont,textSize,textColor,textBold,textItalic,
             data,linewidth;
@@ -9453,12 +9453,14 @@
                 label:         'Average (%{value})',
                 labelPosition: 'top right',
                 labelColor:    '#666', // Same as color property above
-                labelValueDecimals: 2
+                labelValueDecimals: 2,
+                labelOffsetx:       0,
+                labelOffsety:       0
             };
         
         
             // Loop through each line to be drawn
-            for (let i=0; i<obj.properties.lines.length; ++i) {
+            for (let i=0; i<obj.properties.horizontalLines.length; ++i) {
 
                 var conf       = lines[i],
                     textFont   = conf.labelFont  || obj.properties.textFont,
@@ -9529,8 +9531,28 @@
 
                         }
                         break;
-                }
 
+
+
+
+
+
+                    case 'scatter':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+                        } else if (conf.value === 'average') {
+                            // Use the map() function to get an
+                            // average value from the first dataset
+                            var sum = 0;
+                            obj.data[0].map(v => sum += parseFloat(v[1]));
+
+                            avg = sum / obj.data[0].length;
+                            y   = obj.getYCoord(avg);
+                        }
+                        break;
+                }
 
 
 
@@ -9638,11 +9660,12 @@
                 //
                 // Draw the label
                 //
+
                 RGraph.text({
                     object: obj,
                     text: (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
-                    x: textX,
-                    y: textY - (linewidth / 2),
+                    x: textX + parseFloat(conf.labelOffsetx || defaults.labelOffsetx),
+                    y: textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * conf.labelOffsety) : conf.labelOffsety) || defaults.labelOffsety),
                     valign: valign,
                     halign: halign,
                     size:   textSize,
