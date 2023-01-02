@@ -181,6 +181,7 @@
             keyShadowOffsetx:                   2,
             keyShadowOffsety:                   2,
             keyPositionMarginBoxed:             false,
+            keyPositionMarginHSpace:   0,
             keyPositionX:                       null,
             keyPositionY:                       null,
             keyColorShape:                      'square',
