@@ -282,6 +282,7 @@
             keyShadowOffsetx:     2,
             keyShadowOffsety:     2,
             keyPositionMarginBoxed:false,
+            keyPositionMarginHSpace:   0,
             keyPositionX:         null,
             keyPositionY:         null,
             keyInteractive:        false,
@@ -675,7 +676,7 @@
 
 
             // Draw any custom lines that have been defined
-            RGraph.drawCustomLines(this);
+            RGraph.drawHorizontalLines(this);
 
 
 
