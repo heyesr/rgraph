@@ -23,7 +23,7 @@
 
     <RGRAPH_BASIC_DEMO_HTML>
     <style>
-        div#meters{
+        div#svg-container{
             position: relative;
             background-color: black;
             height: 325px;
@@ -33,7 +33,7 @@
             margin-right:auto;
         }
 
-        div#meters div {
+        div#svg-container div {
             float: left;
             width: 200px;
             height: 200px;
@@ -54,7 +54,7 @@
         div#chart-container6 {top: 240px !important;}
     </style>
 
-    <div id="meters">
+    <div id="svg-container">
         <div id="chart-container1"></div>
         <div id="chart-container2"></div>
         <div id="chart-container3"></div>
@@ -350,13 +350,13 @@
     Put this where you want the chart to show up:
     <pre class="code">
 &lt;style&gt;
-    div#meters{
+    div#svg-container{
         position: relative;
         background-color: black;
         height: 425px;
     }
 
-    div#meters div {
+    div#svg-container div {
         float: left;
         width: 300px;
         height: 300px;
@@ -377,7 +377,7 @@
     div#chart-container6 {top: 340px !important;}
 &lt;/style&gt;
 
-&lt;div id="meters"&gt;
+&lt;div id="svg-container"&gt;
     &lt;div id="chart-container1"&gt;&lt;/div&gt;
     &lt;div id="chart-container2"&gt;&lt;/div&gt;
     &lt;div id="chart-container3"&gt;&lt;/div&gt;
