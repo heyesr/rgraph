@@ -246,11 +246,11 @@
             titleSubtitleBold:   null,
             titleSubtitleItalic: null,
             
-            shadow: false,
+            shadow:        false,
             shadowOffsetx: 2,
             shadowOffsety: 2,
-            shadowBlur: 2,
-            shadowOpacity: 0.25,
+            shadowBlur:    2,
+            shadowColor:   'rgba(0,0,0,0.25)',
 
 
 
@@ -540,7 +540,7 @@
                     offsetx: properties.shadowOffsetx,
                     offsety: properties.shadowOffsety,
                     blur:    properties.shadowBlur,
-                    opacity: properties.shadowOpacity,
+                    color:   properties.shadowColor,
                     id:      'dropShadow'
                 });
             }
@@ -895,7 +895,7 @@
                         'fill-opacity': properties.filledOpacity,
                         'stroke-width': properties.linewidth,
                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : '',
-                        filter: properties.shadow ? 'url(#dropShadow)' : '',
+                        filter: properties.shadow ? 'url(#dropShadow)' : ''
                     }
                 });
 
@@ -994,7 +994,8 @@
                                 fill: properties.tickmarksStyle === 'filledcircle' ? properties.colors[i] : properties.tickmarksFill,
                                 stroke: properties.colors[i],
                                 'stroke-width': properties.tickmarksLinewidth,
-                                'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : '',
+                                filter: properties.shadow ? 'url(#dropShadow)' : '',
                             }
                         });
                         
@@ -1018,7 +1019,8 @@
                                 height: properties.tickmarksSize,
                                 fill: properties.tickmarksStyle === 'filledrect' ? properties.colors[i] : fill,
                                 stroke: properties.colors[i],
-                                'stroke-width': properties.tickmarksLinewidth
+                                'stroke-width': properties.tickmarksLinewidth,
+                                filter: properties.shadow ? 'url(#dropShadow)' : '',
                             }
                         });
                         
