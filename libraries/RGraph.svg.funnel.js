@@ -418,7 +418,7 @@
             //        offsetx: properties.shadowOffsetx,
             //        offsety: properties.shadowOffsety,
             //        blur:    properties.shadowBlur,
-            //        opacity: properties.shadowOpacity,
+            //        color:   properties.shadowColor,
             //        id:      'dropShadow'
             //    });
             //}
