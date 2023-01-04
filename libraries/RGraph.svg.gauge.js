@@ -207,7 +207,7 @@
             shadow:        false,
             shadowOffsetx: 2,
             shadowOffsety: 2,
-            shadowOpacity: 0.25,
+            shadowColor: 'rgba(0,0,0,0.25)',
             shadowBlur:    2,
 
             title:       '',
@@ -565,7 +565,7 @@
                     offsetx: properties.shadowOffsetx,
                     offsety: properties.shadowOffsety,
                     blur:    properties.shadowBlur,
-                    opacity: properties.shadowOpacity,
+                    color:   properties.shadowColor,
                     id:      'dropShadow'
                 });
             }
