@@ -259,11 +259,13 @@
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
 
-            shadow:                            false,
-            shadowColor:                       '#666',
-            shadowOffsetx:                     3,
-            shadowOffsety:                     3,
-            shadowBlur:                        3,
+
+
+            shadow:               false,
+            shadowOffsetx:        2,
+            shadowOffsety:        2,
+            shadowBlur:           2,
+            shadowColor:          'rgba(0,0,0,0.25)',
 
             tooltips:                          null,
             tooltipsEffect:                    'slide',
