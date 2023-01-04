@@ -184,7 +184,7 @@
             //
             // First, determine the separator character by seeing what
             // the first non-alnum character is
-            opt.match(/^([a-z0-9]+)([^a-z0-9])/);
+            opt.match(/^([a-z0-9]+)([^a-z0-9])/i);
             var tagName   = RegExp.$1,
                 separator = RegExp.$2,
                 parts     = opt.split(separator),
@@ -3267,11 +3267,11 @@
     RGraph.SVG.setShadow = function (options)
     {
         var obj     = options.object,
+            id      = options.id,
             offsetx = options.offsetx  || 0,
-            offsety = options.offsety || 0,
-            blur    = options.blur || 0,
-            opacity = options.opacity || 0,
-            id      = options.id;
+            offsety = options.offsety  || 0,
+            blur    = options.blur     || 0,
+            color   = options.color    || 'gray';
 
         var filter = RGraph.SVG.create({
             svg: obj.svg,
@@ -3279,56 +3279,20 @@
             type: 'filter',
             attr: {
                 id: id,
-                 width: "130%",
-                 height: "130%"
+                 width: "250%",
+                 height: "250%"
             }
         });
 
         RGraph.SVG.create({
             svg: obj.svg,
             parent: filter,
-            type: 'feOffset',
+            type: 'feDropShadow',
             attr: {
-                result: 'offOut',
-                'in': 'SourceGraphic',
                 dx: offsetx,
-                dy: offsety
-            }
-        });
-
-        RGraph.SVG.create({
-            svg: obj.svg,
-            parent: filter,
-            type: 'feColorMatrix',
-            attr: {
-                result: 'matrixOut',
-                'in': 'offOut',
-                type: 'matrix',
-                values: '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 {1} 0'.format(
-                    opacity
-                )
-            }
-        });
-
-        RGraph.SVG.create({
-            svg: obj.svg,
-            parent: filter,
-            type: 'feGaussianBlur',
-            attr: {
-                result: 'blurOut',
-                'in': 'matrixOut',
-                stdDeviation: blur
-            }
-        });
-
-        RGraph.SVG.create({
-            svg: obj.svg,
-            parent: filter,
-            type: 'feBlend',
-            attr: {
-                'in': 'SourceGraphic',
-                'in2': 'blurOut',
-                mode: 'normal'
+                dy: offsety,
+                stdDeviation: blur,
+                'flood-color': color,
             }
         });
     };
@@ -6603,6 +6567,267 @@
                     'clip-path',
                     'url(#' + id + ')'
                 );
+            }
+        }
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function allows the drawing of custom lines
+    //
+    RGraph.SVG.drawHorizontalLines = function (obj)
+    {
+        var lines = obj.properties.horizontalLines,
+            avg,x,y,label,halign,valign,hmargin = 10,vmargin = 5,
+            position,textFont,textSize,textColor,textBold,textItalic,
+            data,linewidth;
+
+        if (lines) {
+
+            //
+            // Set some defaults for the configuration of
+            // each line
+            //
+            var defaults = {
+                dotted:             false,
+                dashed:             true,
+                color:              '#666', // Same as labelColor property below
+                linewidth:          1,
+                label:              'Average (%{value})',
+                labelPosition:      'top right',
+                labelColor:         '#666', // Same as color property above
+                labelValueDecimals: 2,
+                labelOffsetx:       0,
+                labelOffsety:       0
+            };
+        
+        
+            // Loop through each line to be drawn
+            for (let i=0; i<obj.properties.horizontalLines.length; ++i) {
+                
+                var conf       = lines[i],
+                    textFont   = conf.labelFont  || obj.properties.textFont,
+                    textColor  = conf.labelColor || defaults.labelColor,
+                    textSize   = conf.labelSize  || obj.properties.textSize - 4,
+                    textBold   = typeof conf.labelBold   === 'boolean' ? conf.labelBold   : obj.properties.textBold,
+                    textItalic = typeof conf.labelItalic === 'boolean' ? conf.labelItalic : obj.properties.textItalic;
+
+
+
+
+
+
+
+
+
+                switch (obj.type) {
+                    case 'line':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+                        
+                        } else if(conf.value === 'average') {
+                            avg        = RGraph.SVG.arraySum(obj.originalData[0]) /  obj.originalData[0].length;
+                            y          = obj.getYCoord(avg);
+                        }
+                        break;
+                        
+                    
+                    
+                    case 'bar':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+
+                        } else if (conf.value === 'average') {
+
+                            // Calculate the average value of all
+                            // of the
+                            // values. Grouped charts are treated
+                            // slightly differently to stacked
+                            // charts.
+                            var total = 0;
+                            obj.data.map(v => {
+
+                                if (RGraph.SVG.isNumber(v)) {
+                                    total += v;
+                                } else if (RGraph.SVG.isArray(v)) {
+                                    total += RGraph.SVG.arraySum(v);
+                                }
+                            });
+
+
+                            var num = 0;
+                            for (let i=0; i<obj.data.length; ++i) {
+                                if (obj.properties.grouping === 'grouped') {
+                                    num += RGraph.SVG.isArray(obj.data[i]) ? obj.data[i].length : 1 ;
+                                } else if (obj.properties.grouping === 'stacked') {
+                                    ++num;
+                                }
+                            }
+
+                            avg        = total / num;
+                            y          = obj.getYCoord(avg);
+
+
+                        }
+                        break;
+
+
+
+
+
+
+                    case 'scatter':
+                        // Calculate the Y coord if we've been
+                        // given a numeric value
+                        if (typeof conf.value === 'number') {
+                            y = obj.getYCoord(conf.value);
+
+                        } else if (conf.value === 'average') {
+                            // Use the map() function to get an
+                            // average value from the first dataset
+                            var sum = 0;
+                            obj.data[0].forEach(v => sum += v.y);
+
+                            avg = sum / obj.data[0].length;
+                            y   = obj.getYCoord(avg);
+                        }
+                        break;
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Dotted or dashed lines
+                //
+                linedash = '';
+
+                if (conf.dotted === true) {
+                    linedash = '1 3';
+                }
+                
+                if (conf.dashed === true || (typeof conf.dashed === 'undefined' && typeof conf.dotted === 'undefined') ) {
+                    linedash = '6 6';
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Draw the line
+                //
+                RGraph.SVG.create(
+                    'line,x1=%1,y1=%2,x2=%3,y2=%4,stroke=black,stroke-width=%5,stroke-dasharray=%6,stroke=%7'.format(
+                        obj.properties.marginLeft,y,
+                        obj.width - obj.properties.marginRight,y,
+                        typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                        linedash,
+                        conf.color || defaults.color
+                    ),
+                    obj.svg.all
+                );
+
+
+
+
+
+                //
+                // Draw the label
+                //
+
+
+
+
+                // These chart types only
+                if (['bar','line','scatter'].includes(obj.type)) {
+                    
+                    
+                    // Default pos for the label
+                    if (!conf.labelPosition) {
+                        conf.labelPosition = defaults.labelPosition;
+                    }
+
+
+
+                    if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('left') >= 0) {
+                        textX  = obj.properties.marginLeft + hmargin;
+                        halign = 'left';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('center') >= 0) {
+                        textX  = ((obj.width - obj.properties.marginLeft - obj.properties.marginRight) / 2) + obj.properties.marginLeft;
+                        halign = 'center';
+                    } else {
+                        textX  = obj.width - obj.properties.marginRight - hmargin;
+                        halign = 'right';
+                    }
+
+
+                    if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('bottom') >= 0) {
+                        textY  = y + vmargin;
+                        valign = 'top';
+                    } else {
+                        textY  = y - vmargin;
+                        valign = 'bottom';
+                    }
+                }
+
+                // Account for linewidth
+                linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
+
+                var num = RGraph.SVG.numberFormat({
+                    object:    obj,
+                    num:       (typeof conf.value === 'number' ? conf.value : avg).toFixed(typeof conf.labelValueDecimals === 'number' ? conf.labelValueDecimals : defaults.labelValueDecimals),
+                    prepend:   conf.labelValueUnitsPre,
+                    append:    conf.labelValueUnitsPost,
+                    thousand:  conf.labelValueThousand,
+                    point:     conf.labelValuePoint,
+                    formatter: conf.labelValueFormatter
+                });
+
+
+
+
+                //
+                // Draw the label
+                //
+                RGraph.SVG.text({
+                    object:     obj,
+                    parent:     obj.svg.all,
+                    tag:        'horizontal.line',
+                    text:       (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
+                    x:          textX + parseFloat(conf.labelOffsetx || defaults.labelOffsetx),
+                    y:          textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * conf.labelOffsety) : conf.labelOffsety) || defaults.labelOffsety),
+                    halign:     halign,
+                    valign:     valign,
+                    font:       textFont,
+                    size:       textSize,
+                    bold:       textBold,
+                    italic:     textItalic,
+                    color:      textColor,
+                    background: 'rgba(255,255,255,0.75)',
+                    padding:    1
+                });
             }
         }
     };
