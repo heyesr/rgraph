@@ -311,7 +311,7 @@
             //shadowOffsetx:        2,
             //shadowOffsety:        2,
             //shadowBlur:           2,
-            //shadowOpacity:        0.25,
+            //shadowColor:        'rgba(0,0,0,0.25)',
 
             key:            null,
             keyColors:      null,
@@ -801,7 +801,19 @@
 
 
 
-
+                //
+                // Set a shadow if requested
+                //
+                if (properties.shadow) {
+                    RGraph.SVG.setShadow({
+                        object:  this,
+                        offsetx: properties.shadowOffsetx,
+                        offsety: properties.shadowOffsety,
+                        blur:    properties.shadowBlur,
+                        color:   properties.shadowColor,
+                        id:      'dropShadow'
+                    });
+                }
 
 
                 // Create the rect object
@@ -825,7 +837,8 @@
                         'data-original-height': height,
                         'data-original-stroke': properties.colorsStroke,
                         'data-original-fill': fill,
-                        'data-value': String(this.data[i])
+                        'data-value': String(this.data[i]),
+                        filter: properties.shadow ? 'url(#dropShadow)' : '',
                     }
                 });
                 
