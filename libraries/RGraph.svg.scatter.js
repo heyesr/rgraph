@@ -717,6 +717,15 @@
 
 
 
+            // Draw any custom lines that have been defined
+            RGraph.SVG.drawHorizontalLines(this);
+
+
+
+
+
+
+
 
 
 
