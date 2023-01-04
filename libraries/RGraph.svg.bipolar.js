@@ -290,7 +290,7 @@
             shadowOffsetx:        2,
             shadowOffsety:        2,
             shadowBlur:           2,
-            shadowOpacity:        0.25,
+            shadowColor:          'rgb(0,0,0,0.25)',
 
             key:             null,
             keyColors:       null,
@@ -1299,7 +1299,7 @@
                     offsetx: properties.shadowOffsetx,
                     offsety: properties.shadowOffsety,
                     blur:    properties.shadowBlur,
-                    opacity: properties.shadowOpacity,
+                    color:   properties.shadowColor,
                     id:      'dropShadow'
                 });
             }
