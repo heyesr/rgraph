@@ -303,7 +303,7 @@
             shadowOffsetx:        2,
             shadowOffsety:        2,
             shadowBlur:           2,
-            shadowOpacity:        0.25,
+            shadowColor:          'rgba(0,0,0,0.25)',
             
             errorbars:            null,
             errorbarsColor:       'black',
@@ -772,6 +772,23 @@
 
 
 
+
+
+
+
+            // Draw any custom lines that have been defined
+            RGraph.SVG.drawHorizontalLines(this);
+
+
+
+
+
+
+
+
+
+
+
             //
             // Fire the onfirstdraw event
             //
@@ -846,7 +863,7 @@
                     offsetx: properties.shadowOffsetx,
                     offsety: properties.shadowOffsety,
                     blur:    properties.shadowBlur,
-                    opacity: properties.shadowOpacity,
+                    color:   properties.shadowColor,
                     id:      'dropShadow'
                 });
             }
