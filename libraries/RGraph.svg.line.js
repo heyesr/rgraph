@@ -301,11 +301,11 @@
             labelsAboveValign:            'bottom',
             labelsAboveSpecific:          null,
 
-            shadow: false,
+            shadow:        false,
             shadowOffsetx: 2,
             shadowOffsety: 2,
-            shadowBlur: 2,
-            shadowOpacity: 0.25,
+            shadowBlur:    2,
+            shadowColor:   'rgba(0,0,0,0.25)',
             
             spline: false,
             stepped: false,
@@ -792,6 +792,8 @@
 
 
 
+            // Draw any custom lines that have been defined
+            RGraph.SVG.drawHorizontalLines(this);
 
 
 
@@ -1112,7 +1114,7 @@
                     offsetx: properties.shadowOffsetx,
                     offsety: properties.shadowOffsety,
                     blur:    properties.shadowBlur,
-                    opacity: properties.shadowOpacity,
+                    color:   properties.shadowColor,
                     id:      'dropShadow'
                 });
             }
@@ -1915,25 +1917,19 @@
                         });
 
                         RGraph.SVG.text({
-
                             object:     this,
                             parent:     this.svg.all,
                             tag:        'labels.above',
-
                             text:       str,
-
                             x:          parseFloat(this.coords2[dataset][i][0]) + properties.labelsAboveOffsetx,
                             y:          parseFloat(this.coords2[dataset][i][1]) + properties.labelsAboveOffsety,
-
                             halign:     properties.labelsAboveHalign,
                             valign:     properties.labelsAboveValign,
-                            
-                            font:   textConf.font,
-                            size:   textConf.size,
-                            bold:   textConf.bold,
-                            italic: textConf.italic,
-                            color:  textConf.color,
-
+                            font:       textConf.font,
+                            size:       textConf.size,
+                            bold:       textConf.bold,
+                            italic:     textConf.italic,
+                            color:      textConf.color,
                             background: properties.labelsAboveBackground        || null,
                             padding:    properties.labelsAboveBackgroundPadding || 0
                         });
