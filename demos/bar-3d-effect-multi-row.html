@@ -60,11 +60,12 @@
     </p>
     
     <p>
-        Previously this chart was animated and the second and
-        third charts were drawn using the animation callback
-        functions of the <code>grow</code> effects. Now, however,
-        there is no animation so the charts can be drawn without
-        using any callback functions.
+        This chart is animated and the second and
+        third charts are drawn using the animation callback
+        functions of the <code>grow</code> effects. So the first
+        animations callback calls the function to draw the second
+        chart and the second animations callback calls the function that
+        draws the third chart and the axes.
     </p>
     
     <p>
@@ -143,105 +144,109 @@
                 yaxis: false,
                 yaxisScale: false
             }
-        }).draw();
+        }).grow(null, draw2);
 
 
 
 
-
-        bar2 = new RGraph.Bar({
-            id: 'cvs',
-            data: data[1],
-            options: {
-                // Stipulate 3d but no 3D axes
-                variant: '3d',
-                variantThreedYaxis: false,
-                variantThreedXaxis: false,
-
-                colorsStroke: 'rgba(0,0,0,0)',
-                colors: [colors[1]],
-
-                // No background grid or X/Y labels for the second and third charts
-                backgroundGrid: false,
-                yaxisLabels: false,
-                xaxisLabels: [],
-
-                // The default margins are increased on one side and reduced on
-                // the other in order to move the chart to the left a little and
-                // enhance the perception of depth.
-                marginBottom: marginBottom - 10,
-                marginTop: marginTop + 10,
-                marginLeft: marginLeft - 25,
-                marginRight: marginRight + 25,
-                marginInner: marginInner,
-
-                yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
-                yaxisScale: false
-            }
-        }).draw();
-
-
-
-
-
-        bar3 = new RGraph.Bar({
-            id: 'cvs',
-            data: data[0],
-            options: {
-
-                // Set the chart to be 3D but without any axes
-                variant: '3d',
-                variantThreedYaxis: false,
-                variantThreedXaxis: false,
-
-                colorsStroke: 'rgba(0,0,0,0)',
-                colors: [colors[0]],
-                
-                // Now that we're drawing the chart that's "at the front" the X-axis labels can be drawn
-                xaxisLabels: xaxisLabels,
-
-                backgroundGrid: false,
-                
-                // Add and subtract from the default margins in order to move the
-                // chart to the left
-                marginTop: marginTop + 20,
-                marginBottom: marginBottom - 20,
-                marginLeft: marginLeft - 40,
-                marginRight: marginRight + 50,
-                marginInner: marginInner,
-
-                yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
-                yaxisScale: false
-            }
-        }).draw();
+        function draw2 ()
+        {
+            bar2 = new RGraph.Bar({
+                id: 'cvs',
+                data: data[1],
+                options: {
+                    // Stipulate 3d but no 3D axes
+                    variant: '3d',
+                    variantThreedYaxis: false,
+                    variantThreedXaxis: false,
+    
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    colors: [colors[1]],
+    
+                    // No background grid or X/Y labels for the second and third charts
+                    backgroundGrid: false,
+                    yaxisLabels: false,
+                    xaxisLabels: [],
+    
+                    // The default margins are increased on one side and reduced on
+                    // the other in order to move the chart to the left a little and
+                    // enhance the perception of depth.
+                    marginBottom: marginBottom - 10,
+                    marginTop: marginTop + 10,
+                    marginLeft: marginLeft - 25,
+                    marginRight: marginRight + 25,
+                    marginInner: marginInner,
+    
+                    yaxisScaleMax: yaxisScaleMax,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScale: false
+                }
+            }).grow(null, draw3);
+        }
 
 
 
 
-        // This drawing API Y-axis is used to show the Y-axis labels on the
-        // right-hand-side - though the actual axis is not shown - just the labels.
-        yaxisObj = new RGraph.Drawing.YAxis({
-            id: 'cvs',
-            x: bar1.canvas.width - marginRight + 10,
-            options: {
-                yaxisColor:   'rgba(0,0,0,0)',
-                textColor:    'black',
-                marginTop:    marginTop - 2,
-                marginBottom: marginBottom + 5,
-                marginRight: marginRight,
-                yaxisScaleMax: 35,
-                yaxisPosition: 'right'
-            }
-        }).draw();
-        
-        //bar3.responsive([
-        //    {maxWidth: null,width: 650,height: 300,options: {xaxisLabels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize: 12,marginInner: marginInner},callback: function (){bar1.set('marginInner', 20);bar2.set('marginInner', 20);setTimeout(function (){yaxisObj.x = 635;yaxisObj.set('textSize', 12);RGraph.redraw();}, 250);}},
-        //    {maxWidth: 900,width: 450,height: 200,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 8,marginInner: 10}, callback:function (){bar1.set('marginInner', 10);bar2.set('marginInner', 10);yaxisObj.x = 435;yaxisObj.set('textSize', 8);RGraph.redraw();}}
-        //]);
+        function draw3 ()
+        {
+            bar3 = new RGraph.Bar({
+                id: 'cvs',
+                data: data[0],
+                options: {
+    
+                    // Set the chart to be 3D but without any axes
+                    variant: '3d',
+                    variantThreedYaxis: false,
+                    variantThreedXaxis: false,
+    
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    colors: [colors[0]],
+                    
+                    // Now that we're drawing the chart that's "at the front" the X-axis labels can be drawn
+                    xaxisLabels: xaxisLabels,
+    
+                    backgroundGrid: false,
+                    
+                    // Add and subtract from the default margins in order to move the
+                    // chart to the left
+                    marginTop: marginTop + 20,
+                    marginBottom: marginBottom - 20,
+                    marginLeft: marginLeft - 40,
+                    marginRight: marginRight + 50,
+                    marginInner: marginInner,
+    
+                    yaxisScaleMax: yaxisScaleMax,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScale: false
+                }
+            }).grow();
+
+
+
+
+            // This drawing API Y-axis is used to show the Y-axis labels on the
+            // right-hand-side - though the actual axis is not shown - just the labels.
+            yaxisObj = new RGraph.Drawing.YAxis({
+                id: 'cvs',
+                x: bar1.canvas.width - marginRight + 10,
+                options: {
+                    yaxisColor:   'rgba(0,0,0,0)',
+                    textColor:    'black',
+                    marginTop:    marginTop - 2,
+                    marginBottom: marginBottom + 5,
+                    marginRight: marginRight,
+                    yaxisScaleMax: 35,
+                    yaxisPosition: 'right'
+                }
+            }).draw();
+            
+            //bar3.responsive([
+            //    {maxWidth: null,width: 650,height: 300,options: {xaxisLabels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize: 12,marginInner: marginInner},callback: function (){bar1.set('marginInner', 20);bar2.set('marginInner', 20);setTimeout(function (){yaxisObj.x = 635;yaxisObj.set('textSize', 12);RGraph.redraw();}, 250);}},
+            //    {maxWidth: 900,width: 450,height: 200,options: {xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 8,marginInner: 10}, callback:function (){bar1.set('marginInner', 10);bar2.set('marginInner', 10);yaxisObj.x = 435;yaxisObj.set('textSize', 8);RGraph.redraw();}}
+            //]);
+        }
     </script>
 
 
