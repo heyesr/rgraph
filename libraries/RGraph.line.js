@@ -1577,6 +1577,9 @@
         //
         this.drawTick = function (lineData, xPos, yPos, color, isShadow, prevX, prevY, tickmarks, index, dataset)
         {
+            // Reset the linedash setting for drawing the tickmarks
+            this.context.setLineDash([1,1]);
+
             // Allow for the tickmarksColor property
             if (properties.tickmarksColor) {
                 color = properties.tickmarksColor;
