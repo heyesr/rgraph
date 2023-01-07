@@ -9295,6 +9295,11 @@
         
         RGraph.clipTo.object = args.object;
 
+        // Record the state of the antialiasing flag so that it can
+        // be reset to this when the RGraph.clipTo.end() function
+        // is called.
+        RGraph.clipTo.__rgraph_aa_translated__ = args.object.canvas.__rgraph_aa_translated__ ;
+
         if (typeof args.dimensions === 'string') {
             if (args.dimensions === 'tophalf') {
 
@@ -9330,6 +9335,84 @@
                     args.object.canvas.width / 2,
                     0,
                     args.object.canvas.width / 2,
+                    args.object.canvas.height
+                );
+
+
+
+
+            //
+            // Clip to the top part of the chart whilst taking
+            // into account the margins. So you have different
+            // margin sizes and still clip to the top part of
+            // the chart
+            //
+            } else if (args.dimensions === 'tophalf.margins') {
+
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    0,
+                    args.object.canvas.width,
+                    ((args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) / 2) + args.object.properties.marginTop
+                );
+
+
+
+
+            //
+            // Clip to the bottom part of the chart whilst taking
+            // into account the margins. So you have different
+            // margin sizes and still clip to the bottom part of
+            // the chart
+            //
+            } else if (args.dimensions === 'bottomhalf.margins') {
+
+                var grapharea = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom;
+
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    args.object.properties.marginTop + (grapharea / 2),
+                    args.object.canvas.width,
+                    grapharea / 2
+                );
+
+
+
+
+            //
+            // Clip to the left part of the chart whilst taking
+            // into account the margins. So you have different
+            // margin sizes and still clip to the left part of
+            // the chart
+            //
+            } else if (args.dimensions === 'lefthalf.margins') {
+
+                args.object.path(
+                    'sa b r % % % % cl',
+                    0,
+                    0,
+                    args.object.properties.marginLeft + ((args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2),
+                    args.object.canvas.height
+                );
+
+
+
+
+            //
+            // Clip to the right part of the chart whilst taking
+            // into account the margins. So you have different
+            // margin sizes and still clip to the left part of
+            // the chart
+            //
+            } else if (args.dimensions === 'righthalf.margins') {
+
+                args.object.path(
+                    'sa b r % % % % cl',
+                    args.object.properties.marginLeft + ((args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2),
+                    0,
+                    (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2,
                     args.object.canvas.height
                 );
             
@@ -9419,6 +9502,10 @@
     //
     RGraph.clipTo.end = function ()
     {
+        // Reset the antialiasing flag to what it was when
+        // we started
+        RGraph.clipTo.object.canvas.__rgraph_aa_translated__ = RGraph.clipTo.__rgraph_aa_translated__;
+
         RGraph.path(RGraph.clipTo.object, 'rs');
     };
 
