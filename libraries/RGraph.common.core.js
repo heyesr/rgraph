@@ -1282,8 +1282,15 @@
 
 
 
+
+
+
+
+
+
+
         // Draw the subtitle
-        var text = properties.titleSubtitle;
+        var text = properties.titleSubtitle.toString();
         
         if (typeof text === 'string') {
         
@@ -9563,7 +9570,6 @@
 
 
 
-
                 switch (obj.type) {
                     case 'line':
                         // Calculate the Y coord if we've been
@@ -9712,6 +9718,12 @@
                     } else if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('center') >= 0) {
                         textX  = ((obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight) / 2) + obj.properties.marginLeft;
                         halign = 'center';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition === 'right-margin') {
+                        textX  = obj.canvas.width - obj.properties.marginRight + hmargin;
+                        halign = 'left';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition ==='left-margin') {
+                        textX  = obj.properties.marginLeft - hmargin;
+                        halign = 'right';
                     } else {
                         textX  = obj.canvas.width - obj.marginRight - hmargin;
                         halign = 'right';
@@ -9721,6 +9733,12 @@
                     if (typeof conf.labelPosition === 'string' && conf.labelPosition.indexOf('bottom') >= 0) {
                         textY  = y + vmargin;
                         valign = 'top';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition === 'right-margin') {
+                        textY  = y;
+                        valign = 'center';
+                    } else if (typeof conf.labelPosition === 'string' && conf.labelPosition === 'left-margin') {
+                        textY  = y;
+                        valign = 'center';
                     } else {
                         textY  = y - vmargin;
                         valign = 'bottom';
