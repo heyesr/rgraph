@@ -73,7 +73,7 @@
             titleOffsetx:                   0,
             titleOffsety:                   0,
 
-            titleSubtitle:        null,
+            titleSubtitle:        '',
             titleSubtitleSize:    null,
             titleSubtitleColor:   '#aaa',
             titleSubtitleFont:    null,
