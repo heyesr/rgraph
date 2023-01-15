@@ -40,9 +40,14 @@
                 xaxis: false,
                 yaxis: false,
                 backgroundGridVlines: false,
-                backgroundGridBorder: false
+                backgroundGridBorder: false,
+                shadow: false,
+                tickmarks: true,
+                tickmarksStyle: 'endcircle',
+                tickmarksSize: 7
             }
-        }).wave();
+        }).wave({frames: 90})
+          .trace({frames: 90});
 
 
 
@@ -50,13 +55,16 @@
 
         function change ()
         {
-            line.wave({reverse: true});
+            line.trace({reverse: true, frames: 90});
+            line.wave({reverse: true, frames: 90});
             
             setTimeout(function ()
             {
                 line.original_data[0] = RGraph.arrayRandom(10, 0, 10);
-                line.wave();
-            }, 1500);
+                
+                line.trace({frames: 90});
+                line.wave({frames: 90});
+            }, 2000);
         }
     </script>
 
@@ -73,6 +81,8 @@
 &lt;canvas id="cvs" width="600" height="250"&gt;
     [No canvas support]
 &lt;/canvas&gt;
+
+&lt;button onclick="change()" style="font-size: 20pt; cursor: pointer"&lt;Change data&lt;/button&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
