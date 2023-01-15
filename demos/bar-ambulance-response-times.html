@@ -1,0 +1,98 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Bar chart depicting worsening UK ambulance response times</title>
+    <meta name="description" content="This is a simple example of a Bar chart that illustrates a basic configuration. RGraph has many basic examples of charts in the download archive." />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart depicting worsening UK ambulance response times</h1>
+    
+    <div id="canvas-container">
+        <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+    </div>
+
+
+    <br clear="both" />
+
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: '26,23,27,28,20,20,21,25,30,41,39,44,52,47,52,38,41,60,50,41,48,60,47,50,55',
+            options: {
+                colors: ['#137FA1'],
+                yaxisLabelsCount: 3,
+                backgroundGridHlinesCount: 3,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                yaxisTitle: 'Minutes',
+                xaxisLinewidth: 2,
+                xaxisTickmarksCount: 0,
+                //xaxisLabelsPosition: 'edge',
+                xaxisLabels: [
+                    'Oct\n2020','','','','','','','','','','','',
+                    'Oct\n2021','','','','','','','','','','','',
+                    'Oct\n2022'
+                ],
+                textColor: '#333',
+                textSize: 16,
+                marginLeft: 75,
+                marginRight: 250,
+                marginBottom: 50,
+                _marginInner: 4,
+                title: 'Ambulance response times',
+                titleSubtitle: 'Average time to reach category 2 calls in England in minutes',
+                titleSubtitleSize: 10,
+                titleSubtitleColor: '#aaa',
+                titleSubtitleOffsety: -5,
+                marginTop: 60,
+                horizontalLines: [{
+                    value: 18,
+                    label: 'Target response time:\n18 minutes',
+                    linewidth: 2,
+                    color: 'black',
+                    labelColor: 'black',
+                    labelSize: 16,
+                    labelPosition: 'right-margin'
+                }]
+            }
+        }).draw();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div id="canvas-container"&gt;
+    &lt;canvas id="cvs" width="900" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
