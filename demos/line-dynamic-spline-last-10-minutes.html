@@ -1,0 +1,111 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A dynamically updating spline Line chart showing values for the last 10 minutes (1 per second)</title>
+    
+    
+    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example). It's updated once per second. and shows the last 10 minutes worth of data." />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A dynamically updating spline Line chart showing values for the last 10 minutes (1 per second)</h1>
+    
+    <div style="text-align: center">
+        <canvas id="cvs" width="800" height="400">[No canvas support]</canvas>
+    </div>
+       
+    <script>
+        chart  = null;
+        data   = [8,9,6,5,3,2,9,5,2,5,4,9,8,6,5,2,5,8,9,6,3,5,8,4];
+        labels = ['60s','55s','50s','45s','40s','35s','30s','25s','20s','15s','10s','5s','0s']
+
+        // Make and draw the chart
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                backgroundGridColor: '#222',
+                colors: ['#03f'],
+                linewidth:0.5,
+                shadow: false,
+                spline: true,
+                xaxisTickmarksCount: 20,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textSize: 10,
+                yaxisScaleUnitsPost: 'k',
+                xaxisLabels: labels,
+                xaxisTitle: 'Time',
+                xaxisTitleBold: true,
+                xaxisTitleSize: 18,
+                xaxisTickmarks: false,
+                marginBottom: 50,
+                title: 'A dynamic Line chart',
+                titleSize: 30,
+                titleOffsety: 10,
+                titleFont: 'Impact',
+                marginTop: 40
+            }
+        }).draw();
+
+
+
+
+
+        // The draw() function gets called repeatedly every second
+        (function draw()
+        {
+            // Create a new value
+            var last = data[data.length - 1];
+            var val  = RGraph.random(-2, 2);
+
+            data.push(Math.max(1,last + val) );
+            data.shift();            
+            line.original_data[0] = data;
+            
+
+            RGraph.redraw();
+
+            setTimeout(draw, 1000);
+        })();
+    </script>
+
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="250"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>
