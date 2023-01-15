@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: An SVG Scatter chart with an average indicator</title>
+    
+    
+    <meta name="description" content="An SVG Scatter chart with an average indicator" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An SVG Scatter chart with an average indicator</h1>
+    
+    <div style="width: 600px; height: 300px" id="cc"></div>
+
+    <script>
+        new RGraph.SVG.Scatter({
+            id: 'cc',
+            data: [
+                {x: 10,y: 45},{x: 196,y: 5},{x: 46,y: 8},{x: 199,y: 4},{x: 166,y: 58},
+                {x: 152,y: 67},{x: 288,y: 41},{x: 311,y: 4},{x: 311,y: 12},{x: 133,y: 96},
+                {x: 164,y: 43},{x: 316,y: 31},{x: 48,y: 3},{x: 154,y: 32},{x: 188,y: 84},
+                {x: 321,y: 84},{x: 111,y: 54},{x: 188,y: 4},{x: 166,y: 54},{x: 111,y: 16},
+                {x: 155,y: 13},{x: 64,y: 13},{x: 99,y: 5},{x: 184,y: 12},{x: 133,y: 46},
+                {x: 25,y: 12},{x: 48,y: 19},{x: 189,y: 8},{x: 84,y: 66},{x: 153,y: 54, color: 'red'}
+            ],
+            options: {
+                horizontalLines: [{
+                    value: 'average',
+                    //color: 'red',
+                    linewidth: 2,
+                    //dashed: true,
+                    //dotted: true,
+                    //label: 'Poop: %{value}',
+                    //labelFont:'Georgia',
+                    //labelSize: 18,
+                    //labelColor: 'green',
+                    //labelBold: true,
+                    //labelItalic: true,
+                    //labelValueUnitsPre: '$',
+                    //labelValueUnitsPost: 'c',
+                    //labelValueDecimals: 6,
+                    //labelValuePoint:'..',
+                    //labelValueThousand:',,'
+                    //labelValueFormatter: function (obj, value)
+                    //{
+                    //    $a(value)
+                    //}
+                }],
+                xaxisScaleMax: 365,
+                tickmarksStyle: 'dot',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        }).draw();
+    </script>
+
+
+
+    <div style="clear: both"></div>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 600px; height: 300px" id="cc"&gt;&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
