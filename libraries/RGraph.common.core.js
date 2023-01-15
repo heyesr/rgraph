@@ -1131,11 +1131,11 @@
             y            = properties.titleY,
             halign       = 'center',
             valign       = 'center',
-
             textConf = RGraph.getTextConf({
                 object: args.object,
                 prefix: 'title'
             });
+
 
             var size   = textConf.size,
                 bold   = textConf.bold,
@@ -1198,7 +1198,8 @@
         }
 
         // Move the Y coord up if there's a subtitle
-        if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+        if ((typeof properties.titleSubtitle === 'string' && properties.titleSubtitle.length > 0) || typeof properties.titleSubtitle === 'number') {
+
             var titleSubtitleDim = RGraph.measureText({
                 bold:   properties.titleSubtitleBold,
                 italic: properties.titleSubtitleItalic,
@@ -9380,9 +9381,9 @@
                 args.object.path(
                     'sa b r % % % % cl',
                     0,
-                    args.object.properties.marginTop + (grapharea / 2),
+                    ((args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) / 2) + args.object.properties.marginTop,
                     args.object.canvas.width,
-                    grapharea / 2
+                    args.object.canvas.height
                 );
 
 
