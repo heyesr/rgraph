@@ -1,0 +1,69 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A Scatter chart with an average indicator</title>
+    
+    
+    <meta name="description" content="A Scatter chart with an average indicator" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Line chart using the horizontalLines feature to show an average</h1>
+
+    <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    
+    <script>
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data:
+            [
+                [21,0],[13,16],[8,10],[10,8],[18,18],[15,19],
+                [13,16],[15,12],[16,13],[12,11],[10,18],[11,19],
+                [7,17],[11,18],[9,13],[11,12],[12,10],[10,9],
+                [19,10],[15,15]
+            ],
+            options: {
+                xaxisScaleMax: 31,
+                horizontalLines:[{value:'average'}]
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="750" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
