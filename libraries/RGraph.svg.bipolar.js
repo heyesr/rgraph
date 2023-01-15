@@ -1452,8 +1452,8 @@
                         // If this is the first iteration of the loop and a shadow
                         // is requested draw a rect here to create it.
                         if (j === 0 && properties.shadow) {
-                            
-                            var shadowBackfaceX = properties.marginLeft + this.graphWidth - this.getWidth(RGraph.SVG.arraySum(this.left[i])),
+                                                        
+                            var shadowBackfaceX = properties.marginLeft + this.graphWidth - (this.getWidth(RGraph.SVG.arraySum(this.left[i]))),
                                 shadowBackfaceWidth = this.getWidth(RGraph.SVG.arraySum(this.left[i]));
                                 
 
@@ -3153,6 +3153,10 @@
             // Zero all of the bar-lengths for the left side
             for (var i=0; i<this.coordsLeft.length; i+=1) {
                 this.coordsLeft[i].element.setAttribute('width', 0);
+                
+                if (this.stackedBackfacesLeft[i]) {
+                    this.stackedBackfacesLeft[i].setAttribute('width', 0);
+                }
             }
 
 
@@ -3172,6 +3176,10 @@
             // Zero all of the bar-lengths for the right side
             for (var i=0; i<this.coordsRight.length; i+=1) {
                 this.coordsRight[i].element.setAttribute('width', 0);
+                
+                if (this.stackedBackfacesRight[i]) {
+                    this.stackedBackfacesRight[i].setAttribute('width', 0);
+                }
             }
 
 
@@ -3250,6 +3258,8 @@
                                 // Only update this for stacked charts
                                 if (obj.properties.grouping === 'stacked') {
                                     accWidth += parseFloat(rect_left.getAttribute('width'));
+                                    obj.stackedBackfacesLeft[i].setAttribute('x', obj.properties.marginLeft + obj.graphWidth - accWidth);
+                                    obj.stackedBackfacesLeft[i].setAttribute('width', accWidth);
                                 }
                             }
                             
@@ -3336,12 +3346,14 @@
             
                                 rect_right.setAttribute(
                                     'x',
-                                    obj.properties.marginLeft + obj.graphWidth + properties.marginCenter + accWidth
+                                    obj.properties.marginLeft + obj.graphWidth + obj.properties.marginCenter + accWidth
                                 );
             
                                 // Only update this for stacked charts
                                 if (obj.properties.grouping === 'stacked') {
                                     accWidth += parseFloat(rect_right.getAttribute('width'));
+obj.stackedBackfacesRight[i].setAttribute('x', obj.properties.marginLeft + obj.graphWidth + obj.properties.marginCenter);
+obj.stackedBackfacesRight[i].setAttribute('width', accWidth);
                                 }
                             }
                             
