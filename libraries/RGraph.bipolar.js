@@ -130,7 +130,7 @@
             textAccessiblePointerevents:false,
             text:                       null,
             
-            titleLeft:                  null,
+            titleLeft:                  '',
             titleLeftFont:              null,
             titleLeftSize:              null,
             titleLeftBold:              null,
@@ -139,7 +139,7 @@
             titleLeftOffsetx:           0,
             titleLeftOffsety:           0,
             
-            titleRight:                 null,
+            titleRight:                 '',
             titleRightFont:             null,
             titleRightSize:             null,
             titleRightBold:             null,
@@ -150,7 +150,7 @@
             titleRightOffsetx:          0,
             titleRightOffsety:          0,
             
-            title:                      null,
+            title:                      '',
             titleFont:                  null,
             titleSize:                  null,
             titleBold:                  null,
@@ -2686,8 +2686,13 @@
         //
         this.drawTitles = function ()
         {
+            // Make sure that the title subtitle are strings
+            properties.titleLeft  = String(properties.titleLeft);
+            properties.titleRight = String(properties.titleRight);
+            properties.title      = String(properties.title);
+
             // Draw the left title
-            if (typeof properties.titleLeft === 'string') {
+            if (properties.titleLeft) {
                 
                 // Get the text configuration
                 var textConf = RGraph.getTextConf({
@@ -2717,8 +2722,15 @@
                 });
             }
 
+
+
+
+
+
+
+
             // Draw the right title
-            if (typeof properties.titleRight === 'string') {
+            if (properties.titleRight) {
 
                 // Get the text configuration
                 var textConf = RGraph.getTextConf({
@@ -2750,7 +2762,7 @@
 
 
             // Draw the main title for the whole chart
-            if (typeof properties.title === 'string') {
+            if (properties.title) {
                 RGraph.drawTitle(
                     this,
                     properties.title,
