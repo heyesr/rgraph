@@ -665,6 +665,10 @@
         //
         this.drawTitle = function ()
         {
+            // Make sure that the title subtitle are strings
+            properties.title         = String(properties.title);
+            properties.titleSubtitle = String(properties.titleSubtitle);
+
             var textConf = RGraph.getTextConf({
                 object: this,
                 prefix: 'title'
@@ -678,7 +682,7 @@
             var y = this.marginTop - 3 + properties.titleOffsety;
 
             // Move the Y coord up if there's a subtitle
-            if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+            if (properties.titleSubtitle) {
                 var titleSubtitleDim = RGraph.measureText({
                     bold:   properties.titleSubtitleBold,
                     italic: properties.titleSubtitleItalic,
@@ -699,7 +703,7 @@
                italic: textConf.italic,
                 x:      x,
                 y:      y,
-                text:   String(properties.title),
+                text:   properties.title,
                 valign: 'bottom',
                 halign: 'center',
                 tag:   'title'
@@ -718,7 +722,7 @@
             // Draw the subtitle
             var text = properties.titleSubtitle;
 
-            if (typeof text === 'string') {
+            if (text) {
             
                 // Get the size of the title
                 var titleSize = textConf.size;
@@ -738,7 +742,7 @@
                     italic:  textConf.italic,
                     x:       x + properties.titleSubtitleOffsetx,
                     y:       y + 2 + properties.titleSubtitleOffsety,
-                    text:    String(properties.titleSubtitle),
+                    text:    properties.titleSubtitle,
                     valign:  'top',
                     halign:  'center',
                     tag:     'subtitle'
