@@ -925,6 +925,10 @@
         //
         this.drawTitles = function ()
         {
+            // Make sure that the title subtitle are strings
+            properties.title         = String(properties.title);
+            properties.titleSubtitle = String(properties.titleSubtitle);
+
             // Draw the title text
             if (properties.title) {
 
@@ -944,7 +948,7 @@
 
 
                 // Move the Y coord up if there's a subtitle
-                if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+                if (properties.titleSubtitle) {
                     var titleSubtitleDim = RGraph.measureText({
                         bold:   properties.titleSubtitleBold,
                         italic: properties.titleSubtitleItalic,
@@ -990,7 +994,7 @@
                 // Draw the subtitle
                 var text = properties.titleSubtitle;
                 
-                if (typeof text === 'string') {
+                if (text) {
     
                     // Get the size of the title
                     var titleSize = textConf.size;
