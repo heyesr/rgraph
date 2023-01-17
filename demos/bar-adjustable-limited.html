@@ -33,7 +33,10 @@
                 colors: ['#ddd','#ddd','orange','orange','#ddd','#ddd','#ddd','#ddd','#ddd'],
                 colorsSequential: true,
                 adjustable: true,
-                adjustableOnly: [false,false,true,true,false,false,false,false,false]
+                adjustableOnly: [false,false,true,true,false,false,false,false,false],
+                title: 'Example of the adjustableOnly option',
+                titleBold: true,
+                titleSize: 16
             }
         }).draw();
 
@@ -45,7 +48,10 @@
                 colors: ['#ddd','#ddd','orange','orange','#ddd','#ddd','#ddd','#ddd','#ddd'],
                 colorsSequential: true,
                 adjustable: true,
-                adjustableOnly: RGraph.arrayInvert([false,false,true,true,false,false,false,false,false])
+                adjustableOnly: RGraph.arrayInvert([false,false,true,true,false,false,false,false,false]),
+                title: 'Example of the adjustableOnly option (inverted)',
+                titleBold: true,
+                titleSize: 16
             }
         }).draw();
     </script>

@@ -43,11 +43,13 @@
             id: 'cvs',
             data: data_outer,
             options: {
+                title: 'A nested grouped Bar chart',
+                titleSize: 16,
+                titleBold: true,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 colors: ['Gradient(#eee:#aaa)'],
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
-                textSize: 12,
                 shadow: false,
                 colorsStroke: 'rgba(0,0,0,0)',
                 xaxis: false,
@@ -56,7 +58,11 @@
                 labelsAboveOffsety: 5,
                 labelsAboveUnitsPost: 'kg',
                 yaxisScaleUnitsPost: 'kg',
-                marginLeft: 50
+                marginTop: 50,
+                marginLeft: 50,
+                key: ['Johnny','Rufus','Larna'],
+                keyPosition: 'margin',
+                keyColors: ['red','green','blue']
             }
         }).grow();
         
@@ -66,8 +72,6 @@
             data: data_inner,
             options: {
                 colors: ['red','green','blue'],
-                key: ['Johnny','Rufus','Larna'],
-                keyPosition: 'margin',
                 backgroundGrid: false,
                 textSize: 12,
                 shadow: false,

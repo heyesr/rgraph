@@ -30,6 +30,7 @@
                 xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim'],
                 colors: ['Gradient(#99f:#27afe9:#058DC7:#058DC7)', 'Gradient(#94f776:#50B332:#B1E59F)', 'Gradient(#fe783e:#EC561B:#F59F7D)'],
                 marginInner: 15,
+                marginTop: 50,
                 colorsStroke: 'white',
                 linewidth: 2,
                 shadowOffsetx: 1,
@@ -40,6 +41,10 @@
                 yaxis: false,
                 xaxisScaleZerostart: true,
                 xaxis: false,
+                title: 'A combined Bar and Line chart',
+                titleSubtitle: 'Also shows the combinedEffect callback',
+                titleBold: true,
+                titleSize: 16,
                 combinedEffect: 'wave',
                 combinedEffectCallback: function () {$a('Finished the bar effect!')},
                 combinedEffectOptions: '{frames: 90}'
@@ -51,6 +56,7 @@
             id: 'cvs',
             data: [2,3,2,1,5],
             options: {
+                marginTop: 50,
                 spline: true,
                 tickmarksStyle: 'filledcircle',
                 colors: ['#CDE217'],

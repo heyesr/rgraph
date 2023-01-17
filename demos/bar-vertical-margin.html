@@ -27,10 +27,7 @@
         // Create the data
         data = [6,8,4,6];
         
-        data.forEach(function (val, idx, arr)
-        {
-            arr[idx] = [val - 1, 1];
-        });
+        data.forEach((val, idx, arr) => arr[idx] = [val - 1, 1]);
 
         bar = new RGraph.Bar({
             id: 'cvs',
@@ -55,11 +52,14 @@
                 axesLinewidth: 3,
                 marginLeft: 5,
                 marginRight: 5,
-                marginTop: 15,
+                marginTop: 35,
                 marginBottom: 5,
                 labelsAbove: true,
                 labelsAboveSize: 26,
-                labelsAboveUnitsPost: 'km'
+                labelsAboveUnitsPost: 'km',
+                title: 'A Bar chart with a vertical margin',
+                titleBold: true,
+                titleSize: 16,
             }
         }).draw();
     </script>

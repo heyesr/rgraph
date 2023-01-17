@@ -51,7 +51,10 @@
                     marginRight: 15,
                     colors: ['Gradient(white:rgba(255, 176, 176, 0.5))','Gradient(white:rgba(153, 208, 249,0.5))'],
                     backgroundGridHlinesCount: 5,
-                    backgroundGridVlinesCount: 4
+                    backgroundGridVlinesCount: 4,
+                    title: 'A Bar chart with a reflection effect',
+                    titleBold: true,
+                    titleSize: 16,
                 }
             }).draw()
             
@@ -71,8 +74,8 @@
 
         // Now draw a graduated white rect over the reflection
         var grad = co.createLinearGradient(0,0,0,250)
-        grad.addColorStop(0, 'rgba(255,255,255,0.5)');
-        grad.addColorStop(0.75, 'rgba(255,255,255,1)');
+        grad.addColorStop(0, 'rgba(255,255,255,0.25)');
+        grad.addColorStop(0.75, 'rgba(255,255,255,.75)');
 
         co.fillStyle = grad;
         co.fillRect(0,0,600,250);
