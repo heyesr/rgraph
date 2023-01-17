@@ -1368,26 +1368,33 @@
         //
         this.drawTitle = function ()
         {
+            var x, y;
+
+            // Make sure that the title subtitle are strings
+            properties.title         = String(properties.title);
+            properties.titleSubtitle = String(properties.titleSubtitle);
+
+            var textConf = RGraph.getTextConf({
+                object: this,
+                prefix: 'title'
+            });
+            var x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
+
+            if (properties.labelsPosition == 'top') {
+                y = this.canvas.height - this.marginBottom +5;
+                x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
+                valign = 'top';
+            } else {
+                x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
+                y = this.marginTop - 5;
+                valign = 'bottom';
+            }
+
             // Draw the title text
-            if (properties.title && properties.title.length) {
+            if (properties.title) {
     
-                var x    = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
                 var text = properties.title;
                 
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'title'
-                });
-                
-                if (properties.labelsPosition == 'top') {
-                    y = this.canvas.height - this.marginBottom +5;
-                    x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
-                    valign = 'top';
-                } else {
-                    x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
-                    y = this.marginTop - 5;
-                    valign = 'bottom';
-                }
     
                 x = typeof properties.titleX === 'number' ? properties.titleX : x;
                 y = typeof properties.titleY === 'number' ? properties.titleY : y;
@@ -1401,7 +1408,7 @@
 
 
                 // Move the Y coord up if there's a subtitle
-                if (typeof properties.titleSubtitle === 'string' || typeof properties.titleSubtitle === 'number') {
+                if (properties.titleSubtitle) {
                     var titleSubtitleDim = RGraph.measureText({
                         bold:   properties.titleSubtitleBold,
                         italic: properties.titleSubtitleItalic,
@@ -1460,7 +1467,7 @@
             // Draw the subtitle
             var text = properties.titleSubtitle;
             
-            if (typeof text === 'string') {
+            if (properties.title && text) {
 
                 // Get the size of the title
                 var titleSize = textConf.size;
