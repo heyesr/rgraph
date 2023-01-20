@@ -9517,6 +9517,60 @@
         RGraph.path(RGraph.clipTo.object, 'rs');
     };
 
+    //
+    // Parses a string such as this:
+    //
+    // foo=bar,foo2=bar2,foo3="bar 3"
+    //
+    // @paramstr string The string to parse
+    // @return          An object of the results
+    //
+    RGraph.parseConfigString = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'string,separator');
+
+        // Default to a comma
+        args.separator ??= ',';
+
+        var insideQuote = false,
+            entries     = [],
+            entry       = [],
+            parts       = {};
+        
+        args.string.split('').forEach(function (character)
+        {
+            if(character === '"' || character === "'") {
+                insideQuote = !insideQuote;
+            } else {
+
+                if(character === args.separator && !insideQuote) {
+                    entries.push(entry.join(''));
+                    entry = [];
+                } else {
+                    entry.push(character);
+                }
+            }
+        });
+
+        entries.push(entry.join(''));                                        
+
+        for (let i=0; i<entries.length; ++i) {
+            var index = entries[i].indexOf('=');
+            var name  = entries[i].substr(0, index);
+            var value = entries[i].substr(index + 1);
+
+            // Convert the value to a number type if it looks
+            // like a number
+            if (RGraph.isNumeric(value)) {                
+                value = Number(value);
+            }
+            
+
+            parts[name] = value;
+        }
+        
+        return parts;
+    };
 
 
 
@@ -9801,8 +9855,9 @@
     //
     //        RGraph.isUndefined(window.foo)
     //
-    RGraph.isString    = function (obj){return typeof obj === 'string';};
-    RGraph.isNumber    = function (obj){return typeof obj === 'number';};
+    RGraph.isString    = function(obj){return typeof obj === 'string';};
+    RGraph.isNumber    = function(obj){return typeof obj === 'number';};
+    RGraph.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
     RGraph.isBool      =
     RGraph.isBoolean   = function (obj){return typeof obj === 'boolean';};
     //RGraph.isArray Defined above
