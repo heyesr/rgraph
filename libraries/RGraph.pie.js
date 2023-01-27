@@ -2220,12 +2220,14 @@ this.drawTitle();
                 depth             = properties.variantThreedDepth,
                 prop_shadow       = properties.shadow,
                 prop_labels       = properties.labels,
-                prop_labelsSticks = properties.labelsSticks
+                prop_labelsSticks = properties.labelsSticks,
+                prop_title        = properties.title;
 
             this.set({
                 labels: [],
                 labelsSticks: false,
-                strokestyle: 'rgba(0,0,0,0)'
+                strokestyle: 'rgba(0,0,0,0)',
+                title: ''
             });
             
             //
@@ -2257,11 +2259,21 @@ this.drawTitle();
                     });
                 }
 
+
+                if (i === 1) {
+                    this.set({
+                        title: prop_title
+                    });
+                }
+
                 this.draw();
 
                 // Turn off the shadow after the bottom pie/donut has
                 // been drawn
-                this.set('shadow', false);
+                this.set({
+                    shadow: false,
+                    title: ''
+                });
 
                 //
                 // If on the middle pie/donut turn the labels and sticks off
@@ -2322,10 +2334,11 @@ this.drawTitle();
             // Reset the variant by adding the 3d back on
             //
             this.set({
-                variant: this.get('variant') + '3d',
-                shadow: prop_shadow,
-                labels: prop_labels,
-                labelsSticks: prop_labelsSticks
+                variant:      this.get('variant') + '3d',
+                shadow:       prop_shadow,
+                labels:       prop_labels,
+                labelsSticks: prop_labelsSticks,
+                title:        prop_title
             });
 
             // Necessary to allow method chaining
