@@ -660,6 +660,15 @@ this.drawTitle();
 
 
 
+            // Get the title dimensions
+            var titleDim = RGraph.measureText({
+                bold:   properties.titleBold,
+                italic: properties.titleItalic,
+                size:   properties.titleSize,
+                font:   properties.titleFont,
+                text:   'Mg'
+            });
+
             // Move the Y coord up if there's a subtitle
             if (properties.titleSubtitle) {
                 var titleSubtitleDim = RGraph.measureText({
@@ -686,8 +695,14 @@ this.drawTitle();
                 prefix: 'title'
             });
 
-            if (properties.title) {
-            
+            if (properties.title) { 
+
+                if (typeof properties.titleX === 'number') x = properties.titleX;
+                if (typeof properties.titleY === 'number') y = properties.titleY;
+                
+                if (typeof properties.titleX === 'string') x += parseFloat(properties.titleX);
+                if (typeof properties.titleY === 'string') y += parseFloat(properties.titleY);
+
                 if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
                 if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
             
@@ -703,14 +718,28 @@ this.drawTitle();
                     x:      x,
                     y:      y,
                     text:   properties.title,
-                    halign: 'center',
-                    valign: 'bottom',
+                    halign: typeof properties.titleHalign === 'string' ? properties.titleHalign : 'center',
+                    valign: typeof properties.titleValign === 'string' ? properties.titleValign : 'bottom',
                     tag:    'title',
-                    marker: false
+                    marker: false,
+                    bounding: RGraph.isString(properties.titleBackground) || RGraph.isObject(properties.titleBackground) ? true : null,
+                    boundingFill: RGraph.isString(properties.titleBackground) || RGraph.isObject(properties.titleBackground) ? properties.titleBackground : null
                 });
             }
 
+
+
+
+
+
+
+
+
+
+
+            //
             // Draw the subtitle
+            //
             var text = properties.titleSubtitle;
             
             if (text) {
@@ -722,6 +751,26 @@ this.drawTitle();
                     object: this,
                     prefix: 'titleSubtitle'
                 });
+                
+                //
+                // Use the horizontal alignment from the
+                // titleHalign property
+                //
+                if (RGraph.isString(properties.titleHalign)) {
+                    var subtitleHalign = properties.titleHalign;
+                } else {
+                    var subtitleHalign = 'center';
+                }
+                
+                // Move the subtitle depending on the titles
+                // vertical alignment
+                if (properties.titleValign === 'top') {
+                    var alignment_offsety = titleDim[1];
+                } else if (properties.titleValign === 'center') {
+                    var alignment_offsety = (titleDim[1] / 2);
+                } else {
+                    var alignment_offsety = 0;
+                }
 
                 // Draw the subtitle
                 var ret = RGraph.text({
@@ -732,10 +781,10 @@ this.drawTitle();
                     bold:    textConf.bold,
                     italic:  textConf.italic,
                     x:       x + properties.titleSubtitleOffsetx,
-                    y:       y + 5 + properties.titleSubtitleOffsety,
+                    y:       y + 5 + properties.titleSubtitleOffsety + alignment_offsety,
                     text:    text,
                     valign:  'top',
-                    halign:  'center',
+                    halign:  subtitleHalign,
                     tag:     'subtitle',
                     marker:  false
                 });
