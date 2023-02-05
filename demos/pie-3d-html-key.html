@@ -30,7 +30,7 @@
     <h1>A 3D Pie chart with a HTML key</h1>
 
     <div id="container" style="display: inline-block; position: relative">
-        <canvas id="cvs" width="350" height="350" >[No canvas support]</canvas>
+        <canvas id="cvs" width="400" height="350" >[No canvas support]</canvas>
     </div>
     
     <script>
@@ -65,7 +65,10 @@
                 radius: 80,
                 shadowOffsety: 5,
                 shadowColor: '#aaa',
-                exploded: [20,20,20]
+                exploded: [20,20,20],
+                title: 'A 3D Pie chart with a key',
+                titleOffsety: 35,
+                titleSize: 16
             }
         }).draw();
     </script>

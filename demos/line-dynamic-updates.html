@@ -35,11 +35,7 @@
 
     
     <div style="text-align:center; font-weight: bold; font-size: 14pt; width: 600px">
-        Bandwidth used  (Mb/s)<br />
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
-        <span style="font-size: 12pt; font-weight: normal">
-            Last 60 seconds
-        </span>
     </div>
     
     <button id="toggleButton">Toggle yaxisScaleMax to 250</button>
@@ -71,15 +67,16 @@
                         linewidth: 0.75,
                         shadow: false,
                         tickmarksStyle: null,
-                        marginTop: 10,
-                        marginBottom: 15,
                         marginRight: 40,
                         backgroundGridVlines: false,
                         yaxisPosition: 'right',
                         yaxisTickmarksCount: 5,
                         xaxisTickmarksCount: 0,
                         yaxisLabelsCount: 5,
-                        xaxis: false
+                        xaxis: false,
+                        xaxisTitle: 'Last 60 seconds',
+                        xaxisTitleItalic: true,
+                        title: 'Bandwidth used  (Mb/s)'
                     }
                 })
             }

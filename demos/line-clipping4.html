@@ -56,6 +56,7 @@
                 filledColors:['#fdd'],
                 marginInner: 15,
                 marginLeft: 75,
+                marginTop: 50,
                 spline: true,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 xaxisTickmarksCount: 12,
@@ -63,7 +64,9 @@
                 yaxisLabelsCount: 3,
                 yaxisScaleUnitsPost: '%',
                 textSize: 16,
-                yaxisScaleMax: 30
+                yaxisScaleMax: 30,
+                title: 'A tri-color Line chart using the RGraph clipping functions',
+                titleSize: 20
         }
 
         // Install the beforedraw and draw events within the
@@ -142,9 +145,7 @@
                 xaxisLabels: false,
                 yaxis: false,
                 colors: ['green'],
-                filledColors: ['#cfc'],
-                title: 'A tri-color Line chart',
-                titleSize: 20
+                filledColors: ['#cfc']
             }
 
         // Install the beforedraw and draw events within the

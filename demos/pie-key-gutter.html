@@ -24,7 +24,7 @@
 
     <h1>A Pie chart with the key in margin mode</h1>
 
-    <canvas id="cvs" width="450" height="350">[No canvas support]</canvas>
+    <canvas id="cvs" width="550" height="350">[No canvas support]</canvas>
     
     <script>
         new RGraph.Pie({
@@ -33,8 +33,8 @@
             options: {
                 title: 'A Pie chart using a margin based key',
                 titleSize: 20,
+                titleOffsety: 30,
                 titleItalic: true,
-                titleOffsety: -10,
                 key: ['John','Fred','Lou','Pete','Kevin','Gary'],
                 keyColors: ['red','#ccc','#0f0','#00f','pink','yellow'],
                 keyInteractive: true,
@@ -49,7 +49,7 @@
             }
         }).draw().responsive([
             {maxWidth: 800, width: 350, height: 300,options: {textSize: 10,radius:75,keyPositionY: 240,}},
-            {maxWidth: null, width: 450, height: 350,options: {textSize: 12,radius:125,keyPositionY: 315,}}
+            {maxWidth: null, width: 550, height: 350,options: {textSize: 12,radius:125,keyPositionY: 315,}}
         ]);
     </script>
 

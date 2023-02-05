@@ -253,7 +253,7 @@
         20 Jun 2020	629	0	629
         19 Jun 2020	809	3	812
         18 Jun 2020	944	1	945
-        17 Jun 2020	910	2	912
+17 Jun 2020	910	2	912
         16 Jun 2020	992	1	993
         15 Jun 2020	937	0	937
         14 Jun 2020	747	0	747
@@ -426,12 +426,12 @@
 
 
     <div style="display: inline-block; margin: 35px">
-        <canvas id="cvs-daily" width="800" height="250">[No canvas support]</canvas>
+        <canvas id="cvs-daily" width="1000" height="250">[No canvas support]</canvas>
     </div>
 
 
     <div style="display: inline-block; margin: 35px">
-        <canvas id="cvs-sex" width="800" height="250">[No canvas support]</canvas>
+        <canvas id="cvs-sex" width="1000" height="250">[No canvas support]</canvas>
     </div>
 
     <script>
@@ -459,7 +459,7 @@
                 data: data,
                 options: {
                     title: 'Total number of lab-confirmed cases in England by specimen date',
-                    titleX: 35,
+                    titleX: 75,
                     titleHalign: 'left',
                     titleBold: true,
                     titleItalic: true,
@@ -485,6 +485,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         new RGraph.CSV('id:covid-data-daily', function (csv)
         {
             var data   = [];
@@ -499,7 +514,7 @@
                 data.push(num);
 
                 if (i % 12 === 0) {
-                    labels.push(row[0]);
+                    labels.push(row[0].replace(' 20', '\n20'));
                 }
             }
             
@@ -521,10 +536,12 @@
                 data: data,
                 options: {
                     xaxisLabels: labels,
-                    xaxisLabelsAngle: 45,
                     xaxisLabelsPosition: 'edge',
                     xaxisLabelsOffsety: 5,
                     marginInner: 1,
+                    marginLeft: 75,
+                    marginRight: 75,
+                    marginBottom:50,
                     backgroundGridVlinesCount: labels.length - 1,
                     backgroundGridAutofitAlign: false,
                     colors: ['#62A3B3'],
@@ -542,6 +559,9 @@
                 id: 'cvs-daily',
                 data: ravg,
                 options: {
+                    marginLeft: 75,
+                    marginBottom:50,
+                    marginRight: 75,
                     xaxis: false,
                     yaxis: false,
                     yaxisPosition: 'right',
@@ -554,7 +574,18 @@
 
         },'	');
         
-        
+
+
+
+
+
+
+
+
+
+
+
+
         
 
         new RGraph.CSV('id:covid-data-sex', function (csv)
@@ -597,7 +628,9 @@
                     tooltipsPointer: true,
                     tooltipsPointerCss: {
                     },
-                    tooltipsPositionStatic: true
+                    marginBottom: 75,
+                    marginTop: 10,
+                    marginLeft: 60
                 }
             }).draw();
         },'	');
