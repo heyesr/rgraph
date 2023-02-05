@@ -69,13 +69,19 @@
                 marginLeft: 40,
                 marginInner: 15,
                 shadow: false,
-                labelsAbove: true,
+                labelsAbove: false, // Start with them off - they're
+                                    // turned on by the animation
+                                    // calllback
                 labelsAboveSize: 10,
                 labelsAboveUnitsPost: '%',
                 labelsAboveOffsety: -5,
                 textSize: 16
             }
-        }).draw();
+        }).unfoldFromCenterTrace({frames: 120}, function (obj)
+        {
+            obj.set('labelsAbove',true);
+            RGraph.redraw();
+        });
 
 
 
