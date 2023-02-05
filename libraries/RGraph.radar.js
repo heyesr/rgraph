@@ -23,24 +23,25 @@
             conf.data = [conf.data];
         }
 
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(conf.id);
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d") : null;
-        this.canvas.__object__ = this;
-        this.type              = 'radar';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.data              = [];
-        this.max               = 0;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coords            = [];
-        this.coordsText        = [];
-        this.original_data     = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(conf.id);
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d") : null;
+        this.canvas.__object__      = this;
+        this.type                   = 'radar';
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.data                   = [];
+        this.max                    = 0;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coords                 = [];
+        this.coordsText             = [];
+        this.original_data          = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -64,6 +65,10 @@
             this.original_data.push(RGraph.arrayClone(conf.data[i]));
             this.data.push(RGraph.arrayClone(conf.data[i]));
             this.max = Math.max(this.max, RGraph.arrayMax(conf.data[i]));
+            
+            // Keep a copy of the unmodified_data
+            this.unmodified_data = RGraph.arrayClone(this.original_data);
+
         }
 
 
@@ -131,9 +136,6 @@
             text:                        null,
 
             title:                 '',
-            titleBackground:      null,
-            titleHpos:            null,
-            titleVpos:            null,
             titleColor:           null,
             titleBold:            null,
             titleItalic:          null,
@@ -541,13 +543,7 @@
             
             // Draw the title
             if (properties.title) {
-                RGraph.drawTitle(
-                    this,
-                    properties.title,
-                    this.marginTop,
-                    null,
-                    null
-                )
+                RGraph.drawTitle(this);
             }
     
             // Draw the key if necessary
@@ -1981,20 +1977,27 @@
         //
         this.grow = function ()
         {
-            var obj           = this;
-            var callback      = arguments[1] ? arguments[1] : function () {};
-            var opt           = arguments[0] ? arguments[0] : {};
-            var frames        = opt.frames ? opt.frames : 30;
-            var frame         = 0;
-            var data          = RGraph.arrayClone(obj.data);
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                callback = arguments[1] ? arguments[1] : function () {},
+                opt      = arguments[0] ? arguments[0] : {},
+                frames   = opt.frames ? opt.frames : 30,
+                frame    = 0,
+                data     = RGraph.arrayClone(this.unmodified_data);
 
             function iterator ()
             {
-                for (var i=0,len=data.length; i<len; ++i) {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
 
-                    //if (obj.original_data[i] == null) {
-                    //    obj.original_data[i] = [];
-                    //}
+                for (var i=0,len=data.length; i<len; ++i) {
     
                     for (var j=0,len2=data[i].length; j<len2; ++j) {
                         obj.original_data[i][j] = (frame / frames)  * data[i][j];
@@ -2034,17 +2037,29 @@
         //
         this.trace = function ()
         {
-            var obj       = this;
-            var opt       = arguments[0] || {};
-            var frames    = opt.frames || 60;
-            var frame     = 0;
-            var callback  = arguments[1] || function () {};
-    
-            obj.set('animationTraceClip', 0);
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj       = this,
+                opt       = arguments[0] || {},
+                frames    = opt.frames || 60,
+                frame     = 0,
+                callback  = arguments[1] || function () {};
+            
+            this.original_data = RGraph.arrayClone(this.unmodified_data);    
+            this.set('animationTraceClip', 0);
 
 
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 if (frame < frames) {
         
                     obj.set('animationTraceClip', frame / frames);
@@ -2064,6 +2079,30 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            // Reset the clip
+            this.set('animationTraceClip', 1);
+
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
