@@ -1079,204 +1079,146 @@
     // 
     // @param object  args   An object consisting of the arguments to the function
     //                        o object
-    //                        o text
-    //                        o marginTop
-    //                        o centerx
     //
     // OR
     //
     // @param object  canvas The canvas object
-    // @param string  text   The title to write
-    // @param integer margin The size of the margin
-    // @param integer        The center X point (optional - if not given it will be generated from the canvas width)
-    // @param integer        Size of the text. If not given it will fallback to the textSize property
-    // @param object         An optional object which has canvas and context properties to use instead of those on
-    //                       the obj argument (so as to enable caching)
     //
     RGraph.drawTitle = function ()
     {
-        var args = RGraph.getArgs(arguments, 'object,text,marginTop,centerx');
-
-        //if (   typeof args === 'object'
-        //    && !RGraph.isNull(args)
-        //    && typeof args.object === 'object'
-        //    && typeof args.text === 'string'
-        //    && typeof args.marginTop === 'number') {
-        //    
-        //    // Nada...
-        //    
-        //} else {
-        //
-        //    var args = {
-        //        object:    arguments[0],
-        //        text:      arguments[1],
-        //        marginTop: arguments[2],
-        //        centerx:   arguments[3]
-        //    };
-        //}
-
-        var canvas       = args.object.canvas,
-            context      = args.object.context,
-            properties   = args.object.properties,
-            marginLeft   = properties.marginLeft,
-            marginRight  = properties.marginRight,
-            marginTop    = args.marginTop,
-            marginBottom = properties.marginBottom,
-            centerx      = (args.centerx ? args.centerx : ((canvas.width - marginLeft - marginRight) / 2) + marginLeft),
-            keypos       = properties.keyPosition,
-            vpos         = properties.titleVpos,
-            hpos         = properties.titleHpos,
-            bgcolor      = properties.titleBackground,
-            x            = properties.titleX,
-            y            = properties.titleY,
-            halign       = 'center',
-            valign       = 'center',
+        var args     = RGraph.getArgs(arguments, 'object'),
+            obj      = args.object,
+            halign   = 'center',
+            valign   = 'center',
+            x        = ((obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight) / 2) + obj.properties.marginLeft,
+            y        = null,
             textConf = RGraph.getTextConf({
                 object: args.object,
                 prefix: 'title'
             });
 
 
-            var size   = textConf.size,
-                bold   = textConf.bold,
-                italic = textConf.italic;
-
-                // Set bold to true for the title if it hasn't been set by
-                // the user 
-                if (RGraph.isNull(bold)) {
-                    textConf.bold = true;
-                    bold          = true;
-                }
-
-
-
-        // Account for 3D effect by faking the key position
-        if (args.object.type == 'bar' && properties.variant == '3d') {
-            keypos = 'margin';
+        obj.context.beginPath();
+        obj.context.fillStyle = textConf.color;
+        
+        //
+        // If not set then set the size of the text 4 pt higher than
+        // the textSize setting. Also set the title to be bold if the
+        //bold property isn't set
+        //
+        if (!RGraph.isNumber(obj.properties.titleSize)) {
+            textConf.size += 4;
+        }
+        if (!RGraph.isBoolean(obj.properties.titleBold)) {
+            textConf.bold = true;
         }
 
-        context.beginPath();
-        context.fillStyle = textConf.color ? textConf.color : 'black';
+
+
+
+
+
+        // Determine the Y coordinate
+        y = obj.properties.marginTop - textConf.size - 5;
+
+        if (obj.properties.xaxisPosition === 'top') {
+            y = obj.canvas.height  - obj.properties.marginBottom + textConf.size + 5;
+        }
+
 
 
         //
         // Vertically center the text if the key is not present
+        // or if it's not positioned in the margin
         //
-        if (keypos && keypos != 'margin') {
+        if (obj.properties.key && obj.properties.key.length && obj.properties.keyPosition && obj.properties.keyPosition !== 'margin') {
             var valign = 'center';
 
-        } else if (!keypos) {
-            var valign = 'center';
-
-       } else {
+        } else if (obj.properties.key && obj.properties.key.length && obj.properties.keyPosition && obj.properties.keyPosition === 'margin') {
             var valign = 'bottom';
-        }
-
-
-
-
-
-        // if titleVpos is a number, use that
-        if (typeof properties.titleVpos === 'number') {
-            vpos = properties.titleVpos * marginTop;
-
-            if (properties.xaxisPosition === 'top') {
-                vpos = properties.titleVpos * marginBottom + marginTop + (canvas.height - marginTop - marginBottom);
-            }
-
-        } else {
-            vpos = marginTop - size - 5;
-
-            if (properties.xaxisPosition === 'top') {
-                vpos = canvas.height  - marginBottom + size + 5;
-            }
-        }
-
-        // if titleHpos is a number, use that. It's multiplied with the (entire) canvas width
-        if (typeof hpos === 'number') {
-            centerx = hpos * canvas.width;
-        }
-
-        // Move the Y coord up if there's a subtitle
-        if ((typeof properties.titleSubtitle === 'string' && properties.titleSubtitle.length > 0) || typeof properties.titleSubtitle === 'number') {
-
-            var titleSubtitleDim = RGraph.measureText({
-                bold:   properties.titleSubtitleBold,
-                italic: properties.titleSubtitleItalic,
-                size:   properties.titleSubtitleSize,
-                font:   properties.titleSubtitleFont,
+            
+            // Measure the size of the key text
+            var keyTextDim = RGraph.measureText({
+                bold:   obj.properties.keyLabelsBold,
+                italic: obj.properties.keyLabelsItalic,
+                size:   obj.properties.keyLabelsSize,
+                font:   obj.properties.keyLabelsFont,
                 text:   'Mg'
             });
-        
-            vpos -= titleSubtitleDim[1];
-        }
-
-
-
-        //
-        // Now the titleX and titleY settings override (if set) the above
-        //
-        // Also now (Feb 2021) allow the use of the titleOffsetx and
-        // titleOffsety properties
-        if (typeof x === 'number') centerx = x;
-        if (typeof y === 'number') vpos    = y;
-        
-        if (typeof x === 'string') centerx += parseFloat(x);
-        if (typeof y === 'string') vpos    += parseFloat(y);
-
-        if (typeof properties.titleOffsetx === 'number') centerx += properties.titleOffsetx;
-        if (typeof properties.titleOffsety === 'number') vpos += properties.titleOffsety;
-
-
-
-
-        //
-        // Horizontal alignment can now (Jan 2013) be specified
-        //
-        if (typeof properties.titleHalign === 'string') {
-            halign = properties.titleHalign;
-        }
-        
-        //
-        // Vertical alignment can now (Jan 2013) be specified
-        //
-        if (typeof properties.titleValign === 'string') {
-            valign = properties.titleValign;
-        }
-
-
-
-
-        
-        // Set the color
-        if (typeof textConf.color !== null) {
             
-            var oldColor = context.fillStyle,
-                newColor = textConf.color;
-            
-            context.fillStyle = newColor ? newColor : 'black';
+            y -= keyTextDim[1];
+
+        } else {
+            var valign = 'center';
         }
+
+
+        //
+        // Now, the titleX and titleY settings override (if set) the above
+        if (RGraph.isNumber(obj.properties.titleX)) x = obj.properties.titleX;
+        if (RGraph.isNumber(obj.properties.titleY)) y = obj.properties.titleY;
+
+        // the titleX and titleY properties can be strings - in
+        // which case the added to the calculated coordinate
+        if (RGraph.isString(obj.properties.titleX)) x += parseFloat(obj.properties.titleX);
+        if (RGraph.isString(obj.properties.titleY)) y += parseFloat(obj.properties.titleY);
+
+        // Similar to the above - the titleOffsetx and titleOffsety
+        // are more explicit properties for moving the title
+        if (RGraph.isNumber(obj.properties.titleOffsetx)) x += obj.properties.titleOffsetx;
+        if (RGraph.isNumber(obj.properties.titleOffsety)) y += obj.properties.titleOffsety;
+
+
+        // Set the default vertical alignment for the title
+        if (RGraph.isString(obj.properties.titleSubtitle) && obj.properties.titleSubtitle.length > 0) {
+            valign = 'bottom';
+        } else {
+            valign = 'center';
+        }
+
+
+
+        //
+        // Allow the user to override the horizontal alignment
+        //
+        if (RGraph.isString(obj.properties.titleHalign)) {
+            halign = obj.properties.titleHalign;
+        }
+        
+        //
+        // Allow the user to override the vertical alignment
+        //
+        if (RGraph.isString(obj.properties.titleValign)) {
+            valign = obj.properties.titleValign;
+        }
+
+
+
+
+        
+        // Set the color            
+        var oldColor = obj.context.fillStyle;
+        obj.context.fillStyle = textConf.color ? textConf.color : 'black';
+
+
+
+
 
         // Draw the title
         var ret = RGraph.text({
-        
-            object:  args.object,
-
-            font:    textConf.font,
-            size:    textConf.size,
-            color:   textConf.color,
-            bold:    textConf.bold,
-            italic:  textConf.italic,
-
-            x:       centerx,
-            y:       vpos,
-            text:    args.text,
-            valign:  valign,
-            halign:  halign,
-            bounding:bgcolor != null,
-            'bounding.fill':bgcolor,
-            tag:     'title',
-            marker:  false
+            object:       obj,
+            font:         textConf.font,
+            size:         textConf.size,
+            color:        textConf.color,
+            bold:         textConf.bold,
+            italic:       textConf.italic,
+            x:            x,
+            y:            y,
+            text:         obj.properties.title,
+            valign:       valign,
+            halign:       halign,
+            tag:          'title',
+            marker:       false
         });
 
 
@@ -1290,31 +1232,34 @@
 
 
 
-        // Draw the subtitle
-        var text = properties.titleSubtitle.toString();
-        
-        if (typeof text === 'string') {
-        
+        // Draw the subtitle        
+        if (typeof obj.properties.titleSubtitle === 'string' && obj.properties.titleSubtitle.length) {
+
             // Get the size of the title
-            var titleSize = textConf.size;
+            // Necessary any more ? var titleSize = textConf.size;
+            
+            // Set the default subtitle size if it's null
+            if (RGraph.isNull(obj.properties.titleSubtitleSize)) {
+                obj.properties.titleSubtitleSize = textConf.size - 4;
+            }
         
             var textConf = RGraph.getTextConf({
-                object: args.object,
+                object: obj,
                 prefix: 'titleSubtitle'
             });
 
             // Draw the subtitle
             var ret = RGraph.text({
-                object:  args.object,
+                object:  obj,
                 font:    textConf.font,
                 size:    textConf.size,
                 color:   textConf.color,
                 bold:    textConf.bold,
                 italic:  textConf.italic,
-                x:       centerx + properties.titleSubtitleOffsetx,
-                y:       vpos + (titleSize * 1.5) + properties.titleSubtitleOffsety,
-                text:    text,
-                valign:  valign,
+                x:       x + obj.properties.titleSubtitleOffsetx,
+                y:       y + obj.properties.titleSubtitleOffsety,
+                text:    obj.properties.titleSubtitle,
+                valign:  'top',
                 halign:  halign,
                 tag:     'subtitle',
                 marker:  false
@@ -1327,7 +1272,7 @@
 
 
         // Reset the fill colour
-        context.fillStyle = oldColor;
+        obj.context.fillStyle = oldColor;
     };
 
 
@@ -1572,7 +1517,8 @@
 
 
 
-        // Checking this property ensures the object is only registered once
+        // Checking this property ensures the object is only
+        // registered once
         if (!args.object.get('noregister') && args.object.get('register') !== false) {
             RGraph.ObjectRegistry.add(args.object);
             args.object.set('register', false);
@@ -2173,15 +2119,7 @@
 
         // Draw the title if one is set
         if ( typeof args.object.properties.title == 'string') {
-
-            RGraph.drawTitle(
-                args.object,
-                properties.title,
-                args.object.marginTop,
-                null,
-                properties.titleSize ? properties.titleSize : properties.textSize + 2,
-                args.object
-            );
+            RGraph.drawTitle(args.object);
         }
     };
 
@@ -3408,7 +3346,8 @@
                 RGraph.ObjectRegistry.remove(objects[i]);
             }
 
-        // Clear the entire ObjectRegistry by resetting the object stores
+        // Clear the entire ObjectRegistry by resetting
+        // the object stores.
         } else {
 
             RGraph.ObjectRegistry.objects            = {};
@@ -4348,7 +4287,6 @@
     //
     RGraph.measureText = function ()
     {
-        var args = RGraph.getArgs(arguments, 'text,bold,font,size');
         var args = RGraph.getArgs(arguments, 'text,bold,font,size');
 
         // Add the sizes to the cache as adding DOM elements is costly and causes slow downs
@@ -6428,8 +6366,8 @@
 
 
     //
-    // Resets (more than just clears) the canvas and clears any pertinent objects
-    // from the ObjectRegistry
+    // Resets (more than just clears) the canvas and clears any
+    // pertinent objects from the ObjectRegistry.
     // 
     // @param  args object An object consisting of:
     //                      o canvas
@@ -6441,22 +6379,43 @@
     {
         var args = RGraph.getArgs(arguments, 'canvas');
 
-        // If a string has been given then treat it as the ID of the canvas
+        // If a string has been given then treat it as the ID
+        // of the canvas
         if (typeof args.canvas === 'string') {
             args.canvas = document.getElementById(args.canvas);
         }
 
         args.canvas.width = args.canvas.width;
         
+        // Clear the ObjectRegistry
         RGraph.ObjectRegistry.clear(args.canvas);
+         
         
-        args.canvas.__rgraph_aa_translated__ = false;
+        // Get rid of references from the canvas that are added by
+        // various RGraph dynamic features
+        //
+        // Do the back image first
+        if (args.canvas.__rgraph_background_image__) {
+            delete args.canvas.__rgraph_background_image__.__object__;
+            delete args.canvas.__rgraph_background_image__.__canvas__;
+            delete args.canvas.__rgraph_background_image__.__context__;
+        }
+
+        for (v of ['__object__', '__rgraph_background_image__']) {
+            delete args.canvas[v];
+        }
+
+
+
+
+
 
         if (RGraph.text.domNodeCache && RGraph.text.domNodeCache.reset) {
             RGraph.text.domNodeCache.reset(args.canvas);
         }
 
-        // Create the node and dimension caches if they don't already exist
+        // Create the node and dimension caches if they don't
+        // already exist
         if (!RGraph.text.domNodeCache)          { RGraph.text.domNodeCache          = []; }
         if (!RGraph.text.domNodeDimensionCache) { RGraph.text.domNodeDimensionCache = []; }
 
@@ -6518,6 +6477,34 @@
             || (function (func){setTimeout(func, 16.666);});
         
         window.requestAnimationFrame(args.func);
+    };
+
+
+
+
+
+
+
+
+    //
+    // Checks to see if the user has requested to stop the
+    // animation
+    //
+    // @param obj object The chart object
+    //
+    RGraph.Effects.userRequestedStop = function (obj)
+    {
+        var ret = false;
+
+        if (obj.stopAnimationRequested) {
+
+            ret = true;
+
+            // Reset the flag now that its been checked
+            obj.stopAnimationRequested = false;
+        }
+
+        return ret;
     };
 
 
