@@ -17,26 +17,26 @@
     //
     RGraph.SemiCircularProgress = function (conf)
     {
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(this.id);
-        this.context           = this.canvas.getContext('2d');
-        this.canvas.__object__ = this;
-
-        this.min               = RGraph.stringsToNumbers(conf.min);
-        this.max               = RGraph.stringsToNumbers(conf.max);
-        this.value             = RGraph.stringsToNumbers(conf.value);
-        this.type              = 'semicircularprogress';
-        this.coords            = [];
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.currentValue      = null;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(this.id);
+        this.context                = this.canvas.getContext('2d');
+        this.canvas.__object__      = this;
+        this.min                    = RGraph.stringsToNumbers(conf.min);
+        this.max                    = RGraph.stringsToNumbers(conf.max);
+        this.value                  = RGraph.stringsToNumbers(conf.value);
+        this.type                   = 'semicircularprogress';
+        this.coords                 = [];
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.currentValue           = null;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
         this.properties =
@@ -151,6 +151,8 @@
             titleFont:                  null,
             titleSize:                  null,
             titleColor:                 null,
+            titleHalign:                null,
+            titleValign:                null,
             titleOffsetx:               0,
             titleOffsety:               0,
             titleSubtitle:        '',
@@ -802,13 +804,7 @@
             }
             
             // Draw the title
-            RGraph.drawTitle(
-                this,
-                properties.title,
-                this.marginTop,
-                null,
-                properties.titleSize
-            );
+            RGraph.drawTitle(this);
         };
 
 
@@ -1415,6 +1411,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj           = this,
                 opt           = arguments[0] || {},
                 numFrames     = opt.frames || 30,
@@ -1446,6 +1445,14 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 frame++;
     
                 if (frame <= numFrames) {
@@ -1470,6 +1477,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
