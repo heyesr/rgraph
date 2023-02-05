@@ -1217,8 +1217,25 @@
         var uid     = arguments[0] && arguments[0].uid ? arguments[0].uid : null;
 
         if (tooltip && tooltip.parentNode && (!uid || uid == tooltip.__canvas__.uid)) {
+        
+            // Delete references, that were put there by RGraph,
+            // from the tooltip
+            for (var v of ['__canvas__', '__event__', '__index__', '__object__','__original_text__','__shape__','__text__']) {
+                if (typeof tooltip[v] !== 'undefined') {
+                    delete tooltip[v];
+                }
+            }
+
+            // Delete references, that were put there by RGraph,
+            // from the tooltip (that start with "rgraph_"
+            for (i in tooltip) {
+                if (i.substr(0,7) === 'rgraph_') {
+                    delete tooltip[i];
+                }
+            }
+        
             tooltip.parentNode.removeChild(tooltip);
-            tooltip.style.display = 'none';                
+            tooltip.style.display    = 'none';                
             tooltip.style.visibility = 'hidden';
             RGraph.Registry.set('tooltip', null);
         }
