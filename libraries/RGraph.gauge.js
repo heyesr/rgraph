@@ -20,24 +20,25 @@
             max    = conf.max,
             value  = conf.value;
     
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
-        this.canvas.__object__ = this;
-        this.type              = 'gauge';
-        this.min               = RGraph.stringsToNumbers(min);
-        this.max               = RGraph.stringsToNumbers(max);
-        this.value             = RGraph.stringsToNumbers(value);
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.currentValue      = null;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
+        this.canvas.__object__      = this;
+        this.type                   = 'gauge';
+        this.min                    = RGraph.stringsToNumbers(min);
+        this.max                    = RGraph.stringsToNumbers(max);
+        this.value                  = RGraph.stringsToNumbers(value);
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.currentValue           = null;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -1572,6 +1573,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] ? arguments[0] : {},
                 callback = arguments[1] ? arguments[1] : function () {},
@@ -1600,6 +1604,14 @@
 
                 var iterator = function ()
                 {
+                   if (obj.stopAnimationRequested) {
+        
+                        // Reset the flag
+                        obj.stopAnimationRequested = false;
+        
+                        return;
+                    }
+
                     obj.value = ((frame / frames) * diff) + origValue;
 
                     if (obj.value > obj.max) obj.value = obj.max;
@@ -1646,6 +1658,14 @@
 
                 var iterator = function ()
                 {
+                    if (obj.stopAnimationRequested) {
+        
+                        // Reset the flag
+                        obj.stopAnimationRequested = false;
+        
+                        return;
+                    }
+
                     frame++;
 
                     for (var i=0,len=obj.value.length; i<len; ++i) {
@@ -1671,6 +1691,27 @@
             }
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
