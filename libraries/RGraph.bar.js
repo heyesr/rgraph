@@ -35,6 +35,7 @@
         this.original_colors        = [];
         this.cachedBackgroundCanvas = null;
         this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -206,9 +207,6 @@
             titleY:                null,
             titleHalign:           null,
             titleValign:           null,
-            titleBackground:       null,
-            titleHpos:             null,
-            titleVpos:             null,
             titleFont:             null,
             titleSize:             null,
             titleColor:            null,
@@ -344,7 +342,8 @@
 
 
         //
-        // Convert strings into numbers. Also converts undefined elements to null
+        // Convert strings into numbers. Also converts undefined
+        // elements to null
         //
         data = RGraph.stringsToNumbers(data);
 
@@ -352,7 +351,8 @@
 
 
         //
-        // Determine whether the chart will contain stacked or grouped bars
+        // Determine whether the chart will contain stacked or
+        // grouped bars
         //
         for (var i=0; i<data.length; ++i) {
             if (typeof data[i] === 'object' && !RGraph.isNull(data[i])) {
@@ -362,7 +362,8 @@
 
 
         //
-        // Create the dollar objects so that functions can be added to them
+        // Create the dollar objects so that functions can be
+        // added to them
         //
         var linear_data = RGraph.arrayLinearize(data);
 
@@ -541,7 +542,8 @@
 
 
             //
-            // Parse the colors. This allows for simple gradient syntax
+            // Parse the colors. This allows for simple gradient
+            // syntax
             //
             if (!this.colorsParsed) {
                 this.parseColors();
@@ -565,8 +567,8 @@
 
 
             //
-            // Check for tooltips and alert the user that they're not supported
-            // with pyramid charts
+            // Check for tooltips and alert the user that they're
+            // not supported with pyramid charts
             //
             if (   (properties.variant == 'pyramid' || properties.variant == 'dot')
                 && typeof properties.tooltips == 'object'
@@ -584,7 +586,8 @@
             this.coordsText = [];
 
             //
-            // Work out a few things. They need to be here because they depend on things you can change before you
+            // Work out a few things. They need to be here because
+            // they depend on things you can change before you
             // call Draw() but after you instantiate the object
             //
             this.max            = 0;
@@ -1867,8 +1870,8 @@ this.context.lineTo(
 
 
         //
-        // Draws the labels for the graph. As of version 5.2 this no longer
-        // draws the X axis labels
+        // Draws the labels for the graph. As of version 5.2 this
+        // no longer draws the X axis labels
         //
         this.drawLabels = function ()
         {
@@ -2915,6 +2918,12 @@ this.context.lineTo(
         //
         this.wave = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+            
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.original_data);
+
             // If there's only one bar call the grow function instead
             if (this.data.length === 1) {
                 return this.grow(arguments[0], arguments[1]);
@@ -2924,14 +2933,14 @@ this.context.lineTo(
                 opt = arguments[0] || {},
                 labelsAbove = this.get('labelsAbove');
 
-            opt.frames =  opt.frames || 60;
+            opt.frames      =  opt.frames || 60;
             opt.startFrames = [];
             opt.counters    = [];
 
-            var framesperbar   = opt.frames / 3,
-                frame          = -1,
-                callback       = arguments[1] || function () {},
-                original       = RGraph.arrayClone(this.original_data);
+            var framesperbar = opt.frames / 3,
+                frame        = -1,
+                callback     = arguments[1] || function () {},
+                original     = RGraph.arrayClone(this.original_data);
 
             //
             // turn off the labelsAbove option whilst animating
@@ -2961,9 +2970,20 @@ this.context.lineTo(
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+
+                    // Reset the data
+                    obj.data = RGraph.arrayClone(obj.original_data);
+
+                    return;
+                }
+
                 ++frame;
 
-                for (var i=0,len=obj.data.length; i<len; i+=1) {
+                for (let i=0,len=obj.data.length; i<len; i+=1) {
                         if (frame > opt.startFrames[i]) {
                             if (typeof obj.data[i] === 'number') {
 
@@ -2977,7 +2997,7 @@ this.context.lineTo(
                                     obj.data[i] *= -1;
                                 }
                             } else if (!RGraph.isNull(obj.data[i])) {
-                                for (var j=0,len2=obj.data[i].length; j<len2; j+=1) {
+                                for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
 
                                     obj.data[i][j] = Math.min(
                                         Math.abs(original[i][j]),
@@ -3005,6 +3025,7 @@ this.context.lineTo(
 
                     callback(obj);
                 } else {
+
                     RGraph.redrawCanvas(obj.canvas);
                     RGraph.Effects.updateCanvas(iterator);
                 }
@@ -3034,12 +3055,18 @@ this.context.lineTo(
         this.colorwave =
         this.colorWave = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+            
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.original_data);
+
             var obj = this,
                 opt = arguments[0] || {};
-                opt.frames =  opt.frames || 60;
-                opt.startFrames = [];
-                opt.counters    = [],
-                colors          = obj.properties.colors;
+            opt.frames =  opt.frames || 60;
+            opt.startFrames = [];
+            opt.counters    = [];
+            colors          = obj.properties.colors;
 
             // If just one color is specified and colorsSequential is not, then
             // pad the colors array out
@@ -3111,6 +3138,12 @@ this.context.lineTo(
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+            
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.original_data);
+
             // Callback
             var opt         = arguments[0] || {},
                 frames      = opt.frames || 30,
@@ -3200,6 +3233,20 @@ this.context.lineTo(
 
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+
+                    // Reset the data
+                    obj.data = RGraph.arrayClone(obj.original_data);
+
+                    return;
+                }
+
+
+
+
                 var easingMultiplier = RGraph.Effects.getEasingMultiplier(frames, frame);
 
                 // Alter the Bar chart data depending on the frame
@@ -3274,6 +3321,27 @@ this.context.lineTo(
             iterator();
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // Bipolar animation effects
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
