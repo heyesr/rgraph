@@ -1,0 +1,120 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Bar chart with a trendline</title>
+    <meta name="description" content="This is a n example of a combined Bar and Line chart which displys a Bar chart with a trendline" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart with a trendline</h1>
+    
+    <p>
+        In this chart the <code>trendline</code> is provided by the
+        Line chart - which uses the same data as the Bar chart, but
+        its color is set to
+        <code>transparent</code> so you can't see it. The Bar chart
+        can also draw a <code>trendline</code> by itself.
+    </p>
+    
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="850" height="250">[No canvas support]</canvas>
+    </div>
+
+
+
+    <script id="rgraph-demo-source-code">
+        // The Bar chart data
+        bar_data  = [12,18,10,9,6,5,7];
+        line_data = RGraph.arrayClone(bar_data);
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: bar_data,
+            options: {
+                
+                // Add the data as a property so
+                // the tooltips can reference it
+                data: bar_data,
+
+                grouping: 'stacked',
+                marginInner: 25,
+                tooltips: '',
+                xaxis: false,
+                yaxis: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                textSize: 16,
+                xaxisLabels: RGraph.DAYS_LONG,
+                tooltips: '<div style="float: left; width: 27px; height: 27px; background-color: red; color: red; transform: translateY(3px); overflow: hidden">M</div>%{property:xaxisLabels[%{dataset}]}: %{property:data[%{dataset}]}%',
+                tooltipsFormattedKeyLabels: RGraph.DAYS_LONG,
+                tooltipsCss: {
+                    fontSize: '20pt',
+                    padding: '8px'
+                },
+                title: 'A Bar chart with a trendline',
+                titleSubtitle: 'The Line chart is used to facilitate the trendline functionality',
+                titleSubtitleSize: 12,
+                titleSubtitleColor: 'gray',
+                textFont: 'Verdana',
+                titleSubtitleItalic: true,
+                marginTop: 50
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: line_data,
+            options: {
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                colors: ['transparent'],
+                shadow: false,
+                marginInner: 50,
+                trendline: true,
+                trendlineColors: ['black'],
+                trendlineLinewidth: 2,
+                trendlineDashed: true,
+                trendlineDashArray: [10,10]
+            }
+        }).draw();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dnamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
