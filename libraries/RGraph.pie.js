@@ -19,29 +19,30 @@
             data   = conf.data;
 
         // Get the canvas and context objects
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
-        this.canvas.__object__ = this;
-        this.total             = 0;
-        this.subTotal          = 0;
-        this.angles            = [];
-        this.data              = data;
-        this.properties        = [];
-        this.type              = 'pie';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.coords            = [];
-        this.coords.key        = [];
-        this.coordsSticks      = [];
-        this.coordsText        = [];
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
-        this.exploding         = null;
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
+        this.canvas.__object__      = this;
+        this.total                  = 0;
+        this.subTotal               = 0;
+        this.angles                 = [];
+        this.data                   = data;
+        this.properties             = [];
+        this.type                   = 'pie';
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.coords                 = [];
+        this.coords.key             = [];
+        this.coordsSticks           = [];
+        this.coordsText             = [];
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.exploding              = null;
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -124,9 +125,6 @@
             marginBottom:                   35,
 
             title:                          '',
-            titleBackground:                null,
-            titleHpos:                      null,
-            titleVpos:                      0.5,
             titleBold:                      null,
             titleFont:                      null,
             titleSize:                      null,
@@ -650,145 +648,7 @@ this.drawTitle();
         //
         this.drawTitle = function ()
         {
-            // Make sure that the title subtitle are strings
-            properties.title         = String(properties.title);
-            properties.titleSubtitle = String(properties.titleSubtitle);
-
-            var x = this.centerx;
-            var y = this.centery - this.radius;
-
-
-
-
-            // Get the title dimensions
-            var titleDim = RGraph.measureText({
-                bold:   properties.titleBold,
-                italic: properties.titleItalic,
-                size:   properties.titleSize,
-                font:   properties.titleFont,
-                text:   'Mg'
-            });
-
-            // Move the Y coord up if there's a subtitle
-            if (properties.titleSubtitle) {
-                var titleSubtitleDim = RGraph.measureText({
-                    bold:   properties.titleSubtitleBold,
-                    italic: properties.titleSubtitleItalic,
-                    size:   properties.titleSubtitleSize,
-                    font:   properties.titleSubtitleFont,
-                    text:   'Mg'
-                });
-            
-                y -= titleSubtitleDim[1];
-            }
-
-
-
-
-            // Totally override the calculated positioning
-            if (typeof properties.titlePos == 'number') {
-                y = this.centery - (this.radius * properties.titlePos);
-            }
-
-            var textConf = RGraph.getTextConf({
-                object: this,
-                prefix: 'title'
-            });
-
-            if (properties.title) { 
-
-                if (typeof properties.titleX === 'number') x = properties.titleX;
-                if (typeof properties.titleY === 'number') y = properties.titleY;
-                
-                if (typeof properties.titleX === 'string') x += parseFloat(properties.titleX);
-                if (typeof properties.titleY === 'string') y += parseFloat(properties.titleY);
-
-                if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
-                if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
-            
-                this.context.fillStyle = properties.titleColor;
-
-                RGraph.text({
-               object: this,
-                 font: textConf.font,
-                 size: textConf.size,
-                color: textConf.color,
-                 bold: textConf.bold,
-               italic: textConf.italic,
-                    x:      x,
-                    y:      y,
-                    text:   properties.title,
-                    halign: typeof properties.titleHalign === 'string' ? properties.titleHalign : 'center',
-                    valign: typeof properties.titleValign === 'string' ? properties.titleValign : 'bottom',
-                    tag:    'title',
-                    marker: false,
-                    bounding: RGraph.isString(properties.titleBackground) || RGraph.isObject(properties.titleBackground) ? true : null,
-                    boundingFill: RGraph.isString(properties.titleBackground) || RGraph.isObject(properties.titleBackground) ? properties.titleBackground : null
-                });
-            }
-
-
-
-
-
-
-
-
-
-
-
-            //
-            // Draw the subtitle
-            //
-            var text = properties.titleSubtitle;
-            
-            if (text) {
-
-                // Get the size of the title
-                var titleSize = textConf.size;
-
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'titleSubtitle'
-                });
-                
-                //
-                // Use the horizontal alignment from the
-                // titleHalign property
-                //
-                if (RGraph.isString(properties.titleHalign)) {
-                    var subtitleHalign = properties.titleHalign;
-                } else {
-                    var subtitleHalign = 'center';
-                }
-                
-                // Move the subtitle depending on the titles
-                // vertical alignment
-                if (properties.titleValign === 'top') {
-                    var alignment_offsety = titleDim[1];
-                } else if (properties.titleValign === 'center') {
-                    var alignment_offsety = (titleDim[1] / 2);
-                } else {
-                    var alignment_offsety = 0;
-                }
-
-                // Draw the subtitle
-                var ret = RGraph.text({
-                    object:  this,
-                    font:    textConf.font,
-                    size:    textConf.size,
-                    color:   textConf.color,
-                    bold:    textConf.bold,
-                    italic:  textConf.italic,
-                    x:       x + properties.titleSubtitleOffsetx,
-                    y:       y + 5 + properties.titleSubtitleOffsety + alignment_offsety,
-                    text:    text,
-                    valign:  'top',
-                    halign:  subtitleHalign,
-                    tag:     'subtitle',
-                    marker:  false
-                });
-            }
+            RGraph.drawTitle(this);
         };
 
 
@@ -2411,6 +2271,9 @@ this.drawTitle();
         //
         this.explode = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj            = this;
             var opt            = arguments[0] ? arguments[0] : {};
             var callback       = arguments[1] ? arguments[1] : function () {};
@@ -2418,7 +2281,13 @@ this.drawTitle();
             var frame          = 0;
             var maxExplode     = Number(typeof opt.radius === 'number' ? opt.radius : Math.max(this.canvas.width, this.canvas.height));
             var currentExplode = Number(obj.get('exploded')) || 0;
-            var step           = (maxExplode - currentExplode) / frames;
+            
+            if (currentExplode === maxExplode) {
+                currentExplode = 0;
+                this.set('exploded', 0);
+            }
+            
+            var step = (maxExplode - currentExplode) / frames;
             
             // Lose the labels
             this.set('labels', null);
@@ -2426,6 +2295,14 @@ this.drawTitle();
             // exploded option
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 obj.set('exploded', currentExplode + (step * frame) );
 
                 RGraph.clear(obj.canvas);
@@ -2460,6 +2337,9 @@ this.drawTitle();
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this;
             var canvas   = obj.canvas;
             var opt      = arguments[0] ? arguments[0] : {};
@@ -2473,6 +2353,15 @@ this.drawTitle();
 
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
                 obj.set('radius', (frame / frames) * radius);
                 
                 RGraph.redrawCanvas(canvas);
@@ -2514,6 +2403,9 @@ this.drawTitle();
         this.roundrobin =
         this.roundRobin = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] || {},
                 callback = arguments[1] || function () {},
@@ -2527,6 +2419,16 @@ this.drawTitle();
 
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+
                 obj.set(
                     'effectRoundrobinMultiplier',
                     RGraph.Effects.getEasingMultiplier(frames, frame)
@@ -2575,18 +2477,39 @@ this.drawTitle();
         //
         this.implode = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj         = this,
                 opt         = arguments[0] || {},
                 callback    = arguments[1] || function (){},
                 frames      = opt.frames || 30,
                 frame       = 0,
+                
+                current_exploded = Number(this.get('exploded'));
+
                 explodedMax = Math.max(this.canvas.width, this.canvas.height),
-                exploded    = explodedMax;
-    
+                explodedMax = Number(this.get('exploded')) || explodedMax;
+                
+                if (Number(this.get('exploded')) === explodedMax) {
+                    this.set('exploded', 0);
+                    current_exploded = 0;
+                }
+
     
     
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+
                 exploded =  explodedMax - ((frame / frames) * explodedMax);
 
                 // Set the new value
@@ -2607,6 +2530,27 @@ this.drawTitle();
             iterator();
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
