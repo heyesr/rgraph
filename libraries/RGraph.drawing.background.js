@@ -119,9 +119,6 @@
             linewidth:          1,
 
             title:           '',
-            titleBackground: null, // Gradients aren't supported for this color
-            titleHpos:       null,
-            titleVpos:       null,
             titleFont:       null,
             titleSize:       null,
             titleColor:      null,
