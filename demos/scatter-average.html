@@ -19,21 +19,44 @@
 
     
 
-    <h1>A Line chart using the horizontalLines feature to show an average</h1>
+    <h1>A Scatter chart using the horizontalLines feature to show an average</h1>
 
     <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
     
     <script>
+        data = [
+            [21,0], [13,16],[8,10], [10,8], [18,18],[15,19],
+            [13,16],[15,12],[16,13],[12,11],[10,18],[11,19],
+            [7,17], [11,18],[9,13], [11,12],[12,10],[10,9],
+            [19,10],[15,15]
+        ];
+
+        // CCaluculate the average
+        var sum = data.reduce((total, v) => total + v[1], 0)
+        var avg = sum / data.length;
+        
+        // Set the color of each tickmark depending on whether it's
+        // above or below the average
+        data.forEach(
+            function (v,k,arr)
+            {
+                if (v[1] <= avg) {
+                    arr[k][2] = 'green';
+                }
+            }
+        );
+
         scatter = new RGraph.Scatter({
             id: 'cvs',
-            data:
-            [
-                [21,0],[13,16],[8,10],[10,8],[18,18],[15,19],
-                [13,16],[15,12],[16,13],[12,11],[10,18],[11,19],
-                [7,17],[11,18],[9,13],[11,12],[12,10],[10,9],
-                [19,10],[15,15]
-            ],
+            data: data,
             options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                colorsDefault: 'red',
+                tickmarksStyle: 'circle',
+                tickmarksSize: 10,
                 xaxisScaleMax: 31,
                 horizontalLines:[{value:'average'}]
             }
