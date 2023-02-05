@@ -18,27 +18,38 @@
             canvas              = document.getElementById(id),
             data                = conf.data;
 
-        this.id                 = id;
-        this.canvas             = canvas;
-        this.context            = this.canvas.getContext('2d');
-        this.canvas.__object__  = this;
-        this.type               = 'line';
-        this.max                = 0;
-        this.coords             = [];
-        this.coords2            = [];
-        this.coords.key         = [];
-        this.coordsText         = [];
-        this.coordsSpline       = [];
-        this.coordsAxes         = {xaxis: [], yaxis: []};
-        this.hasnegativevalues  = false;
-        this.isRGraph           = true;
-        this.isrgraph           = true;
-        this.rgraph             = true;
-        this.uid                = RGraph.createUID();
-        this.canvas.uid         = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed       = false;
-        this.original_colors    = [];
-        this.firstDraw          = true; // After the first draw this will be false
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext('2d');
+        this.canvas.__object__      = this;
+        this.type                   = 'line';
+        this.max                    = 0;
+        this.coords                 = [];
+        this.coords2                = [];
+        this.coords.key             = [];
+        this.coordsText             = [];
+        this.coordsSpline           = [];
+        this.coordsAxes             = {xaxis: [], yaxis: []};
+        this.hasnegativevalues      = false;
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
+
+
+
+
+
+
+
+
+
+
 
         // Various config type stuff
         this.properties =
@@ -213,9 +224,6 @@
             text:                       null,
             
             title:                      '',
-            titleBackground:            null,
-            titleHpos:                  null,
-            titleVpos:                  null,
             titleFont:                  null,
             titleSize:                  null,
             titleColor:                 null,
@@ -405,7 +413,8 @@
         }
 
         // Convert strings to numbers
-        this.original_data = RGraph.stringsToNumbers(conf.data);
+        this.original_data  = RGraph.stringsToNumbers(conf.data);
+        
 
         //
         // Store the original data. This also allows for giving arguments as one big array.
@@ -415,7 +424,12 @@
         }
 
 
-
+        // Some of the animations actually modify the
+        // .original_data array so we need to keep a
+        // copy of the unmodified, unmodified data. this
+        // variable is used to access that data in those
+        // effects (eg the wave effect).
+        this.unmodified_data = RGraph.arrayClone(this.original_data);
 
 
 
@@ -3435,6 +3449,9 @@
         //
         this.trace = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] || {},
                 frames   = opt.frames || 30,
@@ -3451,6 +3468,14 @@
     
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 RGraph.clear(obj.canvas);
 
                 RGraph.redrawCanvas(obj.canvas);
@@ -3487,6 +3512,12 @@
         //
         this.wave = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.original_data);
+
             this.draw();
 
             // If there's only one point call the grow function instead
@@ -3506,20 +3537,20 @@
             var framesperpoint = opt.frames / 3,
                 frame          = -1,
                 callback       = arguments[1] || function () {},
-                original       = RGraph.arrayClone(this.original_data);
+                original       = RGraph.arrayClone(this.unmodified_data);
 
             //
             // turn off the labelsAbove option whilst animating
             //
             this.set('labelsAbove', false);
 
-            for (var dataset=0; dataset<obj.original_data.length; ++dataset) {
-                for (var i=0; i<obj.original_data[dataset].length; ++i) {
-                    opt.startFrames[i] = ((opt.frames / 2) / (obj.original_data[0].length - 1)) * i;
+            for (var dataset=0; dataset<original.length; ++dataset) {
+                for (var i=0; i<original[dataset].length; ++i) {
+                    opt.startFrames[i] = ((opt.frames / 2) / (original[0].length - 1)) * i;
                     opt.counters[i] = 0;
                     
                     if (!opt.reverse) {
-                        obj.original_data[dataset][i] = 0;
+                        this.original_data[dataset][i] = 0;
                     }
                 }
             }
@@ -3532,24 +3563,34 @@
             //
             // This stops the chart from jumping
             //
-            //obj.draw();
-            obj.set('yaxisScaleMax', obj.scale2.max);
-            RGraph.clear(obj.canvas);
+            this.set('yaxisScaleMax', this.scale2.max);
+            RGraph.clear(this.canvas);
 
 
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+
+
                 ++frame;
 
                 // Loop thru each dataset
-                for (var dataset=0; dataset<obj.original_data.length; ++dataset) {
+                for (var dataset=0; dataset<original.length; ++dataset) {
                     
                     //Loop thru the data in reverse direction
                     if (opt.reverse) {
                         
                         // Loop thru all of the points in each dataset
-                        for (var i=(obj.original_data[dataset].length - 1); i>=0; i-=1) {
+                        for (var i=(original[dataset].length - 1); i>=0; i-=1) {
                             
                             if (frame > opt.startFrames[i]) {
                                 obj.original_data[dataset][i] = Math.max(
@@ -3564,7 +3605,7 @@
                             }
                         }
                     } else {
-                        for (var i=0,len=obj.original_data[dataset].length; i<len; i+=1) {
+                        for (var i=0,len=original[dataset].length; i<len; i+=1) {
                             if (frame > opt.startFrames[i]) {
     
                                 obj.original_data[dataset][i] = Math.min(
@@ -3622,6 +3663,9 @@
         //
         this.foldtocenter = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] || {},
                 frames   = opt.frames || 30,
@@ -3635,6 +3679,14 @@
             
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 for (var i=0,len=obj.original_data.length; i<len; ++i) {
                     if (obj.original_data[i].length) {
                         for (var j=0,len2=obj.original_data[i].length; j<len2; ++j) {
@@ -3753,6 +3805,9 @@
         this.unfoldfromcenter =
         this.unfoldFromCenter = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+        
             var obj           = this,
                 opt           = arguments[0] || {},
                 frames        = opt.frames || 30,
@@ -3796,6 +3851,14 @@
 
             function unfoldFromCenter ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 for (var dataset=0; dataset<original_data.length; ++dataset) {
                     for (var i=0; i<original_data[dataset].length; ++i) {
                         obj.original_data[dataset][i] += steps[dataset][i];
@@ -3819,6 +3882,41 @@
             unfoldFromCenter();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            // Reset the data on the chart object to the
+            // unmodified_data variable
+            this.original_data = RGraph.arrayClone(this.unmodified_data);
+            
+            // This, effectively, resets the clip area that
+            // is set up by the trace effect (if the trace
+            // effect is stopped part way through the
+            // animationTraceClip option will be less than
+            // 1 - affecting future draws.
+            //
+            if (this.get('animationTraceClip') !== 1) {
+                this.set('animationTraceClip', 1);
+            }
+
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
