@@ -16,21 +16,22 @@
     //
     RGraph.Rose = function (conf)
     {
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(this.id);
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d") : null;
-        this.data              = conf.data;
-        this.canvas.__object__ = this;
-        this.type              = 'rose';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(this.id);
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d") : null;
+        this.data                   = conf.data;
+        this.canvas.__object__      = this;
+        this.type                   = 'rose';
+        this.isRGraph               = true;
+        this.isrgraph              = true;
+        this.rgraph                 = true;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -84,9 +85,6 @@
             shadowBlur:                    15,
 
             title:                         '',
-            titleBackground:               null,
-            titleHpos:                     null,
-            titleVpos:                     null,
             titleBold:                     null,
             titleFont:                     null,
             titleSize:                     null,
@@ -1114,13 +1112,7 @@
     
             // Draw the title if any has been set
             if (properties.title) {
-                RGraph.drawTitle(
-                    this,
-                    properties.title,
-                    (this.canvas.height / 2) - this.radius,
-                    this.centerx,
-                    properties.titleSize ? properties.titleSize : properties.textSize
-                );
+                RGraph.drawTitle(this);
             }
         };
 
@@ -2070,20 +2062,53 @@
         //
         this.explode = function ()
         {
-            var obj         = this;
-            var opt         = arguments[0] || {};
-            var callback    = arguments[1] || function (){};
-            var frames      = opt.frames ? opt.frames : 30;
-            var frame       = 0;
-            var explodedMax = Math.max(this.canvas.width, this.canvas.height);
-            var exploded    = Number(this.get('exploded'));
-    
-    
-    
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj         = this,
+                opt         = arguments[0] || {},
+                callback    = arguments[1] || function (){},
+                frames      = opt.frames ? opt.frames : 30,
+                frame       = 0,
+                explodedMax = Math.max(this.canvas.width, this.canvas.height),
+                exploded    = Number(this.get('exploded')),
+                originalExploded = RGraph.arrayClone(this.get('exploded'));
+
+
+            // Set the exploded to the start point - which is
+            // explodedMax
+            if (RGraph.isArray(originalExploded)) {
+                var exploded = new Array(this.data.length);
+                for (let i=0; i<this.data.length; ++i) {
+                    exploded[i] = originalExploded[i] || 0;
+                    originalExploded[i] = originalExploded[i] || 0;
+                }
+            } else {
+                var exploded = explodedMax;
+            }
+
     
             function iterator ()
             {
-                exploded =  (frame / frames) * explodedMax;
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+                if (RGraph.isArray(originalExploded)) {
+
+                    for (let i=0; i<obj.data.length; ++i) {
+                        exploded[i] = ((frame / frames) * (explodedMax - originalExploded[i])) + originalExploded[i];
+                    }
+                } else {
+                    //exploded = explodedMax - ((frame / frames) * (explodedMax - originalExploded));
+                    exploded =  (frame / frames) * explodedMax;
+                }
+
+                
 
                 // Set the new value
                 obj.set('exploded', exploded);
@@ -2125,29 +2150,44 @@
         this.roundrobin =
         this.roundRobin = function ()
         {
-            var obj             = this;
-            var opt             = arguments[0] || {}
-            var frames          = opt.frames || 30;
-            var frame           = 0;
-            var original_margin = properties.margin;
-            var margin          = (360 / this.data.length) / 2;
-            var callback        = arguments[1] || function () {};
-    
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj             = this,
+                opt             = arguments[0] || {},
+                frames          = opt.frames || 30,
+                frame           = 0,
+                margin          = (360 / this.data.length) / 2,
+                callback        = arguments[1] || function () {}
+            
+            
+            // Save a copy of the original margin
+            this.originalMargin = this.get('margin');
+
             this.set('margin', margin);
             this.set('animationRoundrobinFactor', 0);
     
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+
+                    return;
+                }
+
+
                 RGraph.clear(obj.canvas);
                 RGraph.redrawCanvas(obj.canvas);
 
                 if (frame++ < frames) {
                     obj.set('animationRoundrobinFactor', frame / frames);
-                    obj.set('margin', (frame / frames) * original_margin);
+                    obj.set('margin', (frame / frames) * obj.originalMargin);
                     RGraph.Effects.updateCanvas(iterator);
                 } else {
                     obj.set('animationRoundrobinFactor', 1);
-                    obj.set('margin', original_margin);
+                    obj.set('margin', obj.originalMargin);
 
                     callback(obj);
                 }
@@ -2177,19 +2217,51 @@
         //
         this.implode = function ()
         {
-            var obj         = this;
-            var opt         = arguments[0] || {};
-            var callback    = arguments[1] || function (){};
-            var frames      = opt.frames || 30;
-            var frame       = 0;
-            var explodedMax = Math.max(this.canvas.width, this.canvas.height);
-            var exploded    = explodedMax;
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj              = this,
+                opt              = arguments[0] || {},
+                callback         = arguments[1] || function (){},
+                frames           = opt.frames || 30,
+                frame            = 0,
+                explodedMax      = Math.max(this.canvas.width, this.canvas.height),
+                originalExploded = RGraph.arrayClone(this.get('exploded'));
+
+
+
+            // Set the exploded to the start point - which is
+            // explodedMax
+            if (RGraph.isArray(originalExploded)) {
+                
+                var exploded = new Array(this.data.length);
+                
+                for (let i=0; i<this.data.length; ++i) {
+                    exploded[i] = explodedMax;
+                }
+            } else {
+                var exploded = explodedMax;
+            }
+
     
-    
-    
+
             function iterator ()
             {
-                exploded =  explodedMax - ((frame / frames) * explodedMax);
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+                if (RGraph.isArray(originalExploded)) {
+                    for (let i=0; i<obj.data.length; ++i) {
+                        exploded[i] = explodedMax - ((frame / frames) * (explodedMax - (originalExploded[i] || 0)));
+                    }
+                } else {
+                    exploded = explodedMax - ((frame / frames) * (explodedMax - originalExploded));
+                }
 
                 // Set the new value
                 obj.set('exploded', exploded);
@@ -2229,14 +2301,25 @@
         //
         this.grow = function ()
         {
-            var obj      = this;
-            var opt      = arguments[0] || {};
-            var callback = arguments[1] || function (){};
-            var frames   = opt.frames || 30;
-            var frame    = 0;
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                opt      = arguments[0] || {},
+                callback = arguments[1] || function (){},
+                frames   = opt.frames || 30,
+                frame    = 0;
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 obj.set('animationGrowMultiplier', frame / frames);
     
                 RGraph.clear(obj.canvas);
@@ -2253,6 +2336,41 @@
             iterator();
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            // Reset the clip
+            this.set('animationGrowMultiplier', 1);
+            
+            // Reset the RoundRobin factor
+            this.set('animationRoundrobinFactor', 1);
+            
+            // Set the original margin
+            if (RGraph.isNumber(this.originalMargin)) {
+                this.set('margin', this.originalMargin);
+            }
+            
+            // Reset the exploded
+            this.set('exploded', []);
+
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
