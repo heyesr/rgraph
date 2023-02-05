@@ -21,6 +21,7 @@
 
        // Store the data set(s)
         this.data = RGraph.arrayClone(conf.data);
+        
 
 
         // Account for just one dataset being given
@@ -34,8 +35,8 @@
 
 
 
-        // First, if there's only been a single passed to us, convert it to
-        // the multiple dataset format
+        // First, if there's only been a single dataset passed
+        // to us, convert it to the multiple dataset format
         if (!RGraph.isArray(this.data[0][0])) {
             this.data = [this.data];
         }
@@ -69,26 +70,29 @@
                 }
             }
         }
+        
+        // Store a copy of the data that won't be touched
+        this.unmodified_data = RGraph.arrayClone(this.data);
 
-
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(this.id);
-        this.canvas.__object__ = this;
-        this.context           = this.canvas.getContext ? this.canvas.getContext('2d') : null;
-        this.max               = 0;
-        this.coords            = [];
-        this.type              = 'scatter';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.coordsBubble      = [];
-        this.coords_trendline  = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(this.id);
+        this.canvas.__object__      = this;
+        this.context                = this.canvas.getContext ? this.canvas.getContext('2d') : null;
+        this.max                    = 0;
+        this.coords                 = [];
+        this.type                   = 'scatter';
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.coordsBubble           = [];
+        this.coords_trendline       = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -123,6 +127,7 @@
 
             colors:                     [], // This is used internally for the tooltip key
             colorsBubbleGraduated:      true,
+            colorsBubbleStroke:         null,
             
             textColor:                  'black',
             textFont:                   'Arial, Verdana, sans-serif',
@@ -270,9 +275,6 @@
             marginBottom:               35,
 
             title:                      '',
-            titleBackground:            null,
-            titleHpos:                  null,
-            titleVpos:                  null,
             titleBold:                  null,
             titleItalic:                null,
             titleFont:                  null,
@@ -387,6 +389,14 @@
             bubbleMax:                  null,
             bubbleWidth:                null,
             bubbleData:                 null,
+            bubbleLinewidth:            1,
+            bubbleShadow:               false,
+            bubbleShadowColor:          '#aaa',
+            bubbleShadowOffsetx:        2,
+            bubbleShadowOffsety:        2,
+            bubbleShadowBlur:           3,
+            
+            
 
             clearto:                    'rgba(0,0,0,0)',
             
@@ -2103,6 +2113,25 @@
                 var radius = (((data[i] - min) / (max - min) ) * width) / 2,
                     color  = this.data[dataset][i][2] ? this.data[dataset][i][2] : properties.colorsDefault;
 
+
+
+
+
+
+
+
+
+
+
+
+                // Set a shadow for the bubbles if requested
+                if (this.properties.bubbleShadow) {
+                    RGraph.setShadow({
+                        object: this,
+                        prefix:'bubbleShadow'
+                    });
+                }
+
                 this.context.beginPath();
                 this.context.fillStyle = RGraph.radialGradient({
                     object: this,
@@ -2128,7 +2157,18 @@
                     false
                 );
 
+                if (this.properties.colorsBubbleStroke) {
+                    this.context.lineWidth = this.properties.bubbleLinewidth;
+                    this.context.strokeStyle = this.properties.colorsBubbleStroke;
+                    this.context.stroke();
+                }
+
                 this.context.fill();
+
+                // Clear the shadow
+                if (this.properties.bubbleShadow) {
+                    RGraph.noShadow(this);
+                }
 
                 this.coordsBubble[dataset][i] = [
                     this.coords[dataset][i][0],
@@ -2555,8 +2595,11 @@
         // @param object     Options for the effect. Currently only "frames" is available.
         // @param int        A function that is called when the ffect is complete
         //
-        this.trace  = function ()
+        this.trace = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj       = this,
                 callback  = arguments[2],
                 opt       = arguments[0] || {},
@@ -2564,11 +2607,19 @@
                 frame     = 0,
                 callback  = arguments[1] || function () {}
 
-            obj.set('animationTrace', true);
-            obj.set('animationTraceClip', 0);
+            this.set('animationTrace', true);
+            this.set('animationTraceClip', 0);
     
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 RGraph.clear(obj.canvas);
 
                 RGraph.redrawCanvas(obj.canvas);
@@ -2601,6 +2652,9 @@
         //
         this.explode = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj       = this,
                 callback  = arguments[2],
                 opt       = arguments[0] || {},
@@ -2610,8 +2664,8 @@
                 originX   = this.properties.xaxisScaleMax / 2,
                 originY   = 0,
                 step      = 1 / frames,
-                original  = RGraph.clone(this.data);
-            
+                original  = RGraph.arrayClone(this.unmodified_data);
+
             // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
             // and then animate
             this.draw();
@@ -2639,11 +2693,23 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
                 RGraph.clear(obj.canvas);
-                
+
                 for (var i=0; i<obj.data.length; ++i) { // Loop through each dataset
                     for (var j=0; j<obj.data[i].length; ++j) { // Loop through each point
-                        obj.data[i][j][0] = originX + ((original[i][j][0] - originX) * step * frame);
+                        obj.data[i][j][0] = 
+                            originX + (
+                                    (original[i][j][0] - originX)
+                                * step
+                                * frame
+                            );
                         obj.data[i][j][1] = originY + ((original[i][j][1] - originY) * step * frame);
                     }
                 }
@@ -2660,6 +2726,33 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            // Reset the clip area
+            this.set('animationTraceClip', 1);
+            
+            // Reset the data
+            this.data = RGraph.arrayClone(this.unmodified_data);
+
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
