@@ -12,32 +12,38 @@
     // The progress bar constructor
     RGraph.HProgress = function (conf)
     {
-        var id                 = conf.id,
-            canvas             = document.getElementById(id),
-            min                = conf.min,
-            max                = conf.max,
-            value              = conf.value;
+        var id                      = conf.id,
+            canvas                  = document.getElementById(id),
+            min                     = conf.min,
+            max                     = conf.max,
+            value                   = conf.value;
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext('2d');
+        this.canvas.__object__      = this;
+        this.min                    = RGraph.stringsToNumbers(min);
+        this.max                    = RGraph.stringsToNumbers(max);
+        this.value                  = RGraph.stringsToNumbers(value);
+        this.type                   = 'hprogress';
+        this.coords                 = [];
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.currentValue           = null;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext('2d');
-        this.canvas.__object__ = this;
 
-        this.min               = RGraph.stringsToNumbers(min);
-        this.max               = RGraph.stringsToNumbers(max);
-        this.value             = RGraph.stringsToNumbers(value);
-        this.type              = 'hprogress';
-        this.coords            = [];
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.currentValue      = null;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+
+
+
+
+
 
         this.properties =
         {
@@ -62,19 +68,20 @@
             shadowOffsetx:                      3,
             shadowOffsety:                      3,
 
-            title:                              '',
-            titleBackground:                    null,
-            titleBold:                          null,
-            titleFont:                          null,
-            titleSize:                          null,
-            titleColor:                         null,
-            titleItalic:                        null,
-            titleX:                             null,
-            titleY:                             null,
-            titleHalign:                        null,
-            titleValign:                        null,
-            titleOffsetx:                       0,
-            titleOffsety:                       0,
+            
+            
+            title:                 '',
+            titleX:                null,
+            titleY:                null,
+            titleHalign:           null,
+            titleValign:           null,
+            titleFont:             null,
+            titleSize:             null,
+            titleColor:            null,
+            titleBold:             null,
+            titleItalic:           null,
+            titleOffsetx:          0,
+            titleOffsety:          0,
             titleSubtitle:        '',
             titleSubtitleSize:    null,
             titleSubtitleColor:   '#aaa',
@@ -1368,132 +1375,7 @@
         //
         this.drawTitle = function ()
         {
-            var x, y;
-
-            // Make sure that the title subtitle are strings
-            properties.title         = String(properties.title);
-            properties.titleSubtitle = String(properties.titleSubtitle);
-
-            var textConf = RGraph.getTextConf({
-                object: this,
-                prefix: 'title'
-            });
-            var x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
-
-            if (properties.labelsPosition == 'top') {
-                y = this.canvas.height - this.marginBottom +5;
-                x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
-                valign = 'top';
-            } else {
-                x = ((this.canvas.width - this.marginLeft - this.marginRight) / 2) + this.marginLeft;
-                y = this.marginTop - 5;
-                valign = 'bottom';
-            }
-
-            // Draw the title text
-            if (properties.title) {
-    
-                var text = properties.title;
-                
-    
-                x = typeof properties.titleX === 'number' ? properties.titleX : x;
-                y = typeof properties.titleY === 'number' ? properties.titleY : y;
-
-
-
-
-
-
-
-
-
-                // Move the Y coord up if there's a subtitle
-                if (properties.titleSubtitle) {
-                    var titleSubtitleDim = RGraph.measureText({
-                        bold:   properties.titleSubtitleBold,
-                        italic: properties.titleSubtitleItalic,
-                        size:   properties.titleSubtitleSize,
-                        font:   properties.titleSubtitleFont,
-                        text:   'Mg'
-                    });
-                
-                    y -= titleSubtitleDim[1];
-                }
-
-
-
-
-
-
-
-
-                // Add any use specified offset
-                if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
-                if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
-    
-                RGraph.text({
-                
-               object: this,
-
-                 font: textConf.font,
-                 size: textConf.size,
-                color: textConf.color,
-                 bold: textConf.bold,
-               italic: textConf.italic,
-
-                    x:            x,
-                    y:            y,
-                    text:         text,
-                    valign:       properties.titleValign ? properties.titleValign : valign,
-                    halign:       properties.titleHalign ? properties.titleHalign : 'center',
-                    bounding:     properties.titleBackground ? true : false,
-                    boundingFill: properties.titleBackground,
-                    tag:          'title'
-                });
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // Draw the subtitle
-            var text = properties.titleSubtitle;
-            
-            if (properties.title && text) {
-
-                // Get the size of the title
-                var titleSize = textConf.size;
-
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'titleSubtitle'
-                });
-
-                // Draw the subtitle
-                var ret = RGraph.text({
-                    object:  this,
-                    font:    textConf.font,
-                    size:    textConf.size,
-                    color:   textConf.color,
-                    bold:    textConf.bold,
-                    italic:  textConf.italic,
-                    x:       x + properties.titleSubtitleOffsetx,
-                    y:       y + 5 + properties.titleSubtitleOffsety,
-                    text:    text,
-                    valign:  'top',
-                    halign:  'center',
-                    tag:     'subtitle.top',
-                    marker:  false
-                });
-            }
+            RGraph.drawTitle(this);
         };
 
 
@@ -1616,6 +1498,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj           = this;
             var canvas        = obj.canvas;
             var context       = obj.context;
@@ -1662,6 +1547,14 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 frame++;
     
                 if (frame <= numFrames) {
@@ -1687,6 +1580,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
