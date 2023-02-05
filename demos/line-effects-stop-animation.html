@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <style>
+        button {
+            font-size: 20pt;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>A demonstation of the Line chart effects</h1>
+
+    <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+
+    
+   
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data:[4,5,2,3,4,6,2],
+            options: {
+                marginInner: 10,
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 14,
+                shadow: false,
+                spline: true,
+                tickmarksStyle: 'endcircle',
+                tickmarksSize: 8,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).draw();
+        
+        function disableButtons ()
+        {
+            var buttons = document.querySelectorAll('button');
+            
+            for (let i=0; i<buttons.length; ++i) {
+                if (buttons[i].innerHTML != 'Stop') {
+                    buttons[i].disabled = true;
+                }
+            }
+        }
+        
+        function enableButtons ()
+        {
+            var buttons = document.querySelectorAll('button');
+            
+            for (let i=0; i<buttons.length; ++i) {
+                buttons[i].disabled = false;
+            }
+        }
+    </script>
+
+    
+    <br />
+    
+    <style>
+        button {
+            min-width: 350px;
+            margin: 5px;
+            cursor:pointer;
+            box-shadow: 2px 2px 2px #ddd;
+        }
+    </style>
+    
+    <button onclick="line.stopAnimation(); enableButtons()">Stop</button>
+    <button onclick="disableButtons(); window._button = this; line.trace({frames: 180}, function () {enableButtons()})">Trace</button>
+    <button onclick="disableButtons(); window._button = this; line.wave({frames: 180, reverse: 0}, function () {enableButtons()})">Wave</button>
+    <button onclick="disableButtons(); window._button = this; line.foldtocenter({frames: 180, reverse: 0}, function () {enableButtons()})">Fold to center</button>
+    <button onclick="disableButtons(); window._button = this; line.unfoldfromcentertrace({frames: 180, reverse: 0}, function () {enableButtons()})">UnfoldFromCenterTrace</button>
+    <button onclick="disableButtons(); window._button = this; line.unfoldfromcenter({frames: 180, reverse: 0}, function () {enableButtons()})">UnfoldFromCenter</button>
+
+
+    <br clear="all" />
+    <br clear="all" />
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+        &lt;canvas id="cvs" width="700" height="300"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+    
+&lt;button onclick="line.stopAnimation(); enableButtons()"&gt;Stop&lt;/button&gt;
+&lt;button onclick="disableButtons(); window._button = this; line.trace({frames: 180}, function () {enableButtons()})"&gt;Trace&lt;/button&gt;
+&lt;button onclick="disableButtons(); window._button = this; line.wave({frames: 180, reverse: 0}, function () {enableButtons()})"&gt;Wave&lt;/button&gt;
+&lt;button onclick="disableButtons(); window._button = this; line.foldtocenter({frames: 180, reverse: 0}, function () {enableButtons()})"&gt;Fold to center&lt;/button&gt;
+&lt;button onclick="disableButtons(); window._button = this; line.unfoldfromcentertrace({frames: 180, reverse: 0}, function () {enableButtons()})"&gt;UnfoldFromCenterTrace&lt;/button&gt;
+&lt;button onclick="disableButtons(); window._button = this; line.unfoldfromcenter({frames: 180, reverse: 0}, function () {enableButtons()})"&gt;UnfoldFromCenter&lt;/button&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>
