@@ -21,26 +21,28 @@
             right  = conf.right;
 
         // Get the canvas and context objects
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext('2d');
-        this.canvas.__object__ = this;
-        this.type              = 'bipolar';
-        this.coords            = [];
-        this.coords2           = [];
-        this.coordsLeft        = [];
-        this.coordsRight       = [];
-        this.coords2Left       = [];
-        this.coords2Right      = [];
-        this.max               = 0;
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                           = id;
+        this.canvas                       = canvas;
+        this.context                      = this.canvas.getContext('2d');
+        this.canvas.__object__            = this;
+        this.type                         = 'bipolar';
+        this.coords                       = [];
+        this.coords2                      = [];
+        this.coordsLeft                   = [];
+        this.coordsRight                  = [];
+        this.coords2Left                  = [];
+        this.coords2Right                 = [];
+        this.max                          = 0;
+        this.isRGraph                     = true;
+        this.isrgraph                     = true;
+        this.rgraph                       = true;
+        this.uid                          = RGraph.createUID();
+        this.canvas.uid                   = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.coordsText                   = [];
+        this.original_colors              = [];
+        this.firstDraw                    = true; // After the first draw this will be false
+        this.stopAnimationRequested_left  = false;// Used to control the animations
+        this.stopAnimationRequested_right = false;// Used to control the animations
         
         // The left and right data respectively. Ensure that the data is an array
         // of numbers
@@ -156,9 +158,6 @@
             titleBold:                  null,
             titleItalic:                null,
             titleColor:                 null,
-            titleBackground:            null,
-            titleHpos:                  null,
-            titleVpos:                  null,
             titleX:                     null,
             titleY:                     null,
             titleHalign:                null,
@@ -3285,6 +3284,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             // Callback
             var opt      = arguments[0] || {},
                 frames   = opt.frames || 30,
@@ -3311,6 +3313,19 @@
 
             var iterator = function ()
             {
+                if (obj.stopAnimationRequested_left || obj.stopAnimationRequested_right) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested_left  = false;
+                    obj.stopAnimationRequested_right = false;
+
+                    // Reset the data
+                    obj.left  = RGraph.arrayClone(originalLeft);
+                    obj.right = RGraph.arrayClone(originalRight);
+
+                    return;
+                }
+
                 var easingMultiplier = RGraph.Effects.getEasingMultiplier(frames, frame);
 
                 // Left hand side
@@ -3366,6 +3381,8 @@
         //
         this.wave = function ()
         {
+            this.cancelStopAnimation();
+
             var obj                   = this,
                 opt                   = arguments[0] || {};
                 opt.frames            =  opt.frames || 120;
@@ -3405,6 +3422,17 @@
             //
             function iteratorLeft ()
             {
+                if (obj.stopAnimationRequested_left) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested_left  = false;
+
+                    // Reset the data
+                    obj.left  = RGraph.arrayClone(original_left);
+
+                    return;
+                }
+
                 ++frame_left;
 
                 for (var i=0,len=obj.left.length; i<len; i+=1) {
@@ -3465,6 +3493,17 @@
             //
             function iteratorRight ()
             {
+                if (obj.stopAnimationRequested_right) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested_right = false;
+
+                    // Reset the data
+                    obj.right = RGraph.arrayClone(original_right);
+
+                    return;
+                }
+
                 ++frame_right;
 
                 for (var i=0,len=obj.right.length; i<len; i+=1) {
@@ -3522,6 +3561,29 @@
             iteratorRight();
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // Bipolar animation effects
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested_left  = true;
+            this.stopAnimationRequested_right = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested_left  = false;
+            this.stopAnimationRequested_right = false;
         };
 
 
