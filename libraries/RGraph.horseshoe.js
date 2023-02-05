@@ -22,27 +22,28 @@
 
         // id, min, max, value
         // Get the canvas and context objects
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
-        this.canvas.__object__ = this;
-        this.type              = 'horseshoe';
-        this.min               = RGraph.stringsToNumbers(min);
-        this.max               = RGraph.stringsToNumbers(max);
-        this.value             = RGraph.stringsToNumbers(value);
-        this.centerx           = null;
-        this.centery           = null;
-        this.radius            = null;
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.currentValue      = null;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
+        this.canvas.__object__      = this;
+        this.type                   = 'horseshoe';
+        this.min                    = RGraph.stringsToNumbers(min);
+        this.max                    = RGraph.stringsToNumbers(max);
+        this.value                  = RGraph.stringsToNumbers(value);
+        this.centerx                = null;
+        this.centery                = null;
+        this.radius                 = null;
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.currentValue           = null;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
         
         //
         // If the value is zero set it to very
@@ -850,6 +851,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj = this;
 
             obj.currentValue = obj.currentValue || obj.min;
@@ -866,6 +870,14 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 obj.value = initial + (frame++ * step);
     
                 RGraph.clear(obj.canvas);
@@ -881,6 +893,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
