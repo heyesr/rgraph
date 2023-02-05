@@ -107,9 +107,6 @@
             marginBottom:                           35,
 
             title:                                  '',
-            titleBackground:                        null,
-            titleHpos:                              null,
-            titleVpos:                              null,
             titleBold:                              null,
             titleFont:                              null,
             titleSize:                              null,
@@ -578,16 +575,10 @@
             }
     
     
-    
+
             // Draw the title if any has been set
             if (properties.title) {
-                RGraph.drawTitle(
-                    this,
-                    properties.title,
-                    this.centery - this.radius - 10,
-                    this.centerx,
-                    properties.titleSize ? properties.titleSize : properties.textSize + 2
-                );
+                RGraph.drawTitle(this);
             }
 
 
