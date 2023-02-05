@@ -18,21 +18,23 @@
         var canvas = document.getElementById(id);
         var data   = conf.data;
 
-        this.id                = id;
-        this.canvas            = canvas;
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
-        this.canvas.__object__ = this;
-        this.type              = 'gantt';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.data              = data;
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = id;
+        this.canvas                 = canvas;
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d", {alpha: (typeof id === 'object' && id.alpha === false) ? false : true}) : null;
+        this.canvas.__object__      = this;
+        this.type                   = 'gantt';
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.data                   = data;
+        this.original_data          = RGraph.arrayClone(data);
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
         
         // Set some defaults
@@ -94,7 +96,6 @@
             labelsCompleteOffsety:  0,
 
             title:                  '',
-            titleBackground:       null,
             titleX:                null,
             titleY:                null,
             titleBold:             null,
@@ -1322,6 +1323,12 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+            
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.original_data);
+
             var obj             = this,
                 opt             = arguments[0] || {},
                 callback        = arguments[1] ? arguments[1] : function () {},
@@ -1333,6 +1340,14 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 RGraph.clear(obj.canvas);
                 RGraph.redrawCanvas(obj.canvas);
 
@@ -1365,6 +1380,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
