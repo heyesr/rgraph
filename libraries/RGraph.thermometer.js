@@ -14,26 +14,27 @@
     //
     RGraph.Thermometer = function (conf)
     {
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(this.id);
-        this.context           = this.canvas.getContext ? this.canvas.getContext('2d') : null;
-        this.canvas.__object__ = this;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.type              = 'thermometer';
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.min               = RGraph.stringsToNumbers(conf.min);
-        this.max               = RGraph.stringsToNumbers(conf.max);
-        this.value             = RGraph.stringsToNumbers(conf.value);
-        this.coords            = [];
-        this.graphArea         = [];
-        this.currentValue      = null;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(this.id);
+        this.context                = this.canvas.getContext ? this.canvas.getContext('2d') : null;
+        this.canvas.__object__      = this;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.type                   = 'thermometer';
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.min                    = RGraph.stringsToNumbers(conf.min);
+        this.max                    = RGraph.stringsToNumbers(conf.max);
+        this.value                  = RGraph.stringsToNumbers(conf.value);
+        this.coords                 = [];
+        this.graphArea              = [];
+        this.currentValue           = null;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
         this.properties =
@@ -76,6 +77,8 @@
             titleColor:                 null,
             titleBold:                  null,
             titleItalic:                null,
+            titleHalign:                null,
+            titleValign:                null,
             titleOffsetx:               0,
             titleOffsety:               0,
             titleSubtitle:        '',
@@ -665,91 +668,7 @@
         //
         this.drawTitle = function ()
         {
-            // Make sure that the title subtitle are strings
-            properties.title         = String(properties.title);
-            properties.titleSubtitle = String(properties.titleSubtitle);
-
-            var textConf = RGraph.getTextConf({
-                object: this,
-                prefix: 'title'
-            });
-            
-            //
-            // The coordinates for the title. The Y is modified
-            // if the subtitle is specified.
-            //
-            var x = this.marginLeft + (this.width / 2) + properties.titleOffsetx;
-            var y = this.marginTop - 3 + properties.titleOffsety;
-
-            // Move the Y coord up if there's a subtitle
-            if (properties.titleSubtitle) {
-                var titleSubtitleDim = RGraph.measureText({
-                    bold:   properties.titleSubtitleBold,
-                    italic: properties.titleSubtitleItalic,
-                    size:   properties.titleSubtitleSize,
-                    font:   properties.titleSubtitleFont,
-                    text:   'Mg'
-                });
-            
-                y -= titleSubtitleDim[1];
-            }
-
-            RGraph.text({
-             object: this,
-               font:   textConf.font,
-               size:   textConf.size,
-               color:  textConf.color,
-               bold:   textConf.bold,
-               italic: textConf.italic,
-                x:      x,
-                y:      y,
-                text:   properties.title,
-                valign: 'bottom',
-                halign: 'center',
-                tag:   'title'
-            });
-
-
-
-
-
-
-
-
-
-
-
-            // Draw the subtitle
-            var text = properties.titleSubtitle;
-
-            if (text) {
-            
-                // Get the size of the title
-                var titleSize = textConf.size;
-            
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'titleSubtitle'
-                });
-            
-                // Draw the subtitle
-                var ret = RGraph.text({
-                    object:  this,
-                    font:    textConf.font,
-                    size:    textConf.size,
-                    color:   textConf.color,
-                    bold:    textConf.bold,
-                    italic:  textConf.italic,
-                    x:       x + properties.titleSubtitleOffsetx,
-                    y:       y + 2 + properties.titleSubtitleOffsety,
-                    text:    properties.titleSubtitle,
-                    valign:  'top',
-                    halign:  'center',
-                    tag:     'subtitle'
-                });
-            }
-
-
+            RGraph.drawTitle(this);
         };
 
 
@@ -1278,6 +1197,9 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj       = this,
                 callback  = arguments[1] || function () {},
                 opt       = arguments[0] || {},
@@ -1295,6 +1217,14 @@
 
             function iterate ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 // Set the new value
                 obj.value = (step * frame) + origValue;
 
@@ -1312,6 +1242,27 @@
             iterate();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
