@@ -20,21 +20,26 @@
         this.context           = this.canvas.getContext('2d');
         this.canvas.__object__ = this;
 
-        this.min               = RGraph.stringsToNumbers(conf.min);
-        this.max               = RGraph.stringsToNumbers(conf.max);
-        this.value             = RGraph.stringsToNumbers(conf.value);
-        this.type              = 'vprogress';
-        this.coords            = [];
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.currentValue      = null;
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.min                    = RGraph.stringsToNumbers(conf.min);
+        this.max                    = RGraph.stringsToNumbers(conf.max);
+        this.value                  = RGraph.stringsToNumbers(conf.value);
+        this.type                   = 'vprogress';
+        this.coords                 = [];
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.currentValue           = null;
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
+
+
+
+
 
         this.properties =
         {
@@ -70,9 +75,10 @@
             titleFont:                      null,
             titleSize:                      null,
             titleColor:                     null,
+            titleHalign:                    null,
+            titleValign:                    null,
             titleOffsetx:                   0,
             titleOffsety:                   0,
-
             titleSubtitle:        '',
             titleSubtitleSize:    null,
             titleSubtitleColor:   '#aaa',
@@ -925,103 +931,8 @@
         //
         this.drawTitles = function ()
         {
-            // Make sure that the title subtitle are strings
-            properties.title         = String(properties.title);
-            properties.titleSubtitle = String(properties.titleSubtitle);
-
-            // Draw the title text
-            if (properties.title) {
-
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'title'
-                });
-
-                this.context.fillStyle = properties.titleColor;
-                
-                // Coordinates for the title
-                var x = this.marginLeft + ((this.canvas.width - this.marginLeft - this.marginRight) / 2);
-                var y = this.marginTop - 5;
-
-
-
-
-
-                // Move the Y coord up if there's a subtitle
-                if (properties.titleSubtitle) {
-                    var titleSubtitleDim = RGraph.measureText({
-                        bold:   properties.titleSubtitleBold,
-                        italic: properties.titleSubtitleItalic,
-                        size:   properties.titleSubtitleSize,
-                        font:   properties.titleSubtitleFont,
-                        text:   'Mg'
-                    });
-                
-                    y -= titleSubtitleDim[1];
-                }
-
-
-
-
-
-                // Add any use specified offset
-                if (typeof properties.titleOffsetx === 'number') x += properties.titleOffsetx;
-                if (typeof properties.titleOffsety === 'number') y += properties.titleOffsety;
-
-                RGraph.text({
-                    
-               object: this,
-                 
-                 font: textConf.font,
-                 size: textConf.size,
-                color: textConf.color,
-                 bold: textConf.bold,
-               italic: textConf.italic,
-
-                    x:      x,
-                    y:      y,
-                    text:   properties.title,
-                    valign: 'bottom',
-                    halign: 'center',
-                    tag:    'title'
-                });
-
-
-
-
-
-
-                // Draw the subtitle
-                var text = properties.titleSubtitle;
-                
-                if (text) {
-    
-                    // Get the size of the title
-                    var titleSize = textConf.size;
-    
-                    var textConf = RGraph.getTextConf({
-                        object: this,
-                        prefix: 'titleSubtitle'
-                    });
-    
-                    // Draw the subtitle
-                    var ret = RGraph.text({
-                        object:  this,
-                        font:    textConf.font,
-                        size:    textConf.size,
-                        color:   textConf.color,
-                        bold:    textConf.bold,
-                        italic:  textConf.italic,
-                        x:       x + properties.titleSubtitleOffsetx,
-                        y:       y + 5 + properties.titleSubtitleOffsety,
-                        text:    text,
-                        valign:  'top',
-                        halign:  'center',
-                        tag:     'subtitle.top',
-                        marker:  false
-                    });
-                }
-            }
+            // Draw the main title and subtitle
+            RGraph.drawTitle(this);
 
 
 
@@ -1045,23 +956,17 @@
                 if (typeof properties.titleSideOffsety === 'number') y += properties.titleSideOffsety;
 
                 RGraph.text({
-                    
-               object: this,
-                 
-                 font: textConf.font,
-                 size: textConf.size,
-                color: textConf.color,
-                 bold: textConf.bold,
-               italic: textConf.italic,
-
+               object:      this,                 
+                 font:      textConf.font,
+                 size:      textConf.size,
+                color:      textConf.color,
+                 bold:      textConf.bold,
+               italic:      textConf.italic,
                     x:      x,
                     y:      y,
-
                     text:   properties.titleSide,
-
                     valign: 'bottom',
                     halign: 'center',
-
                     accessible: false,
                     angle:  properties.labelsPosition == 'right' ? 270 : 90,
                     tag:    'title.side'
@@ -1695,6 +1600,10 @@
         //
         this.grow = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+
             var obj           = this;
             var canvas        = this.canvas;
             var context       = this.context;
@@ -1741,6 +1650,15 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
                 frame++;
     
                 if (frame <= numFrames) {
@@ -1766,6 +1684,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
