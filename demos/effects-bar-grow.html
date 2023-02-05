@@ -42,7 +42,11 @@
         {
             var data = RGraph.arrayRandom(7, 0, 10);
 
-            bar.grow({data: data});
+            bar.grow({data: data}, function (obj)
+            {
+                obj.data          = RGraph.arrayClone(data);
+                obj.original_data = RGraph.arrayClone(data);
+            });
         }, 3000);
     </script>
 
