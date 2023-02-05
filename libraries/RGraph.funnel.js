@@ -70,9 +70,6 @@
             labelsFormattedUnitsPost:   '',
 
             title:                  '',
-            titleBackground:       null,
-            titleHpos:             null,
-            titleVpos:             null,
             titleItalic:           null,
             titleBold:             null,
             titleFont:             null,
@@ -314,13 +311,8 @@
             //
             this.coordsText = [];
     
-            RGraph.drawTitle(
-                this,
-                properties.title,
-                this.marginTop,
-                null,
-                typeof properties.titleSize === 'number' ? properties.titleSize : properties.textSize
-            );
+            // Draw the title using the new drawTitle() function
+            RGraph.drawTitle(this);
             
             this.drawFunnel();
 
