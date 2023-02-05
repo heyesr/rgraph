@@ -14,23 +14,25 @@
     //
     RGraph.Waterfall = function (conf)
     {
-        this.id                = conf.id;
-        this.canvas            = document.getElementById(this.id);
-        this.context           = this.canvas.getContext ? this.canvas.getContext("2d") : null;
-        this.canvas.__object__ = this;
-        this.type              = 'waterfall';
-        this.max               = 0;
-        this.data              = conf.data;
-        this.isRGraph          = true;
-        this.isrgraph          = true;
-        this.rgraph            = true;
-        this.coords            = [];
-        this.uid               = RGraph.createUID();
-        this.canvas.uid        = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
-        this.colorsParsed      = false;
-        this.coordsText        = [];
-        this.original_colors   = [];
-        this.firstDraw         = true; // After the first draw this will be false
+        this.id                     = conf.id;
+        this.canvas                 = document.getElementById(this.id);
+        this.context                = this.canvas.getContext ? this.canvas.getContext("2d") : null;
+        this.canvas.__object__      = this;
+        this.type                   = 'waterfall';
+        this.max                    = 0;
+        this.data                   = conf.data;
+        this.isRGraph               = true;
+        this.isrgraph               = true;
+        this.rgraph                 = true;
+        this.coords                 = [];
+        this.uid                    = RGraph.createUID();
+        this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
+        this.colorsParsed           = false;
+        this.coordsText             = [];
+        this.original_colors        = [];
+        this.original_data          = RGraph.arrayClone(conf.data);
+        this.firstDraw              = true; // After the first draw this will be false
+        this.stopAnimationRequested = false;// Used to control the animations
 
 
 
@@ -235,10 +237,6 @@
             text:                              null,
 
             title:                             '',
-            titleColor:                        'black',
-            titleBackground:                   null,
-            titleHpos:                         null,
-            titleVpos:                         null,
             titleBold:                         null,
             titleFont:                         null,
             titleSize:                         null,
@@ -1548,29 +1546,42 @@
         //
         this.grow = function ()
         {
-            var opt      = arguments[0] || {};
-            var callback = arguments[1] || function () {};
-            var frames   = opt.frames || 30;
-            var numFrame = 0;
-            var obj      = this;
-            var data     = RGraph.arrayClone(obj.data);
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var opt      = arguments[0] || {},
+                callback = arguments[1] || function () {},
+                frames   = opt.frames || 30,
+                numFrame = 0,
+                obj      = this,
+                data     = RGraph.arrayClone(this.original_data);
             
-            //Reset The data to zeros
-            for (var i=0,len=obj.data.length; i<len; ++i) {
-                obj.data[i] /= frames;
+            // Reset The data to zeros
+            for (var i=0,len=this.data.length; i<len; ++i) {
+                this.data[i] /= frames;
             }
             
             //
             // Fix the scale
             //
-            if (obj.get('yaxisScaleMax') == null) {
-                var max   = obj.getMax(data);
-                var scale2 = RGraph.getScale({object: obj, options: {'scale.max': max}});
-                obj.set('yaxisScaleMax', scale2.max);
+            if (this.get('yaxisScaleMax') == null) {
+                var max   = this.getMax(data);
+                var scale2 = RGraph.getScale({object: this, options: {'scale.max': max}});
+                this.set('yaxisScaleMax', scale2.max);
             }
     
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+
                 for (var i=0; i<obj.data.length; ++i) {
                     
                     // This produces a very slight easing effect
@@ -1590,6 +1601,27 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
