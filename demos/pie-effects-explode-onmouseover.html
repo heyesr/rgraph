@@ -24,7 +24,7 @@
     <h1>A Pie chart explode() demo using onmouseover</h1>
 
 
-<canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
+<canvas id="cvs" width="550" height="300" style="border: 1px solid #ddd">[No canvas support]</canvas>
     
 <script>
     // Create the Pie chart
@@ -35,10 +35,11 @@
             labels: ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
             textColor: '#ccc',
             exploded: 5,
-            radius: 100,
             linewidth: 1,
             shadowBlur: 10,
-            shadowColor: '#ccc'
+            shadowColor: '#ccc',
+            marginLeft: 100,
+            marginRight: 100
         }
     }).on('mouseover', function (e, shape)
     {
