@@ -23,6 +23,7 @@
     RGraph.Registry.store = [];
     RGraph.Registry.store['event.handlers']       = [];
     RGraph.Registry.store['__rgraph_event_listeners__'] = []; // Used in the new system for tooltips
+    RGraph.Registry.store['rgraph-runonce-functions']   = []; // Used in the runonce system
     RGraph.Background     = {};
     RGraph.background     = {};
     RGraph.objects        = [];
@@ -2661,7 +2662,7 @@
             offsety       = properties.variantThreedOffsety,
             xaxis         = properties.variantThreedXaxis,
             yaxis         = properties.variantThreedYaxis
-        
+
 
         //
         // Draw the 3D Y axis
@@ -2685,7 +2686,7 @@
                 );
 
             } else {
-            
+
                 if (args.object.type === 'hbar') {
                     var xaxisYCoord = args.object.canvas.height - args.object.properties.marginBottom;
                 } else {
@@ -9827,6 +9828,26 @@
             }
         }
     };
+    //
+    // This function allows you to run a function once (immediately)
+    // Future calls using the same identifier are not run.
+    //
+    // @param obj  object   The chart object
+    // @param id   string   A unique identifier used to identifier
+    //                      this function
+    // @param func function The function to call
+    // @return              The return value of the function
+    //
+    RGraph.runOnce = function (id, func)
+    {
+        if (RGraph.Registry.get('rgraph-runonce-functions')[id]) {
+            return;
+        }
+
+        RGraph.Registry.get('rgraph-runonce-functions')[id] = func;
+        
+        func();
+    };
 
 
 
@@ -9844,6 +9865,7 @@
     //
     RGraph.isString    = function(obj){return typeof obj === 'string';};
     RGraph.isNumber    = function(obj){return typeof obj === 'number';};
+    RGraph.isTextual   = function(obj){return (typeof obj === 'string' || typeof obj === 'number');};
     RGraph.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
     RGraph.isBool      =
     RGraph.isBoolean   = function (obj){return typeof obj === 'boolean';};
@@ -9894,7 +9916,21 @@
     //
     window.$a = function (v)
     {
-        alert(v);
+        if (arguments.length > 1) {
+            var args = [];
+            
+            for (let i=0; i<arguments.length; ++i) {
+                args.push(arguments[i]);
+                args.push('    ');
+            }
+            
+            // Get rid of the last element - which is spaces
+            args.pop();
+            
+            alert(args);
+        } else {
+            alert(v);
+        }
     };
 
 
