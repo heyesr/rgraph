@@ -1848,7 +1848,7 @@ this.context.lineTo(
             }
 
             // If 3D, redraw the right hand Y axis
-            if (properties.variant === '3d' && properties.yaxisPosition === 'right') {
+            if (properties.variant === '3d' && properties.yaxisPosition === 'right' && properties.yaxis) {
                 RGraph.draw3DYAxis(this);
             }
 
