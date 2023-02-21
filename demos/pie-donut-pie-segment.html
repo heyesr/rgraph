@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>Demo: A donut chart with a single Pie-style segment</title>
+    <meta name="description" content="A Pie chart configured as a donut chart but with a single Pie segment" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A donut chart with a single Pie-style segment</h1>
+
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <br clear="all" />
+    
+    <script id="rgraph-demo-source-code">
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: data = [40,10],
+            options: conf = {
+                colors: ['orange', 'transparent'],
+                colorsStroke: 'transparent',
+                shadow: false,
+                variant: 'donut',
+                exploded: [,25],
+                labelsIngraph: true,
+                labelsIngraphSpecific: ['','16%'],
+                labelsIngraphSize: 36,
+                labelsIngraphRadius: 100,
+                labelsIngraphColor: 'white',
+                labelsIngraphBold: true,
+                labelsIngraphBounding: false
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, '#5AB98D')
+        }).draw();
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                ...conf,
+                variant: 'pie',
+                colors: ['transparent','blue']
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center" id="canvas-container"&gt;
+    &lt;canvas id="cvs" width="400" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+
+</body>
+</html>
