@@ -9846,7 +9846,7 @@
 
         RGraph.Registry.get('rgraph-runonce-functions')[id] = func;
         
-        func();
+        return func();
     };
 
 
