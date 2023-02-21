@@ -19,9 +19,40 @@
     {
         this.data = new Array(conf.data.length);
 
-       // Store the data set(s)
+        // Store the data set(s)
         this.data = RGraph.arrayClone(conf.data);
         
+
+        // Convert objects to arrays
+        for (let i=0; i<this.data.length; ++i) {
+
+            // Single dataset
+            if (   RGraph.isObject(conf.data[i])
+                && (RGraph.isNumber(this.data[i].x) || RGraph.isString(this.data[i].x))
+                && (RGraph.isNumber(this.data[i].y) || RGraph.isString(this.data[i].y))) {
+
+                    conf.data[i] = [
+                        conf.data[i].x,
+                        conf.data[i].y,
+                        conf.data[i].color || undefined,
+                        typeof conf.data[i].tooltip === 'string' ? conf.data[i].tooltip : undefined
+                    ];
+
+            // Multiple datasets
+            } else if (RGraph.isArray(conf.data[i])) {
+                for (let j=0; j<conf.data[i].length; ++j) {
+                    if (RGraph.isObject(conf.data[i][j])) {
+                        conf.data[i][j] = [
+                            conf.data[i][j].x,
+                            conf.data[i][j].y,
+                            conf.data[i][j].color || undefined,
+                            typeof conf.data[i][j].tooltip === 'string' ? conf.data[i][j].tooltip : undefined
+                        ];
+                    }
+                }
+            }
+        }
+
 
 
         // Account for just one dataset being given
@@ -29,17 +60,10 @@
             var tmp = RGraph.arrayClone(conf.data);
             conf.data = new Array();
             conf.data[0] = RGraph.arrayClone(tmp);
-            
-            this.data = RGraph.arrayClone(conf.data);
         }
-
-
-
-        // First, if there's only been a single dataset passed
-        // to us, convert it to the multiple dataset format
-        if (!RGraph.isArray(this.data[0][0])) {
-            this.data = [this.data];
-        }
+        
+        this.data = RGraph.arrayClone(conf.data);
+        
 
 
 
@@ -47,7 +71,8 @@
 
 
 
-        // If necessary convert X/Y values passed as strings to numbers
+        // If necessary convert X/Y values passed as strings
+        // to numbers
         for (var i=0,len=this.data.length; i<len; ++i) { // Datasets
             for (var j=0,len2=this.data[i].length; j<len2; ++j) { // Points
 
