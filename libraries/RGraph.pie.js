@@ -80,7 +80,7 @@
             labelsColor:                    null,
             labelsBold:                     null,
             labelsItalic:                   null,
-            labelsOffsetRadius:             0,
+            labelsRadiusOffset:             0,
             labelsSticks:                   false,
             labelsSticksLength:             7,
             labelsSticksColors:             null,
@@ -108,7 +108,9 @@
             labelsIngraphThousand:          ',',
             labelsIngraphDecimals:          0,
             labelsIngraphRadius:            null,
-            labelsIngraphOffsetRadius:      0,
+            labelsIngraphRadiusOffset:      0,
+            labelsIngraphUndrawn:           null,
+            labelsIngraphUndrawnAsLabels:   null,
             
             labelsCenter:                   null,
             labelsCenterSize:               26,
@@ -294,6 +296,11 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            // Accommodate some BC
+            if (name === 'labelsOffsetRadius') {
+                name = 'labelsRadiusOffset';
+            }
+
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
             if (arguments.length === 1 && typeof arguments[0] === 'object') {
@@ -302,6 +309,8 @@
                         this.set(i, arguments[0][i]);
                     }
                 }
+
+
 
                 return this;
             }
@@ -787,17 +796,23 @@ this.drawTitle();
                 }
                 
                 for (var i=0; i<properties.labels.length; ++i) {
-                    properties.labels[i] = RGraph.labelSubstitution({
-                        object:    this,
-                        text:      properties.labels[i],
-                        index:     i,
-                        value:     this.data[i],
-                        decimals:  properties.labelsFormattedDecimals  || 0,
-                        unitsPre:  properties.labelsFormattedUnitsPre  || '',
-                        unitsPost: properties.labelsFormattedUnitsPost || '',
-                        thousand:  properties.labelsFormattedThousand  || ',',
-                        point:     properties.labelsFormattedPoint     || '.'
-                    });
+                    
+                    // Only do substitution if it's a string or
+                    // a number
+                    if (RGraph.isTextual(properties.labels[i])) {
+
+                        properties.labels[i] = RGraph.labelSubstitution({
+                            object:    this,
+                            text:      properties.labels[i],
+                            index:     i,
+                            value:     this.data[i],
+                            decimals:  properties.labelsFormattedDecimals  || 0,
+                            unitsPre:  properties.labelsFormattedUnitsPre  || '',
+                            unitsPost: properties.labelsFormattedUnitsPost || '',
+                            thousand:  properties.labelsFormattedThousand  || ',',
+                            point:     properties.labelsFormattedPoint     || '.'
+                        });
+                    }
                 }
             }
 
@@ -886,8 +901,8 @@ this.drawTitle();
                     //
                     // Coords for the text
                     //
-                    var x = cx + explosion_offsetx + ((r + 10 + properties.labelsOffsetRadius) * Math.cos(a)) + (properties.labelsSticks ? (a < RGraph.HALFPI || a > (RGraph.TWOPI + RGraph.HALFPI) ? 2 : -2) : 0),
-                        y = cy + explosion_offsety + (((r + 10 + properties.labelsOffsetRadius) * Math.sin(a)));
+                    var x = cx + explosion_offsetx + ((r + 10 + properties.labelsRadiusOffset) * Math.cos(a)) + (properties.labelsSticks ? (a < RGraph.HALFPI || a > (RGraph.TWOPI + RGraph.HALFPI) ? 2 : -2) : 0),
+                        y = cy + explosion_offsety + (((r + 10 + properties.labelsRadiusOffset) * Math.sin(a)));
 
 
 
@@ -971,12 +986,14 @@ this.drawTitle();
 
 
 
+
             //
             // Draw the right hand side labels
             //
             for (var i=0; i<this.angles.length; ++i) {
-            
-                // Null values do not get labels displayed
+
+                // Null values do not get labels displayed. Also,
+                // null or undefined labels aren't displayed either
                 if (RGraph.isNull(this.data[i])) {
                     continue;
                 }
@@ -1043,15 +1060,12 @@ this.drawTitle();
                         explosionY = labels_right[i][6][0] ? labels_right[i][6][2] : 0
 
                     var ret = RGraph.text({
-                        
                         object: this,
-                        
                         font:   textConf.font,
                         size:   textConf.size,
                         color:  textConf.color,
                         bold:   textConf.bold,
                         italic: textConf.italic,
-
                         x:      x + explosionX + properties.labelsListRightOffsetx,
                         y:      y + explosionY + properties.labelsListRightOffsety,
                         text:   labels_right[i][2],
@@ -1144,7 +1158,7 @@ this.drawTitle();
                     if (ret && ret.node) {
                         ret.node.__index__ = labels_left[i][0];
                     }
-    
+
                     this.path(
                         'lw % b m % % qc % % % % s %',
                         properties.labelsSticksLinewidth,
@@ -1154,7 +1168,7 @@ this.drawTitle();
                     );
 
                     
-                    // Draw a circle at the end odf the stick
+                    // Draw a circle at the end of the stick
                     this.path(
                         'b a % % 2 0 6.2830 false, f %',
                         ret.x + 5 + ret.width,ret.y + (ret.height / 2),
@@ -1224,9 +1238,9 @@ this.drawTitle();
                 points[0] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + extra + offset);
                 points[1] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + stickLength + extra - 5);
                 
-                points[2] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + stickLength + extra + properties.labelsOffsetRadius);
+                points[2] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + stickLength + extra + properties.labelsRadiusOffset);
                 
-                points[3] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + stickLength + extra + properties.labelsOffsetRadius);
+                points[3] = RGraph.getRadiusEndPoint(cx, cy, midpoint, radius + stickLength + extra + properties.labelsRadiusOffset);
                 points[3][0] += (points[3][0] > cx ? 5 : -5);
                 
                 points[4] = [
@@ -1760,8 +1774,19 @@ this.drawTitle();
             var cy      = this.centery;
             var radius  = properties.labelsIngraphRadius;
             
+            // Reset this to an empty array
+            this.set('labelsIngraphUndrawn', []);
+
+            // Account for offsetting
+            if (RGraph.isNumber(properties.labelsIngraphRadiusOffset)) {
+                var radiusOffset = properties.labelsIngraphRadiusOffset;
+            } else {
+                var radiusOffset = 0;
+            }
+
             //
-            // Is the radius less than 2? If so then it's a factor and not an exact point
+            // Is the radius less than 2? If so then it's a
+            // factor and not an exact point
             //
             if (radius <= 2 && radius > 0) {
                 radiusFactor = radius;
@@ -1784,7 +1809,7 @@ this.drawTitle();
             }
     
             for (var i=0,len=this.angles.length; i<len; ++i) {
-    
+
                 // This handles any explosion that the segment may have
                 if (typeof properties.exploded == 'object' && typeof properties.exploded[i] == 'number') {
                     var explosion = properties.exploded[i];
@@ -1793,7 +1818,7 @@ this.drawTitle();
                 } else {
                     var explosion = 0;
                 }
-    
+
                 var angleStart  = this.angles[i][0];
                 var angleEnd    = this.angles[i][1];
                 var angleCenter = ((angleEnd - angleStart) / 2) + angleStart;
@@ -1801,11 +1826,11 @@ this.drawTitle();
                     this.centerx,
                     this.centery,
                     angleCenter,
-                    r + (explosion ? explosion : 0) + properties.labelsIngraphOffsetRadius
+                    r + (explosion ? explosion : 0) + (properties.labelsIngraphRadiusOffset || 0)
                 );
 
-                var x           = coords[0];
-                var y           = coords[1];
+                var x = coords[0];
+                var y = coords[1];
     
                 var text = properties.labelsIngraphSpecific && typeof properties.labelsIngraphSpecific[i] == 'string' ? properties.labelsIngraphSpecific[i] : RGraph.numberFormat({
                     object:    this,
@@ -1815,25 +1840,147 @@ this.drawTitle();
                     point:     properties.labelsIngraphPoint,
                     thousand:  properties.labelsIngraphThousand
                 });
-    
+
                 if (text) {
+
                     this.context.beginPath();
                         
                         var textConf = RGraph.getTextConf({
                             object: this,
                             prefix: 'labelsIngraph'
                         });
-    
-                        RGraph.text({
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+//                                                    //
+// Determine if the text will fit into the segment    //
+//                                                    //
+////////////////////////////////////////////////////////
+                        var ret = RGraph.text({                            
+                            object:         this,
+                            font:           textConf.font,
+                            size:           textConf.size,
+                            color:          'transparent',
+                            bold:           textConf.bold,
+                            italic:         textConf.italic,
+                            x:              x,
+                            y:              y,
+                            text:           text,
+                            valign:         'center',
+                            halign:         'center',
+                            bounding:       false
+                        });
+                        this.context.stroke();
+                    
+
+                        this.path(
+                            'b     lw 1     m % %     a % % % % % false',
                             
+                            this.centerx,
+                            this.centery,
+                            
+                            this.centerx,
+                            this.centery,
+                            this.radius * 1.2,
+                            this.angles[i][0],
+                            this.angles[i][1]
+                        );
+                        
+                        let [textX, textY, textW, textH] = [ret.x, ret.y, ret.width, ret.height];
+
+                        if (
+                            !this.context.isPointInPath(textX, textY) ||
+                            !this.context.isPointInPath(textX + textW, textY) ||
+                            !this.context.isPointInPath(textX, textY + textH) ||
+                            !this.context.isPointInPath(textX + textW, textY + textH)
+                           ) {
+                            
+                            // This clears any existing path
+                            this.context.beginPath();
+
+                            var undrawn = {
+                                index: i,
+                                text: text
+                            };
+
+                            this.get('labelsIngraphUndrawn').push(undrawn);
+                            
+                            // If undrawn ingraph labels are wanted to
+                            // be set as labels instead - add this text
+                            // to the Pie chart labels property
+                            if (properties.labelsIngraphUndrawn && properties.labelsIngraphUndrawnAsLabels) {
+
+                                if (!RGraph.isArray(this.properties.labels)) {
+                                    this.properties.labels = [];
+                                }
+                                
+                                this.properties.labels[undrawn.index] = undrawn.text;
+                                
+                                if (!RGraph.Registry.get('pie-chart-ingraphlabels-redraw-function-added')) {
+                                    var id = RGraph.addCustomEventListener(this, 'draw', function (obj)
+                                    {
+                                        // Now that we're in the
+                                        // function that runs to
+                                        // reenable the labelsingraph
+                                        // labels - remove it
+                                        RGraph.removeCustomEventListener(
+                                            obj,
+                                            RGraph.Registry.get('pie-chart-ingraphlabels-redraw-function-added')
+                                        );
+                                        
+                                        // Redraw the canvas - but only
+                                        // once
+                                        RGraph.runOnce('pie-chart-ingraphlabels-redraw-function', function ()
+                                        {
+                                            RGraph.redraw();
+                                        });
+                                    });
+                                    
+                                    RGraph.Registry.set('pie-chart-ingraphlabels-redraw-function-added', id);
+                                }
+                            }
+
+                            continue;
+                        }
+                        
+                        // This clears any existing path
+                        this.context.beginPath();
+
+//////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        var ret = RGraph.text({                            
                        object: this,
-
-                         font: textConf.font,
-                         size: textConf.size,
-                        color: textConf.color,
-                         bold: textConf.bold,
-                       italic: textConf.italic,
-
+                         font:              textConf.font,
+                         size:              textConf.size,
+                        color:              textConf.color,
+                         bold:              textConf.bold,
+                       italic:              textConf.italic,
                             x:              x,
                             y:              y,
                             text:           text,
@@ -2457,6 +2604,95 @@ this.drawTitle();
             return this;
         };
 
+
+
+
+
+
+
+
+        //
+        // roundRobinSequential
+        //
+        // This function does similar to the above roundRobin
+        // function but increases the segment sizes sequentially
+        // instead of all at once.
+        // 
+        // @param object OPTIONAL Options for the effect
+        // @param function OPTIONAL A callback function
+        //
+        this.roundRobinSequential = function ()
+        {
+            var args = RGraph.getArgs(arguments, 'options,callback');
+
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                opt      = args.options || {},
+                callback = args.callback || function () {},
+                frame    = 0,
+                frames   = opt.frames || 60,
+                radius   =  this.getRadius(),
+                labels   =  this.get('labels')
+            
+            this.set('events', false);
+            this.set('labels', []);
+
+                
+            var radius = Math.max(
+                this.canvas.width,
+                this.canvas.height
+            ) * 2;
+
+            var iterator = function ()
+            {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+
+
+                // Redraw the Pie/donut chart
+                RGraph.redrawCanvas(obj.canvas);
+
+                // Draw the cover over the canvas
+                obj.path(
+                    'b m % % a % % % % % false f white',
+                    obj.centerx,
+                    obj.centery,
+                    obj.centerx,
+                    obj.centery,
+                    radius,
+                    (0 - RGraph.HALFPI)  + ((frame / frames) * RGraph.TWOPI),
+                    RGraph.TWOPI - RGraph.HALFPI
+                );
+
+                if (frame < frames) {
+                    RGraph.Effects.updateCanvas(iterator);
+                    frame++;
+                
+                } else {
+
+                    obj.set({
+                        events: true,
+                        labels: labels
+                    });
+
+                    RGraph.redrawCanvas(obj.canvas);
+                    callback(obj);
+                }
+            };
+    
+            iterator();
+            
+            return this;
+        };
 
 
 
