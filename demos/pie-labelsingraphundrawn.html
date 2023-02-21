@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>Demo: A basic Pie chart showing the labelsIngraphUnseenAsLabels property</title>
+    <meta name="description" content="When using the labelsInside property if the segments are too small for the labels you can opt to have the unseen ingraph labels shown as regular labels instead" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A basic Pie chart showing the labelsIngraphUnseenAsLabels property</h1>
+
+    <div id="canvas-container" style="text-align: center">
+        <canvas id="cvs" width="650" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <br clear="all" />
+    
+    <script id="rgraph-demo-source-code">
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [4,8,6,1,4,.5],
+            options: {
+                shadow: false,
+                
+                labelsIngraph: false, // This is set to true when the
+                                      // animation ends
+                labelsIngraphDecimals:2,
+                labelsIngraphSize: 26,
+                labelsIngraphUnitsPre: '$',
+                labelsIngraphRadius: 0.65,
+                labelsIngraphColor: 'white',
+                labelsIngraphBold: true,
+                labelsIngraphBoundingFill: 'rgba(255,255,255,0.4)',
+                labelsIngraphUndrawnAsLabels: true,
+
+                labelsSize: 16,
+
+                colors: ['#666','red','#666','green','orange','blue','gray','orange','cyan','teal','red','pink'],
+                colorsStroke: 'white',
+                linewidth: 2
+            }
+        //}).draw();
+        }).roundRobin(null, function (obj)
+        {
+            // Only enable the labelsInside labels when the
+            // animation finishes
+            obj.set('labelsIngraph', true);
+            RGraph.redraw();
+        });
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="650" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+
+</body>
+</html>
