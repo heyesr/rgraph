@@ -214,52 +214,54 @@ This is the code that generates the chart - it should be placed AFTER the <code>
         // each set of numbers is actually just one group of bars on the chart.
         // Other than this the configuration is much the same as the Line
         // chart.
-        bar = new RGraph.Bar({
-            id: 'cvs2',
-            data: [
-                [190,12,42,2],
-                [165,180,80,42],
-                [47,10,93,47],
-                [121,80,25,27],
-                [30,25,21,43],
-                [72,75,120,50]
-            ],
-            options: {
-                grouping: 'grouped',
-                shadow: false,
-                tickmarksStyle: null,
-                linewidth: 7,
-                backgroundGridVlines: false,
-                backgroundGridColor: 'gray',
-                colorsBackground: '#222',
-                xaxis: false,
-                yaxis: false,
-                textColor: '#d7d5d6',
-                textSize: 12,
-                title: '2009 employee sales by department',
-                titleColor: 'white',
-                xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
-                marginTop: 75,
-                marginBottom: 60,
-                key: ['Mary','Tom','Brad','Kate'],
-                keyPosition: 'margin',
-                keyLabelsSize: 14,
-                keyLabelsColor: 'rgb(248,248,248)',
-                keyPositionY: 425,
-                colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
-            }
-        // Again, the beforedraw function is used to clear the canvas to
-        // a dark color before the chart is drawn.
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, '#555557');
-
-        // Use the wave effect to show the chart and add some responsive capability to accommodate
-        // smaller screens.
-        }).draw().responsive([
-            {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
-            {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
-        ]);
+        if (!location.href.match(/\.rgraph\.net/)) {
+            bar = new RGraph.Bar({
+                id: 'cvs2',
+                data: [
+                    [190,12,42,2],
+                    [165,180,80,42],
+                    [47,10,93,47],
+                    [121,80,25,27],
+                    [30,25,21,43],
+                    [72,75,120,50]
+                ],
+                options: {
+                    grouping: 'grouped',
+                    shadow: false,
+                    tickmarksStyle: null,
+                    linewidth: 7,
+                    backgroundGridVlines: false,
+                    backgroundGridColor: 'gray',
+                    colorsBackground: '#222',
+                    xaxis: false,
+                    yaxis: false,
+                    textColor: '#d7d5d6',
+                    textSize: 12,
+                    title: '2009 employee sales by department',
+                    titleColor: 'white',
+                    xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
+                    marginTop: 75,
+                    marginBottom: 60,
+                    key: ['Mary','Tom','Brad','Kate'],
+                    keyPosition: 'margin',
+                    keyLabelsSize: 14,
+                    keyLabelsColor: 'rgb(248,248,248)',
+                    keyPositionY: 425,
+                    colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
+                }
+            // Again, the beforedraw function is used to clear the canvas to
+            // a dark color before the chart is drawn.
+            }).on('beforedraw', function (obj)
+            {
+                RGraph.clear(obj.canvas, '#555557');
+    
+            // Use the wave effect to show the chart and add some responsive capability to accommodate
+            // smaller screens.
+            }).draw().responsive([
+                {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
+                {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
+            ]);
+        }
     </script>
 
 
