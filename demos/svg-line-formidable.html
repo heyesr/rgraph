@@ -263,7 +263,7 @@ This is the code that generates the chart - it should be placed AFTER the <code>
 &lt;/script&gt;
 </pre>
 
-
+    <!-- <RGRAPH_REMOVE> -->
     <script>
         line1 = new RGraph.Line({
             id: 'cvs1',
@@ -313,6 +313,7 @@ This is the code that generates the chart - it should be placed AFTER the <code>
             {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
         ]);
     </script>
+    <!-- </RGRAPH_REMOVE> -->
 
 
 </body>
