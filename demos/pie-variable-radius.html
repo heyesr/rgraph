@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>Demo: A Pie chart with variable radius</title>
+    <meta name="description" content="A Pie chart that has segments that use variable radii" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Pie chart with variable radius</h1>
+
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="850" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <br clear="all" />
+    
+    <script id="rgraph-demo-source-code">
+    
+        data    = [4,6,3,5,9,4,15]
+        labels1 = ['', '', '', '', '', '', 'Sunday'];
+        labels2 = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', ''];
+
+        pie_color = new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                shadow: false,
+                variant: 'donut',
+                variantDonutWidth: 100,
+                labels: labels2,
+                labelsSize: 26,
+                colorsStroke: 'transparent',
+                exploded: 5
+            }
+        }).draw();
+        
+        pie_color.properties.colors[6] = 'transparent';
+
+
+        pie_gray = new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                shadow: false,
+                variant: 'donut',
+                variantDonutWidth: 40,
+                radius: '-30',
+                colors: (new Array(6)).fill('gray'),
+
+                labels: labels1,
+                labelsSize: 26,
+                linewidth: 7,
+                colors:['transparent','transparent','transparent','transparent','transparent','transparent','gray'],
+                colorsStroke: 'transparent',
+                exploded: 5
+            }
+        }).draw();
+
+        RGraph.redraw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="800" height="400"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+
+</body>
+</html>
