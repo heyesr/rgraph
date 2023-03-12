@@ -163,6 +163,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:            'rgba(0,0,0,0)',
             highlightFill:              'rgba(255,255,255,0.7)',
@@ -822,6 +823,10 @@
                 mouseY  = mouseXY[1];
 
             for (var i=0; i<this.coords.length; i++) {
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
 
                 var coords  = this.coords[i],
                     left    = coords[0],
