@@ -185,6 +185,13 @@
             keyLabelsItalic:           null,
             keyLabelsOffsetx:          0,
             keyLabelsOffsety:          0,
+            keyFormattedDecimals:      0,
+            keyFormattedPoint:         '.',
+            keyFormattedThousand:      ',',
+            keyFormattedUnitsPre:      '',
+            keyFormattedUnitsPost:     '',
+            keyFormattedValueSpecific: null,
+            keyFormattedItemsCount:    null,
 
             adjustable:                false,
 
@@ -388,7 +395,10 @@
                     }
                 }
     
-                RGraph.drawKey(this, properties.key, colors);
+                RGraph.drawKey(this,
+                    properties.key,
+                    colors
+                );
             }
             
             
@@ -1366,6 +1376,77 @@
         // Register the object
         //
         RGraph.register(this);
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+                return this.properties.keyFormattedValueSpecific[index];
+            } else {
+                if (index === 0) {
+                    return this.value;
+                } else {
+                    return this.properties.needleExtra[index - 1][0];
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            var len = 1;
+            
+            // Add the needleExtra count
+            len += this.properties.needleExtra.length;
+
+            return len;
+        };
+
+
+
+
+
+
+
 
         //
         // This is the 'end' of the constructor so if the first argument
