@@ -186,6 +186,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
 
             xaxis:                      true,
@@ -394,6 +395,13 @@
             keyLabelsItalic:            null,
             keyLabelsOffsetx:           0,
             keyLabelsOffsety:           0,
+            keyFormattedDecimals:       0,
+            keyFormattedPoint:          '.',
+            keyFormattedThousand:       ',',
+            keyFormattedUnitsPre:       '',
+            keyFormattedUnitsPost:      '',
+            keyFormattedValueSpecific:  null,
+            keyFormattedItemsCount:     null,
 
             boxplotWidth:               10,
             boxplotCapped:              true,
@@ -1620,7 +1628,7 @@
             var mouseY      = mouseXY[1];
             var overHotspot = false;
             var offset      = properties.tooltipsHotspot; // This is how far the hotspot extends
-    
+
             for (var set=0,len=this.coords.length; set<len; ++set) {
                 for (var i=0,len2=this.coords[set].length; i<len2; ++i) {
 
@@ -1633,16 +1641,31 @@
                             mouseX >= (x - offset) &&
                             mouseY <= (y + offset) &&
                             mouseY >= (y - offset)) {
-    
+                    
+
+
                             if (RGraph.parseTooltipText) {
                                 var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
                             }
+
                             var sequentialIndex = i;
     
                             for (var ds=(set-1); ds >=0; --ds) {
                                 sequentialIndex += this.data[ds].length;
                             }
-    
+
+                            
+                            
+                            
+
+                            // Should the point be ignored?
+                            if (RGraph.tooltipsHotspotIgnore(this, sequentialIndex)) {
+                                return;
+                            }
+
+
+
+
                             return {
                                 object: this,
                                      x: x,
@@ -2928,7 +2951,75 @@
                 - 15                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
             ) + 'px';
+        };
 
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            
+            
+            
+            } else {
+                var totalX = 0;
+                var totalY = 0;
+    
+                for (let i=0; i<this.data[index].length; ++i) {
+                    totalX += this.data[index][i][0];
+                    totalY += this.data[index][i][1];
+                }
+                
+                return [totalX, totalY];
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.data[0].length;
         };
 
 
