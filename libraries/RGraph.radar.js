@@ -184,6 +184,13 @@
             keyLabelsItalic:       null,
             keyLabelsOffsetx:      0,
             keyLabelsOffsety:      0,
+            keyFormattedDecimals:      0,
+            keyFormattedPoint:         '.',
+            keyFormattedThousand:      ',',
+            keyFormattedUnitsPre:      '',
+            keyFormattedUnitsPost:     '',
+            keyFormattedValueSpecific: null,
+            keyFormattedItemsCount:    null,
 
             contextmenu:           null,
 
@@ -212,6 +219,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:       'gray',
             highlightFill:         'rgba(255,255,255,0.7)',
@@ -1349,6 +1357,10 @@
         {
             for (var i=0; i<this.coords.length; ++i) {
 
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 var x        = this.coords[i][0];
                 var y        = this.coords[i][1];
                 var tooltips = properties.tooltips;
@@ -2200,6 +2212,64 @@
                 - 15
                 - (properties.highlightsRadius - 4)
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+                
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            } else {
+                return RGraph.arraySum(this.original_data[index]);
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.data.length;
         };
 
 
