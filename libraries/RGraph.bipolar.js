@@ -212,6 +212,44 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
+
+
+            key:                    null,
+            keyBackground:         'white',
+            keyPosition:           'graph',
+            keyShadow:             false,
+            keyShadowColor:       '#666',
+            keyShadowBlur:        3,
+            keyShadowOffsetx:     2,
+            keyShadowOffsety:     2,
+            keyPositionMarginBoxed:  false,
+            keyPositionMarginHSpace: 0,
+            keyPositionX:            null,
+            keyPositionY:            null,
+            keyInteractive:          false,
+            keyInteractiveHighlightChartStroke:'transparent',
+            keyInteractiveHighlightChartFill:'rgba(255,255,255,0.7)',
+            keyInteractiveHighlightLabel:'rgba(255,0,0,0.2)',
+            keyHalign:            'right',
+            keyColorShape:        'square',
+            keyRounded:           true,
+            keyLinewidth:         1,
+            keyColors:            null,
+            keyLabelsColor:       null,
+            keyLabelsSize:        null,
+            keyLabelsFont:        null,
+            keyLabelsBold:        null,
+            keyLabelsItalic:      null,
+            keyLabelsOffsetx:     0,
+            keyLabelsOffsety:     0,
+            keyFormattedDecimals:      0,
+            keyFormattedPoint:         '.',
+            keyFormattedThousand:      ',',
+            keyFormattedUnitsPre:      '',
+            keyFormattedUnitsPost:     '',
+            keyFormattedValueSpecific: null,
+            keyFormattedItemsCount:    null,
 
             highlightStroke:            'rgba(0,0,0,0)',
             highlightFill:              'rgba(255,255,255,0.7)',
@@ -497,6 +535,24 @@
             // Call this so that 3D charts are redrawn (the bar faces)
             this.redraw3Dfaces();
 
+
+
+
+
+
+
+            // Draw the key if necessary
+            if (properties.key && properties.key.length) {
+                RGraph.drawKey(
+                    this,
+                    properties.key,
+                    properties.colors
+                );
+            }
+            
+            
+            
+            
             //
             // Setup the context menu if required
             //
@@ -2796,6 +2852,10 @@
             //
             for (var i=0; i<this.coords.length; i++) {
 
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 var mouseX = mouseXY[0],
                     mouseY = mouseXY[1],
                     left   = this.coords[i][0],
@@ -3010,6 +3070,7 @@
                 this.original_colors.colorsStroke    = RGraph.arrayClone(properties.colorsStroke);
                 this.original_colors.colorsLeft      = RGraph.arrayClone(properties.colorsLeft);
                 this.original_colors.colorsRight     = RGraph.arrayClone(properties.colorsRight);
+                this.original_colors.keyColors       = RGraph.arrayClone(properties.keyColors);
             }
 
             var colors = properties.colors;
@@ -3030,6 +3091,14 @@
                 }
             }
             
+            // keyColors
+            var colors = properties.keyColors;
+            if (colors) {
+                for (var i=0; i<colors.length; ++i) {
+                    colors[i] = this.parseSingleColorForGradient(colors[i]);
+                }
+            }
+
             properties.highlightStroke = this.parseSingleColorForGradient(properties.highlightStroke);
             properties.highlightFill   = this.parseSingleColorForGradient(properties.highlightFill);
             properties.axesColor       = this.parseSingleColorForGradient(properties.axesColor);
@@ -3089,6 +3158,41 @@
             }
                 
             return grad ? grad : color;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles highlighting an entire data-series for the interactive
+        // key
+        // 
+        // @param int index The index of the data series to be highlighted
+        //
+        this.interactiveKeyHighlight = function (index)
+        {
+            for (var i=0; i<this.coords2.length; ++i) {
+                
+                var coords = this.coords2[i][index];
+            
+                // Draw some highlight over the top of the bar
+                this.path(
+                    'b   r % % % %     s % f %',
+                    
+                    coords[0],
+                    coords[1],
+                    coords[2],
+                    coords[3],
+                    
+                    properties.keyInteractiveHighlightChartStroke,
+                    properties.keyInteractiveHighlightChartFill
+                );
+            }
+
         };
 
 
@@ -3264,7 +3368,7 @@
                 )[0]);
             }
 
-            return len + 15;
+            return len + 25;
         };
 
 
@@ -3710,6 +3814,92 @@
 
                 args.tooltip.style.top = parseInt(args.tooltip.style.top) + 10  + adjustment + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            } else {
+    
+                var total = 0;
+                
+                // LHS data
+                for (let i=0; i<this.data[0].length; ++i) {
+                    if (RGraph.isArray(this.data[0][i])) {
+                        total += this.data[0][i][index];
+                    }
+                }
+                
+                // RHS data
+                for (let i=0; i<this.data[1].length; ++i) {
+                    if (RGraph.isArray(this.data[1][i])) {
+                        total += this.data[1][i][index];
+                    }
+                }
+                
+                return total;
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            var num = 1;
+
+            for (let side=0; side<this.data.length; ++side) {
+                for (let i=0; i<this.data[side].length; ++i) {
+                    if (RGraph.isArray(this.data[side][i])) {
+                        num = Math.max(
+                            num,
+                            this.data[side][i].length
+                        );
+                    }
+                }
+            }
+
+            return num;
         };
 
 
