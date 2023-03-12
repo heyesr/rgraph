@@ -136,10 +136,16 @@
             keyLabelsBold:         null,
             keyLabelsItalic:       null,
             keyLabelsOffsetx:      0,
-            keyLabelsOffsety:      0,
+            keyLabelsOffsety:      0,            
+            keyFormattedDecimals:  0,
+            keyFormattedPoint:     '.',
+            keyFormattedThousand:  ',',
+            keyFormattedUnitsPre:  '',
+            keyFormattedUnitsPost: '',
+            keyFormattedValueSpecific: null,
+            keyFormattedItemsCount:    null,
 
             tooltipsHighlight:     true,
-
             tooltips:                   null,
             tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
@@ -159,6 +165,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:       'rgba(0,0,0,0)',
             highlightFill:         'rgba(255,255,255,0.7)',
@@ -725,14 +732,21 @@
             for (i=0,len=coords.length; i<len; ++i) {
             
                 var segment = coords[i]
-    
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 // Path testing
-                this.context.beginPath();
-                    this.context.moveTo(segment[0], segment[1]);
-                    this.context.lineTo(segment[2], segment[3]);
-                    this.context.lineTo(segment[4], segment[5]);
-                    this.context.lineTo(segment[6], segment[7]);
-                    this.context.lineTo(segment[8], segment[9]);
+                this.path(
+                    'b m % % l % % l % % l % % l % %',
+                    segment[0], segment[1],
+                    segment[2], segment[3],
+                    segment[4], segment[5],
+                    segment[6], segment[7],
+                    segment[8], segment[9]
+                );
+
     
                 if (this.context.isPointInPath(x, y)) {
                     
@@ -1149,6 +1163,59 @@
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + 20 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            return    RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])
+                    ? this.properties.keyFormattedValueSpecific[index]
+                    : this.data[index];
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.data.length - 1;
         };
 
 
