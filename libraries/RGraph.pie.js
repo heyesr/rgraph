@@ -185,6 +185,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStyle:                 '2d',
             highlightStyleTwodFill:         'rgba(255,255,255,0.7)',
@@ -226,6 +227,13 @@
             keyLabelsItalic:                null,
             keyLabelsOffsetx:               0,
             keyLabelsOffsety:               0,
+            keyFormattedDecimals:           0,
+            keyFormattedPoint:              '.',
+            keyFormattedThousand:           ',',
+            keyFormattedUnitsPre:           '',
+            keyFormattedUnitsPost:          '',
+            keyFormattedValueSpecific:      null,
+            keyFormattedItemsCount:         null,
 
             annotatable:                    false,
             annotatableColor:               'black',
@@ -573,10 +581,14 @@ this.drawTitle();
             }
 
             //
-            // Draw the kay if desired
+            // Draw the key if desired
             //
             if (properties.key && properties.key.length) {
-                RGraph.drawKey(this, properties.key, properties.colors);
+                RGraph.drawKey(
+                    this,
+                    properties.key,
+                    properties.colors
+                );
             }
     
             RGraph.noShadow(this);
@@ -1299,6 +1311,10 @@ this.drawTitle();
     
             for (var i=0,len=angles.length; i<len; ++i) {
 
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 // Draw the segment again so that it can be tested
                 this.path(
                     'b ss rgba(0,0,0,0) a % % % % % false',
@@ -1358,6 +1374,9 @@ this.drawTitle();
 
 
 
+        //
+        // Draw the borders for the Pie chart
+        //
         this.drawBorders = function ()
         {
             if (properties.linewidth > 0) {
@@ -1368,7 +1387,7 @@ this.drawTitle();
                 var r = this.radius;
     
                 for (var i=0,len=this.angles.length; i<len; ++i) {
-                
+
                     var segment = this.angles[i];
 
                     this.context.beginPath();
@@ -1767,6 +1786,7 @@ this.drawTitle();
         //
         // This draws Ingraph labels
         //
+        this.drawLabelsIngraph =
         this.drawInGraphLabels = function ()
         {
             var context = this.context;
@@ -1861,17 +1881,17 @@ this.drawTitle();
 
 
 
-
-////////////////////////////////////////////////////////
-//                                                    //
-// Determine if the text will fit into the segment    //
-//                                                    //
-////////////////////////////////////////////////////////
+                        /////////////////////////////////////////////
+                        //                                         //
+                        // Determine if the text will fit into the //
+                        // segment                                 //
+                        //                                         //
+                        /////////////////////////////////////////////
                         var ret = RGraph.text({                            
                             object:         this,
                             font:           textConf.font,
                             size:           textConf.size,
-                            color:          'transparent',
+                            color:          'transparent',                            //
                             bold:           textConf.bold,
                             italic:         textConf.italic,
                             x:              x,
@@ -1881,22 +1901,36 @@ this.drawTitle();
                             halign:         'center',
                             bounding:       false
                         });
+
                         this.context.stroke();
                     
 
                         this.path(
-                            'b     lw 1     m % %     a % % % % % false',
+                            'b     lw 1     m % %        a % % % % % false',
                             
                             this.centerx,
                             this.centery,
                             
                             this.centerx,
                             this.centery,
-                            this.radius * 1.2,
+                            this.radius + 10,
                             this.angles[i][0],
                             this.angles[i][1]
                         );
                         
+                        // Account for this being a donut chart
+                        if (this.properties.variant.indexOf('donut') >= 0) {
+
+                            this.path(
+                                'a % % % % % true',
+                                this.centerx,
+                                this.centery,
+                                this.radius - (this.properties.variantDonutWidth || this.radius / 2),
+                                this.angles[i][1],
+                                this.angles[i][0]
+                            );
+                        }
+
                         let [textX, textY, textW, textH] = [ret.x, ret.y, ret.width, ret.height];
 
                         if (
@@ -1905,7 +1939,7 @@ this.drawTitle();
                             !this.context.isPointInPath(textX, textY + textH) ||
                             !this.context.isPointInPath(textX + textW, textY + textH)
                            ) {
-                            
+
                             // This clears any existing path
                             this.context.beginPath();
 
@@ -1915,7 +1949,7 @@ this.drawTitle();
                             };
 
                             this.get('labelsIngraphUndrawn').push(undrawn);
-                            
+
                             // If undrawn ingraph labels are wanted to
                             // be set as labels instead - add this text
                             // to the Pie chart labels property
@@ -2902,6 +2936,64 @@ this.drawTitle();
                 + obj.properties.tooltipsOffsety // Add any user defined offset
                 - 10                             // Account for the pointer
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+                
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            } else {
+                return this.data[index];
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.data.length;
         };
 
 
