@@ -131,6 +131,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightLinewidth:                 1,
             highlightStroke:                    'rgba(0,0,0,0)',
@@ -207,6 +208,13 @@
             keyLabelsItalic:                    null,
             keyLabelsOffsetx:                   0,
             keyLabelsOffsety:                   0,
+            keyFormattedDecimals:               0,
+            keyFormattedPoint:                  '.',
+            keyFormattedThousand:               ',',
+            keyFormattedUnitsPre:               '',
+            keyFormattedUnitsPost:              '',
+            keyFormattedValueSpecific:          null,
+            keyFormattedItemsCount:             null,
 
             borderInner:                        true,
             
@@ -390,7 +398,11 @@
     
             // Draw the key if necessary
             if (properties.key && properties.key.length) {
-                RGraph.drawKey(this, properties.key, properties.colors);
+                RGraph.drawKey(
+                    this,
+                    properties.key,
+                    properties.colors
+                );
             }
             
             //
@@ -869,20 +881,24 @@
                 mouseY = mouseXY[1];
 
             for (var i=0,len=this.coords.length; i<len; i++) {
-    
-                    var x   = this.coords[i][0],
-                        y   = this.coords[i][1],
-                        w   = this.coords[i][2],
-                        h   = this.coords[i][3],
-                        idx = i;
 
-                    this.context.beginPath();
-                    this.drawCurvedBar({
-                        x: x,
-                        y: y,
-                        height: h,
-                        width: w
-                    });
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
+                var x   = this.coords[i][0],
+                    y   = this.coords[i][1],
+                    w   = this.coords[i][2],
+                    h   = this.coords[i][3],
+                    idx = i;
+
+                this.context.beginPath();
+                this.drawCurvedBar({
+                    x: x,
+                    y: y,
+                    height: h,
+                    width: w
+                });
     
                 if (this.context.isPointInPath(mouseX, mouseY)) {
                 
@@ -1700,6 +1716,59 @@
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + 20 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            return RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])
+                    ? this.properties.keyFormattedValueSpecific[index]
+                    : (RGraph.isArray(this.value) ? this.value[index] : this.value);
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.value.length;
         };
 
 
