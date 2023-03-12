@@ -253,6 +253,7 @@
             tooltipsEvent:              'onclick',
             tooltipsHighlight:          true,
             tooltipsHotspotXonly:       false,
+            tooltipsHotspotIgnore:      null,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedDecimals:  0,
@@ -299,6 +300,13 @@
             keyLabelsItalic:      null,
             keyLabelsOffsetx:     0,
             keyLabelsOffsety:     0,
+            keyFormattedDecimals:      0,
+            keyFormattedPoint:         '.',
+            keyFormattedThousand:      ',',
+            keyFormattedUnitsPre:      '',
+            keyFormattedUnitsPost:     '',
+            keyFormattedValueSpecific: null,
+            keyFormattedItemsCount:    null,
 
             contextmenu:            null,
 
@@ -1912,7 +1920,11 @@ this.context.lineTo(
 
             for (var i=0,len=coords.length; i<len; i+=1) {
 
-                if (obj.coords[i].length == 0) {
+                if (this.coords[i].length == 0) {
+                    continue;
+                }
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
                     continue;
                 }
 
@@ -3792,6 +3804,82 @@ this.context.lineTo(
 
 
         //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            } else {
+    
+                var total = 0;
+    
+                for (let i=0; i<this.data.length; ++i) {
+                    if (RGraph.isArray(this.data[i])) {
+                        total += this.data[i][index];
+                    }
+                }
+                
+                return total;
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            var num = 0;
+
+            for (let i=0; i<this.data.length; ++i) {
+                if (RGraph.isArray(this.data[i])) {
+                    num = Math.max(
+                        num,
+                        this.data[i].length
+                    );
+                }
+            }
+
+            return num;
+        };
+
+
+
+
+
+
+
+
+        //
         // Register the object
         //
         RGraph.register(this);
@@ -3960,8 +4048,8 @@ this.context.lineTo(
 
 
     //
-    // Provides an easy way to get a segmented Bar chart. See the Bar chart
-    // documentation page for more details.
+    // Provides an easy way to get a segmented Bar chart.
+    // See the Bar chart documentation page for more details.
     //
     RGraph.SegmentedBar = function (conf)
     {
