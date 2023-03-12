@@ -8851,9 +8851,10 @@
 
 
 
-          ////////////////////////////////////////////////////////////////////
-         // Do property substitution when there's an index to the property //
-        ////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////
+        // Do property substitution when there's an index to //
+        // the property                                      //
+        ///////////////////////////////////////////////////////
         var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
 
         while (text.match(reg)) {
@@ -9034,6 +9035,7 @@
             }
             
             RGraph.Registry.set('label-templates-function-object', args.object);
+            RGraph.Registry.set('key-label-templates-function-object', args.object);
 
             var func = new Function ('return ' + str);
             var ret  = func();
@@ -9847,6 +9849,26 @@
         RGraph.Registry.get('rgraph-runonce-functions')[id] = func;
         
         return func();
+    };
+
+    //
+    // This function implements the logic for whether to ignore
+    // a particular hotspot or not
+    //
+    // @param object obj   The chart object
+    // @param number index The Index of the hotspot to check for
+    //
+    RGraph.tooltipsHotspotIgnore = function (obj, index)
+    {
+        if (   (RGraph.isBoolean(obj.properties.tooltipsHotspotIgnore) && obj.properties.tooltipsHotspotIgnore)
+            || (RGraph.isNumber(obj.properties.tooltipsHotspotIgnore)  && obj.properties.tooltipsHotspotIgnore === index)
+            || (RGraph.isArray(obj.properties.tooltipsHotspotIgnore)   && obj.properties.tooltipsHotspotIgnore.includes(index))
+            || (RGraph.isArray(obj.properties.tooltipsHotspotIgnore)   && obj.properties.tooltipsHotspotIgnore[index] === true)) {
+            
+            return true;
+        }
+
+        return false;
     };
 
 
