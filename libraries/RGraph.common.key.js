@@ -43,11 +43,49 @@
             args.object.set('keyPositionY', properties.keyVpos * args.object.get('marginTop'));
         }
 
+
+
+
+
+
+
+
+
+
+
+        // Account for the key now (March 2023) being able to be
+        // a string
+        if (RGraph.isString(args.key)) {
+            
+            var len = 0;
+        
+            if (RGraph.isNumber(args.object.properties.keyFormattedItemsCount)) {
+                len = args.object.properties.keyFormattedItemsCount;
+            } else {
+                len = args.object.getKeyNumDatapoints();
+            }
+            
+            args.key = (new Array(len)).fill(args.key);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //
         // Account for null values in the key
         //
         for (var i=0; i<args.key.length; ++i) {
-            if (args.key[i] != null) {
+            if (args.key[i] !== null) {
                 colors_non_null.push(args.colors[i]);
                 key_non_null.push(args.key[i]);
             }
@@ -55,13 +93,15 @@
         
         key    = key_non_null;
         colors = colors_non_null;
-        
-        // The key does not use accessible text
+
+        // The key does not use accessible text by default
         var textAccessible = false;
         
         if (typeof properties.keyTextAccessible === 'boolean') {
             textAccessible = properties.keyTextAccessible;
         }
+
+
 
 
 
@@ -121,7 +161,10 @@
             blob_size = textConf.size; // The blob of color
             text_size = textConf.size;
 
-            if (!args.object.coords) args.object.coords = {};
+            if (!args.object.coords) {
+                args.object.coords = {};
+            }
+            
             args.object.coords.key = [];
 
             // Need to set this so that measuring the text works out OK
@@ -129,9 +172,26 @@
                       (textConf.bold ? 'bold ' : '') +
                       textConf.size + 'pt ' +
                       textConf.font;
-    
+
             // Work out the longest bit of text
             for (i=0; i<key.length; ++i) {
+
+                ////////////////////////////////////
+                // Label substitution for the key //
+                ////////////////////////////////////
+                key[i] = RGraph.labelSubstitution({
+                    object:    args.object,
+                    text:      key[i],
+                    index:     i,
+                    value:     args.object.getKeyValue(i),
+                    unitsPre:  args.object.properties.keyFormattedUnitsPre,
+                    unitsPost: args.object.properties.keyFormattedUnitsPost,
+                    thousand:  args.object.properties.keyFormattedThousand,
+                    point:     args.object.properties.keyFormattedPoint,
+                    decimals:  args.object.properties.keyFormattedDecimals
+                });
+                //////////// Label substitution for the key ////////////
+
                 width = Math.max(
                     width,
                     args.object.context.measureText(key[i]).width);
@@ -381,10 +441,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //
         // This does the actual drawing of the key when it's in the margin
         //
-        function drawKey_margin ()
+        var drawKey_margin = function ()
         {
             var text_size    = typeof properties.keyLabelsSize == 'number' ? properties.keyLabelsSize : properties.textSize,
                 text_bold    = properties.keyLabelsBold,
@@ -405,7 +480,9 @@
                 strokestyle  = '#999',
                 length       = 0;
 
-            if (!args.object.coords) args.object.coords = {};
+            if (!args.object.coords) {
+                args.object.coords = {};
+            }
             args.object.coords.key = [];
 
     
@@ -414,6 +491,26 @@
             args.object.context.font = (args.object.properties.keyLabelsItalic ? 'italic ' : '') + (args.object.properties.keyLabelsBold ? 'bold ' : '') + text_size + 'pt ' + text_font;
 
             for (i=0; i<key.length; ++i) {
+
+                ////////////////////////////////////
+                // Label substitution for the key //
+                ////////////////////////////////////
+                key[i] = RGraph.labelSubstitution({
+                    object:    args.object,
+                    text:      key[i],
+                    index:     i,
+                    value:     args.object.getKeyValue(i),
+                    unitsPre:  args.object.properties.keyFormattedUnitsPre,
+                    unitsPost: args.object.properties.keyFormattedUnitsPost,
+                    thousand:  args.object.properties.keyFormattedThousand,
+                    point:     args.object.properties.keyFormattedPoint,
+                    decimals:  args.object.properties.keyFormattedDecimals
+                });
+                //////////// Label substitution for the key ////////////
+
+
+
+
                 length += hmargin;
                 length += blob_size;
                 length += hmargin;
@@ -421,7 +518,7 @@
                 length += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
             }
             length += hmargin;
-            
+
             // Don't why we need this but here it is...
             length += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
     
@@ -507,7 +604,7 @@
             //
             // Draw the blobs of color and the text
             //
-    
+
             // Custom colors for the key
             if (properties.keyColors) {
                 colors = properties.keyColors;
@@ -632,7 +729,21 @@
                     args.object
                 ];
             }
-        }
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
