@@ -286,6 +286,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:                   'rgba(0,0,0,0)',
             highlightFill:                     'rgba(255,255,255,0.7)',
@@ -336,6 +337,13 @@
             keyLabelsItalic:                   null,
             keyLabelsOffsetx:                  0,
             keyLabelsOffsety:                  0,
+            keyFormattedDecimals:              0,
+            keyFormattedPoint:                 '.',
+            keyFormattedThousand:              ',',
+            keyFormattedUnitsPre:              '',
+            keyFormattedUnitsPost:             '',
+            keyFormattedValueSpecific:         null,
+            keyFormattedItemsCount:            null,
 
             barOffsetx:                        0, // Used to facilitate multiple dataset Waterfall charts
             barOffsety:                        0, // Used to facilitate multiple dataset Waterfall charts
@@ -1146,7 +1154,11 @@
             // Loop through the bars determining if the mouse is over a bar
             //
             for (var i=0,len=this.coords.length; i<len; i++) {
-    
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 var mouseXY = RGraph.getMouseXY(e),
                     mouseX  = mouseXY[0],
                     mouseY  = mouseXY[1];
@@ -1740,6 +1752,85 @@
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + (coords[3] / 2) + 5 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            
+            
+            
+            } else {
+                // Loop thru the data and sum the up and
+                // down values.
+                for (var i=0,pos=0,neg=0,tot=0; i<this.data.length; ++i) {
+                    if (this.data[i] >= 0) {
+                        pos += this.data[i];
+                    } else {
+                        neg -= this.data[i];
+                    }
+                    
+                    tot += this.data[i]
+                }
+
+                if (index === 0) {
+                    return pos;
+                } else if (index === 1) {
+                    return neg;
+                } else {
+                    return tot;
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.properties.total ? 3 : 2;
         };
 
 
