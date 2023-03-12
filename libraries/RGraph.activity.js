@@ -155,6 +155,7 @@
             tooltipsEvent:                      'onclick',
             tooltipsHighlight:                  true,
             tooltipsHotspotXonly:               false,
+            tooltipsHotspotIgnore:              null,
             tooltipsFormattedThousand:          ',',
             tooltipsFormattedPoint:             '.',
             tooltipsFormattedDecimals:          0,
@@ -893,6 +894,9 @@
             // Go through the obj.coords array and find the correct index/shape
             for (var i=0; i<this.coords.length; ++i) {
 
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
 
                 // Recreate the shape but don't fill/stroke it
                 this.path(
