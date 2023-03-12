@@ -209,6 +209,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:       'rgba(0,0,0,0)',
             highlightFill:         'rgba(255,255,255,0.7)',
@@ -655,7 +656,11 @@
             // Loop through the bars determining if the mouse is over a bar
             //
             for (var i=0,len=this.coords.length; i<len; i++) {
-    
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
                 var left   = this.coords[i][0],
                     top    = this.coords[i][1],
                     width  = this.coords[i][2],
