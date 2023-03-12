@@ -202,6 +202,7 @@
             tooltipsPositionStatic:          true,
             tooltipsOffsetx:                 0,
             tooltipsOffsety:                 0,
+            tooltipsHotspotIgnore:           null,
 
             highlightStyle:             null,
             highlightStroke:            'rgba(0,0,0,0)',
@@ -211,7 +212,45 @@
             annotatebleColor:           'black',
             annotatebleLinewidth:       1,
 
+            key:                                null,
+            keyBackground:                      'white',
+            keyPosition:                        'margin',
+            keyHalign:                          'right',
+            keyShadow:                          false,
+            keyShadowColor:                     '#666',
+            keyShadowBlur:                      3,
+            keyShadowOffsetx:                   2,
+            keyShadowOffsety:                   2,
+            keyPositionMarginBoxed:             false,
+            keyPositionMarginHSpace:            0,
+            keyPositionX:                       null,
+            keyPositionY:                       null,
+            keyColorShape:                      'square',
+            keyRounded:                         true,
+            keyLinewidth:                       1,
+            keyColors:                          null,
+            keyInteractive:                     false,
+            keyInteractiveHighlightChartStroke: 'rgba(0,0,0,0)',
+            keyInteractiveHighlightChartFill:   'rgba(255,255,255,0.7)',
+            keyInteractiveHighlightLabel:       'rgba(255,0,0,0.2)',
+            keyLabelsColor:                     null,
+            keyLabelsFont:                      null,
+            keyLabelsSize:                      null,
+            keyLabelsBold:                      null,
+            keyLabelsItalic:                    null,
+            keyLabelsOffsetx:                   0,
+            keyLabelsOffsety:                   0,
+            keyFormattedDecimals:               0,
+            keyFormattedPoint:                  '.',
+            keyFormattedThousand:               ',',
+            keyFormattedUnitsPre:               '',
+            keyFormattedUnitsPost:              '',
+            keyFormattedValueSpecific:          null,
+            keyFormattedItemsCount:             null,
+
             adjustable:                 false,
+            
+            variant:                    'default',
 
             clearto:                    'rgba(0,0,0,0)'
         }
@@ -326,6 +365,19 @@
 
 
             //
+            // Constrain the value to be within the min and max
+            //
+            if (this.value > this.max) this.value = this.max;
+            if (this.value < this.min) this.value = this.min;
+
+            if (RGraph.isArray(this.value) && RGraph.arraySum(this.value) > this.max) {
+                alert('[SEMI-CIRCULAR PROGRESS] Total value is over the maximum value');
+            }
+
+
+
+
+            //
             // Parse the colors. This allows for simple gradient syntax
             //
             if (!this.colorsParsed) {
@@ -403,6 +455,22 @@
             if (properties.contextmenu) {
                 RGraph.showContext(this);
             }
+
+
+
+
+
+
+            // Draw the key if necessary
+            if (properties.key && properties.key.length) {
+                RGraph.drawKey(
+                    this,
+                    properties.key,
+                    properties.colors
+                );
+            }
+
+
 
 
 
@@ -500,14 +568,27 @@
             }
 
 
-            // Draw the main semi-circle background and then
-            // lighten it by filling it again in semi-transparent
-            // white
+
+
+
+
+
+
+
             this.path(
-                'lw % b a % % % % % false a % % % % % true c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
-                properties.linewidth,
-                this.centerx, this.centery, this.radius, start, end,
-                this.centerx, this.centery, this.radius - this.width, end, start,
+                'lw % b ',
+                this.linewidth
+            );
+
+            // Draw the path for the bar
+            this.pathBar({
+                startValue: 0,
+                endValue:   this.max
+            });
+
+            // Finish the paths and stroke/fill it
+            this.path(
+                'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
                 properties.colorsStroke,
                 properties.colors[0],
                 properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
@@ -515,58 +596,190 @@
             );
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
             // Draw a single value on the meter
+            //
             if (RGraph.isNumber(this.value)) {
+
+                // Begein anew...
+                this.context.beginPath();
                 
-                var angle = ((end - start) * ((this.value - this.scale2.min) / (this.max - this.scale2.min)));
-                
-                this.path(
-                    'b a % % % % % false a % % % % % true c f %',
-                    this.centerx, this.centery, this.radius, start, start + angle,
-                    this.centerx, this.centery, this.radius - this.width, start + angle, start,
-                    properties.colors[0]
-                );
-            
+                // Draw the path for the indicator bar (not
+                // stroking or filling it just yet)
+                this.pathBar({
+                    startValue: 0,
+                    endValue: this.value
+                });
+
+                // Close the path and fill the bar with the
+                // requested color
+                this.path('c f %', properties.colors[0]);
+
+
                 this.coords = [[
                     this.centerx,
                     this.centery,
                     this.radius,
-                    start,
-                    start + angle,
+                    this.getAngle(0),
+                    this.getAngle(this.value),
                     this.width,
-                    angle
+                    this.getAngle(this.value) - this.getAngle(0)
                 ]];
             
             // Draw multiple values on the meter
             } else if (RGraph.isArray(this.value)) {
 
-                for (var i=0; i<this.value.length; ++i) {
+                for (var i=0,accValue=0; i<this.value.length; ++i) {
 
-                    var angle = ((properties.anglesEnd - properties.anglesStart) * ((this.value[i] - this.scale2.min) / (this.max - this.scale2.min)));
-
-                    this.path(
-                        'b a % % % % % false a % % % % % true c f %',
-                        this.centerx, this.centery, this.radius, start, start + angle,
-                        this.centerx, this.centery, this.radius - this.width, start + angle, start,
-                        properties.colors[i]
-                    );
+                    this.context.beginPath();
+                    this.pathBar({
+                        startValue: accValue,
+                        endValue: accValue + this.value[i],
+                        index: i
+                    });
+                    this.path('c f %', properties.colors[i]);
 
                     // Store the coordinates of this segment
                     this.coords.push([
                         this.centerx,
                         this.centery,
                         this.radius,
-                        start,
-                        start + angle,
+                        this.getAngle(accValue),
+                        this.getAngle(accValue + this.value[i]),
                         this.width,
-                        angle
+                        this.getAngle(accValue + this.value[i]) - this.getAngle(accValue)
                     ]);
                     
-                    start += angle;
+                    accValue += this.value[i];
                 }
             }
         };
 
+
+
+
+
+
+
+
+        //
+        // A function to path the bar. This function only
+        // PATHs the bar - it does not stroke or fill the
+        // bar
+        //
+        // @param number start The start angle of the segment
+        // @param number end   The end angle of the segment
+        //
+        this.pathBar = function ()
+        {
+            var args = arguments[0];
+
+
+
+
+
+
+
+
+            // If the start value has been given instead of the
+            // angle - work out the angle
+            if (RGraph.isNumber(args.startValue)) {
+                args.startAngle = this.getAngle(args.startValue);
+            }
+
+            // If the end value has been given instead of the
+            // angle - work out the angle
+            if (RGraph.isNumber(args.endValue)) {
+                args.endAngle = this.getAngle(args.endValue);
+            }
+
+
+
+
+
+
+
+
+            // Get the end point for the middle of the END of the
+            // meter
+            var endpoint1 = RGraph.getRadiusEndPoint(
+                this.centerx,
+                this.centery,
+                args.endAngle,
+                this.radius - (this.width / 2)
+            );
+
+            // Get the end point for the middle of the START of the
+            // meter
+            var endpoint2 = RGraph.getRadiusEndPoint(
+                this.centerx,
+                this.centery,
+                args.startAngle,
+                this.radius - (this.width / 2)
+            );
+
+            // Draw the outside arc from the LHS to the RHS
+            this.path(
+                'a % % % % % false',
+                this.centerx,
+                this.centery,
+                this.radius,
+                args.startAngle,
+                args.endAngle
+            );
+
+            // Draw the RHS rounded end if the variant is set
+            // to rounded
+            if (properties.variant === 'rounded') {
+                this.path(
+                    'a % % % % % false',
+                    endpoint1[0],
+                    endpoint1[1],
+                    this.width / 2,
+                    args.endAngle,
+                    args.endAngle + RGraph.PI,
+                );
+            }
+            
+            // Draw the inner arc from the RHS back to the LHS
+            this.path(
+                ' a % % % % % true',
+                this.centerx,
+                this.centery,
+                this.radius - this.width,
+                args.endAngle,
+                args.startAngle
+            );
+            
+            // Draw the LHS rounded end if the variant is set
+            // to rounded
+            if (properties.variant === 'rounded') {
+                this.path(
+                    'a % % % % % %',
+                    endpoint2[0],
+                    endpoint2[1],
+                    this.width / 2,
+                    args.startAngle + RGraph.PI,
+                    args.startAngle,
+                    args.index > 0
+                );
+            }
+        };
 
 
 
@@ -1005,24 +1218,19 @@
 
             // Loop through the coordinates checking for a match
             for (var i=0; i<this.coords.length; ++i) {
+
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
                 
                 // Draw the meter here but don't stroke or fill it
                 // so that it can be tested with isPointInPath()
-                this.path(
-                    'b a % % % % % false a % % % % % true',
-                    
-                    this.coords[i][0],
-                    this.coords[i][1],
-                    this.coords[i][2],
-                    this.coords[i][3],
-                    this.coords[i][4],
-                    
-                    this.coords[i][0],
-                    this.coords[i][1],
-                    this.coords[i][2] - this.coords[i][5],
-                    this.coords[i][4],
-                    this.coords[i][3]
-                );
+                this.context.beginPath();
+
+                this.pathBar({
+                    startAngle: this.coords[i][3],
+                    endAngle: this.coords[i][4]
+                });
     
     
     
@@ -1112,11 +1320,18 @@
             if (typeof properties.highlightStyle === 'function') {
                 (properties.highlightStyle)(shape);
             } else {
+                this.context.beginPath();
+                
+                this.pathBar({
+                    startAngle: shape.angleStart,
+                    endAngle:   shape.angleEnd,
+                    index:      shape.index
+                });
+
                 this.path(
-                    'lw 5 b a % % % % % false a % % % % % true c f % s % lw 1',
-                    shape.x, shape.y, shape.radiusOuter, shape.angleStart, shape.angleEnd,
-                    shape.x, shape.y, shape.radiusInner, shape.angleEnd, shape.angleStart,
-                    properties.highlightFill, properties.highlightStroke
+                    'c f % s % lw 1',
+                    properties.highlightFill,
+                    properties.highlightStroke
                 );
             }
         };
@@ -1233,8 +1448,10 @@
 
 
         //
-        // This returns true/false as to whether the cursor is over the chart area.
-        // The cursor does not necessarily have to be over the bar itself.
+        // This returns true/false as to whether the cursor is
+        // over the chart area. The cursor does not necessarily
+        // have to be over the bar itself - just the bar or the
+        // background to the bar.
         //
         this.overChartArea = function  (e)
         {
@@ -1244,11 +1461,13 @@
 
             // Draw the background to the Progress but don't stroke or fill it
             // so that it can be tested with isPointInPath()
-            this.path(
-                'b a % % % % % false a % % % % % true',
-                this.coords[0][0], this.coords[0][1], this.coords[0][2], properties.anglesStart, properties.anglesEnd,
-                this.coords[0][0], this.coords[0][1], this.coords[0][2] - this.coords[0][5], properties.anglesEnd, properties.anglesStart
-            );
+            this.context.beginPath();
+            
+            this.pathBar({
+                startValue: this.min,
+                endValue:   this.max
+            });
+
 
             return this.context.isPointInPath(mouseX, mouseY);
         };
@@ -1269,11 +1488,22 @@
             if (this.original_colors.length === 0) {
                 this.original_colors.backgroundColor = RGraph.arrayClone(properties.backgroundColor);
                 this.original_colors.colors          = RGraph.arrayClone(properties.colors);
+                this.original_colors.keyColors       = RGraph.arrayClone(properties.keyColors);
             }
 
             properties.colors[0] = this.parseSingleColorForGradient(properties.colors[0]);
             properties.colors[1] = this.parseSingleColorForGradient(properties.colors[1]);
+
+
             
+            // keyColors
+            var colors = properties.keyColors;
+            if (colors) {
+                for (var i=0; i<colors.length; ++i) {
+                    colors[i] = this.parseSingleColorForGradient(colors[i]);
+                }
+            }
+
             properties.colorsStroke      = this.parseSingleColorForGradient(properties.colorsStroke);
             properties.backgroundColor = this.parseSingleColorForGradient(properties.backgroundColor);
         };
@@ -1333,6 +1563,43 @@
             }
     
             return grad ? grad : color;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles highlighting an entire data-series for the interactive
+        // key
+        // 
+        // @param int index The index of the data series to be highlighted
+        //
+        this.interactiveKeyHighlight = function (index)
+        {
+            if (!this.coords[index]) {
+                return;
+            }
+
+            var coords = this.coords[index];
+
+            // Draw some highlight over the top of the segment
+            this.context.beginPath();
+
+            this.pathBar({
+                startAngle: coords[3],
+                endAngle: coords[4],
+                index: index
+            });
+            
+            this.path(
+                's % f %',
+                properties.keyInteractiveHighlightChartStroke,
+                properties.keyInteractiveHighlightChartFill
+            );
         };
 
 
@@ -1591,6 +1858,59 @@
                 + obj.properties.tooltipsOffsety // Add any user defined offset
                 - 10                             // Account for the pointer
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            return RGraph.isArray(this.properties.keyFormattedValueSpecific) && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])
+                    ? this.properties.keyFormattedValueSpecific[index]
+                    : (RGraph.isArray(this.value) ? this.value[index] : this.value);
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.value.length;
         };
 
 
