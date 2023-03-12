@@ -166,6 +166,13 @@
             keyLabelsItalic:               null,
             keyLabelsOffsetx:              0,
             keyLabelsOffsety:              0,
+            keyFormattedDecimals:          0,
+            keyFormattedPoint:             '.',
+            keyFormattedThousand:          ',',
+            keyFormattedUnitsPre:          '',
+            keyFormattedUnitsPost:         '',
+            keyFormattedValueSpecific:     null,
+            keyFormattedItemsCount:        null,
 
             contextmenu:                   null,
 
@@ -189,6 +196,7 @@
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
             tooltipsPositionStatic:     true,
+            tooltipsHotspotIgnore:      null,
 
             highlightStroke:               'rgba(0,0,0,0)',
             highlightFill:                 'rgba(255,255,255,0.7)',
@@ -1563,15 +1571,19 @@
             //
             for (var i=0; i<angles.length ; ++i) {
     
-                var angleStart  = angles[i][0];
-                var angleEnd    = angles[i][1];
-                var radiusStart = opt.radius === false ? 0 : angles[i][2];
-                var radiusEnd   = opt.radius === false ? this.radius : angles[i][3];
-                var centerX     = angles[i][4];
-                var centerY     = angles[i][5];// - (properties.variant.indexOf('3d') !== -1 ? properties.variantThreedDepth : 0);
-                var mouseXY     = RGraph.getMouseXY(e);
-                var mouseX      = mouseXY[0] - centerX;
-                var mouseY      = mouseXY[1] - centerY;
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
+                var angleStart  = angles[i][0],
+                    angleEnd    = angles[i][1],
+                    radiusStart = opt.radius === false ? 0 : angles[i][2],
+                    radiusEnd   = opt.radius === false ? this.radius : angles[i][3],
+                    centerX     = angles[i][4],
+                    centerY     = angles[i][5],// - (properties.variant.indexOf('3d') !== -1 ? properties.variantThreedDepth : 0);
+                    mouseXY     = RGraph.getMouseXY(e),
+                    mouseX      = mouseXY[0] - centerX,
+                    mouseY      = mouseXY[1] - centerY;
     
                 // New click testing (the 0.01 is there because Opera doesn't like 0 as the radius)
                 this.path(
@@ -2526,6 +2538,94 @@
                 + obj.properties.tooltipsOffsety // Add any user defined offset
                 - 10                             // Account for the pointer
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            
+            
+            
+            // Allow for non-equi-angular Rose charts
+            } else if (this.properties.variant === 'non-equi-angular') {
+
+                var total = 0;
+    
+                for (let i=0; i<this.data.length; ++i) {
+                    total += this.data[i][0];
+                }
+
+                return total;
+            
+            
+            
+            
+            
+            
+            // Regular or stacked Rose charts
+            } else {
+                var total = 0;
+    
+                for (let i=0; i<this.data.length; ++i) {
+                    if (RGraph.isArray(this.data[i])) {
+                        total += this.data[i][index];
+                    } else {
+                        total += this.data[i];
+                    }
+                }
+                
+                return total;
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.properties.variant === 'non-equi-angular' ? 1 : this.data[0].length;
         };
 
 
