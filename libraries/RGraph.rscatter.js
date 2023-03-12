@@ -186,6 +186,13 @@
             keyLabelsItalic:                        null,
             keyLabelsOffsetx:                       0,
             keyLabelsOffsety:                       0,
+            keyFormattedDecimals:                   0,
+            keyFormattedPoint:                      '.',
+            keyFormattedThousand:                   ',',
+            keyFormattedUnitsPre:                   '',
+            keyFormattedUnitsPost:                  '',
+            keyFormattedValueSpecific:              null,
+            keyFormattedItemsCount:                 null,
 
             contextmenu:                            null,
 
@@ -196,6 +203,7 @@
             tooltipsCss:                            null,
             tooltipsHighlight:                      true,
             tooltipsHotspot:                        3,
+            tooltipsHotspotIgnore:                  null,
             tooltipsCoordsPage:                     false,
             tooltipsFormattedThousand:              ',',
             tooltipsFormattedPoint:                 '.',
@@ -1216,9 +1224,13 @@
     
             for (var i=0,len=this.coords.length; i<len; ++i) {
 
-                var x       = this.coords[i][0];
-                var y       = this.coords[i][1];
-                var tooltip = this.coords[i][3];
+                if (RGraph.tooltipsHotspotIgnore(this, i)) {
+                    continue;
+                }
+
+                var x       = this.coords[i][0],
+                    y       = this.coords[i][1],
+                    tooltip = this.coords[i][3];
     
                 if (
                     mouseX < (x + offset) &&
@@ -1331,8 +1343,34 @@
 
 
             } else {
-                RGraph.Highlight.point(this, shape);
-            }
+
+
+
+
+            //
+            // Draw a rectangle on the canvas to highlight the appropriate area
+            //
+            this.context.beginPath();
+                this.context.strokeStyle = properties.highlightStroke;
+                this.context.fillStyle   = properties.highlightFill;
+
+                this.context.arc(
+                    shape.x, shape.y, properties.tickmarksSize,
+                    0, RGraph.TWOPI, false
+                );
+            this.context.stroke();
+            this.context.fill();
+
+
+
+
+
+
+
+
+
+
+}
         };
 
 
@@ -1752,6 +1790,75 @@
                 - 15                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This returns the relevant value for the formatted key
+        // macro %{value}. THIS VALUE SHOULD NOT BE FORMATTED.
+        //
+        // @param number index The index in the dataset to get
+        //                     the value for
+        //
+        this.getKeyValue = function (index)
+        {
+            if (   RGraph.isArray(this.properties.keyFormattedValueSpecific)
+                && RGraph.isNumber(this.properties.keyFormattedValueSpecific[index])) {
+
+                return this.properties.keyFormattedValueSpecific[index];
+            
+            
+            
+            
+            } else {
+                var totalA = 0;
+                var totalM = 0;
+    
+                for (let i=0; i<this.data[index].length; ++i) {
+                    totalA += this.data[index][i][0];
+                    totalM += this.data[index][i][1];
+                }
+                
+                return [totalA, totalM];
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many data-points there should be when a string
+        // based key property has been specified. For example, this:
+        //
+        // key: '%{property:_labels[%{index}]} %{value_formatted}'
+        //
+        // ...depending on how many bits of data ther is might get
+        // turned into this:
+        //
+        // key: [
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        //     '%{property:_labels[%{index}]} %{value_formatted}',
+        // ]
+        //
+        // ... ie in that case there would be 4 data-points so the
+        // template is repeated 4 times.
+        //
+        this.getKeyNumDatapoints = function ()
+        {
+            return this.data[0].length;
         };
 
 
