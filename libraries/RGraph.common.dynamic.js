@@ -369,6 +369,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
                         // ================================================================================================ //
                         // This facilitates the onmousemove facility
                         // ================================================================================================ //
@@ -832,8 +842,46 @@
                     var id    = obj.id;
                     var shape = obj.getShape(e);
 
+
+
+
+
+                    ///////////////////////////////////////////////////
+                    // This bit facilitates the dataset highlighting //
+                    ///////////////////////////////////////////////////
+                    if (obj && obj.properties.highlightDataset) {
+                        
+                        var [x, y]         = RGraph.getMouseXY(e);
+                        var shape          = obj.over(x, y);
+                        var excludedNumber = RGraph.isNumber(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude === shape.dataset;
+                        var excludedArray  = RGraph.isArray(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude.includes(shape.dataset);
+                        
+                        if (shape && !excludedNumber && !excludedArray) {
+                            obj.highlightDataset({
+                                dataset:    shape.dataset,
+                                fill:       obj.properties.highlightDatasetFill,
+                                stroke:     obj.properties.highlightDatasetStroke,
+                                linewidth:  obj.properties.highlightDatasetLinewidth,
+                                linedash:   obj.properties.highlightDatasetDashArray,
+                                dotted:     obj.properties.highlightDatasetDotted,
+                                dashed:     obj.properties.highlightDatasetDashed
+                            });
+                            
+                            // Call the callback if specified
+                            if (RGraph.isFunction (obj.properties.highlightDatasetCallback)) {
+                                obj.properties.highlightDatasetCallback({
+                                    dataset: shape.dataset,
+                                    object: obj
+                                });
+                            }
+                        }
+                    }
+
+
+
                     //
-                    // This bit saves the current pointer style if there isn't one already saved
+                    // This bit saves the current pointer style
+                    // if there isn't one already saved
                     //
                     var func = null;                    
                     if (!func && typeof obj.onclick == 'function') {
@@ -1051,6 +1099,53 @@
         }
 
 
+
+
+
+
+
+
+
+
+        // =========================================================================
+        // Line chart dataset highlighting
+        // =========================================================================
+        var objects = RGraph.OR.getObjectsByXY(e);
+
+        for (let i=0; i<objects.length; ++i) {
+            if (objects[i] && objects[i].type && objects[i].type === 'line' && objects[i].properties.highlightDataset) {
+
+                var [x, y] = RGraph.getMouseXY(e);
+                var shape  = objects[i].over(x, y);
+                var excludedNumber = RGraph.isNumber(objects[i].properties.highlightDatasetExclude) && shape && objects[i].properties.highlightDatasetExclude === shape.dataset;
+                var excludedArray  = RGraph.isArray(objects[i].properties.highlightDatasetExclude) && shape && objects[i].properties.highlightDatasetExclude.includes(shape.dataset);
+    
+                if (shape && !excludedNumber && !excludedArray) {
+                    e.target.style.cursor = 'pointer';
+                }
+            }
+                
+            if (objects[i].getShape(e)) {
+                break;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // =========================================================================
         // Interactive key
         // =========================================================================
