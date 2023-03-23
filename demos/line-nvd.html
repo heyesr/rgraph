@@ -4,7 +4,10 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
 
@@ -25,6 +28,11 @@
 
         
     <script>
+
+        // Get a reference to the canvas tag
+        canvas = document.getElementById('cvs');
+        line1 = line2 = line3 = null;
+
         //
         // This is the data for the three Line charts (the first dataset is transparent)
         //
@@ -50,8 +58,7 @@
             textSize: 15,
             shadow: false,
             linewidth: 0.00001,
-            yaxisScale: false,
-            marginLeft: 45
+            yaxisScale: false
         };
 
         frames = 30;
@@ -65,14 +72,26 @@
         // Each line chart has all of the datasets - though on each Line chart three of
         // the datasets are colored transparent.
         //
-        new RGraph.Line({
+        line1 = new RGraph.Line({
             id: 'cvs',
             data: data,
             options: {
                 ...options,
-                yaxisScale: true
+                yaxisScale: true,
+
+                // Only add the dataset highlighting to this charts
+                highlightDataset: true,
+                highlightDatasetFill: '#eee',
+                highlightDatasetFill: 'white',
+                highlightDatasetLinewidth: 1,
+                highlightDatasetExclude: 0, // Can also be an array of dataset indexes
+                highlightDatasetCallback: function(opt)
+                {
+                    alert('You clicked dataset number: ' + opt.dataset);
+                }
             }
         }).trace({frames: frames}, draw2);
+
 
 
 
@@ -85,10 +104,12 @@
             options.colors         = ['transparent', 'transparent', '#C4D6ED', 'transparent'];
             options.backgroundGrid =  false
 
-            new RGraph.Line({
+            line2 = new RGraph.Line({
                 id: 'cvs',
                 data: data,
-                options: options
+                options: {
+                    ...options
+                }
             }).trace({frames: frames}, draw3);
         }
 
@@ -101,10 +122,12 @@
         {
             options.colors = ['transparent', 'transparent', 'transparent', '#609EC8'];
             
-            new RGraph.Line({
+            line3 = new RGraph.Line({
                 id: 'cvs',
                 data: data,
-                options: options
+                options: {
+                    ...options
+                }
             }).trace({frames: frames});
         }
     </script>
@@ -116,6 +139,7 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="../libraries/RGraph.common.core.js" &gt;&lt;/script&gt;
+&lt;script src="../libraries/RGraph.common.dynamic.js" &gt;&lt;/script&gt;
 &lt;script src="../libraries/RGraph.line.js" &gt;&lt;/script&gt;
 </pre>
     
