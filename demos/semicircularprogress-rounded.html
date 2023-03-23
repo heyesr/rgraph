@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.semicircularprogress.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A rounded Semi-circular Progress chart</title>
+    
+    
+    
+    <meta name="description" content="A rounded Semi-circular Progress chart" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+    <h1>A rounded Semi-circular Progress chart</h1>
+
+    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    
+    <script>
+        data = [43,20];
+
+        scp = new RGraph.SemiCircularProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: data,
+            options: {
+                labelsMin: false,
+                labelsMax: false,
+                labelsCenterSize: 75,
+                labelsCenterUnitsPost: '%',
+                labelsCenterBold: true,
+                labelsCenterOffsety: 30,
+                labelsCenterSpecific: RGraph.arraySum(data) + '%',
+                width: 40,
+                marginBottom: 100,
+                marginTop: 5,
+                colors: ['black','#71a6a1','#c00','blue'],
+                anglesStart: RGraph.PI - (RGraph.HALFPI / 4),
+                anglesEnd:RGraph.TWOPI + (RGraph.HALFPI / 4),
+                variant: 'rounded',
+                _names: ['Alfie','Barack'],
+                tooltips: '%{property:_names[%{index}]}: %{global:data[%{index}]}%',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                colorsStroke: 'transparent',
+                text: [
+                    {
+                     x:      0,
+                     y:      260,
+                     text:   'Overall Data score',
+                     bold:   true,
+                     size:   20,
+                     halign: 'center',
+                     valign: 'top'
+                    },
+                    {
+                     x:      0,
+                     y:      230,
+                     text:   '+12% improvement',
+                     italic: true,
+                     size:   12,
+                     halign: 'center',
+                     valign: 'top',
+                     color: '#aaa',
+                     font: 'Verdana'
+                    }
+                ],
+            }
+        }).on('firstdraw', function (obj)
+        {
+            obj.properties.text[0].x = obj.centerx;
+            obj.properties.text[1].x = obj.centerx;
+        
+            RGraph.redraw();
+        
+        }).on('draw', function (obj)
+        {
+            // Add a roundedRect around the % improvment text
+            var index = 3;
+
+            obj.path(
+                'b rr % % % % % s #ccc',
+                obj.coordsText[index].x - 2,
+                obj.coordsText[index].y - 3,
+                obj.coordsText[index].width + 7,
+                obj.coordsText[index].height + 4,
+                50
+            );
+        }).draw();
+    </script>
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.semicircularprogress.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="300"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
