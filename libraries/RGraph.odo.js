@@ -15,11 +15,11 @@
     //
     RGraph.Odometer = function (conf)
     {
-        var id                 = conf.id;
-        var canvas             = document.getElementById(id);
-        var min                = conf.min;
-        var max                = conf.max;
-        var value              = conf.value;
+        var id                 = conf.id,
+            canvas             = document.getElementById(id),
+            min                = conf.min,
+            max                = conf.max,
+            value              = conf.value;
 
         this.id                     = id;
         this.canvas                 = canvas;
@@ -73,11 +73,11 @@
             labelsValueOffsety:        0,
 
             needleColor:               'black',
+            needleLength:              null,
             needleWidth:               2,
             needleHead:                true,
             needleTail:                true,
             needleType:                'pointer',
-            needleExtra:               [],
             needleTriangleBorder:      '#aaa',
 
             textSize:                  12,
@@ -367,34 +367,42 @@
     
             // And lastly, draw the labels
             this.drawLabels();
-    
+
             // Draw the needle
-            this.drawNeedle(this.value, properties.needleColor);
-            
-            //
-            // Draw any extra needles
-            //
-            if (properties.needleExtra.length > 0) {
-                for (var i=0; i<properties.needleExtra.length; ++i) {
-                    var needle = properties.needleExtra[i];
-                    this.drawNeedle(needle[0], needle[1], needle[2]);
+            if (RGraph.isArray(this.value)) {
+                for (let i=0; i<this.value.length; ++i) {
+                    this.drawNeedle({
+                        value:           this.value[i],
+                        color:           RGraph.isArray(properties.needleColor) ? properties.needleColor[i]   : properties.needleColor,
+                        length:          RGraph.isArray(properties.needleLength) ? properties.needleLength[i] : properties.needleLength,
+                        type:            RGraph.isArray(properties.needleType) ? properties.needleType[i]    : properties.needleType,
+                        linewidth:       RGraph.isArray(properties.needleWidth) ? properties.needleWidth[i]   : properties.needleWidth,
+                        head:            RGraph.isArray(properties.needleHead)  ? properties.needleHead[i]    : properties.needleHead,
+                        tail:            RGraph.isArray(properties.needleTail)  ? properties.needleTail[i]    : properties.needleTail,
+                        triangleBorder:  RGraph.isArray(properties.needleTriangleBorder) ? properties.needleTriangleBorder[i] : properties.needleTriangleBorder
+                    });
                 }
+            } else {
+                this.drawNeedle({
+                    value:           this.value,
+                    color:           RGraph.isArray(properties.needleColor)  ? properties.needleColor[0]  : properties.needleColor,
+                    length:          RGraph.isArray(properties.needleLength) ? properties.needleLength[0] : properties.needleLength,
+                    type:            RGraph.isArray(properties.needleColor)  ? properties.needleType[0]   : properties.needleType,
+                    linewidth:       RGraph.isArray(properties.needleWidth)  ? properties.needleWidth[0]  : properties.needleWidth,
+                    head:            RGraph.isArray(properties.needleHead)   ? properties.needleHead[0]   : properties.needleHead,
+                    tail:            RGraph.isArray(properties.needleTail)   ? properties.needleTail[0]   : properties.needleTail,
+                    triangleBorder:  RGraph.isArray(properties.needleTriangleBorder) ? properties.needleTriangleBorder[0] : properties.needleTriangleBorder
+                });
             }
 
             //
             // Draw the key if requested
             //
             if (properties.key && properties.key.length > 0) {
-                // Build a colors array out of the needle colors
-                var colors = [properties.needleColor];
                 
-                if (properties.needleExtra.length > 0) {
-                    for (var i=0; i<properties.needleExtra.length; ++i) {
-                        var needle = properties.needleExtra[i];
-                        colors.push(needle[1]);
-                    }
-                }
-    
+                // Build a colors array out of the needle colors
+                var colors = RGraph.isArray(properties.needleColor) ? properties.needleColor : [properties.needleColor];
+
                 RGraph.drawKey(this,
                     properties.key,
                     colors
@@ -502,7 +510,14 @@
     
             // Draw the grey border
             this.context.fillStyle = backgroundColor;
-            this.context.arc(this.centerx, this.centery, this.radius, 0.0001, RGraph.TWOPI, false);
+            this.context.arc(
+                this.centerx,
+                this.centery,
+                this.radius + (properties.border ? 20 : 0),
+                0.0001,
+                RGraph.TWOPI,
+                false
+            );
             this.context.fill();
     
             //
@@ -741,30 +756,43 @@
         //
         // Draws the needle of the odometer
         // 
-        // @param number value The value to represent
-        // @param string color The color of the needle
-        // @param number       The OPTIONAL length of the needle
+        // @param object opt An object map of the following
+        //                   properties:
+        //                    o value
+        //                    o head
+        //                    o width
+        //                    o length
+        //                    o type
+        //                    o color
+        //                    o triangleborder
         //
-        this.drawNeedle = function (value, color)
+        this.drawNeedle = function (opt)
         {
             // The optional length of the needle
-            var length = arguments[2] ? arguments[2] : this.radius - properties.labelsMargin;
-    
-            // ===== First draw a grey background circle =====
-            
+            opt.length = opt.length ? opt.length : this.radius - properties.labelsMargin - 10;
+
+            // First draw a grey background circle at the center of
+            // the Odo            
             this.context.fillStyle = '#999';
     
             this.context.beginPath();
                 this.context.moveTo(this.centerx, this.centery);
-                this.context.arc(this.centerx, this.centery, 10, 0, RGraph.TWOPI, false);
-                this.context.fill();
+                this.context.arc(
+                    this.centerx, this.centery,
+                    10,
+                    0, RGraph.TWOPI,
+                    false
+                );
             this.context.closePath();
-    
+            this.context.fill();
             this.context.fill();
     
-            // ===============================================
-            
-            this.context.fillStyle = color
+
+
+
+
+
+            this.context.fillStyle   = opt.color
             this.context.strokeStyle = '#666';
     
             // Draw the centre bit
@@ -776,85 +804,105 @@
             
             this.context.stroke();
             this.context.fill();
-    
-            if (properties.needleType == 'pointer') {
-    
-                this.context.strokeStyle = color;
-                this.context.lineWidth   = properties.needleWidth;
+
+            if (opt.type === 'pointer') {
+
+                this.context.strokeStyle = opt.color;
+                this.context.lineWidth   = opt.linewidth;
                 this.context.lineCap     = 'round';
                 this.context.lineJoin    = 'round';
                 
                 // Draw the needle
                 this.context.beginPath();
+
                     // The trailing bit on the opposite side of the dial
                     this.context.beginPath();
-                        this.context.moveTo(this.centerx, this.centery);
+                        this.context.moveTo(
+                            this.centerx,
+                            this.centery
+                        );
                         
-                        if (properties.needleTail) {
-    
-                            this.context.arc(this.centerx,
-                                   this.centery,
-                                   20,
-                                    (((value / this.range) * 360) + 90) / (180 / RGraph.PI),
-                                   (((value / this.range) * 360) + 90 + 0.01) / (180 / RGraph.PI), // The 0.01 avoids a bug in ExCanvas and Chrome 6
-                                   false
-                                  );
+                        if (opt.tail) {
+
+                            this.context.arc(
+                                this.centerx,
+                                this.centery,
+                                20,
+                                (opt.value / this.range) * RGraph.TWOPI + RGraph.HALFPI,
+                                (opt.value / this.range) * RGraph.TWOPI + RGraph.HALFPI,
+                                false
+                            );
                         }
-    
+
                     // Draw the long bit on the opposite side
-                    this.context.arc(this.centerx,
-                            this.centery,
-                            length - 10,
-                            (((value / this.range) * 360) - 90) / (180 / RGraph.PI),
-                            (((value / this.range) * 360) - 90 + 0.1 ) / (180 / RGraph.PI), // The 0.1 avoids a bug in ExCanvas and Chrome 6
-                            false
-                           );
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        opt.length - 20,
+                        (((opt.value / this.range) * 360) - 90) / (180 / RGraph.PI),
+                        (((opt.value / this.range) * 360) - 90 + 0.1 ) / (180 / RGraph.PI),
+                        false
+                    );
                 this.context.closePath();
                 
                 //this.context.stroke();
                 //this.context.fill();
             
-    
-            } else if (properties.needleType == 'triangle') {
-    
+
+            } else if (opt.type === 'triangle') {
+
                 this.context.lineWidth = 0.01;
                 this.context.lineEnd  = 'square';
                 this.context.lineJoin = 'miter';
-    
+
                 //
                 // This draws the version of the pointer that becomes the border
                 //
                 this.context.beginPath();
-                    this.context.fillStyle = properties.needleTriangleBorder;
-                    this.context.arc(this.centerx, this.centery, 11, (((value / this.range) * 360)) / 57.3, ((((value / this.range) * 360)) + 0.01) / 57.3, 0);
-                    this.context.arc(this.centerx, this.centery, 11, (((value / this.range) * 360) + 180) / 57.3, ((((value / this.range) * 360) + 180) + 0.01)/ 57.3, 0);
-                    this.context.arc(this.centerx, this.centery, length - 5, (((value / this.range) * 360) - 90) / 57.3, ((((value / this.range) * 360) - 90) / 57.3) + 0.01, 0);
+                    this.context.fillStyle = opt.triangleBorder;
+                    this.context.arc(this.centerx, this.centery, 11, (((opt.value / this.range) * 360)) / 57.3, ((((opt.value / this.range) * 360)) + 0.01) / 57.3, 0);
+                    this.context.arc(this.centerx, this.centery, 11, (((opt.value / this.range) * 360) + 180) / 57.3, ((((opt.value / this.range) * 360) + 180) + 0.01)/ 57.3, 0);
+                    this.context.arc(this.centerx, this.centery, opt.length - 5, (((opt.value / this.range) * 360) - 90) / 57.3, ((((opt.value / this.range) * 360) - 90) / 57.3) + 0.01, 0);
                 this.context.closePath();
                 this.context.fill();
     
                 this.context.beginPath();
-                this.context.arc(this.centerx, this.centery, 15, 0, RGraph.TWOPI, 0);
+                this.context.arc(
+                    this.centerx,
+                    this.centery,
+                    15,
+                    0,
+                    RGraph.TWOPI,
+                    false
+                );
                 this.context.closePath();
                 this.context.fill();
-    
+
                 // This draws the pointer
-                this.context.beginPath();
+                this.path(
+                    'b    a % % % % % false    a % % % % % false',
+                    
+                    this.centerx,
+                    this.centery,
+                    7,
+                    (((opt.value / this.range) * 360)) / 57.3,
+                    ((((opt.value / this.range) * 360)) + 0.01) / 57.3,
+                    
+                    
+                    this.centerx,
+                    this.centery,
+                    7,
+                    (((opt.value / this.range) * 360) + 180) / 57.3,
+                    ((((opt.value / this.range) * 360) + 180) + 0.01)/ 57.3
+                );
+
+
+                this.context.arc(this.centerx, this.centery, opt.length - 13, (((opt.value / this.range) * 360) - 90) / 57.3, ((((opt.value / this.range) * 360) - 90) / 57.3) + 0.01, 0);
+                this.context.closePath();
                 this.context.strokeStyle = 'black';
-                this.context.fillStyle = color;
-                this.context.arc(this.centerx, this.centery, 7, (((value / this.range) * 360)) / 57.3, ((((value / this.range) * 360)) + 0.01) / 57.3, 0);
-                this.context.arc(this.centerx, this.centery, 7, (((value / this.range) * 360) + 180) / 57.3, ((((value / this.range) * 360) + 180) + 0.01)/ 57.3, 0);
-                this.context.arc(this.centerx, this.centery, length - 13, (((value / this.range) * 360) - 90) / 57.3, ((((value / this.range) * 360) - 90) / 57.3) + 0.01, 0);
-                this.context.closePath();
+                this.context.fillStyle   = opt.color;
                 this.context.stroke();
-                this.context.fill();
-
-
-                //
-                // This is here to accommodate the MSIE/ExCanvas combo
-                //
-                this.context.beginPath();
-                this.context.arc(this.centerx, this.centery, 7, 0, RGraph.TWOPI, 0);
-                this.context.closePath();
+                
                 this.context.fill();
             }
     
@@ -864,28 +912,44 @@
     
             // Draw the mini center circle
             this.context.beginPath();
-            this.context.fillStyle = color;
-            this.context.arc(this.centerx, this.centery, properties.needleType == 'pointer' ? 7 : 12, 0.01, RGraph.TWOPI, false);
+            this.context.fillStyle = opt.color;
+            this.context.arc(
+                this.centerx,
+                this.centery,
+                opt.type === 'pointer' ? 7 : 12,
+                0.01,
+                RGraph.TWOPI,
+                false
+            );
             this.context.fill();
     
             // This draws the arrow at the end of the line
-            if (properties.needleHead && properties.needleType == 'pointer') {
+            if (opt.head && opt.type === 'pointer') {
                 this.context.lineWidth = 1;
-                this.context.fillStyle = color;
+                this.context.fillStyle = opt.color;
     
                 // round, bevel, miter
                 this.context.lineJoin = 'miter';
                 this.context.lineCap  = 'butt';
-    
+
                 this.context.beginPath();
-                    this.context.arc(this.centerx, this.centery, length - 5, (((value / this.range) * 360) - 90) / 57.3, (((value / this.range) * 360) - 90 + 0.1) / 57.3, false);
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        opt.length - 5,
+                        RGraph.toRadians(((opt.value / this.range) * 360) - 90),
+                        RGraph.toRadians(((opt.value / this.range) * 360) - 90 + 0.1),
+                        false
+                    );
     
-                    this.context.arc(this.centerx,
-                           this.centery,
-                           length - 20,
-                           RGraph.toRadians( ((value / this.range) * 360) - (length < 60 ? 80 : 85) ),
-                           RGraph.toRadians( ((value / this.range) * 360) - (length < 60 ? 100 : 95) ),
-                           1);
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        opt.length - 20,
+                        RGraph.toRadians( ((opt.value / this.range) * 360) - (opt.length < 60 ? 80 : 85) ),
+                        RGraph.toRadians( ((opt.value / this.range) * 360) - (opt.length < 60 ? 100 : 95) ),
+                        true
+                    );
                 this.context.closePath();
         
                 this.context.fill();
@@ -899,7 +963,14 @@
             this.context.beginPath();
             this.context.fillStyle = 'gray';
             this.context.moveTo(this.centerx, this.centery);
-            this.context.arc(this.centerx,this.centery,2,0,6.2795,false);
+            this.context.arc(
+                this.centerx,
+                this.centery,
+                2,
+                0,
+                6.2795,
+                false
+            );
             this.context.closePath();
     
             this.context.fill();
