@@ -685,17 +685,8 @@
         // @param number start The start angle of the segment
         // @param number end   The end angle of the segment
         //
-        this.pathBar = function ()
+        this.pathBar = function (args)
         {
-            var args = arguments[0];
-
-
-
-
-
-
-
-
             // If the start value has been given instead of the
             // angle - work out the angle
             if (RGraph.isNumber(args.startValue)) {
