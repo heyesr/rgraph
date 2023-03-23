@@ -282,6 +282,20 @@
             highlightFill:              'white',
             highlightPointRadius:       2,
             
+            highlightDataset:                false,
+            highlightDatasetStroke:          'rgba(0,0,0,0.25)',
+            highlightDatasetFill:            'rgba(255,255,255,0.75)',
+            highlightDatasetStrokeAlpha:     1,
+            highlightDatasetFillAlpha:       1,
+            highlightDatasetFillUseColors:   false,
+            highlightDatasetStrokeUseColors: false,
+            highlightDatasetLinewidth:       null,
+            highlightDatasetDotted:          false,
+            highlightDatasetDashed:          false,
+            highlightDatasetDashArray:       null,
+            highlightDatasetExclude:         null,
+            highlightDatasetCallback:        null,
+
             stepped:                    false,
             
             key:                        null,
@@ -4036,135 +4050,104 @@
             //
             // This is the function that handles dataset tooltips
             //
-            // TODO Needs highlighting adding
-            //
             this.datasetTooltipsListener = function (e)
             {
-                var mouseXY = RGraph.getMouseXY(e);
+                var [mx, my] = RGraph.getMouseXY(e);
                 
                 // This defaults the tooltipsDatasetEvent property to mousemove
                 if (!obj.properties.tooltipsDatasetEvent) {
                     obj.properties.tooltipsDatasetEvent = 'click';
                 }
-    
-                //
-                // Determine the correct coords array to use
-                //
-                if (obj.properties.spline) {
-                    var coords = obj.coordsSpline;
-                } else {
-                    var coords = obj.coords2;
-                }
-    
-                for (var i=0; i<coords.length; ++i) {
-
-                    // Start a path and draw the line so it can be tested for clicks
-                    // (this is not highlighting the line)
-                    var path = 'b lc round lw 10 m {1} {2}'.format(
-                        coords[i][0][0],
-                        coords[i][0][1]
-                    );
-
-                    for (var j=0; j<coords[i].length; ++j) {
-                        path += ' l {1} {2}'.format(
-                            coords[i][j][0],
-                            coords[i][j][1]
-                        );
-                    }
-                
-                    // Finish the path
-                    //path += ' s red'
-                    
-                    // Stroke it to the canvas
-                    obj.path(path);
-                
-                    // Now test it
-                    if (obj.context.isPointInStroke(mouseXY[0], mouseXY[1])) {
-
-                        var over = true;
-    
-                        // Show the tooltip if we're in the click handler or change the
-                        // pointer if we're in the mousemove listener.
-                        if (    e.type === 'click'
-                            || (e.type === 'mousemove' && obj.properties.tooltipsDatasetEvent === 'mousemove' && (!RGraph.Registry.get('tooltip') || i != RGraph.Registry.get('tooltip').__dataset__))
-                           ) {
-
-                            RGraph.hideTooltip();
-                            RGraph.redraw();
-                            
-                            // Set the tooltip positioning
-                            obj.set('tooltipsPositionStatic', false);
-                            obj.set('tooltipsEffect', 'fade');
-
-                            // Add the dataset index to the object
-                            obj.tooltipsDatasetIndex = i;
-
-                            RGraph.tooltip({
-                                object: obj,
-                                text: typeof obj.properties.tooltipsDataset === 'string'
-                                          ? obj.properties.tooltipsDataset
-                                          : obj.properties.tooltipsDataset[i],
-                                x: 0,
-                                y: 0,
-                                index: i,
-                                event: e
-                            });
 
 
+                // Now test it
+                var result = obj.over(mx, my)
 
+                if (RGraph.isObject(result) && RGraph.isNumber(result.dataset)) {
 
-                            //
-                            // Position the tooltip
-                            //
-                            var x        = obj.coords2[i][Math.floor(obj.coords2[i].length / 2)][0],
-                                y        = obj.coords2[i][Math.floor(obj.coords2[i].length / 2)][1],
-                                canvasXY = RGraph.getCanvasXY(obj.canvas),
-                                tooltip  = RGraph.Registry.get('tooltip'),
-                                width    = tooltip.offsetWidth,
-                                height   = tooltip.offsetHeight;
-                            
-                            tooltip.style.left = (canvasXY[0] + x - (width / 2)) + 'px';
-                            tooltip.style.top  = (canvasXY[1] + y - height - 20) + 'px';
+                    var over    = true,
+                        dataset = result.dataset;
 
+                    // Show the tooltip if we're in the click handler or change the
+                    // pointer if we're in the mousemove listener.
+                    if (    e.type === 'click'
+                        || (e.type === 'mousemove' && obj.properties.tooltipsDatasetEvent === 'mousemove' && (!RGraph.Registry.get('tooltip') || i != RGraph.Registry.get('tooltip').__dataset__))
+                       ) {
 
-
-
-                            // Highlight the dataset.
-                            // Start a path and redraw the line
-                            var path = 'b lw %1 m %2 %3'.format(
-                                properties.linewidth + 10,
-                                coords[i][0][0],
-                                coords[i][0][1]
-                            );
-
-                            for (var j=0; j<coords[i].length; ++j) {
-                                path += ' l {1} {2}'.format(
-                                    coords[i][j][0],
-                                    coords[i][j][1]
-                                );
-                            }
-                            
-                            // Finish the path
-                            path += ' ga 0.2 s ' +  properties.colors[i] + ' ga 1';
-                            obj.path(path);
-                        }
+                        RGraph.hideTooltip();
+                        RGraph.redraw();
                         
-                        if (e.type === 'mousemove') {
-                            e.target.style.cursor = 'pointer';
-                        }
+                        // Set the tooltip positioning
+                        obj.set('tooltipsPositionStatic', false);
+                        obj.set('tooltipsEffect', 'fade');
+
+                        // Add the dataset index to the object
+                        obj.tooltipsDatasetIndex = dataset;
+
+                        RGraph.tooltip({
+                            object: obj,
+                            text: typeof obj.properties.tooltipsDataset === 'string'
+                                      ? obj.properties.tooltipsDataset
+                                      : obj.properties.tooltipsDataset[dataset],
+                            x: 0,
+                            y: 0,
+                            index: dataset,
+                            event: e
+                        });
+
+
+
+
+                        //
+                        // Position the tooltip
+                        //
+                        var coords_length = obj.coords2[dataset].length,
+                            x             = obj.coords2[dataset][Math.floor(coords_length / 2)][0],
+                            y             = obj.coords2[dataset][Math.floor(coords_length / 2)][1],
+                            [cx, cy]      = RGraph.getCanvasXY(obj.canvas),
+                            tooltip       = RGraph.Registry.get('tooltip'),
+                            width         = tooltip.offsetWidth,
+                            height        = tooltip.offsetHeight;
+                        
+                        tooltip.style.left = (cx + x - (width / 2)) + 'px';
+                        tooltip.style.top  = (cy + y - height - 20) + 'px';
+
+
+
+
+
+
+
+                        //
+                        // Highlight the dataset
+                        //
+                        obj.properties.highlightDatasetStrokeAlpha = 0.25;
+                            
+                        obj.highlightDataset({
+                            dataset:   dataset,
+                            linewidth: obj.getLineWidth(dataset) + 10,
+                            stroke:    obj.properties.filled ? 'transparent'  : obj.properties.colors[dataset]
+                        });
+                        
+                        obj.properties.highlightDatasetStrokeAlpha = 1;
                     }
                     
-                    if (!over) {
-                        // Hide the tooltip if the event is click
-                        if (e.type === 'click') {
-                            RGraph.hideTooltip();
-                            RGraph.redraw();
-                        }
-    
-                        // Reset the cursor type
-                        obj.canvas.style.cursor = 'default';
+                    if (e.type === 'mousemove') {
+                        e.target.style.cursor = 'pointer';
                     }
                 }
+                
+                if (!over) {
+                    // Hide the tooltip if the event is click
+                    if (e.type === 'click') {
+                        RGraph.hideTooltip();
+                        RGraph.redraw();
+                    }
+
+                    // Reset the cursor type
+                    obj.canvas.style.cursor = 'default';
+                }
+
 
                 e.stopPropagation();
             };
@@ -4180,7 +4163,6 @@
                 this.datasetTooltipsListenerAdded = true;
             }
         };
-
 
 
 
@@ -4838,6 +4820,379 @@
             return this.data.length;
         };
 
+
+
+
+
+
+
+
+        //
+        // This function tests the given coords to see if
+        // they're over the line. It draws the path using
+        // the coordinates from the line chart (either
+        // the regular coords or the spline coordinates)
+        // and then uses the isPointInstroke() function.
+        //
+        // @param  number  x The X coordinate to test
+        // @param  number  y The Y coordinate to test
+        // @return boolean   Whether the given coordinates
+        //                   are over the line or not.
+        //
+        this.over = function (x, y)
+        {
+            var args     = RGraph.getArgs(arguments, 'x,y');
+            var datasets = properties.spline ? this.coordsSpline : this.coords2;
+
+            // Loop through the set of coords for each line
+            for (var i=0; i<datasets.length; ++i) {
+
+                // Current datasets coordinates
+                var dataset = i;
+
+                // Move to the first points coordinates
+                this.path(
+                    'b lw % lc round ss rgba(0,0,0,0) m % %',
+                    this.properties.linewidth + 5,
+                    datasets[dataset][0][0],
+                    datasets[dataset][0][1]
+                );
+
+                // Loop through the coords for the line
+                for (var j=1; j<datasets[dataset].length; ++j) {                
+                    this.context.lineTo(
+                        datasets[dataset][j][0],
+                        datasets[dataset][j][1]
+                    );
+                }
+
+
+
+
+                // This is the shape object that is retuned
+                // with details of any line/fill that is
+                // currently being hovered over. More
+                // information is added when it can be
+                var shape = {
+                    object: this,
+                    dataset: dataset
+                };
+
+
+
+
+
+
+                //
+                // Accommodate stacked filled line charts
+                //
+                if (   this.properties.filled
+                    && this.properties.filledAccumulative
+                   ) {
+                    
+                    // Highlight the first dataset
+                    // Draw a line to the X axis and back
+                    // to the first point
+                    if (dataset === 0) {
+                        this.context.lineTo(
+                            datasets[dataset][datasets[dataset].length - 1][0],
+                            this.canvas.height - this.properties.marginBottom
+                        );
+                        this.context.lineTo(
+                            this.properties.marginLeft,
+                            this.canvas.height - this.properties.marginBottom
+                        );
+
+
+
+
+                    // Other datasets
+                    //
+                    // Have to stroke the line over the
+                    // coordinates and then backtrack
+                    // over the previous lines coordinates
+                    } else if (dataset > 0) {
+
+                        // Draw a line to the top of the previous dataset and
+                        // back to the first point
+                        var prevDatasetIdx = dataset - 1;
+
+                        // Draw a line to the bottom of the canvas
+                        this.context.lineTo(
+                            datasets[dataset][datasets[dataset].length - 1][0],
+                            this.canvas.height - this.properties.marginBottom
+                        );
+
+                        // Draw a line to the LHS of the canvas
+                        this.context.lineTo(
+                            this.properties.marginLeft,
+                            this.canvas.height - this.properties.marginBottom
+                        );
+
+                        this.context.closePath();
+                        
+                        shape.dataset = dataset;
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Accommodate non-stacked, filled charts
+                } else if (   this.properties.filled
+                           && !this.properties.filledAccumulative
+                          ) {
+
+                    // Reverse the dataset index as the
+                    // datasets need to be checked in reverse
+                    // order
+                    dataset = datasets.length - dataset - 1;
+
+                    this.context.beginPath();
+                    
+                    // Loop through the coordinates
+                    // of the shape
+                    for (var k=0; k<datasets[dataset].length; ++k) {
+                        k === 0
+                            ? this.context.moveTo(datasets[dataset][k][0], datasets[dataset][k][1])
+                            : this.context.lineTo(datasets[dataset][k][0], datasets[dataset][k][1]);
+                    }
+                    
+                    // Draw a line to the bottom of the chart
+                    this.context.lineTo(
+                        datasets[dataset][datasets[dataset].length - 1][0],
+                        this.canvas.height - this.properties.marginBottom
+                    );
+                    
+                    // Draw a line back to the LHS of the chart
+                    this.context.lineTo(
+                        datasets[dataset][0][0],
+                        this.canvas.height - this.properties.marginBottom
+                    );
+                    
+                    this.context.closePath();
+                    this.context.fillStyle = 'rgba(0,0,0,0.5)';
+
+                    
+                    // Add filled shape details to the
+                    // shape (if any)
+                    shape.dataset = dataset;
+                }
+
+//this.context.stroke();
+
+
+
+                // Return the index of the line if the mouse
+                // pointer is over it it's in the stroke
+                if (   this.context.isPointInStroke(args.x, args.y)
+                    || (this.properties.filled && this.context.isPointInPath(args.x, args.y))
+                   ) {
+
+                    // This shape object is created up above
+                    // and the necessary bits are added to it
+                    // as they're determined
+                    return shape;
+                }
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Used to highlight a particular dataset. This
+        // function accommodates fill, non-filled, splines
+        // and non-spline charts.
+        //
+        // @param opt object A little object that should
+        //                   contain configuration
+        //                   information:
+        //
+        //                   linewidth: The linewidth
+        //                   stroke:    The color of the
+        //                              stroke
+        //                   fill:      The color of the fill
+        //
+        this.highlightDataset = function ()
+        {
+            var args   = RGraph.getArgs(arguments, 'opt');
+            var coords = this.properties.spline ? this.coordsSpline : this.coords2;
+
+            // Default to the first dataset
+            args.opt.dataset = parseInt(args.opt.dataset) || 0;
+
+            // Default this to an empty object
+            if (!args.opt)                              args.opt = {};
+            if (!args.opt.stroke)                       args.opt.stroke    = this.properties.highlightDatasetStroke;
+            if (!args.opt.fill)                         args.opt.fill      = this.properties.highlightDatasetFill;
+            if (!args.opt.dotted)                       args.opt.fotted    = this.properties.highlightDatasetDotted;
+            if (!args.opt.dashed)                       args.opt.dashed    = this.properties.highlightDatasetDashed;
+            if (!args.opt.linedash)                     args.opt.linedash  = this.properties.highlightDatasetDashArray;
+            if (!RGraph.isNumber(args.opt.linewidth))   args.opt.linewidth = this.properties.linewidth;
+
+            //
+            // If the colors are arrays - deal with that
+            if (RGraph.isArray(args.opt.stroke) && args.opt.stroke[args.opt.dataset]) {
+                args.opt.stroke = args.opt.stroke[args.opt.dataset];
+            }
+
+            if (RGraph.isArray(args.opt.fill) && args.opt.fill[args.opt.dataset]) {
+                args.opt.fill = args.opt.fill[args.opt.dataset];
+            }
+
+            // Start the path
+            this.context.beginPath();
+
+            // Set the colors and linewidth
+            this.context.strokeStyle = args.opt.stroke;
+            this.context.fillStyle   = args.opt.fill;
+            this.context.lineWidth   = args.opt.linewidth;
+
+            // If the highlighDatasetStrokeUseColors property is set
+            // then set the strokeStyle to the relevant
+            // obj.properties.colors color
+            if (this.properties.highlightDatasetStrokeUseColors && this.properties.colors[args.opt.dataset]) {
+                this.context.strokeStyle = this.properties.colors[args.opt.dataset];
+            }
+            
+            // If the highlighDatasetFillUseColors property is set
+            // then set the fillStyle to the relevant
+            // obj.properties.colors color
+            if (this.properties.highlightDatasetFillUseColors && this.properties.colors[args.opt.dataset]) {
+                this.context.fillStyle = this.properties.colors[args.opt.dataset];
+            }
+            
+            // If the highlighDatasetFillUseColors property is set AND the
+            // obj.properties.filledColors property is being used
+            // then set the fillStyle to the relevant
+            // obj.properties.filledColors color
+            if (this.properties.highlightDatasetFillUseColors && RGraph.isArray(this.properties.filledColors) && this.properties.filledColors[args.opt.dataset]) {
+                this.context.fillStyle = this.properties.filledColors[args.opt.dataset];
+            }
+            
+            // Fotted or dashed settings
+            if (args.opt.dotted || args.opt.dashed) {
+                if (args.opt.dashed) {
+                    this.context.setLineDash([2,6])
+                } else if (args.opt.dotted) {
+                    this.context.setLineDash([1,5])
+                }
+            } else if (args.opt.linedash) {
+                this.context.setLineDash(args.opt.linedash);
+            }
+
+            if (args.opt.linewidth === 0) {
+                this.context.strokeStyle = 'transparent';
+            }
+
+
+
+            // Loop through the coordinates
+            // of the shape
+            for (var i=0; i<coords[args.opt.dataset].length; ++i) {
+                i === 0
+                    ? this.context.moveTo(coords[args.opt.dataset][i][0], coords[args.opt.dataset][i][1])
+                    : this.context.lineTo(coords[args.opt.dataset][i][0], coords[args.opt.dataset][i][1]);
+            }
+
+            //
+            // If this is a stacked & filled chart then we
+            // need to add the previous datasets coordinates
+            // to the path
+            //
+            if (   this.properties.filled
+                && this.properties.filledAccumulative
+                && args.opt.dataset > 0
+               ) {
+
+                // Necessary?
+                this.context.lineTo(
+                    coords[args.opt.dataset - 1][coords[args.opt.dataset - 1].length - 1][0],
+                    coords[args.opt.dataset - 1][coords[args.opt.dataset - 1].length - 1][1]
+                );
+                
+                for (let i=(coords[args.opt.dataset - 1].length - 1); i>=0; --i) {
+                    this.context.lineTo(
+                        coords[args.opt.dataset - 1][i][0],
+                        coords[args.opt.dataset - 1][i][1]
+                    );
+                }
+            }
+
+
+
+
+
+
+            // First dataset or non-stacked charts -
+            // draw a line down to the bottom of
+            // the chart.
+            //
+            // *** ONLY DO THIS FOR FILLED CHARTS ***
+            //
+            if (this.properties.filled && (args.opt.dataset === 0 || !this.properties.filledAccumulative) ) {
+                if (args.opt.dataset === 0 || !this.properties.filledAccumulative) {
+                    this.context.lineTo(
+                        coords[args.opt.dataset][coords[args.opt.dataset].length - 1][0],
+                        this.canvas.height - this.properties.marginBottom
+                    );
+                }
+
+                this.context.lineTo(
+                    this.properties.marginLeft,
+                    this.canvas.height - this.properties.marginBottom
+                );
+            }
+
+
+
+
+            // Close the path
+            //                    
+            // *** ONLY DO THIS FOR FILLED CHARTS ***
+            //
+            if (this.properties.filled) {
+                
+                this.context.closePath();
+                
+                // Enable the highlightDatasetFillAlpha
+                if (RGraph.isNumber(this.properties.highlightDatasetFillAlpha)) {
+                    this.context.globalAlpha = this.properties.highlightDatasetFillAlpha;
+                }
+
+                // Fill the shape - but only on filled
+                // charts
+                this.context.fill();
+                
+                this.context.globalAlpha = 1;
+            }
+
+            // Enable the highlightDatasetStrokeAlpha
+            if (RGraph.isNumber(this.properties.highlightDatasetStrokeAlpha)) {
+                this.context.globalAlpha = this.properties.highlightDatasetStrokeAlpha;
+            }
+
+            // Stroke the shape
+            this.context.stroke();
+            
+
+            this.context.globalAlpha = 1;
+        };
 
 
 
