@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
@@ -27,32 +29,37 @@
     </p>
     
 
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     
     <script>
         line = new RGraph.Line({
             id: 'cvs',
             data: [28,21,26,32,35,36,39,45,47,51,55,74,85],
             options: {
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
                 xaxisLabels: ['1950','\n1955','1960','\n1965','1970','\n1975','1980','\n1985','1990','\n1995','2000','\n2005','2010'],
                 colors: ['blue'],
                 xaxis: false,
                 yaxis: false,
                 yaxisScaleMax: 100,
                 yaxisScaleUnitsPost: '%',
-                marginLeft: 45,
-                marginBottom: 45,
-                marginTop: 10,
-                marginRight: 15,
+                marginLeft: 65,
+                marginBottom: 55,
+                marginTop: 15,
                 linewidth: 3,
-                marginInner: 7
+                marginInner: 7,
+                shadow: false,
+                tickmarksStyle: 'filledcircle',
+                textSize: 16,
+                tooltips: '<span style="font-size: 26pt">%{property:xaxisLabels[%{index}]}</span><br /><i style="font-size: 16pt">Results: %{value}</i>'
             }
         }).on('draw',function (obj)
         {
             // Updated style for the path function
             obj.path(
                 'ss black lw 1 lj miter sr % % % %',
-                45, 10, 550.01, 195
+                65, 15, 500.01, 230
             );
         }).draw();
     </script>
@@ -68,6 +75,8 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
 </pre>
     
