@@ -20,9 +20,8 @@
 
     <h1>A Line chart showing employee sales</h1>
     
-    <div style="text-align: center">
+    <div style="float: left; margin-right: 25px">
         <canvas id="cvs" width="575" height="450" data-image-src="page-demos-line-employee-sales.png">[No canvas support]</canvas><br />
-        <a href="#bar-chart-version">A Bar chart version of the chart</a>
     </div>
     
     
@@ -32,12 +31,6 @@
         a copy of a chart found on the Internet it uses the Line chart - though a
         stacked or grouped Bar chart may represent the data better because the types
         of furniture aren't related to each other.
-    </p>
-    
-    <p>
-        There's <a href="#bar-chart-version">a grouped Bar chart version</a>
-        of the chart that's shown below that makes the
-        data far easier to interpret (in my opinion).
     </p>
 
     <br clear="all" />
@@ -194,141 +187,6 @@ This is the code that generates the chart - it should be placed AFTER the <code>
 
 
 
-    <a name="bar-chart-version"></a>
-    <h2>A Bar chart version of the chart</h2>
-
-    <p>
-        Here's a version of the above Line chart but using a grouped Bar chart instead
-        of a Line chart. Personally, I think the Bar chart makes the interpretation of the
-        data easier and makes the intent easier to read.
-    </p>
-
-
-    <div style="text-align: center">
-        <img src="/images/page-demos-line-employee-sales-bar.png" width="575" height="450" alt="A Bar chart version of the above Line chart" />
-    </div>
-    
-    <script>
-        // A Bar chart version of the Line chart that's shown above. With
-        // the Bar chart the data is arranged differently to the Line chart - 
-        // each set of numbers is actually just one group of bars on the chart.
-        // Other than this the configuration is much the same as the Line
-        // chart.
-        if (!location.href.match(/\.rgraph\.net/)) {
-            bar = new RGraph.Bar({
-                id: 'cvs2',
-                data: [
-                    [190,12,42,2],
-                    [165,180,80,42],
-                    [47,10,93,47],
-                    [121,80,25,27],
-                    [30,25,21,43],
-                    [72,75,120,50]
-                ],
-                options: {
-                    grouping: 'grouped',
-                    shadow: false,
-                    tickmarksStyle: null,
-                    linewidth: 7,
-                    backgroundGridVlines: false,
-                    backgroundGridColor: 'gray',
-                    colorsBackground: '#222',
-                    xaxis: false,
-                    yaxis: false,
-                    textColor: '#d7d5d6',
-                    textSize: 12,
-                    title: '2009 employee sales by department',
-                    titleColor: 'white',
-                    xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
-                    marginTop: 75,
-                    marginBottom: 60,
-                    key: ['Mary','Tom','Brad','Kate'],
-                    keyPosition: 'margin',
-                    keyLabelsSize: 14,
-                    keyLabelsColor: 'rgb(248,248,248)',
-                    keyPositionY: 425,
-                    colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
-                }
-            // Again, the beforedraw function is used to clear the canvas to
-            // a dark color before the chart is drawn.
-            }).on('beforedraw', function (obj)
-            {
-                RGraph.clear(obj.canvas, '#555557');
-    
-            // Use the wave effect to show the chart and add some responsive capability to accommodate
-            // smaller screens.
-            }).draw().responsive([
-                {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
-                {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
-            ]);
-        }
-    </script>
-
-
-
-
-
-
-
-    <p></p>
-
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-<pre class="code">
-&lt;script&gt;
-    <span>// A Bar chart version of the Line chart that's shown above. With
-    // the Bar chart the data is arranged differently to the Line chart - 
-    // each set of numbers is actually just one group of bars on the chart.
-    // Other than this the configuration is much the same as the Line
-    // chart.</span>
-    new RGraph.Bar({
-        id: 'cvs2',
-        data: [
-            [190,12,42,2],
-            [165,180,80,42],
-            [47,10,93,47],
-            [121,80,25,27],
-            [30,25,21,43],
-            [72,75,120,50]
-        ],
-        options: {
-            grouping: 'grouped',
-            shadow: false,
-            tickmarksStyle: null,
-            linewidth: 7,
-            backgroundGridVlines: false,
-            backgroundGridColor: 'gray',
-            colorsBackground: '#222',
-            xaxis: false,
-            yaxis: false,
-            textColor: '#d7d5d6',
-            textSize: 12,
-            title: '2009 employee sales by department',
-            titleColor: 'white',
-            xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
-            marginTop: 75,
-            marginBottom: 60,
-            key: ['Mary','Tom','Brad','Kate'],
-            keyPosition: 'margin',
-            keyLabelsSize: 14,
-            keyLabelsColor: 'rgb(248,248,248)',
-            keyPositionY: 425,
-            colors: ['#B8202C','#96D1E3','#FA8710','#62648D']
-        }
-    <span>// Again, the beforedraw function is used to clear the canvas to
-    // a dark color before the chart is drawn.</span>
-    }).on('beforedraw', function (obj)
-    {
-        RGraph.clear(obj.canvas, '#555557');
-
-    <span>// Use the wave effect to show the chart and add some responsive capability to accommodate
-    // smaller screens.</span>
-    }).wave().responsive([
-        {maxWidth:null,width:575,height:450,options:{marginLeft: 50,marginRight: 50,marginTop: 75,titleSize: 24,keyPositionY: 425}},
-        {maxWidth:900,width:400,height:300,options:{marginLeft: 40,marginRight: 15,marginTop: 55,titleSize: 17,keyPositionY: 275}}
-    ]);
-&lt;/script&gt;
-</pre>
 
 </body>
 </html>
