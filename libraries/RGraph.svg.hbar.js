@@ -254,7 +254,7 @@
             labelsAboveBold:              null,
             labelsAboveItalic:            null,
             labelsAboveColor:             null,
-            labelsAboveBackground:        null,
+            labelsAboveBackground:        '#fffc',
             labelsAboveBackgroundPadding: 0,
             labelsAboveUnitsPre:          null,
             labelsAboveUnitsPost:         null,
