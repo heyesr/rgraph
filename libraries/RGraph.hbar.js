@@ -1,4 +1,5 @@
     // o--------------------------------------------------------------------------------o
+    // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
     // |                         https://www.rgraph.net                                 |
@@ -39,6 +40,7 @@
         this.coords                 = [];
         this.coords2                = [];
         this.coordsText             = [];
+        this.coordsSpline           = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
         this.stopAnimationRequested = false;// Used to control the animations
@@ -320,10 +322,6 @@
             annotatableColor:         'black',
             annotatableLinewidth:     1,
 
-            resizable:                   false,
-            resizableHandleAdjust:     [0,0],
-            resizableHandleBackground: null,
-
             redraw:               true,
 
             variant:                'hbar',
@@ -340,6 +338,25 @@
 
             corners:                'square',
             cornersRoundRadius:     10,
+            
+            line:                           false,
+            lineColor:                      'black',
+            lineLinejoin:                   'round',
+            lineLinecap:                    'round',
+            lineLinewidth:                  1,
+            lineShadow:                     true,
+            lineShadowColor:                '#666',
+            lineShadowBlur:                 2,
+            lineShadowOffsetx:              2,
+            lineShadowOffsety:              2,
+            lineSpline:                     false,
+            lineTickmarksStyle:             null,
+            lineTickmarksSize:              5,
+            lineTickmarksDrawNull:          false,
+            lineTickmarksDrawNonNull:       false,
+
+
+            animationTraceClip:     1,
 
             clearto:                'rgba(0,0,0,0)'
         }
@@ -662,6 +679,13 @@
             // Draw the key if necessary
             if (properties.key && properties.key.length) {
                 RGraph.drawKey(this, properties.key, properties.colors);
+            }
+            
+            //
+            // Draw a line on the chart if necessary
+            //
+            if (this.properties.line) {
+                this.drawLine();
             }
     
     
@@ -1051,6 +1075,12 @@
                         }
 
 
+                        // This skirts an annoying "extra fill bug"
+                        // by getting rid of the last path which
+                        //was drawm - which is usually the last
+                        //bar to be drawn (the bars are drawn
+                        //from bottom to top). Woo.
+                        this.path('b');
 
 
                         this.coords.push([
@@ -1198,7 +1228,7 @@
                                 this.context.rectOld = this.context.rect;
                                 this.context.rect    = this.roundedCornersRect;
                             }
-                            
+
                             this.context.beginPath();
                             this.context.lineJoin = 'miter';
                             this.context.lineCap  = 'square';
@@ -1514,7 +1544,7 @@
     
             this.context.stroke();
             this.context.fill();
-            
+
             // Under certain circumstances we can cover the shadow
             // overspill with a white rectangle
             if ( properties.yaxisPosition === 'right') {
@@ -1598,9 +1628,17 @@
 
 
 
+                // TODO Maybe put a function here to check the
+                // various conditions as to whether a labelsAbove
+                // label should be shown or not
+
                 // Draw labels "above" the bar
                 var halign = 'left';
-                if (properties.labelsAbove && coords[i][6]) {
+                if (
+                       properties.labelsAbove
+                    && coords[i][6]
+                    && !RGraph.isNull(this.data[i])
+                   ) {
     
                     var border = (coords[i][0] + coords[i][2] + 7 + this.context.measureText(properties.labelsAboveUnitsPre + this.coords[i][5] + properties.labelsAboveUnitsPost).width) > this.canvas.width ? true : false,
                         text   = RGraph.numberFormat({
@@ -3145,6 +3183,341 @@
             return num;
         };
 
+
+
+
+
+
+
+
+        //
+        // Draw a line on the chart - just each of the X points
+        // (ie the top of the bars) connected by a line. This
+        // does mean you can set the colors property to transparent
+        // and you have a vertical line.
+        //
+        this.drawLine = function ()
+        {
+            // Set the clipping region so that the trace
+            //effect works
+            RGraph.clipTo.start(this, [
+                0,0,
+                this.canvas.width,this.canvas.height * this.properties.animationTraceClip
+            ]);
+
+            if (this.properties.lineShadow) {
+                RGraph.setShadow({
+                    object: this,
+                    prefix: 'lineShadow'
+                });
+            }
+
+            // Set the line options:
+            //    lineJoin
+            //    lineCap
+            //    lineWidth
+            this.path(
+                'lj % lc % lw %',
+                this.properties.lineLinejoin,
+                this.properties.lineLinecap,
+                this.properties.lineLinewidth
+            );
+
+            if (this.properties.lineSpline) {
+                
+                // Set this so that we can refer to the object
+                var obj = this;
+                var c = RGraph.arrayClone(this.coords);
+
+                Spline(c);
+
+            } else {
+                // Move to the first point
+                this.path(
+                    'b m % %',
+                    this.coords[0][0] + this.coords[0][2],
+                    this.coords[0][1] + (this.coords[0][3] / 2)
+                );
+    
+                // Draw a line to subsequent points unless
+                // that point is null, in which case move
+                // to it instead
+                for (let i=1; i<this.coords.length; ++i) {
+                    
+                    if (RGraph.isNull(this.data[i]) || RGraph.isNull(this.data[i - 1])) {
+                        var action = 'm';
+                    } else {
+                        var action = 'l'
+                    }
+                    
+                    this.path(
+                        '% % %',
+                        action,
+                        this.coords[i][0] + this.coords[i][2],
+                        this.coords[i][1] + (this.coords[i][3] / 2)
+                    );
+                }
+                this.path('s ' + this.properties.lineColor);
+            }
+
+            //
+            // TODO Add more styles of tickmarks
+            //
+            var obj = this;
+            this.coords.forEach(function (v, k, arr)
+            {
+                if (typeof obj.properties.lineTickmarksStyle === 'string') {
+                    
+                    var isEndTick  = (k === 0 || k === (arr.length - 1));
+                    var isNull     = RGraph.isNull(obj.data[k]);
+                    var prevIsNull = RGraph.isNull(obj.data[k - 1]);
+                    var nextIsNull = RGraph.isNull(obj.data[k + 1]);
+                    var isLast     = k === (arr.length - 1);
+
+                    //
+                    // Does this tickmark need to be drawn?
+                    //
+                    if (isNull && !obj.properties.lineTickmarksDrawNull) return;
+                    if (!isNull && prevIsNull && nextIsNull && !obj.properties.lineTickmarksDrawNonNull) return;
+    
+                    //
+                    // Draw the various styles of tickmark
+                    //
+                    switch (obj.properties.lineTickmarksStyle) {
+                        case 'circle':
+                        case 'filledcircle':
+                        case 'filledendcircle':
+                        case 'endcircle':
+                            if (
+                                   (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
+                                || obj.properties.lineTickmarksStyle.indexOf('end') === -1
+                               ) {
+                                obj.path(
+                                    'b a % % % 0 6.29 false s % f %',
+                                    v[0] + v[2],
+                                    v[1] + (v[3]/2),
+                                    obj.properties.lineTickmarksSize,
+                                    obj.properties.lineColor,
+                                    obj.properties.lineTickmarksStyle.indexOf('filled') >= 0
+                                        ? obj.properties.lineColor
+                                        : 'white'
+                                );
+                            }
+                            break;
+
+                        case 'square':
+                        case 'rect':
+                        case 'filledsquare':
+                        case 'filledrect':
+                        case 'filledendsquare':
+                        case 'filledendrect':
+                        case 'endsquare':
+                        case 'endrect':
+                            if (
+                                   (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
+                                || obj.properties.lineTickmarksStyle.indexOf('end') === -1
+                               ) {
+
+                              obj.path(
+                                    'b r % % % % s % f %',
+                                    
+                                    v[0] + v[2] - obj.properties.lineTickmarksSize,
+                                    v[1] + (v[3]/2) - obj.properties.lineTickmarksSize,
+                                    obj.properties.lineTickmarksSize * 2,
+                                    obj.properties.lineTickmarksSize * 2,
+
+                                    obj.properties.lineColor,
+                                    obj.properties.lineTickmarksStyle.indexOf('filled') >= 0
+                                        ? obj.properties.lineColor
+                                        : 'white'
+                                );
+                            }
+                            break;    
+                    }
+                }
+            });
+
+
+            // Turn the shadow off
+            RGraph.noShadow(this);
+            
+            // End the trace animation clipping
+            RGraph.clipTo.end();
+
+
+
+
+            //
+            // This function draws a spline using the HBar coords
+            // 
+            // @param array  coords  The coordinates
+            //
+            function Spline (coords)
+            {
+                var context = obj.context;
+
+                obj.coordsSpline[0] = [];
+
+                var yCoords     = [],
+                    interval    = (obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
+
+                obj.context.beginPath();
+                obj.context.strokeStyle = obj.properties.lineColor;
+
+                //
+                // The drawSpline function needs an array of JUST
+                // the X values - so put the coords into the correct
+                // format
+                //
+                for (var i=0; i<coords.length;++i) {
+                    coords[i] = Number(coords[i][0]) + Number(coords[i][2]);
+                }
+
+    
+
+    
+                //
+                // Get the Points array in the format we want -
+                // first value should be null along with the lst
+                // value
+                //
+                var P = [coords[0]];
+                for (var i=0; i<coords.length; ++i) {
+                    P.push(coords[i]);
+                }
+                P.push(
+                    coords[coords.length - 1] + (coords[coords.length - 1] - coords[coords.length - 2])
+                );
+
+                // This is is necessary to center the points
+                // within each bar/section
+                var halfsection = ((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) / 2
+
+                for (var j=1; j<P.length-2; ++j) {
+                    for (var t=0; t<10; ++t) {
+                        
+                        var xCoord = Spline( t/10, P[j-1], P[j], P[j+1], P[j+2] );
+
+                        yCoords.push(
+                            ((j-1) * interval) + (t * (interval / 10)) + obj.properties.marginTop + halfsection
+                        );
+    
+                        obj.context.lineTo(
+                            xCoord,
+                            yCoords[yCoords.length - 1]
+                        );
+    
+                        
+                        if (typeof index == 'number') {
+                            obj.coordsSpline[0].push(
+                                [xCoords[xCoords.length - 1], yCoords[yCoords.length - 1]]
+                            );
+                        }
+                    }
+                }
+
+    
+                // Draw the last section
+                var last = [
+                    obj.coords[obj.coords.length - 1][0] + obj.coords[obj.coords.length - 1][2],//((j-1) * interval) + obj.properties.marginLeft,
+                    obj.coords[obj.coords.length - 1][1] + (obj.coords[obj.coords.length - 1][3] / 2)
+                ];
+
+                obj.context.lineTo(
+                    last[0],
+                    last[1]
+                );
+                if (typeof index == 'number') {
+                    obj.coordsSpline[0].push(
+                        [
+                            last[0],
+                            last[1]
+                        ]
+                    );
+                }
+                
+                obj.context.stroke();
+    
+    
+        
+                function Spline (t, P0, P1, P2, P3)
+                {
+                    return 0.5 * ((2 * P1) +
+                                 ((0-P0) + P2) * t +
+                                 ((2*P0 - (5*P1) + (4*P2) - P3) * (t*t) +
+                                 ((0-P0) + (3*P1)- (3*P2) + P3) * (t*t*t)));
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Trace (for the line only)
+        // 
+        // This is a new version of the Trace effect which no longer requires jQuery and is more compatible
+        // with other effects (eg Expand). This new effect is considerably simpler and less code.
+        // 
+        // @param object     Options for the effect. Currently only "frames" is available.
+        // @param int        A function that is called when the ffect is complete
+        //
+        this.trace = function ()
+        {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                opt      = arguments[0] || {},
+                frames   = opt.frames || 60,
+                frame    = 0,
+                callback = arguments[1] || function () {};
+
+            obj.set('animationTraceClip', opt.reverse ? 1 : 0);
+            
+            // Disable the labelsAbove option
+            if (obj.properties.labelsAbove) {
+                obj.set('labelsAbove', false);
+                var enableLabelsAbove = true;
+            }
+    
+            function iterator ()
+            {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+                RGraph.clear(obj.canvas);
+
+                RGraph.redrawCanvas(obj.canvas);
+
+                if (frame++ < frames) {
+                    obj.set('animationTraceClip', opt.reverse ? (1 - (frame / frames)) : (frame / frames));
+                    RGraph.Effects.updateCanvas(iterator);
+                } else {
+                    if (enableLabelsAbove) {
+                        setTimeout(function ()
+                        {
+                            obj.set('labelsAbove', true);
+                            RGraph.redraw();
+                        }, 500);
+                    }
+                    callback(obj);
+                }
+            }
+            
+            iterator();
+            
+            return this;
+        };
 
 
 
