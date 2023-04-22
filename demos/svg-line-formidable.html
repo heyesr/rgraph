@@ -26,6 +26,8 @@
     
     <h1>An SVG Line with a simple look</h1>
 
+    
+    <br clear="all" />
     <ul>
         <li>
             <a href="#how-to-get-transparent-tickmarks-using-the-canvas-line-chart">
@@ -141,9 +143,6 @@ This is the code that generates the chart - it should be placed AFTER the <code>
     <a name="how-to-get-transparent-tickmarks-using-the-canvas-line-chart"></a>
     <h2>How to get transparent tickmarks using the canvas Line chart</h2>
 
-    <div style="float: right" style="width: 600px; max-width: 100%;">
-        <img src="/images/page-demos-svg-line-formidable-canvas.png" style="width: 600px; max-width: 100%;" !width="650" !height="250" alt="A canvas-version of the Line chart with transparent tickmarks" />
-    </div>
 
     <p>
         You may have noticed that on the chart above the center of the tickmarks are
@@ -262,58 +261,6 @@ This is the code that generates the chart - it should be placed AFTER the <code>
     ]);
 &lt;/script&gt;
 </pre>
-
-    <!-- <RGRAPH_REMOVE> -->
-    <script>
-        line1 = new RGraph.Line({
-            id: 'cvs1',
-            data: [null,null,null,null,null],
-            options: {
-                xaxis: false,
-                yaxis: false,
-                backgroundGridColor: '#999',
-                yaxisLabels: false
-            }
-        }).draw();
-
-
-        line2 = new RGraph.Line({
-            id: 'cvs2',
-            data: [
-                [9,9,0,9,0],
-                [6,7,10,5,0],
-                [9,4,0,3,4]
-            ],
-            options: {
-                colors: ['#cc0','blue','red'],
-                axes: false,
-                linewidth: 3,
-                backgroundGrid: false,
-                xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
-                textColor: '#ccc',
-                tickmarksSize: 6,
-                tickmarksStyle: function (obj, data, value, index, x, y, color, prevX, prevY)
-                {
-                    // Draw the fill of the tickmark
-                    obj.path(
-                        'gco destination-out b a % % % 0 6.29 false f red s % gco source-over',
-                        x,y,obj.get('tickmarksSize') - 1,color
-                    );
-
-                    // This draws the outline of the tickmark
-                    obj.path(
-                        'b lw 2 a % % % 0 6.29 false s %',
-                        x,y,obj.get('tickmarksSize'),color
-                    );
-                },
-                tickmarkSize: 6
-            }
-        }).draw().responsive([
-            {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
-            {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
-        ]);
-    </script>
-    <!-- </RGRAPH_REMOVE> -->
 
 
 </body>
