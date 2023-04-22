@@ -1343,21 +1343,35 @@
         //
         this.getObjectByXY = function (e)
         {
-            var mouseXY = RGraph.getMouseXY(e);
+            var [mx, my] = RGraph.getMouseXY(e),
+                rounded  = properties.variant === 'rounded',
+                cx       = this.centerx
+                cy       = this.centery,
+                start    = properties.anglesStart,
+                end      = properties.anglesEnd,
+                radius   = this.radius;
 
             // Draw a Path so that the coords can be tested
             // (but don't stroke/fill it
             this.path(
                 'b a % % % % % false',
-                this.centerx,this.centery,this.radius,properties.anglesStart,properties.anglesEnd
+                cx,
+                cy,
+                radius,
+                start - (rounded ? 0.25 : 0),
+                end + (rounded ? 0.25 : 0)
             );
 
             this.path(
                 'a % % % % % true',
-                this.centerx,this.centery,this.radius - this.width,properties.anglesEnd,properties.anglesStart
+                cx,
+                cy,
+                radius - this.width,
+                end + (rounded ? 0.25 : 0),
+                start - (rounded ? 0.25 : 0)
             );
 
-            return this.context.isPointInPath(mouseXY[0], mouseXY[1]) ? this : null;
+            return this.context.isPointInPath(mx, my) ? this : null;
         };
 
 
