@@ -2815,8 +2815,9 @@
             this.context.strokeStyle = color;
 
             //
-            // The drawSpline function takes an array of JUST Y coords - not X/Y coords. So the line coords need converting
-            // if we've been given X/Y pairs
+            // The drawSpline function takes an array of JUST Y
+            // coords - not X/Y coords. So the line coords need
+            // converting if we've been given X/Y pairs
             //
             for (var i=0,len=coords.length; i<len;i+=1) {
                 if (typeof coords[i] == 'object' && coords[i] && coords[i].length == 2) {
@@ -2828,7 +2829,8 @@
 
 
             //
-            // Get the Points array in the format we want - first value should be null along with the lst value
+            // Get the Points array in the format we want - first
+            // value should be null along with the lst value
             //
             var P = [coords[0]];
             for (var i=0; i<coords.length; ++i) {
