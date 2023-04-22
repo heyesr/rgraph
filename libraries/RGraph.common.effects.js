@@ -34,7 +34,6 @@
     {
         for (i in RGraph.Effects.Common) {
             if (typeof RGraph.Effects.Common[i] === 'function') {
-
                 obj[i] = RGraph.Effects.Common[i];
             }
         }
