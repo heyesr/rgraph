@@ -4,16 +4,13 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
 
-    <title>RGraph demo: A Donut chart showing browser market share</title>
+    <title>RGraph demo: A basic Donut chart</title>
     
     
-    <meta name="description" content="A Donut chart showing browser market share" />
+    <meta name="description" content="A basic Donut chart" />
      
     <meta name="robots" content="noindex, nofollow" />
 
@@ -22,7 +19,7 @@
 
     
 
-    <h1>A Donut chart showing browser market share</h1>
+    <h1>A basic Donut chart</h1>
 
     <canvas id="cvs" width="475" height="350">[No canvas support]</canvas>
     
@@ -31,28 +28,7 @@
             id: 'cvs',
             data: [41,37,16,3,3],
             options: {
-                marginTop: 45,
                 variant: 'donut',
-                linewidth: 5,
-                exploded: 5,
-                colorsStroke: 'rgba(0,0,0,0)',
-                title: "Browser share",
-                titleBold: true,
-                titleSize: 22,
-                titleX: 185,
-                tooltips: ['MSIE 7 (41%)', 'MSIE 6 (37%)', 'Firefox (16%)', 'Safari (3%)', 'Other (3%)'],
-                key: ['MSIE 7 (41%)', 'MSIE 6 (37%)', 'Firefox (16%)', 'Safari (3%)', 'Other (3%)'],
-                keyShadow: true,
-                keyShadowOffsetx: 1,
-                keyShadowOffsety: 1,
-                keyShadowBlur: 3,
-                keyShadowColor: '#ccc',
-                keyAlign: 'right',
-                align: 'left',
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                shadowBlur: 3,
-                centerx: 185
             }
         }).draw();
     </script>
@@ -68,9 +44,6 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
 </pre>
     
