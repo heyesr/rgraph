@@ -16,7 +16,9 @@
 (function (win, doc, undefined)
 {
     RGraph.SVG.REG = {
-        store: []
+        store: {
+            'rgraph-svg-runonce-functions': []
+        }
     };
     
     // ObjectRegistry
@@ -6832,6 +6834,34 @@
                 });
             }
         }
+    };
+
+
+
+
+
+
+
+    
+    //
+    // This small function allows you to easily run a function
+    // once only
+    //
+    // @param string id     A unique identifier that is used to
+    //                      identify this function so that it only
+    //                      runs once
+    // @param function func The function that should be run
+    //                      (immediately) only once
+    //
+    RGraph.SVG.runOnce = function (id, func)
+    {
+        if (RGraph.SVG.REG.get('rgraph-svg-runonce-functions')[id]) {
+            return;
+        }
+
+        RGraph.SVG.REG.get('rgraph-svg-runonce-functions')[id] = func;
+        
+        return func();
     };
 
 
