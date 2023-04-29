@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>RGraph demo: A vertical line using the canvas Horizontal Bar chart with a right Y axis</title>
+    <meta name="description" content="A vertical line using the canvas Horizontal Bar chart with a right Y axis" />
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A vertical line using the canvas Horizontal Bar chart with a right Y axis</h1>
+    
+    <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    
+    <br />
+    
+    <button
+        style="cursor: pointer; font-size: 24pt" 
+        onclick="hbar.set('lineSpline', !hbar.get('lineSpline'));RGraph.clear(hbar.canvas);hbar.draw();">Toggle spline</button>
+
+        
+    <script>
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [12,56,45,32,84,25,12],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                colors: ['#0000'],
+                textSize: 18,
+                title: 'A vertical line chart',
+                titleBold: true,
+                marginTop: 50,
+                marginRight: 50,
+                
+                line: true,
+                lineSpline: true
+            }
+        }).trace({frames: 90});
+    </script>
+
+
+
+    <br clear="all" />
+    <br clear="all" />
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="700" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+    
+&lt;br /&gt;
+    
+&lt;button
+    style="cursor: pointer; font-size: 24pt" 
+    onclick="hbar.set('lineSpline', !hbar.get('lineSpline'));RGraph.clear(hbar.canvas);hbar.draw();"&gt;Toggle spline&lt;/button&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
