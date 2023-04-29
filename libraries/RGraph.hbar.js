@@ -3232,13 +3232,43 @@
                 Spline(c);
 
             } else {
+
+
+
+
+
                 // Move to the first point
-                this.path(
-                    'b m % %',
-                    this.coords[0][0] + this.coords[0][2],
-                    this.coords[0][1] + (this.coords[0][3] / 2)
-                );
-    
+                if (this.properties.yaxisPosition === 'right') {
+                    this.path(
+                        'b m % %',
+                        this.coords[0][0],
+                        this.coords[0][1] + (this.coords[0][3] / 2)
+                    );
+                } else if (this.properties.yaxisPosition === 'center') {
+                    if (this.data[0] > 0) {
+                        this.path(
+                            'b m % %',
+                            this.coords[0][0] + this.coords[0][2],
+                            this.coords[0][1] + (this.coords[0][3] / 2)
+                        );
+                    } else {
+                        this.path(
+                            'b m % %',
+                            this.coords[0][0],
+                            this.coords[0][1] + (this.coords[0][3] / 2)
+                        );
+                    }
+                } else {
+                    this.path(
+                        'b m % %',
+                        this.coords[0][0] + this.coords[0][2],
+                        this.coords[0][1] + (this.coords[0][3] / 2)
+                    );
+                }
+
+
+
+
                 // Draw a line to subsequent points unless
                 // that point is null, in which case move
                 // to it instead
@@ -3250,12 +3280,37 @@
                         var action = 'l'
                     }
                     
-                    this.path(
-                        '% % %',
-                        action,
-                        this.coords[i][0] + this.coords[i][2],
-                        this.coords[i][1] + (this.coords[i][3] / 2)
-                    );
+                    if (this.properties.yaxisPosition === 'right') {
+                        this.path(
+                            '% % %',
+                            action,
+                            this.coords[i][0],
+                            this.coords[i][1] + (this.coords[i][3] / 2)
+                        );
+                    } else if (this.properties.yaxisPosition === 'center') {
+                        if (this.data[i] > 0) {
+                            this.path(
+                                '% % %',
+                                action,
+                                this.coords[i][0] + this.coords[i][2],
+                                this.coords[i][1] + (this.coords[i][3] / 2)
+                            );
+                        } else {
+                            this.path(
+                                '% % %',
+                                action,
+                                this.coords[i][0],
+                                this.coords[i][1] + (this.coords[i][3] / 2)
+                            );
+                        }
+                    } else {
+                        this.path(
+                            '% % %',
+                            action,
+                            this.coords[i][0] + this.coords[i][2],
+                            this.coords[i][1] + (this.coords[i][3] / 2)
+                        );
+                    }
                 }
                 this.path('s ' + this.properties.lineColor);
             }
@@ -3279,6 +3334,25 @@
                     //
                     if (isNull && !obj.properties.lineTickmarksDrawNull) return;
                     if (!isNull && prevIsNull && nextIsNull && !obj.properties.lineTickmarksDrawNonNull) return;
+                    
+                    // Determine the X and Y coordinates for the
+                    // tickmark
+                    var x, y;
+                    if (obj.properties.yaxisPosition === 'right') {
+                        var x = v[0],
+                            y = v[1] + (v[3]/2);
+                    } else if (obj.properties.yaxisPosition === 'center') {
+                        if (obj.data[k] > 0) {
+                            var x = v[0] + v[2],
+                                y = v[1] + (v[3]/2);
+                        } else {
+                            var x = v[0],
+                                y = v[1] + (v[3]/2);
+                        }
+                    } else {
+                        var x = v[0] + v[2],
+                            y = v[1] + (v[3]/2);
+                    }
     
                     //
                     // Draw the various styles of tickmark
@@ -3294,8 +3368,8 @@
                                ) {
                                 obj.path(
                                     'b a % % % 0 6.29 false s % f %',
-                                    v[0] + v[2],
-                                    v[1] + (v[3]/2),
+                                    x,
+                                    y,
                                     obj.properties.lineTickmarksSize,
                                     obj.properties.lineColor,
                                     obj.properties.lineTickmarksStyle.indexOf('filled') >= 0
@@ -3321,8 +3395,8 @@
                               obj.path(
                                     'b r % % % % s % f %',
                                     
-                                    v[0] + v[2] - obj.properties.lineTickmarksSize,
-                                    v[1] + (v[3]/2) - obj.properties.lineTickmarksSize,
+                                    x - obj.properties.lineTickmarksSize,
+                                    y - obj.properties.lineTickmarksSize,
                                     obj.properties.lineTickmarksSize * 2,
                                     obj.properties.lineTickmarksSize * 2,
 
@@ -3370,7 +3444,7 @@
                 // format
                 //
                 for (var i=0; i<coords.length;++i) {
-                    coords[i] = Number(coords[i][0]) + Number(coords[i][2]);
+                    coords[i] = Number(coords[i][0]) + (obj.properties.yaxisPosition === 'right' ? 0 : Number(coords[i][2]) );
                 }
 
     
@@ -3419,7 +3493,7 @@
     
                 // Draw the last section
                 var last = [
-                    obj.coords[obj.coords.length - 1][0] + obj.coords[obj.coords.length - 1][2],//((j-1) * interval) + obj.properties.marginLeft,
+                    obj.coords[obj.coords.length - 1][0] + (obj.properties.yaxisPosition === 'right' ? 0 : obj.coords[obj.coords.length - 1][2]),
                     obj.coords[obj.coords.length - 1][1] + (obj.coords[obj.coords.length - 1][3] / 2)
                 ];
 
