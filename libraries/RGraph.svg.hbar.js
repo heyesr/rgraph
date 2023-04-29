@@ -104,10 +104,12 @@
         this.type             = 'hbar';
         this.coords           = [];
         this.coords2          = [];
+        this.coordsSpline     = [];
         this.stackedBackfaces = [];
         this.colorsParsed     = false;
         this.originalColors   = {};
         this.gradientCounter  = 1;
+        this.isTrace          = false; // Used for the vertical line trace effect
         this.firstDraw        = true; // After the first draw this will be false
 
 
@@ -254,7 +256,7 @@
             labelsAboveBold:              null,
             labelsAboveItalic:            null,
             labelsAboveColor:             null,
-            labelsAboveBackground:        '#fffc',
+            labelsAboveBackground:        null,
             labelsAboveBackgroundPadding: 0,
             labelsAboveUnitsPre:          null,
             labelsAboveUnitsPost:         null,
@@ -350,7 +352,23 @@
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
             keyLabelsColor:   null,
-            keyLabelsFont:    null
+            keyLabelsFont:    null,
+
+            line:                           false,
+            lineLinejoin:                   'round',
+            lineLinecap:                    'round',
+            lineLinewidth:                  2,
+            lineTickmarksLinewidth:         2,
+            lineTickmarksStyle:             null,
+            lineTickmarksSize:              5,
+            lineColor:                      'black',
+            lineShadow:                     true,
+            lineShadowColor:               '#666',
+            lineShadowBlur:                 2,
+            lineShadowOffsetx:              2,
+            lineShadowOffsety:              2,
+            lineSpline:                     false,
+            lineTickmarksDrawNonNull:       false
         };
 
 
@@ -610,6 +628,12 @@
 
             // Draw the labelsInbar
             this.drawLabelsInbar();
+            
+            
+            // Draw the verical line
+            if (this.properties.line) {
+                this.drawLine();
+            }
 
 
 
@@ -698,7 +722,7 @@
         //
         // New create() shortcut function
         //eg:
-        //    this.create('rect,x:0,y:0,width:100,height:100'[,parent]);
+        //    this.create('rect,x=0,y=0,width=100,height=100'[,parent]);
         //
         // @param mixed definition This can either be an object
         //                         which holds details of the object
@@ -716,7 +740,12 @@
         //
         this.create = function (definition)
         {
-            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
+            return RGraph.SVG.create.call(
+                this,
+                definition,
+                arguments[1],
+                arguments[2]
+            );
         };
 
 
@@ -789,6 +818,13 @@
 
             // Go through the bars
             for (var i=0,sequentialIndex=0; i<this.data.length; ++i,++sequentialIndex) {
+
+                // Put place holders in the coords arrays
+                // for NULL VALUES
+                if (RGraph.SVG.isNull(this.data[i])) {
+                    this.coords.push([]);
+                    this.coords2.push([]);
+                }
 
                 //
                 // NORMAL bars
@@ -866,11 +902,11 @@
                         height: parseFloat(rect.getAttribute('height'))
                     });
                     
-                    if (!this.coords2[0]) {
-                        this.coords2[0] = [];
+                    if (!this.coords2[i]) {
+                        this.coords2[i] = [];
                     }
 
-                    this.coords2[0].push({
+                    this.coords2[i].push({
                         object:  this,
                         element: rect,
                         x:      parseFloat(rect.getAttribute('x')),
@@ -2169,6 +2205,433 @@
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 10                             // An arbitrary amount
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draw a line on the chart - just each of the X points
+        // (ie the top of the bars) connected by a line. This
+        // does mean you can set the colors property to transparent
+        // and you have a vertical line.
+        //
+        this.drawLine = function ()
+        {
+            // Set the clipping region so that the trace
+            //effect works
+            //RGraph.clipTo.start(this, [
+            //    0,0,
+            //    this.canvas.width,this.canvas.height * this.properties.animationTraceClip
+            //]);
+
+            if (this.properties.lineShadow) {
+                RGraph.SVG.setShadow({
+                    object:     this,
+                    id:         'lineDropShadow_' + this.uid,
+                    offsetx:    this.properties.lineShadowOffsetx,
+                    offsety:    this.properties.lineShadowOffsety,
+                    blur:       this.properties.lineShadowBlur,
+                    color:      this.properties.lineShadowColor
+                });
+            }
+
+            if (this.properties.lineSpline) {
+                
+                // Set this so that we can refer to the object
+                var obj = this;
+                var c = RGraph.SVG.arrayClone(this.coords);
+
+                Spline(c);
+
+            } else {
+            
+                // TODO Need to skip null values at the start
+                //      of the array here
+            
+                var d = '';
+
+                // Move to the first coordinate
+                if (RGraph.SVG.isNumber(this.data[0])) {
+                    if (this.properties.yaxisPosition === 'right') {
+                        d = 'M {1} {2} '.format(
+                            this.coords[0].x,
+                            this.coords[0].y + (this.coords[0].height / 2)
+                        );
+                    } else {
+                        d = 'M {1} {2} '.format(
+                            this.coords[0].x + this.coords[0].width,
+                            this.coords[0].y + (this.coords[0].height / 2)
+                        );
+                    }
+                }
+
+                // Draw a line to subsequent points unless
+                // that point is null, in which case move
+                // to it instead
+                for (let i=0; i<this.coords.length; ++i) {
+
+                    if (RGraph.SVG.isNull(this.data[i])) {
+                        var action = 'M';
+                        var x      = 0;
+                        var y      = 0;
+                    } else if (RGraph.SVG.isNull(this.data[i - 1])) {
+                        var action  = 'M';
+                        var x       = this.coords[i].x + (this.properties.yaxisPosition === 'right' ? 0 : this.coords[i].width);
+                        var y       = this.coords[i].y + (this.coords[i].height / 2);
+                    } else {
+                        var action  = 'L';
+                        var x       = this.coords[i].x + (this.properties.yaxisPosition === 'right' ? 0 : this.coords[i].width);
+                        var y       = this.coords[i].y + (this.coords[i].height / 2);
+                    }
+
+                    d += 
+                        '{1} {2} {3} '.format(
+                        action,x, y
+                    );
+                }
+
+
+                var path = RGraph.SVG.create(
+                    'path,stroke={6},fill=transparent,d={1},stroke-width={2},stroke-linecap={4},stroke-linejoin={3},filter={5},clip-path={7}'.format(
+                        d,
+                        this.properties.lineLinewidth,
+                        this.properties.lineLinejoin,
+                        this.properties.lineLinecap,
+                        this.properties.lineShadow ? 'url(#lineDropShadow_' + this.uid + ')' : '',
+                        this.properties.lineColor,
+                        this.isTrace ? 'url(#trace-effect-clip)' : ''
+                    ),
+                    this.svg.all
+                );
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // TODO Add more styles of tickmarks
+            //
+            var obj = this;
+            this.coords.forEach(function (v, k, arr)
+            {
+                if (typeof obj.properties.lineTickmarksStyle === 'string') {
+                    
+                    var isEndTick  = (k === 0 || k === (arr.length - 1));
+                    var isNull     = RGraph.SVG.isNull(obj.data[k]);
+                    var prevIsNull = RGraph.SVG.isNull(obj.data[k - 1]);
+                    var nextIsNull = RGraph.SVG.isNull(obj.data[k + 1]);
+                    var isLast     = k === (arr.length - 1);
+
+                    //
+                    // Does this tickmark need to be drawn?
+                    //
+                    if (isNull && !obj.properties.lineTickmarksDrawNull) return;
+                    if (!isNull && prevIsNull && nextIsNull && !obj.properties.lineTickmarksDrawNonNull) return;
+
+                    //
+                    // Draw the various styles of tickmark
+                    //
+                    switch (obj.properties.lineTickmarksStyle) {
+                        case 'circle':
+                        case 'filledcircle':
+                        case 'filledendcircle':
+                        case 'endcircle':
+                            if (
+                                   (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
+                                || obj.properties.lineTickmarksStyle.indexOf('end') === -1
+                               ) {
+
+                                obj.create(
+                                    'circle,cx={1},cy={2},r={3},fill={4},filter={5},clip-path={6}'.format(
+                                        v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
+                                        v.y + (v.height/2),
+                                        obj.properties.lineTickmarksSize,
+                                        obj.properties.lineColor,
+                                        obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                                        obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    ),
+                                    obj.svg.all
+                                );
+                                
+                                // Draw the center part of the circle tickmark
+                                if (obj.properties.lineTickmarksStyle.indexOf('filled') < 0) {
+                                    obj.create(
+                                        'circle,cx={1},cy={2},r={3},fill={4},clip-path={5}'.format(
+                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
+                                            v.y + (v.height/2),
+                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                ? (obj.properties.lineTickmarksSize - obj.properties.lineTickmarksLinewidth)
+                                                : (obj.properties.lineTickmarksSize - 3),
+                                            'white',
+                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        ),
+                                        obj.svg.all
+                                    );
+                                }
+                            }
+                            break;
+
+                        case 'square':
+                        case 'rect':
+                        case 'filledsquare':
+                        case 'filledrect':
+                        case 'filledendsquare':
+                        case 'filledendrect':
+                        case 'endsquare':
+                        case 'endrect':
+                            if (
+                                   (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
+                                || obj.properties.lineTickmarksStyle.indexOf('end') === -1
+                               ) {
+                                    obj.create(
+                                        'rect,x={1},y={2},width={3},height={4},fill={5},filter={6},clip-path={7}'.format(
+                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - obj.properties.lineTickmarksSize,
+                                            v.y + (v.height / 2) - obj.properties.lineTickmarksSize,
+                                            obj.properties.lineTickmarksSize * 2,
+                                            obj.properties.lineTickmarksSize * 2,
+                                            obj.properties.lineColor,
+                                            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                                                
+                                            // Trace clipping
+                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        ),
+                                        this.svg.all
+                                    );
+
+                                // Draw the center part of the rect tickmark
+                                if (obj.properties.lineTickmarksStyle.indexOf('filled') < 0) {
+                                    obj.create(
+                                        'rect,x={1},y={2},width={3},height={4},fill={5},clip-path={6}'.format(
+                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
+                                            v.y + (v.height / 2) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
+                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
+                                                : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
+                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
+                                                : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
+
+                                            
+                                            // color
+                                            'white',
+                                            
+                                            // Trace clipping
+                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        ),
+                                        obj.svg.all
+                                    );
+                                }
+                            }
+                            break;    
+                    }
+                }
+            });
+
+
+
+
+
+
+            //
+            // This function draws a spline using the HBar coords
+            // 
+            // @param array  coords  The coordinates
+            //
+            function Spline (coords)
+            {
+                obj.coordsSpline[0] = [];
+
+                var yCoords     = [],
+                    interval    = (obj.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
+                    path        = [];
+
+                //
+                // The drawSpline function needs an array of JUST
+                // the X values - so put the coords into the correct
+                // format
+                //
+
+                for (var i=0; i<coords.length;++i) {
+                    coords[i] = Number(coords[i].x) + (obj.properties.yaxisPosition === 'right' ? 0 : Number(coords[i].width));
+                }
+
+    
+
+    
+                //
+                // Get the Points array in the format we want -
+                // first value should be null along with the lst
+                // value
+                //
+                var P = [coords[0]];
+                for (var i=0; i<coords.length; ++i) {
+                    P.push(coords[i]);
+                }
+                P.push(
+                    coords[coords.length - 1] + (coords[coords.length - 1] - coords[coords.length - 2])
+                );
+
+                // This is is necessary to center the points
+                // within each bar/section
+                var halfsection = ((obj.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) / 2
+
+                for (var j=1; j<P.length-2; ++j) {
+                    for (var t=0; t<10; ++t) {
+                        
+                        var xCoord = Spline( t/10, P[j-1], P[j], P[j+1], P[j+2] );
+
+                        yCoords.push(
+                            ((j-1) * interval) + (t * (interval / 10)) + obj.properties.marginTop + halfsection
+                        );
+
+                        path.push([
+                            xCoord,
+                            yCoords[yCoords.length - 1]
+                        ]);
+    
+                        
+                        if (typeof index == 'number') {
+                            obj.coordsSpline[0].push([
+                                xCoords[xCoords.length - 1],
+                                yCoords[yCoords.length - 1]
+                            ]);
+                        }
+                    }
+                }
+
+    
+                // Draw the last section
+                var last = [
+                    obj.coords[obj.coords.length - 1].x + (obj.properties.yaxisPosition === 'right'  ? 0 : obj.coords[obj.coords.length - 1].width),
+                    obj.coords[obj.coords.length - 1].y + (obj.coords[obj.coords.length - 1].height / 2)
+                ];
+
+                path.push([
+                    last[0],
+                    last[1]
+                ]);
+
+                if (typeof index === 'number') {
+                    obj.coordsSpline[0].push([
+                        last[0],
+                        last[1]
+                    ]);
+                }
+
+                var str = '';
+                path.forEach(function (v,k,arr)
+                {
+                    var command = (k === 0 ? 'M' : 'L');
+                    str += ' {1} {2} {3}'.format(command, v[0], v[1]);
+                });
+
+
+
+//
+// Create the path which depicts the spline
+//
+obj.create(
+    'path,fill=transparent,stroke={2},stroke-width={3},stroke-linejoin=round,stroke-linecap=round,d={1},filter={4},clip-path={5}'.format(
+        str,
+        obj.properties.lineColor,
+        obj.properties.lineLinewidth,
+        obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+        obj.isTrace ? 'url(#trace-effect-clip)' : ''
+    ),
+    obj.svg.all
+);
+    
+    
+        
+                function Spline (t, P0, P1, P2, P3)
+                {
+                    return 0.5 * ((2 * P1) +
+                                 ((0-P0) + P2) * t +
+                                 ((2*P0 - (5*P1) + (4*P2) - P3) * (t*t) +
+                                 ((0-P0) + (3*P1)- (3*P2) + P3) * (t*t*t)));
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // A trace effect for the line
+        //
+        // @param object    Options to give to the effect
+        // @param  function A function to call when the effect has completed
+        //
+        this.trace = function ()
+        {
+            var opt      = arguments[0] || {},
+                frame    = 1,
+                frames   = opt.frames || 60,
+                obj      = this;
+            
+            this.isTrace = true;
+
+            this.draw();
+                
+
+
+            // Create the clip area
+            var clippath = this.create(
+                'clipPath,id=trace-effect-clip',
+                this.svg.defs
+            );
+
+            var clippathrect = RGraph.SVG.create({
+                svg: this.svg,
+                parent: clippath,
+                type: 'rect',
+                attr: {
+                    x: 0,
+                    y: 0,
+                    width: this.width,
+                    height: 0
+                }
+            });
+
+            var iterator = function ()
+            {
+                var height = (frame++) / frames * obj.height;
+
+                clippathrect.setAttribute("height", height);
+
+                if (frame <= frames) {
+                    RGraph.SVG.FX.update(iterator);
+                } else {
+                    
+                    // Remove the clippath
+                    clippath.parentNode.removeChild(clippath);
+                    
+                    if (opt.callback) {
+                        (opt.callback)(obj);
+                    }
+                }
+            };
+            
+            iterator();
+            
+            return this;
         };
 
 
