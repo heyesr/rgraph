@@ -245,7 +245,8 @@
 
             highlightStroke:                        'transparent',
             highlightFill:                          'rgba(255,255,255,0.7)',
-            highlightPointRadius:                   3,
+            highlightSize:                          null,
+            highlightStyle:                         null,
 
             segmentHighlight:                       false,
             segmentHighlightCount:                  null,
@@ -1319,7 +1320,7 @@
 
             } else if (properties.highlightStyle === 'invert') {
             
-                var radius = 25;
+                var radius = RGraph.isNumber(properties.highlightSize) ? properties.highlightSize : 25;
 
                 this.path(
                     'b a % % % -1 6.29 false',
@@ -1348,14 +1349,14 @@
 
 
             //
-            // Draw a rectangle on the canvas to highlight the appropriate area
+            // Draw an arc on the canvas to highlight the appropriate area
             //
             this.context.beginPath();
                 this.context.strokeStyle = properties.highlightStroke;
                 this.context.fillStyle   = properties.highlightFill;
 
                 this.context.arc(
-                    shape.x, shape.y, properties.tickmarksSize,
+                    shape.x, shape.y, RGraph.isNumber(properties.highlightSize) ? properties.highlightSize : properties.tickmarksSize,
                     0, RGraph.TWOPI, false
                 );
             this.context.stroke();
