@@ -53,12 +53,9 @@
             obj.context.fillRect(0,0,obj.canvas.width,obj.canvas.height);
         }).on('draw', function (obj)
         {
-            var x    = obj.coords[0][0]
-                y    = obj.coords[0][1],
-                w    = obj.coords[0][2],
-                h    = obj.coords[0][3],
-                lw   = 5,
-                step = 1
+            var [x,y,w,h] = obj.coords[0],
+                lw        = 5,
+                step      = 1;
             
             for (var i=0; i<=10; i+=step) {
                 
