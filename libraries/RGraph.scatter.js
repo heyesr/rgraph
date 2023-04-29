@@ -2980,10 +2980,12 @@
             } else {
                 var totalX = 0;
                 var totalY = 0;
-    
-                for (let i=0; i<this.data[index].length; ++i) {
-                    totalX += this.data[index][i][0];
-                    totalY += this.data[index][i][1];
+
+                if (this.data[index]) {
+                    for (var i=0; i<this.data[index].length; ++i) {
+                        totalX += this.data[index][i][0];
+                        totalY += this.data[index][i][1];
+                    }
                 }
                 
                 return [totalX, totalY];
