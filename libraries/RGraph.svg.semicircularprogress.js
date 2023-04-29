@@ -27,10 +27,10 @@
             if (arguments.length === 1 && typeof name === 'object') {
                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
-                        
+
                         name  = ret.name;
                         value = ret.value;
-                        
+
                         if (name === 'backgroundColor')        {name = 'backgroundFill';}
                         if (name === 'backgroundColorOpacity') {name = 'backgroundFillOpacity';}
 
@@ -47,7 +47,7 @@
                     name:   name,
                     value:  value
                 });
-                
+
                 name  = ret.name;
                 value = ret.value;
 
@@ -73,7 +73,7 @@
 
         //
         // A getter.
-        // 
+        //
         // @param name  string The name of the property to get
         //
         this.get = function (name)
@@ -111,6 +111,9 @@
         this.shadowNodes     = [];
         this.firstDraw       = true; // After the first draw this will be false
 
+        // Used for adjusting
+        this.adjusting_mousedown = false;
+
         // Bounds checking
         if (this.value > this.max) this.value = this.max;
         if (this.value < this.min) this.value = this.min;
@@ -132,7 +135,7 @@
             centerx: null,
             centery: null,
             radius:  null,
-            
+
             width: 60,
 
             marginLeft:    35,
@@ -180,7 +183,7 @@
             scaleLabelsOffsetr:         0,
             scaleLabelsOffsetx:         0,
             scaleLabelsOffsety:         0,
-            
+
             labelsMin:          true,
             labelsMinSpecific:  null,
             labelsMinPoint:     null,
@@ -194,7 +197,7 @@
             labelsMinColor:     null,
             labelsMinUnitsPre:  null,
             labelsMinUnitsPost: null,
-            
+
             labelsMax:          true,
             labelsMaxSpecific:  null,
             labelsMaxPoint:     null,
@@ -208,7 +211,7 @@
             labelsMaxDecimals:  null,
             labelsMaxUnitsPre:  null,
             labelsMaxUnitsPost: null,
-            
+
             labelsCenter:          true,
             labelsCenterIndex:     0,
             labelsCenterSpecific:  null,
@@ -223,7 +226,7 @@
             labelsCenterDecimals:  null,
             labelsCenterUnitsPre:  null,
             labelsCenterUnitsPost: null,
-            
+
             linewidth: 1,
 
             tooltips:                        null,
@@ -245,22 +248,24 @@
             tooltipsPointer:                 true,
             tooltipsPositionStatic:          true,
 
-            highlightStroke: 'rgba(0,0,0,0)',
-            highlightFill: 'rgba(255,255,255,0.7)',
-            highlightLinewidth: 1,
-            
-            title: '',
-            titleX: null,
-            titleY: null,
-            titleHalign: 'center',
-            titleValign: null,
-            titleFont:   null,
-            titleSize:   null,
-            titleColor:  null,
-            titleBold:   null,
-            titleItalic: null,
+            adjustable:         false,
 
-            titleSubtitle: null,
+            highlightStroke:    'rgba(0,0,0,0)',
+            highlightFill:      'rgba(255,255,255,0.7)',
+            highlightLinewidth: 1,
+
+            title:          '',
+            titleX:         null,
+            titleY:         null,
+            titleHalign:    'center',
+            titleValign:    null,
+            titleFont:      null,
+            titleSize:      null,
+            titleColor:     null,
+            titleBold:      null,
+            titleItalic:    null,
+
+            titleSubtitle:       null,
             titleSubtitleSize:   null,
             titleSubtitleColor:  '#aaa',
             titleSubtitleFont:   null,
@@ -355,12 +360,12 @@
             if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
             if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
             if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
-            
+
             // Set the width of the meter
             this.progressWidth = properties.width || (this.radius / 3);
-            
-            
-            
+
+
+
             // Parse the colors for gradients
             RGraph.SVG.resetColorsToOriginalValues({object:this});
             this.parseColors();
@@ -369,7 +374,7 @@
 
 
 
-            
+
             this.drawBackground(); // Draw the background "grid"
             this.drawMeter(); // Draw the segments
             RGraph.SVG.drawTitle(this);   // Draw the title and subtitle
@@ -383,7 +388,7 @@
             // Add the tooltip event listener
             if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips.length || RGraph.SVG.isString(properties.tooltips)) ) {
 
-                
+
                 for (var i=0; i<this.coords.length; ++i) {
                     (function (index)
                     {
@@ -391,7 +396,7 @@
                             obj.coords[index].element.addEventListener(properties.tooltipsEvent.replace(/^on/, ''), function (e)
                             {
                                 obj.removeHighlight();
-    
+
                                 // Show the tooltip
                                 RGraph.SVG.tooltip({
                                     object: obj,
@@ -401,11 +406,11 @@
                                     text:   RGraph.SVG.isString(properties.tooltips) ? properties.tooltips : properties.tooltips[index],
                                     event:  e
                                 });
-                                
+
                                 // Highlight the rect that has been clicked on
                                 obj.highlight(e.target);
                             }, false);
-                    
+
                             // Add the mousemove listener that changes the
                             // mouse pointer
                             obj.coords[index].element.addEventListener('mousemove', function (e)
@@ -421,10 +426,14 @@
             // Add the event listener that clears the highlight if
             // there is any. Must be MOUSEDOWN (ie before the click
             // event)
-            document.body.addEventListener('mousedown', function (e)
-            {
-                obj.removeHighlight();
-            }, false);
+            if (!this.added_remove_highlight_listener) {
+                document.body.addEventListener('mousedown', function (e)
+                {
+                    obj.removeHighlight();
+                }, false);
+
+                this.added_remove_highlight_listener = true;
+            }
 
 
 
@@ -440,6 +449,112 @@
             RGraph.SVG.addCustomText(this);
 
 
+
+
+
+
+
+
+            //
+            // Ajusting
+            //
+            if (properties.adjustable) {
+
+                var obj = this;
+
+                var func = function (e)
+                {
+                    var div     = e.currentTarget,
+                        mouseX  = e.offsetX,
+                        mouseY  = e.offsetY;
+
+                        if (RGraph.SVG.ISFF) {
+                            mouseX = e.pageX - e.currentTarget.offsetLeft;
+                            mouseY = e.pageY - e.currentTarget.offsetTop;
+                        }
+
+                    var radius = RGraph.SVG.TRIG.getHypLength({
+                        x1: mouseX,
+                        y1: mouseY,
+                        x2: obj.centerx,
+                        y2: obj.centery,
+                        object: obj
+                    });
+
+                    //if (radius > obj.radius) {
+                    //    return;
+                    //}
+
+                    var value = obj.getValue(e);
+
+
+                    obj.value = value;
+                    RGraph.SVG.clear(obj.svg);
+                    obj.draw();
+                };
+
+                //
+                // Only add the adjusting event listeners once
+                //
+                var obj = this;
+                RGraph.SVG.runOnce('rgraph-svg-scp-adjusting-event-listeners', function ()
+                {
+                    //
+                    // Create a reference so that code thats inside
+                    // the event listeners can easily access the
+                    // object
+
+                    obj.container.addEventListener('mousedown', function (e)
+                    {
+                        var mouseX  = e.offsetX,
+                            mouseY  = e.offsetY;
+    
+                        if (RGraph.SVG.ISFF) {
+                            mouseX = e.pageX - e.currentTarget.offsetLeft;
+                            mouseY = e.pageY - e.currentTarget.offsetTop;
+                        }
+    
+                        var radius = RGraph.SVG.TRIG.getHypLength({
+                            x1: mouseX,
+                            y1: mouseY,
+                            x2: obj.centerx,
+                            y2: obj.centery,
+                            object: obj
+                        });
+                        
+                        // The first click that starts adjusting
+                        // must be within the progress meter area
+                        if (radius > obj.radius || radius < (obj.radius - obj.progressWidth)) {
+                            return; 
+                        }
+
+                        obj.adjusting_mousedown = true;
+                        func(e);
+
+                        // Fire the beforedraw event
+                        RGraph.SVG.fireCustomEvent(obj, 'onadjustbegin');
+
+                    }, false);
+
+                    obj.container.addEventListener('mousemove', function (e)
+                    {
+                        if (obj.adjusting_mousedown) {
+                            func(e);
+
+                            // Fire the beforedraw event
+                            RGraph.SVG.fireCustomEvent(obj, 'onadjust');
+                        }
+                    }, false);
+
+                    window.addEventListener('mouseup', function (e)
+                    {
+                        obj.adjusting_mousedown = false;
+
+                        // Fire the beforedraw event
+                        RGraph.SVG.fireCustomEvent(obj, 'onadjustend');
+                    }, false);
+                });
+            }
 
 
 
@@ -497,7 +612,61 @@
         //
         this.create = function (definition)
         {
-            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
+            return RGraph.SVG.create.call(
+                this,
+                definition,
+                arguments[1],
+                arguments[2]
+            );
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function returns the value that the mouse is positioned at, regardless of
+        // the actual indicated value.
+        //
+        // @param object e The event object
+        //
+        this.getValue = function (e)
+        {
+            var mouseX  = e.offsetX,
+                mouseY  = e.offsetY;
+
+            if (RGraph.SVG.ISFF) {
+                mouseX = e.pageX - e.currentTarget.offsetLeft;
+                mouseY = e.pageY - e.currentTarget.offsetTop;
+            }
+
+            var angle = RGraph.SVG.TRIG.getAngleByXY({
+                cx: this.centerx,
+                cy: this.centery,
+                x: mouseX,
+                y: mouseY
+            });
+
+            var value = ((angle - this.angleStart) / (this.angleEnd - this.angleStart));
+
+            // Adjust the angle aso that it goes from 0 - 3.14
+            if (mouseX < this.centerx) {
+               angle = angle - RGraph.SVG.TRIG.PI - RGraph.SVG.TRIG.HALFPI;
+            } else if (mouseX > this.centerx) {
+                angle += RGraph.SVG.TRIG.HALFPI;
+            } else if (mouseX === this.centerx) {
+                angle = RGraph.SVG.TRIG.HALFPI;
+            }
+
+            value = (this.max - this.min) * (angle / RGraph.SVG.TRIG.PI);
+
+            if (value < this.min) value = this.min;
+            if (value > this.max) value = this.max;
+
+            return value;
         };
 
 
@@ -532,7 +701,7 @@
                         lineto: false,
                         moveto: true
                     });
-        
+
                     // Create the path for the inner line of the grid
                     var arcPath2 = RGraph.SVG.TRIG.getArcPath3({
                         cx: this.centerx,
@@ -555,17 +724,17 @@
                         }
                     });
                 }
-                
+
 
                 //
                 // Draw the background grid radials
                 //
                 if (properties.backgroundGridRadials) {
-                
+
                     // Calculate the radius increment
                     var increment = (RGraph.SVG.TRIG.HALFPI - (0 - RGraph.SVG.TRIG.HALFPI) ) / properties.backgroundGridRadialsCount;
                     var angle     = -RGraph.SVG.TRIG.HALFPI;
-    
+
                     for (var i=0,path=''; i<properties.backgroundGridRadialsCount; ++i) {
 
                         path += RGraph.SVG.TRIG.getArcPath3({
@@ -634,7 +803,7 @@
      anticlockwise: false
             });
 
-            
+
             var path2 = RGraph.SVG.TRIG.getArcPath({
                 cx: this.centerx,
                 cy: this.centery,
@@ -667,19 +836,19 @@
             //
             // This draws the bar that indicates the value
             //
-            
+
             // A single number
             if (typeof this.value === 'number') {
 
                 var angle = ((this.value - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
-    
+
                 // Take off half a pi because our origin is the north axis
                 angle -= RGraph.SVG.TRIG.HALFPI;
-                
+
                 // Store the angle for later use
                 this.angle = angle;
-    
-    
+
+
                 // Now get the path of the inner indicator bar
                 var path = RGraph.SVG.TRIG.getArcPath({
                     cx: this.centerx,
@@ -689,7 +858,7 @@
                     end: angle,
                     anticlockwise: false
                 });
-                
+
                 var path2 = RGraph.SVG.TRIG.getArcPath({
                     cx: this.centerx,
                     cy: this.centery,
@@ -699,7 +868,7 @@
                     anticlockwise: false,
                     array: true
                 });
-    
+
                 var path3 = RGraph.SVG.TRIG.getArcPath({
                     cx: this.centerx,
                     cy: this.centery,
@@ -709,8 +878,8 @@
                     anticlockwise: true,
                     moveto: false
                 });
-                
-    
+
+
                 // Create a group for the indicator bar. At a later point any
                 // highlight can be also appended to this group
                 var group = RGraph.SVG.create({
@@ -721,7 +890,7 @@
                         id: 'indicator-bar-group'
                     }
                 });
-    
+
                 // Now draw the path
                 var path = RGraph.SVG.create({
                     svg: this.svg,
@@ -737,7 +906,7 @@
                         'stroke-width': properties.linewidth
                     }
                 });
-    
+
                 // Store a reference to the bar in the nodes array and the
                 // group as well. If necessary any highlight thats later
                 // added can be appended to this group
@@ -760,8 +929,8 @@
             } else if (RGraph.SVG.isArray(this.value)) {
 
 
-                
-    
+
+
                 // Create a group for the indicator bars. At a later point any
                 // highlight can be also appended to this group
                 var group = RGraph.SVG.create({
@@ -774,9 +943,9 @@
                 });
 
                 for (var i=0,start=-RGraph.SVG.TRIG.HALFPI; i<this.value.length; ++i) {
-                    
+
                     var angle = ((this.value[i] - this.min) / (this.max - this.min)) * RGraph.SVG.TRIG.PI; // Because the Meter is always a semi-circle
-        
+
                     var path1 = RGraph.SVG.TRIG.getArcPath({
                         cx: this.centerx,
                         cy: this.centery,
@@ -809,7 +978,7 @@
                             fill: properties.colors[i]
                         }
                     });
-                    
+
                     // Store the angle for later use
                     this.coords.push({
                         cx:             this.centerx,
@@ -820,7 +989,7 @@
                         end:            start + angle,
                         element:        el
                     });
-                    
+
                     // Increment the start angle
                     //
                     // DO THIS LAST
@@ -853,7 +1022,7 @@
                     thousand:  properties.labelsMinThousand,
                     formatter: properties.labelsMinFormatter
                 });
-                
+
                 // Get the text configuration
                 var textConf = RGraph.SVG.getTextConf({
                     object: this,
@@ -876,7 +1045,7 @@
                     italic: textConf.italic,
                     color:  textConf.color
                 });
-                
+
                 this.nodes.labelsMin = text;
             }
 
@@ -899,7 +1068,7 @@
                     formatter: properties.labelsMaxFormatter
                 });
 
-                
+
                 // Get the text configuration
                 var textConf = RGraph.SVG.getTextConf({
                     object: this,
@@ -921,7 +1090,7 @@
                     italic: textConf.italic,
                     color:  textConf.color
                 });
-                
+
                 // Store a reference to the text node
                 this.nodes.labelsMax = text;
             }
@@ -945,7 +1114,7 @@
                     formatter: properties.labelsCenterFormatter
                 });
 
-                
+
                 // Get the text configuration
                 var textConf = RGraph.SVG.getTextConf({
                     object: this,
@@ -967,7 +1136,7 @@
                     italic: textConf.italic,
                     color:  textConf.color
                 });
-                
+
                 // Store a reference to the center label
                 this.nodes.labelsCenter = text;
             }
@@ -1102,7 +1271,7 @@
                     pointerEvents: 'none'
                 }
             });
-            
+
             // Store the highlight node in the registry
             RGraph.SVG.REG.set('highlight', highlight);
 
@@ -1177,7 +1346,7 @@
                   end: this.width - properties.marginRight,
                 direction: 'horizontal'
             });
-            
+
             // Background color
 
             // Background color
@@ -1225,7 +1394,7 @@
                 } else {
                     obj.value = value * multiplier;
                 }
-                
+
                 RGraph.SVG.redraw();
 
                 if (frame++ < frames) {
@@ -1238,7 +1407,7 @@
             };
 
             iterate();
-            
+
             return this;
         };
 
@@ -1407,9 +1576,9 @@
                 this.set(i, conf.options[i]);
             }
         }
-    
-    
-    
+
+
+
         return this;
     };
 
