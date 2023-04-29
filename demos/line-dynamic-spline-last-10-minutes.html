@@ -7,10 +7,10 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A dynamically updating spline Line chart showing values for the last 10 minutes (1 per second)</title>
+    <title>RGraph demo: A dynamically updating spline Line chart showing values for the last 24 seconds (1 per second)</title>
     
     
-    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example). It's updated once per second. and shows the last 10 minutes worth of data." />
+    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example). It's updated once per second and shows the last 24 seconds of worth of data." />
      
     <meta name="robots" content="noindex, nofollow" />
 
@@ -19,7 +19,7 @@
 
     
 
-    <h1>A dynamically updating spline Line chart showing values for the last 10 minutes (1 per second)</h1>
+    <h1>A dynamically updating spline Line chart showing values for the last 24 seconds (1 per second)</h1>
     
     <div style="text-align: center">
         <canvas id="cvs" width="800" height="400">[No canvas support]</canvas>
@@ -27,8 +27,11 @@
        
     <script>
         chart  = null;
-        data   = [8,9,6,5,3,2,9,5,2,5,4,9,8,6,5,2,5,8,9,6,3,5,8,4];
-        labels = ['60s','55s','50s','45s','40s','35s','30s','25s','20s','15s','10s','5s','0s']
+        data   = [
+            8,9,6,5,3,2,9,5,2,5,4,9, //12
+            8,6,5,2,5,8,9,6,3,5,8,4  //24
+        ];
+        labels = ['24s','18s','12s','6s','0s']
 
         // Make and draw the chart
         line = new RGraph.Line({
