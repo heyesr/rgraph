@@ -11,7 +11,7 @@
     
     
     
-    <meta name="description" content="A regular Line chart that has been drawn in two passes so it can be a different color above and below a particular threshold" />
+    <meta name="description" content="A Line chart that uses the RGraph.clipTo functions to get different colors" />
      
     <meta name="robots" content="noindex, nofollow" />
 
@@ -23,7 +23,8 @@
     <h1>A different colored line chart above/below a threshold</h1>
     
     <p>
-        By using the <code>clip()</code> function the Line chart can be drawn in
+        By using the <code>RGraph.clipTo</code> <code>API</code>
+        functions the Line chart can be drawn in
         two passes so that it's colored differently on each pass.
     </p>
 
@@ -36,8 +37,7 @@
         color1    = 'red';
         color2    = 'green';
 
-        // First draw a chart that will enable us to get the Y coordinate.
-        // This chart is not shown
+        // Draw the green chart
         line = new RGraph.Line({
             id: 'cvs', 
             data: data,
@@ -46,50 +46,71 @@
                 marginBottom: 45,
                 linewidth: 3,
                 tickmarksStyle: 'endcircle',
+                tickmarksSize: 7,
                 marginInner: 10,
-                colors: [color1]
+                colors: [color1],
+                yaxisScaleMax: 100,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false
             }
+        }).on('firstdraw', function (obj)
+        {
+            var boundary = obj.getYCoord(threshold);
+        
+            obj.on('beforedraw', function (obj)
+            {
+                RGraph.clipTo.start(obj, [0,0,obj.canvas.width, boundary]);
+        
+            }).on('draw', function (obj)
+            {
+                RGraph.clipTo.end(obj);
+            });
+            
+            RGraph.redraw();
         }).draw();
 
-        // Now get the Y coordinate. Don't use the "y" variable because there
-        // appears to be a missing "var" statement inside the Line chart code.
-        thesholdY = line.getYCoord(threshold);
 
-        // Clear the canvas
-        RGraph.clear(line.canvas);
 
-        // Now draw the chart that will become the red half
-        line.context.save();
-            line.context.beginPath();
-            line.context.rect(0,0,line.canvas.width, thesholdY);
-            line.context.clip();
 
-            // Draw the Line chart again
-            line.draw();
 
-        line.context.restore();
 
-        // Now draw the chart that will become the green half
-        line.context.save();
-            line.context.beginPath();
-            line.context.rect(0,thesholdY,line.canvas.width, line.canvas.height);
-            line.context.clip();
 
-            new RGraph.Line({
-                id: 'cvs',
-                data: data,
-                options: {
-                    marginTop: 5,
-                    marginBottom: 45,
-                    colors: [color2],
-                    linewidth: 3,
-                    tickmarksStyle: 'endcircle',
-                    marginInner: 10,
-                    xaxisLabels: ['Alf','Bert','Charlie','Dave','Edgar','Fliss','Gary','Hoolio','Indigo','Jack','Kevin','Lou','Martha','Neil','Olga']
-                }
-            }).draw();
+
+        // Draw the red chart
+        line = new RGraph.Line({
+            id: 'cvs', 
+            data: data,
+            options: {
+                marginTop: 15,
+                marginBottom: 45,
+                linewidth: 3,
+                tickmarksStyle: 'endcircle',
+                tickmarksSize: 7,
+                marginInner: 10,
+                colors: [color2],
+                yaxisScaleMax: 100,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).on('firstdraw', function (obj)
+        {
+            var boundary = obj.getYCoord(threshold);
+        
+            obj.on('beforedraw', function (obj)
+            {
+                RGraph.clipTo.start(obj, [0,boundary,obj.canvas.width, 999]);
+        
+            }).on('draw', function (obj)
+            {
+                RGraph.clipTo.end(obj);
+            });
             
-        line.context.restore();
+            RGraph.redraw();
+        }).draw();
     </script>
 
 
