@@ -31,6 +31,7 @@
             id: 'cvs',
             data: [12,56,45,32,84,25,12],
             options: {
+                yaxisPosition: 'right',
                 yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
@@ -41,12 +42,13 @@
                 title: 'A vertical line chart',
                 titleBold: true,
                 marginTop: 50,
-                marginRight: 50,
+                marginRightAuto: false,
+                marginRight: 1000,
                 
                 line: true,
                 lineSpline: true
             }
-        }).trace({frames: 90});
+        }).draw();
     </script>
 
 
