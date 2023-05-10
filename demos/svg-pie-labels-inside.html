@@ -1,0 +1,71 @@
+<!-- <!DOCTYPE html > -->
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: An SVG Pie/Donut chart with inner kabels</title>
+
+    
+    <meta name="description" content="An SVG Pie/Donut chart with inner labels" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+
+    <h1>An SVG Pie/Donut chart with inner labels</h1>
+    
+    <div style="width: 400px; height: 400px; border: 1px solid #ddd" id="cc"></div>
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'cc',
+            data: [20,18,62],
+            options: {
+                exploded: 2,
+                donut: true,
+                donutWidth: 40,
+
+                labelsIngraph: true,                
+                labelsIngraphBackground: '#fff6',
+                labelsIngraphSize: 12,
+                labelsIngraphBold: true,
+                labelsIngraphRadiusPos: 0.6,
+                labelsIngraphUnitsPost: '%'
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="width: 350px; height: 300px; border: 1px solid #ddd" id="cc"&gt;&lt;/div&gt;
+    [No canvas support]
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
