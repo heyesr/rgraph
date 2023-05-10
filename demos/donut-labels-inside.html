@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>Demo: A Donut chart with inside labels</title>
+    
+    
+    <meta name="description" content="A Donut chart that has the labels on the inside - instead od the outside" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Donut chart with inside labels</h1>
+    
+    <div id="canvas-container">
+        <canvas id="cvs" width="450" height="450" >[No canvas support]</canvas>
+    </div>
+    
+
+    <script id="rgraph-demo-source-code">
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [61,23,16],
+            options: {
+                variant: 'donut',
+                variantDonutWidth: 40,
+                colorsStroke: 'transparent',                
+                labelsSize: 16,
+                labelsColor: '#333',
+                shadow: false,
+                labelsInside: true,
+                labelsInsideSize: 20,
+                labelsInsideDecimals: 1,
+                labelsInsideUnitsPost: '%',
+                labelsInsideHalign: 'center',
+                labelsInsideOffsetr: -25
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="450" height="450"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+    
+</body>
+</html>
