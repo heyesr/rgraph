@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A 3D Bar chart whose design came from StackOverflow</title>
+    <meta name="description" content="This is a a 3D Bar chart that was first shown on StackOverflow." />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A 3D Bar chart whose design came from StackOverflow</h1>
+    
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="550" height="350">[No canvas support]</canvas>
+    </div>
+
+
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: '11,8,14,4,2.5',
+            options: {
+                variant: '3d',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginBottom: 100,
+                marginLeft: 45,
+                marginInner: 20,
+                colorsSequential: true,
+                colors: ['#ED5053','#E5C8EA','#5D6CBE','#2FA69A'],
+                yaxis: false,
+                xaxis: false,
+                xaxisLabels:['Mon 5th', 'Tue 6th', 'Wed 7th', 'Thu 8th', 'Fri 9th'],
+                xaxisTitle: 'Date',
+                xaxisTitleOffsety: 7,
+                xaxisTitleBold: true,
+                xaxisTitleSize: 18,
+                xaxisLabelsOffsety: 5,
+                title: 'Sales results for previous week',                
+                textSize: 14,
+                yaxisScaleUnitsPost: '%'
+            }
+        }).grow();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="550" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
