@@ -111,6 +111,7 @@
             labelsIngraphRadiusOffset:      0,
             labelsIngraphUndrawn:           null,
             labelsIngraphUndrawnAsLabels:   null,
+            labelsIngraphUndrawnAlwaysShow: false,
             
             labelsCenter:                   null,
             labelsCenterSize:               26,
@@ -120,6 +121,26 @@
             labelsCenterBold:               null,
             labelsCenterOffsetx:            0,
             labelsCenterOffsety:            0,
+            
+            labelsInside:                   null,
+            labelsInsideColor:              null,
+            labelsInsideSize:               null,
+            labelsInsideFont:               null,
+            labelsInsideBold:               null,
+            labelsInsideItalic:             null,
+            labelsInsideDecimals:           0,
+            labelsInsidePoint:              '.',
+            labelsInsideThousand:           ',',
+            labelsInsideUnitsPre:           '',
+            labelsInsideUnitsPost:          '',
+            labelsInsideOffsetr:            0,
+            labelsInsideHalign:             'auto',
+            labelsInsideSpecific:           null,
+            labelsInsideFormattedDecimals:  0,
+            labelsInsideFormattedPoint:     '.',
+            labelsInsideFormattedThousand:  ',',
+            labelsInsideFormattedUnitsPre:  '',
+            labelsInsideFormattedUnitsPost: '',
 
             marginLeft:                     35,
             marginRight:                    35,
@@ -424,10 +445,10 @@
 
 
 
-//
-// Draw the title
-//
-this.drawTitle();
+            //
+            // Draw the title
+            //
+            this.drawTitle();
 
             //
             // The total of the array of values
@@ -548,6 +569,12 @@ this.drawTitle();
             //
             if (typeof properties.labelsCenter === 'string') {
                 this.drawCenterLabel(properties.labelsCenter);
+            }
+            
+            // Draw the labelsInside labels. Mainly for donut
+            // charts - but you can use them if you choose
+            if (properties.labelsInside) {
+                this.drawLabelsInside();
             }
     
             
@@ -1198,6 +1225,121 @@ this.drawTitle();
 
 
         //
+        // Draw the labelsInside labels if they've been
+        // specified
+        //
+        this.drawLabelsInside = function ()
+        {
+
+            // Get the text configuration
+            var textConf = RGraph.getTextConf({
+                object: this,
+                prefix: 'labelsInside'
+            });
+
+
+
+
+
+
+
+
+            // If the labelsInsideSpecific is a string (or a number)
+            // then convert it to an array of that string repeated
+            // a number of times (the same number as there are
+            // items in the data)
+            if (RGraph.isTextual(properties.labelsInsideSpecific)) {
+                properties.labelsInsideSpecific = RGraph.arrayFill(
+                    [],
+                    this.data.length,
+                    properties.labelsInsideSpecific
+                );
+            }
+
+
+
+
+
+
+
+            for (let i=0; i<this.data.length; ++i) {
+
+                var centerAngle = this.angles[i][0] + ((this.angles[i][1] - this.angles[i][0]) / 2);
+
+                var p = RGraph.getRadiusEndPoint(
+                    this.centerx,
+                    this.centery,
+                    centerAngle,
+                    this.radius - properties.variantDonutWidth - 20 + properties.labelsInsideOffsetr + properties.exploded
+                );
+                
+                // Horizontal alignment
+                if (p[0] >= this.centerx) {
+                    var halign = 'right';
+                } else {
+                    var halign = 'left';
+                }
+                
+                // If the labelsInsideSpecific property is set
+                // then use that
+                if (RGraph.isArray(properties.labelsInsideSpecific) && RGraph.isTextual(properties.labelsInsideSpecific[i])) {
+                    
+                    var label = String(properties.labelsInsideSpecific[i]);
+
+                    //
+                    // Allow for label substitution
+                    //
+                    label = RGraph.labelSubstitution({
+                        object:    this,
+                        text:      label,
+                        index:     i,
+                        value:     this.data[i],
+                        decimals:  properties.labelsInsideFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsInsideFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsInsideFormattedUnitsPost || '',
+                        thousand:  properties.labelsInsideFormattedThousand  || ',',
+                        point:     properties.labelsInsideFormattedPoint     || '.'
+                    });
+
+
+
+                } else {
+                
+                    var label = RGraph.numberFormat({
+                        object:    this,
+                        number:    this.data[i].toFixed(properties.labelsInsideDecimals),
+                        unitspre:  properties.labelsInsideUnitsPre,
+                        unitspost: properties.labelsInsideUnitsPost,
+                        point:     properties.labelsInsidePoint,
+                        thousand:  properties.labelsInsideThousand
+                    });
+                }
+
+
+                RGraph.text({
+                    object: this,
+                    x:      p[0],
+                    y:      p[1],
+                    text:   label,
+                    size:   textConf.size,
+                    font:   textConf.font,
+                    color:  textConf.color,
+                    bold:   textConf.bold,
+                    italic: textConf.italic,
+                    halign: properties.labelsInsideHalign === 'center' ? 'center' : halign,
+                    valign: 'center'
+                });
+            }
+        }
+
+
+
+
+
+
+
+
+        //
         // This function draws the pie chart sticks (for the labels)
         //
         this.drawSticks = function ()
@@ -1826,7 +1968,7 @@ this.drawTitle();
 
             if (radius > 2) {
                 r = radius;
-            }
+            } 
     
             for (var i=0,len=this.angles.length; i<len; ++i) {
 
@@ -1934,10 +2076,13 @@ this.drawTitle();
                         let [textX, textY, textW, textH] = [ret.x, ret.y, ret.width, ret.height];
 
                         if (
-                            !this.context.isPointInPath(textX, textY) ||
-                            !this.context.isPointInPath(textX + textW, textY) ||
-                            !this.context.isPointInPath(textX, textY + textH) ||
-                            !this.context.isPointInPath(textX + textW, textY + textH)
+                            this.properties.labelsIngraphUndrawnAlwaysShow === false &&
+                            (
+                             !this.context.isPointInPath(textX, textY) ||
+                             !this.context.isPointInPath(textX + textW, textY) ||
+                             !this.context.isPointInPath(textX, textY + textH) ||
+                             !this.context.isPointInPath(textX + textW, textY + textH)
+                            )
                            ) {
 
                             // This clears any existing path
