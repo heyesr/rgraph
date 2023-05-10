@@ -1145,7 +1145,6 @@
                                     this.context.strokeStyle,prevFillStyle
                                 );
                             }
-
                         }
 
 
@@ -1360,7 +1359,7 @@
                         if (typeof this.coords2[i] == 'undefined') {
                             this.coords2[i] = [];
                         }
-                        
+
                         for (j=(this.data[i].length - 1); j>=0; --j) {
     
                             //
@@ -1408,7 +1407,7 @@
                             // Account for the Y axis being in the middle
                             if ( properties.yaxisPosition == 'center') {
                                 width  /= 2;
-                            
+
                             // Account for the Y axis being on the right
                             } else if ( properties.yaxisPosition == 'right') {
                                 width = Math.abs(width);
@@ -1419,7 +1418,7 @@
                                 startX += width;
                                 width *= -1;
                             }
-                            
+
                             if (properties.corners === 'round') {
                                 this.context.rectOld = this.context.rect;
                                 this.context.rect    = this.roundedCornersRect;
@@ -1431,7 +1430,7 @@
                             this.context.rect(startX, startY, width, individualBarHeight);
                             this.context.stroke();
                             this.context.fill();
-                            
+
                             // Put the rect function back to what it was
                             if (properties.corners === 'round') {
                                 this.context.rect    = this.context.rectOld;
@@ -1528,31 +1527,38 @@
                                 this.context.strokeStyle = prevStrokeStyle;
                                 this.context.fillStyle   = prevFillStyle;
                             }
-
-
-
-
-
-
                         }
-                        
+
                         startY += vmargin;
+                      
+                        // This skirts an annoying "extra fill bug"
+                        // by getting rid of the last path which
+                        // was drawn - which is usually the last
+                        // bar to be drawn (the bars are drawn
+                        // from bottom to top). Woo.
+                        this.path('b');
                     }
-    
+
                 this.context.closePath();
             }
-    
+
             this.context.stroke();
             this.context.fill();
 
+            // Sunday 30th April 2023:
+            //     Why is this necessary? It causes the title
+            //     (if it's big enough) to be cut off so it's
+            //     been commented out.
+            //
             // Under certain circumstances we can cover the shadow
             // overspill with a white rectangle
-            if ( properties.yaxisPosition === 'right') {
-                this.path(
-                    'cr % % % %',
-                    this.canvas.width - this.marginRight + properties.variantThreedOffsetx,'0',this.marginRight,this.canvas.height
-                );
-            }
+            //
+            //if ( properties.yaxisPosition === 'right') {
+            //    this.path(
+            //       'cr % % % %',
+            //        this.canvas.width - this.marginRight + properties.variantThreedOffsetx,'0',this.marginRight,this.canvas.height
+            //    );
+            //}
 
 
 
