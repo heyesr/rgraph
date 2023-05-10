@@ -758,7 +758,8 @@
     // @param  int   len The length to pad the array to
     // @param  mixed     The value to use to pad the array (optional)
     //
-    RGraph.arrayPad = function ()
+    RGraph.arrayFill =
+    RGraph.arrayPad  = function ()
     {
         var args = RGraph.getArgs(arguments, 'array,length,value');
 
@@ -6953,7 +6954,13 @@
             bold   = !RGraph.isNull(properties[prefix + 'Bold'])        ? properties[prefix + 'Bold']   : properties.textBold,
             italic = !RGraph.isNull(properties[prefix + 'Italic'])      ? properties[prefix + 'Italic'] : properties.textItalic;
 
-        return {font: font, size: size, color: color, bold: bold, italic: italic};
+        return {
+            font:   font,
+            size:   size,
+            color:  color,
+            bold:   bold,
+            italic: italic
+        };
     };
 
 
