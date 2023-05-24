@@ -102,6 +102,11 @@
             labelsIngraphBoundingFill:      'rgba(255,255,255,0.85)',
             labelsIngraphBoundingStroke:    'rgba(0,0,0,0)',
             labelsIngraphSpecific:          null,
+            labelsIngraphSpecificFormattedDecimals:  0,
+            labelsIngraphSpecificFormattedPoint:     '.',
+            labelsIngraphSpecificFormattedThousand:  ',',
+            labelsIngraphSpecificFormattedUnitsPre:  '',
+            labelsIngraphSpecificFormattedUnitsPost: '',
             labelsIngraphUnitsPre:          '',
             labelsIngraphUnitsPost:         '',
             labelsIngraphPoint:             '.',
@@ -135,12 +140,15 @@
             labelsInsideUnitsPost:          '',
             labelsInsideOffsetr:            0,
             labelsInsideHalign:             'auto',
+            labelsInsideBounding:           false,
+            labelsInsideBoundingFill:       'rgba(255,255,255,0.75)',
+            labelsInsideBoundingStroke:     'transparent',
             labelsInsideSpecific:           null,
-            labelsInsideFormattedDecimals:  0,
-            labelsInsideFormattedPoint:     '.',
-            labelsInsideFormattedThousand:  ',',
-            labelsInsideFormattedUnitsPre:  '',
-            labelsInsideFormattedUnitsPost: '',
+            labelsInsideSpecificFormattedDecimals:  0,
+            labelsInsideSpecificFormattedPoint:     '.',
+            labelsInsideSpecificFormattedThousand:  ',',
+            labelsInsideSpecificFormattedUnitsPre:  '',
+            labelsInsideSpecificFormattedUnitsPost: '',
 
             marginLeft:                     35,
             marginRight:                    35,
@@ -1230,7 +1238,6 @@
         //
         this.drawLabelsInside = function ()
         {
-
             // Get the text configuration
             var textConf = RGraph.getTextConf({
                 object: this,
@@ -1294,11 +1301,11 @@
                         text:      label,
                         index:     i,
                         value:     this.data[i],
-                        decimals:  properties.labelsInsideFormattedDecimals  || 0,
-                        unitsPre:  properties.labelsInsideFormattedUnitsPre  || '',
-                        unitsPost: properties.labelsInsideFormattedUnitsPost || '',
-                        thousand:  properties.labelsInsideFormattedThousand  || ',',
-                        point:     properties.labelsInsideFormattedPoint     || '.'
+                        decimals:  properties.labelsInsideSpecificFormattedDecimals  || 0,
+                        unitsPre:  properties.labelsInsideSpecificFormattedUnitsPre  || '',
+                        unitsPost: properties.labelsInsideSpecificFormattedUnitsPost || '',
+                        thousand:  properties.labelsInsideSpecificFormattedThousand  || ',',
+                        point:     properties.labelsInsideSpecificFormattedPoint     || '.'
                     });
 
 
@@ -1327,7 +1334,10 @@
                     bold:   textConf.bold,
                     italic: textConf.italic,
                     halign: properties.labelsInsideHalign === 'center' ? 'center' : halign,
-                    valign: 'center'
+                    valign: 'center',
+                    bounding: properties.labelsInsideBounding,
+                    boundingFill: properties.labelsInsideBoundingFill,
+                    boundingStroke: properties.labelsInsideBoundingStroke
                 });
             }
         }
@@ -1935,7 +1945,17 @@
             var cx      = this.centerx;
             var cy      = this.centery;
             var radius  = properties.labelsIngraphRadius;
-            
+
+            // If the labelsIngraphSpecific property is a string
+            // make it an array and populate it
+            if (typeof properties.labelsIngraphSpecific === 'string') {
+                properties.labelsIngraphSpecific = RGraph.arrayFill(
+                    [],
+                    this.data.length,
+                    properties.labelsIngraphSpecific
+                );
+            }
+
             // Reset this to an empty array
             this.set('labelsIngraphUndrawn', []);
 
@@ -1956,7 +1976,7 @@
                 radiusFactor = 0.5;
             }
 
-            if (properties.variant == 'donut') {
+            if (properties.variant === 'donut') {
                 var r = this.radius * (0.5 + (radiusFactor * 0.5));
                 
                 if (typeof properties.variantDonutWidth == 'number') {
@@ -1993,15 +2013,39 @@
 
                 var x = coords[0];
                 var y = coords[1];
-    
-                var text = properties.labelsIngraphSpecific && typeof properties.labelsIngraphSpecific[i] == 'string' ? properties.labelsIngraphSpecific[i] : RGraph.numberFormat({
-                    object:    this,
-                    number:    this.data[i].toFixed(properties.labelsIngraphDecimals),
-                    unitspre:  properties.labelsIngraphUnitsPre,
-                    unitspost: properties.labelsIngraphUnitsPost,
-                    point:     properties.labelsIngraphPoint,
-                    thousand:  properties.labelsIngraphThousand
-                });
+
+                // Work out the text of the label:
+                //
+                // Use specific text
+                if (properties.labelsIngraphSpecific && typeof properties.labelsIngraphSpecific[i] === 'string') {
+
+                    var text = RGraph.labelSubstitution({
+                            object:    this,
+                            text:      properties.labelsIngraphSpecific[i],
+                            index:     i,
+                            value:     this.data[i],
+                            decimals:  properties.labelsIngraphSpecificFormattedDecimals  || 0,
+                            unitsPre:  properties.labelsIngraphSpecificFormattedUnitsPre  || '',
+                            unitsPost: properties.labelsIngraphSpecificFormattedUnitsPost || '',
+                            thousand:  properties.labelsIngraphSpecificFormattedThousand  || ',',
+                            point:     properties.labelsIngraphSpecificFormattedPoint     || '.'
+                        });
+
+
+
+
+
+                // Use the value
+                } else {
+                    var text =  RGraph.numberFormat({
+                        object:    this,
+                        number:    this.data[i].toFixed(properties.labelsIngraphDecimals),
+                        unitspre:  properties.labelsIngraphUnitsPre,
+                        unitspost: properties.labelsIngraphUnitsPost,
+                        point:     properties.labelsIngraphPoint,
+                        thousand:  properties.labelsIngraphThousand
+                    });
+                }
 
                 if (text) {
 
