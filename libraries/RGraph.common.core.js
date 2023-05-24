@@ -8815,8 +8815,8 @@
     // xaxisLabels: '%{names:[%{index}]}: %{value_formatted}'
     // ...
     //
-    //@param object args This can be an object which contains the following
-    //                   things:
+    //@param object args This can be an object which contains the
+    //                   following things:
     //                           args.text      The text on which to perform the substitution on
     //                                          (ie the original label)
     //                           args.object    The chart object
