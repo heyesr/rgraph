@@ -1,0 +1,130 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Bar chart showing the population of the Balearic islands</title>
+    <meta name="description" content="A Bar chart showing the population of the Balearic islands" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A Bar chart showing the population of the Balearic islands</h1>
+    
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
+
+
+    <br clear="both" />
+
+
+
+    <script id="rgraph-demo-source-code">
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [950770,160101,99839,13250],
+            options: {
+                marginInner: 35,
+                xaxisLabels: ['Majorca','Ibiza','Minorca','Formentera'],
+                yaxisTitle: 'Population',
+                textSize: 10,
+                yaxisTitleBold: true,
+                tooltips: '%{property:xaxisLabels[%{group}]}<br /><hr style="margin-top: 25px; margin-bottom: 25px"/>%{value_formatted}',
+                tooltipsCss: {
+                    backgroundColor: 'white',
+                    color: 'black',
+                    fontSize: '10pt',
+                    borderRadius: 0,
+                    fontWeight: 'bold',
+                    padding: '25px',
+                    border: '1px solid gray',
+                    pointerEvents: 'none'
+                },
+                tooltipsPointer: false,
+                tooltipsEvent: 'mousemove',
+                tooltipsPositionStatic: false,
+                tooltipsEffect: 'none',
+                tooltipsHotspotXonly: true,
+                colors: ['#2876DD'],
+                labelsAbove: true,
+                labelsAboveOffsety: 5,
+                labelsAboveSize: 10,
+                labelsAboveBold: true,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginLeft: 100,
+                yaxis: false,
+                xaxisTickmarks: false
+            }
+        }).draw();
+
+
+
+        //
+        // The onmousemove event handles updating the position of
+        // the tooltip
+        //
+        bar.canvas.onmousemove = function (e)
+        {
+            // Get the tooltip <div> from the RGraph registry
+            var tooltip = RGraph.Registry.get('tooltip');
+
+            // If there's a tooltip being displayed
+            if (tooltip) {
+
+                // Get the mouse coordinates in relation to the canvas
+                var mouseXY  = RGraph.getMouseXY(e);
+                
+                // Get the coordinates of the canvas in relation to the page
+                var canvasXY = RGraph.getCanvasXY(e.target);
+                
+                // Set the tooltip position to follow the mouse
+                tooltip.style.left = canvasXY[0] + mouseXY[0] - (tooltip.offsetHeight / 2) + 'px';
+                tooltip.style.top  = canvasXY[1] + mouseXY[1] - tooltip.offsetHeight - 5 + 'px';
+            
+            }
+            
+            // Hide the tooltip if not over the chart area
+            if (!bar.getObjectByXY(e)) {
+                RGraph.hideTooltip();
+                RGraph.redraw();
+            }
+        };
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="750" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
