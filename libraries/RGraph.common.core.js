@@ -819,6 +819,108 @@
 
 
     //
+    // Use this method to remove null vlues from your objects
+    // or arrays
+    //
+    // @param mixed  src An array or an object
+    // @param object opt An options object. There's only two
+    //                   options currently: By default only arrays
+    //                   are handle - ie objects are left untouched.
+    //                   Set the options parameter to true if you
+    //                   want objects and their properties to be
+    //                   checked. For example:
+    //
+    //                   newobj = RGraph.arrayRemoveNull(
+    //                       myArray,
+    //                       {objects: true}
+    //                   );
+    //
+    //                   And you can also set a 'value' option to
+    //                   the value to replace null values with
+    //                   instead of removing them.
+    //
+    //
+    RGraph.arrayRemoveNull = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'source,options');
+
+        if (!args.options) {
+            args.options = {};
+        }
+
+        //
+        // Remove null values from arrays
+        //
+        if (RGraph.isArray(args.source)) {
+            
+            var arr = [];
+
+            for (let i in args.source) {
+
+                if (RGraph.isNull(args.source[i])) {
+                    if (!RGraph.isUndefined(args.options.value)) {
+                        arr.push(args.options.value);
+                    }
+                    continue;
+                
+                } else if (RGraph.isArray(args.source[i])) {
+                    arr.push(RGraph.arrayRemoveNull(args.source[i], args.options));
+
+                } else if (RGraph.isObject(args.source[i]) && args.options.objects) {
+                    arr.push(RGraph.arrayRemoveNull(args.source[i], args.options));
+                
+                } else {                
+                    arr.push(args.source[i]);
+                }
+            }
+            
+        //
+        // Remove null values from objects
+        //
+        } else if (RGraph.isObject(args.source) && args.options.objects) {
+
+            var arr = {};
+
+            for (let i in args.source) {
+                
+                if (RGraph.isArray(args.source[i]) || RGraph.isObject(args.source[i])) {
+                    arr[i] = RGraph.arrayRemoveNull(args.source[i], args.options);
+
+                } else if (!RGraph.isNull(args.source[i])) {
+                    Object.defineProperty(arr, i, {
+                        value: args.source[i]
+                    });
+                
+                } else if (RGraph.isNull(args.source[i])) {
+                    if (!RGraph.isUndefined(args.options.value)) {
+                        arr[i] = args.options.value;
+                    }
+                }
+            }
+        
+        // 
+        // Don't remove nulls from objects
+        //
+        } else if (RGraph.isObject(args.source) && !args.options.objects) {
+
+            var arr = args.source;
+        
+        // Other types - just return them
+        } else {
+            var arr = args.source;
+        }
+
+        return arr;
+    };
+
+
+
+
+
+
+
+
+    //
     // Takes any number of arguments and adds them to one big linear array
     // which is then returned
     // 
