@@ -63,6 +63,7 @@
             labelsPosition:       'edge',
             labelsOffsetx:        0,
             labelsOffsety:        0,
+            labelsBackground:     'rgba(255,255,255,0.7)',
             labelsFormattedDecimals:    0,
             labelsFormattedPoint:       '.',
             labelsFormattedThousand:    ',',
@@ -573,7 +574,7 @@
                     size    = properties.textSize,
                     color   = properties.textColor,
                     labels  = properties.labels,
-                    halign  = properties.textHalign == 'left' ? 'left' : 'center';
+                    halign  = properties.textHalign === 'left' ? 'left' : 'center';
     
                 // Get the text configuration
                 var textConf = RGraph.getTextConf({
@@ -624,7 +625,7 @@
                         valign:         'center',
                         halign:         halign,
                         bounding:       true,
-                        boundingFill:   'rgba(255,255,255,0.7)',
+                        boundingFill:   properties.labelsBackground,
                         boundingStroke: 'rgba(0,0,0,0)',
                         tag:            'labels',
                         cssClass:       RGraph.getLabelsCSSClassName({
