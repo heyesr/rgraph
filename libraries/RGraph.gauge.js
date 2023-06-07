@@ -195,6 +195,10 @@
 
             adjustable:       false,
 
+            annotatable:          false,
+            annotatableLinewidth: 1,
+            annotatableColor:     'black',
+
             shadow:           true,
             shadowColor:     'gray',
             shadowOffsetx:   0,
