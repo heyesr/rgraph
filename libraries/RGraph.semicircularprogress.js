@@ -49,6 +49,7 @@
             backgroundGridCircles:      true,
             backgroundGridRadials:      true,
             backgroundGridRadialsCount: 10,
+            backgroundBackdrop:         true,
 
             colors:                     ['#0c0', '#f66', '#66f', 'yellow', 'pink','#ccc','#cc0','#0cc','#c0c'],
 
@@ -574,26 +575,31 @@
 
 
 
-
-            this.path(
-                'lw % b ',
-                this.linewidth
-            );
-
-            // Draw the path for the bar
-            this.pathBar({
-                startValue: 0,
-                endValue:   this.max
-            });
-
-            // Finish the paths and stroke/fill it
-            this.path(
-                'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
-                properties.colorsStroke,
-                properties.colors[0],
-                properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
-                'rgba(255,255,255,0.85)'
-            );
+            //
+            // Draw the background for the bar which is a similar
+            // color to the bar - just faded out a bit
+            //
+            if (properties.backgroundBackdrop) {
+                this.path(
+                    'lw % b ',
+                    this.linewidth
+                );
+    
+                // Draw the path for the bar
+                this.pathBar({
+                    startValue: 0,
+                    endValue:   this.max
+                });
+    
+                // Finish the paths and stroke/fill it
+                this.path(
+                    'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
+                    properties.colorsStroke,
+                    properties.colors[0],
+                    properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
+                    'rgba(255,255,255,0.85)'
+                );
+            }
 
 
 
