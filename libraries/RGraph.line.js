@@ -295,6 +295,7 @@
             highlightDatasetDashArray:       null,
             highlightDatasetExclude:         null,
             highlightDatasetCallback:        null,
+            highlightDatasetEvent:           'click',
 
             stepped:                    false,
             
