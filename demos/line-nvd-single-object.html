@@ -37,7 +37,7 @@
             options: {
                 filled: true,
                 filledAccumulative: true,
-                colors: ['transparent', '#FDA354', '#C4D6ED', '#609EC8'],
+                colors: ['transparent', '#FDA354', '#C4D6ED', '#609EC8','#CA8363'],
                 spline: true,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
@@ -49,14 +49,15 @@
                 yaxisScale: false,
                 marginLeft: 45,
                 yaxisScale: true,
+
                 highlightDataset: true,
                 highlightDatasetFill: 'rgba(255,255,255,0.75)',
                 highlightDatasetLinewidth: 0,
-                highlightDatasetDashArray: [5,5],
                 highlightDatasetExclude: 0, // Can also be an array of dataset indexes
+                highlightDatasetEvent: 'mousemove',
                 highlightDatasetCallback: function(opt)
                 {
-                    alert('You clicked dataset number: ' + opt.dataset);
+                    console.log('You clicked dataset number: ' + opt.dataset);
                 }
             }
         }).trace({frames: 30});
