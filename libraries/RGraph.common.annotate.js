@@ -335,42 +335,50 @@
         var annotations = win.localStorage['__rgraph_annotations_' + obj.id + '__'];
         var i, len, move, coords;
 
-        context.beginPath();
-        context.lineWidth = obj.get('annotatable.linewidth');
+        // Save the state of the canvas
+        context.save();
+            context.beginPath();
+            context.lineWidth = obj.get('annotatableLinewidth');
 
-        if (annotations && annotations.length) {
-            annotations = annotations.split('|');
-        } else {
-            return;
-        }
-
-
-        for (i=0,len=annotations.length; i<len; ++i) {
-
-            // If the element of the array is a color - finish the path,
-            // stroke it and start a new one
-            if (annotations[i].match(/[a-z]+/)) {
-                context.stroke();
-                context.beginPath();
-
-                context.strokeStyle = annotations[i];
-                move = true;
-                continue;
-            }
-
-            coords = annotations[i].split(',');
-            coords[0] = Number(coords[0]);
-            coords[1] = Number(coords[1]);
-
-            if (move) {
-                context.moveTo(coords[0], coords[1]);
-                move = false;
+            if (annotations && annotations.length) {
+                annotations = annotations.split('|');
             } else {
-                context.lineTo(coords[0], coords[1]);
+                return;
             }
-        }
+            
+            // Set the stroke color
+            context.strokeStyle = annotations[i] || 'black';
+
+    
+    
+            for (i=0,len=annotations.length; i<len; ++i) {
+    
+                // If the element of the array is a color - finish the path,
+                // stroke it and start a new one
+                if (annotations[i].match(/[a-z]+/)) {
+                    
+                    context.stroke();
+                    context.beginPath();
+    
+                    context.strokeStyle = annotations[i];
+                    move = true;
+                    continue;
+                }
+    
+                coords = annotations[i].split(',');
+                coords[0] = Number(coords[0]);
+                coords[1] = Number(coords[1]);
+    
+                if (move) {
+                    context.moveTo(coords[0], coords[1]);
+                    move = false;
+                } else {
+                    context.lineTo(coords[0], coords[1]);
+                }
+            }
         
-        context.stroke();
+            context.stroke();
+        context.restore();
     };
 
 
