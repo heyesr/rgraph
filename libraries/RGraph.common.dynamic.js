@@ -304,6 +304,89 @@
                         uids[obj.uid] = true;
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////
+// This bit facilitates the dataset highlighting //
+///////////////////////////////////////////////////
+if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEvent === 'mousemove') {
+    
+    var [x, y]         = RGraph.getMouseXY(e);
+    var shape          = obj.over(x, y);
+    var excludedNumber = RGraph.isNumber(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude === shape.dataset;
+    var excludedArray  = RGraph.isArray(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude.includes(shape.dataset);
+
+    if (shape && !excludedNumber && !excludedArray) {
+
+        // Store the index that's highlighted on the canvas if
+        // it's different to what's previously been stored.
+        if (shape.dataset !== obj.canvas.rgraph_highlightDataset_dataset) {
+            
+            RGraph.redrawCanvas(obj.canvas);
+            
+            obj.canvas.rgraph_highlightDataset_dataset = shape.dataset;
+
+            obj.highlightDataset({
+                dataset:    shape.dataset,
+                fill:       obj.properties.highlightDatasetFill,
+                stroke:     obj.properties.highlightDatasetStroke,
+                linewidth:  obj.properties.highlightDatasetLinewidth,
+                linedash:   obj.properties.highlightDatasetDashArray,
+                dotted:     obj.properties.highlightDatasetDotted,
+                dashed:     obj.properties.highlightDatasetDashed
+            });
+            
+            // Call the callback if specified
+            if (RGraph.isFunction (obj.properties.highlightDatasetCallback)) {
+                
+                obj.properties.highlightDatasetCallback({
+                    dataset: shape.dataset,
+                    object: obj
+                });
+            }
+        }
+        
+    
+    } else {
+        obj.canvas.rgraph_highlightDataset_dataset = null;
+        RGraph.redraw();
+    }
+}
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                         if (!obj.getShape) {
                             continue;
                         }
@@ -849,13 +932,13 @@
                     ///////////////////////////////////////////////////
                     // This bit facilitates the dataset highlighting //
                     ///////////////////////////////////////////////////
-                    if (obj && obj.properties.highlightDataset) {
+                    if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEvent === 'click') {
                         
                         var [x, y]         = RGraph.getMouseXY(e);
                         var shape          = obj.over(x, y);
                         var excludedNumber = RGraph.isNumber(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude === shape.dataset;
                         var excludedArray  = RGraph.isArray(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude.includes(shape.dataset);
-                        
+
                         if (shape && !excludedNumber && !excludedArray) {
                             obj.highlightDataset({
                                 dataset:    shape.dataset,
@@ -876,6 +959,15 @@
                             }
                         }
                     }
+
+
+
+
+
+
+
+
+
 
 
 
