@@ -336,8 +336,12 @@
             adjustable:             false,
             adjustableOnly:        null,
 
-            corners:                'square',
-            cornersRoundRadius:     10,
+            corners:                 'square',
+            cornersRoundRadius:       10,
+            cornersRoundTop:          true,
+            cornersRoundBottom:       true,
+            cornersRoundTopRadius:    null,
+            cornersRoundBottomRadius: null,
             
             line:                           false,
             lineColor:                      'black',
@@ -1064,7 +1068,14 @@
                         this.context.beginPath();
                         this.context.lineJoin = 'miter';
                         this.context.lineCap  = 'square';
-                        this.context.rect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
+                        
+                        // Draw the rounded corners rect positive or negative
+                        if (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') {
+                            this.context.rect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
+                        } else {
+                            this.roundedCornersRectNegative(barX,this.marginTop + (i * height) + properties.marginInner,barWidth,barHeight);
+                        }
+
                         this.context.stroke();
                         this.context.fill();
 
@@ -1231,7 +1242,18 @@
                             this.context.beginPath();
                             this.context.lineJoin = 'miter';
                             this.context.lineCap  = 'square';
-                            this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+
+                            // Draw the rounded corners rect positive or negative
+                            if (j < (this.data[i].length - 1)  && this.data[i][j] > 0) {
+                                this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                            } else {
+                                if (this.properties.yaxisPosition === 'left') {
+                                    this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                                } else {
+                                    this.roundedCornersRectNegative(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                                }
+                            }
+
                             this.context.stroke();
                             this.context.fill();
                             
@@ -1427,7 +1449,22 @@
                             this.context.beginPath();
                             this.context.lineJoin = 'miter';
                             this.context.lineCap  = 'square';
-                            this.context.rect(startX, startY, width, individualBarHeight);
+
+                            // Draw the rounded corners rect positive or negative
+                            if (this.properties.yaxisPosition === 'left' || this.properties.yaxisPosition === 'center') {
+                                if (this.data[i][j] > 0) {
+                                    this.context.rect(startX, startY, width, individualBarHeight);
+                                } else {
+                                    this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
+                                }
+                            } else {
+                                if (this.data[i][j] > 0) {
+                                    this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
+                                } else {
+                                    this.context.rect(startX + width, startY, width, individualBarHeight);
+                                }
+                            }
+
                             this.context.stroke();
                             this.context.fill();
 
@@ -2963,9 +3000,38 @@
         //
         this.roundedCornersRect = function (x, y, width, height)
         {
-            var radius = properties.cornersRoundRadius;
+            var radiusTop    = null;
+            var radiusBottom = null;
+            
+            // Top radius
+            if (RGraph.isNumber(properties.cornersRoundTopRadius)) {
+                radiusTop = properties.cornersRoundTopRadius;
+            } else {
+                radiusTop = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+            }
 
-            radius = Math.min(width / 2, height / 2, radius);
+            // Bottom radius
+            if (RGraph.isNumber(properties.cornersRoundBottomRadius)) {
+                radiusBottom = properties.cornersRoundBottomRadius;
+            } else {
+                radiusBottom = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+            }
+
+
+
+
+
+            if ( (radiusTop + radiusBottom) > height) {
+
+                // Calculate the top and bottom radiii and assign
+                // to temporary variables
+                var a = height / (radiusTop + radiusBottom) * radiusTop;
+                var b = height / (radiusTop + radiusBottom) * radiusBottom;
+                
+                // Reassign the values to the correct variables
+                radiusTop    = a;
+                radiusBottom = b;
+            }
 
 
             // Because the function is added to the context prototype
@@ -2978,19 +3044,105 @@
                 this.translate(x, y);
     
                 // Move to the center of the top horizontal line
-                this.moveTo(width / 2,0);
+                this.moveTo(width - radiusTop,0);
 
                 // Draw the rounded corners. The connecting lines in between them are drawn automatically
-                this.arcTo(width,0,width,height, Math.min(height / 2, radius));
-                this.arcTo(width, height, 0, height, radius);
-                this.arcTo(0, height, 0, 0, 0);
-                this.arcTo(0, 0, radius, 0, Math.min(height / 2, 0));
+                this.arcTo(width,0, width,0 + radiusTop, properties.cornersRoundTop ? radiusTop : 0);
+                this.arcTo(width, height, width - radiusBottom, height, properties.cornersRoundBottom ? radiusBottom : 0);
+                this.lineTo(0,height);
+                this.lineTo(0, 0);
+                
     
                 // Draw a line back to the start coordinates
-                this.lineTo(width / 2,0);
+                this.closePath();
     
             // Restore the state of the canvas to as it was before the save()
             this.restore();
+        };
+
+
+
+
+
+
+
+
+        //
+        // This draws a rectangle with rounded corners [for negative
+        // values]
+        // 
+        // @param number x      The X coordinate
+        // @param number y      The Y coordinate
+        // @param number width  The width of the rectangle
+        // @param number height The height of the rectangle
+        // @param number radius The radius of the corners. Bigger values mean more rounded corners
+        //
+        this.roundedCornersRectNegative = function (x, y, width, height)
+        {
+            var radiusTop    = null;
+            var radiusBottom = null;
+            
+            // Top radius
+            if (properties.cornersRoundTop) {
+                if (RGraph.isNumber(properties.cornersRoundTopRadius)) {
+                    radiusTop = properties.cornersRoundTopRadius;
+                } else {
+                    radiusTop = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+                }
+            } else {
+                radiusTop = 0;
+            }
+
+            // Bottom radius
+            if (properties.cornersRoundBottom) {
+                if (RGraph.isNumber(properties.cornersRoundBottomRadius)) {
+                    radiusBottom = properties.cornersRoundBottomRadius;
+                } else {
+                    radiusBottom = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+                }
+            } else {
+                radiusBottom = 0;
+            }
+
+
+
+
+            if ( (radiusTop + radiusBottom) > height) {
+
+                // Calculate the top and bottom radiii and assign
+                // to temporary variables
+                var a = height / (radiusTop + radiusBottom) * radiusTop;
+                var b = height / (radiusTop + radiusBottom) * radiusBottom;
+                
+                // Reassign the values to the correct variables
+                radiusTop    = a;
+                radiusBottom = b;
+            }
+
+
+            // Because the function is added to the context prototype
+            // the 'this' variable is actually the context
+            
+            // Save the existing state of the canvas so that it can be restored later
+            this.context.save();
+            
+                // Translate to the given X/Y coordinates
+                this.context.translate(x, y);
+    
+                // Move to the center of the top horizontal line
+                this.context.moveTo(width,0);
+
+                // Draw the rounded corners. The connecting lines in between them are drawn automatically
+                this.context.lineTo(width,height);
+                this.context.lineTo(0 + radiusBottom, height);
+                this.context.arcTo(0,height, 0,height - radiusBottom, properties.cornersRoundBottom ? radiusBottom : 0);
+                this.context.arcTo(0, 0, 0 + radiusTop,0, properties.cornersRoundTop ? radiusTop : 0);
+    
+                // Draw a line back to the start coordinates
+                this.context.closePath();
+    
+            // Restore the state of the canvas to as it was before the save()
+            this.context.restore();
         };
 
 
