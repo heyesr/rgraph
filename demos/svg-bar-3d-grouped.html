@@ -55,11 +55,11 @@
                 yaxisTickmarks: false,
                 tooltips: tooltips,
                 tooltipsCss: {
-                    fontSize:           '105%',
-                    fontFamily:         'Arial, sans-serif',
-                    fontWeight:         'bold',
-                    padding:            '10px',
-                    textAlign:          'center'
+                    fontSize:   '105%',
+                    fontFamily: 'Arial, sans-serif',
+                    fontWeight: 'bold',
+                    padding:    '10px',
+                    textAlign:  'center'
                 },
                 shadow: false,
                 backgroundGridColor: '#eee',
@@ -67,14 +67,7 @@
                 titleY: 10,
                 marginInner: 7
             }
-        }).wave().on('tooltip', function (obj)
-        {
-            var tooltip = RGraph.SVG.REG.get('tooltip'),
-                idx     = RGraph.SVG.sequentialIndexToGrouped(tooltip.__index__, obj.data),
-                colors  = ['red','#0f0','blue'];
-
-            tooltip.style.borderColor = colors[idx[1]];
-        });
+        }).wave();
     </script>
 
 
