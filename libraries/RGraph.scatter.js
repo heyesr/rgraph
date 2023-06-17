@@ -358,6 +358,20 @@
             annotatable:                false,
             annotatableColor:           'black',
             annotatableLinewidth:       1,
+            
+            lasso:                      false,
+            lassoFill:                  '#0064',
+            lassoStroke:                '#006',
+            lassoLinewidth:             1,
+            lassoHighlightLinewidth:    1,
+            lassoHighlightStroke:       'transparent',
+            lassoHighlightFill:         'red',
+            lassoCallback:              null,
+            lassoClearCallback:         null,
+            lassoPersist:               false,
+            lassoPersistLocal:          true,
+            lassoPersistLoad:           null,
+            lassoPersistSave:           null,
 
             line:                       false,
             lineLinewidth:              1,
@@ -464,7 +478,8 @@
 
 
         //
-        // Now make the data_arr array - all the data as one big array
+        // Now make the data_arr array - all the data as one big
+        // array
         //
         this.data_arr = [];
 
@@ -927,6 +942,15 @@
 
             // Draw any custom lines that have been defined
             RGraph.drawHorizontalLines(this);
+
+
+
+
+
+
+
+            // Draw any custom lines that have been defined
+            this.installLasso();
 
 
 
@@ -3022,6 +3046,504 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.data[0].length;
+        };
+
+
+
+
+
+
+
+
+        //
+        // The lasso fature allows you to draw around points.
+        // The callback is passed an array of datapoints and
+        // indexes (NOT values!) which you can use to get the
+        // points from the scatter chart object.
+        //
+        this.installLasso = function ()
+        {            
+            // Set this so that the event listeners can
+            // access the object
+            var obj = this;
+            
+
+
+            if (this.properties.lasso) {
+
+                //
+                // So the default object isn't repeated
+                //
+                obj.lassoGetDefaultObject = function ()
+                {
+                    return {state: {
+                        coords:    [],
+                        mousedown: false
+                    }};
+                };
+
+
+
+
+
+
+                // 
+                // Save the lasso data to localstorage so
+                // that it persists acoss refreshes
+                //
+                obj.lassoSaveData = function (data)
+                {
+                    //
+                    // Save the state to localStorage by
+                    // default
+                    //
+                    if (obj.properties.lassoPersistLocal) {
+                        var str = JSON.stringify(data);                    
+                        window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'] = str;
+                    }
+                    
+                    // Call the event if it's defined
+                    if (RGraph.isFunction(obj.properties.lassoPersistSave)) {
+                        obj.properties.lassoPersistSave(data);
+                    }
+                };
+
+                // 
+                // Load the lasso data from localstorage
+                //
+                obj.lassoLoadData = function ()
+                {
+                    // Load the data from localData
+                    if (obj.properties.lassoPersistLocal) {
+                        var str  = window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'];
+                    }
+                    
+                    var data = str ? JSON.parse(str) : obj.lassoGetDefaultObject().state;
+
+                    // Call the event if it's defined
+                    if (RGraph.isFunction(obj.properties.lassoPersistLoad)) {
+                        data = obj.properties.lassoPersistLoad();
+                    }
+
+                    return data;
+                };
+
+                // 
+                // Reset the localStorageData
+                //
+                obj.lassoResetData = function ()
+                {
+                    window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'] = obj.lassoGetDefaultObject();
+                };
+
+
+
+
+
+
+
+
+                //
+                // Initialise the lasso state
+                //
+                RGraph.runOnce('scatter-chart-lasso-state-object-initialisation', function ()
+                {
+                    //
+                    // Load the persistence data from the
+                    // localData array. Create an
+                    // obj.lassoLoadData() function.
+                    if (obj.properties.lassoPersist) {
+                        obj.lasso = {state: obj.lassoLoadData()};
+
+                    } else {
+                        // This is repeated in the doubleclick/clear function below
+                        obj.lasso = obj.lassoGetDefaultObject();
+                        
+                    }
+                });
+
+
+
+
+
+
+
+
+                //
+                // A function that draws the highlight
+                //
+                this.drawLassoRects = function ()
+                {
+                    if (!obj.lasso || !obj.lasso.state) {
+                        return;
+                    }
+
+                    //
+                    // Loop through the coords
+                    //
+
+                    for (let i=0; i<obj.lasso.state.coords.length; ++i) {
+
+                        if (obj.lasso.state.coords[i]) {
+                            //
+                            // Start the path
+                            //
+                            obj.path('b ss % fs % lw % lc square',
+                                obj.properties.lassoStroke,
+                                obj.properties.lassoFill,
+                                obj.properties.lassoLinewidth
+                            );
+    
+                            for (let j=0; j<obj.lasso.state.coords[i].length; ++j) {
+    
+                                obj.context.rect(
+                                    obj.lasso.state.coords[i][0],
+                                    obj.lasso.state.coords[i][1],
+                                    obj.lasso.state.coords[i][2],
+                                    obj.lasso.state.coords[i][3]
+                                );
+                            }
+    
+                            //
+                            // Finish the and fill/stroke it
+                            //
+                            obj.context.closePath();                    
+                            obj.context.fill();
+                            obj.context.stroke();
+                        }
+                    }
+                };
+
+
+
+
+
+
+
+
+                //
+                // Highlightpoints that have been selected
+                // by the lasso
+                //
+                obj.drawLassoHighlightPoints = function (x, y = null)
+                {
+                    // An array of points datasets/indexes has been given
+                    if (RGraph.isArray(x)) {
+                
+                        for (let i=0; i<x.length; ++i) {
+                            obj.path(
+                                'b lw % a % % % 0 6.29 false s % f %',
+                                obj.properties.lassoHighlightLinewidth,
+                                obj.coords[x[i].dataset][x[i].index][0],
+                                obj.coords[x[i].dataset][x[i].index][1],
+                                obj.properties.tickmarksSize / 2 + 2,
+                                obj.properties.lassoHighlightStroke,
+                                obj.properties.lassoHighlightFill
+                            );
+                        }
+                
+                    // An x/y coordinates combo has been given
+                    } else {
+                
+                        obj.path(
+                            'b lw % a % % % 0 6.29 false s % f %',
+                            obj.properties.lassoHighlightLinewidth,
+                            x,
+                            y,
+                            obj.properties.tickmarksSize / 2 + 2,
+                            obj.properties.lassoHighlightStroke,
+                            obj.properties.lassoHighlightFill
+                        );
+                    }
+                };
+
+
+
+
+
+
+
+
+                //
+                // Clear the lasso state
+                //
+                this.clearLassoState = function ()
+                {
+                    if (confirm('Are you sure that you want to clear ALL of the highlight rectangles?')) {
+                        
+                        // This is repeated above
+                        obj.lasso = obj.lassoGetDefaultObject();
+
+                        //
+                        // Save the reset state to localData
+                        // if persistence is enabled
+                        //
+                        if (obj.properties.lassoPersist) {
+                            obj.lassoSaveData(obj.lasso.state);
+                        }
+
+                        RGraph.redrawCanvas(obj.canvas);
+                        
+                        // Call the user defined function if necessary
+                        if (RGraph.isFunction(obj.properties.lassoClearCallback)) {
+                            obj.properties.lassoClearCallback(obj.lasso.state);
+                        }
+                    }
+                };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //
+                // This is the lasso mousedown event listener
+                //
+                this.lassoMousedownEventListener = function (e)
+                {
+                    if (e.button === 2) {
+                        return;
+                    }
+
+                    var [mouseX, mouseY] = RGraph.getMouseXY(e);
+
+                    // Reset the state
+                    obj.lasso.state.mousedown       = true;
+                    obj.lasso.state.coordsLastIndex = obj.lasso.state.coords.length;
+
+                    // Create a new lasso coords array
+                    obj.lasso.state.originX = mouseX;
+                    obj.lasso.state.originY = mouseY;
+                };
+
+
+
+
+
+
+
+
+                //
+                // This is the lasso mousemove event listener
+                //
+                obj.lassoMousemoveEventListener = function (e)
+                {
+                    var [mouseX, mouseY] = RGraph.getMouseXY(e);
+
+                    if (   obj.lasso
+                        && obj.lasso.state
+                        && obj.lasso.state.mousedown
+                       ) {
+
+                        RGraph.redrawCanvas(obj.canvas);
+
+
+                        // Store the coordinates of the
+                        // rectngle such that the X/Y
+                        // coordinates are always the top
+                        // left corner
+                        obj.lasso.state.coords[obj.lasso.state.coordsLastIndex] = [
+                            mouseX > obj.lasso.state.originX ? obj.lasso.state.originX : mouseX,
+                            mouseY > obj.lasso.state.originY ? obj.lasso.state.originY : mouseY,
+                            Math.abs(mouseX - obj.lasso.state.originX),
+                            Math.abs(mouseY - obj.lasso.state.originY)
+                        ];
+
+                        // Set the strokestyle and the fillstyle
+                        obj.path('b ss % fs % lw %',
+                            obj.properties.lassoStroke,
+                            obj.properties.lassoFill,
+                            obj.properties.lassoLinewidth
+                        );
+
+                        // Highlight the already-selected points
+                        obj.drawLassoRects();
+                        obj.drawLassoHighlightPoints(obj.lasso.state.points);
+                    }
+                };
+
+
+
+
+
+
+
+
+                //
+                // This is the lasso mouseup event listener - where
+                // the magic happens!
+                //
+                this.lassoWindowMouseupEventListener = function (e)
+                {
+                    if (obj.lasso.state.mousedown) {
+
+                        obj.lasso.state.mousedown = false;
+
+                        // Start a new path for the
+                        // rectangles that will be used to
+                        // test the points
+                        obj.path('b');
+
+                        for (let i=0; i<obj.lasso.state.coords.length; ++i) {
+                            if (RGraph.isArray(obj.lasso.state.coords[i])) {
+                                obj.path(
+                                    'r % % % % f % s %',
+                                    obj.lasso.state.coords[i][0],
+                                    obj.lasso.state.coords[i][1],
+                                    obj.lasso.state.coords[i][2],
+                                    obj.lasso.state.coords[i][3],
+                                    'transparent',
+                                    'transparent'
+                                );
+                            }
+                        }
+                        
+                        // Reset the points array to stop it growing
+                        // uncontrollably
+                        obj.lasso.state.points = [];
+                        
+                        // Determine all of the relevant points
+                        for (let i=0; i<obj.coords.length; ++i) {
+                            for (let j=0; j<obj.coords[i].length; ++j) {
+                            
+
+                                var [valueX, valueY] = obj.data[i][j];
+                                var coordX = obj.getXCoord(valueX);
+                                var coordY = obj.getYCoord(valueY);
+
+                                if (obj.context.isPointInPath(coordX, coordY)) {
+                                    obj.lasso.state.points = obj.lasso.state.points || [];
+                                    obj.lasso.state.points.push({
+                                        dataset: i,
+                                        index: j
+                                    });
+                                }
+                            }
+                        }
+
+                        // Now highlight the selected points
+                        if (obj.lasso.state.points) {
+
+                            for (let i=0; i<obj.lasso.state.points.length; ++i) {
+                                
+                                var dataset = obj.lasso.state.points[i].dataset;
+                                var index   = obj.lasso.state.points[i].index;
+
+                                obj.drawLassoHighlightPoints(
+                                    obj.coords[dataset][index][0],
+                                    obj.coords[dataset][index][1]
+                                );
+                            }
+                        }
+
+
+                        //
+                        // Save the highlight data to
+                        // localStorage
+                        //
+                        if (obj.properties.lassoPersist) {
+                            obj.lassoSaveData(obj.lasso.state);
+                        }
+
+
+
+
+
+                        // Call the callback function
+                        if (RGraph.isFunction(obj.properties.lassoCallback)) {
+                            obj.properties.lassoCallback(obj.lasso.state);
+                        }
+                    }
+                };
+
+
+
+
+
+
+
+
+                //
+                // Allow people to clear the lasso state using
+                // a double-click
+                //
+                this.lassoDblclickEventListener = function (e)
+                {
+                    // Go through all of the rects to see if one
+                    // has been clicked and if so - remove it.
+                    if (obj.lasso.state.coords && obj.lasso.state.coords.length) {
+                        
+                        var [mouseX, mouseY] = RGraph.getMouseXY(e);
+                    
+                        for (let i=(obj.lasso.state.coords.length - 1); i>=0; --i) {
+                            
+                            if (   RGraph.isArray(obj.lasso.state.coords)
+                                && obj.lasso.state.coords.length
+                                && obj.lasso.state.coords[i]
+                                && mouseX >= obj.lasso.state.coords[i][0]
+                                && mouseX <= (obj.lasso.state.coords[i][0] + obj.lasso.state.coords[i][2])
+                                && mouseY >= obj.lasso.state.coords[i][1]
+                                && mouseY <= (obj.lasso.state.coords[i][1] + obj.lasso.state.coords[i][3])
+                               ) {
+                                if (confirm('Are you sure that you want to remove this highlight rectangle?')) {
+                                    obj.lasso.state.coords[i] = null;
+    
+                                    // Call the window mouseup
+                                    // event listener to
+                                    // recalulate the points which
+                                    // should be highlighted
+                                    obj.lasso.state.mousedown = true;
+                                    obj.lassoWindowMouseupEventListener(e);
+    
+                                    //RGraph.redrawCanvas(obj.canvas);
+                                    RGraph.redraw();
+                                }
+                                return;
+                            }
+                        }
+                    }
+
+
+
+                    obj.clearLassoState();
+                };
+
+
+
+
+
+
+
+
+                // Install the above event listeners
+                RGraph.runOnce('rgraph-install-scatter-chart-lasso-event-listeners', function ()
+                {
+                    obj.canvas.addEventListener('mousedown',  obj.lassoMousedownEventListener,     false);
+                    obj.canvas.addEventListener('mousemove',  obj.lassoMousemoveEventListener,     false);
+                    obj.canvas.addEventListener('dblclick',   obj.lassoDblclickEventListener,      false);
+                    window.addEventListener('mouseup',        obj.lassoWindowMouseupEventListener, false);
+                });
+                
+                // If the mouse button isn't pressed then redraw the
+                // rectangles and point highlights
+                if (
+                       this.lasso
+                    && this.lasso.state
+                    && !this.lasso.state.mousedown
+                   ) {
+                    
+                    this.drawLassoRects();
+                    this.drawLassoHighlightPoints(this.lasso.state.points);
+                }
+            }
         };
 
 
