@@ -336,8 +336,12 @@
             combinedEffectOptions:  null,
             combinedEffectCallback: null,
 
-            corners:            'square',
-            cornersRoundRadius: 10,
+            corners:                 'square',
+            cornersRoundRadius:      10,
+            cornersRoundLeft:        true,
+            cornersRoundRight:       true,
+            cornersRoundLeftRadius:  null,
+            cornersRoundRightRadius: null,
 
             clearto:   'rgba(0,0,0,0)'
         }
@@ -3681,10 +3685,42 @@ this.context.lineTo(
         //
         this.roundedCornersRect = function (x, y, width, height)
         {
-            var radius = properties.cornersRoundRadius;
+            var radiusLeft  = null;
+            var radiusRight = null;
+            
+            // LHS radius
+            if (RGraph.isNumber(properties.cornersRoundLeftRadius)) {
+                radiusLeft = properties.cornersRoundLeftRadius;
+            } else {
+                radiusLeft = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+            }
+            
+            // RHS radius
+            if (RGraph.isNumber(properties.cornersRoundRightRadius)) {
+                radiusRight = properties.cornersRoundRightRadius;
+            } else {
+                radiusRight = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+            }
 
-            radius = Math.min(width / 2, height / 2, radius);
 
+
+
+            if ( (radiusLeft + radiusRight) > width) {
+            
+                // Calculate the left and right radiuses and assign
+                // to temporary variables
+                var a = width / (radiusLeft + radiusRight) * radiusLeft;
+                var b = width / (radiusLeft + radiusRight) * radiusRight;
+                
+                // Reassign the values to the correct variables
+                radiusLeft  = a;
+                radiusRight = b;
+            }
+            
+
+
+
+            
             
             // Save the existing state of the canvas so that it can be restored later
             this.context.save();
@@ -3696,10 +3732,10 @@ this.context.lineTo(
                 this.context.moveTo(width / 2,0);
 
                 // Draw the rounded corners. The connecting lines in between them are drawn automatically
-                this.context.arcTo(width,0,width,height, Math.min(height / 2, radius));
+                this.context.arcTo(width,0,width,height,Math.min(height / 2, properties.cornersRoundRight ? radiusRight : 0));
                 this.context.arcTo(width, height, 0, height, 0);
                 this.context.arcTo(0, height, 0, 0, 0);
-                this.context.arcTo(0, 0, radius, 0, Math.min(height / 2, radius));
+                this.context.arcTo(0, 0, radiusLeft, 0, Math.min(height / 2, this.properties.cornersRoundLeft ? radiusLeft : 0));
     
                 // Draw a line back to the start coordinates
                 this.context.lineTo(width / 2,0);
@@ -3734,13 +3770,34 @@ this.context.lineTo(
                 y     -= height;
             }
 
-            var radius = properties.cornersRoundRadius;
+            var radiusLeft  = null;
+            var radiusRight = null;
+            
+            // LHS radius
+            if (RGraph.isNumber(properties.cornersRoundLeftRadius)) {
+                radiusLeft = properties.cornersRoundLeftRadius;
+            } else {
+                radiusLeft = Math.min(width / 2, height / 2, properties.cornersRoundRadius);;
+            }
+            
+            // RHS radius
+            if (RGraph.isNumber(properties.cornersRoundRightRadius)) {
+                radiusRight = properties.cornersRoundRightRadius;
+            } else {
+                radiusRight = Math.min(width / 2, height / 2, properties.cornersRoundRadius);;
+            }
 
-            radius = Math.min(
-                Math.abs(width / 2),
-                Math.abs(height / 2),
-                Math.abs(radius)
-            );
+            if ( (radiusLeft + radiusRight) > width) {
+            
+                // Calculate the left and right radiuses and assign
+                // to temporary variables
+                var a = width / (radiusLeft + radiusRight) * radiusLeft;
+                var b = width / (radiusLeft + radiusRight) * radiusRight;
+                
+                // Reassign the values to the correct variables
+                radiusLeft  = a;
+                radiusRight = b;
+            }
 
             // Save the existing state of the canvas so that it can be restored later
             this.context.save();
@@ -3754,8 +3811,8 @@ this.context.lineTo(
                 // Draw the rounded corners. The connecting lines in
                 // between them are drawn automatically
                 this.context.arcTo(width,0,width,height, 0);
-                this.context.arcTo(width, height, 0, height, radius);
-                this.context.arcTo(0, height, 0, 0, radius);
+                this.context.arcTo(width, height, 0, height, Math.min(height / 2, properties.cornersRoundRight ? radiusRight : 0));
+                this.context.arcTo(0, height, 0, 0, Math.min(height / 2, properties.cornersRoundLeft ? radiusLeft : 0));
                 this.context.arcTo(0, 0, width, 0, 0);
     
                 // Draw a line back to the start coordinates
