@@ -1,0 +1,134 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A demonstration of the Scatter chart Lasso option</title>
+    
+    
+    
+    
+    <meta name="description" content="A demonstration of the Scatter chart Lasso option" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+    <style>
+        bbutton
+    </style>
+    
+    <h1>A demonstration of the Scatter chart Lasso option</h1>
+
+    <canvas id="cvs" width="700" height="300">[No canvas support]</canvas><br />
+    <button style="font-size: 20pt; cursor: pointer" onclick="scatter.clearLassoState(); RGraph.redraw();">Clear selections</button>
+    <button style="font-size: 20pt; cursor: pointer" onclick="console.log(scatter.lasso.state);">Log the state to the console</button>
+    
+    <script>
+
+        data = [
+            [10,2],[10,7],[10,2],[10,7],[10,3],
+            [20,5],[20,2],[20,6],[20,6],[20,5],
+            [30,4],[30,4],[30,4],[30,4],[30,8],
+            [40,9],[40,6],[40,2],[40,5],[40,1],
+            [50,5],[50,9],[50,1],[50,3],[50,3],
+            [60,6],[60,1],[60,6],[60,2],[60,7]
+        ];
+
+        // Create and configure the Scatter chart
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                lasso: true,
+                //lassoStroke: '#006',
+                //lassoFill: '#f006',
+                //lassoLinewidth: 1,
+                //lassoHighlightLinewidth: 2,
+                //lassoHighlightStroke: '#0000',
+                //lassoHighlightFill: 'red',
+                
+                //This callback is called what points are cleared
+                //
+                //lassoClearCallback: function (state)
+                //{
+                //    $c(state);
+                //},
+                
+                // When points are selected - this callback function
+                // is called
+                //
+                //lassoCallback: function (state)
+                //{
+                //    //$c(state);
+                //},
+                
+                // Whether to enable persistence or not. If nothing
+                // else is specified then the state information is
+                // stored in the window.localStorage variable
+                lassoPersist: true,
+                
+                // Store the state information in the browser-based
+                // window.localStorage variable
+                lassoPersistLocal: true,
+
+                //lassoPersistSave: function (state)
+                //{
+                //    // Store the state information (for example,
+                //    // in a database). The state information is
+                //    // in the form of a JSON object.
+                //
+                //    console.log(state);
+                //},
+                //lassoPersistLoad: function ()
+                //{
+                //    // Get the data (for example, from a database,
+                //    // and return it (it should be a valid JavaScript
+                //    // object).
+                //    //
+                //    // return state;
+                //},
+
+                xaxisScaleMax: 100,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 8,
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="200"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
