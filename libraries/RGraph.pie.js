@@ -218,8 +218,8 @@
 
             highlightStyle:                 '2d',
             highlightStyleTwodFill:         'rgba(255,255,255,0.7)',
-            highlightStyleTwodStroke:       'rgba(255,255,255,0.7)',
-            highlightStyleTwodLinewidth:    0,
+            highlightStyleTwodStroke:       'transparent',
+            highlightStyleTwodLinewidth:    2,
             highlightStyleOutlineWidth:     null,
 
             centerx:                        null,
@@ -1826,11 +1826,10 @@
                 // Outline style of highlighting
                 } else if (properties.highlightStyle === 'outline') {
             
-                    var tooltip = RGraph.Registry.get('tooltip'),
-                        index   = tooltip.__index__,
-                        coords  = this.angles[index],
-                        color   = this.get('colors')[index]
-                        width   = this.radius / 12.5;
+                    var index  = shape.index,
+                        coords = this.angles[index],
+                        color  = this.get('colors')[index]
+                        width  = this.radius / 12.5;
 
                     // Allow custom setting of outline
                     if (typeof properties.highlightStyleOutlineWidth === 'number') {
@@ -1862,11 +1861,14 @@
         
                 // Default 2D style of  highlighting
                 } else {
-
-                    this.context.beginPath();
     
-                        this.context.strokeStyle = properties.highlightStyleTwodStroke;
-                        this.context.fillStyle   = properties.highlightStyleTwodFill;
+                        this.path(
+                            'b ss % fs % lw %',
+                            properties.highlightStyleTwodStroke,
+                            properties.highlightStyleTwodFill,
+                            properties.highlightStyleTwodLinewidth
+                        );
+
 
                         if (properties.variant.indexOf('donut') > -1) {
                             this.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
