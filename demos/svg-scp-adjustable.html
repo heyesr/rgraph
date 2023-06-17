@@ -21,6 +21,10 @@
 
     <h1>An adjustable SVG Semi-circular Progress</h1>
 
+    <p>
+        This demo has mousewheel support as you can see from the
+        source code below.
+    </p>
     
     <div style="width: 450px; height: 250px" id="chart-container"></div>
 
@@ -28,7 +32,7 @@
 
         
     <script>
-        new RGraph.SVG.SemiCircularProgress({
+        scp = new RGraph.SVG.SemiCircularProgress({
             id: 'chart-container',
             min: 0,
             max: 100,
@@ -38,6 +42,20 @@
                 labelsCenterDecimals: 1
             }
         }).draw();
+        
+        // Add mousewheel support with our own event listener
+        scp.svg.addEventListener('mousewheel', function (e)
+        {
+            scp.value += e.deltaY > 0 ? -2 : 2;
+            
+            // Bounds checking
+            scp.value = Math.min(scp.value, scp.max);
+            scp.value = Math.max(scp.value, scp.min);
+            
+            RGraph.SVG.redraw();
+            
+            e.preventDefault();
+        });
     </script>
 
 
