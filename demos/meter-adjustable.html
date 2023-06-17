@@ -18,6 +18,11 @@
 <body>    
 
     <h1>An adjustable Meter chart</h1>
+    
+    <p>
+        This Meter has the centerpin redrawn by utilising the
+        <code>draw</code> event.
+    </p>
 
     <canvas id="cvs" width="600" height="250" style="border-radius: 15px">[No canvas support]</canvas>
     <script id="source">
@@ -44,9 +49,29 @@
                 needleRadius: 130,
                 needleHeadWidth: 0.15
             }
+        
+        // Clear the canvas
         }).on('beforedraw', function (obj)
         {
             RGraph.clear(obj.canvas, 'white');
+        
+        // A customised centerpin
+        }).on('draw', function (obj)
+        {
+            obj.path(
+                'b a % % 15 0 6.29 false f white',
+                obj.centerx, obj.centery
+            );
+            
+            obj.path(
+                'b a % % 12 0 6.29 false f black',
+                obj.centerx, obj.centery
+            );
+            
+            obj.path(
+                'b a % % 8 0 6.29 false f white',
+                obj.centerx, obj.centery
+            );
         }).draw();
     </script>
 
