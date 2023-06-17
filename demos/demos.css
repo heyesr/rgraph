@@ -8,6 +8,13 @@ body {
     font-family: Arial;
 }
 
+code {
+    padding: 3px;
+    background-color: #eee;
+    font-family: Monospace;
+    white-space: nowrap;
+}
+
 pre.code {
     padding: 5px;
     background-color: #eee;
