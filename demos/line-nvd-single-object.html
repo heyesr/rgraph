@@ -51,13 +51,22 @@
                 yaxisScale: true,
 
                 highlightDataset: true,
-                highlightDatasetFill: 'rgba(255,255,255,0.75)',
+                highlightDatasetFill: 'rgba(255,255,255,0.0075)',
                 highlightDatasetLinewidth: 0,
                 highlightDatasetExclude: 0, // Can also be an array of dataset indexes
                 highlightDatasetEvent: 'mousemove',
                 highlightDatasetCallback: function(opt)
                 {
-                    console.log('You clicked dataset number: ' + opt.dataset);
+                    RGraph.redraw();
+                    
+                    for (let i=0; i<opt.object.data.length; ++i) {
+                        if (i !== opt.dataset) {
+                            opt.object.highlightDataset({
+                                dataset: i,
+                                fill: 'rgba(255,255,255,0.9)'
+                            });
+                        }
+                    }
                 }
             }
         }).trace({frames: 30});
