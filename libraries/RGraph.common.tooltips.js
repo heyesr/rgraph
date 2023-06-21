@@ -292,6 +292,7 @@
                     var value = (typeof specific.values === 'object' && typeof specific.values[i] === 'number') ? specific.values[i] : 0;
                     var color = properties.colorsSequential ? colors[args.index] : colors[i];
                     var label = ( (typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[i] === 'string') ? properties.tooltipsFormattedKeyLabels[i] : '');
+                   
 
 
 
@@ -326,6 +327,10 @@
                         unitspre:  args.object.properties.tooltipsFormattedUnitsPre  || '',
                         unitspost: args.object.properties.tooltipsFormattedUnitsPost || ''
                     });
+
+// TODO If specific values for the tooltip key
+//      are given - check here for them and
+//      apply to the vaalue variable.
 
                     //
                     // If the tooltipsFormattedKeyColorsShape property is set to circle then add
