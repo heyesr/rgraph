@@ -1070,10 +1070,20 @@
                         this.context.lineCap  = 'square';
                         
                         // Draw the rounded corners rect positive or negative
-                        if (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') {
-                            this.context.rect(barX, this.marginTop + (i * height) + properties.marginInner, barWidth, barHeight);
+                        if (properties.corners === 'square' || (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') ) {
+                            this.context.rect(
+                                barX,
+                                this.marginTop + (i * height) + properties.marginInner,
+                                barWidth,
+                                barHeight
+                            );
                         } else {
-                            this.roundedCornersRectNegative(barX,this.marginTop + (i * height) + properties.marginInner,barWidth,barHeight);
+                            this.roundedCornersRectNegative(
+                                barX,
+                                this.marginTop + (i * height) + properties.marginInner,
+                                barWidth,
+                                barHeight
+                            );
                         }
 
                         this.context.stroke();
@@ -1244,7 +1254,7 @@
                             this.context.lineCap  = 'square';
 
                             // Draw the rounded corners rect positive or negative
-                            if (j < (this.data[i].length - 1)  && this.data[i][j] > 0) {
+                            if (properties.corners === 'square' || (j < (this.data[i].length - 1)  && this.data[i][j] > 0) ) {
                                 this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
                             } else {
                                 if (this.properties.yaxisPosition === 'left') {
@@ -1451,14 +1461,14 @@
                             this.context.lineCap  = 'square';
 
                             // Draw the rounded corners rect positive or negative
-                            if (this.properties.yaxisPosition === 'left' || this.properties.yaxisPosition === 'center') {
-                                if (this.data[i][j] > 0) {
+                            if (properties.corners === 'square' || (this.properties.yaxisPosition === 'left' || this.properties.yaxisPosition === 'center')) {
+                                if (properties.corners === 'square' || this.data[i][j] > 0) {
                                     this.context.rect(startX, startY, width, individualBarHeight);
                                 } else {
                                     this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
                                 }
                             } else {
-                                if (this.data[i][j] > 0) {
+                                if (this.data[i][j] > 0 && properties.corners === 'round') {
                                     this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
                                 } else {
                                     this.context.rect(startX + width, startY, width, individualBarHeight);
@@ -1789,7 +1799,8 @@
                         var revert = true;
                     
                     } else if (properties.grouping === 'stacked') {
-                        // Do nothing for the main body bits of stacked bars
+                        // Do nothing for the main body bits of
+                        // stacked bars
                     
                     } else {
 
