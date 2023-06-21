@@ -6955,6 +6955,8 @@
                 case 'ga':context.globalAlpha=parseFloat(p[i+1]);i++;break;
                 case 'gco':context.globalCompositeOperation=p[i+1];i++;break;
                 case 'fu':(p[i+1])(context.canvas.__object__);i++;break;
+                case 'ci':context.arc(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),0,6.29,false);i+=3;break;
+                case 'do':context.arc(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),0,6.29,false);context.arc(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+4]),6.29,0,true);i+=4;break;
                 
                 // Empty option - ignore it
                 case '':break;
@@ -9922,24 +9924,32 @@
                 //
 
                 RGraph.text({
-                    object: obj,
-                    text: (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
-                    x: textX + parseFloat(conf.labelOffsetx || defaults.labelOffsetx),
-                    y: textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * conf.labelOffsety) : conf.labelOffsety) || defaults.labelOffsety),
-                    valign: valign,
-                    halign: halign,
-                    size:   textSize,
-                    font:   textFont,
-                    color:  textColor,
-                    italic: textItalic,
-                    bold:   textBold,
-                    bounding: true,
+                    object:     obj,
+                    text:       (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
+                    x:          textX + parseFloat(conf.labelOffsetx || defaults.labelOffsetx),
+                    y:          textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * conf.labelOffsety) : conf.labelOffsety) || defaults.labelOffsety),
+                    valign:     valign,
+                    halign:     halign,
+                    size:       textSize,
+                    font:       textFont,
+                    color:      textColor,
+                    italic:     textItalic,
+                    bold:       textBold,
+                    bounding:   true,
                     boundingFill: 'rgba(255,255,255,0.75)',
                     boundingStroke: 'transparent'
                 });
             }
         }
     };
+
+
+
+
+
+
+
+
     //
     // This function allows you to run a function once (immediately)
     // Future calls using the same identifier are not run.
@@ -9960,6 +9970,13 @@
         
         return func();
     };
+
+
+
+
+
+
+
 
     //
     // This function implements the logic for whether to ignore
