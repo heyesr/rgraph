@@ -58,8 +58,7 @@
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
                 xaxisLabels: RGraph.DAYS_LONG,
-                tooltips: '<div style="float: left; width: 27px; height: 27px; background-color: red; color: red; transform: translateY(3px); overflow: hidden">M</div>%{property:xaxisLabels[%{dataset}]}: %{property:data[%{dataset}]}%',
-                tooltipsFormattedKeyLabels: RGraph.DAYS_LONG,
+                tooltips: '%{color:%{property:colors[%{index}]}} %{property:xaxisLabels[%{dataset}]}: %{property:data[%{dataset}]}%',
                 tooltipsCss: {
                     fontSize: '20pt',
                     padding: '8px'
