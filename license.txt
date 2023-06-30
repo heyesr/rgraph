@@ -1,10 +1,9 @@
 
-RGraph is licensed under the Open Source MIT license. Feel free to use it and/or change
-it as you wish.
+RGraph is licensed under the Open Source MIT license. Feel free to
+use it for any purpose, as much or as little as you want and make
+changes to it as you need.
 
-If you wish to contribute to the development of RGraph by making a donation, you can
-do so here:
-                          https://www.rgraph.net/donate.html
+                       https://www.rgraph.net
 
 
 Support
@@ -17,7 +16,7 @@ https://stackoverflow.com - your choice.
 The MIT license
 ===============
 
-Copyright (c) 2022 RGraph: Beautiful javascript charts for websites
+Copyright (c) 2023 RGraph: Beautiful javascript charts for websites
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software
