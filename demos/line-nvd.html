@@ -58,7 +58,8 @@
             textSize: 15,
             shadow: false,
             linewidth: 0.00001,
-            yaxisScale: false
+            yaxisScale: false,
+            marginLeft: 50
         };
 
         frames = 30;
@@ -81,9 +82,8 @@
 
                 // Only add the dataset highlighting to this charts
                 highlightDataset: true,
-                highlightDatasetFill: '#eee',
-                highlightDatasetFill: 'white',
-                highlightDatasetLinewidth: 1,
+                highlightDatasetFill: '#fffa',
+                highlightDatasetStroke: 'transparent',
                 highlightDatasetExclude: 0, // Can also be an array of dataset indexes
                 highlightDatasetCallback: function(opt)
                 {
