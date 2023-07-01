@@ -1,0 +1,125 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <title>RGraph demo: A Gantt chart with a different aesthetic</title>
+    
+    
+    <meta name="description" content="A Gantt chart with a different aesthetic" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Gantt chart with a different aesthetic</h1>
+    
+    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+
+    <script>
+
+        height = 6;
+
+        colors = {
+            main: 'blue',
+            background: '#aaa'
+        };
+
+        var data = [
+            {start: 10,  duration: 150,  label: 'George', color: colors.main, border: 'transparent', complete: 67, background: colors.background},
+            {start: 40,  duration: 25,  label: 'Jerry',  color: colors.main, border: 'transparent', complete: 48, background: colors.background},
+            {start: 120, duration: 198, label: 'Hanna',  color: colors.main, border: 'transparent', complete: 19, background: colors.background},
+            {start: 240, duration: 47,  label: 'Kim',    color: colors.main, border: 'transparent', complete: 38, background: colors.background}
+        ];
+
+        var gantt = new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScaleMax: 365,
+                xaxisLabels: RGraph.MONTHS_SHORT,
+                marginInner: 26,
+                marginRight: 65,
+                backgroundGridVlinesCount: 12,
+                textSize: 16,
+                labelsCompleteOffsetx: 10,
+                tooltips: 'This is a tooltip! (%{dataset})',
+                tooltipsCss: {
+                    fontSize: '16pt'
+                },
+                highlightFill: 'transparent'
+            }
+        }).on('draw', function (obj)
+        {
+            // Loop through all of the coordinates
+            // adding the end circles to each bar
+            for (let i=0; i<obj.coords.length; ++i) {
+
+                // Draw the LHS end donut
+                obj.path(
+                    'b a % % 10 0 6.29 false f %',
+                    obj.coords[i][0],
+                    obj.coords[i][1] + (obj.coords[i][3] / 2),
+                    colors.main
+                );
+                obj.path(
+                    'b a % % 6 0 6.29 false f white',
+                    obj.coords[i][0],
+                    obj.coords[i][1] + (obj.coords[i][3] / 2)
+                );
+
+
+
+
+
+                // Draw the RHS end circle
+                obj.path(
+                    'b a % % 10 0 6.29 false f %',
+                    obj.coords[i][0] + obj.coords[i][2],
+                    obj.coords[i][1] + (obj.coords[i][3] / 2),
+                    obj.coords[i][4].complete === 100 ? colors.main : colors.background
+                );
+                obj.path(
+                    'b a % % 6 0 6.29 false f white',
+                    obj.coords[i][0] + obj.coords[i][2],
+                    obj.coords[i][1] + (obj.coords[i][3] / 2)
+                );
+            }
+        }).on('beforedraw', function (obj)
+        {
+            // Dynamically determine the size of the lines
+            obj.properties.marginInner = (((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) - height) / 2;
+        }).draw();
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="800" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+</body>
+</html>
