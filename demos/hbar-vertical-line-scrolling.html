@@ -1,0 +1,127 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A scrolling Horizontal Bar chart/vertical Line chart</title>
+    <meta name="description" content="A scrolling Horizontal Bar chart configured as a vertical Line" />     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>  
+
+    <h1>A scrolling Horizontal Bar chart/vertical Line chart</h1>
+
+    <canvas id="cvs" width="600" height="600">[No canvas support]</canvas>
+    
+    <script>
+        data  = RGraph.arrayFill([], 599,null);
+        data.push(50);
+        num   = 50;
+        delta = 3;
+        min   = 0;
+        max   = 100;
+
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: data,
+            options: {
+                marginLeftAuto: false,
+                marginLeft: 50,
+
+                backgroundGridAutofit: false,
+                backgroundGridVsize: 105,
+                backgroundGridHsize: 104,
+
+                colors: ['transparent'],
+                textSize: 18,
+                title: 'A scrolling vertical line chart',
+                marginTop: 50,
+                xaxis: false,
+                yaxis: false,
+                
+                xaxisScaleMax: max,
+                yaxisTickmarks: false,
+                yaxisLabelsPosition: 'edge',
+                yaxisLabels:['0m','2m','4m','6m','8m', '10m'],
+
+                line: true,
+                lineLinejoin:                   'round',
+                lineLinecap:                    'round',
+                lineLinewidth:                  2,
+                lineColor: 'red'
+            }
+        }).draw();
+
+
+
+        // This is the main draw function that is called multiple times per
+        // second to update the chart with new data. It:
+        // 
+        // 1. Clears the canvas so that it's ready to be drawn on again
+        // 2. Removes a piece of data from the rear of the Line chart internal data
+        //    variable
+        // 3. Adds a new piece of data to the end of the same array
+        // 4. Draws the chart again
+        function draw()
+        {
+    
+            // Generate a random number between -5 and 5 and add it to the num
+            // variable. Adding a small change instead of generating a whole new
+            // value results in a gentler change.
+            num += RGraph.random(-1 * delta, delta);
+    
+            // Limit the num variable to minimum - maximum
+            num = Math.max(min, num);
+            num = Math.min(max, num);
+    
+            // Remove a number from the front of the data array
+            hbar.data.pop();
+    
+            // Add the new number on to end of the data array
+            hbar.data.unshift(num);
+
+            // Draw the chart
+            RGraph.redraw();
+            
+            // Call this function again after the delay (using requestAnimationFrame()
+            // NOT setTimeout() ). This function is a compatibility wrapper around
+            // requestAnimationFrame()
+            setTimeout(function ()
+            {
+                draw();
+            }, 1000);
+        }
+        
+        draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="600"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
