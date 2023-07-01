@@ -51,7 +51,7 @@
 
 
 
-        new RGraph.Pie({
+        pie = new RGraph.Pie({
             id: 'cvs',
             data: [4,8,4,6,5,3,2,5],
             options: {
@@ -65,11 +65,28 @@
                 radius: 80,
                 shadowOffsety: 5,
                 shadowColor: '#aaa',
-                exploded: [20,20,20],
-                title: 'A 3D Pie chart with a key',
-                titleOffsety: 35,
-                titleSize: 16
+                exploded: [20,20,20]
             }
+        }).on('draw', function (obj)
+        {
+            // This timeout is needed because the 3D pie chart does
+            // multiple draws - so without it if the transformation
+            // is reset in the first ondraw event then the subsequent
+            // draws by the pie chart, which are there to produce the
+            // depth of the 3D pie, will not be whilst transformed
+            setTimeout(function ()
+            {
+                obj.context.resetTransform();
+    
+                RGraph.text({
+                    object: obj,
+                    x: obj.canvas.width / 2,
+                    y: 65,
+                    text: 'A 3D Pie chart with a key',
+                    halign: 'center',
+                    size: 18
+                });
+            }, 10);
         }).draw();
     </script>
 
