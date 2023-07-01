@@ -51,33 +51,27 @@
         });
         
         bar = new RGraph.Bar({
-             id: 'cvs',
-             data: data,
-             options: {
-                title: 'A Bar chart showing the "labelsAbove" option',
-                titleBold: true,
-                titleSize: 16,
-                 textSize: 10,
-                 marginTop: 35,
-                 marginBottom: 80,
-                 xaxisLabelsAngle: 45,
-                 marginInner: 10,
-                 xaxisLabelsOffsety: 10,
-                 xaxisLabels: labels,
-                 colors: ['#aaf', 'rgba(96,128,96,0.5)', '#faa','#afa'],
-                 backgroundGridVlines: false,
-                 backgroundGridBorder: false,
-                 grouping: 'stacked',
-                 colorsStroke: 'transparent',
-                 shadow: false,
-                 labelsAbove: true,
-                 labelsAboveSize: 12,
-                 labelsAboveOffset: 5,
-                 labelsAboveSpecific: labelsAbove,
-                 xaxis: false,
-                 yaxis: false
-             }
-         }).wave();
+            id: 'cvs',
+            data: data,
+            options: {
+                textSize: 10,
+                marginTop: 35,
+                marginBottom: 80,
+                marginInner: 10,
+                xaxisLabels: labels,
+                colors: ['#aaf', 'rgba(96,128,96,0.5)', '#faa','#afa'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                grouping: 'stacked',
+                colorsStroke: 'transparent',
+                shadow: false,
+                labelsAbove: true,
+                labelsAboveSize: 12,
+                labelsAboveSpecific: labelsAbove,
+                xaxis: false,
+                yaxis: false
+            }
+            }).wave();
     </script>
 
 
