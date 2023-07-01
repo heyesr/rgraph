@@ -2638,7 +2638,7 @@ this.context.lineTo(
                 text_font   = properties.textFont,
                 text_size   = properties.textSize,
                 grouping    = properties.grouping;
-            
+
             // BC
             if (typeof properties.labelsAboveOffset === 'number') {
                 offsety = properties.labelsAboveOffset;
@@ -2667,22 +2667,19 @@ this.context.lineTo(
                         var halign = (angle ? 'left' : 'center');
                         var valign = angle !== 0 ? 'center' : 'bottom';
 
-                        RGraph.text({
-                        
+                        RGraph.text({                        
                           object: this,
-
                             font:   textConf.font,
                             size:   textConf.size,
                             color:  textConf.color,
                             bold:   textConf.bold,
                             italic: textConf.italic,
-
                             x:    coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:    coords2[i][0][1] - offsety,
+                            y:    coords2[i][0][1] - offsety - 3,
                             text: specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                 object:    this,
-                                number:    Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
-                                value:     Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
+                                number:    Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
+                                value:     Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
@@ -2717,21 +2714,18 @@ this.context.lineTo(
 
 
                         RGraph.text({
-                        
                           object: this,
-
                             font:   textConf.font,
                             size:   textConf.size,
                             color:  textConf.color,
                             bold:   textConf.bold,
                             italic: textConf.italic,
-
                             x:              coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:              coords2[i][0][1] + coords2[i][0][3] + offsety,
+                            y:              coords2[i][0][1] + coords2[i][0][3] + offsety + 5,
                             text: specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                 object:    this,
-                                number:    Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
-                                value:     Number(Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals)),
+                                number:    Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
+                                value:     Number(typeof data[i] === 'object' ? data[i][0] : data[i]).toFixed(decimals),
                                 unitspre:  unitsPre,
                                 unitspost: unitsPost,
                                 point:     point,
@@ -2769,21 +2763,18 @@ this.context.lineTo(
                                     valign = angle != 0 ? 'center' : valign;
 
                                 RGraph.text({
-                                
                                   object: this,
-
                                     font:   textConf.font,
                                     size:   textConf.size,
                                     color:  textConf.color,
                                     bold:   textConf.bold,
                                     italic: textConf.italic,
-
                                     x:                  coords2[i][j][0] + (coords2[i][j][2] / 2) + offsetx,
-                                    y:                  properties.xaxisPosition === 'top' ? coords2[i][j][1] + coords2[i][j][3] + 5 : coords2[i][j][1] + (data[i][j] < 0 ? coords2[i][j][3] + offsety : -offsety),
+                                    y:                  properties.xaxisPosition === 'top' ? coords2[i][j][1] + coords2[i][j][3] + 5 : coords2[i][j][1] + (data[i][j] < 0 ? coords2[i][j][3] + offsety + 5: -offsety),
                                     text:               specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                             object:    this,
-                                                            number:    Number(Number(data[i][j]).toFixed(decimals)),
-                                                            value:     Number(Number(data[i][j]).toFixed(decimals)),
+                                                            number:    Number(data[i][j]).toFixed(decimals),
+                                                            value:     Number(data[i][j]).toFixed(decimals),
                                                             unitspre:  unitsPre,
                                                             unitspost: unitsPost,
                                                             point:     point,
@@ -2832,11 +2823,11 @@ this.context.lineTo(
                             italic: textConf.italic,
 
                             x:              coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:              coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety,
+                            y:              coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety - 3,
                             text:           specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                 object:    this,
-                                                number:    Number(Number(RGraph.arraySum(data[i])).toFixed(decimals)),
-                                                value:     Number(Number(RGraph.arraySum(data[i])).toFixed(decimals)),
+                                                number:    Number(RGraph.arraySum(data[i])).toFixed(decimals),
+                                                value:     Number(RGraph.arraySum(data[i])).toFixed(decimals),
                                                 unitspre:  unitsPre,
                                                 unitspost: unitsPost,
                                                 point:     point,
@@ -2876,11 +2867,11 @@ this.context.lineTo(
                             italic: textConf.italic,
 
                             x:                  coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:                  coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety,
+                            y:                  coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety - 3,
                             text:               specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                     object:    this,
-                                                    number:    Number(Number(data[i]).toFixed(decimals)),
-                                                    value:     Number(Number(data[i]).toFixed(decimals)),
+                                                    number:    Number(data[i]).toFixed(decimals),
+                                                    value:     Number(data[i]).toFixed(decimals),
                                                     unitspre:  unitsPre,
                                                     unitspost: unitsPost,
                                                     point:     point,
