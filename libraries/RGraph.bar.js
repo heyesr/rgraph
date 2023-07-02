@@ -2813,17 +2813,14 @@ this.context.lineTo(
                         var valign = angle != 0 ? 'center' : 'bottom';
 
                         RGraph.text({
-                        
                           object: this,
-
                             font:   textConf.font,
                             size:   textConf.size,
                             color:  textConf.color,
                             bold:   textConf.bold,
                             italic: textConf.italic,
-
                             x:              coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:              coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety - 3,
+                            y:              coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) + (properties.xaxisPosition === 'top' ? (coords2[i].reduce( (acc, curr) => acc += curr[3], 0) + 3 + offsety) : (-3 - offsety) ),
                             text:           specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                 object:    this,
                                                 number:    Number(RGraph.arraySum(data[i])).toFixed(decimals),
@@ -2836,7 +2833,7 @@ this.context.lineTo(
                                                 dataset:   i
                                             }),
                             halign:         halign,
-                            valign:         valign,
+                            valign:         properties.xaxisPosition === 'top' ? 'top' : valign,
                             angle:          angle,
                             bounding:       true,
                             'bounding.fill':background,
@@ -2867,7 +2864,7 @@ this.context.lineTo(
                             italic: textConf.italic,
 
                             x:                  coords2[i][0][0] + (coords2[i][0][2] / 2) + offsetx,
-                            y:                  coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) - offsety - 3,
+                            y:                  coords2[i][0][1] + (data[i][0] < 0 ? coords2[i][0][3] : 0) + (properties.xaxisPosition === 'top' ? coords2[i][0][3] + offsety + 3 : 0 - offsety - 3),
                             text:               specific ? (specific[sequentialIndex] || '') : RGraph.numberFormat({
                                                     object:    this,
                                                     number:    Number(data[i]).toFixed(decimals),
@@ -2880,7 +2877,7 @@ this.context.lineTo(
                                                     dataset:   i
                                                 }),
                             halign:             halign,
-                            valign:             valign,
+                            valign:             properties.xaxisPosition === 'top' ? 'top' : valign,
                             angle:              angle,
                             bounding:           true,
                             'bounding.fill':    background,
