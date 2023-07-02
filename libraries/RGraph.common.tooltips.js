@@ -250,7 +250,9 @@
                 var specific = args.object.tooltipSubstitutions({
                     index: args.index
                 });
+
             }
+
 
 
             // This allows for escaping the percent
@@ -328,9 +330,7 @@
                         unitspost: args.object.properties.tooltipsFormattedUnitsPost || ''
                     });
 
-// TODO If specific values for the tooltip key
-//      are given - check here for them and
-//      apply to the vaalue variable.
+
 
                     //
                     // If the tooltipsFormattedKeyColorsShape property is set to circle then add
@@ -343,6 +343,11 @@
                         
                         borderRadius = '100px';
                     }
+
+
+
+
+
 
 
 
@@ -436,9 +441,7 @@
 
 
 
-
-
-            //Do %{list} sunstitution
+            //Do %{list} substitution
             if (text.indexOf('%{list}') !== -1) {
                 (function ()
                 {
@@ -533,7 +536,7 @@
 
 
             // Do property substitution when there's an index to the property
-            var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
+            var reg = /%{p(?:rop)?(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
 
             while (text.match(reg)) {
 
@@ -557,7 +560,7 @@
 
 
 
-            // Replace this: %%property:xxx%%
+            // Replace this: %{property:xxx}
             while (text.match(/%{property:([_a-z0-9]+)}/i)) {
                 var str = '%{property:' + RegExp.$1 + '}';
                 text    = text.replace(str, args.object.properties[RegExp.$1]);
@@ -566,11 +569,25 @@
 
 
 
-            // Replace this: %%prop:xxx%%
+            // Replace this: %{prop:xxx}
             while (text.match(/%{prop:([_a-z0-9]+)}/i)) {
                 var str = '%{prop:' + RegExp.$1 + '}';
                 text    = text.replace(str, args.object.properties[RegExp.$1]);
             }
+
+
+
+
+            // Replace this: %{prop:xxx}
+            while (text.match(/%{p:([_a-z0-9]+)}/i)) {
+                var str = '%{p:' + RegExp.$1 + '}';
+                text    = text.replace(str, args.object.properties[RegExp.$1]);
+            }
+
+
+
+
+
 
 
 
@@ -688,13 +705,7 @@
 
 
 
-
-
-
-
-
-            // And lastly - call any functions
-            // MUST be last
+            // Call any functions
             var regexp = /%{function:([_A-Za-z0-9]+)\((.*?)\)}/;
             
             // Temporarily replace carriage returns and line feeds with CR and LF
@@ -717,6 +728,23 @@
 
                 text = text.replace(regexp, ret)
             }
+
+
+
+
+
+
+            // Do color blob replacement
+            text = text.replace(/%{color\:([^}]+)}/g, '<div style="display: inline-block; background-color: $1; scale: 0.9;color: transparent">Mj</div>');
+
+
+
+
+
+
+
+
+
 
             // Replace CR and LF with a space
             text = text.replace(/\|CR\|/, ' ');
