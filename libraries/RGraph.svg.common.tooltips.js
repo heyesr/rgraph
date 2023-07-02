@@ -467,8 +467,9 @@
 
 
 
-            // Do property substitution when there's an index to the property
-            var reg = /%{prop(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
+            // Do property substitution when there's an index to
+            // the property
+            var reg = /%{pr?o?p?(?:erty)?:([_a-z0-9]+)\[([0-9]+)\]}/i;
 
             while (text.match(reg)) {
 
@@ -504,6 +505,15 @@
             // Fourth, replace this: %%prop:xxx%%
             while (text.match(/%{prop:([_a-z0-9]+)}/i)) {
                 var str = '%{prop:' + RegExp.$1 + '}';
+                text    = text.replace(str, opt.object.properties[RegExp.$1]);
+            }
+
+
+
+
+            // Fourth, replace this: %%p:xxx%%
+            while (text.match(/%{p:([_a-z0-9]+)}/i)) {
+                var str = '%{p:' + RegExp.$1 + '}';
                 text    = text.replace(str, opt.object.properties[RegExp.$1]);
             }
 
@@ -672,6 +682,29 @@
                 text = text.replace(regexp, ret)
             }
 
+
+
+
+
+
+
+
+
+
+            // Do color blob replacement
+            text = text.replace(/%{color\:([^}]+)}/g, '<div style="display: inline-block; background-color: $1; scale: 0.9;color: transparent">Mj</div>');
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             // Replace CR and LF with a space
             text = text.replace(/\|CR\|/, ' ');
             text = text.replace(/\|LF\|/, ' ');
