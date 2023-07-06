@@ -4172,7 +4172,8 @@
     RGraph.SVG.resetColorsToOriginalValues = function (opt)
     {
         var obj = opt.object;
-
+        
+        // TODO This appears to be BORKED
         if (obj.originalColors) {
             // Reset the colors to their original values
             for (var j in obj.originalColors) {
@@ -4200,7 +4201,11 @@
         obj.colorsParsed = false;
         
         // Reset the gradient counter
-        obj.gradientCounter = 1;
+        // 
+        // TAKEN OUT ON 6th JULY 2023 SO THAT GRADIENTS ARE
+        // RE-PARSED WHEN THE .responsive() FUNCTION RUNS
+        //
+        //obj.gradientCounter = 1;
     };
 
 
@@ -5538,6 +5543,7 @@
     {
         var obj = this;
 
+
         //
         // Sort the configuration so that it descends in order of biggest screen
         // to smallest
@@ -5628,6 +5634,12 @@
                 for (var j in rule.options) {
                     if (typeof j === 'string') {
                         obj.set(j, rule.options[j]);
+
+                        // Set the original colors to the new colors
+                        // if necessary
+                        if (j === 'colors' && obj.originalColors) {
+                            obj.originalColors = RGraph.SVG.arrayClone(rule.options[j]);
+                        }
                     }
                 }
             }
@@ -5869,6 +5881,29 @@
         
         // This facilitates chaining
         return obj;
+    };
+
+
+
+
+
+
+
+
+    //
+    // You can now specify your reponsive configuration inline,
+    // with the rest of your charts configuration.
+    //
+    // @param object obj The chart object
+    //
+    RGraph.SVG.installInlineResponsive = function (obj)
+    {
+        if (RGraph.SVG.isArray(obj.properties.responsive)) {
+            RGraph.SVG.runOnce('install-responsive-configuration-' + obj.uid, function ()
+            {
+                obj.responsive(obj.properties.responsive);
+            });
+        }
     };
 
 
