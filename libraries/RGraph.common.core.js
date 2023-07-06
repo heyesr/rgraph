@@ -32,7 +32,6 @@
     RGraph.cursor         = [];
     RGraph.Effects        = RGraph.Effects || {};
     RGraph.cache          = [];
-    RGraph.QS             =
     RGraph.GET            = {};
     RGraph.GET.__parts__  = null;
 
@@ -5848,7 +5847,8 @@
 
 
         //
-        // If the function is present on the object to reset specific colors - use that
+        // If the function is present on the object to reset
+        // specific colors - use that
         //
         if (typeof args.object.resetColorsToOriginalValues === 'function') {
             args.object.resetColorsToOriginalValues();
@@ -7187,6 +7187,12 @@
                 for (var j in rule.options) {
                     if (typeof j === 'string') {
                         obj.set(j, rule.options[j]);
+                        
+                        // Set the original colors to the new colors
+                        // if necessary
+                        if (j === 'colors' && obj.original_colors) {
+                            obj.original_colors = RGraph.arrayClone(rule.options[j]);
+                        }
                     }
                 }
             }
@@ -7268,6 +7274,29 @@
         
         // Returning the object facilitates chaining
         return obj;
+    };
+
+
+
+
+
+
+
+
+    //
+    // You can now specify your reponsive configuration inline,
+    // with the rest of your charts configuration.
+    //
+    // @param object obj The chart object
+    //
+    RGraph.installInlineResponsive = function (obj)
+    {
+        if (RGraph.isArray(obj.properties.responsive)) {
+            RGraph.runOnce('install-responsive-configuration-' + obj.uid, function ()
+            {
+                    obj.responsive(obj.properties.responsive);
+            });
+        }
     };
 
 
