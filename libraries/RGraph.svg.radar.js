@@ -597,6 +597,27 @@
 
 
 
+
+
+
+
+            //
+            // Install any inline responsive configuration. This
+            // should be last in the draw function - even after
+            // the draw events.
+            //
+            RGraph.SVG.installInlineResponsive(this);
+
+
+
+
+
+
+
+
+
+
+
             return this;
         };
 
