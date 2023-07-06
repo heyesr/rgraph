@@ -594,6 +594,30 @@
             //
             RGraph.fireCustomEvent(this, 'ondraw');
 
+
+
+
+
+
+
+
+            //
+            // Install any inline responsive configuration. This
+            // should be last in the draw function - even after
+            // the draw events.
+            //
+            RGraph.installInlineResponsive(this);
+
+
+
+
+
+
+
+
+
+
+
             return this;
         };
 
