@@ -473,6 +473,7 @@
 
 
 
+
             // Go through the data and work out the maximum value
             // This now also accounts for errorbars
             var values = [];
@@ -805,6 +806,28 @@
 
             // Fire the draw event
             RGraph.SVG.fireCustomEvent(this, 'ondraw');
+
+
+
+
+
+
+
+
+            //
+            // Install any inline responsive configuration. This
+            // should be last in the draw function - even after
+            // the draw events.
+            //
+            RGraph.SVG.installInlineResponsive(this);
+
+
+
+
+
+
+
+
 
 
 
@@ -1539,6 +1562,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
 
             if (colors) {
                 for (var i=0; i<colors.length; ++i) {
+
                     colors[i] = RGraph.SVG.parseColorLinear({
                         object: this,
                         color: colors[i]
