@@ -342,6 +342,8 @@
             cornersRoundRight:       true,
             cornersRoundLeftRadius:  null,
             cornersRoundRightRadius: null,
+            
+            responsive: null,
 
             clearto:   'rgba(0,0,0,0)'
         }
@@ -717,6 +719,27 @@
             // Fire the RGraph draw event
             //
             RGraph.fireCustomEvent(this, 'ondraw');
+
+
+
+
+
+
+
+
+            //
+            // Install any inline responsive configuration. This
+            // should be last in the draw function - even after
+            // the draw events.
+            //
+            RGraph.installInlineResponsive(this);
+
+
+
+
+
+
+
 
             return this;
         };
