@@ -351,7 +351,7 @@
 
 
 
-                    str[i] = '<tr><td><div id="RGraph_tooltipsFormattedKeyColor_' + i + '" class="RGraph_tooltipsFormattedKeyColor">Ml</div></td><td id="RGraph_tooltipsFormattedKeyLabel_' + i + '">'
+                    str[i] = '<tr><td><div id="RGraph_tooltipsFormattedKeyColor_' + i + '" class="RGraph_tooltipsFormattedKeyColor" style="color: transparent">Ml</div></td><td id="RGraph_tooltipsFormattedKeyLabel_' + i + '">'
                         + '<span>{1}</span>'.format(label)
                         + ' ' + value + '</td></tr>';
                     
