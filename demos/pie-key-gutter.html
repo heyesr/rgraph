@@ -45,12 +45,13 @@
                 keyPositionMarginHSpace: 10,
                 colorsStroke: 'rgba(0,0,0,0)',
                 exploded: 5,
-                shadow: false
+                shadow: false,
+                responsive: [
+                    {maxWidth: 800, width: 350, height: 300,options: {textSize: 10,radius:75,keyPositionY: 240,}},
+                    {maxWidth: null, width: 550, height: 350,options: {textSize: 12,radius:125,keyPositionY: 315,}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 800, width: 350, height: 300,options: {textSize: 10,radius:75,keyPositionY: 240,}},
-            {maxWidth: null, width: 550, height: 350,options: {textSize: 12,radius:125,keyPositionY: 315,}}
-        ]);
+        }).draw();
     </script>
 
 

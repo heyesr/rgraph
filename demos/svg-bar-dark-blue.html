@@ -75,13 +75,14 @@
                 colors: ['Gradient(#6969FF:#6969FF:#000)'],
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 textColor:'white',
-                textSize:16
+                textSize:16,
+                responsive: [
+                    {maxWidth: null,width:600, height: 300,options: {marginInner:15},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 800, width:400, height: 200,options: {marginInner:10},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
         // Draw the chart and add some responsive capabilities
-        }).draw().responsive([
-            {maxWidth: null,width:600, height: 300,options: {marginInner:15},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 800, width:400, height: 200,options: {marginInner:10},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

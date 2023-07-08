@@ -52,12 +52,13 @@
                 yaxisPosition: 'right',
                 yaxisScaleMin: -1,
                 yaxisScaleMax: 4,
-                xaxisLabelsOffsety: 20
+                xaxisLabelsOffsety: 20,
+                responsive: [
+                    {maxWidth: 800,width:450,height:200,options:{textSize:8,marginInner: 5}},
+                    {maxWidth: null,width:750,height:300,options:{textSize:12,marginInner: 10}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 800,width:450,height:200,options:{textSize:8,marginInner: 5}},
-            {maxWidth: null,width:750,height:300,options:{textSize:12,marginInner: 10}}
-        ]);
+        }).draw();
     </script>
 
 

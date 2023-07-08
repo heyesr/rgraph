@@ -80,12 +80,13 @@
                 textColor: '#ccc',
                 tickmarksStyle: 'circle',
                 tickmarksFill: 'black',
-                tickmarksLinewidth: 3
+                tickmarksLinewidth: 3,
+                responsive: [
+                    {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).trace().responsive([
-            {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:900,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).trace();
     </script>
 
 
@@ -110,33 +111,8 @@
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre class="code">
-&lt;script&gt;
-    line = new RGraph.SVG.Line({
-        id: 'cc',
-        data: [
-            [9,9,0,9,0],
-            [6,7,10,5,0],
-            [9,4,0,3,4]
-        ],
-        options: {
-            colors: ['#cc0','blue','red'],
-            xaxis: false,
-            yaxis: false,
-            linewidth: 3,
-            backgroundGridColor: '#999',
-            xaxisLabels: ['5.0','6.0','7.0','8.0','9.0'],
-            textColor: '#ccc',
-            tickmarksStyle: 'circle',
-            tickmarksFill: 'black',
-            tickmarksLinewidth: 3
-        }
-    }).trace().responsive([
-        {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},css:{'float':'right'}},
-        {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},css:{'float':'none'}}
-    ]);
-&lt;/script&gt;
-</pre>
+        <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
 
 
 
@@ -253,12 +229,13 @@ This is the code that generates the chart - it should be placed AFTER the <code>
                     x, y, obj.get('tickmarksSize'), color
                 );
             },
-            tickmarkSize: 6
+            tickmarkSize: 6,
+            responsive: [
+                {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
+                {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
+            ]
         }
-    }).draw().responsive([
-        {maxWidth:null,width:650,height:250,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right'},callback:function (obj) {},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 650;canvas.height = 250;var div = canvas.parentNode.parentNode;div.style.width  = '650px';div.style.height = '250px';RGraph.cache = [];RGraph.redraw();}},
-        {maxWidth:800,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none'},callback:function (obj){var canvas = document.getElementById('cvs1');canvas.width  = 450;canvas.height = 200;var div = canvas.parentNode.parentNode;div.style.width  = '450px';div.style.height = '200px';RGraph.cache = [];RGraph.redraw();}}
-    ]);
+    }).draw();
 &lt;/script&gt;
 </pre>
 

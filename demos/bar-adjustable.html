@@ -76,12 +76,13 @@
                 titleBold: true,
                 titleSize: 16,
                 adjustable: true,
-                xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John']
+                xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John'],
+                responsive: [
+                    {maxWidth: null,width: 600,height: 250,options:{textSize:16},parentCss: {'float':'right'}},
+                    {maxWidth: 800,width: 350,height: 200,options:{textSize:10},parentCss: {'float':'none', textAlign: 'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null,width: 600,height: 250,options:{textSize:16},parentCss: {'float':'right'}},
-            {maxWidth: 800,width: 350,height: 200,options:{textSize:10},parentCss: {'float':'none', textAlign: 'center'}}
-        ]);
+        }).draw();
     </script>
 
 

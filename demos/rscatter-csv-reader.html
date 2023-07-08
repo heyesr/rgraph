@@ -38,7 +38,7 @@
     </script>
 
     <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="500" height="450" data-image-src="page-demos-rscatter-csv-reader.png">[No canvas support]</canvas>
+        <canvas id="cvs" width="500" height="450" >[No canvas support]</canvas>
     </div>
     
     <p>
@@ -108,12 +108,13 @@ console.log(arr);
                     marginTop: 15,
                     marginBottom: 15,
                     marginLeft: 15,
-                    marginRight: 15
+                    marginRight: 15,
+                    responsive: [
+                        {maxWidth:null,width:500,height:450,parentCss:{'float':'right',textAlign:'none'}},
+                        {maxWidth:900,width:400,height:300,parentCss: {'float':'none',textAlign:'center'}}
+                    ]
                 }
-            }).draw().responsive([
-                {maxWidth:null,width:500,height:450,parentCss:{'float':'right',textAlign:'none'}},
-                {maxWidth:800,width:400,height:300,parentCss: {'float':'none',textAlign:'center'}}
-            ]);
+            }).draw();
         });
     </script>
 

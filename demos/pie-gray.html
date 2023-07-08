@@ -124,12 +124,13 @@
                 tooltipsEvent: 'mousemove',
                 highlightStyle: 'outline',
                 title: 'Smartphone share in Q2 2010',
-                titleSize: 18
+                titleSize: 18,
+                responsive: [
+                    {maxWidth: null, width: 550, height: 250, options: {labelsList: true, labels: labels_large,textSize:10},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900, width: 350, height: 250, options: {labelsList: false, labels: labels_small,textSize:8},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width: 550, height: 250, options: {labelsList: true, labels: labels_large,textSize:10},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900, width: 350, height: 250, options: {labelsList: false, labels: labels_small,textSize:8},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

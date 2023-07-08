@@ -76,17 +76,22 @@
             xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
             shadow: false,
             colors: ['Gradient(#fdd:red)'],
-            marginLeft: 75
+            marginLeft: 75,
+            responsive: [
+                {maxWidth: null,width:600,height:250,options:{marginInner: 5,yaxisLabelsOffsety:20, textSize:16},parentCss:{width:'600px',height:'250px'}},
+                {maxWidth: 900,width:400,height:200,options:{marginInner: 3,yaxisLabelsOffsety:15, textSize:12},parentCss:{width:'400px',height:'200px'}}
+            ]
         });
         
         seg.background.set({
-            marginLeft: 75
+            marginLeft: 75,
+            responsive: [
+                {maxWidth: null,width:600,height:250,options:{marginInner: 5,yaxisLabelsOffsety:20, textSize:16},parentCss:{width:'600px',height:'250px'}},
+                {maxWidth: 900,width:400,height:200,options:{marginInner: 3,yaxisLabelsOffsety:15, textSize:12},parentCss:{width:'400px',height:'200px'}}
+            ]
         });
 
-        seg.draw().responsive([
-            {maxWidth: null,width:600,height:250,options:{marginInner: 5,yaxisLabelsOffsety:20, textSize:16},parentCss:{width:'600px',height:'250px'}},
-            {maxWidth: 800,width:400,height:200,options:{marginInner: 3,yaxisLabelsOffsety:15, textSize:12},parentCss:{width:'400px',height:'200px'}}
-        ]);
+        seg.draw();
     </script>
 
 

@@ -88,12 +88,13 @@
                 backgroundGridHlinesCount: 6,
                 backgroundGridVlinesCount: 7,
                 colorsStroke: 'transparent',
-                shadow: false
+                shadow: false,
+                responsive: [
+                    {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

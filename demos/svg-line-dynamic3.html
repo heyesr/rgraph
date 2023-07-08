@@ -108,13 +108,14 @@
                         xaxisTickmarks: 0,
                         xaxisLinewidth: 2,
                         yaxisTickmarks: 0,
-                        yaxisLinewidth: 2
+                        yaxisLinewidth: 2,
+                        responsive: [
+                            {maxWidth: null,width:650,height:250,options:{textSize:16},parentCss:{textAlign:'none','float':'right'}},
+                            {maxWidth: 900, width:400,height:150,options:{textSize:12},parentCss:{textAlign:'center','float':'none'}}
+                        ]
                     }
-                }).responsive([
-                    {maxWidth: null,width:650,height:250,options:{textSize:16},parentCss:{textAlign:'none','float':'right'}},
-                    {maxWidth: 900, width:400,height:150,options:{textSize:12},parentCss:{textAlign:'center','float':'none'}}
-                ]);
-            
+                });
+
             // If the chart has already been created then clear the SVG
             } else {
                 RGraph.SVG.clear(obj.svg);
@@ -131,6 +132,7 @@
            
            // The random value is constrained to a minimum of 0 and a
            // maximum of 250.
+
            random_value = Math.max(random_value, 0);
            random_value = Math.min(random_value, 250);
 

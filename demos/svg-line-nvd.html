@@ -96,16 +96,19 @@
                 xaxis: false,
                 yaxis: false,
                 textSize: 14,
-                xaxisLabels: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20']
+                xaxisLabels: ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20'],
+                
+                // Add some responsive capability to
+                // accommodate both large and small screens
+                responsive: [
+                    {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign: 'none'}},
+                    {maxWidth:900, width:450,height:200,parentCss:{'float':'none',textAlign:'center'}}
+                    
+                ]
             }
         
-        // Animate the chart with the trace() effect and add some responsive capability to
-        // accommodate both large and small screens
-        }).trace().responsive([
-            {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign: 'none'}},
-            {maxWidth:850, width:450,height:200,parentCss:{'float':'none',textAlign:'center'}}
-            
-        ]);
+        // Animate the chart with the trace() effect
+        }).trace();
     </script>
 
 

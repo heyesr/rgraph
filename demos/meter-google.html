@@ -24,16 +24,10 @@
 
     <h1>A customised Meter chart</h1>
 
-    <RGRAPH_BASIC_DEMO_HTML>
     <div style="float: right; text-align: center" id="canvas-container">
         <canvas id="cvs" width="500" height="250" data-image-src="page-demos-meter-google.png">[No canvas support]</canvas><br />
-        <script>
-            if (location.href.indexOf('demo-basic.html') !== -1) {
-                document.write('<button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>');
-            }
-        </script>
+        <button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
     
     <p>
         Here's a customised Meter chart that looks a little bit like the Google Charts meter chart. The
@@ -133,12 +127,13 @@ RGraph.toDegrees = function (radians)
                 // This option means that the chart will be dynamically adjustable.
                 // You could then use the adjust* events to do something with the
                 // new value of the chart.
-                adjustable: true
+                adjustable: true,
+                responsive: [
+                    {maxWidth:null,parentCss: {'float':'right'}},
+                    {maxWidth:700,parentCss: {'float':'none'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth:null,parentCss: {'float':'right'}},
-            {maxWidth:700,parentCss: {'float':'none'}}
-        ]);
+        }).draw();
         
         
         //

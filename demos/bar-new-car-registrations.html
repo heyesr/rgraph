@@ -103,10 +103,8 @@
                 // of the main chart area.
                 title: 'New car registrations in the UK, 2010-2016',
 
-                titleX: 100,
                 titleY: '+5',
                 titleBold: true,
-                titleHalign: 'left',
                 
                 // Use formatted tooltips to show tooltips
                 tooltips: '<i>Results for <b style="font-size: 14pt">%{property:key[%{index}]}</b> in <b style="font-size: 14pt">%{property:xaxisLabels[%{dataset}]}</b>:</i><br /><span style="font-size: 20pt">$%{value_formatted}</span>',
@@ -114,16 +112,17 @@
                 // Add some CSS values that are applied to the tooltip
                 tooltipsCss: {
                     textAlign: 'center'
-                }
+                },
+                responsive: [
+                    {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right',textAlign:'none'}},
+                    {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 75}, parentCss: {'float':'none',textAlign:'center'}}
+                ]
             }
         }).grow().on('beforedraw', function (obj)
         {
             RGraph.clear(obj.canvas, 'white');
 
-        }).responsive([
-            {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right',textAlign:'none'}},
-            {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 50}, parentCss: {'float':'none',textAlign:'center'}}
-        ]);
+        });
     </script>
 
 

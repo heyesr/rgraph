@@ -72,12 +72,13 @@
                 data: data,
                 options: {
                     yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                    marginLeft: 95
+                    marginLeft: 95,
+                    responsive: [
+                        {maxWidth: null,parentCss:{'float':'right',textAlign:'none'}},
+                        {maxWidth: 750,parentCss:{'float':'none',textAlign:'center'}}
+                    ]
                 }
-            }).draw().responsive([
-                {maxWidth: null,parentCss:{'float':'right',textAlign:'none'}},
-                {maxWidth: 750,parentCss:{'float':'none',textAlign:'center'}}
-            ]);
+            }).draw();
         }});
     </script>
 

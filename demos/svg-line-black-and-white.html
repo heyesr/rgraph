@@ -143,7 +143,11 @@ RGraph.SVG.create({
                 marginRight: 10,
                 marginTop: 20,
                 backgroundGrid: false,
-                textFont: 'Verdana'
+                textFont: 'Verdana',
+                responsive: [
+                    {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7},parentCss: {'float':'right', textAlign:'center'}},
+                    {maxWidth: 900,width: 500,height: 175,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5},parentCss: {'float':'none', textAlign:'center'}}
+                ]
             }
         
         // The draw event adds the overhang to each of the axes
@@ -151,10 +155,7 @@ RGraph.SVG.create({
         
         // Use the trace() effect to draw the chart setting the number of
         // frames used by the animation to 60
-        .trace({frames: 60}).responsive([
-            {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7},parentCss: {'float':'right', textAlign:'center'}},
-            {maxWidth: 900,width: 500,height: 175,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5},parentCss: {'float':'none', textAlign:'center'}}
-        ]);
+        .trace({frames: 60});
     </script>
 
 

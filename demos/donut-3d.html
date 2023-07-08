@@ -62,7 +62,7 @@
         // Create the Pie chart, set the donut variant and the rest of the
         // configuration. The variant property is what sets the chart to
         // be a Donut chart instead of a regular Pie chart.
-        new RGraph.Pie({
+        donut = new RGraph.Pie({
             id: 'cvs',
             data: [4,8,6,3,5,2,5],
             options: {
@@ -79,7 +79,9 @@
                     fontSize:'16pt'
                 }
             }
-        }).draw().responsive([
+        }).draw();
+        
+        donut.responsive([
             {maxWidth: null,width:600,height:350,options:{radius: 100,labelsList: true, labels:labels,title:'',tooltips:null}},
             {maxWidth: 900,width:400,height:250,options:{radius: 90,labels: null,title: '(Click for labels)',tooltips:labels}}
         ]);

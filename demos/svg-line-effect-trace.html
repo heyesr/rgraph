@@ -83,12 +83,13 @@
                 tickmarksFill: 'black',
                 tickmarksLinewidth: 2,
                 linewidth: 4,
-                spline: true
+                spline: true,
+                responsive: [
+                    {maxWidth: null,width:750,height:300,options: {xaxisLabels: ['Kev','John','Fred','July','Fred','Olga','Ben','Boris','Lenny','Pete','Lewis'],marginLeft: 65,textSize: 14,tickmarksStyle: 'circle',tickmarksSize: 5,linewidth: 3}, parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 1000, width:400,height:200,options: {xaxisLabels: ['Kev','\nJohn','Fred','\nJuly','Fred','\nOlga','Ben','\nBoris','Lenny','\nPete','Lewis'],marginLeft: 50,textSize: 10,tickmarksStyle: '',tickmarksSize: 3,linewidth: 2}, parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).trace().responsive([
-            {maxWidth: null,width:750,height:300,options: {xaxisLabels: ['Kev','John','Fred','July','Fred','Olga','Ben','Boris','Lenny','Pete','Lewis'],marginLeft: 65,textSize: 14,tickmarksStyle: 'circle',tickmarksSize: 5,linewidth: 3}, parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 1000, width:400,height:200,options: {xaxisLabels: ['Kev','\nJohn','Fred','\nJuly','Fred','\nOlga','Ben','\nBoris','Lenny','\nPete','Lewis'],marginLeft: 50,textSize: 10,tickmarksStyle: '',tickmarksSize: 3,linewidth: 2}, parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).trace();
     </script>
 
 

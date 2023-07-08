@@ -52,12 +52,13 @@
             value: 70,
             options: {
                 labelsCenterUnitsPost: '%',
-                labelsCenterColor: '#aaa'
+                labelsCenterColor: '#aaa',
+                responsive: [
+                    {maxWidth: null,width: 350,height: 350,options:{width: 55,labelsCenterSize: 60},parentCss:{'float':'right', textAlign:'none'}},
+                    {maxWidth: 700,width: 250,height: 250,options:{width: 40,labelsCenterSize: 45},parentCss:{'float':'none', textAlign:'center'}}
+                ]
             }
-        }).roundRobin({frames: 60}).responsive([
-            {maxWidth: null,width: 350,height: 350,options:{width: 55,labelsCenterSize: 60},parentCss:{'float':'right', textAlign:'none'}},
-            {maxWidth: 700,width: 250,height: 250,options:{width: 40,labelsCenterSize: 45},parentCss:{'float':'none', textAlign:'center'}}
-        ]);
+        }).roundRobin({frames: 60});
 
 
 

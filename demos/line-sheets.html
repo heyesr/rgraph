@@ -112,15 +112,18 @@ new RGraph.Sheets(
                     backgroundGridBorder: false,
                     marginLeft: 35,
                     marginInner: 10,
-                    spline: true
+                    spline: true,
+                    
+                    // Add some responsive capability
+                    // to accommodate smaller screens
+                    responsive: [
+                        {maxWidth: null,width:600,height:250,options:{textSize: 12}},
+                        {maxWidth: 900,width:400,height:200,options:{textSize: 10}}
+                    ]
                 }
             
-            // Animate the chart using the trace() effect and add some responsive capability
-            // to accommodate smaller screens
-            }).trace().responsive([
-                {maxWidth: null,width:600,height:250,options:{textSize: 12}},
-                {maxWidth: 900,width:400,height:200,options:{textSize: 10}}
-            ]);;
+            // Animate the chart using the trace() effect
+            }).trace();
         });
     </script>
 

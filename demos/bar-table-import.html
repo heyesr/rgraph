@@ -82,12 +82,13 @@
                     shadowOffsetx: 5,
                     shadowOffsety: 5,
                     colors: ['Gradient(#f99:red)'],
-                    tooltips: '<i>%{property:xaxisLabels[%{dataset}]}\'s sales income:</i><br /> <span style="font-size:28pt">$%{value}</span>'
+                    tooltips: '<i>%{property:xaxisLabels[%{dataset}]}\'s sales income:</i><br /> <span style="font-size:28pt">$%{value}</span>',
+                    responsive: [
+                        {maxWidth: null, width: 950, height: 300, options:{textSize: 16,marginLeft: 75,marginInner: 35,xaxisLabels: labels}},
+                        {maxWidth: 950, width: 600, height: 200, options:{textSize: 12,marginLeft: 50,marginInner: 15,xaxisLabels: labels_short}}
+                    ]
                 }
-            }).wave().responsive([
-                {maxWidth: null, width: 950, height: 300, options:{textSize: 16,marginLeft: 75,marginInner: 35,xaxisLabels: labels}},
-                {maxWidth: 950, width: 600, height: 200, options:{textSize: 12,marginLeft: 50,marginInner: 15,xaxisLabels: labels_short}}
-            ]);
+            }).wave();
         });
     </script>
 

@@ -115,23 +115,21 @@
                     // Give the Y-axis labels some units that are both prepended
                     // and appended to the numbers
                     yaxisScaleUnitsPost: 'm',
-                    yaxisScaleUnitsPre: '$'
+                    yaxisScaleUnitsPre: '$',
+                    responsive: [
+                        {maxWidth: null, parentCss:{'float': 'right', textAlign: 'none'}, callback: function () {setTimeout(function (){document.getElementById('chart-container1').style.display = 'inline-block';document.getElementById('chart-container2').style.display = 'none';})}},
+                        {maxWidth: 900,  parentCss:{'float': 'none',  textAlign: 'center'}, callback: function () {setTimeout(function () {document.getElementById('chart-container1').style.display = 'none';document.getElementById('chart-container2').style.display = 'inline-block';})}}
+                    ]
                 }
             //
             // Draw the chart immediately. The SVG tags that the
             // charts are drawn on are alternatively hidden and
-            // shown by the responsive callback functions. Also,
-            // the SVG tag is centered for a small screen and
-            // floated right for a larger screen.
+            // shown by the responsive callback functions (as you
+            // can see above). Also, the SVG tag is centered for
+            // a small screen and floated right for a larger
+            // screen.
             //
-            // The hiding/showing of each SVG tag is delayed by
-            // 50ms using setTimeout() to skirt some drawing
-            // irregularities.
-            //
-            }).draw().responsive([
-                {maxWidth: null, parentCss:{'float': 'right', textAlign: 'none'}, callback: function () {setTimeout(function (){document.getElementById('chart-container1').style.display = 'inline-block';document.getElementById('chart-container2').style.display = 'none';},50)}},
-                {maxWidth: 800,  parentCss:{'float': 'none',  textAlign: 'center'}, callback: function () {setTimeout(function () {document.getElementById('chart-container1').style.display = 'none';document.getElementById('chart-container2').style.display = 'inline-block';}, 50)}}
-            ]);
+            }).draw();
         }
 
 

@@ -52,12 +52,13 @@
                 title: 'Bobs Day at the races',
                 titleY: 35,
                 titleSubtitle: 'A chart showing winners of the individual races',
-                marginTop: 50
+                marginTop: 50,
+                responsive: [
+                    {maxWidth: 900, width: 400, height: 400, options: {}},
+                    {maxWidth: null,width: 500, height: 500, options: {}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 600, width: 400, height: 400, options: {}},
-            {maxWidth: null,width: 500, height: 500, options: {}}
-        ]);
+        }).draw();
     </script>
 
 

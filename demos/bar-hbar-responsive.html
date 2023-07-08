@@ -53,11 +53,12 @@
             id: 'cvs',
             data: [],
             options: {
+                responsive: [
+                    {maxWidth: null, width: 700, height: 350, callback: drawBar},
+                    {maxWidth: 750, width: 450, height: 700, callback: drawHbar}
+                ]
             }
-        }).responsive([
-            {maxWidth: null, width: 700, height: 350, callback: drawBar},
-            {maxWidth: 750, width: 450, height: 700, callback: drawHbar}
-        ]);
+        }).draw();
 
         //
         // This function resets the canvas and then draws

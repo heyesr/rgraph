@@ -43,12 +43,13 @@
                 xaxis: false,
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
-                title: 'A basic Horizontal Bar chart'
+                title: 'A basic Horizontal Bar chart',
+                responsive: [
+                    {maxWidth: 900,width: 400, height: 300, options:{textSize: 10}},
+                    {maxWidth: null,width: 750, height: 500, options:{textSize: 12}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 900,width: 400, height: 300, options:{textSize: 10}},
-            {maxWidth: null,width: 750, height: 500, options:{textSize: 12}}
-        ]);
+        }).draw();
     </script>
 
 

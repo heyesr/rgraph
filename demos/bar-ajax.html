@@ -104,15 +104,17 @@ You can view the demos on the RGraph website here:
                     titleSize: 16,
                     titleOffsety: 5,
                     titleSubtitle: 'This chart uses random data',
-                    titleSubtitleOffsety: -5
+                    titleSubtitleOffsety: -5,
+                    
+                    //  Add some responsive capability is also added.
+                    responsive: [
+                        {maxWidth: null,width:600,height:250,options:{marginInner: 10,textSize:12},parentCss:{'float': 'right',textAlign:'none'}},
+                        {maxWidth: 900,width:400,height:200,options:{marginInner: 5,textSize:10},parentCss:{'float': 'none',textAlign:'center'}}
+                    ]
                 }
             
-            // The grow() animation effect is used and works just like a regular Bar chart. Some
-            // responsive capability is also added.
-            }).grow().responsive([
-                {maxWidth: null,width:600,height:250,options:{marginInner: 10,textSize:12},parentCss:{'float': 'right',textAlign:'none'}},
-                {maxWidth: 800,width:400,height:200,options:{marginInner: 5,textSize:10},parentCss:{'float': 'none',textAlign:'center'}}
-            ]);
+            // The grow() animation effect is used and works just like a regular Bar chart.
+            }).grow();
         });
     </script>
 

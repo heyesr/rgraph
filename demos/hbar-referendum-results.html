@@ -138,19 +138,19 @@ function getTooltip(group)
                 highlightStyle: 'invert',
                 highlightFill: 'rgba(255,255,255,0.85)',
 
-                title: 'Leave vs Remain - General election seats won\r\nbased on EU referendum results',
+                title: 'Leave vs Remain - General election seats\r\nwon based on EU referendum results',
                 titleBold: true,
                 titleY: '-10',
                 titleHalign: 'center',
-                titleColor: 'gray'
+                titleColor: 'gray',
+                responsive: [
+                    {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
 
         // Use the grow() animation effect
-        }).grow().responsive([
-            {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 700, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},parentCss:{'float':'none',textAlign:'center'}}
-        
-        ])
+        }).grow()
         
         // This is a way to specify CSS values for the tooltips. You
         // should use the JavaScript versions of the CSS names (ie

@@ -110,12 +110,13 @@ data.sort(function (a, b)
                 colorsSequential: true,
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
-                marginInner: 10
+                marginInner: 10,
+                responsive: [
+                    {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:700,parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:700,parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
         
         // Loop through the coordinates that are stored in the Horizontal Bar
         // object.

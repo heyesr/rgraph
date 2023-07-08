@@ -99,12 +99,13 @@
                     border: '3px solid black',
                     fontSize: '20pt'
                 },
-                tooltipsPointer: false
+                tooltipsPointer: false,
+                responsive: [
+                    {maxWidth: null, width: 450, height: 400,options:{labelsSize:16},parentCss: {'float': 'right',textAlign:'none'}},
+                    {maxWidth: 900,  width: 350, height: 300,options:{labelsSize:12},parentCss: {'float': 'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width: 450, height: 400,options:{labelsSize:16},parentCss: {'float': 'right',textAlign:'none'}},
-            {maxWidth: 750,  width: 350, height: 300,options:{labelsSize:12},parentCss: {'float': 'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

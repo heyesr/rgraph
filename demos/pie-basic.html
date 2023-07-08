@@ -89,15 +89,17 @@
 
                 shadow: false,
                 colorsStroke: 'transparent',
-                keyPositionGraphBoxed: false
+                keyPositionGraphBoxed: false,
                 
+                // Add responsive capabilities. On smaller screens the width
+                // is reduced and the labels are changed to a key. This takes up less space.
+                responsive: [
+                    {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,width:420,height:250,options: {centerx: 150,key:labels, labels: []},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        // Draw the chart and add responsive capabilities. On smaller screens the width
-        // is reduced and the labels are changed to a key. This takes up less space.
-        }).draw().responsive([
-            {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 750,width:420,height:250,options: {centerx: 150,key:labels, labels: []},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        // Draw the chart
+        }).draw();
     </script>
 
 

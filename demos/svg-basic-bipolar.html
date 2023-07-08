@@ -54,13 +54,14 @@
                 ],
                 grouping: 'stacked',
                 title: 'A basic Bipolar example chart',
-                titleSubtitle: 'A subtitle to go along with the title'
+                titleSubtitle: 'A subtitle to go along with the title',
+                responsive: [
+                    {maxWidth: 900,  width:400,height:300, options: {marginInner: 5, labelsAboveSize: 10, textSize:10, yaxisLabelsSize:10, yaxis:false, backgroundGridHlines:false, backgroundGridBorder:false}},
+                    {maxWidth: 1100, width:600,height:400, options: {marginInner: 5, labelsAboveSize: 12, textSize:12, yaxisLabelsSize:12, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}},
+                    {maxWidth: null, width:900,height:500, options: {marginInner: 10,labelsAboveSize: 18, textSize:12, yaxisLabelsSize:18, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 900,  width:400,height:300, options: {marginInner: 5, labelsAboveSize: 10, textSize:10, yaxisLabelsSize:10, yaxis:false, backgroundGridHlines:false, backgroundGridBorder:false}},
-            {maxWidth: 1100, width:600,height:400, options: {marginInner: 5, labelsAboveSize: 12, textSize:12, yaxisLabelsSize:12, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}},
-            {maxWidth: null, width:900,height:500, options: {marginInner: 10,labelsAboveSize: 18, textSize:12, yaxisLabelsSize:18, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}}
-        ]);
+        }).draw();
     </script>
 
 

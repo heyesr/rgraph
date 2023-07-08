@@ -73,7 +73,11 @@
                 keyPosition: 'margin',
                 keyLabelsSize: 14,
                 keyLabelsColor: 'rgb(248,248,248)',
-                keyPositionY: 425
+                keyPositionY: 425,
+                responsive:[
+                    {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
+                    {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
+                ]
             }
         
         // Here we use the beforedraw event to clear the canvas to a dark
@@ -88,10 +92,7 @@
 
         // Use the trace effect to show the chart and add some responsive capability to accommodate
         // smaller screens.
-        }).trace().responsive([
-            {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
-            {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
-        ]);
+        }).trace();
     </script>
 
 
@@ -118,69 +119,8 @@
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre class="code">
-&lt;script&gt;
-    <span>// Create the Line chart</span>
-    new RGraph.Line({
-        id: 'cvs',
-        
-        <span>// The four datasets that are shown on the chart - a multi-dimensional
-        // array.</span>
-        data: [
-            [190,165,47,121,30,72],
-            [12,180,10,80,25,75],
-            [42,80,93,25,21,120],
-            [2,42,27,47,43,50]
-        ],
-
-        options: {
-            shadow: false,
-            tickmarksStyle: null,
-            linewidth: 7,
-            backgroundGridVlines: false,
-            backgroundGridColor: 'gray',
-            colorsBackground: '#222',
-            xaxis: false,
-            yaxis: false,
-            textColor: '#A7A5A6',
-            textSize: 10,
-            title: '2009 employee sales by department',
-            titleColor: 'white',
-            titleSize: 24,
-            xaxisLabels: ['Food','Auto','Household','Furniture','Kitchen','Bath'],
-            marginLeft: 50,
-            marginRight: 50,
-            marginTop: 75,
-            marginBottom: 60,
-            colors: ['#B8202C','#96D1E3','#FA8710','#62648D'],
-            
-            <span>// The key for this chart is positioned in the bottom margin
-            // instead of the top</span>
-            key: ['Mary','Tom','Brad','Kate'],
-            keyPosition: 'margin',
-            keyLabelsSize: 14,
-            keyLabelsColor: 'rgb(248,248,248)',
-            keyPositionY: 425
-        }
-    
-    <span>// Here we use the beforedraw event to clear the canvas to a dark
-    // color before the drawing is performed. Since it's the beforedraw
-    // event the call to the draw() function has to be after the on()
-    // function (otherwise the beforedraw event would have already run
-    // by the time that the event handler function is added.</span>
-    }).on('beforedraw', function (obj)
-    {
-        <span>// Clear the canvas to a specific color</span>
-        RGraph.clear(obj.canvas, '#555557');
-    
-    <span>// Use the trace effect to show the chart and add some responsive capability to accommodate
-    // smaller screens.</span>
-    }).trace().responsive([
-        {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
-        {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
-    ]);
-&lt;/script&gt;
-</pre>
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
 
 
 

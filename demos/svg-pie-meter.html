@@ -90,11 +90,12 @@
             id: 'chart-container',
             data: [100],
             options: {
+                responsive: [
+                    {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900,parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:700,parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
 
         // Create the outer Donut. This chart shows the real values.
         pi1b = new RGraph.SVG.Pie({

@@ -85,14 +85,15 @@
                 yaxis: false,
                 yaxisScaleUnitsPost: 'k',
                 textSize: 10,
-                xaxisLabels: ['1910','1920','1930','1940','1950','1960','1970','1980','1990','2000','2010']
+                xaxisLabels: ['1910','1920','1930','1940','1950','1960','1970','1980','1990','2000','2010'],
+                responsive: [
+                    {maxWidth: null,width:600,height:250,parentCss: {'float':'right',textAlign:'none'},options:{xaxisLabelsAngle: 0,linewidth:2,tickmarksSize:6}},
+                    {maxWidth: 850, width:400,height:200,parentCss: {'float':'none',textAlign:'center'}, options:{xaxisLabelsAngle: 45,linewidth:2,tickmarksSize:5}}
+                ]
             }
         
         // Use the trace() animation to show the chart and add some responsive capability
-        }).trace().responsive([
-            {maxWidth: null,width:600,height:250,parentCss: {'float':'right',textAlign:'none'},options:{xaxisLabelsAngle: 0,linewidth:2,tickmarksSize:6}},
-            {maxWidth: 850, width:400,height:200,parentCss: {'float':'none',textAlign:'center'}, options:{xaxisLabelsAngle: 45,linewidth:2,tickmarksSize:5}}
-        ]);
+        }).trace();
     </script>
 
 

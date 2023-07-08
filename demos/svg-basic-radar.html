@@ -50,12 +50,13 @@
                 scaleColor: '#999',
                 key: ['Robert','Jeoffory'],
                 keyOffsety: -25,
-                marginTop: 45
+                marginTop: 45,
+                responsive: [
+                    {maxWidth: 900, width: 450, height: 350, options: {}},
+                    {maxWidth: null,width: 600, height: 500, options: {}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 700, width: 450, height: 350, options: {}},
-            {maxWidth: null,width: 600, height: 500, options: {}}
-        ]);
+        }).draw();
     </script>
 
 

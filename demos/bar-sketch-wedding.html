@@ -94,12 +94,13 @@
                 // The labelsAbove labels serve as the labels for the chart
                 labelsAbove: true,
                 labelsAboveOffsety: 10,
-                labelsAboveSpecific: ['Butterflies', 'Doves', 'Pidgeons', 'Wasps', 'Prisoners', 'The Kraken']
+                labelsAboveSpecific: ['Butterflies', 'Doves', 'Pidgeons', 'Wasps', 'Prisoners', 'The Kraken'],
+                responsive: [
+                    {maxWidth: null,width:600,height: 250,options: {titleY:25,textSize: 12,marginInner: 15,marginBottom:115,titleSize: 20},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,width:400,height: 200,options: {titleY: 10,textSize: 8,marginInner: 5,marginBottom:95,titleSize: 15},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null,width:600,height: 250,options: {titleY:25,textSize: 12,marginInner: 15,marginBottom:100,titleSize: 20},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 800,width:400,height: 200,options: {titleY: 10,textSize: 8,marginInner: 5,marginBottom:65,titleSize: 15},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

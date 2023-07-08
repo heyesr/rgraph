@@ -101,12 +101,13 @@
                 marginInner: 10,
                 marginInnerGrouped: 1,
                 marginLeft: 45,
-                yaxis: false
+                yaxis: false,
+                responsive: [
+                    {maxWidth: null, width:600,height:250, options: {marginBottom: 85,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:18,marginInner:10},css: {marginBottom: 0,'float': 'right'},parentCss:{textAlign:'none'}},
+                    {maxWidth: 900,width: 400,height: 150,options: {marginBottom: 25,xaxisLabelsOffsety: 0,xaxisLabelsAngle: 0,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 10,marginInner:5},css: {marginBottom: '35px','float': 'none'},parentCss:{textAlign:'center'}}
+                ]
             }
-        }).wave().responsive([
-            {maxWidth: null, width:600,height:250, options: {marginBottom: 85,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:18,marginInner:10},css: {marginBottom: 0,'float': 'right'},parentCss:{textAlign:'none'}},
-            {maxWidth: 900,width: 400,height: 150,options: {marginBottom: 25,xaxisLabelsOffsety: 0,xaxisLabelsAngle: 0,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 10,marginInner:5},css: {marginBottom: '35px','float': 'none'},parentCss:{textAlign:'center'}}
-        ]);
+        }).wave();
     </script>
 
 

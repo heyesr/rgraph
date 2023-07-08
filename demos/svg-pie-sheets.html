@@ -102,14 +102,17 @@
                     textSize: 10,
                     tooltipsCss: {
                         fontSize:'16pt'
-                    }
+                    },
+                    
+                    // Add some responsive accommodation
+                    responsive: [
+                        {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},parentCss:{'float':'right',textAlign:'none'}},
+                        {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},parentCss: {'float':'none',textAlign:'center'}}
+                    ]
                 }
             
-            // Draw the chart and add some responsive accommodation
-            }).draw().responsive([
-                {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},parentCss:{'float':'right',textAlign:'none'}},
-                {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},parentCss: {'float':'none',textAlign:'center'}}
-            ]);
+            // Draw the chart and 
+            }).draw();
         });
     </script>
 

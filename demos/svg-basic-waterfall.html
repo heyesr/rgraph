@@ -44,12 +44,13 @@
             options: {
                 key: ['Money in','Money out'],
                 tooltips: ['Start', 'Monday','Tuesday','Wednesday','Midweek','Thursday','Friday','Saturday','Result: <b>79 sold, 21 remaining</b>'],
-                backgroundGridDashed: true
+                backgroundGridDashed: true,
+                responsive: [
+                    {maxWidth: 900, width: 450, height: 200, options: {textSize:10,xaxisLabels: ['Start', 'Mon','Tue','Wed','Midwk','Thu','Fri','Sat','Result'],}},
+                    {maxWidth: null,width: 900, height: 300, options: {textSize:12,xaxisLabels: ['Start', 'Monday','Tuesday','Wednesday','Midweek','Thursday','Friday','Saturday','Result'],}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 900, width: 450, height: 200, options: {textSize:10,xaxisLabels: ['Start', 'Mon','Tue','Wed','Midwk','Thu','Fri','Sat','Result'],}},
-            {maxWidth: null,width: 900, height: 300, options: {textSize:12,xaxisLabels: ['Start', 'Monday','Tuesday','Wednesday','Midweek','Thursday','Friday','Saturday','Result'],}}
-        ]);
+        }).draw();
     </script>
 
 

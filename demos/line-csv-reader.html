@@ -87,12 +87,13 @@
                     backgroundGridBorder: false,
                     backgroundGridVlines: false,
                     xaxis: false,
-                    yaxis: false
+                    yaxis: false,
+                    responsive: [
+                        {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12,marginLeft: 35},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
+                        {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 20,textSize: 10,marginLeft: 45},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
+                    ]
                 }
-            }).draw().responsive([
-                {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12,marginLeft: 35},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
-                {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 20,textSize: 10,marginLeft: 45},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
-            ]);
+            }).draw();
         });
     </script>
 

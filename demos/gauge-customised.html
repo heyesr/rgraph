@@ -119,12 +119,13 @@
                 tickmarksMediumColor: 'white',
                 tickmarksSmallColor: 'white',
                 borderOuter: '#666',
-                borderInner: '#333'
+                borderInner: '#333',
+                responsive: [
+                    {maxWidth:null,css:{'float':'right'},parentCss:{textAlign:'none','float': 'right'}},
+                    {maxWidth:900,css:{'float':'none'},parentCss:{textAlign:'center','float': 'none'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth:null,css:{'float':'right'},parentCss:{textAlign:'none','float': 'right'}},
-            {maxWidth:600,css:{'float':'none'},parentCss:{textAlign:'center','float': 'none'}}
-        ]);
+        }).draw();
     </script>
 
 

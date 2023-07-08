@@ -65,12 +65,13 @@
                 linewidth: 3,
                 labels: ['', 'Barry', 'Gary','Dave','Paul','Rich'],
                 labelsAxes: 'n',
-                textSize: 16
+                textSize: 16,
+                responsive: [
+                    {maxWidth: null, width: 500, height: 400,parentCss:{'float':'right', textAlign:'center'}},
+                    {maxWidth: 900,  width: 300, height: 300,parentCss:{'float':'none', textAlign:'center'}}
+                ]
             }
-        }).trace().responsive([
-            {maxWidth: null, width: 500, height: 400,parentCss:{'float':'right', textAlign:'center'}},
-            {maxWidth: 700,  width: 300, height: 300,parentCss:{'float':'none', textAlign:'center'}}
-        ]);
+        }).trace();
     </script>
 
 

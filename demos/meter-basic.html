@@ -37,37 +37,38 @@
                 colorsRedColor: 'Gradient(#f00:#400)',
                 labelsValue: true,
                 labelsValueUnitsPost: ',000k',
-                labelsRadiusOffset: -3
+                labelsRadiusOffset: -3,
+                responsive: [
+                    // This is the configuration for small screens
+                    {
+                        maxWidth:900,
+                        width:400,
+                        height:200,
+                        options:{textSize: 8},
+                        callback:function (obj)
+                        {
+                            // Set the width/height of the container
+                            obj.canvas.parentNode.style.width  = '400px';
+                            obj.canvas.parentNode.style.height = '200px';
+                        }
+                    },
+        
+                    // This is the default configuration (for larger screens)
+                    {
+                        maxWidth:null,
+                        width:600,
+                        height:300,
+                        options:{textSize: 18},
+                        callback:function (obj)
+                        {
+                            // Set the width/height of the container
+                            obj.canvas.parentNode.style.width  = '600px';
+                            obj.canvas.parentNode.style.height = '300px';
+                        }
+                    }
+                ]
             }
-        }).draw().responsive([
-            // This is the configuration for small screens
-            {
-                maxWidth:900,
-                width:400,
-                height:150,
-                options:{textSize: 8},
-                callback:function (obj)
-                {
-                    // Set the width/height of the container
-                    obj.canvas.parentNode.style.width  = '400px';
-                    obj.canvas.parentNode.style.height = '150px';
-                }
-            },
-
-            // This is the default configuration (for larger screens)
-            {
-                maxWidth:null,
-                width:600,
-                height:300,
-                options:{textSize: 18},
-                callback:function (obj)
-                {
-                    // Set the width/height of the container
-                    obj.canvas.parentNode.style.width  = '600px';
-                    obj.canvas.parentNode.style.height = '300px';
-                }
-            }
-        ]);
+        }).draw();
     </script>
 
 

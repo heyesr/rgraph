@@ -110,14 +110,15 @@
 
                 // Don't show any axes
                 xaxis: false,
-                yaxis: false
+                yaxis: false,
+                responsive: [
+                    {maxWidth:null,width:600,height:300,options:{textSize: 12},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900,width:450,height:250,options:{textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
         
         // Use the trace effect to show the chart and add some responsive capability
-        }).trace().responsive([
-            {maxWidth:null,width:600,height:300,options:{textSize: 12},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:900,width:450,height:250,options:{textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).trace();
     </script>
 
 

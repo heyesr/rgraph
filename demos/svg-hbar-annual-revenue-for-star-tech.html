@@ -102,15 +102,18 @@
 
                 labelsAbove: true,
                 xaxisScaleUnitsPre: '$',
-                xaxisScaleUnitsPost: 'm'
+                xaxisScaleUnitsPost: 'm',
+                
+                // Add a responsive configuration that resizes the
+                // chart when you use a smaller screen
+                responsive: [
+                    {maxWidth:null,width:650,height:300,parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900, width:400,height:250,parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
         
-        // Draw the chart and add a responsive configuration that resizes the chart when you use a
-        // smaller screen
-        }).draw().responsive([
-            {maxWidth:null,width:650,height:300,parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:800, width:400,height:250,parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        // Draw the chart
+        }).draw();
     </script>
 
 

@@ -146,14 +146,15 @@
                 yaxis: false,
                 yaxisScale: false,
                 yaxisScaleMax: 15,
-                marginInner: 1
+                marginInner: 1,
+                responsive: [
+                    {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900,width:400,height:200,parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
         
         // Draw the chart and add some responsive capability
-        }).draw().responsive([
-            {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:900,width:400,height:200,parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

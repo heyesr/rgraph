@@ -114,12 +114,13 @@
                     fontSize: '26pt'
                 },
 
-                key: ['Introduction','Site visit','Finalisation']
+                key: ['Introduction','Site visit','Finalisation'],
+                responsive: [
+                    {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

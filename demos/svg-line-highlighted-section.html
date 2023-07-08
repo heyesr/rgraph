@@ -92,7 +92,11 @@
                 textSize: 10,
                 //xaxisLabelsAngle: 45,
                 marginBottom:45,
-                marginTop:25
+                marginTop:25,
+                responsive: [
+                    {maxWidth: null,parentCss: {'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,parentCss: {'float':'none',textAlign:'center'}}
+                ]
             }
         }).on('draw', function (obj)
         {
@@ -128,10 +132,7 @@
                     fill: 'rgba(0,0,0,0.3)'
                 }
             });
-        }).draw().responsive([
-            {maxWidth: null,parentCss: {'float':'right',textAlign:'none'}},
-            {maxWidth: 700,parentCss: {'float':'none',textAlign:'center'}}
-        ]);
+        }).draw();
     </script>
 
 

@@ -86,12 +86,13 @@
                 // Add the labels that you can see on the right of the
                 // chart.
                 labelsAboveColor: 'white',
-                labelsAboveSpecific: data
+                labelsAboveSpecific: data,
+                responsive:[
+                    {maxWidth: null, width: 500, height: 300, options: {textSize: 12},parentCss:{'float':'right', textAlign:'none'}},
+                    {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10},parentCss:{'float':'none', textAlign:'center'}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width: 500, height: 300, options: {textSize: 12},parentCss:{'float':'right', textAlign:'none'}},
-            {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10},parentCss:{'float':'none', textAlign:'center'}}
-        ]);
+        }).draw();
 
 
 
@@ -111,7 +112,11 @@
                 yaxisLabels: labels,
                 xaxisScale: false,
                 backgroundGrid: false,
-                marginInner: 5
+                marginInner: 5,
+                responsive: [
+                    {maxWidth: null, width: 500, height: 300, options: {textSize: 12}},
+                    {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10}}
+                ]
             }
         
         // The orange chart uses the wave() effect.
@@ -119,10 +124,7 @@
         {
             bar_bg.set('labelsAbove', true);
             RGraph.SVG.redraw();
-        }}).responsive([
-            {maxWidth: null, width: 500, height: 300, options: {textSize: 12}},
-            {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10}}
-        ]);
+        }});
     </script>
 
 

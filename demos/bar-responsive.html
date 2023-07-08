@@ -44,12 +44,13 @@
                 xaxis: false,
                 yaxis: false,
                 marginLeft: 50,
-                marginBottom: 50
+                marginBottom: 50,
+                responsive: [
+                    {maxWidth: 900,  width: 400, height: 150, options: {textSize:10, xaxisLabels: ['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'], marginInner: 10}},
+                    {maxWidth: null, width: 750, height: 250, options: {textSize:14, xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'], marginInner: 20}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 900,  width: 400, height: 150, options: {textSize:10, xaxisLabels: ['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'], marginInner: 10}},
-            {maxWidth: null, width: 750, height: 250, options: {textSize:14, xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'], marginInner: 20}}
-        ]);
+        }).draw();
     </script>
 
 

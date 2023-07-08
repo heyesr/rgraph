@@ -66,12 +66,13 @@
                 tooltipsFormattedUnitsPost: '%',
                 tooltipsCss: {
                     fontSize: '26pt'
-                }
+                },
+                responsive: [
+                    {maxWidth:null,width:750,height:250,options: {textSize:14,xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'],marginInner: 20}},
+                    {maxWidth:900,width:500,height:200,options: {textSize:12,xaxisLabels:['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'],marginInner: 10}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth:null,width:750,height:250,options: {textSize:14,xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'],marginInner: 20}},
-            {maxWidth:900,width:500,height:200,options: {textSize:12,xaxisLabels:['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'],marginInner: 10}}
-        ]);
+        }).draw();
     </script>
 
 

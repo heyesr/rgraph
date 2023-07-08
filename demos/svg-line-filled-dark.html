@@ -106,15 +106,16 @@
                 filledColors: [
                     'Gradient(rgba(255,0,0,1):rgba(255,0,0,0.3))',
                     'Gradient(rgba(0,255,0,1):rgba(0,0,0,0.75))'
+                ],
+                // Add some responsive capability that shrinks the
+                // chart for a smaller screen
+                responsive: [
+                    {maxWidth: null,width: 700,height:250,options: {textSize: 16,marginLeft:70},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900, width: 400,height:200,options: {textSize: 12,marginLeft:60},parentCss:{'float':'none',textAlign:'center'}}
                 ]
             }
-        
-        // Use the trace effect to show the chart and add some responsive capability that shrinks the
-        // chart for a smaller screen
-        }).trace().responsive([
-            {maxWidth: null,width: 700,height:250,options: {textSize: 16,marginLeft:70},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900, width: 400,height:200,options: {textSize: 12,marginLeft:60},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        // Use the trace effect to show the chart
+        }).trace();
     </script>
 
 

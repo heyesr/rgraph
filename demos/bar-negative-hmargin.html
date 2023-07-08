@@ -142,12 +142,13 @@
                 yaxis: false,
                 yaxisScaleMax: 20,
                 yaxisScaleUnitsPost: '%',
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat']
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],
+                responsive: [
+                    {maxWidth: null, width: 650, height: 250, options: {marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
+                    {maxWidth: 750,width: 450,height: 250,options: {marginInnerGrouped: -5,marginInner: 15,textSize: 12}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}}
+                ]
             }
-        }).wave({frames: 30}).responsive([
-            {maxWidth: null, width: 650, height: 250, options: {marginInnerGrouped: -15, marginInner: 30, textSize: 14}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}},
-            {maxWidth: 750,width: 450,height: 250,options: {marginInnerGrouped: -5,marginInner: 15,textSize: 12}, callback:function () {axes.x = canvas.width - marginRight; RGraph.redraw();}}
-        ]);
+        }).wave({frames: 30});
 
 
 
@@ -180,10 +181,7 @@
                 yaxisScaleMax: 20,
                 yaxisScale: false
             }
-        }).trace().responsive([
-            {maxWidth: null, options: {linewidth: 5,tickmarksSize: 7,marginInner: 55}},
-            {maxWidth: 750, options: {linewidth: 3,tickmarksSize: 3,marginInner: 30}}
-        ]);
+        }).trace();
     </script>
 
 

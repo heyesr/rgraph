@@ -86,12 +86,13 @@
                     fontSize:'20pt'
                 },
 
-                labels: labels_large
+                labels: labels_large,
+                responsive: [
+                    {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},parentCss: {'float':'right',textAlign: 'center'}},
+                    {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},parentCss: {'float':'none',textAlign: 'center'}}
+                ]
             }
-        }).grow({frames: 15}).responsive([
-            {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},parentCss: {'float':'right',textAlign: 'center'}},
-            {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},parentCss: {'float':'none',textAlign: 'center'}}
-        ]);
+        }).grow({frames: 15});
     </script>
 
 

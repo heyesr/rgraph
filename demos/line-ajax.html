@@ -36,12 +36,13 @@
                     xaxis: false,
                     yaxis: false,
                     marginInner: 15,
-                    shadow: false
+                    shadow: false,
+                    responsive: [
+                        {maxWidth:800, width:500, height:200, options: {textSize: 10,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],linewidth: 4}},
+                        {maxWidth:null, width:750, height:350, options: {textSize:14,xaxisLabels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],linewidth: 7}}
+                    ]
                 }
-            }).draw().responsive([
-                {maxWidth:800, width:500, height:200, options: {textSize: 10,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],linewidth: 4}},
-                {maxWidth:null, width:750, height:350, options: {textSize:14,xaxisLabels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],linewidth: 7}}
-            ]);
+            }).draw();
         });
     </script>
 

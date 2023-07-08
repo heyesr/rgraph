@@ -38,12 +38,13 @@
                 tooltipsEvent: 'mousemove',
                 highlightStyle: 'outline',
                 exploded: 5,
-                tooltips: ['Alf','Berty','Craig','Dean','Elgar','Fliss','Lucy','Paul']
+                tooltips: ['Alf','Berty','Craig','Dean','Elgar','Fliss','Lucy','Paul'],
+                responsive: [
+                    {maxWidth: 900, width: 450, height: 250, options: {key: null, marginTop: 15, marginBottom: 15, marginLeft: 15, marginRight: 15}},
+                    {maxWidth: null,width: 600, height: 350, options: {key: ['Bob','Rik','Alf','Hal','Kev','Tom','Mat','Pam'], marginTop: 35, marginBottom: 25, marginLeft: 25, marginRight: 25}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 900, width: 450, height: 250, options: {key: null, marginTop: 15, marginBottom: 15, marginLeft: 15, marginRight: 15}},
-            {maxWidth: null,width: 600, height: 350, options: {key: ['Bob','Rik','Alf','Hal','Kev','Tom','Mat','Pam'], marginTop: 35, marginBottom: 25, marginLeft: 25, marginRight: 25}}
-        ]);
+        }).draw();
     </script>
 
 

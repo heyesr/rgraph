@@ -31,12 +31,13 @@
             max: 100,
             value: [23,35,45],
             options: {
-                adjustable: true
+                adjustable: true,
+                responsive: [
+                    {maxWidth: null, width: 350,height: 350, options: {width: 35}},
+                    {maxWidth: 700, width: 250,height: 250, options: {width: 25}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width: 350,height: 350, options: {width: 35}},
-            {maxWidth: 700, width: 250,height: 250, options: {width: 25}}
-        ]).on('adjustbegin', function (obj)
+        }).draw().on('adjustbegin', function (obj)
         {
             console.log('Adjusting has started');
         }).on('adjust', function (obj)

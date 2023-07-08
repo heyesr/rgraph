@@ -79,12 +79,13 @@
                 labelsAbove: true,
                 labelsAboveSpecific: labelsAbove,
                 labelsAboveBold: true,
-                labelsAboveOffsety:-25
+                labelsAboveOffsety:-25,
+                responsive: [
+                    {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20,labelsAboveSize: 20,labelsAboveOffsety:-25},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14,labelsAboveSize: 12,labelsAboveOffsety:-15},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
-        }).responsive([
-            {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20,labelsAboveSize: 20,labelsAboveOffsety:-25},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14,labelsAboveSize: 12,labelsAboveOffsety:-15},parentCss:{'float':'none',textAlign:'center'}}
-        ]).draw();
+        }).draw();
     </script>
 
 

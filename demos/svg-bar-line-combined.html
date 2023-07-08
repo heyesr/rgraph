@@ -83,11 +83,14 @@
                 marginInner: 10,
                 colors: ['rgba(255,0,0,0.2)','rgba(0,200,200,0.2)'],
                 marginLeft: 50,
-                labelsAbove: true
+                labelsAbove: true,
+                
+                // Add a responsive configuration that resizes the
+                // chart when you use a smaller screen
+                responsive: responsiveConf
             }
-        // Draw the chart and add a responsive configuration that resizes the chart when you use a
-        // smaller screen
-        }).draw().responsive(responsiveConf);
+        // Draw the chart
+        }).draw();
 
 
 
@@ -119,11 +122,15 @@
                 colors: ['#0bb'],
                 linewidth: 3,
                 tickmarksStyle: 'filledcircle',
-                labelsAbove: true
+                labelsAbove: true,
+
+                // Add a responsive configuration that resizes the
+                // chart when you use a smaller screen
+                responsive: responsiveConf
             }
-        // Draw the chart and add a responsive configuration that resizes the chart when you use a
-        // smaller screen
-        }).draw().responsive(responsiveConf);
+        
+        // Draw the chart
+        }).draw();
     </script>
 
 

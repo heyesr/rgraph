@@ -58,12 +58,13 @@
                 yaxis: false,
                 tooltips: ' ',
                 tooltipsOverride: function (obj, opt) {},
-                shadow: true
+                shadow: true,
+                responsive: [
+                    {maxWidth: 900,width: 450, height: 250, options:{textSize: 10,  xaxisLabels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], linewidth: 3}},
+                    {maxWidth: null,width: 750, height: 300, options:{textSize: 12, xaxisLabels: ['\r\nMonday', 'Tuesday', '\r\nWednesday', 'Thursday', '\r\nFriday', 'Saturday', '\r\nSunday'],linewidth:5}}
+                ]
             }
-        }).trace().responsive([
-            {maxWidth: 900,width: 450, height: 250, options:{textSize: 10,  xaxisLabels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], linewidth: 3}},
-            {maxWidth: null,width: 750, height: 300, options:{textSize: 12, xaxisLabels: ['\r\nMonday', 'Tuesday', '\r\nWednesday', 'Thursday', '\r\nFriday', 'Saturday', '\r\nSunday'],linewidth:5}}
-        ]);
+        }).trace();
     </script>
 
 

@@ -39,12 +39,13 @@
                 labelsCentered: true,
                 labelsOffsetAngle: 0,
                 labelsOffsetx: 0,
-                labelsOffsety: 0
+                labelsOffsety: 0,
+                responsive: [
+                    {maxWidth: null, width: 450, height: 450, options: {textSize: 24,labelsOffsetRadius: 15,labelsValueSize: 28,labelsValueYPos: 0.4}},
+                    {maxWidth: 800,  width: 250, height: 250, options: {textSize: 10,labelsOffsetRadius: 15,labelsValueSize: 10,labelsValueYPos: 0.6}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width: 450, height: 450, options: {textSize: 24,labelsOffsetRadius: 15,labelsValueSize: 28,labelsValueYPos: 0.4}},
-            {maxWidth: 800,  width: 250, height: 250, options: {textSize: 10,labelsOffsetRadius: 15,labelsValueSize: 10,labelsValueYPos: 0.6}}
-        ]);
+        }).draw();
     </script>
 
 

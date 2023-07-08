@@ -53,12 +53,13 @@
                 marginTop: 5,
                 marginBottom: 5,
                 marginLeft: 5,
-                marginRight: 5
+                marginRight: 5,
+                responsive: [
+                    {maxWidth: null, width: 450, height: 450, options: {width: null}, parentCss: {'float':'right', textAlign:'none',width:''}},
+                    {maxWidth: 750,  width: 250, height: 250, options: {width: 25}, parentCss: {'float':'none', textAlign:'center',width:'100%'}}
+                ]
             }
-        }).grow().responsive([
-            {maxWidth: null, width: 450, height: 450, options: {width: null}, parentCss: {'float':'right', textAlign:'none',width:''}},
-            {maxWidth: 750,  width: 250, height: 250, options: {width: 25}, parentCss: {'float':'none', textAlign:'center',width:'100%'}}
-        ]);
+        }).grow();
     </script>
 
 

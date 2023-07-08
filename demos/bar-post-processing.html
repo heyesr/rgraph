@@ -80,7 +80,11 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 colorsStroke: 'rgba(0,0,0,0)',
-                shadowOffsety: -3
+                shadowOffsety: -3,
+                responsive: [
+                    {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, parentCss: {'float': 'left',textAlign:'none'}},
+                    {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, parentCss: {'float': 'none',textAlign:'center'}}
+                ]
             }
         
         // Now use the draw event and the coordinates that were created when
@@ -110,10 +114,7 @@
                 // Draw the highlight rectangle
                 obj.context.fillRect(x,y,w,h)
             }
-        }).draw().responsive([
-            {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, parentCss: {'float': 'left',textAlign:'none'}},
-            {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, parentCss: {'float': 'none',textAlign:'center'}}
-        ], {delay: 0});
+        }).draw();
     </script>
 
 

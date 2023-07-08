@@ -68,12 +68,13 @@
                     fontSize: '26pt'
                 },
 
-                key: ['Introduction','Site visit','Finalisation']
+                key: ['Introduction','Site visit','Finalisation'],
+                responsive: [
+                    {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300}},
+                    {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 5,  marginLeft: 300}},
-            {maxWidth: 700,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
-        ]);
+        }).draw();
     </script>
 
 

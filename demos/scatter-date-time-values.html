@@ -100,15 +100,18 @@
                 backgroundGridVlines: false,
                 
                 tickmarksStyle: 'circle',
-                tickmarksSize: 8
+                tickmarksSize: 8,
+                
+                // Add some responsive capabilities so that it
+                // fits well on smaller screens
+                responsive: [
+                    {maxWidth: null,width:600,height:200,options:{textSize:12},parentCss:{'float':'right',textAlign:'none'}},
+                    {maxWidth: 900,width:400,height:200,options:{textSize:10},parentCss:{'float':'none',textAlign:'center'}}
+                ]
             }
         
-        // Draw the chart and add some responsive capabilities so that it fits well on smaller
-        // screens
-        }).draw().responsive([
-            {maxWidth: null,width:600,height:200,options:{textSize:12},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth: 900,width:400,height:200,options:{textSize:10},parentCss:{'float':'none',textAlign:'center'}}
-        ]);
+        // Draw the chart
+        }).draw();
     </script>
 
 

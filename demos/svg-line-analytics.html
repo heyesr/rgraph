@@ -162,7 +162,12 @@ new RGraph.Bar({
 
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
-                backgroundGridHlinesCount: 2
+                backgroundGridHlinesCount: 2,
+                
+                responsive: [
+                    {maxWidth: null,parentCss: {'float': 'right',textAlign:'none'}},
+                    {maxWidth: 900,parentCss: {'float':'none',textAlign:'center'}}
+                ]
             }
         }).draw();
         
@@ -191,10 +196,7 @@ new RGraph.Bar({
         l4 = new RGraph.SVG.Line({id: 'cc4',data: [3,6,8,4,2,3,8,9,4,6,5,6,7,8,8,8,6,5,0,0,0,0,0,0]}).draw();
         l5 = new RGraph.SVG.Line({id: 'cc5',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0]}).draw();
         l6 = new RGraph.SVG.Line({id: 'cc6',data: [1,2,3,4,5,2,3,4,6,3,5,2,3,5,4,2,4,5,0,0,0,0,0,0]}).draw();
-        l7 = new RGraph.SVG.Line({id: 'cc7',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0]}).draw().responsive([
-            {maxWidth: null,parentCss: {'float': 'right',textAlign:'none'}},
-            {maxWidth: 850,parentCss: {'float':'none',textAlign:'center'}}
-        ])
+        l7 = new RGraph.SVG.Line({id: 'cc7',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0]}).draw();
 
         // Add some text to the smaller charts. Because the smaller charts
         // each have their own SVG tags the coordinates can be the same.

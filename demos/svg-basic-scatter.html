@@ -70,12 +70,13 @@
                 colors: colors,
                 title: 'This is a Scatter chart with five datasets',
                 titleBold: true,
-                titleItalic:true
+                titleItalic:true,
+                responsive: [
+                    {maxWidth: 900, width: 450, height: 250, options: {textSize:10,titleSize: 14}},
+                    {maxWidth: null,width: 650, height: 350, options: {textSize:12,titleSize: 20}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 700, width: 450, height: 250, options: {textSize:10,titleSize: 14}},
-            {maxWidth: null,width: 650, height: 350, options: {textSize:12,titleSize: 20}}
-        ]);
+        }).draw();
     </script>
 
 

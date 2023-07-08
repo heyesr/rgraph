@@ -36,13 +36,14 @@
                 yaxis: false,
                 yaxisLabels: ['Monday','Tuesday','Wednesday'],
                 backgroundGridBorder: false,
-                backgroundGridHlines: false
+                backgroundGridHlines: false,
+                responsive:     [
+                    {maxWidth: 700,  width: 400, height: 200, options: {textSize: 8}},
+                    {maxWidth: 900,  width: 400, height: 200, options: {textSize: 12}},
+                    {maxWidth: null, width: 700, height: 350, options: {textSize: 20}}
+                ]
             }
-        }).grow().responsive([
-            {maxWidth: 600, width: 400, height: 200, options: {textSize: 8}},
-            {maxWidth: 900, width: 400, height: 200, options: {textSize: 12}},
-            {maxWidth: null, width: 700, height: 350, options: {textSize: 19}}
-        ]);
+        }).grow();
     </script>
     
     

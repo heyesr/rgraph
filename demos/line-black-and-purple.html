@@ -91,7 +91,13 @@
                 shadowBlur: 15,
                 colorsStroke: 'rgba(0,0,0,0)',
                 combinedEffect: 'wave',
-                combinedEffectOptions: '{frames: 30}'
+                combinedEffectOptions: '{frames: 30}',
+                
+                // Add some responsive capability to the Bar chart
+                responsive: [
+                    {maxWidth: null,width:750,height:250,options:{textSize:18,marginInner: 20}},
+                    {maxWidth: 900, width:400,height:150,options:{textSize:12,marginInner: 7}}
+                ]
             }
         });
 
@@ -113,7 +119,13 @@
                 tickmarksStyle: null,
                 spline: true,
                 combinedEffect: 'trace',
-                textSize: 18
+                textSize: 18,
+                
+                // Add some responsive capability to the Line chart
+                responsive: [
+                    {maxWidth: null,options:{textSize:18,marginInner: 45,linewidth: 7}},
+                    {maxWidth: 900, options:{textSize:12,marginInner: 20,linewidth: 5}}
+                ]
             }
         });
         
@@ -127,18 +139,6 @@
         });
 
         RGraph.redraw();
-        
-        // Add some responsive capability to the Bar chart
-        bar.responsive([
-            {maxWidth: null,width:750,height:250,options:{textSize:18,marginInner: 20}},
-            {maxWidth: 900, width:400,height:200,options:{textSize:12,marginInner: 7}}
-        ]);
-        
-        // Add some responsive capability to the Line chart
-        line.responsive([
-            {maxWidth: null,width:750,height:250,options:{textSize:18,marginInner: 45,linewidth: 7}},
-            {maxWidth: 900, width:400,height:200,options:{textSize:12,marginInner: 20,linewidth: 5}}
-        ]);
     </script>
 
 

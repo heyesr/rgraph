@@ -106,13 +106,14 @@
                     valign: 'center',
                     bold:   true,
                     color:  'white',
-                    size: obj.get('textSize')
+                    size: obj.get('textSize'),
+                    responsive: [
+                        {maxWidth: null,width:600,height: 350,parentCss:{'float':'right', textAlign:'none'}},
+                        {maxWidth: 800,width:400,height: 300,parentCss:{'float':'none', textAlign:'center'}}
+                    ]
                 });
             }
-        }).grow().responsive([
-            {maxWidth: null,width:600,height: 350,parentCss:{'float':'right', textAlign:'none'}},
-            {maxWidth: 800,width:400,height: 300,parentCss:{'float':'none', textAlign:'center'}}
-        ]);
+        }).grow();
     </script>
 
 

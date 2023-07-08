@@ -21,7 +21,9 @@
     <h1>An SVG Bar chart with a dark background</h1>
     <p>This is an SVG version of the canvas based <a href="https://www.rgraph.net/demos/bar-dark-background.html" target="_blank">bar-dark-background.html</a> demo. It's a Bar chart, with a dark background and light pink and light blue graduated bars. It also uses the <code>wave()</code> effect too. Other than that it's pretty standard.</p>
 
-    <div style="width: 600px; height: 300px; background-color: black; border-radius: 10px" id="cc"></div>
+    <div style="text-align: center">
+        <div style="width: 600px; height: 300px; background-color: black; border-radius: 10px" id="cc"></div>
+    </div>
     
     <script>
         var data = [[45,56],[75,32],[39,47],[34,48],[46,47],[48,52]];
@@ -35,12 +37,13 @@
                 backgroundGridBorder: false,
                 textColor: 'white',
                 xaxisLabels: ['2007','2008','2009','2011','2012','2013'],
-                marginInner: 7
+                marginInner: 7,
+                responsive: [
+                    {maxWidth:900,width:400,height:200,options: {textSize: 10,textBold: true,marginBottom: 35,marginLeft: 35,marginRight: 15,marginTop: 25}},
+                    {maxWidth:null,width:600,height:300,options: {textSize: 16,textBold: false,marginBottom: 45,marginLeft: 45,marginRight: 45,marginTop: 45}}
+                ]
             }
-        }).responsive([
-            {maxWidth:500,width:400,height:200,options: {textSize: 10,textBold: true,marginBottom: 35,marginLeft: 35,marginRight: 15,marginTop: 25}},
-            {maxWidth:null,width:600,height:300,options: {textSize: 16,textBold: false,marginBottom: 45,marginLeft: 45,marginRight: 45,marginTop: 45}}
-        ]);
+        }).draw();
     </script>
 
 

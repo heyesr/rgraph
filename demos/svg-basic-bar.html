@@ -46,12 +46,13 @@
                 titleSubtitle: 'A chart showing the daily totals for last week',
                 titleSubtitleItalic: true,
                 colors: ['red','pink'],
-                shadowOpacity: 0.2
+                shadowOpacity: 0.2,
+                responsive:[
+                    {maxWidth: 900,  width: 400, height: 200, options: {textSize: 8, marginInner: 10,xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], xaxis: false, yaxis: false, shadow: false,marginBottom:25}},
+                    {maxWidth: null, width: 750, height: 300, options: {textSize: 12,marginInner: 20,xaxisLabels: ['Monday\nresults','Tuesday\nresults','Wednesday\nresults\n (winner!)','Thursday\nresults','Friday\r\nresults','Saturday\nresults','Sunday\nresults'], xaxis: true, yaxis: true, shadow: true,marginBottom:75}}
+                ]
             }
-        }).draw().responsive([
-            {maxWidth: 750,  width: 400, height: 200, options: {textSize: 8, marginInner: 10,xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], xaxis: false, yaxis: false, shadow: false,marginBottom:25}},
-            {maxWidth: null, width: 750, height: 300, options: {textSize: 12,marginInner: 20,xaxisLabels: ['Monday\nresults','Tuesday\nresults','Wednesday\nresults\n (winner!)','Thursday\nresults','Friday\r\nresults','Saturday\nresults','Sunday\nresults'], xaxis: true, yaxis: true, shadow: true,marginBottom:75}}
-        ]);
+        }).draw();
     </script>
 
 
