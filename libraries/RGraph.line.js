@@ -1104,7 +1104,36 @@
             for (var i=0; i<this.data.length; ++i) {
                 if (    (RGraph.isArray(properties.trendline) && properties.trendline[i])
                      || (!RGraph.isArray(properties.trendline) && properties.trendline)) {
-                    this.drawTrendline(i);
+
+
+
+
+
+
+
+
+
+
+                    this.context.save()
+                    this.context.beginPath();
+        
+                        // The clipping region is idfferent based on the
+                        // animationTraceCenter option
+                        if (properties.animationTraceCenter) {
+                            this.context.rect(
+                                (this.canvas.width / 2) * (1 - properties.animationTraceClip),
+                                0,
+                                this.canvas.width * properties.animationTraceClip,
+                                this.canvas.height
+                            );
+                        } else {
+                            this.context.rect(0, 0, this.canvas.width * properties.animationTraceClip, this.canvas.height);
+                        }
+            
+                        this.context.clip();
+                        
+                        this.drawTrendline(i);
+                    this.context.restore();
                 }
             }
 
