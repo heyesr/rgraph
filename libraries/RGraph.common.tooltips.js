@@ -928,7 +928,8 @@
 
 
         //
-        // Set the width on the tooltip so it doesn't resize if the window is resized
+        // Set the width on the tooltip so it doesn't resize if the
+        // window is resized
         //
         tooltipObj.style.width = width + 'px';
 
@@ -1150,6 +1151,15 @@
         tooltipObj.onmousedown = function (e){e.stopPropagation();}
         tooltipObj.onmouseup   = function (e){e.stopPropagation();}
         tooltipObj.onclick     = function (e){if (e.button == 0) {e.stopPropagation();}}
+        
+        // If the window is resized then hide the tooltip
+        window.addEventListener('resize', function ()
+        {
+            if (tooltipObj) {
+                RGraph.hideTooltip();
+                RGraph.redrawCanvas(args.object.canvas);
+            }
+        });
 
 
 
