@@ -141,8 +141,10 @@
             marginBottom: 35,
             rmargin:      null, // This is set below
             
-            backgroundFill: 'Gradient(white:#FEFEFE:#E6E6E6:#dedede)',
-            backgroundStroke: '#ddd',
+            backgroundFill:      'Gradient(white:#FEFEFE:#E6E6E6:#dedede)',
+            backgroundStroke:    '#ddd',
+            backgroundGrid:      true,
+            backgroundGridColor: '#ddd',
 
             linewidth:   1,
             colors: ['black','black'],
@@ -608,6 +610,67 @@
             });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Draw the gray background grid lines
+            //
+            if (properties.backgroundGrid) {
+                (function (obj)
+                {
+                    for(var i=0; i<=properties.scaleInnerLabelsCount; ++i) {
+                    
+                        var numticks = properties.tickmarksCount,
+                            gap      = obj.angleSpan / numticks;
+                    
+                        // Draw the background grid lines
+                        var endPoint = RGraph.SVG.TRIG.getRadiusEndPoint({
+                            angle:  obj.angleStart + (i * gap) - RGraph.SVG.TRIG.HALFPI,
+                            radius: obj.radius - properties.rmargin - properties.innerGap
+                        });
+                    
+                        RGraph.SVG.create({
+                            svg: obj    .svg,
+                            type: 'path',
+                            parent: obj.svg.all,
+                            attr: {
+                                d: 'M{1} {2} L{3} {4}'.format(
+                                    obj.centerx + endPoint[0], obj.centery + endPoint[1],
+                                    obj.centerx, obj.centery
+                                ),
+                                stroke: properties.backgroundGridColor,
+                                fill: 'transparent',
+                                'stroke-width': 1,
+                                'stroke-linecap':  'square'
+                            }
+                        });
+                    }
+                })(this);
+            }
+
+
+
+
+
+
+
+
+
+
             // Create the axis groups
             this.nodes.innerAxisGroup = RGraph.SVG.create({
                 svg: this.svg,
@@ -627,7 +690,6 @@
                     id: 'outerAxisGroup',
                 }
             });
-
 
 
 
@@ -911,6 +973,12 @@
 
             // Draw the inner labels
             for(var i=0; i<=properties.scaleInnerLabelsCount; ++i) {
+
+
+
+
+
+
 
                 // Draw the INNER tickmarks
 
