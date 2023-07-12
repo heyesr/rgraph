@@ -1,25 +1,16 @@
 @media screen and (max-width: 1100px) {
-    h1 {
-        font-size:2.5em;
-    }
-    h2 {
-        font-size:2em;
-    }
-    h3 {
-        font-size:1.5em;
-    }
     img#github-share {
         display:none;
     }
-}
+    
+    ul#front-page-advantages-list {
+        float: none;
+        text-align: left;
+        display: inline-block;
+    }
 
-@media only screen and (max-width: 950px) {
-    #sidebar-background-images-first,
-    #sidebar-background-images-second,
-    #sidebar-background-images-third,
-    #sidebar-background-images-fourth,
-    #sidebar-background-images-fifth {
-        background-attachment:scroll;
+    div#front-page-advantages-list-container {
+        text-align: center;
     }
 }
 
@@ -39,7 +30,7 @@
     a#navigation-top-bar-link {
         display: none;
     }
-    img#navigation-top-bar-hamburger {
+    #navigation-top-bar-hamburger {
         display:inline;
     }
     div#navigation-icons-images {
@@ -73,12 +64,65 @@
     div#main-body-container img#front-page-how-do-i{
         display:none;
     }
-}
-@media screen and (max-width: 875px){
-    br#front-page-import-methods-break{
-        display:inline !important;
+
+    #page-reference-index .contents-list-container {
+        width: 50%;
+    }
+
+    #page-reference-index .contents-list-container-3 {
+        display: none;
+    }
+    
+    #page-reference-index div#contents-list-shadow-options,
+    #page-reference-index div#contents-list-other,
+    #page-reference-index div#contents-list-pixel-manipulation {
+        display: block !important;
+    }
+
+    #page-index div.features {
+        flex-direction: column;
+    }
+    
+    #page-index div.features div {
+        width: 100% !important;
     }
 }
+
+
+
+@media only screen and (max-width: 950px) {
+    #sidebar-background-images-first,
+    #sidebar-background-images-second,
+    #sidebar-background-images-third,
+    #sidebar-background-images-fourth,
+    #sidebar-background-images-fifth {
+        background-attachment:scroll;
+    }
+}
+
+
+
+@media only screen and (max-width: 900px) {
+}
+
+@media screen and (max-width: 875px){
+    h1 {
+        font-size:2.5em;
+    }
+    h2 {
+        font-size:2em;
+    }
+    h3 {
+        font-size:1.5em;
+    }
+}
+
+
+
+
+
+
+
 @media screen and (min-width: 700px){
     #advantages-smallscreen{
         display:none;
@@ -100,9 +144,6 @@
 @media screen and (max-width: 650px) {
     #header-image {
         display: none;
-    }
-    #advantages-purple-box{
-        background-color:white !important;
     }
     #front-page-chart-image-container {
         display: none;

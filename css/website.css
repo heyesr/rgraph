@@ -15,6 +15,21 @@
     src: url('/fonts/RobotoCondensed-Light.ttf');
 }
 
+:target {
+    position: relative;
+    top: -65px;
+}
+
+/*
+* Set the default of transformation scaling
+* Used by:
+*          o The social share icons
+* 
+*/
+:root {
+    --scale-factor: 1.25;
+}
+
 .nowrap {
     white-space: nowrap;
 }
@@ -26,15 +41,9 @@ html {
 body {
     font-family: sans-serif;
     font-size: 1.2em;
-    color: #666;
     line-height: 45px;
     padding-top: 50px;
     overflow-x: hidden;
-}
-
-:target {
-    position: relative;
-    top: -75px;
 }
 
 /* Add the little icon after external links */
@@ -73,10 +82,12 @@ h1 {
 
 h2 {
     font-size: 1.5em;
+    margin-bottom: 25px;
 }
 
 h3 {
     font-size: 1em;
+    margin-bottom: 30px;
 }
 
 a:link {
@@ -147,12 +158,7 @@ div#view-on-code-pen div {
 }
 
 a div#view-on-code-pen div {
-    color: #333;
     font-style: italic;
-}
-
-a:hover div#view-on-code-pen div {
-    color: #333 !important;
 }
 
 #breadcrumb {
@@ -213,7 +219,6 @@ td.chart {
 
 #advantages-purple-box {
     background-color: #cccdfe;
-    color: #333;
     z-index: 997;
     max-width: 1000px;
     padding: 15px;
@@ -502,6 +507,10 @@ ul#demopage-screenshots li {
     display: inline;
 }
 
+div#front-page-heading {
+    line-height: 30px;
+}
+
 div#front-page-heading h1 {
     font-size: 2.25em;
     margin: 10px 0 10px 0;
@@ -512,8 +521,14 @@ div#front-page-heading h1 span {
 }
 
 div#front-page-heading span#subheading {
-    color: #aaa;
+    color: #666;
     font-style: italic;
+}
+div#infobox-container span.number {
+    font-size: 100pt;
+    color: gray;
+    display: inline-block;
+    margin: 50px;
 }
 
 div#easily-connect-to-and-import-your-data-container>div {
@@ -567,41 +582,10 @@ ul#front-page-data-import-tools-list li>div {
     margin-top: 20px;
 }
 
-ul#front-page-data-import-tools-list li img {
-    background-image: url(/images/sprite.png)
-}
 
-ul#front-page-data-import-tools-list li>div div {
+ul#front-page-data-import-tools-list li > div div {
     min-height: 75px;
     line-height: 20px !important;
-}
-
-ul#front-page-howto-guide-examples {
-    display: inline;
-    margin: 0;
-    padding: 0;
-}
-
-ul#front-page-howto-guide-examples li {
-    display: inline;
-    margin: 0;
-    padding: 0;
-    line-height: 45px;
-}
-
-ul#front-page-howto-guide-examples li>a>div {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    display: inline-block;
-    width: 250px;
-    text-align: center
-}
-
-ul#front-page-howto-guide-examples li>a>div>img {
-    border: 1px solid #eee;
-    transition: transform .25s
 }
 
 div#front-page-download-buttons {
@@ -744,19 +728,11 @@ div#front-page-50-howto-guides-container div#ygyufjyu {
     width: 100%;
 }
 
-div#front-page-50-howto-guides-container div#bjfdtr {
-    text-align: center;
-}
-
-div#front-page-50-howto-guides-container div#ugyufybgjgvffdhyhd {
-    text-align: center;
-    max-width: 900px;
-    display: inline-block;
-}
 
 ul#front-page-advantages-list {
     float: left;
-    list-style-image: url(/images/tick-large.png);
+    list-style-type: none;
+    -list-style-image: url(/images/page-index-tick.png);
     line-height: 45px;
 }
 
@@ -904,9 +880,14 @@ ul.dropdown-menu-smallscreen li a {
     line-height: 40px;
 }
 
-img#navigation-top-bar-hamburger {
+#navigation-top-bar-hamburger {
     display: none;
     white-space: nowrap;
+    position: absolute;
+    top: 7px;
+    right: 25px;
+    z-index: 5;
+    cursor: pointer;
 }
 
 div#navigation-top-bar {
@@ -968,16 +949,6 @@ div#navigation-top-bar-links ul li {
     display: inline;
 }
 
-img#navigation-top-bar-hamburger {
-    position: absolute;
-    top: 0;
-    right: 45px;
-    z-index: 5;
-    background-image: url(/images/navigation-icons/small/icons-combined.png);
-    background-position: -146px -125px;
-    cursor: pointer;
-}
-
 img#navigation-top-bar-logo {
     float: left;
     margin-top: 2px;
@@ -1032,7 +1003,6 @@ ul#dropdown-menu-smallscreen-social-container li {
 }
 
 img#facebook-share {
-    background: url(/images/sprite.png) -429px -82px;
     position: absolute;
     top: 5px;
     left: calc(64% + 295px);
@@ -1040,11 +1010,11 @@ img#facebook-share {
 }
 
 img#twitter-share {
-    background: url(/images/sprite.png) -432px -48px;
     position: absolute;
     top: 8px;
     left: calc(64% + 320px);
     transition: transform .5s ease-out;
+    transform: translate(3px, -3px);
 }
 
 img#github-share {
@@ -1052,18 +1022,18 @@ img#github-share {
     top: 8px;
     left: calc(64% + 350px);
     transition: transform .5s ease-out;
+    transform: translate(13px,0);
 }
+
 
 img#facebook-share:hover {
-    transform: scale(1.25);
+    transform: scale(var(--scale-factor));
 }
-
 img#twitter-share:hover {
-    transform: scale(1.25);
+    transform: translate(3px, -3px) scale(var(--scale-factor));
 }
-
 img#github-share:hover {
-    transform: scale(1.25);
+    transform: translate(13px,0) scale(var(--scale-factor));
 }
 
 #front-page-floated-data-import-methods {
@@ -1129,7 +1099,7 @@ img#social-sharing-left-fixed-container-twitter-icon {
 ul#advantages-list li {
     list-style-type: none;
     line-height: 45px;
-    background: url(/images/tick-black.png) no-repeat 0 0;
+    background: url(/images/page-index-tick.png) no-repeat 0 15px;
     padding: 3px 0 3px 30px;
     text-align: left;
 }
@@ -1149,6 +1119,12 @@ ul#advantages-list li {
 
 #back-to-top:hover {
     transform: scale(1.1);
+}
+
+div#infobox-heading {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div#infobox-container {
@@ -1253,51 +1229,55 @@ div#page-demos-index div {
     text-align: center;
 }
 
-div#page-demos-index ul {
+div#page-demos-index ul#demo-pages {
     display: inline;
     margin-left: 0;
     padding-left: 0;
 }
 
-div#page-demos-index ul li {
+div#page-demos-index ul#demo-pages li {
     display: inline;
 }
 
-div#page-demos-index ul li img {
+div#page-demos-index ul#demo-pages li img {
     border: 1px solid transparent;
     margin: 0 20px 0 20px;
 }
 
-div#page-demos-index ul li img:hover {
+div#page-demos-index ul#demo-pages li img:hover {
     border: 1px solid #ddd;
 }
 
-div#page-canvas-responsive div#responsive-example-demos {
-    text-align: center;
-}
 
-div#page-canvas-responsive div#responsive-example-demos {
-    max-width: 800px;
+div#page-index div.features {
+    display: flex;
+    gap: 15px;
+    max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
 
-div#page-canvas-responsive div#responsive-example-demos img {
-    display: inline;
-    transition: transform .25s ease-in-out;
+div#page-index div.features div {
+    width: 50%;
+    padding: 0 20px 0 20px;
+}
+div#page-index div.features div {
+    margin-bottom: 15px;
 }
 
-div#page-canvas-responsive div#responsive-example-demos img:hover {
-    transform: scale(1.05);
-}
+div#page-index div.features.first-row div:nth-child(1)  {background-color: #aaf8;}
+div#page-index div.features.first-row div:nth-child(2)  {background-color: #fcc;}
+div#page-index div.features.second-row div:nth-child(1) {background-color: #ada;}
+div#page-index div.features.second-row div:nth-child(2) {background-color: #ffc;}
+div#page-index div.features.third-row div:nth-child(1)  {background-color: #dad9;}
+div#page-index div.features.third-row div:nth-child(2)  {background-color: #bad5f0;}
+div#page-index div.features.fourth-row div:nth-child(1) {background-color: #ddd;}
+div#page-index div.features.fourth-row div:nth-child(2) {background-color: #0bf3;}
+div#page-index div.features.fifth-row div:nth-child(1)  {background-color: #ff06;}
+div#page-index div.features.fifth-row div:nth-child(2)  {background-color: #cfc;}
 
-div#page-canvas-responsive div#responsive-example-demos ul {
-    display: inline;
-    padding-left: 0;
-}
-
-div#page-canvas-responsive div#responsive-example-demos ul li {
-    display: inline;
+div#page-index div.features p span {
+    color: #666;
 }
 
 div#page-install-index ul {
@@ -1310,63 +1290,6 @@ div#page-canvas-index ul {
 
 div#page-canvas-howtos ul {
     line-height: 45px;
-}
-
-div#page-svg-index div#chart-types {
-    text-align: center;
-}
-
-div#page-svg-index div#chart-types ul {
-    display: inline;
-    padding-left: 0;
-}
-
-div#page-svg-index div#chart-types ul li {
-    display: inline;
-}
-
-div#page-svg-index div#chart-types img {
-    margin-bottom: 10px;
-}
-
-div#page-svg-index div.chart-type-container {
-    margin-bottom: 25px;
-    transition: transform .5s;
-    width: 250px;
-    display: inline-block;
-    text-align: center;
-    line-height: 25px;
-}
-
-div#page-svg-index div.chart-type-container:hover {
-    transform: scale(1.1);
-}
-
-div#page-canvas-charts div#chart-types-list {
-    text-align: center;
-    line-height: 25px;
-}
-
-div#page-canvas-charts div#chart-types-list-container ul {
-    display: inline;
-    padding: 0;
-}
-
-div#page-canvas-charts div#chart-types-list-container li {
-    display: inline;
-    text-align: center;
-}
-
-div#page-canvas-charts div#chart-types-list-container li div {
-    transition: transform .5s;
-    display: inline-block;
-    width: 250px;
-    margin: 0 0 50px 0;
-    text-align: center;
-}
-
-div#page-canvas-charts div#chart-types-list-container li div:hover {
-    transform: scale(1.2);
 }
 
 div#page-blog-index div#blog-years-list-horizontal {
@@ -1384,6 +1307,15 @@ div#page-blog-index div#blog-years-list-horizontal ul {
     padding: 0;
 }
 
+#page-svg-index div#chart-types ul {
+    float: left;
+}
+
+div#page-canvas-charts div#chart-types-list-container ul {
+    float: left;
+    margin-left: 50px;
+}
+
 div#page-blog-index div#blog-years-list-horizontal ul li {
     display: inline;
     margin: 0;
@@ -1397,4 +1329,14 @@ div#page-canvas-line div#example-canvas-container {
 div#page-canvas-line div#example-canvas-container button {
     font-size: 20pt;
     cursor: pointer;
+}
+
+#page-reference-index .contents-list-container {
+    width: 33%;
+    float: left;
+}
+#page-reference-index .contents-list-container-4 {
+    width: 100%;
+    float: none;
+    display: none;
 }
