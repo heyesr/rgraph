@@ -6,7 +6,7 @@
     // | RGraph is licensed under the Open Source MIT license. That means that it's     |
     // | totally free to use and there are no restrictions on what you can do with it!  |
     // o--------------------------------------------------------------------------------o
-
+  
     RGraph = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
 
     //
