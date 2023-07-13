@@ -17,14 +17,15 @@
 
     <h1>A basic Horizontal Bar chart</h1>
 
-    <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+    <canvas id="cvs" width="600" height="600">[No canvas support]</canvas>
     
     <script>
         new RGraph.HBar({
             id: 'cvs',
             data: [1,2,5,10,20,30,40,45,50],
             options: {
-                yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
+                textSize: 14,
+                yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
                 adjustable: true
             }
         }).draw();
@@ -61,7 +62,7 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="450"&gt;
+&lt;canvas id="cvs" width="600" height="600"&gt;
     [No canvas support]
 &lt;/canvas&gt;
 </pre>
