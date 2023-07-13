@@ -2142,12 +2142,14 @@
                     
                     obj.context.beginPath();
         
-        
+
                     // Draw the horizontal lines
                     if (properties.backgroundGridHlines) {
                         height = (cacheCanvas.height - marginBottom)
                         var hsize = properties.backgroundGridHsize;
-                        for (y=marginTop; y<=height; y+=hsize) {
+                        
+                        for (y=marginTop; y<=(height+1); y+=hsize) {
+
                             cacheContext.moveTo(marginLeft, Math.round(y));
                             cacheContext.lineTo(args.object.canvas.width - marginRight, Math.round(y));
 
