@@ -2535,8 +2535,8 @@
             });
             
             //
-            // Change the variant so that the draw function doesn't keep
-            // coming in here
+            // Change the variant so that the draw function doesn't
+            // keep coming in here
             //
             this.set({
                 variant: this.get('variant').replace(/3d/, '')
