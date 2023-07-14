@@ -563,7 +563,8 @@
 
 
             //
-            // Get the scale a second time if the ymin should be mirored
+            // Get the scale a second time if the ymin should be
+            // mirored
             //
             // Set the ymin to zero if it's set mirror
             if (mirrorScale) {
@@ -1165,7 +1166,8 @@
                         parent: group,
                         attr: {
                             preserveAspectRatio: 'xMidYMid meet',
-                            'xlink:href': src
+                            'xlink:href': src,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
 
@@ -1208,7 +1210,8 @@
                                 coordY + (conf.size / 2)
                             ),
                             fill: conf.color,
-                            'fill-opacity': conf.opacity
+                            'fill-opacity': conf.opacity,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
                 break;
@@ -1230,7 +1233,8 @@
                                 coordY + (conf.size / 2)
                             ),
                             stroke: conf.color,
-                            'stroke-opacity': conf.opacity
+                            'stroke-opacity': conf.opacity,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
                 break;
@@ -1247,7 +1251,8 @@
                             width: conf.size,
                             height: conf.size,
                             fill: conf.color,
-                            'fill-opacity': conf.opacity
+                            'fill-opacity': conf.opacity,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
                 break;
@@ -1265,7 +1270,8 @@
                             cy: coordY,
                             r: conf.size / 2,
                             fill: conf.color,
-                            'fill-opacity': conf.opacity
+                            'fill-opacity': conf.opacity,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
                 break;
@@ -1286,7 +1292,8 @@
                                 coordX + (conf.size / 2), coordY - (conf.size / 2)
                             ),
                             stroke: conf.color,
-                            'stroke-opacity': conf.opacity
+                            'stroke-opacity': conf.opacity,
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
                     break;
@@ -1355,7 +1362,8 @@
                     cy: opt.coordy,
                     r: size,
                     fill: color,
-                    'fill-opacity': conf.opacity
+                    'fill-opacity': conf.opacity,
+                    'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : '',
                 }
             });
 
@@ -1441,7 +1449,8 @@
                     stroke: color,
                     'stroke-width': linewidth,
                     'stroke-linecap': 'round',
-                    'stroke-linejoin': 'round'
+                    'stroke-linejoin': 'round',
+                    'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                 }
             });
         };
@@ -1622,7 +1631,7 @@
             });
 
             // Add the text to the scene
-            RGraph.SVG.text({
+            var text = RGraph.SVG.text({
                 object:     this,
                 parent:     this.svg.all,
                 tag:        'labels.above',
@@ -1644,6 +1653,13 @@
                 background: properties.labelsAboveBackground        || null,
                 padding:    properties.labelsAboveBackgroundPadding || 0
             });
+            
+            if (this.isTrace) {
+                text.setAttribute(
+                    'clip-path',
+                    'url(#trace-effect-clip)'
+                );
+            }
         };
 
 
@@ -1806,7 +1822,8 @@
                         x2: opt.x,
                         y2: y1,
                         stroke: color,
-                        'stroke-width': linewidth
+                        'stroke-width': linewidth,
+                        'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
                 });
         
@@ -1822,7 +1839,8 @@
                         x2: opt.x + halfCapWidth,
                         y2: y1,
                         stroke: color,
-                        'stroke-width': linewidth
+                        'stroke-width': linewidth,
+                        'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
                 });
             }
@@ -1853,11 +1871,12 @@
                         x2: opt.x,
                         y2: y2,
                         stroke: color,
-                        'stroke-width': linewidth
+                        'stroke-width': linewidth,
+                        'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
                 });
         
-                // Draw the cap to the UPPER line
+                // Draw the cap to the LOWER line
                 var errorbarCap = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
@@ -1868,7 +1887,8 @@
                         x2: opt.x + halfCapWidth,
                         y2: y2,
                         stroke: color,
-                        'stroke-width': linewidth
+                        'stroke-width': linewidth,
+                        'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                     }
                 });
             }
@@ -1973,6 +1993,80 @@
 
 
         //
+        // A trace effect
+        //
+        //  @param object    Options to give to the effect
+        // @param  function  A function to call when the effect has completed
+        //
+        this.trace = function ()
+        {
+            var opt      = arguments[0] || {},
+                frame    = 1,
+                frames   = opt.frames || 60,
+                obj      = this;
+            
+            this.isTrace = true;
+
+            this.draw();
+                
+
+
+            // Create the clip area
+            var clippath = RGraph.SVG.create({
+                svg: this.svg,
+                parent: this.svg.defs,
+                type: 'clipPath',
+                attr: {
+                    id: 'trace-effect-clip'
+                }
+            });
+
+            var clippathrect = RGraph.SVG.create({
+                svg: this.svg,
+                parent: clippath,
+                type: 'rect',
+                attr: {
+                    x: 0,
+                    y: 0,
+                    width: 0,
+                    height: this.height
+                }
+            });
+            
+
+
+            var iterator = function ()
+            {
+                var width = (frame++) / frames * obj.width;
+
+                clippathrect.setAttribute("width", width);
+
+                if (frame <= frames) {
+                    RGraph.SVG.FX.update(iterator);
+                } else {
+                    
+                    // Remove the clippath
+                    clippath.parentNode.removeChild(clippath);
+                    
+                    if (opt.callback) {
+                        (opt.callback)(obj);
+                    }
+                }
+            };
+            
+            iterator();
+            
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
         // Draws a trendline on the Scatter chart. This is also known
         // as a "best-fit line"
         //
@@ -2006,6 +2100,8 @@
                 margin = margin[dataset];
             } else if (typeof margin === 'object'){
                 margin = 25;
+            } else {
+                margin = 0;
             }
             
 
@@ -2147,7 +2243,12 @@
                     'stroke-width':  linewidth,
                     'stroke-dasharray': strokeDasharray,
                     'stroke-linecap': 'round',
-                    'clip-path': 'url(#trendline-clippath-dataset-' + dataset + ')'
+                    
+                    // Makes trendline clipping redundant in favour
+                    // of the trace effect
+                    //'clip-path': 'url(#trendline-clippath-dataset-' + dataset + ')'
+                    //
+                    'clip-path': 'url(#trace-effect-clip)'
                 }
             });
         };
