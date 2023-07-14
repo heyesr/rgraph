@@ -30,7 +30,8 @@
         for (var i=0,data=[]; i<=11; ++i) {
             data.push({
                 x:i,
-                y: RGraph.SVG.random({min: 0, max: 50})
+                y: RGraph.SVG.random({min: 0, max: 50}),
+                above: 'Foo'
             });
         }
 
@@ -66,7 +67,7 @@
                 
                 line: true
             }
-        }).draw();
+        }).trace();
     </script>
 
 
