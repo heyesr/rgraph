@@ -20,9 +20,9 @@
         //
         // Allow for object config style
         //
-        var id                 = conf.id
-        var canvas             = document.getElementById(id);
-        var data               = conf.data;
+        var id     = conf.id,
+            canvas = document.getElementById(id),
+            data   = conf.data;
 
 
         this.id                     = id;
@@ -2738,6 +2738,12 @@
             if (typeof opt.xmax === 'number') {
                 obj.set('xaxisScaleMax', opt.xmax);
             }
+            
+            //
+            // Need a copy of the original border radiuses
+            //
+            if (typeof obj.properties.cornersRoundTopRadius === 'number')    {orig_cornersRoundTopRadius    = obj.properties.cornersRoundTopRadius;}
+            if (typeof obj.properties.cornersRoundBottomRadius === 'number') {orig_cornersRoundBottomRadius = obj.properties.cornersRoundBottomRadius;}
 
 
 
@@ -2754,6 +2760,14 @@
 
 
                 var easingMultiplier = RGraph.Effects.getEasingMultiplier(frames, frame);
+                
+                if (typeof obj.properties.cornersRoundTopRadius === 'number') {
+                    obj.properties.cornersRoundTopRadius = easingMultiplier * orig_cornersRoundTopRadius;
+                }
+                
+                if (typeof obj.properties.cornersRoundBottomRadius === 'number') {
+                    obj.properties.cornersRoundBottomRadius = easingMultiplier * orig_cornersRoundBottomRadius;
+                }
 
                 // Alter the Bar chart data depending on the frame
                 for (var j=0,len=obj.original_data.length; j<len; ++j) {
@@ -2875,6 +2889,20 @@
                 callback       = arguments[1] || function () {},
                 original       = RGraph.arrayClone(obj.data),
                 labelsAbove    = properties.labelsAbove;
+                
+            this.isWave = true;
+            
+            //
+            // If corners are set to be rounded disable them
+            // whilst growing the bars
+            //
+            var orig_cornersRoundRadius       = this.properties.cornersRoundRadius;
+            var orig_cornersRoundTopRadius    = this.properties.cornersRoundTopRadius;
+            var orig_cornersRoundBottomRadius = this.properties.cornersRoundBottomRadius;
+
+            this.properties.cornersRoundRadius       = null;
+            this.properties.cornersRoundTopRadius    = null;
+            this.properties.cornersRoundBottomRadius = null;
 
             this.set('labelsAbove', false);
 
@@ -2897,6 +2925,7 @@
             obj.draw();
             obj.set('xaxisScaleMax', obj.scale2.max);
             RGraph.clear(obj.canvas);
+
 
             function iterator ()
             {
@@ -2961,10 +2990,30 @@
                         RGraph.redrawCanvas(obj.canvas);
                     }
 
+                    //
+                    // Animate the corners to their desired amount
+                    // if it has been requested
+                    //
+                    if (
+                           typeof orig_cornersRoundRadius       === 'number'
+                        || typeof orig_cornersRoundTopRadius    === 'number'
+                        || typeof orig_cornersRoundBottomRadius === 'number'
+                       ) {
+                    
+                        obj.animate({
+                            frames: 90,
+                            cornersRoundRadius:       orig_cornersRoundRadius,
+                            cornersRoundTopRadius:    orig_cornersRoundTopRadius,
+                            cornersRoundBottomRadius: orig_cornersRoundBottomRadius
+                        });
+                    }
+                    
+                    this.isWave = null;
+
                     callback(obj);
                 } else {
-                    RGraph.redrawCanvas(obj.canvas);
 
+                    RGraph.redrawCanvas(obj.canvas);
                     RGraph.Effects.updateCanvas(iterator);
                 }
             }
@@ -3755,7 +3804,8 @@
                 obj.set('labelsAbove', false);
                 var enableLabelsAbove = true;
             }
-    
+
+
             function iterator ()
             {
                 if (obj.stopAnimationRequested) {
