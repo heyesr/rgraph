@@ -3091,6 +3091,8 @@
 
 
             if (this.properties.lasso) {
+            
+                var localData_key = 'rgraph-scatter-chart-' + RGraph.md5(location.href + obj.id) + '-lasso-data';
 
                 //
                 // So the default object isn't repeated
@@ -3119,8 +3121,8 @@
                     // default
                     //
                     if (obj.properties.lassoPersistLocal) {
-                        var str = JSON.stringify(data);                    
-                        window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'] = str;
+                        var str = JSON.stringify(data);
+                        window.localStorage[localData_key] = str;
                     }
                     
                     // Call the event if it's defined
@@ -3136,7 +3138,7 @@
                 {
                     // Load the data from localData
                     if (obj.properties.lassoPersistLocal) {
-                        var str  = window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'];
+                        var str  = window.localStorage[localData_key];
                     }
                     
                     var data = str ? JSON.parse(str) : obj.lassoGetDefaultObject().state;
@@ -3154,7 +3156,7 @@
                 //
                 obj.lassoResetData = function ()
                 {
-                    window.localStorage['rgraph-scatter-chart-' + obj.id + '-lasso-data'] = obj.lassoGetDefaultObject();
+                    window.localStorage[localData_key] = obj.lassoGetDefaultObject();
                 };
 
 
@@ -3337,6 +3339,9 @@
                     var [mouseX, mouseY] = RGraph.getMouseXY(e);
 
                     // Reset the state
+                    if (!obj.lasso || !obj.lasso.state) {
+                        obj.lasso = obj.lassoGetDefaultObject();
+                    }
                     obj.lasso.state.mousedown       = true;
                     obj.lasso.state.coordsLastIndex = obj.lasso.state.coords.length;
 
@@ -3404,7 +3409,7 @@
                 //
                 this.lassoWindowMouseupEventListener = function (e)
                 {
-                    if (obj.lasso.state.mousedown) {
+                    if (obj.lasso && obj.lasso.state && obj.lasso.state.mousedown) {
 
                         obj.lasso.state.mousedown = false;
 
