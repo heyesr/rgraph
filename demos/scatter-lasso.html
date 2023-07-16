@@ -29,16 +29,13 @@
     <canvas id="cvs" width="700" height="300">[No canvas support]</canvas><br />
     <button style="font-size: 20pt; cursor: pointer" onclick="scatter.clearLassoState(); RGraph.redraw();">Clear selections</button>
     <button style="font-size: 20pt; cursor: pointer" onclick="console.log(scatter.lasso.state);">Log the state to the console</button>
+    <button style="font-size: 20pt; cursor: pointer" onclick="console.log(scatter.lasso.state.points);">Log the state.points to the console</button>
     
     <script>
 
         data = [
-            [10,2],[10,7],[10,2],[10,7],[10,3],
-            [20,5],[20,2],[20,6],[20,6],[20,5],
-            [30,4],[30,4],[30,4],[30,4],[30,8],
-            [40,9],[40,6],[40,2],[40,5],[40,1],
-            [50,5],[50,9],[50,1],[50,3],[50,3],
-            [60,6],[60,1],[60,6],[60,2],[60,7]
+            [[10,1],[20,2],[30,3],[40,4],[50,5],[60,6]],
+            [[10,0],[20,0],[30,0],[40,0],[50,0],[60,0]]
         ];
 
         // Create and configure the Scatter chart
@@ -58,15 +55,15 @@
                 //
                 //lassoClearCallback: function (state)
                 //{
-                //    $c(state);
+                //    $p(state.points);
                 //},
                 
                 // When points are selected - this callback function
                 // is called
-                //
+                
                 //lassoCallback: function (state)
                 //{
-                //    //$c(state);
+                //    $c(state.points);
                 //},
                 
                 // Whether to enable persistence or not. If nothing
