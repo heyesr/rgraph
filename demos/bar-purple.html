@@ -1,0 +1,89 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A purple and burgundy grouped Bar chart with a basic look</title>
+
+    <meta name="description" content="A purple and burgundy grouped Bar chart with a basic look" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A purple and burgundy grouped Bar chart with a basic look</h1>
+
+    <canvas id="cvs" width="650" height="450">[No canvas support]</canvas>
+
+    <br clear="all" />
+    
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[6.2,4],[8.1,6.5],[7.9,6.9],[12,7.8],[14.5,8]],
+            options: {
+                marginInner: 25,
+                marginInnerGrouped: 0,
+                marginBottom: 75,
+                colors: ['#9A99FF', 'darkred'],
+                linewidth: 2,
+                colorsStroke: 'black',
+                backgroundGridHlinesCount: 8,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: 'black',
+                yaxisLabelsCount: 8,
+                yaxisScaleMax: 16,
+                yaxisLinewidth: 2,
+                yaxisTickmarksLength: 5,
+                xaxisTickmarksLength: 5,
+                yaxisTickmarksLastBottom: true,
+                xaxisTickmarksLastLeft: true,
+                xaxisLinewidth: 2,
+                xaxisLabels: ['1992','1994','1996','1998','2000'],
+                xaxisLabelsOffsety: 5,
+                textSize: 16,
+                key: ['IT industry','Service industry'],
+                keyPosition: 'margin',
+                keyPositionMarginBoxed: true,
+                keyPositionY: 425,
+                keyLabelsOffsety: 2
+            }
+        }).draw();
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="350" height="200"&gt;[No canvas support]&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+
+    
+
+
+</body>
+</html>
