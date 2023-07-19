@@ -181,7 +181,7 @@
             //
         // Handle the format:
         //     obj.create('rect,x:0,y:0,width:100,y:100'[, parent[, style]])
-        if (typeof opt === 'string') {
+        if (typeof opt === 'string' && opt.substr(0,1) !== '<') {
 
             //
             // First, determine the separator character by seeing what
@@ -251,10 +251,65 @@
             if (parentNode) {
                 opt.parent = parentNode;
             }
+        
+        //
+        // This allows for the format of the function:
+        //
+        // var tag = RGraph.SVG.create('<rect id="myRect" x="5" y="5" width="90" height="90"></rect>');
+        //
+        } else if (typeof arguments[0] === 'object' && typeof arguments[1] === 'string' && arguments[1].substr(0,1) === '<') {
+            
+            var str = arguments[1].replace(/<\/[a-z]+>/, '');
+
+            // First, extract the style attribute if its present
+            str.match(/style="([^"]*)"/);
+            var style = RegExp.$1;
+            str = str.replace(/style="[^"]*"/,'');
+
+            // Split the string on spaces
+            var parts = str.split(/ +/);
+            
+            // Extract the tagName
+            var tagName = parts[0].replace('<','').replace('>','').trim();            
+
+            // Get rid of the final angle bracket
+            parts[parts.length - 1] = parts[parts.length - 1].replace('>','');
+
+            // Loop through the attributes
+            for (var i=1,attr={},name,value; i<parts.length; ++i) {
+
+                [name, value] = parts[i].split('=');
+
+                if (name) {
+                    // Get rid of surrounding quotes
+                    value = value.replace(/^"/,'').replace(/"$/,'');
+    
+                    // Convert to a number
+                    if (value.match(/^[-0-9.]+$/)) {
+                        value = Number(value);
+                    }
+                    
+                    attr[name] = value;
+                }
+            }
+            
+            // Convert the style into an array
+            var styleObj = {};
+            let tmp = style.split(/ *; */);
+            for (let i=0; i<tmp.length; ++i) {
+                tmp[i] = tmp[i].split(/ *: */)
+                styleObj[tmp[i][0]] = tmp[i][1];
+            }
+
+            
+
+            opt = {
+                attr:   attr,
+                type:   tagName,
+                parent: arguments[0],
+                style:  styleObj
+            };
         }
-
-
-
 
 
 
