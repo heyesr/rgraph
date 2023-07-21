@@ -10092,6 +10092,37 @@
 
 
 
+    //
+    // This is an easy shortcut function that paths a line in
+    // the form of an array of coordinate pairs. The first
+    // coordinate is moved to and then the rest are lined to.
+    // No beginpath or stroking/filling is done.
+    //
+    // @param object  context The context
+    // @param array   coords  An array of coordinate pairs
+    // @param boolean moveto  Whether to moveTo the first
+    //                        point or lineTo
+    //
+    RGraph.pathLine = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'context,coords,moveto');
+        
+        for (var i=0; i<args.coords.length; ++i) {
+            if (i === 0 && args.moveto !== false) {
+                args.context.moveTo(args.coords[i][0], args.coords[i][1]);
+            } else {
+                args.context.lineTo(args.coords[i][0], args.coords[i][1]);
+            }
+        }
+    };
+
+
+
+
+
+
+
+
     // Some utility functions that help identify the type of an object
     //
     // Note that isUndefined() should be used like this or you'll get an
