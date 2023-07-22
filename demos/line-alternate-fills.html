@@ -43,7 +43,8 @@
                 textColor: '#ccc',
                 xaxis: false,
                 yaxis: false,
-                linewidth: 0.01,
+                linewidth: 3,
+                tickmarkSize: 7,
                 backgroundGridColor: '#666',
                 backgroundGridDashed: true,
                 marginLeft: 75,
@@ -58,22 +59,57 @@
             // First, fill the bits which appear ABOVE the cyan
             // (the first) line
             obj.path('sa');
-                // Clip to the top bit of the first line
+
+                // Clip to the top bit of the canvas - above first
+                // line
                 obj.path('b m % % l % %',
                     obj.canvas.width - obj.properties.marginRight,
                     obj.properties.marginTop,
                     obj.properties.marginLeft,
                     obj.properties.marginTop
                 );
-                RGraph.pathLine(obj.context, obj.coords2[0], false);
+                
+                // Path the line - the RGraph.pathLine() function
+                // is a shortcut function for creating a
+                // path from an array of X/Y coordinate pairs
+                RGraph.pathLine({
+                    context: obj.context,
+                    coords:  obj.coords2[0],
+                    moveto:  false
+                });
+                
+                // Now clip the canvas to the path that has just
+                // been created.
                 obj.path('cl');
-                
-                
-                // Draw the lines
+
+
+
+
+
+
+                // Begin drawing the lines
                 obj.path('b');
-                    RGraph.pathLine(obj.context, obj.coords2[0]);
-                    RGraph.pathLine(obj.context, obj.coords2[1].reverse(), false);
+                
+                // Create a path from the first line
+                RGraph.pathLine({
+                    context: obj.context,
+                    coords:  obj.coords2[0]
+                });
+                
+                // Add the second line to the path in reverse
+                // order
+                RGraph.pathLine({
+                    context: obj.context,
+                    coords:  obj.coords2[1],
+                    moveto:  false,
+                    reverse: true
+                });
+                
+                // Set the globalAlpha and then fill the shape
+                // that has just been drawn
                 obj.path('ga 0.5 f purple');
+            
+            // Reset the canvas
             obj.path('rs');
             
             
@@ -83,28 +119,57 @@
             
 
             // Second, fill the bits which appear BELOW the cyan
-            // (the first) line
+            // (the first) line.
             obj.path('sa');
 
-                // Clip to the bottom bit of the first line
+                // Clip to the bottom bit of the canvas - below the
+                // first line.
                 obj.path('b m % % l % %',
                     obj.canvas.width - obj.properties.marginRight,
                     obj.canvas.height - obj.properties.marginBottom,
                     obj.properties.marginLeft,
                     obj.canvas.height - obj.properties.marginBottom
                 );
-                RGraph.pathLine(obj.context, obj.coords2[0], false);
+                RGraph.pathLine({
+                    context: obj.context,
+                    coords:  obj.coords2[0],
+                    moveto:  false
+                });
+                
+                // Clip the canvas
                 obj.path('cl');
 
-                // Draw the lines
+
+
+
+
+
+
+                // Draw both of the lines
                 obj.path('b');
-                    RGraph.pathLine(obj.context, obj.coords2[0]);
-                    RGraph.pathLine(obj.context, obj.coords2[1], false);
+                    RGraph.pathLine({
+                        context: obj.context,
+                        coords:  obj.coords2[0]
+                    });
+                    RGraph.pathLine({
+                        context: obj.context,
+                        coords:  obj.coords2[1],
+                        moveto:  false,
+                        reverse: true
+                    });
+                
+                // Set the globalAlpha and fill the shape in a green
+                // color
                 obj.path('ga 0.5 f green');
+            
+            // Reset the canvas
             obj.path('rs');
-            
-            
-            
+
+
+
+
+
+
             //
             // Now, because the fills that were done above appear
             // a little bit over the lines, draw the lines again
@@ -119,9 +184,12 @@
                 var coords = obj.coords2[i];
             
                 // Redraw the lines
-                obj.path('b');
-                RGraph.pathLine(obj.context, coords);
-                obj.path('lw 3 s %', obj.properties.colors[i]);
+                RGraph.drawLine({
+                    context:   obj.context,
+                    coords:    coords,
+                    linewidth: typeof obj.properties.linewidth === 'object' ? obj.properties.linewidth[i] : obj.properties.linewidth,
+                    stroke:    obj.properties.colors[i]
+                });
                 
                 
                 // Draw the tickmarks for the line
@@ -130,14 +198,19 @@
                     var x = coords[j][0];
                     var y = coords[j][1];
                 
+                    // Draw a big circle in the line color
                     obj.path(
                         "b a % % % % % false f %",
-                        x, y, 7, 0, 6.29,
+                        x, y, obj.properties.tickmarkSize, 0, 6.29,
                         obj.properties.colors[i]
                     );
+                    
+                    // Draw a smaller circle over the above circle
+                    // with a smaller radius so that it appears
+                    // like a donut shaped tickmark
                     obj.path(
                         "b a % % % % % false f %",
-                        x, y, 4, 0, 6.29,
+                        x, y, obj.properties.tickmarkSize - 3, 0, 6.29,
                         'black'
                     );
                 }
@@ -156,7 +229,6 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.background.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
 </pre>
     
