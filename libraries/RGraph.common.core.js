@@ -10105,8 +10105,13 @@
     //
     RGraph.pathLine = function ()
     {
-        var args = RGraph.getArgs(arguments, 'context,coords,moveto');
+        var args = RGraph.getArgs(arguments, 'context,coords,moveto,reverse');
         
+        if (args.reverse) {
+            args.coords = RGraph.arrayReverse(args.coords);
+        }
+
+        // Path the line
         for (var i=0; i<args.coords.length; ++i) {
             if (i === 0 && args.moveto !== false) {
                 args.context.moveTo(args.coords[i][0], args.coords[i][1]);
@@ -10114,6 +10119,56 @@
                 args.context.lineTo(args.coords[i][0], args.coords[i][1]);
             }
         }
+    };
+
+
+
+
+
+
+
+
+    //
+    // This is an easy shortcut function that draws a line in
+    // on to the canvas - not just pathing a line like the
+    // above function.
+    //
+    // @param object  context The context
+    // @param array   coords  An array of coordinate pairs
+    // @param boolean moveto  Whether to moveTo the first
+    //                        point or lineTo
+    //
+    RGraph.drawLine = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'context,coords,moveto,stroke');
+        
+        // Start
+        args.context.beginPath();
+        
+            // Path the line on to the canvas
+            RGraph.pathLine({
+                context: args.context,
+                coords:  args.coords,
+                moveto:  args.moveto
+            });
+            
+            // Linewidth
+            if (args.linewidth) {
+                args.context.lineWidth = args.linewidth;
+            }
+            
+            // Fill the line
+            if (args.fill) {
+                args.context.fillStyle = args.fill;
+                args.context.fill();
+            }
+            
+            // Stroke the line
+            if (args.stroke) {
+                args.context.strokeStyle = args.stroke;
+                args.context.stroke();
+            }
+            
     };
 
 
