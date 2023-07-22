@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
@@ -26,7 +27,17 @@
         huge amount of use cases.
     </p>
 
-    <canvas id="cvs" width="750" height="350" style="background-color: black">[No canvas support]</canvas>
+    <canvas id="cvs" width="750" height="350" style="background-color: black">[No canvas support]</canvas><br />
+    <label for="checkboxAdjustable">
+        <span style="font-size: 30pt">Adjustable</span>
+    </label>
+    <input type="checkbox"
+           value="1"
+           id="checkboxAdjustable"
+           onchange="line.set('adjustable', this.checked); RGraph.redraw()"
+           style="width: 35px; height: 35px"
+           checked
+           />
     
     <script>
 
@@ -52,7 +63,8 @@
                 yaxisScaleUnitsPost: 'k',
                 xaxisLabels: ['Rich','Holly','Kevin','Bea','Gary','Pob','Luis','Jim'],
                 xaxisLabelsOffsety: 5,
-                textSize: 20
+                textSize: 20,
+                adjustable: true
             }
         }).on('draw', function (obj)
         {
@@ -229,6 +241,7 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
 </pre>
     
@@ -237,6 +250,18 @@
 &lt;canvas id="cvs" width="750" height="350" style="background-color: black"&gt;
     [No canvas support]
 &lt;/canvas&gt;
+
+&lt;label for="checkboxAdjustable"&gt;
+    &lt;span style="font-size: 30pt"&gt;Adjustable&lt;/span&gt;
+&lt;/label&gt;
+
+&lt;input type="checkbox"
+       value="1"
+       id="checkboxAdjustable"
+       onchange="line.set('adjustable', this.checked); RGraph.redraw()"
+       style="width: 35px; height: 35px"
+       checked
+       /&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
