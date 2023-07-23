@@ -10190,7 +10190,7 @@
     RGraph.isTextual   = function(obj){return (typeof obj === 'string' || typeof obj === 'number');};
     RGraph.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
     RGraph.isBool      =
-    RGraph.isBoolean   = function (obj){return typeof obj === 'boolean';};
+    RGraph.isBoolean   = function(obj){return typeof obj === 'boolean';};
     //RGraph.isArray Defined above
     RGraph.isObject    = function(obj){return (obj && typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0) ? true : false;};
     //RGraph.isNull  Defined above
