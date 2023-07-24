@@ -41,7 +41,11 @@
 
     <label for="checkboxTickmarks"><span style="font-size: 30pt">Tickmarks</span></label>
     <input type="checkbox" value="1" id="checkboxTickmarks" onchange="line.set('tickmarksSize', this.checked ? 7 : 0); RGraph.redraw()" style="width: 35px; height: 35px" checked />
-           
+    
+    &nbsp;&nbsp;&nbsp;
+    
+    <button onclick="line.wave({frames: 120});" style="cursor: pointer;font-size: 30pt">Animate</button>
+    
     <script>
         line = new RGraph.Line({
             id: 'cvs',
@@ -191,7 +195,7 @@
                     }
                 }
             }
-        }).draw();
+        }).wave({frames: 120});
     </script>
 
 
