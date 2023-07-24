@@ -28,19 +28,21 @@
     </p>
 
     <canvas id="cvs" width="750" height="350" style="background-color: black">[No canvas support]</canvas><br />
-    <label for="checkboxAdjustable">
-        <span style="font-size: 30pt">Adjustable</span>
-    </label>
-    <input type="checkbox"
-           value="1"
-           id="checkboxAdjustable"
-           onchange="line.set('adjustable', this.checked); RGraph.redraw()"
-           style="width: 35px; height: 35px"
-           checked
-           />
     
-    <script>
+    <label for="checkboxAdjustable"><span style="font-size: 30pt">Adjustable</span></label>
+    <input type="checkbox" value="1" id="checkboxAdjustable" onchange="line.set('adjustable', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" checked />
 
+    &nbsp;&nbsp;&nbsp;
+
+    <label for="checkboxSpline"><span style="font-size: 30pt">Spline</span></label>
+    <input type="checkbox" value="1" id="checkboxSpline" onchange="line.set('spline', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" />
+
+    &nbsp;&nbsp;&nbsp;
+
+    <label for="checkboxTickmarks"><span style="font-size: 30pt">Tickmarks</span></label>
+    <input type="checkbox" value="1" id="checkboxTickmarks" onchange="line.set('tickmarksSize', this.checked ? 7 : 0); RGraph.redraw()" style="width: 35px; height: 35px" checked />
+           
+    <script>
         line = new RGraph.Line({
             id: 'cvs',
             data: [
@@ -48,6 +50,7 @@
                 [200,110,280,290,250,350,310,110]
             ],
             options: {
+                spline: false,
                 shadow: false,
                 yaxisScaleMax: 400,
                 colors: ['pink', 'cyan'],
@@ -55,7 +58,7 @@
                 xaxis: false,
                 yaxis: false,
                 linewidth: 3,
-                tickmarkSize: 7,
+                tickmarksSize: 7,
                 backgroundGridColor: '#666',
                 backgroundGridDashed: true,
                 marginLeft: 75,
@@ -68,36 +71,21 @@
             }
         }).on('draw', function (obj)
         {
+            // Use different sets of coordinates depending on
+            // whether a spline has been requested or not
+            var coordinates = obj.properties.spline ? obj.coordsSpline : obj.coords2;
+
+
             // First, fill the bits which appear ABOVE the cyan
             // (the first) line
-            obj.path('sa');
-
-                // Clip to the top bit of the canvas - above first
-                // line
-                obj.path('b m % % l % %',
-                    obj.canvas.width - obj.properties.marginRight,
-                    obj.properties.marginTop,
-                    obj.properties.marginLeft,
-                    obj.properties.marginTop
-                );
                 
-                // Path the line - the RGraph.pathLine() function
-                // is a shortcut function for creating a
-                // path from an array of X/Y coordinate pairs
-                RGraph.pathLine({
-                    context: obj.context,
-                    coords:  obj.coords2[0],
-                    moveto:  false
-                });
-                
-                // Now clip the canvas to the path that has just
-                // been created.
-                obj.path('cl');
-
-
-
-
-
+            // Clip the canvas to the the top part of the
+            // canvas
+            //
+            var p1 = [obj.canvas.width - obj.properties.marginRight, obj.properties.marginTop];
+            var p2 = [obj.properties.marginLeft, obj.properties.marginTop];
+            
+            RGraph.clipTo.start(obj, [p1,p2].concat(coordinates[0]));
 
                 // Begin drawing the lines
                 obj.path('b');
@@ -105,14 +93,14 @@
                 // Create a path from the first line
                 RGraph.pathLine({
                     context: obj.context,
-                    coords:  obj.coords2[0]
+                    coords:  coordinates[0]
                 });
                 
                 // Add the second line to the path in reverse
                 // order
                 RGraph.pathLine({
                     context: obj.context,
-                    coords:  obj.coords2[1],
+                    coords:  coordinates[1],
                     moveto:  false,
                     reverse: true
                 });
@@ -120,52 +108,33 @@
                 // Set the globalAlpha and then fill the shape
                 // that has just been drawn
                 obj.path('ga 0.5 f purple');
-            
+        
             // Reset the canvas
-            obj.path('rs');
-            
-            
-            
+            RGraph.clipTo.end();
             
             
             
 
             // Second, fill the bits which appear BELOW the cyan
             // (the first) line.
-            obj.path('sa');
 
-                // Clip to the bottom bit of the canvas - below the
-                // first line.
-                obj.path('b m % % l % %',
-                    obj.canvas.width - obj.properties.marginRight,
-                    obj.canvas.height - obj.properties.marginBottom,
-                    obj.properties.marginLeft,
-                    obj.canvas.height - obj.properties.marginBottom
-                );
-                RGraph.pathLine({
-                    context: obj.context,
-                    coords:  obj.coords2[0],
-                    moveto:  false
-                });
-                
-                // Clip the canvas
-                obj.path('cl');
-
-
-
-
-
+            // Clip to the bottom bit of the canvas - below the
+            // first line.
+            var p3 = [obj.canvas.width - obj.properties.marginRight, obj.canvas.height - obj.properties.marginBottom];
+            var p4 = [obj.properties.marginLeft, obj.canvas.height - obj.properties.marginBottom];
+            
+            RGraph.clipTo.start(obj, [p3,p4].concat(coordinates[0]));
 
 
                 // Draw both of the lines
                 obj.path('b');
                     RGraph.pathLine({
                         context: obj.context,
-                        coords:  obj.coords2[0]
+                        coords:  coordinates[0]
                     });
                     RGraph.pathLine({
                         context: obj.context,
-                        coords:  obj.coords2[1],
+                        coords:  coordinates[1],
                         moveto:  false,
                         reverse: true
                     });
@@ -175,7 +144,7 @@
                 obj.path('ga 0.5 f green');
             
             // Reset the canvas
-            obj.path('rs');
+            RGraph.clipTo.end();
 
 
 
@@ -193,7 +162,7 @@
             // with the middle colored black
             for (var i=0; i<2; ++i) {
                 
-                var coords = obj.coords2[i];
+                var coords = coordinates[i];
             
                 // Redraw the lines
                 RGraph.drawLine({
@@ -204,27 +173,22 @@
                 });
                 
                 
-                // Draw the tickmarks for the line
-                for (var j=0; j<coords.length; ++j) {
-                
-                    var x = coords[j][0];
-                    var y = coords[j][1];
-                
-                    // Draw a big circle in the line color
-                    obj.path(
-                        "b a % % % % % false f %",
-                        x, y, obj.properties.tickmarkSize, 0, 6.29,
-                        obj.properties.colors[i]
-                    );
+                // Draw the tickmarks for the line if necessary
+                if (obj.properties.tickmarksSize > 0) {
+                    for (var j=0; j<coords.length; j+=(obj.properties.spline ? 10 : 1)) {
                     
-                    // Draw a smaller circle over the above circle
-                    // with a smaller radius so that it appears
-                    // like a donut shaped tickmark
-                    obj.path(
-                        "b a % % % % % false f %",
-                        x, y, obj.properties.tickmarkSize - 3, 0, 6.29,
-                        'black'
-                    );
+                        var x = coords[j][0];
+                        var y = coords[j][1];
+                    
+                        // Draw a donut in the line color. The center of
+                        // the donut is colored black.
+                        obj.path(
+                            "b a % % % % % false f % b a % % % % % false f black",
+                            x, y, obj.properties.tickmarksSize, 0, 6.29,
+                            obj.properties.colors[i],
+                            x, y, obj.properties.tickmarksSize - 3, 0, 6.29
+                        );
+                    }
                 }
             }
         }).draw();
@@ -247,21 +211,16 @@
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="750" height="350" style="background-color: black"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;canvas id="cvs" width="750" height="350" style="background-color: black"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
 
-&lt;label for="checkboxAdjustable"&gt;
-    &lt;span style="font-size: 30pt"&gt;Adjustable&lt;/span&gt;
-&lt;/label&gt;
+&lt;label for="checkboxAdjustable"&gt;&lt;span style="font-size: 30pt"&gt;Adjustable&lt;/span&gt;&lt;/label&gt;
+&lt;input type="checkbox" value="1" id="checkboxAdjustable" onchange="line.set('adjustable', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" checked /&gt;
 
-&lt;input type="checkbox"
-       value="1"
-       id="checkboxAdjustable"
-       onchange="line.set('adjustable', this.checked); RGraph.redraw()"
-       style="width: 35px; height: 35px"
-       checked
-       /&gt;
+&lt;label for="checkboxSpline"&gt;&lt;span style="font-size: 30pt"&gt;Spline&lt;/span&gt;&lt;/label&gt;
+&lt;input type="checkbox" value="1" id="checkboxSpline" onchange="line.set('spline', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" /&gt;
+
+&lt;label for="checkboxTickmarks"&gt;&lt;span style="font-size: 30pt"&gt;Tickmarks&lt;/span&gt;&lt;/label&gt;
+&lt;input type="checkbox" value="1" id="checkboxTickmarks" onchange="line.set('tickmarksSize', this.checked ? 7 : 0); RGraph.redraw()" style="width: 35px; height: 35px" checked /&gt;
 </pre>
 
 This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
