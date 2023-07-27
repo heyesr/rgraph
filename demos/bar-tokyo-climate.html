@@ -1,0 +1,158 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A mixed Bar and Line chart</title>
+    <meta name="description" content="A Bar and Line combo chart showing the tokyo climate" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+
+    <h1>A mixed Bar and Line chart</h1>
+    
+    <div id="canvas-container" style="padding: 30px; background-color: #6C6960; display: inline-block">
+        <canvas id="cvs" width="750" height="250" style="border-radius: 20px; border: 1px solid #ddd">[No canvas support]</canvas>
+    </div>
+
+    <br clear="both" />
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [50,75,105,120,145,175,140,150,220,190,100,50],
+            options: {
+                marginLeft: 45,
+                marginRight: 75,
+                marginTop: 50,
+                marginBottom: 50,
+                marginInner: 15,
+                
+                backgroundGridColor: '#999',
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                backgroundGridHlinesCount: 3,
+                
+                colors: ['#4771AB'],
+                colorsStroke: 'white',
+                linewidth: 3,
+                textColor: 'yellow',
+                xaxisColor: 'gray',
+                xaxisTickmarksLength: 10,
+                xaxisLabels: RGraph.MONTHS_SHORT,
+                xaxisLabelsOffsety: 3,
+                xaxisLabelsColor: '#bbb',
+                
+                yaxis: false,
+                yaxisPosition: 'right',
+                yaxisLabelsColor: '#4771AB',
+                yaxisLabelsCount: 3,
+                yaxisScaleMax: 300,
+                yaxisScaleUnitsPost: 'c',
+                
+                textSize: 14,
+                title: 'Tokyo climate',
+                titleOffsety: 5,
+                titleColor: 'white'
+            }
+        }).on('beforedraw', function (obj)
+        {
+            obj.context.fillStyle = RGraph.linearGradient({
+                object: obj,
+                x1: 0,
+                y1: 25,
+                x2: 0,
+                y2: 225,
+                colors: ['#6C6960', '#1C1A14']
+            })
+            obj.context.fillRect(-1,-1,1000,1000);
+        }).wave({frames: 60});
+
+
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data:[6.5,6.5,9.5,13.4,19,21.2,26,27.2,24,19,14,10],
+            options: {
+                xaxis: false,
+                yaxis: false,
+                linewidth: 3,
+                colors: ['yellow'],
+                backgroundGrid: false,
+                spline: true,
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 4,
+
+                marginLeft: 45,
+                marginRight: 75,
+                marginTop: 50,
+                marginBottom: 50,
+                marginInner: 27,
+                
+                yaxisColor: 'transparent',
+                yaxisLabelsCount: 3,
+                yaxisLabelsColor: 'yellow',
+                yaxisScaleLabelsCount: 3,
+                yaxisScaleMax: 30,
+                yaxisScaleUnitsPost: 'c',
+                yaxisLabelsBold: true
+            }
+        }).trace({frames: 60});
+
+
+
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data:[23,77],
+            options: {
+                exploded: [10],
+                colors: ['yellow', '#4771AB'],
+                radius: 35,
+                linewidth: 2,
+                centerx: 90,
+                centery: 70,
+                shadow: false,
+                labels: ['Sunlight'],
+                textColor: 'yellow',
+                labelsList: false,
+                textSize: 10,
+                textColor: '#bbb'
+            }
+        }).roundRobin({frames: 60});
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="750" height="250" style="border-radius: 20px; border: 1px solid #ddd"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
