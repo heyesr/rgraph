@@ -30,7 +30,8 @@
     </div>
     
     <p>
-        Here's a basic Bar chart that only has one  configuration option specified: <code>adjustable</code>
+        Here's a basic Bar chart that only has a few configuration
+        options specified, most notably: <code>adjustable</code>
         This means that the chart can be adjusted dynamically by clicking on the chart and moving your mouse
         up and down. The types of charts that can be adjusted are:
     </p>
@@ -55,8 +56,26 @@
         <a href="https://www.rgraph.net/canvas/adjusting.html">
             You can read more about adjusting and see the canvas documentation for it here.
         </a>
+        
+        One thing you should note is that there are three events
+        that you can use:
     </p>
     
+    <ul>
+        <li>adjustbegin</li>
+        <li>adjust</li>
+        <li>adjustend</li>
+    </ul>
+    
+    <p>
+        This means that you could use an
+        <code>adjustend</code> event listener to send the updated
+        value(s) back to
+        the server with <code>ajax</code> and save them to your
+        database or to a file.
+    </p>
+    
+
     <p>
         When the browser/screen is smaller the size of the <code>canvas</code> is reduced, the <code>textSize</code> is
         reduced and the <code>CSS</code> <code>float</code> on the container is removed.
