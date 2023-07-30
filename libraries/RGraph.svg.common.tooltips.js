@@ -816,9 +816,9 @@ if (pointerObj) {
     
     pointerObj.style.backgroundColor = styles.backgroundColor;
     pointerObj.style.color           = 'transparent';
-    pointerObj.style.position        = 'absolute';
-    pointerObj.style.bottom          = '-5px';
-    pointerObj.style.left            = '50%';
+    pointerObj.style.position        = 'absolute';    
+    pointerObj.style.bottom          = -5 + (RGraph.SVG.isNumber(obj.properties.tooltipsPointerOffsety) ? obj.properties.tooltipsPointerOffsety : 0) + 'px';
+    pointerObj.style.left            = 'calc(50% + ' + (RGraph.SVG.isNumber(obj.properties.tooltipsPointerOffsetx) ? obj.properties.tooltipsPointerOffsetx : 0) + 'px)';
     pointerObj.style.transform       = 'translateX(-50%) rotate(45deg)';
     pointerObj.style.width           = '10px';
     pointerObj.style.height          = '10px';
@@ -924,9 +924,9 @@ if (pointerObj) {
 
 
         //
-        // Allow for static positioning. Support for this is limited at the moment
+        // Allow for static positioning.
         //
-        if (opt.object.properties.tooltipsPositionStatic && typeof opt.object.positionTooltipStatic === 'function') {
+        if (opt.object.properties.tooltipsPositionStatic && RGraph.SVG.isFunction(opt.object.positionTooltipStatic)) {
 
             opt.object.positionTooltipStatic({
                 object:  opt.object,
@@ -934,6 +934,10 @@ if (pointerObj) {
                 tooltip: tooltipObj,
                 index:   tooltipObj.__sequentialIndex__
             });
+            
+            // Allow for offsetting the position
+            tooltipObj.style.left = parseFloat(tooltipObj.style.left) + obj.properties.tooltipsOffsetx + 'px';
+            tooltipObj.style.top  = parseFloat(tooltipObj.style.top)  + obj.properties.tooltipsOffsety + 'px';
         }
 
 

@@ -130,6 +130,8 @@
             tooltipsFormattedTableHeaders: null,
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
+            tooltipsPointerOffsetx:     0,
+            tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 

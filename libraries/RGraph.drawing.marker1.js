@@ -116,6 +116,8 @@
             tooltipsFormattedListType:  'ul',
             tooltipsFormattedListItems: null,
             tooltipsPointer:            true,
+            tooltipsPointerOffsetx:     0,
+            tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             
             align:              'center',

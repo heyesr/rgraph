@@ -275,6 +275,8 @@
             tooltipsDataset:            null,
             tooltipsDatasetEvent:       'click',
             tooltipsPointer:            true,
+            tooltipsPointerOffsetx:     0,
+            tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
 
             highlightStyle:             null,

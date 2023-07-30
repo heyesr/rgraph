@@ -108,6 +108,8 @@
             tooltipsFormattedListType:  'ul',
             tooltipsFormattedListItems: null,
             tooltipsPointer:            true,
+            tooltipsPointerOffsetx:     0,
+            tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
 
             highlightStroke:     'rgba(0,0,0,0)',

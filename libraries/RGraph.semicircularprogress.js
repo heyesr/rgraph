@@ -200,6 +200,8 @@
             tooltipsFormattedTableData:      null,
             tooltipsPointer:                 true,
             tooltipsPointerCss:              null,
+            tooltipsPointerOffsetx:          0,
+            tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
             tooltipsOffsetx:                 0,
             tooltipsOffsety:                 0,

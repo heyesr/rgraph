@@ -213,6 +213,8 @@
             tooltipsFormattedTableHeaders: null,
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
+            tooltipsPointerOffsetx:     0,
+            tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
@@ -1388,7 +1390,11 @@
                 linewidth = properties.labelsSticksLinewidth
 
             for (var i=0,len=this.angles.length; i<len; ++i) {
-            
+                
+                if (!this.properties.labels[i]) {
+                    continue;
+                }
+                
                 var segment = this.angles[i];
     
                 // This allows the labelsSticks to be an array as well as a boolean

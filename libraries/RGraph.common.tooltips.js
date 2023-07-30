@@ -883,7 +883,7 @@
 
     // Set styles on the pointer. It's done this way
     // (not adding the style to the HTML above) to
-    // prevent an error bein thrown should a
+    // prevent an error being thrown should a
     // Content-Security-Policy header using style-src
     // be in place
     setTimeout(function ()
@@ -895,8 +895,8 @@
             pointerObj.style.backgroundColor = styles.backgroundColor;
             pointerObj.style.color           = 'transparent';
             pointerObj.style.position        = 'absolute';
-            pointerObj.style.bottom          = '-5px';
-            pointerObj.style.left            = '50%';
+            pointerObj.style.bottom          = -5 + (RGraph.isNumber(args.object.properties.tooltipsPointerOffsety) ? args.object.properties.tooltipsPointerOffsety : 0) + 'px';
+            pointerObj.style.left            = 'calc(50% + '+ (RGraph.isNumber(args.object.properties.tooltipsPointerOffsetx) ? args.object.properties.tooltipsPointerOffsetx : 0) +'px )';
             pointerObj.style.transform       = 'translateX(-50%) rotate(45deg)';
             pointerObj.style.width           = '10px';
             pointerObj.style.height          = '10px';
@@ -937,8 +937,8 @@
 
 
 //
-        // Now that the tooltip pointer has been added, determine the background-color and update
-        // the color of the pointer
+        // Now that the tooltip pointer has been added, determine
+        // the background-color and update the color of the pointer
         if (args.object.properties.tooltipsPointer) {
 
             var styles = window.getComputedStyle(tooltipObj, false);
@@ -1040,9 +1040,11 @@
 
 
         //
-        // Move the tooltip and its pointer if they're off-screen LHS
+        // Move the tooltip and its pointer if they're off-screen
+        // LHS
         //
         if (parseInt(tooltipObj.style.left) < 0) {
+            
             var left  = parseInt(tooltipObj.style.left);
             var width = parseInt(tooltipObj.style.width)
             
@@ -1056,7 +1058,7 @@
                 setTimeout(function ()
                 {
                     if (pointer) {
-                        pointer.style.left = 'calc(10% + 5px)';
+                        pointer.style.left = 'calc(10% + ' + (5 + (typeof args.object.properties.tooltipsPointerOffsetx === 'number' ? args.object.properties.tooltipsPointerOffsetx : 0)) + 'px)';
                     }
                 }, 25);
             })(pointer)
