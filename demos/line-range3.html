@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    
+    <title>RGraph demo: A range chart with regular lines</title>
+    
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    
+    <meta name="description" content="A range chart with regular lines" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A range chart with regular lines</h1>
+
+    <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+
+
+    <script>
+        upper = [26,27,28,29,31,31,32,30,28,28,27,28,29,30,31,31,29,31,32,32,33,33,35,35,35,35,35,35,33,33,34,35,34,35,35,35,35,35,35,35,34,32,33,31,32,32,33,31,29,30,29,31,31,30,29,28,29,30,31,33,34,34,33,33,31,30,29,30,30,30,29,31,33,34,35,35,35,33,31,31,30,29,28,27,26,26,28,29,28,30,29,29,31,31,29,27,25,26,28,26];
+        lower = [16,17,18,19,21,21,22,20,18,18,17,18,19,20,21,21,19,21,22,22,23,23,25,25,25,25,25,25,23,23,24,25,24,25,25,25,25,25,25,25,24,22,23,21,22,22,23,21,19,20,19,21,21,20,19,18,19,20,21,23,24,24,23,23,21,20,19,20,20,20,19,21,23,24,25,25,25,23,21,21,20,19,18,17,16,16,18,19,18,20,19,19,21,21,19,17,15,16,18,16];
+        data  = [21,22,23,24,26,26,27,25,23,23,22,23,24,25,26,26,24,26,27,27,28,28,30,30,30,30,30,30,28,28,29,30,29,30,30,30,30,30,30,30,29,27,28,26,27,27,28,26,24,25,24,26,26,25,24,23,24,25,26,28,29,29,28,28,26,25,24,25,25,25,24,26,28,29,30,30,30,28,26,26,25,24,23,22,21,21,23,24,23,25,24,24,26,26,24,22,20,21,23,21];
+        data2 = [26,26,25,24,23,24,25,26,28,29,29,28,28,26,25,24,25,25,25,24,26,28,29,30,30,30,28,26,26,25,24,23,22,21,21,23,24,23,25,24,24,26,26,24,22,20,21,23,21,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null];
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [upper,lower],
+            options: {
+                filled: true,
+                filledRange: true,
+                filledColors: '#f003',
+                colors: ['rgba(0,0,0,0)'],
+                colors: ['red'],
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                tickmarksStyle: null,
+                marginBottom: 50,
+                xaxisTickmarksCount: 11,
+                xaxis: false,
+                yaxis: false,
+                textSize: 18,
+                linewidth: .5
+            }
+        }).draw();
+
+
+
+        // Shared confiuration
+        opt = {
+
+                colors: ['red'],
+                backgroundGrid: false,
+                xaxis: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                marginBottom: 50,
+                tickmarksStyle: null,
+                yaxisScaleMax: line.max,
+                shadow: false,
+                linewidth: 2,
+                textSize: 18,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct']
+        };
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                ...opt
+            }
+        }).draw();
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: data2,
+            options: {
+                ...opt,
+                colors: ['blue'],
+                textSize: 18,
+                xaxisLabels: []
+            }
+        }).trace({frames: 180});
+    </script>
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="700" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+
+</body>
+</html>
+
