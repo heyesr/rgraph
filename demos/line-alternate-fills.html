@@ -5,6 +5,7 @@
     
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     
@@ -14,6 +15,22 @@
     <meta name="description" content="A Line chart which has alternate color fills" />
      
     <meta name="robots" content="noindex, nofollow" />
+    
+    <style>
+        td{
+            text-align: left;
+            font-size: 12pt;
+        }
+        
+        table tr td:nth-child(1) {
+            color: gray;
+        }
+        
+        table tr:nth-child(3) td:nth-child(2) {
+            color: #0c0;
+            font-weight: bold;
+        }
+    </style>
 
 </head>
 <body>
@@ -29,8 +46,13 @@
 
     <canvas id="cvs" width="750" height="350" style="background-color: black">[No canvas support]</canvas><br />
     
+    <label for="checkboxTooltips"><span style="font-size: 30pt">Tooltips</span></label>
+    <input type="checkbox" value="1" id="checkboxTooltips" onchange="line.set('tooltips', this.checked ? '%{table}' : ''); RGraph.redraw()" style="width: 35px; height: 35px"  checked />
+
+    &nbsp;&nbsp;&nbsp;
+    
     <label for="checkboxAdjustable"><span style="font-size: 30pt">Adjustable</span></label>
-    <input type="checkbox" value="1" id="checkboxAdjustable" onchange="line.set('adjustable', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" checked />
+    <input type="checkbox" value="1" id="checkboxAdjustable" onchange="line.set('adjustable', this.checked); RGraph.redraw()" style="width: 35px; height: 35px" />
 
     &nbsp;&nbsp;&nbsp;
 
@@ -71,7 +93,106 @@
                 xaxisLabels: ['Rich','Holly','Kevin','Bea','Gary','Pob','Luis','Jim'],
                 xaxisLabelsOffsety: 5,
                 textSize: 20,
-                adjustable: true
+                tooltips: '%{table}',
+                tooltipsCss: {
+                    border: '3px solid #999'
+                },
+                tooltipsPointerCss: {
+                    borderBottom: '3px solid #999',
+                    borderRight:  '3px solid #999'
+                },
+                tooltipsPointerOffsetx: 0,
+                tooltipsPointerOffsety: -3.25,
+tooltipsPositionStatic: false,
+tooltipsOffsetx: 0,
+tooltipsOffsety: -5,
+                tooltipsFormattedTableData: [
+                    [
+                        ['Time: ',  'Rich'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$200   .43512']
+                    ],
+                    [
+                        ['Person: ',  'Holly'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$300.1945']
+                    ],
+                    [
+                        ['Person: ','Kevin'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$200.4956']
+                    ],
+                    [
+                        ['Time: ',  'Bea'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$300.4355']
+                    ],
+                    [
+                        ['Person: ',  'Gary'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$225.1358']
+                    ],
+                    [
+                        ['Person: ',  'Pob'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$350.4677']
+                    ],
+                    [
+                        ['Person: ',  'Luis'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$250.8465']
+                    ],
+                    [
+                        ['Person: ',  'Jim'],
+                        ['Date: ',  '23rd June 1978'],
+                        ['Price: ', '$200.1594']
+                    ],
+
+
+
+
+
+                    [
+                        ['Time: ',  'Rich'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$200.43512']
+                    ],
+                    [
+                        ['Person: ',  'Holly'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$110.1945']
+                    ],
+                    [
+                        ['Person: ','Kevin'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$280.4956']
+                    ],
+                    [
+                        ['Time: ',  'Bea'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$290.4355']
+                    ],
+                    [
+                        ['Person: ',  'Gary'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$250.1358']
+                    ],
+                    [
+                        ['Person: ',  'Pob'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$350.4677']
+                    ],
+                    [
+                        ['Person: ',  'Luis'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$310.8465']
+                    ],
+                    [
+                        ['Person: ',  'Jim'],
+                        ['Date: ',  '30th June 1978'],
+                        ['Price: ', '$110.1594']
+                    ],
+                ]
             }
         }).on('draw', function (obj)
         {
