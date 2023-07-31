@@ -40,20 +40,22 @@
 
         new RGraph.HBar({
             id: 'cvs1',
-            data: [57,59,60,61,58,57],
+            data: [57,59,60,61,58,59],
             options: {
-                ...opt
+                ...opt,
+                text: [{
+                    x: 160,
+                    y: 35,
+                    size: 20,
+                    bold: true,
+                    font: 'Arial',
+                    color: 'gray',
+                    text: 'Two Bar charts with similar marginLeft values'
+                }]
             }
         }).draw();
 
-        new RGraph.HBar({
-            id: 'cvs2',
-            data: [59,58,56,57,59,56],
-            options: {
-                ...opt,
-                colors: ['red']
-            }
-        }).draw();
+        new RGraph.HBar({id: 'cvs2',data: [59,58,56,57,59,56],options: {...opt,colors: ['red']}}).draw();
     </script>
 
 

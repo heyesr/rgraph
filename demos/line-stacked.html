@@ -1,0 +1,285 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.table.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script> 
+    
+    <title>RGraph demo: A stacked Line chart usiing the table reader with a right aligned key</title>
+    
+    
+    <meta name="description" content="A stacked Line chart using the table reader with a right aligned key" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A stacked Line chart using the table reader with a right aligned key</h1>
+
+    <div style="text-align: center">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <style>
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            font-family: Verdana;
+            border: 1px solid black;
+        }
+        tr:nth-child(1n+1) td:nth-child(1n+2) {
+            background-color: #ddd;
+            text-align: center;
+        }
+    </style>
+    
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr>
+                <td>Richard</td>
+                <td>4</td>
+                <td>8</td>
+                <td>5</td>
+                <td>7</td>
+                <td>3</td>
+                <td>5</td>
+                <td>1</td>
+                <td>3</td>
+                <td>8</td>
+                <td>4</td>
+            </tr>
+            
+            <tr>
+                <td>Ricky</td>
+                <td>7</td>
+                <td>4</td>
+                <td>8</td>
+                <td>9</td>
+                <td>1</td>
+                <td>6</td>
+                <td>7</td>
+                <td>2</td>
+                <td>3</td>
+                <td>2</td>
+            </tr>
+            
+            <tr>
+                <td>Rachel</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>5</td>
+                <td>2</td>
+                <td>4</td>
+                <td>6</td>
+                <td>7</td>
+                <td>6</td>
+                <td>3</td>
+            </tr>
+            
+            <tr>
+                <td>Ruth</td>
+                <td>3</td>
+                <td>5</td>
+                <td>4</td>
+                <td>8</td>
+                <td>6</td>
+                <td>3</td>
+                <td>2</td>
+                <td>9</td>
+                <td>8</td>
+                <td>7</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        new RGraph.HTMLTable('myTable', function (table)
+        {
+            // Create a data array
+            for (var i=1,rows=[]; i<table.numrows; ++i) {
+                rows.push(table.row(i, 1));
+            }
+            
+            var labels = table.row(0,1);
+            labels.forEach(function (v, k, arr)
+            {
+                arr[k] = arr[k].substr(0,3);
+            });
+
+            var line = new RGraph.Line({
+                id: 'cvs',
+                data: rows,
+                options: {
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    xaxis: false,
+                    filled: true,
+                    colors: ['rgba(0,0,0,0)'],
+                    filledColors: colors =['red','blue','#0c0','#aaa'],
+                    xaxisLabels: labels,
+                    textSize: 18,
+                    yaxis: false,
+                    linewidth: 7,
+                    textAccessible: true,
+                    title: 'Richard, Ricky, Rachels and Ruths sales previous week',
+                    titleX: 35,
+                    titleOffsety: 15,
+                    titleSize: 16,
+                    titleHalign: 'left',
+                    shadow: false,
+                    key: ['Richard','Ricky','Rachel','Ruth'],
+                    keyColors: colors,
+                    keyBackground: '#fff9',
+                    keyPosition: 'margin',
+                    keyPositionOffsety: 25,
+                    keyLabelsSize: 12,
+                    keyLabelsFont: 'Verdana',
+                    keyLabelsBold: true
+                }
+            
+            //
+            // The first draw event calculates the width of the key
+            // and then right aligns it.
+            //
+            }).on('firstdraw', function (obj)
+            {
+                // The key coordinates
+                var arr = obj.coords.key;
+                
+                // Calculate the total width of the key
+                var width = arr.reduce(function (sum, current)
+                {
+                    return sum + current[2] + 25;
+                },0);
+                
+                // Now set the new X coord
+                obj.properties.keyPositionX = obj.canvas.width - 35 - width;
+            }).trace();
+            
+        });
+    </script>
+
+
+
+
+    <p />
+
+
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.table.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center"&gt;
+    &lt;canvas id="cvs" width="750" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+    table {
+        margin-left: auto;
+        margin-right: auto;
+        font-family: Verdana;
+        border: 1px solid black;
+    }
+    tr:nth-child(1n+1) td:nth-child(1n+2) {
+        background-color: #ddd;
+        text-align: center;
+    }
+&lt;/style&gt;
+
+&lt;table id="myTable"&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;/th&gt;
+            &lt;th&gt;Monday&lt;/th&gt;
+            &lt;th&gt;Tuesday&lt;/th&gt;
+            &lt;th&gt;Wednesday&lt;/th&gt;
+            &lt;th&gt;Thursday&lt;/th&gt;
+            &lt;th&gt;Friday&lt;/th&gt;
+            &lt;th&gt;Monday&lt;/th&gt;
+            &lt;th&gt;Tuesday&lt;/th&gt;
+            &lt;th&gt;Wednesday&lt;/th&gt;
+            &lt;th&gt;Thursday&lt;/th&gt;
+            &lt;th&gt;Friday&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;td&gt;Richard&lt;/td&gt;
+            &lt;td&gt;4&lt;/td&gt;
+            &lt;td&gt;8&lt;/td&gt;
+            &lt;td&gt;5&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+            &lt;td&gt;5&lt;/td&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+            &lt;td&gt;8&lt;/td&gt;
+            &lt;td&gt;4&lt;/td&gt;
+        &lt;/tr&gt;
+        
+        &lt;tr&gt;
+            &lt;td&gt;Ricky&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+            &lt;td&gt;4&lt;/td&gt;
+            &lt;td&gt;8&lt;/td&gt;
+            &lt;td&gt;9&lt;/td&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;6&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+            &lt;td&gt;2&lt;/td&gt;
+        &lt;/tr&gt;
+        
+        &lt;tr&gt;
+            &lt;td&gt;Rachel&lt;/td&gt;
+            &lt;td&gt;6&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+            &lt;td&gt;8&lt;/td&gt;
+            &lt;td&gt;5&lt;/td&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;4&lt;/td&gt;
+            &lt;td&gt;6&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+            &lt;td&gt;6&lt;/td&gt;
+            &lt;td&gt;3&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+</body>
+</html>
