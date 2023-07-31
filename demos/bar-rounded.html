@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    
+
+    <title>Demo: A Bar chart with rounded corners</title>
+    <meta name="description" content="A Bar chart with rounded corners" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+
+
+    <h1>A Bar chart with rounded corners</h1>
+    
+    <p>
+        This chart has all corners of the bars rounded which is
+        done using a little custom coding and the RGraph
+        <code>api</code>.
+    </p>
+
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+
+    <br clear="both" />
+
+
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: '12,18,10,9,6,20,18',
+            options: {
+                marginInner: 20,
+                colors: ['#0000'],
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                textSize: 20,
+                xaxisLabels: RGraph.DAYS_SHORT
+            }
+        }).on('draw', function (obj)
+        {
+            obj.coords.forEach(function (v, k, arr)
+            {
+                obj.path(
+                    'b lw 5 rr % % % % 20 f red s black',
+                    v[0], v[1], v[2], v[3]
+                );
+            });
+        }).wave();
+    </script>
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div style="text-align: center" id="canvas-container"&gt;
+    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+</body>
+</html>
