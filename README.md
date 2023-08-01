@@ -17,9 +17,6 @@ but as my familiarity with GitHub grows it will become more and more tied to it 
 is intended.
 
 <br clear="all" />
-<p align="center">
-    <a href="https://www.rgraph.net/demos/index.html" target="_blank">See demos...</a>
-</p>
     
 <p>Links point to the RGraph website</p>
   
