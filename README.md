@@ -25,7 +25,7 @@ is intended.
   <li><a href="https://www.rgraph.net/download.html#stable" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">Download RGraph</a></li>
   <li><a href="https://www.rgraph.net/svg/index.html" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">SVG documentation</a></li>
   <li><a href="https://www.rgraph.net/canvas/index.html" target="_blank" target="_blank" target="_blank" target="_blank" target="_blank">Canvas documentation</a></li>
-  <li><a href="https://www.rgraph.net/demos/index.html" target="_blank" target="_blank" target="_blank" target="_blank">Demos of charts</a></li>
+  <li><a href="https://www.rgraph.net/demos/index.html" target="_blank" target="_blank" target="_blank" target="_blank"><b>Demos of charts</b>b></a></li>
   <li><a href="https://www.rgraph.net/blog/index.html" target="_blank" target="_blank" target="_blank">News and updates</a></li>
   <li><a href="https://www.rgraph.net/about.html" target="_blank" target="_blank">About RGraph and its author</a></li>
   <li><a href="https://www.rgraph.net/forum/index.html" target="_blank">Get help with RGraph</a></li>
