@@ -27,7 +27,7 @@
 * 
 */
 :root {
-    --scale-factor: 1.25;
+    --scale-factor: 1;
 }
 
 .nowrap {
@@ -44,6 +44,7 @@ body {
     line-height: 45px;
     padding-top: 50px;
     overflow-x: hidden;
+    min-height: 95vh;
 }
 
 /* Add the little icon after external links */
@@ -453,6 +454,11 @@ table.api-properties-large-screen td:nth-child(3) {
 
 div.api-properties-small-screen {
     display: none;
+}
+
+footer {
+    position: sticky;
+    top: 100vh;
 }
 
 footer div#footer {
@@ -1329,6 +1335,17 @@ div#page-canvas-line div#example-canvas-container {
 div#page-canvas-line div#example-canvas-container button {
     font-size: 20pt;
     cursor: pointer;
+}
+
+div#page-download div#download-button {
+    background-color: #0c0;
+    background-image: linear-gradient(to top, #0a0, #0c0);
+    color: white;
+    display: inline-block;
+    padding: 5px 20px 5px 20px;
+    border-radius: 50px;
+    box-shadow: 3px 3px 3px #ccc;
+    font-size: 20pt;
 }
 
 #page-reference-index .contents-list-container {
