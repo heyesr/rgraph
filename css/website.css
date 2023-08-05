@@ -249,24 +249,39 @@ legend {
 }
 
 div.warning {
-    background-color: #ffa;
+    background-color: #fff7d0;
     padding: 10px;
-    margin-top: 5px;
-    border-radius: 15px;
-    opacity: 1;
-    box-shadow: 2px 2px 2px #ccc;
+    border-left: 10px solid #e7c000;
+    line-height: 30px;
 }
 
-div.warning p {
-    text-align: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
+div.warning span {
+    Color: #aa0;
     font-weight: bold;
 }
 
-div.notice {
-    background-color: #eee;
-    padding: 15px;
+div.success {
+    background-color: #0f04;
+    border-left: 10px solid #0a0;
+    padding: 10px;
+    line-height: 30px;
+}
+
+div.success span {
+    Color: green;
+    font-weight: bold;
+}
+
+div.error {
+    background-color: #f004;
+    border-left: 10px solid #f00;
+    padding: 10px;
+    line-height: 30px;
+}
+
+div.error span {
+    Color: red;
+    font-weight: bold;
 }
 
 div#title div#image {
