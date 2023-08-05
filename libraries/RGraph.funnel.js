@@ -460,16 +460,18 @@
                 this.context.shadowOffsetY = properties.shadowOffsety;
             }
 
+            this.context.strokeStyle = '#0000';
+
             for (i=0,len=this.data.length; i<len; ++i) {
 
-                var firstvalue = this.data[0];
-                var firstwidth = (firstvalue / max) * width;
-                var curvalue   = this.data[i];
-                var curwidth   = (curvalue / max) * width;
-                var curheight  = height / (this.data.length - 1);
-                var halfCurWidth = (curwidth / 2);
-                var nextvalue  = this.data[i + 1];
-                var nextwidth  = this.data[i + 1] ? (nextvalue / max) * width : null;
+                var firstvalue    = this.data[0];
+                var firstwidth    = (firstvalue / max) * width;
+                var curvalue      = this.data[i];
+                var curwidth      = (curvalue / max) * width;
+                var curheight     = height / (this.data.length - 1);
+                var halfCurWidth  = (curwidth / 2);
+                var nextvalue     = this.data[i + 1];
+                var nextwidth     = this.data[i + 1] ? (nextvalue / max) * width : null;
                 var halfNextWidth = (nextwidth / 2);
                 var center        = this.marginLeft + (firstwidth / 2);
 
@@ -485,16 +487,15 @@
                 if (nextwidth && i < this.data.length - 1) {
 
                     this.context.beginPath();
-    
-                        this.context.strokeStyle = properties.colorsStroke;
+
                         this.context.fillStyle   = properties.colors[i];
-    
+                        this.context.strokeStyle = '#0000';
+
                         this.context.moveTo(x1, y1);
                         this.context.lineTo(x2, y2);
                         this.context.lineTo(x3, y3);
                         this.context.lineTo(x4, y4);
-    
-                    this.context.closePath();
+
 
                     //
                     // Store the coordinates
@@ -514,16 +515,17 @@
             }
 
             //
-            // If the shadow is enabled, redraw every segment, in order to allow for shadows going upwards
+            // If the shadow is enabled, redraw every segment, in
+            // order to allow for shadows going upwards
             //
             if (properties.shadow) {
             
                 RGraph.noShadow(this);
-            
+
                 for (i=0; i<this.coords.length; ++i) {
                 
-                    this.context.strokeStyle = properties.colorsStroke;
-                    this.context.fillStyle = properties.colors[i];
+                    this.context.strokeStyle = properties.colors[i];
+                    this.context.fillStyle   = properties.colors[i];
             
                     this.context.beginPath();
                         this.context.moveTo(this.coords[i][0], this.coords[i][1]);
