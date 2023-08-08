@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Donut chart with a label in the middle</title>
+    
+    
+    <meta name="description" content="A Donut chart with a label in the middle" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Donut chart with a label in the middle</h1>
+
+    <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    
+    <script>
+        donut = new RGraph.Pie({
+            id: 'cvs',
+            data: [41,59],
+            options: {
+                variant: 'donut',
+                //labelsCenter: '', // This is added in the draw event
+                labelsCenterSize: 66,
+                shadow: false,
+                colors: [
+                    '#666',
+                    'transparent'
+                ],
+                linewidth: 2,
+                tooltips: ['Current water tank level: %{value}%'],
+                tooltipsCss: {
+                    fontSize: '30pt'
+                }
+            }
+        }).roundRobin().on('beforedraw', function (obj)
+        {
+            for (let i=10; i<=100; i+=10) {
+                obj.path(
+                    'b ld [5,6] lw 1 ci % % % s #666 ld [1,0]',
+                    obj.centerx,
+                    obj.centery,
+                    obj.radius - i
+                );
+            }
+        }).on('draw', function (obj)
+        {
+            obj.properties.labelsCenter = Math.round(obj.data[0] * obj.get('effectRoundrobinMultiplier')) + '%';
+        })
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="500" height="500"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>
