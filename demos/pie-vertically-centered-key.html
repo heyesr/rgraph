@@ -1,0 +1,101 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>Demo: A Pie chart with a vertically centered key</title>
+    <meta name="description" content="A Pie chart with a vertically centered key" />
+
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>A Pie chart with a vertically centered key</h1>
+
+    <div id="canvas-container">
+        <canvas id="cvs" width="550" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <br clear="all" />
+    
+    
+    
+    <script id="rgraph-demo-source-code">
+        // Create the Pie chart and configure a little
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [61,23,16,50,64,32],
+            options: {
+                tooltips: ['Bobby','Lucy','Peter','Piper','Billy','Harriet'],
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                
+                // Add the key and increase the size of its labels
+                key: ['Bobby','Lucy','Peter','Piper','Billy','Harriet'],
+                keyPosition: 'graph',
+                keyPositionGraphBoxed: false,
+                keyLabelsSize: 18,
+                keyValign: 'center',
+                
+                shadow: false
+            }
+        
+        // Draw the Pie chart and add the exec function which
+        // runs after the draw function
+        }).roundRobin({frames: 45}).exec(function (obj)
+        {
+            // Calculate how big the key labels are
+            textConf = RGraph.getTextConf({
+                object: obj,
+                prefix: 'keyLabels'
+            });
+            
+            // Calculate the height of the key
+            height = obj.properties.key.length * textConf.size * 1.5 - 10;
+            
+            // Use the height that has just been calculate to set
+            // the new Y coordinate of the key
+            obj.set('keyPositionY', (obj.canvas.height / 2) - (height / 2));
+            
+            // Redraw the Pie chart
+            RGraph.redraw();
+        });
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;div&gt;
+    &lt;canvas id="cvs" width="350" height="250"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre class="code" id="dynamic-source-code"></pre>
+    <script>showSource()</script>
+
+
+</body>
+</html>
