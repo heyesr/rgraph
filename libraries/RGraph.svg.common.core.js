@@ -177,144 +177,6 @@
     RGraph.SVG.create = function (opt)
     {
         var ns  = "http://www.w3.org/2000/svg";
-        
-            //
-        // Handle the format:
-        //     obj.create('rect,x:0,y:0,width:100,y:100'[, parent[, style]])
-        if (typeof opt === 'string' && opt.substr(0,1) !== '<') {
-
-            //
-            // First, determine the separator character by seeing what
-            // the first non-alnum character is
-            opt.match(/^([a-z0-9]+)([^a-z0-9])/i);
-            var tagName   = RegExp.$1,
-                separator = RegExp.$2,
-                parts     = opt.split(separator),
-                attr      = {};
-
-            opt = {type: tagName,svg:this.svg};
-
-
-
-
-            //
-            // Add any attributes that have been given
-            //
-            for (let i=1; i<parts.length; ++i) {
-                if (parts[i]) {
-                    var [name,value] = [...parts[i].split('=')];
-                    attr[name] = value;
-                }
-            }
-            opt.attr = attr;
-
-
-
-            //
-            // Add any styles that have been given as the
-            // second arg
-            //
-            if (typeof arguments[1] === 'string') {
-                
-                opt.style = {};
-                parts     = arguments[1].split(separator);
-
-                for (let i=0; i<parts.length; ++i) {
-                    var [name,value] = [...parts[i].split(/=|:/)];
-                    opt.style[name] = value;
-                }
-
-            //
-            // Style given as third arg
-            //
-            } else if (typeof arguments[2] === 'string') {
-                
-                opt.style = {};
-                parts     = arguments[2].split(separator);
-                for (let i=0; i<parts.length; ++i) {
-                    var [name,value] = [...parts[i].split('=')];
-                    opt.style[name] = value;
-                }
-            }
-
-            // The parentNode can be given as the second argument
-            if (typeof arguments[1] === 'object' && !RGraph.SVG.isNull(arguments[1])) {
-                var parentNode = arguments[1];
-            }
-            
-            // Parent node was given as the third argument
-            if (typeof arguments[2] === 'object' && !RGraph.SVG.isNull(arguments[2])) {
-                var parentNode = arguments[2];
-            }
-
-            // Set the parent node on the opt object
-            if (parentNode) {
-                opt.parent = parentNode;
-            }
-        
-        //
-        // This allows for the format of the function:
-        //
-        // var tag = RGraph.SVG.create('<rect id="myRect" x="5" y="5" width="90" height="90"></rect>');
-        //
-        } else if (typeof arguments[0] === 'object' && typeof arguments[1] === 'string' && arguments[1].substr(0,1) === '<') {
-            
-            var str = arguments[1].replace(/<\/[a-z]+>/, '');
-
-            // First, extract the style attribute if its present
-            str.match(/style="([^"]*)"/);
-            var style = RegExp.$1;
-            str = str.replace(/style="[^"]*"/,'');
-
-            // Split the string on spaces
-            var parts = str.split(/ +/);
-            
-            // Extract the tagName
-            var tagName = parts[0].replace('<','').replace('>','').trim();            
-
-            // Get rid of the final angle bracket
-            parts[parts.length - 1] = parts[parts.length - 1].replace('>','');
-
-            // Loop through the attributes
-            for (var i=1,attr={},name,value; i<parts.length; ++i) {
-
-                [name, value] = parts[i].split('=');
-
-                if (name) {
-                    // Get rid of surrounding quotes
-                    value = value.replace(/^"/,'').replace(/"$/,'');
-    
-                    // Convert to a number
-                    if (value.match(/^[-0-9.]+$/)) {
-                        value = Number(value);
-                    }
-                    
-                    attr[name] = value;
-                }
-            }
-            
-            // Convert the style into an array
-            var styleObj = {};
-            let tmp = style.split(/ *; */);
-            for (let i=0; i<tmp.length; ++i) {
-                tmp[i] = tmp[i].split(/ *: */)
-                styleObj[tmp[i][0]] = tmp[i][1];
-            }
-
-            
-
-            opt = {
-                attr:   attr,
-                type:   tagName,
-                parent: arguments[0],
-                style:  styleObj
-            };
-        }
-
-
-
-
-
 
         
         var tag = doc.createElementNS(ns, opt.type);
@@ -354,7 +216,73 @@
 
         return tag;
     };
+    //
+    // Parse a string form of a tag like this:
+    //
+    // circle = RGraph.SVG.create.parseStr(
+    //     obj,
+    //     '<circle cx="65" cy="90" r="50">'
+    // )
+    //
+    RGraph.SVG.create.parseStr = function (obj, str)
+    {
+        // Either an SVG tag object or an RGraph object can be
+        // given
+        var svg = obj.isrgraph ? obj.svg : obj;
 
+        // Get rid of the closing tag if its present
+        var str = arguments[1].replace(/<\/[-a-z]+>/, '');
+
+        // First, extract the style attribute if its present
+        str.match(/style="([^"]*)"/);
+        var style = RegExp.$1;
+        str = str.replace(/style="[^"]*"/,'');
+
+        // Split the string on spaces
+        var parts = str.split(/ +/);
+
+        // Extract the tagName
+        var tagName = parts[0].replace('<','').replace('>','').trim();            
+
+        // Get rid of the final angle bracket
+        parts[parts.length - 1] = parts[parts.length - 1].replace('>','');
+
+        // Loop through the attributes
+        for (var i=1,attr={},name,value; i<parts.length; ++i) {
+
+            [name, value] = parts[i].split('="');
+
+            if (name) {
+
+                // Get rid of surrounding quotes
+                value = value.replace(/^"/,'').replace(/"$/,'');
+
+                // Convert to a number
+                if (value.match(/^[-0-9.]+$/)) {
+                    value = Number(value);
+                }
+
+                attr[name] = value;
+            }
+        }
+
+        // Convert the style into an array
+        var styleObj = {};
+        let tmp = style.split(/ *; */);
+        for (let i=0; i<tmp.length; ++i) {
+            tmp[i] = tmp[i].split(/ *: */)
+            styleObj[tmp[i][0]] = tmp[i][1];
+        }
+
+        
+
+        return {
+            attr:   attr,
+            type:   tagName,
+            parent: svg,
+            style:  styleObj
+        };
+    };
 
 
 
