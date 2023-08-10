@@ -43,7 +43,7 @@
                 key: ['Bobby','Lucy','Peter','Piper','Billy','Harriet'],
                 keyPosition: 'graph',
                 keyPositionGraphBoxed: false,
-                keyLabelsSize: 18,
+                keyLabelsSize: 16,
                 keyValign: 'center',
                 
                 shadow: false
@@ -54,7 +54,7 @@
         }).roundRobin({frames: 45}).exec(function (obj)
         {
             // Calculate how big the key labels are
-            textConf = RGraph.getTextConf({
+            var textConf = RGraph.getTextConf({
                 object: obj,
                 prefix: 'keyLabels'
             });
