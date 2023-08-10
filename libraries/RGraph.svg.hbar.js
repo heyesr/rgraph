@@ -744,31 +744,26 @@
 
         //
         // New create() shortcut function
-        //eg:
-        //    this.create('rect,x=0,y=0,width=100,height=100'[,parent]);
+        // For example:
+        //    this.create('rect,x:0,y:0,width:100,height:100'[,parent]);
         //
-        // @param mixed definition This can either be an object
-        //                         which holds details of the object
-        //                         that you want to make or a string
-        //                         that holds the same information.
-        // @param mixed            This can be either a string that
-        //                         holds style information to be
-        //                         applied to the new node or it
-        //                         can be the parent node that the
-        //                         new node is to be added to.
-        // @param string           If used, this can be a string
-        //                         that holds the style information
-        //                         that is to be applied to the new
-        //                         node.
+        // @param str string The tag definition to parse and create
+        // @param     object The (optional) parent element
+        // @return    object The new tag
         //
-        this.create = function (definition)
+        this.create = function (str)
         {
-            return RGraph.SVG.create.call(
-                this,
-                definition,
-                arguments[1],
-                arguments[2]
-            );
+            var def = RGraph.SVG.create.parseStr(this, str);
+            def.svg = this.svg;
+            
+            // By default the parent is the SVG tag - but if
+            // requested then change it to the tag that has
+            // been given
+            if (arguments[1]) {
+                def.parent = arguments[1];
+            }
+
+            return RGraph.SVG.create(def);
         };
 
 
@@ -2319,18 +2314,21 @@
                 }
 
 
-                var path = RGraph.SVG.create(
-                    'path,stroke={6},fill=transparent,d={1},stroke-width={2},stroke-linecap={4},stroke-linejoin={3},filter={5},clip-path={7}'.format(
-                        d,
-                        this.properties.lineLinewidth,
-                        this.properties.lineLinejoin,
-                        this.properties.lineLinecap,
-                        this.properties.lineShadow ? 'url(#lineDropShadow_' + this.uid + ')' : '',
-                        this.properties.lineColor,
-                        this.isTrace ? 'url(#trace-effect-clip)' : ''
-                    ),
-                    this.svg.all
-                );
+                var path = RGraph.SVG.create({
+                    svg:    this.svg,
+                    type:   'path',
+                    parent: this.svg.all,
+                    attr: {
+                        d:      d,
+                        stroke: this.properties.lineColor,
+                        fill:   'transparent',
+                        'stroke-width': this.properties.lineLinewidth,
+                        'stroke-linecap': this.properties.lineLinecap,
+                        'stroke-linejoin': this.properties.lineLinejoin,
+                        filter: this.properties.lineShadow ? 'url(#lineDropShadow_' + this.uid + ')' : '',
+                        'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                    }
+                });
 
             }
 
@@ -2377,32 +2375,37 @@
                                 || obj.properties.lineTickmarksStyle.indexOf('end') === -1
                                ) {
 
-                                obj.create(
-                                    'circle,cx={1},cy={2},r={3},fill={4},filter={5},clip-path={6}'.format(
-                                        v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
-                                        v.y + (v.height/2),
-                                        obj.properties.lineTickmarksSize,
-                                        obj.properties.lineColor,
-                                        obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
-                                        obj.isTrace ? 'url(#trace-effect-clip)' : ''
-                                    ),
-                                    obj.svg.all
-                                );
-                                
+                                RGraph.SVG.create({
+                                    svg:  obj.svg,
+                                    type: 'circle',
+                                    parent: obj.svg.all,
+                                    attr: {
+                                        cx:          v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
+                                        cy:          v.y + (v.height/2),
+                                        r:           obj.properties.lineTickmarksSize,
+                                        fill:        obj.properties.lineColor,
+                                        filter:      obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                                        'clip-path': obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    }
+                                });
+
                                 // Draw the center part of the circle tickmark
                                 if (obj.properties.lineTickmarksStyle.indexOf('filled') < 0) {
-                                    obj.create(
-                                        'circle,cx={1},cy={2},r={3},fill={4},clip-path={5}'.format(
-                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
-                                            v.y + (v.height/2),
-                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
-                                                ? (obj.properties.lineTickmarksSize - obj.properties.lineTickmarksLinewidth)
-                                                : (obj.properties.lineTickmarksSize - 3),
-                                            'white',
-                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
-                                        ),
-                                        obj.svg.all
-                                    );
+
+                                    RGraph.SVG.create({
+                                        svg:    obj.svg,
+                                        type:   'circle',
+                                        parent: obj.svg.all,
+                                        attr: {
+                                            cx:         v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
+                                            cy:         v.y + (v.height/2),
+                                            r:          RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                          ? (obj.properties.lineTickmarksSize - obj.properties.lineTickmarksLinewidth)
+                                                          : (obj.properties.lineTickmarksSize - 3),
+                                            fill:       'white',
+                                            'clip-path':obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        }
+                                    });
                                 }
                             }
                             break;
@@ -2419,43 +2422,40 @@
                                    (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
                                 || obj.properties.lineTickmarksStyle.indexOf('end') === -1
                                ) {
-                                    obj.create(
-                                        'rect,x={1},y={2},width={3},height={4},fill={5},filter={6},clip-path={7}'.format(
-                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - obj.properties.lineTickmarksSize,
-                                            v.y + (v.height / 2) - obj.properties.lineTickmarksSize,
-                                            obj.properties.lineTickmarksSize * 2,
-                                            obj.properties.lineTickmarksSize * 2,
-                                            obj.properties.lineColor,
-                                            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
-                                                
-                                            // Trace clipping
-                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
-                                        ),
-                                        this.svg.all
-                                    );
+                                    RGraph.SVG.create({
+                                        svg:    obj.svg,
+                                        type:   'rect',
+                                        parent: obj.svg.all,
+                                        attr: {
+                                            x:           v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - obj.properties.lineTickmarksSize,
+                                            y:           v.y + (v.height / 2) - obj.properties.lineTickmarksSize,
+                                            width:       obj.properties.lineTickmarksSize * 2,
+                                            height:      obj.properties.lineTickmarksSize * 2,
+                                            fill:        obj.properties.lineColor,
+                                            filter:      obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                                            'clip-path': obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        }
+                                    });
 
                                 // Draw the center part of the rect tickmark
                                 if (obj.properties.lineTickmarksStyle.indexOf('filled') < 0) {
-                                    obj.create(
-                                        'rect,x={1},y={2},width={3},height={4},fill={5},clip-path={6}'.format(
-                                            v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
-                                            v.y + (v.height / 2) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
-                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
-                                                ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
-                                                : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
-                                            RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
-                                                ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
-                                                : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
-
-                                            
-                                            // color
-                                            'white',
-                                            
-                                            // Trace clipping
-                                            obj.isTrace ? 'url(#trace-effect-clip)' : ''
-                                        ),
-                                        obj.svg.all
-                                    );
+                                    RGraph.SVG.create({
+                                        svg:    obj.svg,
+                                        type:   'rect',
+                                        parent: obj.svg.all,
+                                        attr: {
+                                            x:           v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
+                                            y:           v.y + (v.height / 2) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
+                                            width:       RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                            ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
+                                                            : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
+                                            height:      RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
+                                                            ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
+                                                            : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
+                                            fill:        'white',
+                                            'clip-path': obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                                        }
+                                    });
                                 }
                             }
                             break;    
@@ -2563,20 +2563,26 @@
 
 
 
-//
-// Create the path which depicts the spline
-//
-obj.create(
-    'path,fill=transparent,stroke={2},stroke-width={3},stroke-linejoin=round,stroke-linecap=round,d={1},filter={4},clip-path={5}'.format(
-        str,
-        obj.properties.lineColor,
-        obj.properties.lineLinewidth,
-        obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
-        obj.isTrace ? 'url(#trace-effect-clip)' : ''
-    ),
-    obj.svg.all
-);
-    
+                //
+                // Create the path which depicts the spline
+                //
+
+                RGraph.SVG.create({
+                    svg: obj.svg,
+                    parent: obj.svg.all,
+                    type: 'path',
+                    attr: {
+                        fill:              "transparent",
+                        stroke:            obj.properties.lineColor,
+                        'stroke-width':    obj.properties.lineLinewidth,
+                        'stroke-linejoin': 'round',
+                        'stroke-linecap':  'round',
+                        d:                 str,
+                        filter:            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                        'clip-path':       obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                    }
+                });
+
     
         
                 function Spline (t, P0, P1, P2, P3)
@@ -2616,15 +2622,20 @@ obj.create(
 
 
             // Create the clip area
-            var clippath = this.create(
-                'clipPath,id=trace-effect-clip',
-                this.svg.defs
-            );
+
+            var clippath = RGraph.SVG.create({
+                svg:  this.svg,
+                type: 'clipPath',
+                parent: this.svg.defs,
+                attr: {
+                    id: 'trace-effect-clip'
+                }
+            });
 
             var clippathrect = RGraph.SVG.create({
                 svg: this.svg,
-                parent: clippath,
                 type: 'rect',
+                parent: clippath,
                 attr: {
                     x: 0,
                     y: 0,
