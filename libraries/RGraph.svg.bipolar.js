@@ -617,26 +617,26 @@
 
         //
         // New create() shortcut function
-        //eg:
+        // For example:
         //    this.create('rect,x:0,y:0,width:100,height:100'[,parent]);
         //
-        // @param mixed definition This can either be an object
-        //                         which holds details of the object
-        //                         that you want to make or a string
-        //                         that holds the same information.
-        // @param mixed            This can be either a string that
-        //                         holds style information to be
-        //                         applied to the new node or it
-        //                         can be the parent node that the
-        //                         new node is to be added to.
-        // @param string           If used, this can be a string
-        //                         that holds the style information
-        //                         that is to be applied to the new
-        //                         node.
+        // @param str string The tag definition to parse and create
+        // @param     object The (optional) parent element
+        // @return    object The new tag
         //
-        this.create = function (definition)
+        this.create = function (str)
         {
-            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
+            var def = RGraph.SVG.create.parseStr(this, str);
+            def.svg = this.svg;
+            
+            // By default the parent is the SVG tag - but if
+            // requested then change it to the tag that has
+            // been given
+            if (arguments[1]) {
+                def.parent = arguments[1];
+            }
+
+            return RGraph.SVG.create(def);
         };
 
 
