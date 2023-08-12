@@ -1,4 +1,16 @@
-/* CSS unminified on 16th October 2022 */
+
+/*
+*  CSS unminified on 16th October 2022
+* 
+* This file is now minified on the fly by the file styles.css
+* and then the output of that is written to disk and cached
+*  in the file styles.css.min.css. 
+* 
+* The styles.css file checks for the cached file first and
+* then uses that if it exists - bypassing the chore of
+* minifying the original CSS files. The dates are checked
+* first so that stales content is never served.
+*/
 
 @viewport {
     width: extend-to-zoom;
@@ -44,11 +56,11 @@ body {
     line-height: 45px;
     padding-top: 50px;
     overflow-x: hidden;
-    min-height: 95vh;
+    min-height: 100vh;
 }
 
 /* Add the little icon after external links */
-a[rel*="external"]::after {    
+a[rel*="external"]::after {
     content: "";
     width: 13px;
     height: 13px;
@@ -120,7 +132,9 @@ pre.code {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.5), transparent);
     padding: 15px;
     line-height: 20px !important;
-    overflow: auto; /*overflow added back in as it was causing small-screen errors*/
+    
+    /* Overflow added back in as it was causing small-screen errors */
+    overflow: auto;
 }
 
 samp {
@@ -502,7 +516,7 @@ footer div#footer ul li {
 }
 
 footer div#footer ul li::before {
-    content: ''
+    content: '';
 }
 
 footer div#footer ul li:nth-child(1) {
@@ -558,7 +572,7 @@ div#easily-connect-to-and-import-your-data-container>div {
     justify-content: center;
     margin: 0 auto 0 auto;
     text-align: center;
-    max-width: 900px
+    max-width: 900px;
 }
 
 div#front-page-background-banner {
@@ -569,7 +583,7 @@ div#front-page-background-banner {
 div#front-page-header-text {
     position: relative;
     z-index: 1;
-    font-size: 1.25em
+    font-size: 1.25em;
 }
 
 div#front-page-header-text div:first-child {
@@ -636,10 +650,11 @@ div#front-page-download-buttons span#download-button {
     z-index: 1;
     position: relative;
     margin: -10px 10px 10px 10px;
-    background-image: linear-gradient(225deg, #8AD092, #0a0);
+    background-color: #0b0;
+    -background-image: linear-gradient(225deg, #060, #0a0);
     transition: transform linear .25s;
     width: 200px;
-    box-shadow: 1px 1px 3px gray;
+    box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
 
@@ -651,10 +666,11 @@ div#front-page-download-buttons span#front-page-setup-introduction-button {
     z-index: 1;
     position: relative;
     margin: 10px 10px 10px 10px;
-    background-image: linear-gradient(225deg, #FF5757, #f66);
+    background-color: #f00;
+    -background-image: linear-gradient(225deg, #c00, #f00);
     transition: transform linear .25s;
     width: 200px;
-    box-shadow: 1px 1px 3px gray;
+    box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
 
@@ -719,13 +735,13 @@ div#front-page-download-buttons span#front-page-github-button:hover,
 div#front-page-download-buttons span#download-button:hover,
 div#front-page-download-buttons span#front-page-setup-donate-button:hover,
 div#front-page-download-buttons span#front-page-setup-introduction-button:hover {
-    transform: scale(1.05);
+    transform: scale(var(--scale-factor));
 }
 
 div#front-page-50-howto-guides-container {
     max-width: 1000px;
     margin-left: auto;
-    margin-right: auto
+    margin-right: auto;
 }
 
 div#front-page-50-howto-guides-container p#floated-para {
@@ -963,7 +979,7 @@ div#navigation-top-bar-links a span:hover::after {
 }
 
 div#navigation-top-bar-links ul {
-    margin: 0
+    margin: 0;
 }
 
 div#navigation-top-bar-links ul li {
@@ -980,12 +996,12 @@ img#navigation-top-bar-logo {
 }
 
 #navigation-top-bar a:hover {
-    color: white !important
+    color: white !important;
 }
 
 #front-page-free-for {
     width: 90%;
-    margin-left: 5%
+    margin-left: 5%;
 }
 
 #front-page-free-for span {
@@ -1001,13 +1017,13 @@ img#navigation-top-bar-logo {
     float: right;
     position: relative;
     width: 670px;
-    height: 300px
+    height: 300px;
 }
 
 #download-page-poster-image-container img {
     position: absolute;
     top: 0;
-    left: 0
+    left: 0;
 }
 
 #download-page-poster-image-container div {
@@ -1016,11 +1032,11 @@ img#navigation-top-bar-logo {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0))
+    background-image: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
 }
 
 ul#dropdown-menu-smallscreen-social-container li {
-    display: inline
+    display: inline;
 }
 
 img#facebook-share {
@@ -1063,11 +1079,11 @@ img#github-share:hover {
     padding: 15px;
     background-color: #BBD4EB;
     border-radius: 15px;
-    margin-left: 15px
+    margin-left: 15px;
 }
 
 #front-page-floated-data-import-methods img {
-    transition: transform .25s ease-in
+    transition: transform .25s ease-in;
 }
 
 #front-page-floated-data-import-methods img:hover {
@@ -1079,7 +1095,7 @@ img#github-share:hover {
     background-color: #efefef;
     vertical-align: middle;
     padding: 3px;
-    border: 1px solid #ddd
+    border: 1px solid #ddd;
 }
 
 div#social-sharing-left-fixed-container {
@@ -1092,14 +1108,14 @@ div#social-sharing-left-fixed-container {
 
 img#social-sharing-left-fixed-container-facebook-icon {
     float: left;
-    border: 1px solid #aaa
+    border: 1px solid #aaa;
 }
 
 img#social-sharing-left-fixed-container-twitter-icon {
     float: left;
     border: 1px solid #aaa;
     position: relative;
-    top: -1px
+    top: -1px;
 }
 
 .demo-page-section-description {
@@ -1158,7 +1174,7 @@ div#infobox-container {
 div#infobox-container div {
     max-width: 250px;
     text-align: center;
-    margin: 0 0 20px 0
+    margin: 0 0 20px 0;
 }
 
 div#infobox-container div span {
@@ -1286,16 +1302,16 @@ div#page-index div.features div {
     margin-bottom: 15px;
 }
 
-div#page-index div.features.first-row div:nth-child(1)  {background-color: #aaf8;}
-div#page-index div.features.first-row div:nth-child(2)  {background-color: #fcc;}
-div#page-index div.features.second-row div:nth-child(1) {background-color: #ada;}
-div#page-index div.features.second-row div:nth-child(2) {background-color: #ffc;}
-div#page-index div.features.third-row div:nth-child(1)  {background-color: #dad9;}
-div#page-index div.features.third-row div:nth-child(2)  {background-color: #bad5f0;}
-div#page-index div.features.fourth-row div:nth-child(1) {background-color: #ddd;}
-div#page-index div.features.fourth-row div:nth-child(2) {background-color: #0bf3;}
-div#page-index div.features.fifth-row div:nth-child(1)  {background-color: #ff06;}
-div#page-index div.features.fifth-row div:nth-child(2)  {background-color: #cfc;}
+div#page-index div.features.first-row div:nth-child(1) {background-color:#aaf8;}
+div#page-index div.features.first-row div:nth-child(2) {background-color:#fcc;}
+div#page-index div.features.second-row div:nth-child(1){background-color:#ada;}
+div#page-index div.features.second-row div:nth-child(2){background-color:#ffc;}
+div#page-index div.features.third-row div:nth-child(1) {background-color:#dad9;}
+div#page-index div.features.third-row div:nth-child(2) {background-color:#bad5f0;}
+div#page-index div.features.fourth-row div:nth-child(1){background-color:#ddd;}
+div#page-index div.features.fourth-row div:nth-child(2){background-color:#0bf3;}
+div#page-index div.features.fifth-row div:nth-child(1) {background-color:#ff06;}
+div#page-index div.features.fifth-row div:nth-child(2) {background-color:#cfc;}
 
 div#page-index div.features p span {
     color: #666;
