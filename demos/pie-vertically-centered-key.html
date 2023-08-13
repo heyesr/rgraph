@@ -43,6 +43,7 @@
                 key: ['Bobby','Lucy','Peter','Piper','Billy','Harriet'],
                 keyPosition: 'graph',
                 keyPositionGraphBoxed: false,
+                keyPositionY: 0,
                 keyLabelsSize: 16,
                 keyValign: 'center',
                 
@@ -51,24 +52,7 @@
         
         // Draw the Pie chart and add the exec function which
         // runs after the draw function
-        }).roundRobin({frames: 45}).exec(function (obj)
-        {
-            // Calculate how big the key labels are
-            var textConf = RGraph.getTextConf({
-                object: obj,
-                prefix: 'keyLabels'
-            });
-            
-            // Calculate the height of the key
-            var height = obj.properties.key.length * textConf.size * 1.5 - 10;
-            
-            // Use the height that has just been calculate to set
-            // the new Y coordinate of the key
-            obj.set('keyPositionY', (obj.canvas.height / 2) - (height / 2));
-            
-            // Redraw the Pie chart
-            RGraph.redraw();
-        });
+        }).roundRobin();
     </script>
 
 
