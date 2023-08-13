@@ -624,20 +624,26 @@
             if (properties.key && properties.key.length) {
             
                 // Allow for vertical centering
+                if (properties.keyValign === 'center') {
                 
-                // Calculate how big the key labels are
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'keyLabels'
-                });
+                    // Calculate how big the key labels are
+                    var textConf = RGraph.getTextConf({
+                        object: this,
+                        prefix: 'keyLabels'
+                    });
+    
+                    // Calculate the height of the key
+                    var height = this.properties.key.length * textConf.size * 1.5;
+    
+                    // Use the height that has just been calculate to set
+                    // the new Y coordinate of the key
+                    this.set('keyPositionY', this.centery - (height / 2));
+                }
 
-                // Calculate the height of the key
-                var height = this.properties.key.length * textConf.size * 1.5;
 
-                // Use the height that has just been calculate to set
-                // the new Y coordinate of the key
-                this.set('keyPositionY', this.centery - (height / 2));
-            
+
+
+
                 RGraph.drawKey(
                     this,
                     properties.key,
