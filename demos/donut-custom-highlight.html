@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Donut chart which highlights the key</title>
+    
+    
+    <meta name="description" content="A Donut chart which highlights the key" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    
+
+    <h1>A Donut chart which highlights the key</h1>
+
+    <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+    
+    <script>
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: [61,23,16,50,64,32],
+            options: {
+                key: ['Bobby','Lucy*','Peter','Piper','Billy','Harriet'],
+                keyPosition: 'graph',
+                keyPositionGraphBoxed: false,
+                keyLabelsSize: 18,
+                keyValign: 'center',
+                shadow: false,
+                variant: 'donut',
+                tooltips: ' ' // This makes the pointer change
+                              // when hovering over a segment
+            }
+        }).draw();
+        
+        pie.canvas.onclick = function (e)
+        {            
+            var shape = pie.getShape(e);
+            
+            if (shape) {
+                
+                var coords = pie.coords.key[shape.index];
+                
+                pie.highlight(shape);
+                
+                // Highlight the key. Change the globalCompositeOperation
+                // so that the highlight is drawn behing the text
+                pie.path(
+                    'gco destination-over b r % % % % f #ff09 gco source-over',
+                        coords[0],
+                        coords[1],
+                        coords[2],
+                        coords[3]
+                );
+            }
+        };
+    </script>
+
+
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+&lt;canvas id="cvs" width="600" height="350"&gt;
+    [No canvas support]
+&lt;/canvas&gt;
+</pre>
+
+    This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+
+    
+</body>
+</html>
