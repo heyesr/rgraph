@@ -5160,11 +5160,12 @@
         //
         if (args.marker) {
             
-            var marker_size = 10;
+            var marker_size = 5;
             var strokestyle = context.strokeStyle;
             
             context.beginPath();
                 context.strokeStyle = 'red';
+                context.lineWidth = 1;
                 context.moveTo(x, y - marker_size);
                 context.lineTo(x, y + marker_size);
                 context.moveTo(x - marker_size, y);
@@ -5225,7 +5226,7 @@
         }
         
         var boundingW = width + 4;
-        var boundingH = height + 4;
+        var boundingH = height + 2;
 
 
 

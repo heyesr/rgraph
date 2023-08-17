@@ -1661,7 +1661,7 @@
         // @param number index The zero-indexed number of the segment
         // @param number size  The size (in pixels) of the explosion
         //
-        this.explodeSegment = function (index, size)
+        this.explodeSegment = function (index, size,callback = null)
         {
             if (typeof this.exploding === 'number' && this.exploding === index) {
                 return;
@@ -1707,6 +1707,11 @@
             setTimeout(function ()
             {
                 obj.exploding = null;
+
+                if (RGraph.isFunction (callback)) {
+                    callback(obj);
+                }
+
             }, size * delay);
         };
 

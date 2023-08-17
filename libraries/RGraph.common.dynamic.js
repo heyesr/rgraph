@@ -127,8 +127,9 @@
 
 
     //
-    // This is the canvas mouseup event listener. It installs the mouseup event for the
-    // canvas. The mouseup event then checks the relevant object.
+    // This is the canvas mouseup event listener. It installs the
+    // mouseup event for the  canvas. The mouseup event then checks
+    // the relevant object.
     // 
     // @param object obj The chart object
     //
@@ -182,7 +183,7 @@
     
 
                         if (!RGraph.isNull(obj) && RGraph.tooltip) {
-    
+
                             var shape = obj.getShape(e);
 
                             if (shape && shape.tooltip) {
@@ -192,14 +193,22 @@
                                 if (text) {
 
                                     var type = shape.object.type;
-    
+
                                     RGraph.clear(obj.canvas);
                                     RGraph.redraw();
                                     RGraph.Registry.set('tooltip.shape', shape);
-                                    
+
                                     // Note that tooltips are positioned at the pointer
                                     // now; and thats done within the .tooltip() function
-                                    RGraph.tooltip(obj, text, 0, 0, shape.sequentialIndex, e);
+
+                                    RGraph.tooltip(
+                                        obj,
+                                        text,
+                                        0,
+                                        0,
+                                        shape.sequentialIndex,
+                                        e
+                                    );
 
                                     obj.highlight(shape);
 
@@ -280,7 +289,7 @@
                 //
                 if (navigator.userAgent.indexOf('Firefox') >= 0) window.event = e;
 
-    
+
     
     
                 //
@@ -776,7 +785,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                 //
                 if (navigator.userAgent.indexOf('Firefox') >= 0) window.event = e;
 
-    
+
                 //
                 // Annotating
                 //
@@ -788,6 +797,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                 var obj = RGraph.ObjectRegistry.getObjectByXY(e);
 
                 if (obj) {
+
 
                     var id = obj.id;
                     
@@ -1101,9 +1111,15 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
                 var shape = obj.getShape(e);
 
-                if (obj.get('tooltips')) {
+                if (
+                    (!obj.isMarimekko && obj.get('tooltips')) ||
+                    (obj.isMarimekko && obj.get('marimekkoTooltips'))
+                   ) {
 
-                    var text = RGraph.parseTooltipText(obj.get('tooltips'), shape.sequentialIndex);
+                    var text = RGraph.parseTooltipText(
+                        obj.isMarimekko ? obj.get('marimekkoTooltips') : obj.get('tooltips'),
+                        shape.sequentialIndex
+                    );
 
                     if (!text && shape.object.type == 'scatter' && shape.index) {
                         text = RGraph.parseTooltipText(obj.get('tooltips'), shape.index);

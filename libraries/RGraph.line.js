@@ -1259,6 +1259,8 @@
         this.drawAxes = function ()
         {
             this.context.beginPath();
+            
+            this.context.lineCap = 'square';
 
             // Draw the X axis
             RGraph.drawXAxis(this);

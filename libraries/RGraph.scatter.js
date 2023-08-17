@@ -21,7 +21,7 @@
 
         // Store the data set(s)
         this.data = RGraph.arrayClone(conf.data);
-        
+
 
         // Convert objects to arrays
         for (let i=0; i<this.data.length; ++i) {
@@ -444,6 +444,40 @@
             bubbleShadowOffsetx:        2,
             bubbleShadowOffsety:        2,
             bubbleShadowBlur:           3,
+
+            marimekkoLinewidth:               10,
+            marimekkoColors:                  ['#faa', '#afa', '#aaf', '#ffa', '#faf', '#aff'],
+            marimekkoColorsSequential:        false,
+            marimekkoColorsStroke:            'white',
+            marimekkoLabels:                  null,
+            marimekkoLabelsColor:             null,
+            marimekkoLabelsSize:              null,
+            marimekkoLabelsFont:              null,
+            marimekkoLabelsBold:              null,
+            marimekkoLabelsItalic:            null,
+            marimekkoLabelsOffsetx:           0,
+            marimekkoLabelsOffsety:           0,
+            marimekkoLabelsFormattedDecimals: 0,
+            marimekkoLabelsFormattedPoint:    '.',
+            marimekkoLabelsFormattedThousand: ',',
+            marimekkoLabelsFormattedUnitsPre: '',
+            marimekkoLabelsFormattedUnitsPost:'',
+            marimekkoLabelsIngraph:           false,
+            marimekkoLabelsIngraphColor:      null,
+            marimekkoLabelsIngraphSize:       10,
+            marimekkoLabelsIngraphFont:       null,
+            marimekkoLabelsIngraphBold:       null,
+            marimekkoLabelsIngraphItalic:     null,
+            marimekkoLabelsIngraphUnitsPre:   '',
+            marimekkoLabelsIngraphUnitsPost:  '',
+            marimekkoLabelsIngraphPoint:      '.',
+            marimekkoLabelsIngraphThousand:   ',',
+            marimekkoLabelsIngraphDecimals:   0,
+            marimekkoLabelsIngraphOffsetx:    0,
+            marimekkoLabelsIngraphOffsety:    0,
+            marimekkoLabelsIngraphBackgroundFill: '#fffa',
+            marimekkoLabelsIngraphBackgroundStroke: 'transparent',
+            marimekkoLabelsIngraphSpecific:   null,
             
             
 
@@ -596,7 +630,7 @@
             if (typeof properties.backgroundImage === 'string') {
                 RGraph.drawBackgroundImage(this);
             }
-    
+
 
             //
             // Fire the onbeforedraw event
@@ -691,7 +725,7 @@
             // Go through all the data points and see if a tooltip has been given
             this.hasTooltips = false;
             var overHotspot  = false;
-    
+
             // Reset the coords array
             this.coords = [];
     
@@ -911,8 +945,13 @@
             //
             // Draw the key if necessary
             //
+
             if (properties.key && properties.key.length) {
-                RGraph.drawKey(this, properties.key, properties.lineColors);
+                RGraph.drawKey(
+                    this,
+                    properties.key,
+                    this.isMarimekko ? properties.marimekkoColors : properties.lineColors
+                );
             }
     
     
@@ -953,6 +992,14 @@
 
             // Draw any custom lines that have been defined
             this.installLasso();
+
+
+            //
+            // Draw a Marimekko chart
+            //
+            if (this.isMarimekko) {
+                this.drawMarimekko();
+            }
 
 
 
@@ -1019,6 +1066,8 @@
         //
         this.drawAxes = function ()
         {
+            this.context.lineCap = 'square';
+
             // Draw the X axis
             RGraph.drawXAxis(this);
             
@@ -1676,104 +1725,147 @@
             var overHotspot = false;
             var offset      = properties.tooltipsHotspot; // This is how far the hotspot extends
 
-            for (var set=0,len=this.coords.length; set<len; ++set) {
-                for (var i=0,len2=this.coords[set].length; i<len2; ++i) {
+            if (this.isMarimekko) {
 
-                    var x = this.coords[set][i][0];
-                    var y = this.coords[set][i][1];
-                    var tooltip = this.data[set][i][3];
-    
-                    if (typeof y == 'number') {
-                        if (mouseX <= (x + offset) &&
-                            mouseX >= (x - offset) &&
-                            mouseY <= (y + offset) &&
-                            mouseY >= (y - offset)) {
-                    
+                for (var i=0,seq=0; i<this.coordsMarimekko.length; ++i) {
+                    for (var j=0; j<this.coordsMarimekko[i].length; ++j) {
 
+                        let coords = this.coordsMarimekko[i][j];
 
-                            if (RGraph.parseTooltipText) {
-                                var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
-                            }
-
-                            var sequentialIndex = i;
-    
-                            for (var ds=(set-1); ds >=0; --ds) {
-                                sequentialIndex += this.data[ds].length;
-                            }
-
-                            
-                            
-                            
-
-                            // Should the point be ignored?
-                            if (RGraph.tooltipsHotspotIgnore(this, sequentialIndex)) {
-                                return;
-                            }
-
-
-
-
-                            return {
-                                object: this,
-                                     x: x,
-                                     y: y,
-                               tooltip: typeof tooltip === 'string' ? tooltip : null,
-                               dataset: set,
-                                 index: i,
-                       sequentialIndex: sequentialIndex
-                            };
-                        }
-
-
-
-
-                    } else if (RGraph.isNull(y)) {
-                        // Nothing to see here
-
-
-
-
-
-                    // Boxplots
-                    } else {
-
-                        var mark = this.data[set][i];
-
-                        //
-                        // Determine the width
-                        //
-                        var width = properties.boxplotWidth;
-                        
-                        if (typeof mark[1][7] === 'number') {
-                            width = mark[1][7];
-                        }
-
-                        if (   typeof x === 'object'
-                            && mouseX > x[0]
-                            && mouseX < x[1]
-                            && mouseY > y[1]
-                            && mouseY < y[3]
+                        if (    mouseX > coords[0] && mouseX < (coords[0] + coords[2])
+                             && mouseY > coords[1] && mouseY < (coords[1] + coords[3])
                             ) {
-
-                            var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
-
-                            // Determine the sequential index
-                            var sequentialIndex = i;    
-                            for (var ds=(set-1); ds >=0; --ds) {
-                                sequentialIndex += this.data[ds].length;
+                            // Determine the tooltip
+                            var tooltip = null;
+                            if (RGraph.isString(this.get('marimekkoTooltips'))) {
+                                tooltip = this.get('marimekkoTooltips');
+                            } else if ( RGraph.isArray(this.get('marimekkoTooltips')) && RGraph.isString(this.get('marimekkoTooltips')[seq])) {
+                                tooltip = this.get('marimekkoTooltips')[seq];
+                            }
+                            
+                            if (RGraph.parseTooltipText) {
+                                tooltip = RGraph.parseTooltipText(tooltip, seq);
                             }
 
+                            // Return the shape array
                             return {
-                             object: this,
-                                  x: x[0],
-                                  y: y[3],
-                              width: Math.abs(x[1] - x[0]),
-                             height: Math.abs(y[1] - y[3]),
-                            dataset: set,
-                              index: i,
-                    sequentialIndex: sequentialIndex,
-                            tooltip: tooltip
+                            object: this,
+                                 x: coords[0],
+                                 y: coords[1],
+                             width: coords[2],
+                            height: coords[3],
+                           tooltip: tooltip,
+                           dataset: i,
+                             index: j,
+                   sequentialIndex: seq
                             };
+                        }
+
+                        ++seq;
+                        
+                    }
+                }
+
+            } else {
+                for (var set=0,len=this.coords.length; set<len; ++set) {
+                    for (var i=0,len2=this.coords[set].length; i<len2; ++i) {
+    
+                        var x = this.coords[set][i][0];
+                        var y = this.coords[set][i][1];
+                        var tooltip = this.data[set][i][3];
+        
+                        if (typeof y == 'number') {
+                            if (mouseX <= (x + offset) &&
+                                mouseX >= (x - offset) &&
+                                mouseY <= (y + offset) &&
+                                mouseY >= (y - offset)) {
+                        
+    
+    
+                                if (RGraph.parseTooltipText) {
+                                    var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
+                                }
+    
+                                var sequentialIndex = i;
+        
+                                for (var ds=(set-1); ds >=0; --ds) {
+                                    sequentialIndex += this.data[ds].length;
+                                }
+    
+                                
+                                
+                                
+    
+                                // Should the point be ignored?
+                                if (RGraph.tooltipsHotspotIgnore(this, sequentialIndex)) {
+                                    return;
+                                }
+    
+    
+    
+    
+                                return {
+                                    object: this,
+                                         x: x,
+                                         y: y,
+                                   tooltip: typeof tooltip === 'string' ? tooltip : null,
+                                   dataset: set,
+                                     index: i,
+                           sequentialIndex: sequentialIndex
+                                };
+                            }
+    
+    
+    
+    
+                        } else if (RGraph.isNull(y)) {
+                            // Nothing to see here
+    
+    
+    
+    
+    
+                        // Boxplots
+                        } else {
+    
+                            var mark = this.data[set][i];
+    
+                            //
+                            // Determine the width
+                            //
+                            var width = properties.boxplotWidth;
+                            
+                            if (typeof mark[1][7] === 'number') {
+                                width = mark[1][7];
+                            }
+    
+                            if (   typeof x === 'object'
+                                && mouseX > x[0]
+                                && mouseX < x[1]
+                                && mouseY > y[1]
+                                && mouseY < y[3]
+                                ) {
+    
+                                var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
+    
+                                // Determine the sequential index
+                                var sequentialIndex = i;    
+                                for (var ds=(set-1); ds >=0; --ds) {
+                                    sequentialIndex += this.data[ds].length;
+                                }
+    
+                                return {
+                                 object: this,
+                                      x: x[0],
+                                      y: y[3],
+                                  width: Math.abs(x[1] - x[0]),
+                                 height: Math.abs(y[1] - y[3]),
+                                dataset: set,
+                                  index: i,
+                        sequentialIndex: sequentialIndex,
+                                tooltip: tooltip
+                                };
+                            }
                         }
                     }
                 }
@@ -2286,6 +2378,7 @@
         //
         this.parseColors = function ()
         {
+
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
                 this.original_colors.data                 = RGraph.arrayClone(this.data);
@@ -2301,6 +2394,10 @@
                 this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor);
                 this.original_colors.backgroundColor      = RGraph.arrayClone(properties.backgroundColor);
                 this.original_colors.axesColor            = RGraph.arrayClone(properties.axesColor);
+                this.original_colors.marimekkoColors      = RGraph.arrayClone(properties.marimekkoColors);
+                this.original_colors.marimekkoColorsStroke= RGraph.arrayClone(properties.marimekkoColorsStroke);
+                this.original_colors.marimekkoLabelsIngraphBackgroundStroke= RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundStroke);
+                this.original_colors.marimekkoLabelsIngraphBackgroundFill  = RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundFill);
             }
 
 
@@ -2350,6 +2447,14 @@
                     colors[i] = this.parseSingleColorForGradient(colors[i]);
                 }
             }
+            
+            // Parse colors for marimekko charts
+            var colors = properties.marimekkoColors;
+            if (colors) {
+                for (i=0; i<colors.length; ++i) {
+                    colors[i] = this.parseSingleColorForGradient(colors[i]);
+                }
+            }
     
              properties.colorsDefault         = this.parseSingleColorForGradient(properties.colorsDefault);
              properties.crosshairsColor       = this.parseSingleColorForGradient(properties.crosshairsColor);
@@ -2360,6 +2465,9 @@
              properties.backgroundGridColor   = this.parseSingleColorForGradient(properties.backgroundGridColor);
              properties.backgroundColor       = this.parseSingleColorForGradient(properties.backgroundColor);
              properties.axesColor             = this.parseSingleColorForGradient(properties.axesColor);
+             properties.marimekkoColorsStroke = this.parseSingleColorForGradient(properties.marimekkoColorsStroke);
+             properties.marimekkoLabelsIngraphBackgroundStroke = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundStroke);
+             properties.marimekkoLabelsIngraphBackgroundFill   = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundFill);
         };
 
 
@@ -2910,14 +3018,47 @@
         //
         this.tooltipSubstitutions = function (opt)
         {
-            var indexes = RGraph.sequentialIndexToGrouped(opt.index, this.data);
+            // Create the data for marimekko charts
+            if (this.isMarimekko) {
+                var marimekko_data = [];
+                for (var i=0; i<this.properties.marimekkoData.length; ++i) {
+                    marimekko_data[i] = [];
+                    for (var j=0; j<this.properties.marimekkoData[i][1].length; ++j) {
+                        marimekko_data[i].push(this.properties.marimekkoData[i][1][j]);
+                    }
+                }
+            }
+
+
+            // Marimekko charts
+            if (this.isMarimekko) {
+                var indexes = RGraph.sequentialIndexToGrouped(
+                    opt.index,
+                    marimekko_data
+                );
+                
+                var  value = marimekko_data[indexes[0]][indexes[1]];
+                var values = [marimekko_data[indexes[0]][indexes[1]]];
+            
+            // Regular Scatter charts
+            } else {
+                var indexes = RGraph.sequentialIndexToGrouped(
+                    opt.index,
+                    this.data
+                );
+                
+                var value  = this.data[indexes[0]][indexes[1]][1];
+                var values = [this.data[indexes[0]][indexes[1]][1]];
+            }
+
+
 
             return {
                   index: indexes[1],
                 dataset: indexes[0],
         sequentialIndex: opt.index,
-                  value: this.data[indexes[0]][indexes[1]][1],
-                 values: [this.data[indexes[0]][indexes[1]][1]]
+                  value: value,
+                 values: values
             };
         };
 
@@ -2946,7 +3087,7 @@
             }
 
             // If a color is defined for this point then use it
-            if (this.data[specific.dataset][specific.index][2]) {
+            if (!this.isMarimekko && this.data[specific.dataset][specific.index][2]) {
                 color = this.data[specific.dataset][specific.index][2];
             }
 
@@ -2973,20 +3114,34 @@
         //
         this.positionTooltipStatic = function (args)
         {
+            // Make the data into a bog standard 2D array
+            if (this.isMarimekko) {
+                var marimekko_data = [];
+                for (var i=0; i<this.properties.marimekkoData.length; ++i) {
+                    marimekko_data[i] = [];
+                    for (var j=0; j<this.properties.marimekkoData[i][1].length; ++j) {
+                        marimekko_data[i].push(this.properties.marimekkoData[i][1][j]);
+                    }
+                }
+            }
+
+
+
+
             var obj      = args.object,
                 e        = args.event,
                 tooltip  = args.tooltip,
                 index    = args.index,
                 canvasXY = RGraph.getCanvasXY(obj.canvas),
-                indexes  = RGraph.sequentialIndexToGrouped(args.index, this.data),
-                coords   = this.coords[indexes[0]][indexes[1]];
+                indexes  = RGraph.sequentialIndexToGrouped(args.index, this.isMarimekko ? marimekko_data : this.data),
+                coords   = this.isMarimekko ? this.coordsMarimekko[indexes[0]][indexes[1]] : this.coords[indexes[0]][indexes[1]];
 
 
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                 canvasXY[0]                      // The X coordinate of the canvas
-                + coords[0]                      // The X coordinate of the point on the chart
+                + (this.isMarimekko ? (coords[0] + (coords[2] / 2) ) : coords[0]) // The X coordinate of the point on the chart
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
@@ -3582,6 +3737,194 @@
 
 
         //
+        // Draws a Marimekko chart
+        //
+        this.drawMarimekko = function ()
+        {
+            var data = RGraph.arrayClone(this.properties.marimekkoData);
+
+            // Calculate the total of all the X values
+            for (var i=0,totalX=0; i<data.length; ++i) {
+                totalX += data[i][0];
+            }
+
+
+            var graphWidth  = this.canvas.width - this.properties.marginLeft - this.properties.marginRight;
+            var graphHeight = this.canvas.height - this.properties.marginTop - this.properties.marginBottom;
+            var x           = this.properties.marginLeft;
+            var coords      = [];
+
+
+
+
+
+
+
+
+            ////////////////////////////////
+            // Draw the data on the chart //
+            ////////////////////////////////
+            for (var i=0,seq=0; i<data.length; ++i) {
+
+                var width     = (data[i][0] / totalX) * graphWidth;
+                var y         = this.canvas.height - this.properties.marginBottom;
+                    coords[i] = [];
+             
+                // Calulate the total Y value
+                for (var j=0,totalY=0; j<data[i][1].length; ++j) {
+                    totalY += data[i][1][j];
+                }
+
+                // Loop through the vertical values
+                for (var j=0; j<data[i][1].length; ++j) {
+
+                    var value  = data[i][1][j];
+                    var height = (value / totalY) * graphHeight;
+                    var pc     = (value / RGraph.arraySum(data[i][1])) * 100;
+
+                    this.path(
+                        'b r % % % % lw % s % f %',
+                        x, y - height, width, height,
+                        this.properties.marimekkoLinewidth,
+                        this.properties.marimekkoLinewidth ? this.properties.marimekkoColorsStroke : 'transparent',
+                        this.properties.marimekkoColorsSequential ? this.properties.marimekkoColors[seq] : this.properties.marimekkoColors[j]
+                    );
+                    
+                    coords[i].push([x, y - height, width, height]);
+
+
+
+                    //
+                    // Draw the ingraph label if requested
+                    //
+                    if (this.properties.marimekkoLabelsIngraph) {
+
+                        if (!marimekkoLabelsIngraphTextConf) {
+                            
+                            var marimekkoLabelsIngraphTextConf = RGraph.getTextConf({
+                                object: this,
+                                prefix: 'marimekkoLabelsIngraph'
+                            });
+                        }
+                        
+                        var text = (this.properties.marimekkoLabelsIngraphSpecific && RGraph.isString(this.properties.marimekkoLabelsIngraphSpecific[seq]) ) ? (this.properties.marimekkoLabelsIngraphSpecific[seq] || '') : RGraph.numberFormat({
+                            object:    this,
+                            number:    Number(pc).toFixed(this.properties.marimekkoLabelsIngraphDecimals),
+                            value:     Number(pc).toFixed(this.properties.marimekkoLabelsIngraphDecimals),
+                            unitspre:  this.properties.marimekkoLabelsIngraphUnitsPre,
+                            unitspost: this.properties.marimekkoLabelsIngraphUnitsPost,
+                            point:     this.properties.marimekkoLabelsIngraphPoint,
+                            thousand:  this.properties.marimekkoLabelsIngraphThousand
+                        });
+                        
+                        seq++;
+
+
+
+
+
+                        RGraph.text({
+                            object: this,
+                            text:   text,
+                            x:      x + (width / 2) + this.properties.marimekkoLabelsIngraphOffsetx,
+                            y:      y - (height / 2) + 5 + this.properties.marimekkoLabelsIngraphOffsety,
+                            color:  marimekkoLabelsIngraphTextConf.color,
+                            italic: marimekkoLabelsIngraphTextConf.italic,
+                            bold:   marimekkoLabelsIngraphTextConf.bold,
+                            font:   marimekkoLabelsIngraphTextConf.font,
+                            size:   marimekkoLabelsIngraphTextConf.size,
+                            halign: 'center',
+                            valign: 'center',
+                            tag:    'marimekkoLabelsIngraph',
+                            bounding: true,
+                            'bounding.stroke': this.properties.marimekkoLabelsIngraphBackgroundStroke,
+                            'bounding.fill':   this.properties.marimekkoLabelsIngraphBackgroundFill
+                        });
+                    }
+
+
+
+
+
+
+                    y -= height;
+                }
+
+
+
+
+
+                //
+                // Draw the regular (horizonatal) Marimekko
+                // label if it's been given
+                //
+                if (this.properties.marimekkoLabels) {
+                
+                
+                    var textConf = RGraph.getTextConf({
+                        object: this,
+                        prefix: 'marimekkoLabels'
+                    });
+                
+                    // Get the label
+                    if (RGraph.isString(this.properties.marimekkoLabels)) {
+                        var label = this.properties.marimekkoLabels;
+                    } else if (RGraph.isArray(this.properties.marimekkoLabels)) {
+                        var label = this.properties.marimekkoLabels[i];
+                    } else {
+                        var label = '';
+                    }
+
+                    // Now do substitution on the label
+                    var label = RGraph.labelSubstitution({
+                        index:     i,
+                        text:      label || '',
+                        object:    this,
+                        value:     RGraph.arraySum(data[i][1]),
+                        decimals:  this.properties.marimekkoLabelsFormattedDecimals,
+                        point:     this.properties.marimekkoLabelsFormattedPoint,
+                        thousand:  this.properties.marimekkoLabelsFormattedThousand,
+                        unitsPre:  this.properties.marimekkoLabelsFormattedUnitsPre,
+                        unitsPost: this.properties.marimekkoLabelsFormattedUnitsPost
+                    });
+                
+                    RGraph.text({
+                        object: this,
+                        x:      coords[i].at(-1)[0] + (coords[i].at(-1)[2] / 2) + this.properties.marimekkoLabelsOffsetx,
+                        y:      coords[i].at(-1)[1]  - 5 + this.properties.marimekkoLabelsOffsety,
+                        text:   label,
+                        color:  textConf.color,
+                        font:   textConf.font,
+                        size:   textConf.size,
+                        bold:   textConf.bold,
+                        italic: textConf.italic,
+                        halign: 'center',
+                        valign: 'bottom'
+                    });
+                }
+                x += width;
+            }
+
+
+
+
+
+            //
+            // Store the coordinates
+            //
+            this.coordsMarimekko = coords;
+
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
         // Register the object
         //
         RGraph.register(this);
@@ -3741,4 +4084,47 @@
     RGraph.Scatter.drilldown.draw = function (options)
     {
         return RGraph.Scatter.drilldown(options);
+    };
+
+
+
+
+
+
+
+
+    //
+    // This is a function that facilitates creating a
+    // Marimekko chart.
+    //
+    RGraph.Scatter.Marimekko = function (opt)
+    {
+        this.options = opt.options;
+        this.data    = opt.data;
+        this.id      = opt.id;
+
+        //
+        // The draw function for the Marimekko chart
+        //
+        this.draw = function ()
+        {
+            return new RGraph.Scatter({
+                id: this.id,
+                data: opt.data,
+                options: {
+                    xaxisScaleMax: 100,
+                    yaxisScaleMax: 100,
+                    backgroundGrid: false,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScaleUnitsPost: '%',
+                    ...this.options
+                }
+            }).exec(function (obj)
+            {
+                // Set this flag so that we can tell if this
+                // is a marimekko chart
+                obj.isMarimekko = true;
+            }).draw();
+        };
     };
