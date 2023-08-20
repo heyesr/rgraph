@@ -44,23 +44,33 @@
         }).draw();
         
         pie.canvas.onclick = function (e)
-        {            
+        {
+            // Get the shape object. This is available when
+            // a shape on the chart (in the case of the
+            // Pie chart - a segment) is hovered over or
+            // clicked. If a shape hasn't been clicked or
+            // isn't currently being hovered over this
+            // method will return null.
             var shape = pie.getShape(e);
             
             if (shape) {
                 
+                // Get the coordinates of the segment, using the
+                // index that's given as part of the shape object,
+                // from the coordinates that are held on the
+                // chart object.
                 var coords = pie.coords.key[shape.index];
                 
+                // Highlight the segment using the highlight()
+                // function on the Pie chart object
                 pie.highlight(shape);
                 
-                // Highlight the key. Change the globalCompositeOperation
-                // so that the highlight is drawn behing the text
+                // Highlight the key. Change the
+                // globalCompositeOperation so that the highlight is
+                // drawn behind the text
                 pie.path(
                     'gco destination-over b r % % % % f #ff09 gco source-over',
-                        coords[0],
-                        coords[1],
-                        coords[2],
-                        coords[3]
+                    coords[0],coords[1],coords[2],coords[3]
                 );
             }
         };

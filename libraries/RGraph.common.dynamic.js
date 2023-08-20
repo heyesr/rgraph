@@ -848,6 +848,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                                     }
                                     break;
                                 case 'line':      var shape = obj.getShape(e); break;
+                                case 'scatter':   var shape = obj.getShape(e); break;
                                 case 'hbar':      var shape = obj.getShapeByY(e); break;
                                 case 'activity':  var shape = obj.getShape(e); break;
                                 default:          var shape = null;
@@ -860,7 +861,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
                             //
                             // Added 30/9/2016
-                            // Now check the index in the adjustingLimitto property
+                            // Now check the index in the adjustingOnly property
                             // If that property is an object and the appropriate index is
                             // truthy then allow adjusting, otherwise don't.
                             //
@@ -1292,6 +1293,25 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
                 if (shape && obj.isAdjustable(shape)) {
                     e.target.style.cursor = 'ns-resize';
+                }
+            } else {
+                e.target.style.cursor = 'default';
+            }
+        }
+
+        
+        // =========================================================================
+        // Scatter chart adjusting
+        // =========================================================================
+
+
+        if (obj && obj.type == 'scatter' && obj.get('adjustable')) {
+            if (obj.getShape) {
+
+                var shape = obj.getShape(e);
+
+                if (shape && obj.isAdjustable(shape)) {
+                    e.target.style.cursor = 'move';
                 }
             } else {
                 e.target.style.cursor = 'default';

@@ -479,7 +479,8 @@
             marimekkoLabelsIngraphBackgroundStroke: 'transparent',
             marimekkoLabelsIngraphSpecific:   null,
             
-            
+            adjustable:                 false,
+            adjustableOnly:             null,
 
             clearto:                    'rgba(0,0,0,0)',
             
@@ -1977,8 +1978,8 @@
     
             if (   mouseY < this.marginTop
                 || mouseY > (this.canvas.height - this.marginBottom)
-                || mouseX < this.marginLeft
-                || mouseX > (this.canvas.width - this.marginRight)
+                //|| mouseX < this.marginLeft
+                //|| mouseX > (this.canvas.width - this.marginRight)
                ) {
                 return null;
             }
@@ -2046,9 +2047,9 @@
             }
             var obj = this;
             
-            if (   mouseY < this.marginTop
-                || mouseY > (this.canvas.height - this.marginBottom)
-                || mouseX < this.marginLeft
+            if (//|| mouseY < this.marginTop
+                //|| mouseY > (this.canvas.height - this.marginBottom)
+                mouseX < this.marginLeft
                 || mouseX > (this.canvas.width - this.marginRight)
                ) {
                 return null;
@@ -3915,6 +3916,89 @@
             this.coordsMarimekko = coords;
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This method handles the adjusting calculation for
+        // when the mouse is moved
+        // 
+        // @param object e The event object
+        //
+        this.adjusting_mousemove = function (e)
+        {
+            //
+            // Handle adjusting for the Bar
+            //
+            if (properties.adjustable && RGraph.Registry.get('adjusting') && RGraph.Registry.get('adjusting').uid == this.uid) {
+    
+                var shape = RGraph.Registry.get('adjusting.shape');
+
+                if (shape) {
+    
+                    RGraph.Registry.set('adjusting.shape', shape);
+
+                    var x = this.getXValue(e);
+                    var y = this.getYValue(e);
+                    var [mouseX, mouseY] = RGraph.getMouseXY(e);
+
+
+                    // Y coordinate bounding
+                    if (mouseY <= shape.object.properties.marginTop) {
+                        y = shape.object.scale2.max;
+                    } else if (mouseY > (shape.object.canvas.height - shape.object.properties.marginBottom) ) {
+                        y = shape.object.scale2.min;
+
+                    }
+
+                    // X coordinate bounding
+                    if (mouseX <= shape.object.properties.marginLeft) {
+                        x = shape.object.properties.xaxisScaleMin;
+                    } else if (mouseX > (shape.object.canvas.width - shape.object.properties.marginRight) ) {
+                        x = shape.object.properties.xaxisScaleMax;
+                    }
+
+
+                    // Set the new X and Y values
+                    this.data[shape.dataset][shape.index][0] = x;
+                    this.data[shape.dataset][shape.index][1] = y;
+    
+                    RGraph.redrawCanvas(e.target);
+                    
+                    RGraph.fireCustomEvent(this, 'onadjust');
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Determines whether a point is adjustable or not.
+        //
+        // @param object A shape object
+        //
+        this.isAdjustable = function (shape)
+        {
+            if (RGraph.isNull(properties.adjustableOnly)) {
+                return true;
+            }
+
+            if (shape && RGraph.isArray(properties.adjustableOnly) && properties.adjustableOnly[shape.sequentialIndex]) {
+                return true;
+            }
+
+            return false;
         };
 
 
