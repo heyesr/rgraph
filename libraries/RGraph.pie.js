@@ -2095,7 +2095,8 @@
 
 
                 // Use the value
-                } else {
+                } else if (RGraph.isNumber(this.data[i]) ) {
+
                     var text =  RGraph.numberFormat({
                         object:    this,
                         number:    this.data[i].toFixed(properties.labelsIngraphDecimals),
