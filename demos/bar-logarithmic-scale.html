@@ -12,9 +12,7 @@
     
     <meta name="description" content="When you have a dataset that has wildly different values in it a logarithmic chart like this may be the answer." />
     
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
@@ -61,7 +59,7 @@
     
     <script id="rgraph-demo-source-code">
         // Some raw data
-        data = [1000000,5,6,4,6,8012,12,7];
+        data = [1000000,100000,10000,1000,100,10,0];
 
         // Convert the data using the RGraph.log() function to logarithmic values
         for (i=0;i<data.length; ++i) {
@@ -81,14 +79,16 @@
                 // logarithmic values
                 yaxisLabelsSpecific: ['1,000,000', '100,000', '10,000', '1,000', '100', '10', '0'],
 
-                xaxisLabels: ['Pob','Libby','June','Hoolio','Jane','Daz','Luis','John'],
+                xaxisLabels: ['Pob','Libby','June','Hoolio','Jane','Daz','Luis'],
                 xaxisTickmarksCount: 8,
                 marginLeft: 95,
                 marginBottom: 45,
+                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 6,
-                backgroundGridVlinesCount: 7,
+                backgroundGridBorder: false,
                 colorsStroke: 'transparent',
-                shadow: false,
+                xaxis: false,
+                yaxis: false,
                 responsive: [
                     {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
                     {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{'float':'none',textAlign:'center'}}
