@@ -4100,7 +4100,9 @@
 
 
 
+        //
         // Adds dataset tooltips
+        //
         this.addDatasetTooltip = function ()
         {
             var obj = this;
@@ -4138,6 +4140,10 @@
                         // Set the tooltip positioning
                         obj.set('tooltipsPositionStatic', false);
                         obj.set('tooltipsEffect', 'fade');
+                        
+                        if (obj.get('tooltipsDatasetEvent') === 'mousemove') {
+                            obj.set('tooltipsEffect', 'none');
+                        }
 
                         // Add the dataset index to the object
                         obj.tooltipsDatasetIndex = dataset;
