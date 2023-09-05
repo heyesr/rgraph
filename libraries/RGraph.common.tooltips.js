@@ -1117,7 +1117,7 @@
         
         
         
-        
+
         // If the effect is fade:
         // Increase the opacity from its default 0 up to 1 - fading the tooltip in
         if (args.object.get('tooltipsEffect') === 'fade') {
@@ -1133,7 +1133,7 @@
                     })(i);
                 }
             //}, 1000)
-        } else {
+        } else if (!RGraph.isNumber(args.object.properties.tooltipsCss.opacity)) {
             tooltipObj.style.opacity = 1;
         }
 
