@@ -64,7 +64,25 @@
                 //keyBackground: 'white',
                 textSize: 16
             }
-        }).draw()
+        }).draw();
+        
+        // This ontooltip event listener moves the tooltip to be
+        // positioned by the cursor (at the time of the click)
+        //
+        //.on('tooltip', function (obj)
+        //{
+        //    var e        = window.event
+        //    var tooltip  = RGraph.Registry.get('tooltip');
+        //    var [mx, my] = RGraph.getMouseXY(e);
+        //    var [cx, cy] = RGraph.getCanvasXY(obj.canvas);
+        //    
+        //    // Use this to set the position of the tooltip
+        //    setTimeout(function()
+        //    {
+        //        tooltip.style.left = cx + mx - (tooltip.offsetWidth / 2)+ 'px';
+        //        tooltip.style.top  = cy + my - tooltip.offsetHeight - 20 + 'px';
+        //    },25);
+        //});
         
         //.on('tooltip', function (obj)
         //{
