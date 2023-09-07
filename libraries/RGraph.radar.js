@@ -119,11 +119,11 @@
             labelsAxesOffsetx:    0,
             labelsAxesOffsety:    0,
 
-            backgroundCircles:    true,
-            backgroundCirclesCount: null,
-            backgroundCirclesColor: '#ddd',
-            backgroundCirclesPoly:  true,
-            backgroundCirclesSpokes: 24,
+            backgroundGrid:    true,
+            backgroundGridCount: null,
+            backgroundGridColor: '#ddd',
+            backgroundGridPoly:  true,
+            backgroundGridSpokes: 24,
 
             textSize:             12,
             textFont:             'Arial, Verdana, sans-serif',
@@ -332,6 +332,11 @@
 
             if (name === 'labelsOffset') {
                 name = 'labelsOffsetRadius';
+            }
+            
+            // Change backgroundCircles to backgroundGrid
+            if (name.startsWith('backgroundCircles')) {
+                name = name.replace(/^backgroundCircles/,'backgroundGrid');
             }
 
             // the number of arguments is only one and it's an
@@ -677,10 +682,10 @@
         //
         this.drawBackground = function ()
         {
-            var color   = properties.backgroundCirclesColor;
-            var poly    = properties.backgroundCirclesPoly;
-            var spacing = properties.backgroundCirclesSpacing;
-            var spokes  = properties.backgroundCirclesSpokes;
+            var color   = properties.backgroundGridColor;
+            var poly    = properties.backgroundGridPoly;
+            var spacing = properties.backgroundGridSpacing;
+            var spokes  = properties.backgroundGridSpokes;
     
     
     
@@ -694,7 +699,7 @@
             //
             // Draws the background circles
             //
-            if (properties.backgroundCircles && poly == false) {
+            if (properties.backgroundGrid && poly == false) {
     
     
     
@@ -704,7 +709,7 @@
                 this.context.strokeStyle = color;
                this.context.beginPath();
                     
-                    var numrings = typeof properties.backgroundCirclesCount == 'number' ? properties.backgroundCirclesCount : properties.labelsAxesCount;
+                    var numrings = typeof properties.backgroundGridCount == 'number' ? properties.backgroundGridCount : properties.labelsAxesCount;
 
                     // TODO Currently set to 5 - needs changing
                    for (var r=0; r<=this.radius; r+=(this.radius / numrings)) {
@@ -746,7 +751,7 @@
             // many points there are
             // (ie hexagons if there are 6 points, squares if there are four etc)
             //
-            } else if (properties.backgroundCircles && poly == true) {
+            } else if (properties.backgroundGrid && poly == true) {
 
                 //
                 // Draw the diagonals/spokes
@@ -774,7 +779,7 @@
                 //
                 this.context.strokeStyle = color;
                 
-                var numrings = typeof properties.backgroundCirclesCount === 'number' ? properties.backgroundCirclesCount : properties.labelsAxesCount;
+                var numrings = typeof properties.backgroundGridCount === 'number' ? properties.backgroundGridCount : properties.labelsAxesCount;
 
                 for (var r=0; r<=this.radius; r+=(this.radius / numrings)) {
                     this.context.beginPath();
