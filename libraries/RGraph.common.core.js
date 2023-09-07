@@ -3833,6 +3833,7 @@
     RGraph.getAngleByXY = function ()
     {
         var args = RGraph.getArgs(arguments, 'cx,cy,x,y');
+
         var angle = Math.atan((args.y - args.cy) / (args.x - args.cx));
             angle = Math.abs(angle)
 
