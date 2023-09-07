@@ -293,7 +293,8 @@
     //
     // The function that creates the path string
     //
-    // @param coords array The array that contains X/Y pair coordinates
+    // @param coords array The array that contains X/Y pair
+    //                     coordinates
     //
     RGraph.SVG.create.pathString = function (coords)
     {
