@@ -1187,6 +1187,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
         if (pointer) {
             e.target.style.cursor = 'pointer';
+
         } else if (e.target.style.cursor == 'pointer') {
             e.target.style.cursor = 'default';
         } else {
@@ -1245,7 +1246,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
         
         
         
-        
+
         
         
         
@@ -1265,7 +1266,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             e.target.style.cursor = 'pointer';
         }
 
-        
+
         // =========================================================================
         // Gantt chart adjusting
         // =========================================================================
