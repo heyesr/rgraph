@@ -2706,6 +2706,7 @@
                     );
                 
                 } else {
+                    this.context.lineWidth = 1;
                     RGraph.Highlight.point(this, shape);
                 }
             }
