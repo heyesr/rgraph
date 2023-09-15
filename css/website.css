@@ -27,10 +27,12 @@
     src: url('/fonts/RobotoCondensed-Light.ttf');
 }
 
-:target {
-    position: relative;
-    top: -65px;
-}
+/*
+* :target {
+*     position: relative;
+*     top: -65px;
+* }
+*/
 
 /*
 * Set the default of transformation scaling
@@ -54,13 +56,14 @@ body {
     font-family: sans-serif;
     font-size: 1.2em;
     line-height: 45px;
-    padding-top: 50px;
     overflow-x: hidden;
     min-height: 100vh;
 }
 
 /* Add the little icon after external links */
 a[rel*="external"]::after {
+/*a[href^="http://"]::after,
+a[href^="https://"]::after {*/
     content: "";
     width: 13px;
     height: 13px;
@@ -78,6 +81,9 @@ div#main-body-container {
     padding-bottom: 5px;
     padding-top: 0;
     text-align: left;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 :is(h1,h2,h3,h4) {
@@ -485,17 +491,43 @@ div.api-properties-small-screen {
     display: none;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 footer {
     position: sticky;
     top: 100vh;
 }
 
+footer nav div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 footer div#footer {
     background-color: black;
     color: white;
-    margin: -30px -30px;
+    max-width: 1200px;
     z-index: 1000;
     position: relative;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 footer div#footer p {
@@ -921,20 +953,20 @@ ul.dropdown-menu-smallscreen li a {
     display: none;
     white-space: nowrap;
     position: absolute;
-    top: 7px;
+    top: 14px;
     right: 25px;
     z-index: 5;
     cursor: pointer;
 }
 
 div#navigation-top-bar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 1000;
     width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
     line-height: 25px;
     box-shadow: 0px 0px 3px 2px #999;
+    border-radius: 50px;
 }
 
 div#navigation-top-bar-image {
@@ -952,9 +984,11 @@ div#navigation-top-bar-links a {
     font-family: Segoe UI, sans-serif;
     text-align: center;
     font-size: .8em;
-    width: 8%;
+    width: 9%;
     display: inline-block;
     padding-top: 4px;
+    position: relative;
+    top: -3px;
 }
 
 div#navigation-top-bar-links a span {
@@ -999,6 +1033,21 @@ img#navigation-top-bar-logo {
     color: white !important;
 }
 
+a.navigation-top-bar-social-links img  {
+    position: relative;
+    top: 5px;
+}
+
+a.navigation-top-bar-social-links img.facebook-share {
+    left: 12px;
+}
+
+a.navigation-top-bar-social-links img.github-share {
+    top: 7px;
+    left: -5px;
+}
+
+
 #front-page-free-for {
     width: 90%;
     margin-left: 5%;
@@ -1040,26 +1089,14 @@ ul#dropdown-menu-smallscreen-social-container li {
 }
 
 img#facebook-share {
-    position: absolute;
-    top: 5px;
-    left: calc(64% + 295px);
-    transition: transform .5s ease-out;
+    
 }
 
 img#twitter-share {
-    position: absolute;
-    top: 8px;
-    left: calc(64% + 320px);
-    transition: transform .5s ease-out;
-    transform: translate(3px, -3px);
+
 }
 
 img#github-share {
-    position: absolute;
-    top: 8px;
-    left: calc(64% + 350px);
-    transition: transform .5s ease-out;
-    transform: translate(13px,0);
 }
 
 
@@ -1098,25 +1135,6 @@ img#github-share:hover {
     border: 1px solid #ddd;
 }
 
-div#social-sharing-left-fixed-container {
-    position: fixed;
-    left: 10px;
-    top: 50%;
-    width: 35px;
-    z-index: 1;
-}
-
-img#social-sharing-left-fixed-container-facebook-icon {
-    float: left;
-    border: 1px solid #aaa;
-}
-
-img#social-sharing-left-fixed-container-twitter-icon {
-    float: left;
-    border: 1px solid #aaa;
-    position: relative;
-    top: -1px;
-}
 
 .demo-page-section-description {
     background-color: #eee;

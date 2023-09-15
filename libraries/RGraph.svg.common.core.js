@@ -296,9 +296,13 @@
     // @param coords array The array that contains X/Y pair
     //                     coordinates
     //
-    RGraph.SVG.create.pathString = function (coords)
+    RGraph.SVG.create.pathString = function (coords, initial = 'M')
     {
-        var path = 'M {1} {2}'.format(coords[0][0], coords[0][1]);
+        var path = '{1} {2} {3}'.format(
+            initial,
+            coords[0][0],
+            coords[0][1]
+        );
 
         for (var i=0; i<coords.length; ++i) {
             path += ` L ${coords[i][0]} ${coords[i][1]}`;
@@ -6633,7 +6637,7 @@
         
             // Loop through each line to be drawn
             for (let i=0; i<obj.properties.horizontalLines.length; ++i) {
-                
+
                 var conf       = lines[i],
                     textFont   = conf.labelFont  || obj.properties.textFont,
                     textColor  = conf.labelColor || defaults.labelColor,
@@ -6761,16 +6765,20 @@
                 //
                 // Draw the line
                 //
-                RGraph.SVG.create(
-                    'line,x1=%1,y1=%2,x2=%3,y2=%4,stroke=black,stroke-width=%5,stroke-dasharray=%6,stroke=%7'.format(
-                        obj.properties.marginLeft,y,
-                        obj.width - obj.properties.marginRight,y,
-                        typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
-                        linedash,
-                        conf.color || defaults.color
-                    ),
-                    obj.svg.all
-                );
+                RGraph.SVG.create({
+                    svg:    obj.svg,
+                    type:   'line',
+                    parent: obj.svg.all,
+                    attr: {
+                        x1:                 obj.properties.marginLeft,
+                        y1:                 y,
+                        x2:                 obj.width - obj.properties.marginRight,
+                        y2:                 y,
+                        'stroke-width':     typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                        'stroke-dasharray': linedash,
+                        stroke:             conf.color || defaults.color
+                    }
+                });
 
 
 

@@ -375,7 +375,7 @@
 
             // Convert a string based row name to a
             // numeric index
-            if (RGraph.isString(index)) {
+            if (typeof index === 'string') {
                 for (var i=0; i<this.data.length; ++i) {
                     if (this.data[i][0] === index) {
                         var found = true;

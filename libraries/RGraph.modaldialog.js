@@ -230,8 +230,8 @@
                 ModalDialog.dialog.style.left = (document.body.offsetWidth / 2) - (ModalDialog.dialog.offsetWidth / 2) + 'px';
             }
     
-            ModalDialog.background.style.width  = '2500px';
-            ModalDialog.background.style.height = '2500px';
+            ModalDialog.background.style.width  = '100%';
+            ModalDialog.background.style.height = '100%';
         },
 
 

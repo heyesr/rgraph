@@ -273,6 +273,7 @@
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsDataset:                 null,
 
             //highlightStroke: 'rgba(0,0,0,0)',
             //highlightFill: 'rgba(255,255,255,0.7)',
@@ -765,6 +766,20 @@
 
             // Draw the labelsAbove labels
             this.drawLabelsAbove();
+            
+            
+            
+            
+            
+            // Add the dataset nodes and the event listener
+            if (properties.tooltipsDataset) {
+                this.addDatasetTooltip();
+            }
+
+
+
+
+
 
 
 
@@ -857,6 +872,7 @@
         //
         // @param str string The tag definition to parse and create
         // @param     object The (optional) parent element
+        //
         // @return    object The new tag
         //
         this.create = function (str)
@@ -2578,6 +2594,188 @@
                 }
             }
         };
+
+
+
+
+
+
+
+
+        //
+        // Add the dataset tooltip event listener
+        //
+        this.addDatasetTooltip = function ()
+        {
+            if (this.properties.spline) {
+                var coords = this.coordsSpline;
+             } else {
+                var coords = this.coords2;
+             }
+
+            for (let i=0; i<coords.length; ++i) {
+
+
+
+
+
+
+
+                // Create the path that is placed on
+                // top of the line that facilitates
+                // the click
+                //
+                var path = RGraph.SVG.create.pathString(coords[i]);
+
+
+
+
+
+
+
+
+
+                //
+                // If the line chart is filled then create
+                // an extra path that goes back over the
+                // previous line in reverse. When doing
+                // this for dataset 0 then there is no
+                // previous dataset so just go back to the
+                // right using the X axis coordinates
+                //
+                if (
+                    (properties.filled && properties.filledAccumulative && i === 0)
+                    ||
+                    (properties.filled && !properties.filledAccumulative)
+                    ) {
+                    path += 'L {1} {2}'.format(
+                        this.width - properties.marginRight - properties.marginInner,
+                        this.height - properties.marginBottom
+                    );
+                    path += 'L {1} {2}'.format(
+                        properties.marginLeft + properties.marginInner,
+                        this.height - properties.marginBottom
+                    );
+
+
+
+
+                // Chart is filled, but this is not the
+                // first dataset. So go back over the
+                // previous dataset coordinates to get get
+                // to the LHS
+                } else if (properties.filled && properties.filledAccumulative && i > 0) {
+                    var previous_dataset = coords[i-1];
+                    path += RGraph.SVG.create.pathString(previous_dataset.toReversed(), 'L');
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Create the line the goes over the line as a
+                // cover
+                var node = RGraph.SVG.create({
+                    svg: this.svg,
+                    type: 'path',
+                    parent: this.svg.all,
+                    attr: {
+                        fill: properties.filled ? '#0000' : 'none',
+                        d: path,
+                        stroke: '#0000',
+                        'stroke-width': properties.filled ? 0 : Math.max(5, properties.linewidth),
+                        'stroke-linecap':'round'
+                    },
+                    style: {
+                        cursor: 'pointer'
+                    }
+                });
+
+                //
+                // Now add the dataset event listener that causes
+                // the dataset toolotip to be shown
+                //
+                var obj = this;
+                (function (dataset)
+                {
+                    node.addEventListener(properties.tooltipsEvent, function (e)
+                    {
+                        if (RGraph.SVG.REG.get('tooltip') &&
+                            RGraph.SVG.REG.get('tooltip').__dataset__ === dataset &&
+                            RGraph.SVG.REG.get('tooltip').__object__.uid === obj.uid) { // Added on the 27th/6/2019
+                            return;
+                        }
+                
+                        // Lose any previous highlighting
+                        var previous_highlight = RGraph.SVG.REG.get('tooltip-dataset-highlight');
+                        if (previous_highlight) {
+                            previous_highlight.setAttribute(obj.properties.filled ? 'fill' : 'stroke', 'transparent');
+                            RGraph.SVG.REG.set('tooltip-dataset-highlight', null);
+                        }
+
+                        //
+                        // Calculate a sequential index to give
+                        // the tooltip
+                        //
+                        var seq = 0;
+                        for (let i=0; i<dataset; ++i) {
+                            seq += obj.coords2[i].length;
+                        }
+                        
+                        seq += (obj.coords2[dataset].length / 2);
+                
+                
+                
+                
+
+
+                        RGraph.SVG.tooltip({
+                            object:          obj,
+                            index:           Math.round(obj.coords2[dataset].length / 2),
+                            dataset:         dataset,
+                            sequentialIndex: Math.floor(seq),
+                            text:            typeof properties.tooltipsDataset === 'string' ? properties.tooltipsDataset : properties.tooltipsDataset[dataset],
+                            event:           e
+                        });
+                        
+                        // Highlight the line
+                        //
+                        if (properties.filled) {
+                            e.target.setAttribute('fill','#fff9');
+                        }
+                        e.target.setAttribute('stroke','#fff9');
+
+                        RGraph.SVG.REG.set('tooltip-dataset-highlight', e.target);
+                
+                        RGraph.SVG.runOnce('tooltip-dataset-window-mousedown-event-listener-gfyugyuyugfugfyu', function ()
+                        {
+                            window.addEventListener('mousedown', function (e)
+                            {
+                                RGraph.SVG.hideTooltip();
+                                
+                                if (RGraph.SVG.REG.get('tooltip-dataset-highlight')) {
+                                    RGraph.SVG.REG.get('tooltip-dataset-highlight').setAttribute('stroke', 'transparent');
+                                    RGraph.SVG.REG.get('tooltip-dataset-highlight').setAttribute('fill', properties.filled ? 'transparent' : 'none');
+                                }
+                            });
+                        });
+                
+                    }, false);
+                })(i);
+            }
+        };
+
+
 
 
 
