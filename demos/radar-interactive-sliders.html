@@ -1,0 +1,121 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <script src="demos.js" ></script>
+
+    <title>RGraph demo: A Radar chart with interactive sliders</title>
+    
+    <meta name="description" content="A Radar chart with interactive sliders" />
+     
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>   
+
+    <h1>A Radar chart with interactive sliders</h1>
+
+    <style>
+        input[type=range] {
+            width: 250px;
+        }
+    </style> 
+
+<table border="1"  style="float: left" cellspacing="0">
+    <tr>  <td>Skill 1</td>   <td><input type="range" min="1" max="10" value="6" id="range_0" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 2</td>   <td><input type="range" min="1" max="10" value="3" id="range_1" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 3</td>   <td><input type="range" min="1" max="10" value="7" id="range_2" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 4</td>   <td><input type="range" min="1" max="10" value="5" id="range_3" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 5</td>   <td><input type="range" min="1" max="10" value="7" id="range_4" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 6</td>   <td><input type="range" min="1" max="10" value="2" id="range_5" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 7</td>   <td><input type="range" min="1" max="10" value="8" id="range_6" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 8</td>   <td><input type="range" min="1" max="10" value="8" id="range_7" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 9</td>   <td><input type="range" min="1" max="10" value="5" id="range_8" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 10</td>  <td><input type="range" min="1" max="10" value="4" id="range_9" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 11</td>  <td><input type="range" min="1" max="10" value="6" id="range_10" oninput="updateRadar(this)"/></td></tr>
+    <tr>  <td>Skill 12</td>  <td><input type="range" min="1" max="10" value="9" id="range_11" oninput="updateRadar(this)"/></td></tr>
+</table>
+
+    <canvas id="cvs" width="800" height="450">[No canvas support]</canvas>
+    
+    <script>
+        data = [6,3,7,5,7,2,8,8,5,4,6,9];
+        
+        radar = new RGraph.Radar({
+            id: 'cvs',
+            data: data,
+            options: {
+                textSize: 24,
+                backgroundCirclesColor: 'gray',
+                colors: ['#f007'],
+                colorsStroke: 'black',
+                linewidth: 5,
+                labels: ['Skill 1',' Skill 2',' Skill 3',' Skill 4',' Skill 5',' Skill 6',' Skill 7',' Skill 8',' Skill 9',' Skill 10',' Skill 11',' Skill 12'],
+                labelsOffsetRadius: 10
+            }
+        }).draw();
+        
+        function updateRadar(el)
+        {
+            var index = parseInt(el.id.replace(/range_/,''));
+            var value = parseInt(el.value);
+            
+            radar.original_data[0][index] = value;
+            
+            RGraph.redraw();
+        }
+    </script>
+
+
+
+
+
+    <p></p>
+
+    This goes in the documents header:
+    <pre class="code">
+&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
+&lt;script src="RGraph.radar.js"&gt;&lt;/script&gt;
+</pre>
+    
+    Put this where you want the chart to show up:
+    <pre class="code">
+    &lt;style&gt;
+        input[type=range] {
+            width: 250px;
+        }
+    &lt;/style&gt; 
+
+    &lt;table border="1"  style="float: left" cellspacing="0"&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 1&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="6" id="range_0" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 2&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="3" id="range_1" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 3&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="7" id="range_2" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 4&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="5" id="range_3" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 5&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="7" id="range_4" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 6&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="2" id="range_5" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 7&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="8" id="range_6" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 8&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="8" id="range_7" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 9&lt;/td&gt;   &lt;td&gt;&lt;input type="range" min="1" max="10" value="5" id="range_8" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 10&lt;/td&gt;  &lt;td&gt;&lt;input type="range" min="1" max="10" value="4" id="range_9" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 11&lt;/td&gt;  &lt;td&gt;&lt;input type="range" min="1" max="10" value="6" id="range_10" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;  &lt;td&gt;Skill 12&lt;/td&gt;  &lt;td&gt;&lt;input type="range" min="1" max="10" value="9" id="range_11" oninput="updateRadar(this)"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;canvas id="cvs" width="800" height="450"&gt;[No canvas support]&lt;/canvas&gt;&gt;
+</pre>
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+
+This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
+    <div id="dynamic-source-code"></div>
+    <script>showSource()</script>
+    
+
+
+
+
+</body>
+</html>
