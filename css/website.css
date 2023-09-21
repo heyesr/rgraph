@@ -608,7 +608,7 @@ div#easily-connect-to-and-import-your-data-container>div {
 }
 
 div#front-page-background-banner {
-    padding: 25px;
+    padding-top: 10px;
     position: relative;
 }
 
@@ -621,7 +621,7 @@ div#front-page-header-text {
 div#front-page-header-text div:first-child {
     margin-left: auto;
     margin-right: auto;
-    max-width: 1000px;
+    max-width: 1200px;
 }
 
 img#front-page-chart-image {
@@ -1307,7 +1307,7 @@ div#page-demos-index ul#demo-pages li img:hover {
 div#page-index div.features {
     display: flex;
     gap: 15px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
 }
