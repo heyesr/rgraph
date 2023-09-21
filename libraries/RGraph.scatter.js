@@ -356,6 +356,7 @@
             crosshairsCoordsLabelsY:    'Y',
             crosshairsCoordsFormatterX: null,
             crosshairsCoordsFormatterY: null,
+            crosshairsSnapToScale: false,
 
             annotatable:                false,
             annotatableColor:           'black',

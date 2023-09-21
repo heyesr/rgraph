@@ -314,8 +314,10 @@
 
             crosshairs:             false,
             crosshairsColor:       '#333',
+            crosshairsLinewidth:   1,
             crosshairsHline:       true,
             crosshairsVline:       true,
+            crosshairsSnapToScale: false,
 
             linewidth:              1,
 

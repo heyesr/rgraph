@@ -338,6 +338,13 @@
             adjustable:             false,
             adjustableOnly:        null,
 
+            crosshairs:             false,
+            crosshairsColor:       '#333',
+            crosshairsLinewidth:   1,
+            crosshairsHline:       true,
+            crosshairsVline:       true,
+            crosshairsSnapToScale: false,
+
             corners:                 'square',
             cornersRoundRadius:       10,
             cornersRoundTop:          true,

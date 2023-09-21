@@ -1419,6 +1419,122 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             prop         = obj.properties,
             properties   = obj.properties;
 
+
+        //
+        // The event listener for the crosshairs
+        //
+        var crosshairsSnapToScale = function (e)
+        {
+            var obj = e.target.__object__;
+
+            if (obj.properties.crosshairs && obj.properties.crosshairsSnapToScale) {
+                if (obj.type === 'scatter') {
+                    var value = obj.getYValue(e);
+                } else {
+                    var value = obj.getValue(e);
+                }
+                var scale = obj.scale2.values;
+                    scale.unshift(obj.scale2.min);
+                var dist = [];
+                scale.map((v, k, arr) => {
+                    dist.push({
+                        index: k,
+                        distance: Math.abs(value - v)
+                    });
+                });
+    
+                dist.sort(function (a, b)
+                {
+                    return a.distance - b.distance;
+                });
+                
+                // Reset the value variable
+                value = obj.scale2.values[dist[0].index];
+                
+                // Determine the linedash setting
+                if (properties.crosshairsDotted) {
+                    var linedash = '[1,3]';
+                } else if (properties.crosshairsDashed) {
+                    var linedash = '[5,5]';
+                } else {
+                    var linedash = '[1,1]';
+                }
+    
+                // Start drawing on a "fresh" canvas
+                RGraph.redraw();
+                
+                // Draw a vertical line for the HBar
+                if (obj.type === 'hbar') {
+
+                    // Draw the vertical line
+                    if (obj.properties.crosshairsVline) {
+                        obj.path(
+                            'b ld % lw % m % % l % % s %',
+                            linedash,
+                            obj.properties.crosshairsLinewidth,
+                            obj.getXCoord(value),
+                            obj.marginTop,
+                            obj.getXCoord(value),
+                            obj.canvas.height - obj.marginBottom,
+                            obj.properties.crosshairsColor
+                        );
+                    }
+
+                    // Draw the horizontal line
+                    if (obj.properties.crosshairsHline) {
+                    
+                        var [mouseX, mouseY] = RGraph.getMouseXY(e);
+                    
+                        obj.path(
+                            'b ld % lw % m % % l % % s %',
+                            linedash,
+                            obj.properties.crosshairsLinewidth,
+                            obj.properties.marginLeft,
+                            mouseY,
+                            obj.canvas.width - obj.properties.marginRight,
+                            mouseY,
+                            obj.properties.crosshairsColor
+                        );
+                    }
+                
+                // Draw a horizontal line for bar/line/scatter charts
+                } else {
+                    if (obj.properties.crosshairsHline) {
+                        obj.path(
+                            'b ld % lw % m % % l % % s %',
+                            linedash,
+                            obj.properties.crosshairsLinewidth,
+                            obj.marginLeft,
+                            obj.getYCoord(value),
+                            obj.canvas.width - obj.marginRight,
+                            obj.getYCoord(value),
+                            obj.properties.crosshairsColor
+                        );
+                    }
+                    
+                    // Draw a vertical line
+                    if (obj.properties.crosshairsVline) {
+                    
+                        var [mouseX, mouseY] = RGraph.getMouseXY(e);
+                    
+                        obj.path(
+                            'b ld % lw % m % % l % % s %',
+                            linedash,
+                            obj.properties.crosshairsLinewidth,
+                            mouseX,
+                            obj.properties.marginTop,
+                            mouseX,
+                            obj.canvas.height - obj.properties.marginBottom,
+                            obj.properties.crosshairsColor
+                        );
+                    }
+                }
+            }
+        };
+
+
+
+
         RGraph.redrawCanvas(obj.canvas);
 
         if (   x >= marginLeft
@@ -1430,8 +1546,10 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             var linewidth = properties.crosshairsLinewidth ? properties.crosshairsLinewidth : 1;
             obj.context.lineWidth = linewidth ? linewidth : 1;
 
-            obj.context.beginPath();
-            obj.context.strokeStyle = properties.crosshairsColor;
+            obj.path(
+                'b ss %',
+                properties.crosshairsColor
+            );
 
 
 
@@ -1440,7 +1558,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             //
             // The crosshairsSnap option
             //
-            if (properties.crosshairsSnap) {
+            if (properties.crosshairsSnap && !properties.crosshairsSnapToScale) {
             
                 // Linear search for the closest point
                 var point = null;
@@ -1448,7 +1566,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                 var len   = null;
                 
                 if (obj.type == 'line') {
-            
+
                     for (var i=0; i<obj.coords.length; ++i) {
                     
                         var length = RGraph.getHypLength(obj.coords[i][0], obj.coords[i][1], x, y);
@@ -1497,23 +1615,36 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                     x = obj.coords[dataset][point][0];
                     y = obj.coords[dataset][point][1];
                 }
+            } else if (!properties.crosshairsSnap && properties.crosshairsSnapToScale) {
+                crosshairsSnapToScale(e);
             }
 
 
 
 
 
-
-            // Draw a vertical line
-            if (properties.crosshairsVline) {
-                obj.context.moveTo(Math.round(x), Math.round(marginTop));
-                obj.context.lineTo(Math.round(x), Math.round(height - marginBottom));
-            }
-
-            // Draw a horizontal line
-            if (properties.crosshairsHline) {
-                obj.context.moveTo(Math.round(marginLeft), Math.round(y));
-                obj.context.lineTo(Math.round(width - marginRight), Math.round(y));
+            if (!properties.crosshairsSnapToScale) {
+                
+                // Determine the linedash setting
+                if (properties.crosshairsDotted) {
+                    obj.context.setLineDash([1,3]);
+                } else if (properties.crosshairsDashed) {
+                    obj.context.setLineDash([5,5]);
+                } else {
+                    obj.context.setLineDash([1,1]);
+                }
+                
+                // Draw a vertical line
+                if (properties.crosshairsVline) {
+                    obj.context.moveTo(Math.round(x), Math.round(marginTop));
+                    obj.context.lineTo(Math.round(x), Math.round(height - marginBottom));
+                }
+    
+                // Draw a horizontal line
+                if (properties.crosshairsHline) {
+                    obj.context.moveTo(Math.round(marginLeft), Math.round(y));
+                    obj.context.lineTo(Math.round(width - marginRight), Math.round(y));
+                }
             }
 
             obj.context.stroke();
