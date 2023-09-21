@@ -75,20 +75,11 @@
                     color: 'white',
                     fontSize: '16pt',
                     fontWeight: 'bold',
-                    backgroundColor: state.color,
+                    backgroundColor: '%{property:colors[%{dataset}]}',
                     boxShadow: 'none'
                 }
             }
-        }).draw().on('tooltip', function (obj)
-        {
-            var tooltip = RGraph.Registry.get('tooltip');
-
-            // Set the tooltip pointer and background color
-            var pointer = tooltip.getElementsByTagName('div')[0];
-            
-            tooltip.style.backgroundColor = obj.get('colors')[tooltip.__dataset__];
-            pointer.style.backgroundColor = obj.get('colors')[tooltip.__dataset__];
-        });
+        }).draw();
     </script>
 
 
