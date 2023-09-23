@@ -1,79 +1,68 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     
-    <title>RGraph demo: A Bar chart with horizontal gradients</title>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    
-    <meta name="description" content="A regular Bar chart but with horizontal gradients that are tailored to each individual bar" />
-    
-    <meta name="robots" content="noindex, nofollow" />
 
+    <title>Demo: A Bar chart with horizontal gradients</title>
+    <meta name="description" content="A Bar chart with horizontal gradients" />
+    
+     <meta name="robots" content="noindex, nofollow" />
+ 
 </head>
 <body>
 
 
     <h1>A Bar chart with horizontal gradients</h1>
     
-    <p>
-        This Bar chart draws the chart then uses the coordinates of the bars to
-        create gradients (each is specific to a bar),
-        changes the colors to the gradients and finally redraws the chart.
-    </p>
+    <div style="text-align: center" id="canvas-container">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
 
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    <script>
-        bar = new RGraph.Bar({
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
             id: 'cvs',
-            data: [4,8,5,3,4,6,8],
+            data: [4,6,5,3,2,9,8],
             options: {
-                title: 'A Bar chart with horizontal Gradients',
-                titleSize: 16,
-                titleBold: true,
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-                colorsSequential: true,
-                shadowColor: '#999',
-                shadow: false,
-                shadowOffsetx: 0,
-                shadowOffsety: 0,
-                shadowBlur: 15,
-                colors: ['Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)'],
-                colorsStroke: 'rgba(0,0,0,0)',
-                backgroundGridVlinesCount: 7,
-                yaxis: false
+                backgroundGridBorder: false,
+                backgroundGridHlines: false,
+                xaxis: false,
+                yaxis: false,
+                textSize: 22,
+                xaxisLabels: ['Harry','Gary','Flo','Eddie','Doug','Charly','Bob']
             }
-        }).draw();
-
-
-        // Now that the chart has been drawn use the coordinates to create some appropriate gradients
-        var colors = [];
-
-        for(var i=0; i<bar.coords.length; ++i) {
+        }).wave().exec(function (obj)
+        {
+            var coords = obj.coords;
+            var colors = [];
             
-            // Because it's a horizontal gradient the Y coordinates don't matter
-            x1 = bar.coords[i][0];
-            y1 = 0;
-            x2 = bar.coords[i][0] + bar.coords[i][2];
-            y2 = 0;
-            
-            colors[i] = RGraph.linearGradient({
-                object: bar,
-                x1: x1, y1: y1, x2: x2, y2: y2,
-                colors: ['#c00','red']
+            coords.forEach(v =>
+            {
+                var grad = 'Gradient({colors:["#f00","#d00"],x1:{1},y1:0,x2:{2},y2:0})'.format(
+                    v[0],v[0] + v[2]
+                );
+                
+                colors.push(grad);
             });
-        }
 
-        bar.set('colors', colors);
-        RGraph.redraw();
+            // Set the new properties on the object
+            obj.set({
+                colors: colors,
+                colorsSequential: true
+            });
+            
+            // This is necessary so that the colors are parsed for
+            // gradients again
+            obj.colorsParsed = false;
 
+            // Redraw the chart
+            RGraph.redraw();
+        });
     </script>
-
 
 
 
@@ -82,25 +71,19 @@
     This goes in the documents header:
     <pre class="code">
 &lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
 &lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
 </pre>
     
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
+&lt;div style="text-align: center" id="canvas-container"&gt;
+    &lt;canvas id="cvs" width="750" height="350"&gt;[No canvas support]&lt;/canvas&gt;
+&lt;/div&gt;
 </pre>
 
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
+This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
+    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-
 
 </body>
 </html>
