@@ -35,53 +35,71 @@
     <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     
     <script>
+        // The linewidth
         linewidth = 5;
+        
+        // The Line chart data
         linedata  = [1,5,6,8,9,8,6,4,3,1];
+        
+        // The Bar chart data
         bardata   = [8,7,9,10,8,7,6,5,4];
 
+        // This line hart purely handles the background grid
+         new RGraph.Line({
+            id: 'cvs',
+            data: [],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                yaxisScale: false,
+                xaxis: false
+            }
+        }).draw();
+
+        // This linse chart draws the red line on the chart
         line = new RGraph.Line({
             id: 'cvs',
             data: linedata,
             options: {
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
+                backgroundGrid: false,
                 spline: true,
-                tickmarksStyle: 'endcircle',
+                tickmarksStyle: 'dot',
+                tickmarksStyleDotLinewidth: 3,
+                tickmarksSize: 7,
                 linewidth: linewidth,
                 shadow: false,
-                textSize: 14
+                textSize: 14,
+                xaxis: false,
+                yaxis: false
             }
         }).draw();
         
-        ca = line.canvas;
-        co = line.context;
-            
+
         // Draw an area under the chart and clip to it
-        co.beginPath();
-            co.moveTo(line.marginLeft, ca.height)
-            for (var i=0,len=line.coordsSpline[0].length; i<len; ++i) {
-                co.lineTo(line.coordsSpline[0][i][0], line.coordsSpline[0][i][1] + (linewidth / 2) - 0.5);
-            }
-            co.lineTo(ca.width, ca.height)
-            co.clip();
+        clip_coords = RGraph.arrayClone(line.coordsSpline[0]);
+        clip_coords.unshift([0,line.canvas.height]);
+        clip_coords.push([line.canvas.width,line.canvas.height]);
+        RGraph.clipTo.start(line, clip_coords);
             
-        // Now draw the bar chart
-        new RGraph.Bar({
-            id: 'cvs',
-            data: bardata,
-            options: {
-                xaxisLabels: ['Rob','Lucy','Lynsey','Paul','Olga','Jerry','Kev','Luis','Hoolio'],
-                backgroundGrid: false,
-                xaxis: false,
-                yaxis: false,
-                yaxisScale: false,
-                colors: ['gradient(#eef:#01B4FF)'],
-                shadow: false,
-                colorsStroke: 'rgba(0,0,0,0)',
-                textSize: 14,
-                marginBottom: 35
-            }
-        }).wave();
+            // Now draw the bar chart
+            new RGraph.Bar({
+                id: 'cvs',
+                data: bardata,
+                options: {
+                    xaxisLabels: ['Rob','Lucy','Lynsey','Paul','Olga','Jerry','Kev','Luis','Hoolio'],
+                    backgroundGrid: false,
+                    xaxis: false,
+                    yaxis: false,
+                    yaxisScale: false,
+                    colors: ['gradient(#eef:#01B4FF)'],
+                    shadow: false,
+                    colorsStroke: 'rgba(0,0,0,0)',
+                    textSize: 14
+                }
+            }).wave();
+        
+        RGraph.OR.bringToFront(line)
     </script>
 
 
