@@ -447,6 +447,28 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'backgroundGridColor'
+                || name === 'backgroundColor'
+                || name === 'backgroundBarsColor1'
+                || name === 'backgroundBarsColor2'
+                || name === 'textColor'
+                || name === 'yaxisLabelsColor'
+                || name === 'colorsStroke'
+                || name === 'axesColor'
+                || name === 'highlightFill'
+                || name === 'highlightStroke'
+                || name === 'annotatableColor'
+
+                ) {
+                this.colorsParsed = false;
+            }
+
+
+
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
             if (arguments.length === 1 && typeof arguments[0] === 'object') {
@@ -2099,7 +2121,6 @@
         {
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
-                //this.original_colors['chart.'] = RGraph.arrayClone(properties.);
                 this.original_colors.colors               = RGraph.arrayClone(properties.colors);
                 this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor);
                 this.original_colors.backgroundColor      = RGraph.arrayClone(properties.backgroundColor);
@@ -2111,8 +2132,7 @@
                 this.original_colors.axesColor            = RGraph.arrayClone(properties.axesColor);
                 this.original_colors.highlightFill        = RGraph.arrayClone(properties.highlightFill);
                 this.original_colors.highlightStroke      = RGraph.arrayClone(properties.highlightStroke);
-                this.original_colors.annotatableColor     = RGraph.arrayClone(properties.annotatableColor);
-                
+                this.original_colors.annotatableColor     = RGraph.arrayClone(properties.annotatableColor);                
             }
 
             var colors = properties.colors;

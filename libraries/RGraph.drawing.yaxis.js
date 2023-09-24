@@ -32,6 +32,7 @@
         this.coords            = [];
         this.coordsText        = [];
         this.original_colors   = [];
+        this.colorsParsed      = false;
         this.maxLabelLength    = 0;
         this.firstDraw         = true; // After the first draw this will be false
 
@@ -213,6 +214,17 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (   name === 'colors'
+                || name === 'yaxisLabelsColor'
+                || name === 'titleColor'
+                || name === 'textColor'
+               ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

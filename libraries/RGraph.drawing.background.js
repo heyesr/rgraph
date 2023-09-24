@@ -29,6 +29,7 @@
         this.context           = this.canvas.getContext('2d');
         this.canvas.__object__ = this;
         this.original_colors   = [];
+        this.colorsParsed      = false;
         this.firstDraw         = true; // After the first draw this will be false
 
         //
@@ -212,6 +213,19 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'backgroundColor'
+                || name === 'backgroundGridColor'
+                || name === 'backgroundBarsColor1'
+                || name === 'backgroundBarsColor2'
+                || name === 'highlightStroke'
+                || name === 'highlightFill'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
@@ -460,10 +474,12 @@
         {
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
-                this.original_colors.backgroundColor     = RGraph.arrayClone(properties.backgroundColor);
-                this.original_colors.backgroundGridColor = RGraph.arrayClone(properties.backgroundGridColor);
-                this.original_colors.highlightStroke     = RGraph.arrayClone(properties.highlightStroke);
-                this.original_colors.highlightFill       = RGraph.arrayClone(properties.highlightFill);
+                this.original_colors.backgroundColor      = RGraph.arrayClone(properties.backgroundColor);
+                this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor);
+                this.original_colors.backgroundBarsColor1 = RGraph.arrayClone(properties.backgroundBarsColor1);
+                this.original_colors.backgroundBarsColor2 = RGraph.arrayClone(properties.backgroundBarsColor2);
+                this.original_colors.highlightStroke      = RGraph.arrayClone(properties.highlightStroke);
+                this.original_colors.highlightFill        = RGraph.arrayClone(properties.highlightFill);
             }
 
 
@@ -473,10 +489,12 @@
             //
             // Parse various properties for colors
             //
-            properties.backgroundColor     = this.parseSingleColorForGradient(properties.backgroundColor);
-            properties.backgroundGridColor = this.parseSingleColorForGradient(properties.backgroundGridColor);
-            properties.highlightStroke     = this.parseSingleColorForGradient(properties.highlightStroke);
-            properties.highlightFill       = this.parseSingleColorForGradient(properties.highlightFill);
+            properties.backgroundColor      = this.parseSingleColorForGradient(properties.backgroundColor);
+            properties.backgroundBarsColor1 = this.parseSingleColorForGradient(properties.backgroundBarsColor1);
+            properties.backgroundBarsColor2 = this.parseSingleColorForGradient(properties.backgroundBarsColor2);
+            properties.backgroundGridColor  = this.parseSingleColorForGradient(properties.backgroundGridColor);
+            properties.highlightStroke      = this.parseSingleColorForGradient(properties.highlightStroke);
+            properties.highlightFill        = this.parseSingleColorForGradient(properties.highlightFill);
         };
 
 

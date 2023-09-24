@@ -515,6 +515,30 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'fillledColors'
+                || name === 'keyColors'
+                || name === 'backgroundHbars'
+                || name === 'backgroundBarsColor1'
+                || name === 'backgroundBarsColor2'
+                || name === 'backgroundGridColor'
+                || name === 'backgroundColor'
+                || name === 'textColor'
+                || name === 'crosshairsColor'
+                || name === 'annotatableColor'
+                || name === 'titleColor'
+                || name === 'xaxisTitleColor'
+                || name === 'yaxisTitleColor'
+                || name === 'keyBackground'
+                || name === 'axesColor'
+                || name === 'highlightFill'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
@@ -4189,6 +4213,11 @@
                         // Highlight the dataset
                         //
                         obj.properties.highlightDatasetStrokeAlpha = 0.25;
+                        
+                        // Set the linecap and linejoin to match
+                        // the chart object
+                        obj.context.lineCap  = obj.properties.linecap;
+                        obj.context.lineJoin = obj.properties.linejoin;
                             
                         obj.highlightDataset({
                             dataset:   dataset,

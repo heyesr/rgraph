@@ -32,6 +32,7 @@
         this.coords            = [];
         this.coordsText        = [];
         this.original_colors   = [];
+        this.colorsParsed      = false;
         this.firstDraw         = true; // After the first draw this will be false
 
         // This defines the type of this shape
@@ -185,6 +186,18 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+
+
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (   name === 'colors'
+                || name === 'textColor'
+                || name === 'xaxisLabelsColor'
+                || name === 'xaxisTitleColor'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

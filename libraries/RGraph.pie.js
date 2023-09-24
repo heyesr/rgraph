@@ -340,6 +340,21 @@
             if (name === 'labelsOffsetRadius') {
                 name = 'labelsRadiusOffset';
             }
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'keyColors'
+                || name === 'colorsStroke'
+                || name === 'highlightStroke'
+                || name === 'highlightStyleTwodFill'
+                || name === 'highlightStyleTwodStroke'
+                || name === 'labelsIngraphBoundingFill'
+                || name === 'labelsIngraphColor'
+               ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
@@ -2388,7 +2403,7 @@
             properties.highlightStyleTwodFill    = this.parseSingleColorForGradient(properties.highlightStyleTwodFill);
             properties.highlightStyleTwodStroke  = this.parseSingleColorForGradient(properties.highlightStyleTwodStroke);
             properties.labelsIngraphBoundingFill = this.parseSingleColorForGradient(properties.labelsIngraphBoundingFill);
-            properties.labelsIngraphColor         = this.parseSingleColorForGradient(properties.labelsIngraphColor);
+            properties.labelsIngraphColor        = this.parseSingleColorForGradient(properties.labelsIngraphColor);
         };
 
 

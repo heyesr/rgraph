@@ -235,6 +235,14 @@
 
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            if (   name === 'colorsRedColor'
+                || name === 'colorsYellowColor'
+                || name === 'colorsGreenColor'
+                || name === 'colorsRanges'
+               ) {
+                this.colorsParsed = false;
+            }
+
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
             if (arguments.length === 1 && typeof arguments[0] === 'object') {

@@ -284,6 +284,21 @@
             if (name === 'bevelled') {
                 name = 'beveled';
             }
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'tickmarksInnerColor'
+                || name === 'tickmarksOuterColor'
+                || name === 'colorsStrokeInner'
+                || name === 'colorsStrokeOuter'
+                || name === 'highlightFill'
+                || name === 'highlightStroke'
+                || name === 'backgroundColor'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

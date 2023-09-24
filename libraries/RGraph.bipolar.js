@@ -40,6 +40,7 @@
         this.canvas.uid                   = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.coordsText                   = [];
         this.original_colors              = [];
+        this.colorsParsed                 = false;
         this.firstDraw                    = true; // After the first draw this will be false
         this.stopAnimationRequested_left  = false;// Used to control the animations
         this.stopAnimationRequested_right = false;// Used to control the animations
@@ -341,6 +342,21 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'highlightStroke'
+                || name === 'highlightFill'
+                || name === 'axesColor'
+                || name === 'colorsStroke'
+                || name === 'colorsLeft'
+                || name === 'colorsRight'
+                || name === 'keyColors'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

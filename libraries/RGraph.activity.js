@@ -216,6 +216,16 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'backgroundColor'
+                ) {
+                this.colorsParsed = false;
+            }
+
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
             if (arguments.length === 1 && typeof arguments[0] === 'object') {

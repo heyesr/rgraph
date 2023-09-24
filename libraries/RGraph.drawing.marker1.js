@@ -170,6 +170,18 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colorsFill'
+                || name === 'colorsStroke'
+                || name === 'highlightFill'
+                || name === 'highlightStroke'
+                || name === 'textColor'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

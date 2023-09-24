@@ -152,6 +152,17 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colorsFill'
+                || name === 'colorsStroke'
+                || name === 'highlightStroke'
+                || name === 'highlightFill'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
@@ -461,7 +472,6 @@
         //
         this.parseColors = function ()
         {
-
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
                 this.original_colors.colorsFill      = RGraph.arrayClone(properties.colorsFill);

@@ -338,6 +338,24 @@
             if (name.startsWith('backgroundCircles')) {
                 name = name.replace(/^backgroundCircles/,'backgroundGrid');
             }
+            
+            // Set the colorsParsed flag to false if the colors
+            // property is being set
+            if (
+                   name === 'colors'
+                || name === 'keyColors'
+                || name === 'titleColor'
+                || name === 'textColor'
+                || name === 'labelsColor'
+                || name === 'labelsAxesColor'
+                || name === 'highlightStroke'
+                || name === 'highlightFill'
+                || name === 'circleFill'
+                || name === 'circleStroke'
+                || name === 'colorsStroke'
+                ) {
+                this.colorsParsed = false;
+            }
 
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.

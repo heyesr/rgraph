@@ -317,6 +317,17 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            // Reset the colorsParsed flag if required
+            if (   name === 'highlightStroke'
+                || name === 'highlightFill'
+                || name === 'colorsDefault'
+                || name === 'backgroundGridColor'
+                || name === 'backgroundColor'
+                || name === 'segmentHighlightStroke'
+                || name === 'segmentHighlightFill') {
+                this.colorsParsed = false;
+            }
+
             // the number of arguments is only one and it's an
             // object - parse it for configuration data and return.
             if (arguments.length === 1 && typeof arguments[0] === 'object') {
