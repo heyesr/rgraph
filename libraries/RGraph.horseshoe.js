@@ -155,7 +155,9 @@
 
             // Set the colorsParsed flag to false if the colors
             // property is being set
-            if (name === 'colors' || name === 'backgroundColor') {
+            if (   name === 'colors'
+                || name === 'backgroundColor'
+               ) {
                 this.colorsParsed = false;
             }
             // the number of arguments is only one and it's an

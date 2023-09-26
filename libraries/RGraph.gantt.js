@@ -310,12 +310,12 @@
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (
-                name === 'backgroundBarsColor1'
-                name === 'backgroundBarsColor2'
-                name === 'backgroundGridColor'
-                name === 'colorsDefault'
-                name === 'highlightStroke'
-                name === 'highlightFill'
+                   name === 'backgroundBarsColor1'
+                || name === 'backgroundBarsColor2'
+                || name === 'backgroundGridColor'
+                || name === 'colorsDefault'
+                || name === 'highlightStroke'
+                || name === 'highlightFill'
                 ) {
                     this.colorsParsed = false;
             }

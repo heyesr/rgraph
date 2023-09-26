@@ -167,7 +167,9 @@
 
             // Set the colorsParsed flag to false if the colors
             // property is being set
-            if (name === 'colors' || name === 'needleColor') {
+            if (   name === 'colors'
+                || name === 'needleColor'
+               ) {
                 this.colorsParsed = false;
             }
 

@@ -462,7 +462,6 @@
                 || name === 'highlightFill'
                 || name === 'highlightStroke'
                 || name === 'annotatableColor'
-
                 ) {
                 this.colorsParsed = false;
             }

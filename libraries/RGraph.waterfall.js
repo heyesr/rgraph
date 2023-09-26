@@ -435,8 +435,6 @@
                 || name === 'xaxisColor'
                 || name === 'yaxisColor'
                 ) {
-
-
                 this.colorsParsed = false;
             }
 
