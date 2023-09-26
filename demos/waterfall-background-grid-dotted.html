@@ -6,14 +6,6 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.waterfall.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
-    
-    
-    
-    
-    <meta name="description" content="A demo of the Chrome-only (currently) dotted or dashed background grid" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
@@ -33,8 +25,11 @@ obj.set('backgroundGridDashed', true);
 obj.set('backgroundGridDotted', true);
 </pre>
 
+    <div id="rgraph-demo-html">
     <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
-    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
     <script>
         new RGraph.Waterfall({
             id: 'cvs1',
@@ -80,29 +75,6 @@ obj.set('backgroundGridDotted', true);
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.waterfall.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs1" width="600" height="250"&gt;
-&lt;canvas id="cvs2" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     
 </body>
