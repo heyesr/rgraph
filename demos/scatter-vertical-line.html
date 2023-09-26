@@ -6,13 +6,7 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A Scatter chart configured as a vertical line</title>
-    <meta name="description" content="A guide for drawing a vertical line chart. Vertical line charts aren't one of the supported base types of charts - but can be accomplished by using the Scatter chart." />
-     
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
@@ -34,8 +28,8 @@
     
     <hr />
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="400" height="550" data-image-src="page-demos-scatter-vertical-line.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="550">[No canvas support]</canvas>
     </div>
 
     
@@ -81,26 +75,9 @@
     </p>
     
     <p>
-        Read the comments in the code sample below to find out more information.
+        Read the comments in the code sample to find out more information.
     </p>
 
-    <br clear="all" />
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="400" height="550" style="float: right"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

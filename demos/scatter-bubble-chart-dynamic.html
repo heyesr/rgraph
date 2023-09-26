@@ -6,26 +6,19 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A dynamic Bubble chart</title>
-    
-    
-    
-    <meta name="description" content="A dynamic bubble chart that's integrated with a standard HTML input control" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-    
-
     <h1>A dynamic Bubble chart interated with a range input</h1>
 
-    <div style="text-align: center; font-size: 26pt">
-        <canvas id="cvs" width="900" height="350">[No canvas support]</canvas><br />
-        <input type="range" min="2008" max="2022" value="2015" id="myRange" style="width: 900px" /><br />
-        Year (2008-2022)
+    <div id="rgraph-demo-html">
+        <div style="text-align: center; font-size: 26pt">
+            <canvas id="cvs" width="900" height="350">[No canvas support]</canvas><br />
+            <input type="range" min="2008" max="2022" value="2015" id="myRange" style="width: 900px" /><br />
+            Year (2008-2022)
+        </div>
     </div>
     
     <script>
@@ -33,7 +26,7 @@
         // This is not the final format that the Scatter
         // chart takes - that is handled in the draw() function
         // below.
-        count       = 50;
+        count         = 50;
         negativeDelta = -1;
         positiveDelta = 2;
 
@@ -155,29 +148,8 @@
         draw(2015);
     </script>
 
+    <p />
 
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="text-align: center; font-size: 26pt"&gt;
-    &lt;canvas id="cvs" width="900" height="350"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
-    &lt;input type="range" min="2008" max="2022" value="2022" id="myRange" style="width: 900px" /&gt;&lt;br /&gt;
-    Year (2008-2022)
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

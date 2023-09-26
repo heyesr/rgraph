@@ -6,19 +6,10 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
-    
-    
-    
-    <meta name="description" content="A demonstration of the Scatter chart with a Chrome-only (currently) dotted and dashed background grid" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
-
-    
 
     <h1>A demo of the Chrome-only dotted or dashed background grid</h1>
     
@@ -30,12 +21,14 @@
     </p>
 
     <pre class="code">
-obj.Set('backgroundGridDashed', true);
-obj.Set('backgroundGridDotted', true);
+obj.set('backgroundGridDashed', true);
+obj.set('backgroundGridDotted', true);
 </pre>
 
-    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
-    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
 
     <script>
         new RGraph.Scatter({
@@ -65,27 +58,6 @@ obj.Set('backgroundGridDotted', true);
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.scatter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     
 </body>
