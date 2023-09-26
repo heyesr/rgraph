@@ -3,117 +3,91 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
-        <script src="../libraries/RGraph.common.core.js" ></script>
-        <script src="../libraries/RGraph.common.dynamic.js" ></script>
-        <script src="../libraries/RGraph.common.tooltips.js" ></script>
-        <script src="../libraries/RGraph.common.key.js" ></script>
-        <script src="../libraries/RGraph.semicircularprogress.js" ></script>
-
-        <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Semi-circular Progress chart showing multiple values</title>
-    
-    
-    
-    <meta name="description" content="Three Semi-circular Progress charts combined to show multiple values" />
-    
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.semicircularprogress.js" ></script>
+    <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
     <h1>A Semi-circular Progress chart showing multiple values</h1>
 
-    <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+    </div>
     
     <script>
-            scpOuter = new RGraph.SemiCircularProgress({
-                id: 'cvs',
-                min: 0,
-                max: 100,
-                value: 0,
-                options: {
-                    labelsMin: false,
-                    labelsMax: false,
-                    labelsCenter: false,
-                    width: 100,
-                    colors: ['black'],
-                    keyColors: ['red','black'],
-                    key: ['Richard','Bazza'],
-                    keyLabelsSize: 16
-                }
-            }).draw();
+        scpOuter = new RGraph.SemiCircularProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 0,
+            options: {
+                labelsMin: false,
+                labelsMax: false,
+                labelsCenter: false,
+                width: 100,
+                colors: ['black'],
+                keyColors: ['red','black'],
+                key: ['Richard','Bazza'],
+                keyLabelsSize: 16
+            }
+        }).draw();
 
-            new RGraph.SemiCircularProgress({
-                id: 'cvs',
-                min: 0,
-                max: 100,
-                value: 64,
-                options: {
-                    radius: scpOuter.radius - 52.5,
-                    width: 42.5,
-                    colors: ['black'],
-                    labelsCenterSize: 50,
-                    labelsCenterSpecific: '60%',
-                    labelsMin: false,
-                    labelsMax: false,
-                    backgroundBackdrop: false,
-                    tooltips: ['Bazza scored the best!'],
-                    tooltipsCss: {
-                        fontSize: '20pt'
-                    }
+        new RGraph.SemiCircularProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 64,
+            options: {
+                radius: scpOuter.radius - 52.5,
+                width: 42.5,
+                colors: ['black'],
+                labelsCenterSize: 50,
+                labelsCenterSpecific: '60%',
+                labelsMin: false,
+                labelsMax: false,
+                backgroundBackdrop: false,
+                tooltips: ['Bazza scored the best!'],
+                tooltipsCss: {
+                    fontSize: '20pt'
                 }
-            }).grow();
+            }
+        }).grow();
 
-            new RGraph.SemiCircularProgress({
-                id: 'cvs',
-                min: 0,
-                max: 100,
-                value: 56,
-                options: {
-                    radius: scpOuter.radius - 5,
-                    width: 42.5,
-                    colors: ['red'],
-                    labelsCenter: false,
-                    labelsMin: false,
-                    labelsMax: false,
-                    backgroundBackdrop: false,
-                    text: [{
-                        x: scpOuter.centerx,
-                        y: scpOuter.centery + 15,
-                        text: 'Average score',
-                        color: '#aaa',
-                        font: 'Calibri, Verdana',
-                        halign: 'center',
-                        size: 16
-                    }],
-                    tooltips: ['Richard scored well'],
-                    tooltipsCss: {
-                        fontSize: '20pt'
-                    }
+        new RGraph.SemiCircularProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 56,
+            options: {
+                radius: scpOuter.radius - 5,
+                width: 42.5,
+                colors: ['red'],
+                labelsCenter: false,
+                labelsMin: false,
+                labelsMax: false,
+                backgroundBackdrop: false,
+                text: [{
+                    x: scpOuter.centerx,
+                    y: scpOuter.centery + 15,
+                    text: 'Average score',
+                    color: '#aaa',
+                    font: 'Calibri, Verdana',
+                    halign: 'center',
+                    size: 16
+                }],
+                tooltips: ['Richard scored well'],
+                tooltipsCss: {
+                    fontSize: '20pt'
                 }
-            }).grow();
+            }
+        }).grow();
     </script>
 
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="/libraries/RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="/libraries/RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="/libraries/RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="/libraries/RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="/libraries/RGraph.semicircularprogress.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="300"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>
