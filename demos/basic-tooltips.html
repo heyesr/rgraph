@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    <title>RGraph demo: A basic example of a chart with tooltips that contain Pie charts</title>
-
-    
-    <meta name="description" content=" A basic example of a chart with tooltips that contain Pie charts. It shows a simple example and there is little happening on the page so the source code is easy to navigate." />
-    
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <!-- Include the RGraph libraries -->
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
@@ -17,23 +10,21 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
-
 <body>
-
-    
 
     <h1>A basic example of Pie charts in tooltips</h1>
 
-    <canvas id="myBar" width="1000" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="1000" height="250">[No canvas support]</canvas>
+    </div>
 
     <script>
         // Creates the Bar chart
         new RGraph.Bar({
-            id: 'myBar',
+            id: 'cvs',
             data: [12,13,16,15],
             options: {
                 marginLeft: 35,
@@ -62,10 +53,10 @@
             // This gets the tooltip index from the tooltip (which is stored in the RGraph registry) itself
             var idx = RGraph.Registry.get('tooltip').__index__;
             
-            /**
-            * The Pie chart data. Realistically this would come from a dynamic source
-            * eg AJAX
-            */
+            //
+            // The Pie chart data. Realistically this would come from a dynamic source
+            // eg AJAX
+            //
             var pieData = [
                 [4,5,3,6],
                 [8,4,5,2],
@@ -90,42 +81,15 @@
     </script>
     
     <p>
-        This is a basic example that shows charts (Pie charts) in tooltips. The canvas element is part of the tooltip
-        HTML code (specified like regular tooltips) and then it uses the <code>tooltip</code> event to run some code which
-        then creates the Pie chart in the tooltip.
+        This is a basic example that shows charts
+        (<code>Pie charts</code>) in tooltips. The
+        <code>canvas</code> element is part of the tooltip
+        <code>html</code> code (specified like regular tooltips) and
+        then it uses the <code>tooltip</code> event to run some code
+        which then creates the <code>Pie chart</code> in the tooltip.
     </p>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="1000" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
-
-
-
+    
 </body>
 </html>
