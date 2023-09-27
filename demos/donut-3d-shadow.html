@@ -6,19 +6,13 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>RGraph demo: A Donut chart with a 3D look using shadows</title>
-    
-    <meta name="description" content="A Donut chart with a 3D look using shadows" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-    
-
     <h1>A Donut chart with a 3D look using gradients</h1>
+    
     <p>
         Here we have a donut chart (which is itself a Pie chart with the <code>variant</code>
         option set to <code>donut</code>) which has had the colors manipulated (to a gradient)
@@ -27,7 +21,9 @@
         effect along with segment separation (the <code>exploded</code> option).
     </p>
 
-    <canvas id="cvs" width="475" height="350">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="475" height="350">[No canvas support]</canvas>
+    </div>
     
     <script>
         new RGraph.Pie({
@@ -55,29 +51,6 @@
         }).roundRobin();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="475" height="350"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-    This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     
 </body>

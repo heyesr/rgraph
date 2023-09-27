@@ -6,21 +6,17 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.segmented.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: An example of a Segmented Donut chart</title>
-    <meta name="description" content="A Segmented donut chart that uses the roundRobin() effect." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>A Segmented Donut chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="350" height="350" data-image-src="page-demos-donut-segments.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="float: right" id="canvas-container">
+            <canvas id="cvs" width="350" height="350" data-image-src="page-demos-donut-segments.png">[No canvas support]</canvas>
+        </div>
     </div>
     
     <p>
@@ -75,30 +71,7 @@
             }
         }, false);
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.segmented.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="350" height="350"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
     
 </body>

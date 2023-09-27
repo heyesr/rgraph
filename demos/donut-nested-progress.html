@@ -6,21 +6,17 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.activity.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A nested Donut chart progress meter</title>
-    <meta name="description" content="A nested Donut chart using the RGraph.Activity class." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>A nested Donut chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="450" height="450" style="background-color: black;" data-image-src="page-demos-donut-nested-progress.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="float: right" id="canvas-container">
+            <canvas id="cvs" width="450" height="450" style="background-color: black">[No canvas support]</canvas>
+        </div>
     </div>
     
     <p>
@@ -33,9 +29,7 @@
     <p>
         The colors and quantity of the rings are specified by you and the icons are configurable (or can be
         replaced with text if you prefer. The chart can be animated using the <code>grow</code> effect, adjusted and can now also have tooltips.
-    </p>
-
-    
+    </p>    
     
     <script id="rgraph-demo-source-code">
         activity = new RGraph.Activity({
@@ -61,29 +55,7 @@
             }
         }).grow();
     </script>
-
-
-
-
-
-
-    <div style="clear: both"></div>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.activity.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right; display: inline-block"&gt;
-    &lt;canvas id="cvs" width="450" height="450" style="background-color: black;"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
     
 </body>
