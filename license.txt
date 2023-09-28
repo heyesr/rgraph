@@ -1,19 +1,21 @@
 
-RGraph is dual licensed under the Open Source MIT license and a
-commercial license. If you want to use the Open Source MIT license
-then go ahead. However if you prefer, the commercial license is
-available to you  for £99.  Under both licenses you can use RGraph
-as much as you wish and change it to suit your needs.
+RGraph is licensed under the Open Source MIT license. Under
+this license you can use RGraph as much as you wish and
+change it, if required, to suit your needs.
 
-           Read more here: https://www.rgraph.net/license.html
+You can make a donation to the RGraph project to help keep
+it going via this page:
+
+           https://www.rgraph.net/license.html
 
 
 Support
 =======
-Support is available via an online support forum and you can find it here:
+Support is available via an online support forum and you
+can find it here:
 
-               https://www.rgraph.net/forum/index.html
-               
+        https://www.rgraph.net/forum/index.html
+
 Or you can ask a question on StackOverflow - your choice.
 
 
