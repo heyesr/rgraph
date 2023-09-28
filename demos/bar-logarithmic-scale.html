@@ -6,56 +6,18 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A logarithmic Bar chart</title>
-    
-    
-    <meta name="description" content="When you have a dataset that has wildly different values in it a logarithmic chart like this may be the answer." />
-    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A demo of a logarithmic Bar chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="300" data-image-src="page-demos-bar-logarithmic-scale.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        At first look, you may think that this looks like a regular, basic Bar chart. And you'd not be far
-        wrong. The <code>Y-axis</code> has six labels instead of five (not including zero) but apart from that what's
-        different?
-    </p>
-    
-    <p>
-        The scale - that's what. Notice that instead of being a linear progression of (for example)
-        [0, 2, 4, 6, 8, 10] it's a logarithmic scale that has the numbers
-        [0,10,100,1000,10000,100000,1000000].
-    </p>
-    
-    <p>
-        This can make it easier to show datasets that have one or more data points that are significantly
-        higher than the rest - as is shown here (the first value is <code>1,000,000</code> and the second value is <code>5</code>.
-        The entire dataset is:
-    </p>
-    
-    <pre class="code">[1000000,5,6,4,6,8012,12,7]</pre>
-    
-    <p>
-        Before the chart is created the data is converted to smaller numbers by using the
-        <code>RGraph.log</code> <code>API</code> function. It's these smaller numbers that are then plotted on the
-        chart.
-    </p>
-    
-    <p>
-        For smaller screens the size of the chart shrinks, the<code>CSS</code> <code>float</code> is removed, the
-        size of the text reduces and the <code>X-axis</code> labels are changed to be angled.
-    </p>
-
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // Some raw data
@@ -90,43 +52,14 @@
                 xaxis: false,
                 yaxis: false,
                 responsive: [
-                    {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null,width:600,height:300,options: {xaxisLabelsOffsety:0,xaxisLabelsAngle:0,textSize: 14},parentCss:{textAlign:'none'}},
+                    {maxWidth: 900,width:400,height:200,options: {xaxisLabelsOffsety:3,xaxisLabelsAngle:45,textSize: 12},parentCss:{textAlign:'center'}}
                 ]
             }
         }).draw();
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-
-
 
 </body>
 </html>

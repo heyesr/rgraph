@@ -9,71 +9,23 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A Bar chart with a rotating background</title>
-    
-    
-    <meta name="description" content="A bar chart using two canvas tags and on the rear, there's a rotating starburst effect. Because it's on a different canvas the bar chart doesn't need to be redrawn." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A rotating background</h1>
     
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="position: relative; display: inline-block; max-width: 650px; max-height: 250px; float: right;margin-right: 25px" id="canvas-container">
-        <canvas id="cvs_background" width="650" height="250" style="position: absolute; top: 0; left: 0" data-image-src="page-demos-bar-rotating-background-dual-canvas.png">[No canvas support]</canvas>
-        <canvas id="cvs_foreground" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+    
+    <div id="rgraph-demo-html">
+        <div style="position: relative; display: inline-block; max-width: 650px; max-height: 250px; margin-right: 25px" id="canvas-container">
+            <canvas id="cvs_background" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+            <canvas id="cvs_foreground" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]</canvas>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        This is the dual <code>canvas</code> version of this demo that uses two <code>canvas</code>
-        tags. It has also now been changed to use the <code>RGraph.common.starburst.js</code> code which
-        makes adding a starburst effect at the back of your <code>canvas</code> easier.
-    </p>
-    
-    <p>
-        The background rotates on the rear <code>canvas</code> and the Bar chart is drawn on the
-        foreground <code>canvas</code>. The single <code>canvas</code> version
-        <a href="/download.html#stable">
-            can be found in the demos that come with <a href="https://www.rgraph.net/download.html#stable">the download archive</a></a>.
-    </p>
-    
-    <p>
-        The Bar chart is straightforward enough - it has a high <code>marginInner</code> setting, no
-        labels and no tickmarks - though the labels at the top of each bar are done by using the
-        <code>labelsAbove</code> and the <code>labelsAboveOffset</code> options.
-        It also uses the <code>wave</code> animation effect.
-    </p>
-    
-    <p>
-        What happens with the other <code>canvas</code> is quite interesting though - It uses the StarBurst code
-        (which is bundled as part of RGraph) to create the rotating StarBurst effect that you can see.
-        Because this is drawn on a separate <code>canvas</code> tag there are no issues generated for tooltips (if the
-        StarBurst was drawn on the same <code>canvas</code> as the chart the constant redrawing would cause issues).
-    </p>
-    
-    <p>
-        Because the StarBurst code is used as the rotating background, the <code>responsive</code>
-        function is quite large (to correctly change the StarBurst so that it looks correct).
-        This is why the code is expanded and not all on one line like in the other examples. Most of the
-        action in the <code>responsive</code> configuration is in the <code>callback</code>, to resize and reposition
-        the StarBurst.
-    </p>
-
-
 
     <script id="rgraph-demo-source-code">
-        // This function is called when a tooltip is about to be shown
-        // and removes linebreaks from the text
         function removeLinebreak (str)
         {
             return str.replace(/\r?\n/g, ': ');
@@ -138,33 +90,8 @@
             }
         }).wave();
     </script>
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.starburst.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="position: relative; display: inline-block; width: 650px; height: 250px; float: left;margin-right: 25px"&gt;
-    &lt;canvas id="cvs_background" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]&lt;/canvas&gt;
-    &lt;canvas id="cvs_foreground" width="650" height="250" style="position: absolute; top: 0; left: 0">[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-    
-
 
 </body>
 </html>

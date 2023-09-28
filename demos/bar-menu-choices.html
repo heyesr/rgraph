@@ -7,24 +7,17 @@
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: Menu choices at Christmas</title>
-    
-    
-    <meta name="description" content="A Bar chart showing Christmas menu choices for people" />
-    
-
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>Various menu choices popularity at Christmas</h1>
 
-
-    <div style="display: inline-block; margin: 5px">
-        <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="display: inline-block; margin: 5px">
+            <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+        </div>
     </div>
 
     <script>
@@ -69,30 +62,6 @@
         }).wave();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="display: inline-block; margin: 35px"&gt;
-    &lt;canvas id="cvs" width="700" height="400"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

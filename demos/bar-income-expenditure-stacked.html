@@ -6,22 +6,16 @@
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A stacked Bar chart showing income and expenditure</title>
-    
-    
-    <meta name="description" content="A stacked Bar chart showing income and expenditure" />
-    
-
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A stacked Bar chart showing income and expenditure</h1>
 
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
 
     <script>
         data1 = [[2,5,9],[4,2,6],[6,5,8]];
@@ -63,34 +57,7 @@
         }).wave();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
-
-    
-
 
 </body>
 </html>

@@ -8,41 +8,18 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A basic Bar chart (with dual-line labels)</title>
-    <meta name="description" content="This is a simple example of a Bar chart that illustrates a basic configuration. RGraph has many basic examples of charts in the download archive." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A basic Bar chart</h1>
     
-    <div style="text-align: center" id="canvas-container">
-        <canvas id="cvs" width="750" height="250" data-image-src="page-demos-bar-basic.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="text-align: center" id="canvas-container">
+            <canvas id="cvs" width="750" height="250" data-image-src="page-demos-bar-basic.png">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        An example of a straightforward Bar chart. It has the axes turned off, the default margin sizes
-        have been altered and it uses units on the <code>Y-axis</code> labels. Otherwise, it's pretty unremarkable except
-        for the fact
-        that two of the labels are multi-line. This is accomplished by using carriage returns in the
-        text like this: <code>Monday<span>\n</span>(yuck!)</code>
-    </p>
-    
-    <p>
-        When the screen is smaller the size of the <code>canvas</code> is reduced, the size of the text is reduced
-        and the labels are changed so that the weekday names are the three-letter versions.
-    </p>
-
-    <br clear="both" />
-
-
 
     <script id="rgraph-demo-source-code">
         // Create the new Bar chart. Nothing special is being done here - note
@@ -74,28 +51,7 @@
             }
         }).draw();
     </script>
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="750" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

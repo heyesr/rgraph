@@ -8,53 +8,18 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A Bar chart with an overlap effect</title>
-    
-    
-    <meta name="description" content="A combined Bar and Line chart using a negative horizontal margin. This gives the bars on the chart an overlapping appearance." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>Negative horizontal margin on a Bar chart</h1>
-
     
-    <div style="display: block; float: left" id="canvas-container">
-        <canvas id="cvs" width="650" height="250" data-image-src="page-demos-bar-negative-hmargin.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="display: block" id="canvas-container">
+            <canvas id="cvs" width="650" height="250" data-image-src="page-demos-bar-negative-hmargin.png">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        This is a demo of a combined (grouped) Bar and Line chart where the <code>marginInnerGrouped</code>
-        setting on the Bar chart has been set to <code>-15</code>, This gives the appearance of the bars
-        overlapping each other slightly.
-    </p>
-    
-    <p>
-        It has dual <code>Y-axes</code> by utilising the drawing <code>API</code> <code>Y-axis</code> object and the colors have been specifically set
-        to what they are to link the bars and lines together.
-    </p>
-    
-    <p>
-        The Lines also have slightly larger-than-normal tickmarks for a nicer aesthetic and the whole
-        chart uses slightly larger-than-the-default text.
-    </p>
-    
-    <p>
-        In terms of <code>responsive</code> features, there's not much done by the Line chart - though there's a lot done
-        by the Bar chart - particularly to accommodate the <code>Y-axis</code> objects. To make it easier to understand
-        you will do well to "un-minify" it and spread it across multiple lines.
-    </p>
-    
-    <br clear="all" />
-
-
 
     <script id="rgraph-demo-source-code">
         marginLeft   = 75;
@@ -183,31 +148,8 @@
             }
         }).trace();
     </script>
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="padding: 25px; display: inline-block; margin:20px"&gt;
-    &lt;canvas id="cvs" width="650" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
 
 </body>
 </html>

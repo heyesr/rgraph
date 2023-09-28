@@ -8,63 +8,26 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart with a dark background</title>
-    <meta name="description" content="This is a Bar chart with a dark theme. It illustrates how versatile RGraph can be when you're configuring your charts." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>An animated Bar chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="500" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <style>
+            canvas {
+                background-color: #333;
+                border-radius: 5px;
+                box-shadow: 2px 2px 2px #999;
+            }
+        </style>
+        
+        <div id="canvas-container">
+            <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        This is a grouped Bar chart with two bars per group which uses red and blue
-        graduated fills. The background grid has been customised and the background
-        itself is a dark color (so the text has been changed to white). Also, the
-        chart is using the Bar chart <code>wave</code> effect. This grows sequentially from
-        the left-hand-side with a small delay between each group of bars.
-    </p>
-    
-    <p>
-        The two gradients that are used here  (<code>Gradient(white:#ccf:#ccf:#ccf:#ccf)</code>
-        and <code>Gradient(white:#faa:#faa:#faa:#faa)</code>)
-        are created by using the RGraph specific gradient syntax. This is an easy way
-        to produce gradients (it's certainly easier than the <code>canvas</code> <code>API</code> method!) and
-        can be utilised to produce gradients for your own charts.
-    </p>
-    
-    <p>
-        If you wanted to add further information to the chart to identify
-        the meaning of the two bars you could add a key in either the <code>graph</code> or <code>margin</code>
-        modes or you could perhaps use the <code>labelsAbove</code> option.
-    </p>
-    
-    <p>
-        For smaller screens, the <code>responsive</code> function reduces the size of the chart,
-        reduces the size of the text on the chart and reduces the size of the margins.
-    </p>
-    
-    <p>
-        This demo shows the new highlighting style - <code>invert</code>. This reverses the
-        highlighting from adding a rectangle over the focused bar to adding rectangles to every
-        rectangle <i>except</i> the focused bar.
-    </p>
-    
-    <p>
-        The tooltips have no fade effect and are positioned at the top right of the <code>canvas</code> tag by using
-        the <code>tooltip</code> event. This runs a snippet of code that gets the <code>canvas</code> tag x/y
-        coordinates and sets the position of the tooltip accordingly.
-    </p>
-
-    
     
     <script id="rgraph-demo-source-code">
         // This is the data that gets displayed on the Bar chart. It's a
@@ -149,39 +112,6 @@
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="500" height="250" style="background-color: #333; border-radius: 5px; box-shadow: 2px 2px 2px #999; float: right"&gt;[No canvas support]&lt;/canvas&gt;
-
-<span>&lt;!-- Center align the tooltip key --&gt;</span>
-&lt;style&gt;
-    <span>/*
-    * .RGraph_tooltip table {
-    *    margin-left: auto;
-    *    margin-right: auto;
-    * }
-    */</span>
-&lt;/style&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

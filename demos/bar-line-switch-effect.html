@@ -8,46 +8,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A pair of charts with a switch effect</title>
-    
-    
-    <meta name="description" content="There are numerous ways of switching between charts - some of which have examples in the download archive. Here's a nice example of a CSS transition." />
-
-    
-    <RGRAPH_BASIC_DEMO_CSS>
-    <style>
-        div#canvas-container {
-            position: relative;
-            width: 600px;
-            height: 250px;
-        }
-        
-        div#canvas-container canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 600px;
-            height: 250px;
-            background-color: white;
-            transition: all 1s;
-            opacity: 1;
-        }
-        
-        div#canvas-container canvas#cvs1 {
-            top: 125px;
-            left: 300px;
-            width: 0;
-            height: 0;
-            opacity: 0;
-            transform: rotate(90deg);
-        }
-    </style>
-    </RGRAPH_BASIC_DEMO_CSS>
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
@@ -57,27 +18,40 @@
 
     <span style="font-weight: bold; color: red;">Requires jQuery</span>
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div id="canvas-container" style="display: inline-block; float: right">
-        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
-        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container" style="display: inline-block">
+            <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+            <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+        </div>
+
+        <style>
+            div#canvas-container {
+                position: relative;
+                width: 600px;
+                height: 250px;
+            }
+            
+            div#canvas-container canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 600px;
+                height: 250px;
+                background-color: white;
+                transition: all 1s;
+                opacity: 1;
+            }
+            
+            div#canvas-container canvas#cvs1 {
+                top: 125px;
+                left: 300px;
+                width: 0;
+                height: 0;
+                opacity: 0;
+                transform: rotate(90deg);
+            }
+        </style>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    
-    <p>
-        It's a nice transition effect where one chart blends into another with a "folding-away" type motion.
-        The other chart is shown in the reverse direction. The effect is not animated by using <code>JavaScript</code>
-        animation but by using <code>JavaScript</code> to apply <code>CSS</code> properties. The <code>CSS</code> transitions that are also
-        specified on the <code>canvas</code> then take care of doing the animating.
-    </p>
-    
-    <p>
-        The charts themselves are quite straightforward - with the Line chart having a larger <code>linewidth</code>
-        and bigger tickmarks than normal.
-    </p>
-
-    <br clear="all" />
 
     <script id="rgraph-demo-source-code">
         // First create the Bar chart
@@ -199,62 +173,7 @@
             }
         });
     </script>
-
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-
-&lt;style&gt;
-    div#canvas-container {
-        position: relative;
-        width: 600px;
-        height: 250px;
-    }
     
-    div#canvas-container canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 600px;
-        height: 250px;
-        background-color: white;
-        transition: all 1s;
-        opacity: 1;
-    }
-    
-    div#canvas-container canvas#cvs1 {
-        top: 125px;
-        left: 300px;
-        width: 0;
-        height: 0;
-        opacity: 0;
-        transform: rotate(90deg);
-    }
-&lt;/style&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div id="canvas-container" style="display: inline-block; float: right"&gt;
-    &lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-    &lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

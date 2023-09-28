@@ -8,24 +8,18 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A mixed Bar and Line chart</title>
-    <meta name="description" content="A Bar and Line combo chart showing the tokyo climate" />
-
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A mixed Bar and Line chart</h1>
     
-    <div id="canvas-container" style="padding: 30px; background-color: #6C6960; display: inline-block">
-        <canvas id="cvs" width="750" height="250" style="border-radius: 20px; border: 1px solid #ddd">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container" style="padding: 30px; background-color: #6C6960; display: inline-block">
+            <canvas id="cvs" width="750" height="250" style="border-radius: 20px; border: 1px solid #ddd">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <br clear="both" />
 
     <script id="rgraph-demo-source-code">
         new RGraph.Bar({
@@ -80,7 +74,7 @@
 
 
 
-        line = new RGraph.Line({
+        new RGraph.Line({
             id: 'cvs',
             data:[6.5,6.5,9.5,13.4,19,21.2,26,27.2,24,19,14,10],
             options: {
@@ -111,7 +105,7 @@
 
 
 
-        pie = new RGraph.Pie({
+        new RGraph.Pie({
             id: 'cvs',
             data:[23,77],
             options: {
@@ -132,27 +126,6 @@
           .grow({frames: 60});
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="750" height="250" style="border-radius: 20px; border: 1px solid #ddd"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

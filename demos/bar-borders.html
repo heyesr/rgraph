@@ -8,27 +8,20 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart with vetical, black borders</title>
-
-    
-    <meta name="description" content="A Bar chart with vetical, black borders" />
-    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A Bar chart with vetical, black borders</h1>
-  
 
-    <div style="text-align: cwnter" id="canvas-container">
-        <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+    <<div id="rgraph-demo-html">
+        <div style="text-align: cwnter" id="canvas-container">
+            <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+        </div>
     </div>
 
     <script id="rgraph-demo-source-code">
-    
         // The data and a few common properties
         data       = [4,8,6,5,3,5,2];
         properties = {
@@ -84,34 +77,7 @@
         }).grow();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
 
 </body>
 </html>

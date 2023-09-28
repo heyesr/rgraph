@@ -7,55 +7,18 @@
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: Google's power usage on a Bar chart</title>
-
-    
-    <meta name="description" content="An example of a stacked Bar chart that's been configured to look quite different to a standard Bar chart. It uses custom labels so that the top label has custom text added." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>Google's power usage</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="350" data-image-src="page-demos-bar-google-power-usage.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's a chart that was recently shown on Google's blog and I decided it would be a great one to
-        recreate with RGraph. It uses the <code>canvas</code> library but it should be equally as simple to use the
-        <code>SVG</code> libraries.
-    </p>
-    
-    <p>
-        It's a stacked Bar chart that uses the <code>labelsAboveSpecific</code> option so that the
-        <code>labelsAbove</code> labels can be specified explicitly.
-    </p>
-    
-    <p>
-        The <code>Y-axis</code> labels are specific, enabling the top label to have some text appended to it.
-    </p>
-    
-    <p>
-        There's a key that's positioned on the left-hand-side and also a title that's positioned
-        in the same place.
-    </p>
-    
-    <p>
-        Also, the <code>Y-axis</code> is disabled, the <code>X-axis</code> is colored gray and its tickmarks are disabled.
-    </p>
-    
-    <p>
-        The <code>responsive</code> function changes the size of the chart, changes the size of text
-        on the chart and changes the key to be in the bottom right corner of the chart. It gives the
-        key a semi-transparent white background too so that it's easier to read.
-    </p>
 
     <script id="rgraph-demo-source-code">
         // Create the bar chart. The data is such that we have
@@ -131,28 +94,6 @@
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="350" style="float: right"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

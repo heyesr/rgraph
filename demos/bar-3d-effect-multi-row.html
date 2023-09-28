@@ -5,74 +5,21 @@
     
     <script src="../libraries/RGraph.common.core.js"></script>
     <script src="../libraries/RGraph.bar.js" ></script>
-    <script src="demos.js" ></script> 
-    
-    <title>Demo: A multiple-row 3D Bar chart</title>
-    
-    
-    <meta name="description" content="RGraph can make realistic-looking 3D Bar charts. This demo is a multi-row example of such a chart. There are three rows of bars that are each drawn by a separate Bar chart object." />
-    
-    <!-- <RGRAPH_REMOVE> -->
+    <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A 3D Bar chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="650" height="300" data-image-src="page-demos-bar-3d-effect-multi-row.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="text-align: center" id="canvas-container">
+            <canvas id="cvs" width="650" height="300" data-image-src="page-demos-bar-3d-effect-multi-row.png">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        This style of 3D chart is not supported natively but is pretty easy to
-        achieve - especially as all of the source code is shown below and you can just
-        copy it!
-    </p>
     
-    <p>
-        First, some variables are defined that are used in the configuration - this is so that they're
-        easier for you to edit and manage.
-    </p>
-    
-    <p>
-        Each row of bars is actually a separate chart object and they're drawn inside a dedicated function.
-        The 3D variant options turn off the 3D axes and the regular axes are also turned off. Slight shadows
-        are set which add to the 3D effect.
-    </p>
-    
-    <p>
-        The background grid is turned off for the second and third charts but is enabled for the first - the
-        chart at the back.
-    </p>
-    
-    <p>
-        The margins are set to those defined in the variables along with the <code>Y-axis</code> scale max value.
-        The <code>Y-axis</code> labels are turned off.
-    </p>
-    
-    <p>
-        Finally, a drawing <code>API</code> <code>Y-axis</code> object is used to draw a <code>Y-axis</code> on the right-hand-side. The color of
-        this <code>Y-axis</code> is transparent so the only part of it that you can see is the labels.
-    </p>
-    
-    <p>
-        This chart is animated and the second and
-        third charts are drawn using the animation callback
-        functions of the <code>grow</code> effects. So the first
-        animations callback calls the function to draw the second
-        chart and the second animations callback calls the function that
-        draws the third chart and the axes.
-    </p>
-    
-    <p>
-        Like the code for the rest of this chart, the <code>responsive</code> section is not inconsiderable. It
-        reduces the size of the <code>canvas</code>, changes the <code>X-axis</code> labels to the three-letter variations of
-        the weekday names, changes the margin sizes on all three objects and changes the
-        <code>textSize</code> on the main Bar chart and the <code>Y-axis</code> object.
-    </p>
+    <br clear="both" />
 
     <script id="rgraph-demo-source-code">
         // Some default variables. These margins are not all hard-and-fast
@@ -235,28 +182,6 @@
         }
     </script>
 
-
-
-
-    <p />
-
-
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right">
-    &lt;canvas id="cvs" width="650" height="300">[No canvas support]&lt;/canvas>
-&lt;/div>
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

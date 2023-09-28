@@ -6,60 +6,23 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A Bar chart styled like a popular game-show</title>
-    <meta name="description" content="A Bar chart customised to look like the 'Who wants to be a millionaire?' 'Ask the audience' bar chart." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A "Who wants to be a millionaire?" style Bar chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="300" height="250" style="border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px" data-image-src="page-demos-bar-millionaire.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="300" height="250" style="border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        This is an example of a Bar chart that has been customised to have an
-        appearance similar to the "Who wants to be a millionaire?" "Ask the
-        audience" results bar chart. It uses the <code>draw</code> event in conjunction with
-        the <code>API</code> to draw the text above the bars. The background gradient
-        is done with a <code>CSS</code> linear gradient - it's not drawn on the <code>canvas</code>. The
-        background grid is customised in <code>linewidth</code> and <code>colors</code>, the axes are disabled
-        and the text color is customised too.
-    </p>
-    
-    <p>
-        The <code>CSS</code> gradient that's used in the <code>canvas</code> tag's <code>style</code> attribute is a
-        straightforward linear gradient but achieves a nice effect for the
-        background of the chart. The relevant <code>CSS</code> is this:
-    </p>
-    
-    <pre class="code">background-image: linear-gradient(45deg, black, blue, black);</pre>
-    
-    <p>
-        It's made up of three parts - an angle for the gradient (which in this case is
-        45 degrees) and the colors that the gradient uses.
-        <a href="https://www.rgraph.net/canvas/howto-gradients.html">
-            There's a whole HOWTO document about <code>CSS</code> gradients here
-        </a>
-        that shows you the various options that are available to you.
-    </p>
 
     <p>
-        There's also an <code>SVG</code> version of this chart in
+        There's also an <code>svg</code> version of this chart in
         <a href="https://www.rgraph.net/download.html">the download archive</a>.
     </p>
-
-    
-
-
 
     <script id="rgraph-demo-source-code">
         
@@ -122,30 +85,8 @@
             }
         });
     </script>
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="300" height="250" style="border-radius: 6px; background-image: linear-gradient(45deg, black, blue, black); box-shadow: #aaa 2px 2px 2px; float: right"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-
 
 </body>
 </html>

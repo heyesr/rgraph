@@ -10,33 +10,10 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.vprogress.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    <meta name="description" content="A Bar chart that has been combined with the Vertical Progress bar" />
-    
-    
-    <style>
-        .RGraph_tooltip img {
-            display: none;
-        }
-
-        .RGraph_tooltip {
-            box-shadow: none ! important;
-            border: 2px solid blue ! important;
-            background-color: white ! important;
-            padding: 3px ! important;
-            text-align: center;
-            font-weight: bold;
-            font-family: Verdana;
-        }
-    </style>
-    
-    <title>RGraph demo: Combined grouped Bar and Vertical Progress bar</title>
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
-
 
     <h1>Combined grouped Bar and Vertical Progress bar</h1>
     
@@ -47,7 +24,26 @@
         progress bar object (as well as defining a <code>mousemove</code> event on the canvas to update the tooltip's position).
     </p>
     
-    <canvas id="cvs" width="600" height="250"></canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250"></canvas>
+
+        <style>
+            .RGraph_tooltip img {
+                display: none;
+            }
+    
+            .RGraph_tooltip {
+                box-shadow: none ! important;
+                border: 2px solid blue ! important;
+                background-color: white ! important;
+                padding: 3px ! important;
+                text-align: center;
+                font-weight: bold;
+                font-family: Verdana;
+            }
+        </style>
+    </div>
+    
     <script>
         people = ['Rob','Luis','Kinga'];
         bar = new RGraph.Bar({
@@ -148,50 +144,7 @@
             }
         }
     </script>
-        
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-
-&lt;style&gt;
-    .RGraph_tooltip img {
-        display: none;
-    }
-
-    .RGraph_tooltip {
-        box-shadow: none ! important;
-        border: 2px solid blue ! important;
-        background-color: white ! important;
-        padding: 3px ! important;
-        text-align: center;
-        font-weight: bold;
-        font-family: Verdana;
-    }
-&lt;/style&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

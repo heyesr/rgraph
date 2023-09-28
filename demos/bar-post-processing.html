@@ -6,46 +6,21 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart with a post-processing effect added</title>
-    
-    
-    <meta name="description" content="A Bar chart that shows you that by using the draw event along with the coordinates you can do post-processing on your charts" />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
-
         
     <h1>Post-processing on a Bar chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-post-processing.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-post-processing.png">[No canvas support]</canvas>
+        </div>
     </div>
     
-    <p>
-        This Bar chart uses the custom RGraph <code>draw</code> event to add
-        some highlighting to each bar.<br />
-        
-        There's an <code>SVG</code> version of this chart in
-        <a href="https://www.rgraph.net/download.html">the download archive</a>.
-    </p>
-    
-    <p>
-        The highlighting is added using the <code>draw</code> event (which is triggered at the end of the
-        <code>draw</code> function) so the coordinates of the bars are available.
-    </p>
-    
-    <p>
-        The gradient is created using this bit of code, which uses an RGraph function for creating gradients
-        easily:
-    </p>
-    
-    <div style="clear: both"></div>
-    
+    <br clear="all" />
+
     <pre class="code">obj.context.fillStyle = RGraph.linearGradient({
     object: obj,                  <span>// The chart object</span>
     x1: 0, y1: 0, x2: 0, y2: 250, <span>// strartX, startY, endX, endY</span>
@@ -54,16 +29,6 @@
         'rgba(255,255,255,0)'     <span>// End color</span>
     ]
 });</pre>
-
-    <p>
-        The <code>responsive</code> function reduces the size of the text, turns off axes and the shadow
-        and removes the <code>CSS</code> <code>float</code> from the <code>canvas</code> tag.
-    </p>
-    
-    <br clear="all" />
-    
-
-    
 
     <script id="rgraph-demo-source-code">
         // Create the bar chart just like a normal grouped bar chart
@@ -82,8 +47,8 @@
                 colorsStroke: 'rgba(0,0,0,0)',
                 shadowOffsety: -3,
                 responsive: [
-                    {maxWidth: null,width:600,height:300,options: {textSize:14,marginInner: 5,shadow:true, xaxis: false,yaxis: false,}, parentCss: {'float': 'left',textAlign:'none'}},
-                    {maxWidth: 900, width:400,height:200,options: {textSize:10,marginInner: 2,shadow:false,xaxis: false,yaxis: false,}, parentCss: {'float': 'none',textAlign:'center'}}
+                    {maxWidth: null, width: 600, height: 300, options: {textSize: 14, marginInner: 5, shadow: true,  xaxis: false, yaxis: false}},
+                    {maxWidth: 900,  width: 400, height: 200, options: {textSize: 10, marginInner: 2, shadow: false, xaxis: false, yaxis: false}}
                 ]
             }
         
@@ -116,34 +81,8 @@
             }
         }).draw();
     </script>
-
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: left"&gt;
-    &lt;canvas id="cvs" width="600" height="250"&gt;[no canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-    
-
 
 </body>
 </html>

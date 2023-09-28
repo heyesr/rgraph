@@ -8,19 +8,10 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart that uses AJAX to fetch data</title>
-
-    
-    <meta name="description" content="RGraph has AJAX functionality that makes integration with your existing scripts easy and painless." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
-
 
     <h1>A Bar chart using AJAX</h1>
 
@@ -36,39 +27,13 @@ You can view the demos on the RGraph website here:
     </script>
   
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-ajax.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-ajax.png">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here is an example of a 3D variation of the Bar chart which is both animated using the
-        <code>grow</code> effect and which is also fetching its data via <code>AJAX</code>.
-    </p>
-    
-    <p>
-        The <code>AJAX</code> script is a simple one that just outputs a sequence of random numbers.
-        <a href="/getdata.html">You can see the script directly by going here.</a>
-    </p>
-    
-    <p>
-        If you view the <code>AJAX</code> script you'll see that it just outputs the numbers and nothing
-        else - so no labels or title. So on the chart, the labels are just hardcoded.
-    </p>
-    
-    <p>
-        The rest of the configuration is pretty straightforward - and you can see it below.
-    </p>
-
-    <p>
-        When the screen is smaller the <code>canvas</code> dimensions are reduced, the <code>marginInner</code> is
-        reduced and the <code>textSize</code> is reduced as well.
-    </p>
 
     <script id="rgraph-demo-source-code">
-        // Use the RGraph.AJAX.getCSV() function to fetch some CSV data from the server.
-        // This example fetches the URL https://www.rgraph.net/getdata.html which just
-        // outputs a set of CSV values. The second argument is a function which is
-        // used as the callback and creates the chart.
         RGraph.AJAX.getCSV('/getdata.html', function (data)
         {
             new RGraph.Bar({
@@ -108,8 +73,8 @@ You can view the demos on the RGraph website here:
                     
                     //  Add some responsive capability is also added.
                     responsive: [
-                        {maxWidth: null,width:600,height:250,options:{marginInner: 10,textSize:12},parentCss:{'float': 'right',textAlign:'none'}},
-                        {maxWidth: 900,width:400,height:200,options:{marginInner: 5,textSize:10},parentCss:{'float': 'none',textAlign:'center'}}
+                        {maxWidth: null,width:600,height:250,options:{marginInner: 10,textSize:12}},
+                        {maxWidth: 900,width:400,height:200,options:{marginInner: 5,textSize:10}}
                     ]
                 }
             
@@ -117,35 +82,8 @@ You can view the demos on the RGraph website here:
             }).grow();
         });
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
 
 </body>
 </html>

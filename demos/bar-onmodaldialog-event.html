@@ -1,41 +1,37 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.modaldialog.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
-    <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Bar chart the ModalDialog</title>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    
-    <meta name="description" content="A Bar chart with a ModalDialog that uses the modaldialog event" />
-    
-    <style>
-        .modaldialog_background {
-            background-color: rgba(0,0,0,0.5) ! important;
-        }
-    </style>
-     
+    <script src="demos.js" ></script>     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A Bar chart showing the modaldialog event</h1>
     
     <p>
         This Bar chart uses the ModalDialog which in turn uses the
-        <code>modaldialog</code> event which is added using DOM1 style methods.
-        Click on the canvas and a ModalDialog will be shown that uses the DOM1
-        style <code>modaldialog</code> event to show an <code>alert()</code>.
+        <code>modaldialog</code> event which is added using <code>dom1</code> style methods.
+        Click on the <code>canvas</code> and a ModalDialog will be shown that uses the <code>dom1</code>
+        style <code>modaldialog</code> event to show an <code>alert</code>.
     </p>
 
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        
+        <style>
+            .modaldialog_background {
+                background-color: rgba(0,0,0,0.5) ! important;
+            }
+        </style>
+    </div>
+    
     <script>
         bar = new RGraph.Bar({
             id: 'cvs',
@@ -63,34 +59,7 @@
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.modaldialog.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
-    
 
 </body>
 </html>

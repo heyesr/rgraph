@@ -9,60 +9,19 @@
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart showing new car registrations</title>
-    
-    
-    <meta name="description" content="A grouped Bar chart showing motor vehicle sales which has three bars per group along with a turquoise color theme." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A grouped Bar chart</h1>
 
-    <div style="margin: 35px;float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="300" data-image-src="page-demos-bar-new-car-registrations.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div style="margin: 35px" id="canvas-container">
+            <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
+        </div>
     </div>
     
-    <p>
-        A straightforward Bar chart with a nice aesthetic to it. This style (ie the colors) of chart is frequently used
-        by the BBC news website.
-    </p>
-    
-    <p>
-        It's a grouped Bar chart with three data pieces per segment (the third data pieces are quite
-        small when compared to the other two).
-    </p>
-    
-    <p>
-        The background grid vertical lines are disabled (there's still a border around the edge of
-        the grid) and there's a key that's positioned in the margin, on the left-hand-side.
-    </p>
-
-    <p>
-        If you like this style of chart, then you could also try a slightly larger  font size.
-    </p>
-
-
-    <p>
-        The <code>responsive</code> function alters the text sizes of the chart and changes the <code>CSS</code>
-        value of the <code>float</code> property so that on smaller screens it's not aligned to the
-        right.
-    </p>
-    
-    <p>
-        There now some tooltips on the chart which use both the <code>tooltipsCss</code> property and
-        the formatted tooltips feature. These use a white-on-black theme and are left aligned - both using
-        <code>CSS</code>. As a result they have a nice aesthetic  to them.
-    </p>
-    
-    <br clear="all" />
-
     <script id="rgraph-demo-source-code">
         // Create a Bar chart with a 2D array as the data. Each group
         // has three elements even though the chart gives the
@@ -114,8 +73,8 @@
                     textAlign: 'center'
                 },
                 responsive: [
-                    {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}, parentCss: {'float':'right',textAlign:'none'}},
-                    {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 75}, parentCss: {'float':'none',textAlign:'center'}}
+                    {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}},
+                    {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 75}}
                 ]
             }
         }).grow().on('beforedraw', function (obj)
@@ -124,33 +83,7 @@
 
         });
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="margin: 35px"&gt;
-    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

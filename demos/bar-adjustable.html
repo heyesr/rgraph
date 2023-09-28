@@ -7,81 +7,16 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    <title>Demo: A customised and adjustable Bar chart</title>
-    
-    
-    
-    <meta name="description" content="One of the dynamic features that RGraph supports for certain canvas charts is adjusting. This is an example of an adjustable Bar chart." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>An adjustable Bar chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-adjustable.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
     </div>
-    
-    <p>
-        Here's a basic Bar chart that only has a few configuration
-        options specified, most notably: <code>adjustable</code>
-        This means that the chart can be adjusted dynamically by clicking on the chart and moving your mouse
-        up and down. The types of charts that can be adjusted are:
-    </p>
-    
-    <ul>
-        <li>Bar charts</li>
-        <li>Fuel charts</li>
-        <li>Gantt charts</li>
-        <li>Gauge charts</li>
-        <li>Horizontal Bar charts</li>
-        <li>Horizontal Progress bars</li>
-        <li>Line charts (including spline charts)</li>
-        <li>Meter charts</li>
-        <li>Odometer charts</li>
-        <li>Semi-circular Progress bars</li>
-        <li>Thermometer charts</li>
-        <li>Vertical Progress bars</li>
-        <li>SVG Gauge</li>
-    </ul>
-    
-    <p>
-        <a href="https://www.rgraph.net/canvas/adjusting.html">
-            You can read more about adjusting and see the canvas documentation for it here.
-        </a>
-        
-        One thing you should note is that there are three events
-        that you can use:
-    </p>
-    
-    <ul>
-        <li>adjustbegin</li>
-        <li>adjust</li>
-        <li>adjustend</li>
-    </ul>
-    
-    <p>
-        This means that you could use an
-        <code>adjustend</code> event listener to send the updated
-        value(s) back to
-        the server with <code>ajax</code> and save them to your
-        database or to a file.
-    </p>
-    
-
-    <p>
-        When the browser/screen is smaller the size of the <code>canvas</code> is reduced, the <code>textSize</code> is
-        reduced and the <code>CSS</code> <code>float</code> on the container is removed.
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // Quite a basic Bar chart which just has the single 'adjustable'
@@ -97,41 +32,14 @@
                 adjustable: true,
                 xaxisLabels: ['Alf','Vinny','Moe','Bill','Neil','Olga','Lilly','Paul','John'],
                 responsive: [
-                    {maxWidth: null,width: 600,height: 250,options:{textSize:16},parentCss: {'float':'right'}},
-                    {maxWidth: 800,width: 350,height: 200,options:{textSize:10},parentCss: {'float':'none', textAlign: 'center'}}
+                    {maxWidth: null,width: 600,height: 250,options:{textSize:16}},
+                    {maxWidth: 800,width: 350,height: 200,options:{textSize:10}}
                 ]
             }
         }).draw();
     </script>
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-
 
 </body>
 </html>

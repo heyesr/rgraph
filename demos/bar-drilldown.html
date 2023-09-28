@@ -3,18 +3,12 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     
-    <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.common.effects.js" ></script>
-    <script src="../libraries/RGraph.drawing.text.js" ></script>
-    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.common.dynamic.js"></script>
+    <script src="../libraries/RGraph.common.effects.js"></script>
+    <script src="../libraries/RGraph.drawing.text.js"></script>
+    <script src="../libraries/RGraph.bar.js"></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Bar chart capable of drilldown</title>
-    
-    
-    <meta name="description" content="A Bar chart that's capable of drilldown when you click on a bar" />
-    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
@@ -22,9 +16,10 @@
 
     <h1>A Bar chart capable of drilldown</h1>
 
-    <canvas id="cvs" width="650" height="250">[No canvas support]</canvas><br />
-    
-    <button id="butBack">Show the overview chart</button>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="650" height="250">[No canvas support]</canvas><br />
+        <button id="butBack">Show the overview chart</button>
+    </div>
     
     <script>
         ca = document.getElementById("cvs");
@@ -109,39 +104,7 @@
         }
     </script>
 
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.text.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
-
-    
-
-
 
 </body>
 </html>

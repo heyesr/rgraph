@@ -6,54 +6,18 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: My favourite dog breeds!</title>
-    
-    
-    <meta name="description" content="A sketchy variation of the Bar chart that's showing that the French Mastiff dog breed is easily the best type of dog!" />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>A Bar chart of my favourite dog breeds</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-i-love-my-dog-de-bordeaux.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        How could you resist such a <i>gorgeous</i> face?! Here's an amusing chart that shows you exactly
-        what your favourite dog breed should be. This type of dog was featured in the Tom Hanks film
-        <b><i>Turner and Hooch</i></b> - A funny film from the 1980's that's definitely worth watching.
-    </p>
-    
-    <p>
-        The chart demonstrates the <code>sketch</code> variant (add <code>variant: 'sketch'</code> to
-        your chart configuration) that the Bar chart has that gives the
-        chart more of a "hand-drawn" look. The background image depicts a French Mastiff dog  that was
-        added using the <code>backgroundImage</code> property.
-    </p>
-    
-    <p>
-        The font has been set to <code>Comic sans MS</code> so that it goes well with the style of the chart.
-    </p>
-    
-    <p>
-        The chart has been given a large bottom margin so that the slogan on the background image is clearly
-        visible.
-    </p>
-    
-    <p>
-        To get the chart looking good on smaller screens the <code>responsive</code> function changes
-        the margins, updates the width and height of the background image and the <code>CSS</code> <code>float</code>
-        is removed.
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // This is used to give the background image the correct height and
@@ -98,38 +62,14 @@
                 xaxisLinewidth: 5,
                 yaxisScaleUnitsPost: '%',
                 responsive: [
-                    {maxWidth: null, width: 600, height: 250,options:{marginLeft: 150,marginBottom: 60,marginInner: 45,labelsAboveSize: 24,textSize: 20,backgroundImageW: 600,backgroundImageH: 250},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900, width: 400, height: 200,options:{marginLeft: 50,marginBottom: 40,marginInner: 15,labelsAboveSize: 16,textSize: 10,backgroundImageW: 400,backgroundImageH: 200},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null, width: 600, height: 250,options:{marginLeft: 150,marginBottom: 60,marginInner: 45,labelsAboveSize: 24,textSize: 20,backgroundImageW: 600,backgroundImageH: 250}},
+                    {maxWidth: 900, width: 400, height: 200,options:{marginLeft: 50,marginBottom: 40,marginInner: 15,labelsAboveSize: 16,textSize: 10,backgroundImageW: 400,backgroundImageH: 200}}
                 ]
             }
         }).draw();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="600" height="250" &gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

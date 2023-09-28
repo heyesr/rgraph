@@ -1,73 +1,26 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Bar chart with an interactive key</title>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    
-    <meta name="description" content="This is an example of a Bar chart with an interactive key. Various charts support interactive keys." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>An example of an interactive key</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" style="margin-bottom: 50px" data-image-src="page-demos-bar-interactive-key.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" style="margin-bottom: 50px">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        The interactive key was updated in June 2013 and added to
-        more chart types. The types of charts that now support the
-        interactive key are:
-    </p>
-    
-    <ul>
-        <li>Bar</li>
-        <li>Funnel</li>
-        <li>Horizontal Bar</li>
-        <li>Horizontal Progress</li>
-        <li>Line</li>
-        <li>Pie</li>
-        <li>Radar</li>
-        <li>Rose</li>
-        <li>Radial Scatter</li>
-        <li>Scatter</li>
-        <li>Vertical Progress</li>
-    </ul>
-    
-    <p>
-        The interactive key uses the <code>RGraph.common.dynamic.js</code> library and the
-        <code>RGraph.common.core.js</code> libraries so you'll need to include these in your page if you
-        want your chart to show a dynamic key. Apart from that the only additional property that you
-        need to specify in your chart configuration is this: <code>keyInteractive: true</code>.
-    </p>
-    
-    <p>
-        There's not a lot more going on for this chart except for having angled labels (at 25 degrees)
-        and the groups of bars are made clear by using the <code>marginInner</code> and
-        <code>marginInnerGrouped</code> properties. The chart also uses the <code>wave</code> animation
-        effect.
-    </p>
-    
-    <p>
-        For smaller screens the text size is reduced, the margins are changed (both the RGraph margins
-        and also the <code>CSS</code> margins of the <code>canvas</code> tag) and the <code>CSS</code> <code>float</code> is removed.
-    </p>
-
 
     <script id="rgraph-demo-source-code">
         // Create a grouped Bar chart. Note that the data is a 2D array.
@@ -103,45 +56,14 @@
                 marginLeft: 45,
                 yaxis: false,
                 responsive: [
-                    {maxWidth: null, width:600,height:250, options: {marginBottom: 85,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:18,marginInner:10},css: {marginBottom: 0,'float': 'right'},parentCss:{textAlign:'none'}},
-                    {maxWidth: 900,width: 400,height: 150,options: {marginBottom: 25,xaxisLabelsOffsety: 0,xaxisLabelsAngle: 0,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 10,marginInner:5},css: {marginBottom: '35px','float': 'none'},parentCss:{textAlign:'center'}}
+                    {maxWidth: null, width:600,height:250, options: {marginBottom: 85,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:18,marginInner:10},css: {marginBottom: 0},parentCss:{textAlign:'none'}},
+                    {maxWidth: 900,width: 400,height: 150,options: {marginBottom: 25,xaxisLabelsOffsety: 0,xaxisLabelsAngle: 0,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 10,marginInner:5},css: {marginBottom: '35px'},parentCss:{textAlign:'center'}}
                 ]
             }
         }).wave();
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.rect.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="600" height="250" style="float: right; margin-bottom: 50px"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-
 
 </body>
 </html>
