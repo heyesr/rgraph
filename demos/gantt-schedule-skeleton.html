@@ -1,52 +1,12 @@
     <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    
-    <title>RGraph demo: A Gantt chart schedule demo</title>
-
-
-    <style>
-        span.formLabel,
-        input[type=submit],
-        input[type=text],
-        button {
-            font-family: Arial, sans-serif;
-            font-size: 150%;
-        }
-        
-        span.formLabel {
-            width: 150px;
-            display: inline-block;
-            text-align: right;
-            padding: 5px;
-        }
-        
-        p#eventForm input[type=text],
-        p#addEventForm input[type=text] {
-            border: none;
-            background-color: #eee;
-        }
-        
-        p#eventForm input#startdate,
-        p#eventForm input#duration {
-            background-color: white;
-            width: 150px;
-        }
-        
-        button {
-            cursor: pointer;
-        }
-    </style>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
@@ -54,55 +14,74 @@
 
     <h1>A Gantt chart schedule demo</h1>
     
-    <p>
-        View the source to get the code.
-    </p>
-    
-    <div>
+    <div id="rgraph-demo-html">
+        <style>
+            span.formLabel,
+            input[type=submit],
+            input[type=text],
+            button {
+                font-family: Arial, sans-serif;
+                font-size: 150%;
+            }
+            
+            span.formLabel {
+                width: 150px;
+                display: inline-block;
+                text-align: right;
+                padding: 5px;
+            }
+            
+            p#eventForm input[type=text],
+            p#addEventForm input[type=text] {
+                border: none;
+                background-color: #eee;
+            }
+            
+            p#eventForm input#startdate,
+            p#eventForm input#duration {
+                background-color: white;
+                width: 150px;
+            }
+            
+            button {
+                cursor: pointer;
+            }
+        </style>
 
         <canvas id="cvs" width="950" height="450">[No canvas support]</canvas>
+        
         <p />
+        
         <button onclick="addPerson()">Add...</button>
         <button onclick="deletePerson()">Delete</button>
-    </div>
     
-    <p id="eventForm">
-        <span class="formLabel">Name:</span>
-        <input type="text" id="name" />
-        <button onclick="updateName()">Update</button>
-        
-        <br />
-        <span class="formLabel">Start date:</span>
-        <input type="text" id="startdate" readonly />
-        <i>(dd/mm)</i>
-        
-        <br />
-
-        <span class="formLabel">Duration:</span>
-        <input type="text" id="duration" readonly />
-        <i>(days)</i>
-        
-        <br />
-
-        <span class="formLabel">%&nbsp;Complete:</span>
-        <input type="text" id="complete" />
-        <button onclick="updateComplete()">Update</button>
-        
-        <p>
-            <button id="reset" onclick="reset()" style="background-color: red; color: white">Reset data to defaults</button>
+        <p id="eventForm">
+            <span class="formLabel">Name:</span>
+            <input type="text" id="name" />
+            <button onclick="updateName()">Update</button>
+            
+            <br />
+            <span class="formLabel">Start date:</span>
+            <input type="text" id="startdate" readonly />
+            <i>(dd/mm)</i>
+            
+            <br />
+    
+            <span class="formLabel">Duration:</span>
+            <input type="text" id="duration" readonly />
+            <i>(days)</i>
+            
+            <br />
+    
+            <span class="formLabel">%&nbsp;Complete:</span>
+            <input type="text" id="complete" />
+            <button onclick="updateComplete()">Update</button>
+            
+            <p>
+                <button id="reset" onclick="reset()" style="background-color: red; color: white">Reset data to defaults</button>
+            </p>
         </p>
-    </p>
-
-
-
-
-
-
-
-
-
-
-
+    </div>
 
     <script>
         // This function converts day numbers to dates
@@ -449,6 +428,8 @@
 
         myGantt.canvas.parentNode.style.display = 'inline-block';
     </script>
+    
+    <script>showSource()</script>
 
 </body>
 </html>

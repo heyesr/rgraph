@@ -1,19 +1,13 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
-    <script src="demos.js" ></script>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    <title>RGraph demo: A Gantt chart with tooltips on the labels</title>
-    
-    
-    <meta name="description" content="A Gantt chart with tooltips on the labels" />
-     
+    <script src="demos.js" ></script>     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
@@ -21,10 +15,11 @@
 
     <h1>A Gantt chart with tooltips on the labels</h1>
     
-    <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+    </div>
 
     <script>
-
         gantt = new RGraph.Gantt({
             id: 'cvs',
             data: [
@@ -46,9 +41,7 @@
                 tooltipsOffsety: -10,
 
                 backgroundGridVlinesCount: 5,
-                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5'],
-
-                textAccessible: true
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5']
             }
         }).on('draw', function (obj)
         {
@@ -90,30 +83,6 @@
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="800" height="350"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     
 </body>

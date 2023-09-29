@@ -2,27 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    <title>RGraph demo: A demo of the Chrome-only dotted or dashed background grid</title>
 
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    
-    <meta name="description" content="An example of the (currently) Chrome-only dotted or dashed background grid feature" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A demo of the dotted or dashed background grid (limited browser support)</h1>
     
     <p>
-        This uses the relatively recent addition to canvas from the canvas v5
+        This uses the relatively recent addition to <code>canvas</code>
+        from the <code>canvas v5</code>
         specification - native dotted and dashed lines.
         In somewhat limited testing it worked in Chrome, Firefox and Internet
         Explorer 11.
@@ -33,8 +26,11 @@ backgroundGridDashed: true,
 backgroundGridDotted: true
 </pre>
 
-    <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
-    <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
     <script>
         new RGraph.Gantt({
             id: 'cvs1',
@@ -109,30 +105,8 @@ backgroundGridDotted: true
             }
         }).draw();
     </script>
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.gantt.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs1" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;canvas id="cvs2" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
     
 </body>
 </html>
