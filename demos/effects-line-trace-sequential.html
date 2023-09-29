@@ -6,83 +6,20 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="./demos.js" ></script>
-    
-    <title>Demo: A Line chart that uses sequential tracing effects</title>
-    <meta name="description" content="A Line chart with multiple datasets that are tracing sequentially from the left-hand-side." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
+
 </head>
 <body>
 
     <h1>A sequential trace effect</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" style="background-color: black" data-image-src="page-demos-effects-line-trace-sequential.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" style="background-color: black" data-image-src="page-demos-effects-line-trace-sequential.png">[No canvas support]</canvas>
+        </div>
     </div>
     
-    <p>
-        This demo shows you how you can create new effects with a little customisation
-        and a smattering of standard <code>JavaScript</code>.
-    </p>
-    
-    <p>
-        There are three Line chart objects and each one uses the
-        <code>trace</code> effect - however, the
-        second is delayed until the first is finished. And then the third, again using
-        the <code>trace</code> effect, is delayed until the second is finished.
-    </p>
-    
-    <p>
-        Each Line object is passed all three datasets, however in each chart, two of the
-        datasets are set to use <code>transparent</code> as the color - so only one dataset can be
-        seen. In the first Line chart it's the first dataset, in the second Line chart it's the
-        second and in the third Line chart it's the third dataset.
-    </p>
-    
-    <p>
-        The visible colors are gradients, as you can see. If it runs a
-        little too slow for you on your device (on less powerful devices it
-        can slow down a little) you can make the gradients solid colors and you
-        can also make the sequential tracing a little delayed - so each dataset starts tracing only
-        when the previous has finished and then a little delay too. There's a demo of the datasets
-        tracing from the center outwards that you can see here:
-        <a href="https://www.rgraph.net/demos/effects-line-tracecenter.html">
-            https://www.rgraph.net/demos/effects-line-tracecenter.html
-        </a>
-    </p>
-    
-    <p>
-        That demo also uses the <code>animationTraceCenter</code>
-        option - and this changes the <code>trace</code> effect from tracing from the left-hand-side to
-        tracing from the center of the chart outwards in both directions.
-    </p>
-    
-    <p>
-        When the screen size is smaller the chart shrinks and the <code>CSS</code> <code>float</code> setting
-        is removed. Because gradients are used as the fill colors these too are reset.
-    </p>
-    
-    <p>
-        This is done by having each object clone its original colors so that the gradients are recreated and
-        then redrawing the charts.
-    </p>
-    
-    <p>
-        It should also be noted that the <code>responsive</code> functionality isn't added until all of the animation effects
-        have completed. This is done by simply using the standard <code>setTimout</code> function.
-    </p>
-    
-    
-
-
-    
-    
     <script id="rgraph-demo-source-code">
-        // The data for the charts. All of the datasets are passed to
-        // each of the three chart objects but the colors are set such
-        // that two of datasets are invisible.
         data = [
             [8,6,3,5,12,8,5,4,6,12],
             [4,8,6,3,5,2,4,8,5,2],
@@ -211,28 +148,12 @@
         setTimeout(function ()
         {
             l1.responsive([
-                {maxWidth:null,width: 600,height:250,css: {'float': 'right'},callback: function (){l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}},
-                {maxWidth:900, width: 400,height:150,css: {'float': 'none'},callback: function () {l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}}
+                {maxWidth:null,width: 600,height:250,callback: function (){l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}},
+                {maxWidth:900, width: 400,height:150,callback: function () {l1.properties.colors = RGraph.arrayClone(l1.original_colors);l2.properties.colors = RGraph.arrayClone(l2.original_colors);l3.properties.colors = RGraph.arrayClone(l3.original_colors);RGraph.redraw();}}
             ]);
-        }, 1500)
-
+        }, 1500);
     </script>
 
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250" style="background-color: black; float: right"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

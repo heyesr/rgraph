@@ -6,74 +6,20 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Line chart using animationTraceCenter</title>
-    
-    
-    <meta name="description" content="A demonstration of the animationTraceCenter option that alters the behaviour of the trace() effect so that the tracing starts in the middle instead of on the left." />
-     
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-    
-
     <h1>A Line chart using the animation option</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" data-image-src="page-demos-effects-line-tracecenter.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" data-image-src="page-demos-effects-line-tracecenter.png">[No canvas support]</canvas>
+        </div>
     </div>
     
-    <p>
-        This is a <code>canvas</code> based demonstration of the Line chart <code>animationTraceCenter</code> option
-        which is used when utilising the <code>trace</code> effect.
-    </p>
-    
-    <p>
-        In addition to this <code>trace</code> effect, there are three datasets shown - and each one is
-        its own chart object.
-        The second and third charts start animating when the previous chart has finished.
-    </p>
-    
-    <p>
-        ie When the first Line chart finishes its <code>trace</code> effect the <code>callback</code> triggers the
-        second chart to start animating and then when it also finishes animating the third Line chart is
-        animated.
-    </p>
-    
-    <p>
-        The overall effect is as you see here - each dataset animating sequentially. This is better than delayed
-        effects (so the second Line chart starts tracing whilst the first is still animating and similarly
-        for the third dataset) because the browser isn't animating two charts at once - thus reducing the
-        amount of work that it has to do.
-    </p>
-    
-    <p>
-        In terms of other configuration, the <code>linewidth</code> option is set to zero, the
-        <code>backgroundGrid</code> and the <code>axes</code> options are set to false (on two
-        of the chart objects),
-        the colors are set to gradients and the <code>Y-axis</code> scale maximum is set to 35.
-        The labels are added to the first chart that's drawn
-    </p>
-    
-    <p>
-        When the screen shrinks the chart is made to be smaller to accommodate the smaller screen
-        and the text size is reduced. The <code>CSS</code> <code>float</code> setting of the <code>canvas</code> tag is removed so
-        that it isn't aligned to the right-hand-side.
-    </p>
-    
-    <br clear="all" />
-    
     <script id="rgraph-demo-source-code">
-        // Create the first Line chart. Note the animationTraceCenter
-        // property is set to true which changes the behaviour of the
-        // trace() effect. The backgroundGrid and axes are enabled on this
-        // chart (horizontal lines only). The charts are all filled and
-        // splines. The effect used is (obviously) the trace effect and
-        // the callback function creates the second Line chart.
         l1 = new RGraph.Line({
             id: 'cvs',
             data: [8,6,3,5,12,8,5,4,6,12],
@@ -94,13 +40,6 @@
             }
         }).trace(null, function ()
         {
-            // Create the second Line chart. Again this uses the
-            // animationTraceCenter property that modifies the
-            // trace() effect. It has no axes or backgroundGrid
-            // - these are defined on the first chart. Note that
-            // unlike the first chart this has two datasets
-            // defined - the dataset from the first chart (which
-            // is transparent) and this charts dataaset.
             new RGraph.Line({
                 id: 'cvs',
                 data: [
@@ -123,13 +62,6 @@
                 }
             }).trace(null, function ()
             {
-                // Again the trace() effect callback function is used
-                // to trigger the drawing of the next Line chart.
-                // Three datasets now - ie all three. The first two are
-                // colored transparent so that you can't see them. Like
-                // the second chart there's no backgroundGrid or axes and
-                // with this being the final chart - there's no callback
-                // function.
                 new RGraph.Line({
                     id: 'cvs',
                     data: [
@@ -155,37 +87,12 @@
             });
         });
         
-        // Add some responsiveness to the charts. This is added to the first chart but since all three
-        // are being drawn on the same canvas it doesn't need to be added to each chart object.
         l1.responsive([
-            {maxWidth:null,width: 600,height:250,options:{textSize: 14},parentCss:{'float':'right', textAlign: 'none'}},
-            {maxWidth:900, width: 400,height:200,options:{textSize: 10},parentCss:{'float':'none', textAlign: 'center'}}
+            {maxWidth:null,width: 600,height:250,options:{textSize: 14}},
+            {maxWidth:900, width: 400,height:200,options:{textSize: 10}}
         ]);
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

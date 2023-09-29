@@ -6,26 +6,21 @@
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: Horizontal Bar grow() effect changing values</title>
-    
-    
-    
-    <meta name="description" content="Horizontal Bar chart grow() effect changing values" />
-    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>    
 
-    <h1>Horizontal Bar grow() effect changing values</h1>
+    <h1>Horizontal Bar grow( effect changing values</h1>
     
     <p>
-        This is a demo of the grow() effect being passed new data and instead
+        This is a demo of the <code>grow</code> effect being passed new data and instead
         of growing from zero it grows from the old data to the new data supplied.
     </p>
 
-    <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    </div>
     
     <script>
         hbar = new RGraph.HBar({
@@ -45,24 +40,7 @@
             hbar.grow({data: RGraph.arrayRandom(7, 0, 500)});
         }, 2500);
     </script>
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>
