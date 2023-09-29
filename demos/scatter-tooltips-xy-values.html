@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+    
+</head>
+<body>
+
+    <h1>A Scatter chart showing how to use both X and Y values in tooltips</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        // This function is called when a tooltip is to be shown
+        // and retuwns the appropriate HTML
+        function getXY (dataset, index)
+        {
+            var obj = RGraph.ObjectRegistry.getFirstObjectByType('scatter');
+            var x   = obj.data[dataset][index][0];
+            var y   = obj.data[dataset][index][1];
+            
+            return '<table><tr><td>X: </td><td>%1</td></tr><tr><td>Y: </td><td>%2</td></tr></table>'.format(x, y)
+        }
+
+        // Create and configure the Scatter chart
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: [
+                {x: 103, y:46, color: 'red', tooltip: '%{function:getXY(%{dataset}, %{index})}'},
+                {x: 153, y:34, color: 'red', tooltip: '%{function:getXY(%{dataset}, %{index})}'}
+            ],
+            options: {
+                xaxisLabels: RGraph.MONTHS_SHORT,
+                xaxisScaleMax: 365,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 10,
+                tooltipsHotSpot: 10,
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                highlightStyle: function (shape)
+                {
+                    var size = shape.object.properties.tickmarksSize;
+                    var x    = shape.object.coords[shape.dataset][shape.index][0];
+                    var y    = shape.object.coords[shape.dataset][shape.index][1];
+
+                    shape.object.path(
+                        'b a % % % 0 6.29 false f #fffb',
+                        x, y, shape.object.properties.tickmarksSize
+                    );
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
