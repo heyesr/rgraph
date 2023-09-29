@@ -6,77 +6,18 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: An example of a customised Gauge chart</title>
-    
-    
-    <meta name="description" content="A Gauge chart that has been customised to look quite different from what is the default appearance." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
-
     <h1>A customised Gauge chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="300" height="300" data-image-src="page-demos-gauge-customised.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's an example of the <code>canvas</code> Gauge chart which is just one of the various meter-type charts
-        that's available with RGraph. These charts are:
-    </p>
-    
-    <ul>
-        <li>Fuel (<code>canvas</code>)</li>
-        <li>Gauge (<code>canvas</code>)</li>
-        <li>Horizontal Progress bar (<code>canvas</code>)</li>
-        <li>Meter (<code>canvas</code>)</li>
-        <li>Odometer (<code>canvas</code>)</li>
-        <li>Semi-circular progress (<code>canvas</code>)</li>
-        <li>Thermometer (<code>canvas</code>)</li>
-        <li>Vertical Progress bar (<code>canvas</code>)</li>
-        <li>Gauge (<code>SVG</code>)</li>
-        <li>Semi-circular progress (<code>SVG</code>)</li>
-    </ul>
-    
-    <p>
-        As you can see - there are far more <code>canvas</code> meters than <code>SVG</code> ones. Though you can quite easily
-        configure the vertical and horizontal <code>SVG</code> Bar charts to appear as progress bars. There are demos
-        of this being done in <a href="/download.html">the download archive</a>. There's also a demo available
-        <a href="https://www.rgraph.net/demos/pie-horseshoe.html">
-            of a Pie chart being configured as a progress gauge
-        </a>
-        
-        and other meters
-        <a href="/demos/pie-progress.html">here</a>,
-        <a href="/demos/donut-nested-progress.html">here</a>,
-        <a href="/demos/donut-segments.html">here</a>,
-        <a href="/demos/svg-pie-meter.html">here</a> and 
-        <a href="/demos/svg-pie-dashboard.html">here</a>
-    </p>
-    
-    <p>
-        Regarding this chart, the top and bottom titles are being configured, the colors for the banding
-        around the Gauge are being set with specific ranges, there are multiple needles - each with its
-        own color and the tickmarks are being configured.
-    </p>
-
-    <p>
-        As you can see it looks quite different to the standard Gauge!
-    </p>
-    
-    <p>
-        The <code>responsive</code> function in this case doesn't change the appearance or size of the
-        chart but instead changes the <code>CSS</code> so the <code>float</code> is removed from the <code>canvas</code> and
-        parent <code>div</code> and the alignment of the parent is changed to be center aligned.
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         new RGraph.Gauge({
@@ -121,35 +62,13 @@
                 borderOuter: '#666',
                 borderInner: '#333',
                 responsive: [
-                    {maxWidth:null,css:{'float':'right'},parentCss:{textAlign:'none','float': 'right'}},
-                    {maxWidth:900,css:{'float':'none'},parentCss:{textAlign:'center','float': 'none'}}
+                    {maxWidth:null},
+                    {maxWidth:900}
                 ]
             }
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="300" height="300"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

@@ -8,26 +8,24 @@
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A customised and adjustable Gauge chart</title>
-    
-    <meta name="description" content="A customised Gauge chart which can be adjusted" />
-     
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-
     <h1>A customised and adjustable Gauge chart</h1>
     
     <p>
-        This example Gauge chart doesn't use the built-in adjusting but uses a custom
-        <code>click</code> event listener (which you can see below) in order to make the
-        adjusting animated. It also uses a custom <code>draw</code> event to draw the centerpin.
+        This example <code>Gauge chart</code> doesn't use the
+        built-in adjusting but uses a custom <code>click</code>
+        event listener (which you can see below) in order to make
+        the adjusting animated. It also uses a custom
+        <code>draw</code> event to draw the centerpin.
     </p>
 
-    <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
+    </div>
     
     <script>
         gauge = new RGraph.Gauge({
@@ -87,29 +85,6 @@
         }
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.effects.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.gauge.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>
