@@ -8,34 +8,29 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.drawing.text.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A basic example of the drawing API text object being used as a button to switch between charts</title>
-
-    
-    <meta name="description" content="A basic example of the drawing API text object being used as a button to switch between charts" />
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-    
-        
     <h1>A basic example of the drawing API text object being used as a button to switch between charts</h1>
 
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
 
     <script>
         var canvas = document.getElementById('cvs');
         
-        /**
-        * Draw the chart when the page loads
-        */
+        //
+        // Draw the chart when the page loads
+        //
         drawBar1();
 
 
-        /**
-        * Draw the first chart
-        */
+        //
+        // Draw the first chart
+        //
         function drawBar1 ()
         {
             RGraph.reset(canvas);
@@ -54,9 +49,9 @@
             drawButtons();
         }
 
-        /**
-        * Draw the second chart
-        */
+        //
+        // Draw the second chart
+        //
         function drawBar2 ()
         {
             RGraph.reset(canvas);
@@ -76,9 +71,9 @@
 
 
 
-        /**
-        * Draw the buttons (using the drawing API text object).
-        */
+        //
+        // Draw the buttons (using the drawing API text object).
+        //
         function drawButtons ()
         {
             var text1 = new RGraph.Drawing.Text({
@@ -150,33 +145,6 @@
         }
     </script>
 
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.text.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-    This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>
