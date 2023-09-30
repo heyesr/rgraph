@@ -8,89 +8,18 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A demonstration of formatted tooltips</title>
-    
-    
-    
-    <meta name="description" content="An example of a Horizontal Bar chart that's showing the result of the 2016 UK referendum that decided the question of EU membership." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>A Horizontal Bar chart with formatted tooltips</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="275" data-image-src="page-demos-hbar-referendum-results.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="275" data-image-src="page-demos-hbar-referendum-results.png">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's a Horizontal Bar chart indicating the 2016 UK referendum results. Let's not dwell on the
-        disastrous nature of the vote though and look at the chart, shall we?
-    </p>
-    
-    <p>
-        It has a high <code>marginInner</code> setting - though the bars are still quite thick
-        due to the height of the chart and the fact that there are only two values that are being
-        represented.
-    </p>
-    
-    <p>
-        It uses the <code>labelsAbove</code> setting, has <code>tooltips</code> and the number of <code>X-axis</code>
-        labels has been increased. The number of vertical background grid lines has been increased to match
-        the number of labels.
-    </p>
-    
-    <p>
-        The <code>responsive</code> function reduces the size of the chart, the text that's on the chart,
-        slightly reduces the <code>marginInner</code> and reduces the number of <code>X-axis</code> labels that you see.
-        It also removes  the <code>CSS</code> <code>float</code> on the <code>canvas</code> tag.
-    </p>
-    
-    <p>
-        This demo shows the new formatted tooltips feature - which allows you to specify the tooltips as
-        a string instead of an array of tooltips:
-    </p>
-    
-    <pre class="code">
-...
-tooltips: '%{function:getTooltip(%{dataset})}'
-...
-</pre>
-
-    <p>
-        The <code>getTooltip</code> function is called with the group ID given as an argument and
-        that function looks like this:
-    </p>
-    
-    <pre class="code">
-<span>// Format and return the correct tooltip</span>
-function getTooltip(group)
-{
-    var results = [
-        [408,'The "Leave" campaign won a significant&lt;br /&gt;majority with a total of 408 seats.'],
-        [242, 'The "Remain" campaign fought valiantly&lt;br /&gt;but, alas, it was to no avail.']
-    ];
-
-    return 'Seats: &lt;b&gt;{1}&lt;/b&gt;&lt;br /&gt;&lt;span style="color: #666"&gt;{2}&lt;/span&gt;'.format(
-        results[group][0],
-        results[group][1]
-    );
-}
-</pre>
-
-    <p>
-        This function returns the correct text based on the group ID that is given and
-        that text is then used as the tooltip.
-    </p>
-    
-    <p>
-        And finally, it's animated using the <code>grow</code> effect - which is a linear growing effect.
-    </p>
     
     <script id="rgraph-demo-source-code">
         //
@@ -144,8 +73,8 @@ function getTooltip(group)
                 titleHalign: 'center',
                 titleColor: 'gray',
                 responsive: [
-                    {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null, width: 600,height: 275,options: {titleSize: 18,textSize: 14,marginInner: 25,xaxisLabelsCount: 18}},
+                    {maxWidth: 900, width: 400,height: 225,options: {titleSize: 14,textSize: 12,marginInner: 15,xaxisLabelsCount: 9}}
                 ]
             }
 
@@ -159,30 +88,7 @@ function getTooltip(group)
         // becomes "cssFloat")
         RGraph.tooltips.style.textAlign = 'left';
     </script>
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="275"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>    
 
 </body>

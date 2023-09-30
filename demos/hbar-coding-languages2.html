@@ -8,10 +8,6 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A (second) HBar chart of programming language popularity</title>
-    <meta name="description" content="A (second) Horizontal Bar chart that's showing the popularity of various computer programming languages. The labels are added manually using the RGraph.text() function." />
-    
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
@@ -19,16 +15,16 @@
 
     <h1>Popular coding languages (an alternative method)</h1>
     
-    <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+    </div>
 
     <p>
         This Horizontal Bar chart is a duplicate of the
         <code>hbar-coding-languages.html</code> public demo but done
         a different way - instead of using custom coding it uses a
-        second HBar chart.
+        second <code>HBar chart</code>.
     </p>
-
-    <div style="clear: both"></div>
     
     <script id="rgraph-demo-source-code">
         // The labels for the chart are added by adding them
@@ -93,28 +89,7 @@
             }
         }).draw();
     </script>
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="350"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre  id="dynamic-source-code"></pre>
     <script>showSource()</script>    
 
 </body>

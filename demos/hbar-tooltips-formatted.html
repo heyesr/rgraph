@@ -2,45 +2,34 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    <style>
-        table {
-            border-color: #ccc;
-        }
-
-        td {
-            text-align: left;
-            padding-left: 15px;
-        }
-    </style>
 
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>RGraph demo: An HBar chart showing the new (version 5.22) formatted tooltips feature</title>
-    <meta name="description" content="An HBar chart showing the new formatted tooltips feature" />
-    
     <meta name="robots" content="noindex, nofollow" />
+    
 </head>
 <body>
 
-
     <h1>An HBar chart showing the new (version 5.22) formatted tooltips feature</h1>
     
-    <p>
-        Formatted tooltips are a new feature in version 5.22 and make it super-easy to
-        have unique tooltips but using just one specification in your configuration
-        (as shown below).
-    </p>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs1" width="650" height="450">[No canvas support]</canvas>
+        <canvas id="cvs2" width="650" height="450">[No canvas support]</canvas>
+        <canvas id="cvs3" width="650" height="450">[No canvas support]</canvas>
+        <style>
+            table {
+                border-color: #ccc;
+            }
     
-    <canvas id="cvs1" width="650" height="450">[No canvas support]</canvas>
-    <canvas id="cvs2" width="650" height="450">[No canvas support]</canvas>
-    <canvas id="cvs3" width="650" height="450">[No canvas support]</canvas>
-
-
+            td {
+                text-align: left;
+                padding-left: 15px;
+            }
+        </style>
+    </div>
 
     <script>
         // A function used in the template
@@ -124,28 +113,7 @@
         RGraph.tooltips.style.maxWidth = '950px';
         RGraph.tooltips.style.fontSize = '14pt';
     </script>
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs1" width="650" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;canvas id="cvs2" width="650" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;canvas id="cvs3" width="650" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

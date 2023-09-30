@@ -8,53 +8,18 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A HBar chart of programming language popularity</title>
-    <meta name="description" content="A Horizontal Bar chart that's showing the popularity of various computer programming languages. The labels are added manually using the RGraph.text() function." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 
 </head>
 <body>
 
     <h1>Popular coding languages</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="350" data-image-src="page-demos-hbar-coding-languages.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="350" data-image-src="page-demos-hbar-coding-languages.png">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        This Horizontal Bar chart does not use the <code>yaxisLabels</code> option
-        but instead has a minimal <code>marginLeft</code> setting and then uses some
-        custom code in the <code>draw</code> event to manually draw some labels. It also
-        uses the <code>labelsAbove</code> option to indicate the percentages for each bar.
-    </p>
-    
-    <p>
-        The <code>grow</code> effect is employed to animate the chart.
-    </p>
-    
-    <p>
-        If the <code>draw</code> event wasn't used and the labels were simply
-        added after the chart had been drawn then they would
-        disappear when the <code>canvas</code> is cleared for the second frame of the
-        animation. And that happens so fast that it would seem like they
-        just aren't being drawn.
-    </p>
-    
-    <p>
-        The <code>responsive</code> function doesn't do much - it simply changes the width and height of
-        the <code>canvas</code> tag and changes the <code>CSS</code> <code>float</code> that's applied to the container of the <code>canvas</code>.
-    </p>
-    
-    <p>
-        This chart has been updated in March 2020 to add tooltips that use formatting and the highlighting
-        color has been updated to a gradient so that the labels on the left-hand-side are unobscured.
-    </p>
-    
-    <div style="clear: both"></div>
     
     <script id="rgraph-demo-source-code">
         // The labels for the chart are not added by giving them to the
@@ -115,30 +80,7 @@
             }
         }).grow();
     </script>
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.hbar.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="350"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>    
 
 </body>
