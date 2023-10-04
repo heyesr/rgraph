@@ -2,12 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
     <h1>A DateTime Scatter chart</h1>
@@ -17,28 +15,7 @@
             <canvas id="cvs" width="600" height="200" data-image-src="page-demos-scatter-date-time-values.png">[No canvas support]</canvas>
         </div>
     </div>
-    
-    <p>
-        This demo shows how you can use date/time values as <code>X-axis</code> values with the Scatter
-        chart. Although it's a Scatter chart it can also
-        show a line that connects the points, as you can see on the example to the right.
-        The chart has two datasets, one of which is set to be drawn as being stepped.
-    </p>
-    
-    <p>
-        The date/time format parsing in RGraph is done by the <code>RGraph.parseDate</code> function
-        internally and this function is quite versatile in the formats that it accepts.
-    </p>
-    
-    <p>
-        This means that you are free to use many different formats for the date/time values that you supply.
-        Some of the different formats that are accepted are shown in the source code below.
-    </p>
-    
-    <p>
-        For smaller screens, the text size is reduced and the <code>CSS</code> <code>float</code> is reduced.
-    </p>
-    
+
     <script id="rgraph-demo-source-code">
         // The first dataset - the set of points that are drawn on
         // to the chart. Note the different formats of the date/time

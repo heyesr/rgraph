@@ -2,15 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A vertical line Scatter chart</h1>
 
     <div style="margin: 10px; background-color: #fff7d0;padding: 10px;border-left: 10px solid #e7c000;line-height: 25px;">
@@ -59,24 +56,6 @@
             }
         }).draw();
     </script>
-
-    <p>
-        Vertical line charts are not supported natively in RGraph however they can
-		be achieved using the Scatter chart. With
-        the Scatter chart, unlike the Line chart, you can specify the <code>X-axis</code> and <code>Y-axis</code> coordinates and a connecting
-        line can be shown as in the example.
-    </p>
-    
-    <p>
-        Below is the code that's necessary to achieve the vertical line chart. The <code>Y-axis</code> labels are
-        specific and used to show the labels for the chart whilst an <code>X-axis</code> scale is enabled to show
-        the magnitude of values. The maximum values are set manually - so you may want to add code
-        that determines these based on the data - as a normal Line chart would.
-    </p>
-    
-    <p>
-        Read the comments in the code sample to find out more information.
-    </p>
 
     <script>showSource()</script>
 

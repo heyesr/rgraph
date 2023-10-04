@@ -2,51 +2,30 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
-    <style>
-        input {
-            font-size: 16pt;
-        }
-    </style>
 </head>
 <body>
-
     <h1>A Scatter chart getting the X/Y value</h1>
 
+    <div id="rgraph-demo-html">
+        <div style="width: 600px">
+            <style>
+                input {
+                    font-size: 16pt;
+                }
+            </style>
 
-<div id="rgraph-demo-html">
-<div style="float: right; width: 600px">
             <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
             <div style="position: relative; left: 25px; width: 550px">
                 <span style="font-size: 16pt">X:</span> <input type="text" id="x" /><br />
                 <span style="font-size: 16pt">Y:</span> <input type="text" id="y" />
             </div>
-</div>
-</div>
-
-<p>
-    The Line chart has no concept of an X-axis scale. The values that you supply
-	are simply spaced equally across the chart. The
-    Scatter chart on the other hand does have an X-axis scale, so you can have
-	an uneven distribution of elements across the chart
-    if you so wished.
-</p>
-
-<p>
-    Because the X-axis is scaled this means that you can get the relevant X value
-	from a <code>click</code> or <code>mousemove</code> event. You can also get
-    the relevant Y value so you then have an (X,Y) coordinate pair. The code to
-	achieve this is as follows. It uses the RGraph
-    replacement for the <code>mousemove</code> event but this is not a requirement:
-</p>
-
-
+        </div>
+    </div>
 
     <script>
         data   = [];

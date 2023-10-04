@@ -2,26 +2,25 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Scatter chart demonstrating  the crosshairs snap option</h1>
     
-    <p>
-        This Scatter chart demonstrates how you can extract the Scatter chart's
-        dataset and index from the variables that are set on the canvas tag
-        by RGraph.
-    </p>
-
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+
+        <p />
+        
+        Dataset:<br />
+        <input id="dataset" type="text" /><br /><br />
+    
+        Point:<br />
+        <input id="point" type="text" />
     </div>
     
     <script>
@@ -49,14 +48,6 @@
             document.getElementById("point").value =  obj.canvas.__crosshairs_snap_point__;
         };
     </script>
-    
-    <p />
-    
-    Dataset:<br />
-    <input id="dataset" type="text" /><br /><br />
-
-    Point:<br />
-    <input id="point" type="text" />
 
     <script>showSource()</script>
 
