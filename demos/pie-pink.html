@@ -2,52 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A simple, pretty pink Pie chart</title>
-    
-    
-    <meta name="description" content="A pink Pie chart using the (now default) sticks option for labels. The linewidth option is also employed to make a small segment separation effect." />
-     
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
-<body>
-
-    
-
+<body>    
     <h1>A pink Pie chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="450" height="200" data-image-src="page-demos-pie-pink.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="450" height="200" data-image-src="page-demos-pie-pink.png">[No canvas support]</canvas>
+        </div>
     </div>
-
-    <p>
-        Another quite basic Pie chart that is predominantly a pinkish theme. All of the colors
-        are defined using <code>rgb</code> values instead of <code>hex</code> values or named colors.
-    </p>
-    
-    <p>
-        The <code>linewidth</code> is set to 2 so the resultant effect is a small amount of segment
-        separation.
-    </p>
-    
-    <p>
-        The labels are defined and the <code>textSize</code> option is enlarged slightly so
-        that those labels are a little bit clearer.
-    </p>
-    
-    <p>
-        It's quite a basic example of a Pie chart but the resulting aesthetic is quite nice.
-        This goes to show that your charts don't need to be fancy to look good!
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // A pretty straight-forward Pie chart. The only thing to note here
@@ -77,27 +44,6 @@
         }).draw();
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="550" height="450"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

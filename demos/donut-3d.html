@@ -2,51 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
-<body>    
-
+<body>
     <h1>A 3D Donut chart</h1>
     
     <div id="rgraph-demo-html">
-        <div style="float: right" id="canvas-container">
+        <div id="canvas-container">
             <canvas id="cvs" width="600" height="350" data-image-src="page-demos-donut-3d.png">[No canvas support]</canvas>
         </div>
-    </div>
-    
-    <p>
-        Here's an example of a 3D Pie chart effect used in conjunction with the
-        <code>donut3d</code> variation (use the <code>variant</code> property as shown below).
-    </p>
-    
-    <p>
-        Other variants include: <code>pie</code> <code>pie3d</code> and <code>donut</code>
-    </p>
-    
-    <p>
-        On this chart, the shadow is used to accentuate the
-        appearance of depth.
-    </p>
-    
-    <p>
-        The 3D effect is achieved by stretching the <code>canvas</code> in the horizontal direction - which is why the
-        text looks stretched.
-    </p>
-    
-    <p>
-        In terms of the <code>responsive</code> nature of the chart, when viewing on smaller screens the labels are switched to
-        tooltips and a title is added to indicate as such.
-    </p>
-
-    <br clear="all" />
-    
+    </div>    
 
     <script id="rgraph-demo-source-code">
         labels = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];

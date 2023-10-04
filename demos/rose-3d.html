@@ -2,58 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.rose.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Rose chart using the 3D effect</title>
-
-
-    
-    <meta name="description" content="A 3D Rose chart. The 3D Rose chart has a nice aesthetic to it and could work well as part of a presentation." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-    
-
     <h1>A 3D Rose chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="300" data-image-src="page-demos-rose-3d.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="300" data-image-src="page-demos-rose-3d.png">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's a novel version of the more traditional 2D Rose chart - the 3D Rose chart. It doesn't add
-        any advantages over the 2D version - though it might make your presentations look a little nicer!
-    </p>
-
-    <p>
-        There are tooltips, which you can see by clicking on the segments as usual. These tooltips were
-        formerly built dynamically. They still are currently however the method that's used has changed
-        to the new (version 5.22) formatted tooltips.
-    </p>
-    
-    <p>
-        This means the amount of code has been both reduced and simplified. The tooltips are created by
-        concatenating the name (the <span style="white-space: nowrap;"><code>%{property:myNames[%{index}]}</code></span> bit) and the value (the
-        <code>%{value}</code> bit).
-    </p>
-    
-    <p>
-        In terms of <code>responsive</code> features, on smaller screens, it switches from 3D to 2D and is slightly smaller.
-        The labels are changed from the full names of the weekdays to the shorter three-letter
-        variations.
-    </p>
-
-    <br clear="all" />
 
     <script id="rgraph-demo-source-code">
         labels_small = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
@@ -88,40 +51,14 @@
 
                 labels: labels_large,
                 responsive: [
-                    {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'},parentCss: {'float':'right',textAlign: 'center'}},
-                    {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'},parentCss: {'float':'none',textAlign: 'center'}}
+                    {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'}},
+                    {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'}}
                 ]
             }
         }).grow({frames: 15});
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float:right"&gt;
-    &lt;canvas id="cvs" width="600" height="300"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-    
 
 </body>
 </html>

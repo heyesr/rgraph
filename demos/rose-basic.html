@@ -2,62 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.rose.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A basic, responsive Rose chart</title>
-
-
-    
-    <meta name="description" content="A basic Rose chart. The Rose chart can be used as an alternative to a Radar chart if you prefer it. It has regular, stacked and non-equi-angular modes." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
-<body>
-
-    
-
+<body>    
     <h1>A simple Rose chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="400" data-image-src="page-demos-rose-basic.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's a simple Rose chart that can be quite easily used as a traditional Wind Rose chart
-        (ie based on a compass with larger segments indicating stronger winds).
-    </p>
-    
-    <p>
-        The  <code>canvas</code> Rose can be <code>stacked</code> or <code>non-equi-angular</code> and there's also an  <code>SVG</code> version
-        of it. The  <code>SVG</code> version can also be configured in a <code>stacked</code> + <code>non-equi-angular</code> configuration
-        (the <code>canvas</code> version can't do this). There's a demo of that in the download called
-        <code>svg-rose-non-equi-angular-stacked.html</code>
-    </p>
-    
-    <p>
-        Though the <code>canvas</code> Rose <i>can</i> be configured to have a 3D appearance.
-        <a href="https://www.rgraph.net/demos/rose-3d.html">There's a demo of the 3D Rose online</a> and
-        in the download.
-    </p>
-    
-    <p>
-        The <code>SVG</code> Rose also has a <code>segmentsAngleOffset</code> property. This property allows you to
-        rotate the segments slightly and by using two Rose charts  - one with a positive offset
-        and one with a negative offset you can get a grouped effect to the chart. This is shown
-        by a demo in the download called <code>svg-rose-grouped.html</code>
-    </p>
-    
-    <p>
-        For smaller screens, the text is smaller and there's no <code>CSS</code> <code>float</code> applied to the <code>SVG</code> tag.
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // This is a simple example of the Rose chart that's been configured
@@ -68,8 +25,8 @@
             options: {
                 labels: ['Luna','Kevin','Richard','John','Dave','Bob','Paul'],
                 responsive: [
-                    {maxWidth: null,width:600,height:400,options:{textSize:12},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900,width:400,height:300,options:{textSize:10},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null,width:600,height:400,options:{textSize:12}},
+                    {maxWidth: 900,width:400,height:300,options:{textSize:10}}
                 ]
             }
         
@@ -78,27 +35,6 @@
         }).draw();
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="400"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>    
 
 </body>

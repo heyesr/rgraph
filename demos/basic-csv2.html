@@ -3,16 +3,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A basic Bar chart using CSV data (with column based data)</h1>
 
     <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
@@ -76,11 +73,6 @@
         //
         RGraph.AJAX({url: '/sample2.csv', callback: callback});
     </script>
-    
-    <p>
-        This basic example uses <code>ajax</code> to request a <code>csv</code> file as with <a href="basic-csv.html">basic-csv.html</a> but unlike that example
-        this <code>csv</code> file holds each dataset as columns instead of rows. <a href="/sample2.csv">You can see the CSV file here.</a>
-    </p>
 
     <script>showSource()</script>
     

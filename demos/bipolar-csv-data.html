@@ -2,31 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bipolar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>    
-
     <h1>A Bipolar chart using CSV data</h1>
-    
-    <p>
-        The <code>csv</code> data is hidden in the page using a hidden <code>div</code>. It's then
-        retrieved using the <code>document.getElementById</code> function
-        and split up using the <code>javascript</code> <code>split</code> function. The
-        resulting <code>array</code> is an <code>array</code> of strings so it's converted
-        to numbers using the <code>Number</code> function.
-    </p>
-    
-    <p>
-        <b>Note:</b>
-        Recent versions of RGraph should not need the strings converting to numbers - 
-        just the <code>split</code> function will be sufficient and RGraph will do the
-        conversion for you.
-    </p>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>

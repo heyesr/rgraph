@@ -2,38 +2,18 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.rose.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A graduated Rose chart</title>
-
-
-    
-    <meta name="description" content="A graduated Rose chart. The Rose chart shown here is achieved by manually specifying graduated colors and using a stacked variation." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-    
-
     <h1>A graduated Rose chart</h1>
 
-    <canvas id="cvs" width="600" height="400" style="float: right">[No canvas support]</canvas>
-    
-    <p>
-        A graduated Rose chart. The Rose chart shown here is achieved by manually specifying
-        graduated colors and using a stacked variation. You could also just use a standard gradient,
-        for example <code>Gradient(#f77:red)</code>
-    </p>
-    
-    <br clear="all" />
-    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    </div>
+
     <script>
         // Set the data. The actual values don't matter for this chart
         data = [
@@ -89,27 +69,6 @@
         }).draw();
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.rose.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="400"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>    
 
 </body>

@@ -2,26 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A basic Pie chart showing the labelsIngraphUnseenAsLabels property</title>
-    <meta name="description" content="When using the labelsInside property if the segments are too small for the labels you can opt to have the unseen ingraph labels shown as regular labels instead" />
-    
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A basic Pie chart showing the labelsIngraphUnseenAsLabels property</h1>
 
-    <div id="canvas-container" style="text-align: center">
-        <canvas id="cvs" width="650" height="400">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="650" height="400">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         pie = new RGraph.Pie({
@@ -57,29 +50,7 @@
         });
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="650" height="400"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

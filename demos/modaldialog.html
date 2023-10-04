@@ -1,12 +1,41 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="./demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
 
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    <title>RGraph demo: An example of the ModalDialog</title>
+</head>
+<body>
+
+    <h1>An example of the ModalDialog</h1>
+
+    <div id="rgraph-demo-html">
+        <style>
+            button,
+            #ModalDialog_dialog input {
+                font-size: 16pt;
+                margin: 5px;
+                cursor: pointer;
+                cursor: hand;
+            }
+            
+            #ModalDialog_dialog input[type=text],
+            #ModalDialog_dialog input[type=password] {
+                cursor: initial;
+            }
+            
+            #ModalDialog_dialog input[value=Cancel] {
+                opacity: 0.5;
+            }
+        </style>
+        
+        <button onclick="showDialog()">Show dialog</button>
+    </div>
+
     
     <script>
         function showDialog ()
@@ -18,42 +47,9 @@
                 ModalDialog.hide();
             }
         }
+        
+        // new RGraph.
     </script>
-
-    
-    <meta name="description" content="An example of the ModalDialog" />
-     
-    <meta name="robots" content="noindex, nofollow" />
-    
-    <style>
-        button,
-        #ModalDialog_dialog input {
-            font-size: 16pt;
-            margin: 5px;
-            cursor: pointer;
-            cursor: hand;
-        }
-        
-        #ModalDialog_dialog input[type=text],
-        #ModalDialog_dialog input[type=password] {
-            cursor: initial;
-        }
-        
-        #ModalDialog_dialog input[value=Cancel] {
-            opacity: 0.5;
-        }
-    </style>
-
-</head>
-<body>
-
-    
-
-    <h1>An example of the ModalDialog</h1>
-
-    <button onclick="showDialog()">Show dialog</button>
-
-    <p></p>
     
     The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
     The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
@@ -76,5 +72,7 @@
     The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
     The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
     
+    <script>showSource()</script>
+
 </body>
 </html>

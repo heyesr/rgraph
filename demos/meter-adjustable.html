@@ -2,29 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.meter.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    <meta name="description" content="An adjustable Meter chart" />
-     
-     <title>RGraph demo: An adjustable Meter chart</title>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
-<body>    
-
+<body>
     <h1>An adjustable Meter chart</h1>
     
-    <p>
-        This Meter has the centerpin redrawn by utilising the
-        <code>draw</code> event.
-    </p>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250" style="border-radius: 15px">[No canvas support]</canvas>
+    </div>
 
-    <canvas id="cvs" width="600" height="250" style="border-radius: 15px">[No canvas support]</canvas>
     <script id="source">
         meter = new RGraph.Meter({
             id: 'cvs',
@@ -75,29 +65,6 @@
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

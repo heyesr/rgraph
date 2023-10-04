@@ -2,39 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A Pie chart using the tooltipsHotspotIgnore option</title>
-    <meta name="description" content="A Pie chart using the tooltipsHotspotIgnore option to ignore certain hotspots" />
-    
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Pie chart using the tooltipsHotspotIgnore option</h1>
 
-    <p>
-        The Pie chart at the front has the second segment set to
-        be coloured <code>transparent</code> and the <code>tooltipsHotspotIgnore</code>
-        option is set to <code>1</code> (so the second segment is
-        ignored).
-    </p>
-
-    <div id="canvas-container">
-        <canvas id="cvs" width="550" height="350">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="550" height="350">[No canvas support]</canvas>
+        </div>
     </div>
-    
 
-    
-    <div style="clear: both"></div>
-    
-    
     <script id="rgraph-demo-source-code">
 
         labels = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -74,31 +57,7 @@
         RGraph.redraw();
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div id="canvas-container"&gt;
-    &lt;canvas id="cvs" width="550" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

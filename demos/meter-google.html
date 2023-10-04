@@ -2,76 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.meter.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-    <meta name="description" content="A Meter chart that's customised to look like Google charts. It's been made to be dynamically adjustable so you can click on the chart to set the value." />
-     
-    <title>Demo: A Meter chart that looks like Google charts</title>
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
-<body>
-
-    
-
+<body>    
     <h1>A customised Meter chart</h1>
 
-    <div style="float: right; text-align: center" id="canvas-container">
-        <canvas id="cvs" width="500" height="250" data-image-src="page-demos-meter-google.png">[No canvas support]</canvas><br />
-        <button onclick="toggleGradient()" style="font-size: 20pt">Toggle gradient</button>
+    <div id="rgraph-demo-html">
+        <div style="text-align: center; display: inline-block" id="canvas-container">
+            <canvas id="cvs" width="500" height="250">[No canvas support]</canvas><br />
+            <button onclick="toggleGradient()" style="cursor: pointer; font-size: 20pt">Toggle gradient</button>
+        </div>
     </div>
-    
-    <p>
-        Here's a customised Meter chart that looks a little bit like the Google Charts meter chart. The
-        orange to yellow graduation here is done by using the <code>colorsRanges</code> property and
-        specifying the individual colors manually.
-    </p>
-    
-    <p>
-        <b>Update:</b>
-        You can now (December 2019) toggle the colors of the chart between the solid graduations and a
-        real gradient which shows a much smoother transition through the colors.
-    </p>
-    
-    <p>
-        The normal Meter chart is a semi-circle, starting on the left and going 180 degrees around to the
-        right. Here though the start and endpoints have been altered by using the <code>anglesStart</code>
-        and <code>anglesEnd</code> properties.
-    </p>
-    
-    <p>
-        If you use these properties though - remember that they're measured in <code>radians</code> and not degrees.
-        1 radian = (180 / Pi) degrees. There are some functions that the RGraph common core library
-        provides for you when converting from one to the other:
-    </p>
-    
-    <pre class="code">
-<span>// Usage: RGraph.toRadians(360) // 6.28</span>
-RGraph.toRadians = function (degrees)
-{
-    return degrees * (Math.PI / 180);
-};
-
-<span>// Usage: RGraph.toDegrees(3.14) // 180</span>
-RGraph.toDegrees = function (radians)
-{
-    return radians * (180 / Math.PI);
-};
-</pre>
-
-    <p>
-        The Meter is set to be dynamically adjustable too using the <code>adjustable</code> property
-    </p>
-    
-    <br clear="all" />
 
     <script id="rgraph-demo-source-code">
         defaultColors = [
@@ -127,11 +72,7 @@ RGraph.toDegrees = function (radians)
                 // This option means that the chart will be dynamically adjustable.
                 // You could then use the adjust* events to do something with the
                 // new value of the chart.
-                adjustable: true,
-                responsive: [
-                    {maxWidth:null,parentCss: {'float':'right'}},
-                    {maxWidth:700,parentCss: {'float':'none'}}
-                ]
+                adjustable: true
             }
         }).draw();
         
@@ -160,29 +101,6 @@ RGraph.toDegrees = function (radians)
         }
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.meter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right; text-align: center"&gt;
-    &lt;canvas id="cvs" width="500" height="250">[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
-    &lt;button onclick="toggleGradient()" style="font-size: 20pt"&gt;Toggle gradient&lt;/button&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

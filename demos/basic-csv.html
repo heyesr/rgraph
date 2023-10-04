@@ -2,15 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A basic Bar chart using CSV data</h1>
 
     <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
@@ -65,18 +62,6 @@
         //
         RGraph.AJAX({url: '/sample.csv', callback: callback});
     </script>
-    
-    <p>
-        This basic example uses <code>ajax</code> to request a <code>csv</code> file from the server and then
-        parses it with <code>javascript</code> to convert it into usable
-        data. You can see the <code>csv</code> file <a href="https://www.rgraph.net/sample.csv">here</a>.
-    </p>
-
-    <p>
-        <b>Note:</b>
-        In October 2013 a new <code>csv</code> reader was added to RGraph. It makes reading <code>csv</code> files much easier. You can read about
-        <a href="https://www.rgraph.net/canvas/docs/csv-reader.html">the new CSV reader</a> here.
-    </p>
 
     <script>showSource()</script>
     

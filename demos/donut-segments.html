@@ -2,44 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.segmented.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Segmented Donut chart</h1>
     
     <div id="rgraph-demo-html">
-        <div style="float: right" id="canvas-container">
-            <canvas id="cvs" width="350" height="350" data-image-src="page-demos-donut-segments.png">[No canvas support]</canvas>
+        <div id="canvas-container">
+            <canvas id="cvs" width="350" height="350">[No canvas support]</canvas>
         </div>
     </div>
-    
-    <p>
-        The Segmented donut chart was formerly a variation of the Pie chart, however now it has been promoted
-        to a standalone chart type. It represents a single value as a proportion of the whole - a circular
-        progress bar effectively.
-    </p>
-    
-    <p>
-        The chart is quite small and fits well on smaller devices so it doesn't need a lot of changing
-        with the <code>responsive</code> function. Only the <code>width</code> and <code>labelSize</code>
-        properties are adjusted and the <code>CSS</code> <code>float</code> value is changed.
-    </p>
-    
-    <p>
-        An event listener is added to the <code>canvas</code> (using the standard <code>addEventListener</code>
-        function) so that when you click on the chart the value of where you click is retrieved (using the
-        objects <code>getValue</code> function, set on the chart object and then the chart animates to the
-        new value.
-        
-    </p>
-
-    
     
     <script id="rgraph-demo-source-code">
         segmented = new RGraph.Segmented({
@@ -50,8 +25,8 @@
                 labelsCenterUnitsPost: '%',
                 labelsCenterColor: '#aaa',
                 responsive: [
-                    {maxWidth: null,width: 350,height: 350,options:{width: 55,labelsCenterSize: 60},parentCss:{'float':'right', textAlign:'none'}},
-                    {maxWidth: 700,width: 250,height: 250,options:{width: 40,labelsCenterSize: 45},parentCss:{'float':'none', textAlign:'center'}}
+                    {maxWidth: null,width: 350,height: 350,options:{width: 55,labelsCenterSize: 60}},
+                    {maxWidth: 700,width: 250,height: 250,options:{width: 40,labelsCenterSize: 45}}
                 ]
             }
         }).roundRobin({frames: 60});

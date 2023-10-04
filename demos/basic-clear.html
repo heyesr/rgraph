@@ -2,7 +2,6 @@
 <html>
 <head>    
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -10,19 +9,9 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
-
 <body>
-
     <h1>A basic example of clearing your canvas</h1>
-    
-    <p>
-        This is a demonstration of how the <code>RGraph.reset</code> function may be preferable to the <code>RGraph.clear</code> function. It's
-        particularly apt if you're using the same <code>canvas</code> to show multiple charts. Because RGraph tracks objects so that it can redraw
-        them you may find that old charts are redrawn. In this case you can use the <code>RGraph.reset</code> function instead of the
-        <code>RGraph.clear</code> function to eliminate traces of prior charts.
-    </p>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />

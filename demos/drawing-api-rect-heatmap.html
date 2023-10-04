@@ -2,31 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>    
-        
     <h1>A heatmap like chart using the drawing API rect object</h1>
-    
-    <p>
-        This chart was inspired by Facebooks heatmap-esque visualisation for
-        determining what computers (though it doesn't have to be
-        computers) are either malfunctioning or sending alerts. In a large
-        datacenter each column could be a particular rack and each
-        individual square a specific computer.
-    </p>
-    
-    <p>
-        Each individual square is a drawing <code>api</code> Rect object - so they can be
-        assigned their own tooltip, colors and <code>click</code> / <code>mousemove</code> events.
-    </p>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>

@@ -2,17 +2,14 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
     <script src="demos.js" ></script>     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Gantt chart with tooltips on the labels</h1>
     
     <div id="rgraph-demo-html">
@@ -41,11 +38,14 @@
                 tooltipsOffsety: -10,
 
                 backgroundGridVlinesCount: 5,
-                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5']
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5'],
+                
+                textAccessible: true
             }
         }).on('draw', function (obj)
         {
             // Get the text nodes using the tag to find them
+
             var nodes = RGraph.text.find({
                 id: 'cvs',
                tag: 'yaxis.labels'

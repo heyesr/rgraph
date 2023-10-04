@@ -2,61 +2,25 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>Demo: A basic Pie chart using the roundRobin effect</title>
-    <meta name="description" content="A basic Pie chart that has a large first segment and which uses the roundRobin() effect. The curvy sticks for labels are now the default (they didn't use to be)." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A basic Pie chart</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="550" height="250" data-image-src="page-demos-pie-basic.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="550" height="250">[No canvas support]</canvas>
+        </div>
     </div>
     
-    <p>
-        A simple Pie chart that shows off the label sticks to good effect. As far as the Pie chart
-        itself goes there's not a whole lot to it - the tooltips and labels both use the same array
-        (which is defined just above the chart itself).
-    </p>
-    <p>
-        The shadow is turned off (set to a transparent color) and the stroke color is also set to
-        transparent. The Pie chart also uses the <code>roundRobin</code> animation effect.
-    </p>
-    
-    <p>
-        With smaller screens the labels are disabled and a key is used instead. This takes up a little
-        extra space so that the chart fits better in the available space.
-    </p>
-    
-    <p>
-        The tooltips have been customised using formatted tooltips and the <code>tooltipsCss</code> property.
-    </p>
-    
-    <br clear="all" />
-    
     <script id="rgraph-demo-source-code">
-        // A basic configuration for a Pie chart with just the labels
-        // separated out into their own array. This is because the same
-        // array is used for both the labels and the tooltips so
-        // doing this makes for less upkeep when the time comes to
-        // change things around.
-        //
-        // Also note that the stroke color has been set to transparent so
-        // that there's no separation between the segments
-        //
+    
         labels = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
         new RGraph.Pie({
@@ -94,39 +58,14 @@
                 // Add responsive capabilities. On smaller screens the width
                 // is reduced and the labels are changed to a key. This takes up less space.
                 responsive: [
-                    {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900,width:420,height:250,options: {centerx: 150,key:labels, labels: []},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels}},
+                    {maxWidth: 900,width:420,height:250,options: {centerx: 150,key:labels, labels: []}}
                 ]
             }
-        // Draw the chart
         }).draw();
     </script>
 
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div&gt;
-    &lt;canvas id="cvs" width="350" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

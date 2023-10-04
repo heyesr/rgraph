@@ -2,15 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A basic example of a CSV file and AJAX</h1>
 
     <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
@@ -20,26 +17,20 @@
         <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
     </div>
 
-    <p>
-        This is a basic example of using a <code>csv</code> file and <code>ajax</code>. <code>ajax</code> is used to request the
-        <code>csv</code> data from the server and it's returned in an <code>array</code> format. 
-        A chart is then created using it.
-    </p>
-
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
     </div>
 
     <script>
-        /**
-        * Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html
-        * If you view this in your browser you'll see that all it does is output a sequence of numbers.
-        */
+        //
+        // Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html
+        // If you view this in your browser you'll see that all it does is output a sequence of numbers.
+        //
         RGraph.AJAX.getCSV({url: '/getdata.html', callback: drawGraph});
 
-        /**
-        * This is the AJAX callback function. The AJAX getCSV() converts the strings to numbers for you.
-        */
+        //
+        // This is the AJAX callback function. The AJAX getCSV() converts the strings to numbers for you.
+        //
         function drawGraph (csv)
         {
             // Now draw the chart
@@ -56,13 +47,6 @@
             }).draw()
         }
     </script>
-    
-    <p>
-        <b>Note:</b>
-        In October 2013 a new <code>csv</code> reader was added to RGraph. It makes reading <code>csv</code>
-        files much easier. You can read about
-        <a href="https://www.rgraph.net/canvas/docs/csv-reader.html">the new CSV reader here</a>.
-    </p>
 
     <script>showSource()</script>
     

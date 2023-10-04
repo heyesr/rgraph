@@ -2,35 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.activity.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A nested Donut chart</h1>
 
     <div id="rgraph-demo-html">
-        <div style="float: right" id="canvas-container">
+        <div id="canvas-container">
             <canvas id="cvs" width="450" height="450" style="background-color: black">[No canvas support]</canvas>
         </div>
     </div>
-    
-    <p>
-        This is an example of the new (in version 5.28) <code>RGraph.Activity</code> class.
-        (<a href="/canvas/activity.html">You can read the documentation page for the Activity meter here.</a>
-        Previously to get this sort of chart a large amount of custom code was necessary but now
-        the chart has been given its own class - which is in the <code>RGraph.activity.js</code> file.
-    </p>
-    
-    <p>
-        The colors and quantity of the rings are specified by you and the icons are configurable (or can be
-        replaced with text if you prefer. The chart can be animated using the <code>grow</code> effect, adjusted and can now also have tooltips.
-    </p>    
-    
+
     <script id="rgraph-demo-source-code">
         activity = new RGraph.Activity({
             id: 'cvs',
@@ -49,8 +34,8 @@
                 marginLeft: 5,
                 marginRight: 5,
                 responsive: [
-                    {maxWidth: null, width: 450, height: 450, options: {width: null}, parentCss: {'float':'right', textAlign:'none',width:''}},
-                    {maxWidth: 750,  width: 250, height: 250, options: {width: 25}, parentCss: {'float':'none', textAlign:'center',width:'100%'}}
+                    {maxWidth: null, width: 450, height: 450, options: {width: null}, parentCss: {width:''}},
+                    {maxWidth: 750,  width: 250, height: 250, options: {width: 25}, parentCss: {width:'100%'}}
                 ]
             }
         }).grow();

@@ -2,30 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A basic example of a chart updated by using a Web Worker</h1>
-    
-    <p>
-        This is a basic demo of using <code>Web Workers</code>
-        (which are child
-        threads) to generate a random value which is posted back to
-        the main thread (this page). The value is then used to update
-        the <code>Gauge chart</code>. To make a useful example you
-        could use the child thread in conjunction with <code>Web Sockets</code>
-        to retrieve server-load values from your server(s).
-        Also, to retrieve data from your server you may find it
-        easier and less involved to use <code>ajax</code>.
-    </p>
-    
+
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
     </div>
@@ -65,14 +50,6 @@
             }
         }).draw();
     </script>
-
-    <p>
-        <b>See also:</b>
-    </p>
-
-    <ul>
-        <li><a href="http://www.html5rocks.com/en/tutorials/workers/basics/" target="_blank">Article about Web Workers on html5rocks.com</a></li>
-    </ul>
 
     <script>showSource()</script>
     

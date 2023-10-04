@@ -2,27 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A customised and adjustable Gauge chart</h1>
     
-    <p>
-        This example <code>Gauge chart</code> doesn't use the
-        built-in adjusting but uses a custom <code>click</code>
-        event listener (which you can see below) in order to make
-        the adjusting animated. It also uses a custom
-        <code>draw</code> event to draw the centerpin.
-    </p>
-
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
     </div>
