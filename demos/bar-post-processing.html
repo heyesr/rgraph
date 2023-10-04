@@ -2,15 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-        
     <h1>Post-processing on a Bar chart</h1>
     
     <div id="rgraph-demo-html">
@@ -18,17 +15,6 @@
             <canvas id="cvs" width="600" height="250" data-image-src="page-demos-bar-post-processing.png">[No canvas support]</canvas>
         </div>
     </div>
-    
-    <br clear="all" />
-
-    <pre class="code">obj.context.fillStyle = RGraph.linearGradient({
-    object: obj,                  <span>// The chart object</span>
-    x1: 0, y1: 0, x2: 0, y2: 250, <span>// strartX, startY, endX, endY</span>
-    colors: [
-        'rgba(255,255,255,.75)',  <span>// Start color</span>
-        'rgba(255,255,255,0)'     <span>// End color</span>
-    ]
-});</pre>
 
     <script id="rgraph-demo-source-code">
         // Create the bar chart just like a normal grouped bar chart

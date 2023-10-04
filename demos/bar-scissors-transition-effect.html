@@ -2,7 +2,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="../libraries/RGraph.common.core.js"></script>
     <script src="../libraries/RGraph.common.effects.js"></script>
@@ -11,17 +10,17 @@
     <script src="../libraries/RGraph.pie.js"></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Bar chart with a scissors transition effect</h1>
     
     <div id="rgraph-demo-html">
-        <div style="text-align: center">
-            <button onclick="hide(showBarChart)">Bar</button>
-            <button onclick="hide(showLineChart)">Line</button>
-            <button onclick="hide(showPieChart)">Pie</button><br />
+        <div style="display: inline-block">
+            <div style="text-align: center">
+                <button onclick="hide(showBarChart)">Bar</button>
+                <button onclick="hide(showLineChart)">Line</button>
+                <button onclick="hide(showPieChart)">Pie</button><br />
+            </div>
             <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
         </div>
     </div>
