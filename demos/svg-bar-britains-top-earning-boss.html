@@ -2,61 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A SVG Bar chart showing income</title>
-    
-    <meta name="description" content="An SVG Bar chart of the earnings of Britain's highest-paid boss. As you can see there's quite a jump up to £469m. A good year!" />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>An SVG Bar/HBar combo chart</h1>
-
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div id="svg-container">
-        <div style="width: 600px; height: 250px;" id="chart-container1"></div>
-        <div style="width: 350px; height: 650px;" id="chart-container2"></div>
+    
+    <div id="rgraph-demo-html">
+        <div id="svg-container">
+            <div style="width: 600px; height: 250px" id="chart-container1"></div>
+            <div style="width: 350px; height: 650px" id="chart-container2"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        She founded Bet365 -  an online gambling firm. Who would have guessed that gambling could be so
-        profitable?! Ok perhaps everyone in the world! Personally though, if a company that I started
-        earned just (?) five million pounds - I'd retire!
-    </p>
-    
-    <p>
-        The chart itself is quite straightforward with a single solid color for the bars, a small
-        <code>marginInner</code> setting and large text. Being like this though makes the clarity
-        of the chart quite good.
-    </p>
-    
-    <p>
-        It also uses the <code>labelsAbove</code> setting to show the exact figures that the bars
-        represent.
-    </p>
-    
-    <p>
-        For smaller screens, the chart is switched from being
-        a Bar chart to a HBar chart. There's another, <code>canvas</code>
-        example of this in
-        <a href="https://www.rgraph.net/download.html#stable">the download archive</a>
-        called <code>bar-hbar-responsive.html</code>
-    </p>
-
-
 
     <script id="rgraph-demo-source-code">
     
@@ -117,8 +77,8 @@
                     yaxisScaleUnitsPost: 'm',
                     yaxisScaleUnitsPre: '$',
                     responsive: [
-                        {maxWidth: null, parentCss:{'float': 'right', textAlign: 'none'}, callback: function () {setTimeout(function (){document.getElementById('chart-container1').style.display = 'inline-block';document.getElementById('chart-container2').style.display = 'none';})}},
-                        {maxWidth: 900,  parentCss:{'float': 'none',  textAlign: 'center'}, callback: function () {setTimeout(function () {document.getElementById('chart-container1').style.display = 'none';document.getElementById('chart-container2').style.display = 'inline-block';})}}
+                        {maxWidth: null, callback: function () {setTimeout(function (){document.getElementById('chart-container1').style.display = 'inline-block';document.getElementById('chart-container2').style.display = 'none';})}},
+                        {maxWidth: 900, callback: function () {setTimeout(function () {document.getElementById('chart-container1').style.display = 'none';document.getElementById('chart-container2').style.display = 'inline-block';})}}
                     ]
                 }
             //
@@ -167,27 +127,6 @@
         }
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 600px; height: 250px;" id="chart-container1"&gt;&lt;/div&gt;
-    &lt;div style="width: 350px; height: 650px;" id="chart-container2"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

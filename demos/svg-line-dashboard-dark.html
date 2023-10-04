@@ -2,151 +2,114 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.key.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A demo of a Line chart-based dashboard</title>
-    
-    
-    <meta name="description" content="A predominantly Line chart-based status dashboard. The dashboard is made from 4 Line charts, a Pie chart and some text." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A Line chart dashboard</h1>
-
-    <p>
-        This is a darker dashboard that shows multiple Line charts and also a Pie
-        (which uses the <code>donut</code> option). Lots of code and <code>CSS</code> for this demo as
-        it goes far beyond the normal single chart demos. It does show what you
-        can achieve when you build several objects into one page though. 
-    </p>
     
-    <p>
-        The stacked Lines are accompanied by a Pie chart, as already mentioned,
-        using the <code>donut</code> option. There's a segment that also shows just some regular
-        text.
-    </p>
+    <div id="rgraph-demo-html">
+        <style>
+            div#chart-container1,
+            div#chart-container2 {
+                width: 295px;
+                height: 200px;
+                background-color: black;
+            }
+            div#chart-container3 {
+                width: 190px;
+                height: 200px;
+                background-color: black;
+                display: inline-block;
+                position: relative;
+            }
     
-    <p>
-        You can combine any number of charts like this to create your own
-        tailored dashboard that shows you whatever information you want to see.
-        It's effectively just a webpage with many charts on it.
-    </p>
-
-
-    <RGRAPH_BASIC_DEMO_HTML>
-    <style>
-        div#cc1,
-        div#cc2 {
-            width: 295px;
-            height: 200px;
-            background-color: black;
-        }
-        div#cc3 {
-            width: 190px;
-            height: 200px;
-            background-color: black;
-            display: inline-block;
-            position: relative;
-        }
-
-        div#cc3 span:nth-child(2) {
-            display: inline-block;
-            position: relative;
-            left: 50%;
-            top: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            font-size: 40pt;
-            color: #02BDD0;
-        }
-        
-        div#cc4 {
-            width: 195px;
-            height: 200px;
-            background-color: black;
-        }
-        
-        div#cc5,
-        div#cc6 {
-            width: 490px;
-            height: 200px;
-            background-color: black;
-        }
-        
-        div#cc1,
-        div#cc2,
-        div#cc3,
-        div#cc4,
-        div#cc5,
-        div#cc6 {
-            font-family: Arial;
-            float: left;
-        }
-        
-        div#cc1 span:nth-child(1),
-        div#cc2 span:nth-child(1),
-        div#cc3 span:nth-child(1),
-        div#cc4 span:nth-child(1),
-        div#cc5 span:nth-child(1),
-        div#cc6 span:nth-child(1) {
-            color: #ccc;
-            font-size: 10pt;
-            position: absolute;
-            top: 0;
-            left: 5px;
-        }
-        
-        div#cc3 span:nth-child(1) {
-            color: cyan;
-            font-size: 50pt;
-            position: absolute;
-            top: calc(50% - 40px);
-            left: calc(50% - 50px);
-        }
-    </style>
-
-    <div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818">
-        <div id="cc1">
-            <span>Searches over time by query type</span>
+            div#chart-container3 span:nth-child(2) {
+                display: inline-block;
+                position: relative;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                font-size: 40pt;
+                color: #02BDD0;
+            }
+            
+            div#chart-container4 {
+                width: 195px;
+                height: 200px;
+                background-color: black;
+            }
+            
+            div#chart-container5,
+            div#chart-container6 {
+                width: 490px;
+                height: 200px;
+                background-color: black;
+            }
+            
+            div#chart-container1,
+            div#chart-container2,
+            div#chart-container3,
+            div#chart-container4,
+            div#chart-container5,
+            div#chart-container6 {
+                font-family: Arial;
+                float: left;
+            }
+            
+            div#chart-container1 span:nth-child(1),
+            div#chart-container2 span:nth-child(1),
+            div#chart-container3 span:nth-child(1),
+            div#chart-container4 span:nth-child(1),
+            div#chart-container5 span:nth-child(1),
+            div#cc6 span:nth-child(1) {
+                color: #ccc;
+                font-size: 10pt;
+                position: absolute;
+                top: 0;
+                left: 5px;
+            }
+            
+            div#chart-container3 span:nth-child(1) {
+                color: cyan;
+                font-size: 50pt;
+                position: absolute;
+                top: calc(50% - 40px);
+                left: calc(50% - 50px);
+            }
+        </style>
+    
+        <div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818">
+            <div id="chart-container1">
+                <span>Searches over time by query type</span>
+            </div>
+            <div id="chart-container2">
+                <span>Search capacity by query type</span>
+            </div>
+            <div id="chart-container3">
+                <span>260</span>
+            </div>
+            <div id="chart-container4">
+                <span>Capacity usage by query</span>
+            </div>
+            <div id="chart-container5">
+                <span>Capacity usage by query</span>
+            </div>
+            <div id="chart-container6">
+                <span>search capacity by user</span>
+            </div>
+            
+            <div style="clear: both"></div>
         </div>
-        <div id="cc2">
-            <span>Search capacity by query type</span>
-        </div>
-        <div id="cc3">
-            <span>260</span>
-        </div>
-        <div id="cc4">
-            <span>Capacity usage by query</span>
-        </div>
-        <div id="cc5">
-            <span>Capacity usage by query</span>
-        </div>
-        <div id="cc6">
-            <span>search capacity by user</span>
-        </div>
-        
-        <div style="clear: both"></div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-
-
-
-        
-
+    
     <script id="rgraph-demo-source-code">
         l1 = new RGraph.SVG.Line({
-            id: 'cc1',
+            id: 'chart-container1',
             data: [
                 [0,8,0,0,8,0,2,8,0,0,8,1,0,6],
                 [null,null,null,null,null,null,null,null,null,null,null,null,null,5],
@@ -190,7 +153,7 @@
 
 
         l2 = new RGraph.SVG.Line({
-            id: 'cc2',
+            id: 'chart-container2',
             data: [
                 [40,8,0,0,0,0,0,0,0,0,0,0,0,28],
                 [4,8,1,1,5,0,1,5,0,0,5,0,0,4],
@@ -235,7 +198,7 @@
 
 
         p1 = new RGraph.SVG.Pie({
-            id: 'cc4',
+            id: 'chart-container4',
             data: [70, 5,22,3],
             options: {
                 colors: ['green','#a00','#CB6800','#00a'],
@@ -248,7 +211,7 @@
 
 
         l5 = new RGraph.SVG.Line({
-            id: 'cc5',
+            id: 'chart-container5',
             data: [
                 [0,9,0,0,8,0,2,8,0,0,8,1,0,6],
                 [6,6,8,5,6,8,6,7,8,9,7,6,8,5],
@@ -298,7 +261,7 @@
 
 
         l6 = new RGraph.SVG.Line({
-            id: 'cc6',
+            id: 'chart-container6',
             data: [
             
                 [4,10,0,0,0,0,0,0,0,0,0,0,0,28],
@@ -342,106 +305,6 @@
         }).draw();
     </script>
 
-
-
-    <div style="clear: both"></div>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;style&gt;
-    div#cc1,
-    div#cc2 {
-        width: 295px;
-        height: 200px;
-        background-color: black;
-        float:left;
-    }
-    div#cc3 {
-        width: 190px;
-        height: 200px;
-        background-color: black;
-        float:left;
-        position: relative;
-    }
-
-    div#cc3 span:nth-child(2) {
-        display: inline-block;
-        position: relative;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        font-size: 40pt;
-        color: #02BDD0;
-    }
-    
-    div#cc4 {
-        width: 195px;
-        height: 200px;
-        background-color: black;
-        float:left;
-    }
-    
-    div#cc5,
-    div#cc6 {
-        width: 490px;
-        height: 200px;
-        background-color: black;
-        float:left;
-    }
-    
-    div#cc1,
-    div#cc2,
-    div#cc3,
-    div#cc4,
-    div#cc5,
-    div#cc6 {
-        float: left;
-    }
-    
-    div span:nth-child(1) {
-        color: #ccc;
-        font-size: 10pt;
-        position: absolute;
-        top: 0;
-        left: 5px;
-    }
-&lt;/style&gt;
-
-&lt;div style="position: relative; left: -10px; width: calc(100% + 20px); background-color: #181818"&gt;
-    &lt;div id="cc1"&gt;
-        &lt;span&gt;Searches over time by query type&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div id="cc2"&gt;
-    &lt;span&gt;Search capacity by query type&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div id="cc3"&gt;
-        &lt;span&gt;Searches&lt;/span&gt;
-        &lt;span&gt;260&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div id="cc4"&gt;
-        &lt;span&gt;Capacity usage by query&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div id="cc5"&gt;
-        &lt;span&gt;Capacity usage by query&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div id="cc6"&gt;
-        &lt;span&gt;search capacity by user&lt;/span&gt;
-    &lt;/div&gt;
-    
-    &lt;div style="clear: both"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

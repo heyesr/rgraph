@@ -2,68 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A pastal-colored SVG filled Line chart</title>
-    <meta name="description" content="An SVG Line chart that was inspired by a chart on the NVD website. The 'floating' appearance is done by setting the color for the first dataset to transparent." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>A floating Line chart</h1>
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 600px; height: 250px" id="chart-container"></div>
+
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 600px; height: 250px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        This is a demo of a Line chart that was inspired by an example that was
-        showcased on the NVD website.
-    </p>
-    
-    <p>
-        It's a filled Line chart that has the
-        <code>filledAccumulative</code> and the <code>spline</code> options enabled.
-    </p>
-    
-    <p>
-        And importantly, the first color for the chart is transparent - making it seem
-        like the rest of the datasets are "floating".
-    
-    </p>
-    
-    <p>
-        The rest of the configuration
-        is quite straightforward - the vertical grid lines are turned  off and the
-        colors are a custom set. There are also labels specified (the labels are numbers
-        - though this does NOT make it a scale. The Line chart <code>X-axis</code> is NOT scaled).
-    </p>
-    
-    <p>
-        The <code>responsive</code> configuration reduces the size of the <code>SVG</code> tag and removes the <code>CSS</code> <code>float</code>.
-    </p>
-    
-    <p>
-        <b>Note:</b>
-        There's a <code>canvas</code> version of this chart in the download (called <code>demos/line-nvd.html</code>) where
-        the datasets are traced sequentially (so the datasets are traced one at a time and when one
-        dataset finishes tracing the next starts).
-    </p>
-
-
-
         
     <script id="rgraph-demo-source-code">
         // Create the Line chart and give it all of the data that's to be shown
@@ -101,9 +53,8 @@
                 // Add some responsive capability to
                 // accommodate both large and small screens
                 responsive: [
-                    {maxWidth:null,width:600,height:250,parentCss:{'float':'right',textAlign: 'none'}},
-                    {maxWidth:900, width:450,height:200,parentCss:{'float':'none',textAlign:'center'}}
-                    
+                    {maxWidth:null,width:600,height:250},
+                    {maxWidth:900, width:450,height:200}
                 ]
             }
         
@@ -111,25 +62,6 @@
         }).trace();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
-&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 600px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

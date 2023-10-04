@@ -2,68 +2,25 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.key.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An SVG version of an older canvas Line chart</title>
-    
-    
-    <meta name="description" content="An SVG version of an older filled spline Line chart. The chart uses gradients as the fill colors. There's also a key defined." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>An SVG filled and stacked Line chart</h1>
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 600px; height: 300px" id="cc"></div>
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 600px; height: 300px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        This is an <code>SVG</code> version of an older <code>canvas</code> demo that has been updated to be a bit more
-        up-to-date style-wise.
-    </p>
-
-    <p>
-        The vertical lines on the grid have been removed, the <code>X-axis</code> and <code>Y-axis</code>
-        have been removed and instead of being angular the line is now a <code>spline</code> (ie it's curvy).
-    </p>
-    
-    <p>
-        Also, it now uses the <code>trace</code> animation effect. The chart is filled and the
-        <code>filledAccumulative</code> option is set to true so that the three datasets are
-        stacked on top of each other.
-    </p>
-    
-    <p>
-        Other than this there's a key, a title and the <code>yaxisScaleUnitsPost</code> has been set. The
-        chart is also <code>responsive</code> and on smaller screens, the size of the <code>SVG</code> tag is reduced, text size is
-        reduced and the <code>CSS</code> <code>float</code> is removed.
-    </p>
-
-    
-
-
-
-
-        
 
     <script id="rgraph-demo-source-code">
         // Create the Line chart and give it the three datasets.
         new RGraph.SVG.Line({
-            id: 'cc',
+            id: 'chart-container',
             data: [
                 [4,6,12,16,8,4,2,8,18,16,14,16],
                 [2,4,8,4,2,6,6,12,8,10,6,8],
@@ -112,8 +69,8 @@
                 xaxis: false,
                 yaxis: false,
                 responsive: [
-                    {maxWidth:null,width:600,height:300,options:{textSize: 12},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:900,width:450,height:250,options:{textSize: 10},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth:null,width:600,height:300,options:{textSize: 12}},
+                    {maxWidth:900,width:450,height:250,options:{textSize: 10}}
                 ]
             }
         
@@ -121,26 +78,6 @@
         }).trace();
     </script>
 
-
-
-    <div style="clear: both"></div>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 600px; height: 300px" id="cc"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

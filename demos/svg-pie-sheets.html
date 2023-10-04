@@ -2,68 +2,23 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.sheets.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An SVG Pie chart using Google Sheets data</title>
-
-
-    <meta name="description" content="An SVG Pie chart using the Google Sheets connector. The Pie chart gets its data and labels from the spreadsheet." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>An SVG Pie chart using Google Sheets</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 650px; height: 300px" id="chart-container"></div>
+
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 650px; height: 300px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
 
-    <p>
-        This is a demo of a chart being created by using the Google Sheets connector that's bundled with
-        RGraph.
-        <a href="https://docs.google.com/spreadsheets/d/1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E/edit?usp=sharing" target="_blank" rel="nofollow external">
-            You can see the Google Sheet that RGraph is fetching data from here</a>
-        
-        and the documentation for
-        
-        <a href="/canvas/sheets.html">
-            the Google Sheets Connector</a> here.
-    </p>
-    
-    <p>
-        It's using the data that's on the Bar worksheet (there are
-        multiple buttons at the bottom of the screen that allows
-        you access to the other worksheets). The labels are coming
-        from the spreadsheet too.
-    </p>
-    
-    <p>
-        The stroke color is set to white and the <code>linewidth</code>
-        is 2. There's no other configuration so the Pie chart looks quite standard, though there is a
-        <code>responsive</code> configuration so that on smaller screens the labels disappear and tooltips are used
-        instead.
-    </p>
-
-    
-    <br clear="all" />
-
-
-
-        
     <script id="rgraph-demo-source-code">
         // A pretty basic Pie chart that doesn't do anything particularly magical.
         // The only thing that's worthy of note here is the fact that it gets its
@@ -106,8 +61,8 @@
                     
                     // Add some responsive accommodation
                     responsive: [
-                        {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''},parentCss:{'float':'right',textAlign:'none'}},
-                        {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'},parentCss: {'float':'none',textAlign:'center'}}
+                        {maxWidth: null, width: 650, height: 300, options: {labels: labels, tooltips: null,title: ''}},
+                        {maxWidth: 900,  width: 400, height: 300, options: {labels: [], tooltips: labels,title: '(Click for labels)'}}
                     ]
                 }
             
@@ -116,27 +71,6 @@
         });
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.sheets.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 650px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

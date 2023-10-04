@@ -2,32 +2,17 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>RGraph demo: An orange/blue SVG Horizontal Bar chart</title>
-    
-    
-    <meta name="description" content="An orange/blue SVG Horizontal Bar chart" />
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
-
     <h1>An orange/blue SVG Horizontal Bar chart</h1>
-    <p>An example of a Horizontal Bar chart which has the Y-axis centered. The chart has a <code>draw</code> event attached to it so that when the <code>draw()</code> function is called a small bit of text is added to the bottom right of the SVG tag that serves as a label showing what the X-axis represents.</p>
-
     
-    <div style="width: 850px; height: 500px; border: 1px solid #eee" id="chart-container"></div>
-
-
-
-        
+    <div id="rgraph-demo-html">
+        <div style="width: 850px; height: 500px; border: 1px solid #eee" id="chart-container"></div>
+    </div>
 
     <script>
         new RGraph.SVG.HBar({
@@ -88,25 +73,6 @@
         }).grow();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="padding: 15px"&gt;
-    &lt;div style="width: 850px; height: 500px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

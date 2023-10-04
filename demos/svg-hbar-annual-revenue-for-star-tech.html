@@ -2,69 +2,28 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An SVG HBar chart</title>
-    
-    <meta name="description" content="An SVG Horizontal Bar chart showing stats for Star Tech (not a real company!). It's a horizontal Bar chart that has been customised to give it a different aesthetic." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A blue SVG Horizontal Bar chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <style>
-        div#chart-container {
-            background-image: linear-gradient(45deg, #000049,#0000CB);
-            border-bottom-right-radius: 25px;
-            border-top-left-radius: 25px;
-        }
-    </style>
-
-    <div style="float: right">
-        <div id="chart-container" style="width: 650px;height: 300px"></div>
+    <div id="rgraph-demo-html">
+        <style>
+            div#chart-container {
+                background-image: linear-gradient(45deg, #000049,#0000CB);
+                border-bottom-right-radius: 25px;
+                border-top-left-radius: 25px;
+            }
+        </style>
+    
+        <div>
+            <div id="chart-container" style="width: 650px;height: 300px"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
 
-    <p>
-        Here's a Horizontal Bar chart that has been significantly customised.
-        The <code>div</code> tag that the chart sits in has had a gradient applied to the
-        background and two of the corners are curved, using the <code>border-radius</code>
-        <code>CSS</code> property. The bars themselves have been given a gradient, the background
-        grid has been updated so that there's no border and the horizontal grid
-        lines have been disabled. The <code>labelsAbove</code> option has been added and the
-        chart uses the <code>wave</code> effect.
-    </p>
-    
-    <p>
-        To get a different gradient for each bar, the
-        <code>colorsSequential</code> has been enabled
-        and five different gradients have been supplied to the
-        <code>colors</code> option.
-    </p>
-    
-    <p>
-        The size of the text has been reduced from the default to 8pt.
-    </p>
-    
-    <p>
-        As far as <code>responsive</code> features go, the chart simply reduces in size when the screen size is smaller - no
-        options are changed.
-    </p>
-
-
-
-
-        
     <script id="rgraph-demo-source-code">
         // Create the HBar chart. There's only a small amount of data given
         // to the chart.
@@ -107,8 +66,8 @@
                 // Add a responsive configuration that resizes the
                 // chart when you use a smaller screen
                 responsive: [
-                    {maxWidth:null,width:650,height:300,parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:900, width:400,height:250,parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth:null,width:650,height:300},
+                    {maxWidth:900, width:400,height:250}
                 ]
             }
         
@@ -116,40 +75,6 @@
         }).draw();
     </script>
 
-
-
-    <br clear="all" />
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;style&gt;
-    <span>/*
-    * Here's some CSS to configure the appearance of the div tag
-    * that the chart is added to. There's the background gradient
-    * as well as two of the corners being rounded.
-    */</span>
-    div#chart-container {
-        div#chart-container {
-            background-image: linear-gradient(45deg, #000049,#0000CB);
-            border-bottom-right-radius: 25px;
-            border-top-left-radius: 25px;
-        }
-    }
-&lt;/style&gt;
-
-&lt;div style="float: right"&gt;
-    &lt;div id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

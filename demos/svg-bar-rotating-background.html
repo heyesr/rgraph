@@ -2,46 +2,36 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>RGraph demo: An SVG Bar chart with a canvas background</title>
-    
-    
-    <meta name="description" content="An SVG Bar chart with a canvas background" />
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>An SVG Bar chart with a canvas background</h1>
-    <p>This is an interesting mix - it's a regular SVG Bar chart that has been arranged to have a canvas background. Then a star-burst pattern is drawn on the canvas and is continually updated giving it a slow rotation effect. The Bar chart uses the <code>wave()</code> effect and and has the <code>labelsAbove</code> option enabled. However the position of the labels has been adjusted using the <code>labelsAboveOffsety</code> option so that the text appears at the top of the bars - and also it has been colored white so that you can see it.</p>
 
-    
-    <div id="outer" style="padding: 15px; display: inline-block">
-        <canvas width="750" height="300" id="cvs_background"></canvas>
-        <div style="width: 750px; height: 300px" id="cc"></div>
+    <div id="rgraph-demo-html">
+        <style>
+            div#outer {
+                position: relative;
+            }
+            
+            div#outer canvas {
+                position: absolute;
+                left: 50px;
+                top: 50px;
+                width: 680px;
+                height: 230px;
+            }
+        </style>
+
+        <div id="outer" style="padding: 15px; display: inline-block">
+            <canvas width="750" height="300" id="cvs_background"></canvas>
+            <div style="width: 750px; height: 300px" id="chart-container"></div>
+        </div>
     </div>
-    
-    <style>
-        div#outer {
-            position: relative;
-        }
-        
-        div#outer canvas {
-            position: absolute;
-            left: 50px;
-            top: 50px;
-            width: 680px;
-            height: 230px;
-        }
-    </style>
-
-
 
     <script>
         color1    = 'white';
@@ -97,7 +87,7 @@
         draw();
         
         var bar = new RGraph.SVG.Bar({
-            id: 'cc',
+            id: 'chart-container',
             data: [4,8,6,5,3,7,8],
             options: {
                 backgroundGrid: false,
@@ -116,42 +106,6 @@
         }).wave();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div id="outer" style="padding: 15px; display: inline-block"&gt;
-    &lt;canvas width="750" height="300" id="cvs_background"&gt;&lt;/canvas&gt;
-    &lt;div style="width: 750px; height: 300px" id="cc"&gt;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;style&gt;
-    div#outer {
-        position: relative;
-    }
-    
-    div#outer canvas {
-        position: absolute;
-        top: 50px;
-        left: 50px;
-        width: 680px;
-        height: 230px;
-    }
-&lt;/style&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

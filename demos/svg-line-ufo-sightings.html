@@ -2,67 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A simple looking SVG Line chart</title>
-    
-    
-    <meta name="description" content="An SVG Line chart showing UFO sightings over the past century. As you can see, people's imagination is increasing!" />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>A black and gray SVG Line chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 600px; height: 250px" id="chart-container"></div>
-    </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    
-    <p>
-        A straightforward Line chart that's showing UFO sightings
-        over the past century. As you can see - people's creativity
-        is clearly on the increase - particularly since the 1990s!
-    </p>
-
-    <p>
-        The background grid is customised with white and
-        an increased number of vertical lines.
-    </p>
-    
-    <p>
-        The <code>X-axis</code> labels are just years, the axes have been
-        turned off and the tickmarks for the line are filled circles.
-    </p>
-    
-    <p>
-        On the whole, it's a pretty regular Line chart. The
-        <code>responsive</code> configuration just shrinks the size of the chart
-        and reduces the size of the <code>linewidth</code> and the
-        <code>tickmarksSize</code> options.
-    </p>
-    
-    
-    <br clear="all" />
-
-    
-    
-
-
-
-        
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 600px; height: 250px" id="chart-container"></div>
+        </div>
+    </div>        
 
     <script id="rgraph-demo-source-code">
         // A Line chart that shows the increase over the years
@@ -87,8 +39,8 @@
                 textSize: 10,
                 xaxisLabels: ['1910','1920','1930','1940','1950','1960','1970','1980','1990','2000','2010'],
                 responsive: [
-                    {maxWidth: null,width:600,height:250,parentCss: {'float':'right',textAlign:'none'},options:{xaxisLabelsAngle: 0,linewidth:2,tickmarksSize:6}},
-                    {maxWidth: 850, width:400,height:200,parentCss: {'float':'none',textAlign:'center'}, options:{xaxisLabelsAngle: 45,linewidth:2,tickmarksSize:5}}
+                    {maxWidth: null,width:600,height:250,options:{xaxisLabelsAngle: 0,linewidth:2,tickmarksSize:6}},
+                    {maxWidth: 850, width:400,height:200,options:{xaxisLabelsAngle: 45,linewidth:2,tickmarksSize:5}}
                 ]
             }
         
@@ -96,25 +48,6 @@
         }).trace();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
-&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 600px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

@@ -2,36 +2,24 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: An SVG version of a canvas Pie/Bar example chart</title>
-
-    
-    <meta name="description" content="An SVG version of a canvas Pie/Bar example chart" />
-    
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
-
     <h1>An SVG version of a canvas Pie/Bar example chart</h1>
-    <p>This is an SVG version of an, originally canvas based, demo that shows the combination of a Pie and grouped Bar chart. Both are animated - the Pie chart with the <code>roundRobin()</code> effect and the Bar chart with the <code>wave()</code> effect. The Bar chart has the <code>labelsAbove</code> option enabled.</p>
 
-
-
-    <div id="cc" style="width: 650px; height: 350px"></div>
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 650px; height: 350px"></div>
+    </div>
 
         
     <script>
         var bar = new RGraph.SVG.Bar({
-            id: 'cc',
+            id: 'chart-container',
             data: [[50,60,52],[65,30,50],[40,80,70],[115,100,70]],
             options: {
                 labelsAbove: true,
@@ -51,7 +39,7 @@
         }).wave();
         
         var pie = new RGraph.SVG.Pie({
-            id: 'cc',
+            id: 'chart-container',
             data: [270,270,164],
             options: {
                 exploded: [7,2,],
@@ -74,16 +62,6 @@
         }).roundRobin({frames: 50});
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

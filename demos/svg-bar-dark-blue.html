@@ -2,55 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A dark blue Bar chart (no labels)</title>
-    <meta name="description" content="An example of a graduated dark blue Bar chart. It has no labels and no axes. The background grid horizontal lines are disabled." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A dark and graduated blue Bar chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 600px; height: 300px; background-color: black" id="chart-container"></div>
+    
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 600px; height: 300px; background-color: black" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        A dark and graduated Bar chart. The colors are black at the bottom of the
-        bars graduating to blue towards the top. The background grid is customised
-        too with the horizontal grid lines having been disabled. Nor are there any
-        labels. It uses the <code>responsive</code> function to enable it to
-        reduce in size on smaller screens.
-    </p>
-    
-    <p>
-        Another thing to note here is the complete lack of any labels.
-        You don't always need to have labels on your charts, as the meaning may be
-        clear without them - perhaps having a title elsewhere on the page. I
-        wouldn't imagine that these use-cases are very common though - with most cases
-        requiring at least a scale to make sense.
-    </p>
-    
-    <p>
-        When the screen is smaller, not much happens - there's no text to reduce in size so the only
-        thing that's done is the <code>CSS</code> <code>float</code> is removed and the <code>marginInner</code>
-        is tweaked.
-    </p>
-
-    
-    
-
 
     <script id="rgraph-demo-source-code">
         // This is not a complicated configuration - here the data is
@@ -77,33 +42,14 @@
                 textColor:'white',
                 textSize:16,
                 responsive: [
-                    {maxWidth: null,width:600, height: 300,options: {marginInner:15},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 800, width:400, height: 200,options: {marginInner:10},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null,width:600, height: 300,options: {marginInner:15}},
+                    {maxWidth: 800, width:400, height: 200,options: {marginInner:10}}
                 ]
             }
         // Draw the chart and add some responsive capabilities
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the graphic to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 600px; height: 300px; background-color: black" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

@@ -2,28 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.common.key.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An SVG Bar chart showing rejects (?)</title>
-    <meta name="description" content="This is an SVG version of a canvas example of a Bar chart that's combined with a Line chart. Each chart has own scale" />
-    
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
     <h1>A SVG Bar chart combined with a Line chart</h1>
     
-    <div style="width: 700px; height: 500px" id="chart-container"></div>
-
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 500px" id="chart-container"></div>
+    </div>
 
     <script id="rgraph-demo-source-code">
         new RGraph.SVG.Bar({ 
@@ -87,26 +79,6 @@
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="width: 700px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

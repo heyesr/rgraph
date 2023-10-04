@@ -2,56 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An SVG Horizontal Bar chart</title>
-    
-    
-    <meta name="description" content="A black and orange SVG Horizontal Bar chart that uses two Horizontal Bar objects  to provide the gray backgrounds to the bars." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A black and orange SVG Horizontal Bar chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 500px; height: 300px; display: inline-block; background-color: black" id="chart-container"></div>
-    </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        This is a Horizontal Bar that's made up of two separate objects. The
-        first is the gray background for the bars that you can see. Then the
-        orange Horizontal Bar is overlaid on top. The labels on the right are
-        made up from the <code>labelsAbove</code> option (on the first, background Horizontal Bar). As
-        you can see the chart uses the <code>wave</code> effect (the <code>wave</code> effect is not just a Bar
-        chart effect but also available with the Horizontal Bar.).
-    </p>
-    
-    <p>
-        By combining charts like this you can get a multitude of different effects
-        that just wouldn't be feasible with just a single chart. You can examine the
-        source code for both of the Horizontal Bar objects below. The <code>div</code> tag that the <code>SVG</code> uses is
-        itself wrapped in another <code>div</code> tag and it's this one that has <code>CSS</code> applied to it.
-    </p>
-    
-    <p>
-        This chart doesn't do a lot in terms of <code>responsive</code> features. It reduces in size a little, the
-        text size is reduced and the <code>CSS</code> <code>float</code> is removed.
-    </p>
-
-
-
-        
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 500px; height: 300px; background-color: black" id="chart-container"></div>
+        </div>
+    </div>        
 
     <script id="rgraph-demo-source-code">
         // The data for the chart
@@ -88,8 +51,8 @@
                 labelsAboveColor: 'white',
                 labelsAboveSpecific: data,
                 responsive:[
-                    {maxWidth: null, width: 500, height: 300, options: {textSize: 12},parentCss:{'float':'right', textAlign:'none'}},
-                    {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10},parentCss:{'float':'none', textAlign:'center'}}
+                    {maxWidth: null, width: 500, height: 300, options: {textSize: 12}},
+                    {maxWidth: 800, width: 400,  height: 250, options: {textSize: 10}}
                 ]
             }
         }).draw();
@@ -127,25 +90,6 @@
         }});
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 500px; height: 300px; display: inline-block; background-color: black" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

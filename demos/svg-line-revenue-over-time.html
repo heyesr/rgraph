@@ -2,57 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A basic SVG Line chart</title>
-
-    
-    <meta name="description" content="An SVG Line chart showing revenue over time. This example shows that a chart doesn't have to be complicated to be attractive." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A simple SVG Line chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width:650px; height: 250px" id="chart-container"></div>
+
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width:650px; height: 250px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        Here's a nice, simply-presented <code>SVG</code> Line chart. It has no
-        background grid, a large <code>marginInner</code>
-        setting (which was, until version 5.01, called <code>hmargin</code> -
-        but is now called <code>marginInner</code>)
-        larger than usual text
-        and an extra little bit of text that's added using the
-        <code>labelsAboveSpecific</code> property. The previous way
-        of adding this text was to use the RGraph <code>API</code>,
-        and because it's an <code>SVG</code>
-        chart it did not need to be added in the <code>draw</code>
-        event. Now though, it's added using the much simpler
-        <code>labelsAboveSpecific</code> property and the label is
-        styled using the <code>labelsAbove*</code> properties. Using
-        the RGraph properties also makes the text easier to
-        manipulate when you're making use of the
-        <code>responsive</code> function.
-    </p>
-    
-    <p>
-        The chart has a <code>responsive</code> section that reduces the size of a few properties and also removes the
-        <code>CSS</code> <code>float</code> from the <code>SVG</code> tag.
-    </p>
-    
-    <br clear="all" />
 
     <script id="rgraph-demo-source-code">    
         // This is the data for the Line chart. A simple JavaScript array.
@@ -81,32 +44,13 @@
                 labelsAboveBold: true,
                 labelsAboveOffsety:-25,
                 responsive: [
-                    {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20,labelsAboveSize: 20,labelsAboveOffsety:-25},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14,labelsAboveSize: 12,labelsAboveOffsety:-15},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth:null,width:650,height:250,options:{linewidth:5,tickmarksSize: 8,textSize: 16,marginInner: 50,'data-textsize': 20,labelsAboveSize: 20,labelsAboveOffsety:-25}},
+                    {maxWidth:900,width:400,height:200,options:{linewidth:3,tickmarksSize: 4,textSize: 10,marginInner: 30,'data-textsize': 14,labelsAboveSize: 12,labelsAboveOffsety:-15}}
                 ]
             }
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="../libraries/RGraph.svg.common.core.js" &gt;&lt;/script&gt;
-&lt;script src="../libraries/RGraph.svg.line.js" &gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width:650px; height: 250px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

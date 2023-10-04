@@ -2,94 +2,55 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: SVG Pie charts that look like meters</title>
-    <meta name="description" content="Three SVG Pie charts that have been configured to look like meters along with three horizontal Progress bars." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>SVG Pie charts based meters</h1>
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <style>
-        div#svg-container{
-            position: relative;
-            background-color: black;
-            height: 325px;
-            width: 610px;
-            margin: 25px;
-            margin-left:auto;
-            margin-right:auto;
-        }
-
-        div#svg-container div {
-            float: left;
-            width: 200px;
-            height: 200px;
-        }
-        
-        
-        div#chart-container4,
-        div#chart-container5,
-        div#chart-container6 {
-            position: absolute !important;
-            left: 0 !important;
-            top: 180px !important;
-            width: 600px !important;
-            height: 70px !important;
-        }
-        
-        div#chart-container5 {top: 210px !important;}
-        div#chart-container6 {top: 240px !important;}
-    </style>
-
-    <div id="svg-container">
-        <div id="chart-container1"></div>
-        <div id="chart-container2"></div>
-        <div id="chart-container3"></div>
-        <div id="chart-container4"></div>
-        <div id="chart-container5"></div>
-        <div id="chart-container6"></div>
+    <div id="rgraph-demo-html">
+        <style>
+            div#svg-container{
+                position: relative;
+                background-color: black;
+                height: 325px;
+                width: 610px;
+                margin: 25px;
+            }
+    
+            div#svg-container div {
+                float: left;
+                width: 200px;
+                height: 200px;
+            }
+            
+            
+            div#chart-container4,
+            div#chart-container5,
+            div#chart-container6 {
+                position: absolute !important;
+                left: 0 !important;
+                top: 180px !important;
+                width: 600px !important;
+                height: 70px !important;
+            }
+            
+            div#chart-container5 {top: 210px !important;}
+            div#chart-container6 {top: 240px !important;}
+        </style>
+    
+        <div id="svg-container">
+            <div id="chart-container1"></div>
+            <div id="chart-container2"></div>
+            <div id="chart-container3"></div>
+            <div id="chart-container4"></div>
+            <div id="chart-container5"></div>
+            <div id="chart-container6"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        Here are three Pie charts that have been configured to look like gauges
-        showing percentage values. They're all regular Pie charts with two colors but then a
-        big black circle is added over the top of them which makes them look like donut
-        charts. And finally, the text is added to the center using the <code>draw</code>
-        event.
-    </p>
-    
-    <p>
-        There are also three Horizontal Progress bars placed at the bottom of the <code>SVG</code>
-        drawing area. These progress bars are actually Horizontal Bar charts that
-        are configured with just a single data point so that there's just one bar -
-        which makes them look like progress bars. You can make Vertical Progress
-        bars in the same way by using the regular Bar chart.
-    </p>
-    
-    <p>
-        Like the <code>canvas</code> chart libraries, you can make other types of
-        charts using the regular <code>SVG</code> chart libraries and combining
-        them together. Eg a combined Bar and Line chart.
-    </p>
-
-
-
-
-
         
     <script id="rgraph-demo-source-code">
         // Create the first Pie chart. It uses the roundRobin() effect and is
@@ -336,57 +297,6 @@
         new RGraph.SVG.HBar({id: 'chart-container6', data: [74], options: conf}).grow();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;style&gt;
-    div#svg-container{
-        position: relative;
-        background-color: black;
-        height: 425px;
-    }
-
-    div#svg-container div {
-        float: left;
-        width: 300px;
-        height: 300px;
-    }
-    
-    
-    div#chart-container4,
-    div#chart-container5,
-    div#chart-container6 {
-        position: absolute !important;
-        left: 0 !important;
-        top: 280px !important;
-        width: 900px !important;
-        height: 70px !important;
-    }
-    
-    div#chart-container5 {top: 310px !important;}
-    div#chart-container6 {top: 340px !important;}
-&lt;/style&gt;
-
-&lt;div id="svg-container"&gt;
-    &lt;div id="chart-container1"&gt;&lt;/div&gt;
-    &lt;div id="chart-container2"&gt;&lt;/div&gt;
-    &lt;div id="chart-container3"&gt;&lt;/div&gt;
-    &lt;div id="chart-container4"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

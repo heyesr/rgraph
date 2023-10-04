@@ -2,75 +2,62 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: An SVG clipped red and black Line chart</title>
-
-    <meta name="description" content="An SVG clipped red and black Line chart" />
-     
     <meta name="robots" content="noindex,nofollow" />
-
 </head>
 <body>
-
     <h1>An SVG clipped red and black Line chart</h1>
     
-    <p>
-        Strictly-speaking clipping isn't used - two SVG charts are
-        drawn - both different colors - and HTML/CSS positioning
-        and visibility is used to ensure the relevant portion of
-        each is visible.
-    </p>
-
-    <style>
-        #container {
-            position: relative;
-            width: 700px;
-            height: 300px;
-        }
-        
-        #wrapper1 {
-            position: absolute;
-            top: 0px;
-            left: 0;
-            width: 700px;
-            height: 150px;
-            overflow: hidden;
-        }
-        
-        #wrapper2 {
-            position: absolute;
-            top: 150px;
-            left: 0;
-            width: 700px;
-            height: 150px;
-            overflow: hidden;
-        }
-        
-        #cc1 {
-            width: 700px;
-            height: 300px;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        
-        #cc2 {
-            width: 700px;
-            height: 300px;
-            position: absolute;
-            top: -150px;
-            left: 0;
-        }
-    </style>
-
-    <div id="container">
-        <div id="wrapper1">   <div id="cc1"></div>   </div>
-        <div id="wrapper2">   <div id="cc2"></div>   </div>
+    <div id="rgraph-demo-html">
+        <style>
+            #container {
+                position: relative;
+                width: 700px;
+                height: 300px;
+            }
+            
+            #wrapper1 {
+                position: absolute;
+                top: 0px;
+                left: 0;
+                width: 700px;
+                height: 150px;
+                overflow: hidden;
+            }
+            
+            #wrapper2 {
+                position: absolute;
+                top: 150px;
+                left: 0;
+                width: 700px;
+                height: 150px;
+                overflow: hidden;
+            }
+            
+            #chart-container1 {
+                width: 700px;
+                height: 300px;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            
+            #chart-container2 {
+                width: 700px;
+                height: 300px;
+                position: absolute;
+                top: -150px;
+                left: 0;
+            }
+        </style>
+    
+        <div id="container">
+            <div id="wrapper1">   <div id="chart-container1"></div>   </div>
+            <div id="wrapper2">   <div id="chart-container2"></div>   </div>
+        </div>
     </div>
 
     <script>
@@ -88,7 +75,7 @@
 
         // Create the green part of the line
         line = new RGraph.SVG.Line({
-            id: 'cc1',
+            id: 'chart-container1',
             data: data,
             options: {
                 textSize: 16,
@@ -120,7 +107,7 @@
 
         // Create the red part of the line
         line2 = new RGraph.SVG.Line({
-            id: 'cc2',
+            id: 'chart-container2',
             data: data,
             options: {
                 textSize: 16,
@@ -153,67 +140,6 @@
         }).trace();
     </script>
 
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;style&gt;
-    #container {
-        position: relative;
-        width: 700px;
-        height: 300px;
-    }
-    
-    #wrapper1 {
-        position: absolute;
-        top: 0px;
-        left: 0;
-        width: 700px;
-        height: 150px;
-        overflow: hidden;
-    }
-    
-    #wrapper2 {
-        position: absolute;
-        top: 150px;
-        left: 0;
-        width: 700px;
-        height: 150px;
-        overflow: hidden;
-    }
-    
-    #cc1 {
-        width: 700px;
-        height: 300px;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    
-    #cc2 {
-        width: 700px;
-        height: 300px;
-        position: absolute;
-        top: -150px;
-        left: 0;
-    }
-&lt;/style&gt;
-
-&lt;div id="container"&gt;
-    &lt;div id="wrapper1"&gt;   &lt;div id="cc1"&gt;&lt;/div&gt;   &lt;/div&gt;
-    &lt;div id="wrapper2"&gt;   &lt;div id="cc2"&gt;&lt;/div&gt;   &lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

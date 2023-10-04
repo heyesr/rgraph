@@ -2,70 +2,26 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: A combined Bar and regular Line chart</title>
-    
-    
-    <meta name="description" content="A grouped Bar chart with an overlaid filled Line chart. It also has the labelsAbove option enabled so you get indications of each point's value." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>A combined Bar and Line chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 650px; height: 250pt" id="chart-container"></div>
+    
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 650px; height: 250px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        A demonstration of how you can combine the different RGraph chart types onto a
-        single <code>SVG</code> tag. Here a Bar chart is being combined with a filled Line
-        chart - a common combination. Both charts are using the <code>labelsAbove</code>
-        option and they both also have a center <code>X-axis</code>.
-    </p>
-    
-    <p>
-        The Line chart <code>marginInner</code> property has been set such that the points on the Line
-        chart line up with the center of each section of bars.
-    </p>
-    
-    <p>
-        The Line chart is filled with a semi-opaque color so that you can see the bars
-        behind the line.
-    </p>
-    
-    <p>
-        Both the Line and Bar have the <code>labelsAbove</code> property stipulated so that there are
-        labels above each point/bar that show you the exact value.
-    </p>
-    
-    <p>
-        When the screen size is smaller the size of the text is reduced and the <code>CSS</code> <code>float</code> on
-        the <code>SVG</code> tag is removed.
-    </p>
-
-
-
-    <br clear="both" />
 
     <script id="rgraph-demo-source-code">
         responsiveConf = [
-            {maxWidth:null,width:650,height:250,options: {textSize: 12,labelsAboveSize: 10},parentCss:{'float':'right',textAlign:'none'}},
-            {maxWidth:900, width:400,height:200,options: {textSize: 8,labelsAboveSize: 8},parentCss:{'float':'none',textAlign:'center'}}
+            {maxWidth:null,width:650,height:250,options: {textSize: 12,labelsAboveSize: 10}},
+            {maxWidth:900, width:400,height:200,options: {textSize: 8,labelsAboveSize: 8}}
         ];
 
 
@@ -133,34 +89,7 @@
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>,
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 650px; height: 250pt" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-
-    
-    
-
-
 
 </body>
 </html>

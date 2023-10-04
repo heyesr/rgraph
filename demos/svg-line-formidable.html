@@ -2,32 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    <!-- The SVG chart libraries -->
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
-    
-    <!-- The canvas chart libraries -->
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A simple SVG Line</title>
-    
-    
-    <meta name="description" content="An SVG Line chart with three datasets and a simple look and feel. This page also shows you how to get transparent tickmarks." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
-<body>
-    
+<body>    
     <h1>An SVG Line with a simple look</h1>
 
-    
-    <br clear="all" />
     <ul>
         <li>
             <a href="#how-to-get-transparent-tickmarks-using-the-canvas-line-chart">
@@ -36,35 +20,15 @@
         </li>
     </ul>
 
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div id="cc" style="width:700px; height: 300px; background-color: black"></div>
+    <div id="rgraph-demo-html">
+        <div>
+            <div id="chart-container" style="width:700px; height: 300px; background-color: black"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        Here is a simple Line chart that has three separate datasets. The labels
-        for the chart (on the <code>X-axis</code>) are not a scale - they're just regular labels
-        as you would normally give to a Line chart but they're numbers instead
-        of words - that's all. The Line doesn't have the facility to show
-        a scale across the <code>X-axis</code> - for that you'll need to use a Scatter chart
-        with the <code>line</code> option enabled.
-    </p>
-    
-    <p>
-        As for the tickmarks, while at first glance it may appear that they're
-        'hollow' they're actually just using a fill color that matches the
-        background.
-    </p>
-    
-    <p>
-        Other than this it's a pretty basic dark-themed Line that uses the
-        <code>trace</code> effect.
-    </p>
     
     <script id="rgraph-demo-source-code">
         line = new RGraph.SVG.Line({
-            id: 'cc',
+            id: 'chart-container',
             data: [
                 [9,9,0,9,0],
                 [6,7,10,5,0],
@@ -82,43 +46,17 @@
                 tickmarksFill: 'black',
                 tickmarksLinewidth: 3,
                 responsive: [
-                    {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:900,width:450,height:200,options:{textSize: 10,tickmarksSize:4},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth:null,width:700,height:300,options:{textSize: 12,tickmarksSize:5}},
+                    {maxWidth:900,width:450,height:200,options:{textSize: 10,tickmarksSize:4}}
                 ]
             }
         }).trace();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div id="cc" style="width:700px; height: 300px; background-color: black"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-        <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
 
     <a name="how-to-get-transparent-tickmarks-using-the-canvas-line-chart"></a>
     <h2>How to get transparent tickmarks using the canvas Line chart</h2>
-
 
     <p>
         You may have noticed that on the chart above the center of the tickmarks are

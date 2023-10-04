@@ -2,69 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>Demo: An infographic which uses the SVG HBar</title>
-    
-    
-    <meta name="description" content="An SVG Horizontal Bar chart that could be used in an infographic. It's a Horizontal Bar chart with circles drawn at the end of the bars." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
-
     <h1>An infographic SVG Horizontal Bar chart</h1>
     
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 350px; height: 300px; display: inline-block" id="chart-container"></div>
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 350px; height: 300px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-    
-    <p>
-        Here's a small Horizontal Bar chart that has had some extra work done to it so that it appears
-        similar to what you might see used in an infographic.
-    </p>
-    
-    <p>
-        It's just a case of sorting the data
-        so that the data pieces appear in the correct order and the bars also have a bulb at the end
-        indicating the position in the results (assuming that there was a competition of some kind).
-        The chart is using <code>SVG</code> so this bulb doesn't have to be drawn in the <code>draw</code>
-        event.
-    </p>
-
-    <p>
-        The raw data for the chart is sorted using the <code>JavaScript</code> array function <code>sort</code> so
-        that the highest number is at the top. Since the array is two-dimensional a custom sort function
-        has to be used so that the action of sorting can be stipulated. This is the call to the
-        <code>sort</code> function:
-    </p>
-    
-    <pre class="code">
-data.sort(function (a, b)
-{
-    return b[0] - a[0];
-});
-</pre>
-    
-    <p>
-        The original data array is two-dimensional (as you can see below in the source code) so that
-        after sorting it, the label and the color are still all correlated and the correct name and
-        color are associated with the correct bar.
-    </p>
-
-
-
         
     <script id="rgraph-demo-source-code">
         // The "raw" data. This array contains the data, the label and the color.
@@ -110,11 +60,7 @@ data.sort(function (a, b)
                 colorsSequential: true,
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
-                marginInner: 10,
-                responsive: [
-                    {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:700,parentCss:{'float':'none',textAlign:'center'}}
-                ]
+                marginInner: 10
             }
         }).draw();
         
@@ -161,25 +107,6 @@ data.sort(function (a, b)
         }
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 350px; height: 300px; display: inline-block" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>

@@ -2,33 +2,17 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    
-
-    <title>RGraph demo: A Line chart with highlighted sections</title>
-    
-    
-    <meta name="description" content="A Line chart with highlighted sections" />
-
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-
     <h1>A Line chart with highlighted sections</h1>
     
-    <div style="width: 700px; height: 250px; background-color: black" id="cc"></div>
-
-    <p>
-        Here is an SVG scrolling Line chart which has had three semi-opaque rectangles
-        placed on top of the chart - one red, one yellow and one green.
-    </p>
-    
-    
-        
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 250px; background-color: black" id="chart-container"></div>
+    </div>
 
     <script>
         data = [
@@ -47,7 +31,7 @@
         // Create the chart but DON'T draw it. That is done in the
         // draw() function. The line variable is a global.
         line = new RGraph.SVG.Line({
-            id: 'cc',
+            id: 'chart-container',
             data: data,
             options: {
                 marginLeft: 50,
@@ -142,24 +126,6 @@
         }
     </script>
 
-
-
-    <div style="clear: both"></div>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="width: 600px; height: 250px; display: inline-block; background-color: black"&gt;&lt;/div&gt;
-</pre>
-
-    
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

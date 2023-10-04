@@ -2,27 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.ajax.js" ></script>
     <script src="../libraries/RGraph.svg.common.csv.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A grouped SVG Bar chart using the CSV reader</title>
-
-    
-    <meta name="description" content="A grouped SVG Bar chart using the CSV reader" />
-    
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
-
     <h1>A grouped SVG Bar chart using the CSV reader</h1>
-    <p>The CSV reader demonstrated by reading CSV data via AJAX and showing a grouped Bar chart. Other than the CSV reader it's a pretty normal grouped Bar chart that uses the <code>grow()</code> effect.</p>
 
     <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
         <b>Note:</b>
@@ -41,10 +29,9 @@
         </a>
     </div>
 
-
-
-    <div style="width: 750px; height: 300px" id="chart-container"></div>
-    
+    <div id="rgraph-demo-html">
+        <div style="width: 750px; height: 300px" id="chart-container"></div>
+    </div>    
 
     <script>
         new RGraph.CSV('/sample.csv', function (csv)
@@ -81,31 +68,6 @@
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.ajax.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.csv.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="width: 750px; height: 300px" id="chart-container"&gt;&lt;/div&gt;
-    [No canvas support]
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

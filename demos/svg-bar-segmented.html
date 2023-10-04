@@ -2,30 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>RGraph demo: A segmented Bar chart</title>
-    
-    
-    <meta name="description" content="A segmented Bar chart" />
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
-
     <h1>A segmented Bar chart</h1>
-    <p>An interesting variation on a regular Bar chart. It's actually two Bar charts - the first is drawn without axes or a background grid and then lines are drawn over the bars. This gives us the segmented effect. Then another Bar chart is drawn on top of this with the bars zeroed out so it just has the grid and the axes that you see.</p>
-
     
-    <div style="position: relative; padding: 15px; display: inline-block; width: 750px; height: 300px">
-        <div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container1"></div>
-        <div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container2"></div>
+    <div id="rgraph-demo-html">
+        <div style="position: relative; padding: 15px; display: inline-block; width: 750px; height: 300px">
+            <div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container1"></div>
+            <div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container2"></div>
+        </div>
     </div>
 
 
@@ -92,26 +81,6 @@
         bar2.container.style.position = 'absolute';
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="position: relative; padding: 15px; display: inline-block; width: 750px; height: 300px"&gt;
-    &lt;div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container1"&gt;&lt;/div&gt;
-    &lt;div style="width: 750px; height: 300px; top: 0; left: 0; position: absolute" id="chart-container2"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

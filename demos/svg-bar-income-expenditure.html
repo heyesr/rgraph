@@ -2,27 +2,17 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: An SVG Bar chart showing income and expenditure</title>
-    
-    
-    <meta name="description" content="An SVG Bar chart showing income and expenditure" />
-
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-
     <h1>An SVG Bar chart showing income and expenditure</h1>
 
-    <p><a href="bar-income-expenditure.html">There's also a canvas version of this chart.</a> Here we have an effective visualisation that shows the income and expenditure figures for a company. It's actually made up of two Bar charts - one for the top figures and one for the bottom that are being drawn on the same SVG tag.</p>
-
-    <div style="width: 600px; height: 250px" id="cc"></div>
+    <div id="rgraph-demo-html">
+        <div style="width: 600px; height: 250px" id="chart-container"></div>
+    </div>
 
     <script>
         var data1 = [[4,8,6],[1,5,8],[4,9,6]],
@@ -35,7 +25,7 @@
 
 
         new RGraph.SVG.Bar({
-            id: 'cc',
+            id: 'chart-container',
             data: data1,
             options: {
                 xaxis: false,
@@ -49,7 +39,7 @@
         }).wave();
 
         new RGraph.SVG.Bar({
-            id: 'cc',
+            id: 'chart-container',
             data: data2,
             options: {
                 yaxisLabels: false,
@@ -63,28 +53,6 @@
         }).wave();
     </script>
 
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js" &gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.bar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="width: 650px; height: 250px" id="cc"&gt;&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

@@ -2,41 +2,31 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    <style>
-        table {
-            border-color: #ccc;
-        }
-
-        td {
-            text-align: left;
-            padding-left: 15px;
-        }
-    </style>
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.hbar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>RGraph demo: An SVG Horizontal Bar chart showing the new (version 5.22) formatted tooltips feature</title>
-    <meta name="description" content="An SVG Horizontal Bar chart showing the new formatted tooltips feature" />
-    
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-
     <h1>An SVG Horizontal Bar chart showing the new (version 5.22) formatted tooltips feature</h1>
+
+    <div id="rgraph-demo-html">
+        <style>
+            table {
+                border-color: #ccc;
+            }
     
-    <p>
-        Formatted tooltips are a new feature in version 5.22 and make it super-easy to
-        have unique tooltips but using just one specification in your configuration
-        (as shown below).
-    </p>
+            td {
+                text-align: left;
+                padding-left: 15px;
+            }
+        </style>
     
-    <div id="cc1" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
-    <div id="cc2" style="width: 700px; height: 650px; border: 1px solid #ddd"></div>
-    <div id="cc3" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
+        <div id="chart-container1" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
+        <div id="chart-container2" style="width: 700px; height: 650px; border: 1px solid #ddd"></div>
+        <div id="chart-container3" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
+    </div>
 
     <script>
         names = ['Ken  ','Mark','Barry','Lewis','Pete','Larry','Jerry'];
@@ -49,7 +39,7 @@
         }
 
         hbar1 = new RGraph.SVG.HBar({
-            id: 'cc1',
+            id: 'chart-container1',
             data: [45,100,35,54,65,35,25],
             options: {
                 marginTop: 50,
@@ -78,7 +68,7 @@
 
 
         hbar2 = new RGraph.SVG.HBar({
-            id: 'cc2',
+            id: 'chart-container2',
             data: [[8,1,5],[3,2,4],[5,5,8],[4,5,4],[3,5,2],[6,8,5],[4,5,8]],
             options: {
                 marginTop: 50,
@@ -107,7 +97,7 @@
 
 
         hbar3 = new RGraph.SVG.HBar({
-            id: 'cc3',
+            id: 'chart-container3',
             data: [[8,1,5],[3,2,4],[5,5,8],[4,5,4],[3,5,2],[6,8,5],[4,5,8]],
             options: {
                 grouping: 'stacked',
@@ -134,26 +124,6 @@
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.hbar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div id="cc1" style="width: 700px; height: 450px"&gt;&lt;div&gt;;
-&lt;div id="cc2" style="width: 700px; height: 450px"&gt;&lt;div&gt;;
-&lt;div id="cc3" style="width: 700px; height: 450px"&gt;&lt;div&gt;;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

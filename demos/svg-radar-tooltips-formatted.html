@@ -2,41 +2,30 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    <style>
-        table {
-            border-color: #ccc;
-        }
-
-        td {
-            text-align: left;
-            padding-left: 15px;
-        }
-    </style>
-
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.radar.js" ></script>
     <script src="demos.js" ></script>
-    
-
-    <title>RGraph demo: An SVG Radar chart showing the new (version 5.22) formatted tooltips feature</title>
-    <meta name="description" content="An SVG Radar chart showing the new formatted tooltips feature" />
-    
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-
-
     <h1>An SVG Radar chart showing the new (version 5.22) formatted tooltips feature</h1>
     
-    <p>
-        Formatted tooltips are a new feature in version 5.22 and make it super-easy to
-        have unique tooltips but using just one specification in your configuration
-        (as shown below).
-    </p>
+    <div id="rgraph-demo-html">
+        <div id="chart-container1" style="width: 500px; height: 300px"></div>
+        <div id="chart-container2" style="width: 500px; height: 300px"></div>
+        
+        <style>
+            table {
+                border-color: #ccc;
+            }
     
-    <div id="cc1" style="width: 500px; height: 300px"></div>
-    <div id="cc2" style="width: 500px; height: 300px"></div>
+            td {
+                text-align: left;
+                padding-left: 15px;
+            }
+        </style>
+    </div>
 
     <script>
         names = ['Ken  ','Mark','Barry','Lewis','Pete','Larry','Jerry'];
@@ -49,7 +38,7 @@
         }
 
         radar1 = new RGraph.SVG.Radar({
-            id: 'cc1',
+            id: 'chart-container1',
             data: [
                 [45,50,39,54,65,35,25],
                 [24,23,29,28,31,20,20]
@@ -75,7 +64,7 @@
         }).draw();
 
         radar2 = new RGraph.SVG.Radar({
-            id: 'cc2',
+            id: 'chart-container2',
             data: [5,8,6,3,5,4,5],
             options: {
                 myNames:['Ken  ','Mark','Barry','Lewis','Pete','Larry','Jerry'],
@@ -97,25 +86,6 @@
         }).draw();
     </script>
 
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.radar.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div id="cc1" style="width: 500px; height: 300px"&gt;&lt;div&gt;
-&lt;div id="cc2" style="width: 500px; height: 300px"&gt;&lt;div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>&lt;div&gt;</code> tag:
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

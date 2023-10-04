@@ -2,71 +2,19 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
     <script src="../libraries/RGraph.svg.pie.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: An SVG Pie chart that looks like a Meter</title>
-
-    
-    <meta name="description" content="A set of concentric SVG Pie charts that have been configured to look like a Meter that could represent your figures." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-    
-
 </head>
 <body>
     <h1>A Meter-esque SVG Pie chart</h1>
 
-    <b>Note:</b>
-    There's a dedicated chart type that looks similar to this called
-    <a href="/canvas/activity.html">the Activity meter</a>. It can also be
-    further configured to look even more like this. And because it's a
-    dedicated chart type - to do so requires a lot less code. You can see demos in
-    <a href="https://www.rgraph.net/download.html#stable">
-        the download archive
-    </a> (which have the prefix <code>svg-activity-</code> and <code>svg-activity-</code>).
-
-
-    <RGRAPH_BASIC_DEMO_HTML>
-    <div style="float: right">
-        <div style="width: 350px; height: 350px; background-color: black; border-radius: 5px" id="chart-container"></div>
+    <div id="rgraph-demo-html">
+        <div>
+            <div style="width: 350px; height: 350px; background-color: black; border-radius: 5px" id="chart-container"></div>
+        </div>
     </div>
-    </RGRAPH_BASIC_DEMO_HTML>
-
-    <p>
-        Here's a set of Pie objects that have been configured so that
-        they appear as circular progress meters.
-    </p>
-    
-    <p>
-        This is done by adding one Pie object that
-        has the real color and is configured with the real value on top of another
-        which is used as the background and has a single value of 100 so it's a
-        full Pie segment.
-    </p>
-
-    <p>
-        The labels are added by utilising the
-        <code>RGraph.SVG.text</code> API function.
-        You can use this function to add your own text labels  to your visualisations.
-        To position the text the <code>pie.centerx</code>
-        and <code>pie.centery</code> <code>API</code> variables are used.
-    </p>
-    
-    <p>
-        One more thing that's used is the
-        <code>RGraph.SVG.GLOBALS</code> variable. All
-        objects get any values that are set on this object first before their own
-        properties. This means that you can set common values as defaults and all
-        subsequently created objects will use them.
-    </p>
-
-    
-    
         
     <script id="rgraph-demo-source-code">
         // These global settings are applied to all objects that are created
@@ -90,10 +38,6 @@
             id: 'chart-container',
             data: [100],
             options: {
-                responsive: [
-                    {maxWidth:null,parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth:900,parentCss:{'float':'none',textAlign:'center'}}
-                ]
             }
         }).draw();
 
@@ -236,29 +180,6 @@
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.svg.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.svg.pie.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;div style="width: 350px; height: 350px; background-color: black; border-radius: 5px" id="chart-container"&gt;&lt;/div&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>div</code> tag:
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
 
 </body>
