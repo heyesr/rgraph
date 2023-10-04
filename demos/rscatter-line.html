@@ -2,27 +2,17 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.rscatter.js" ></script>
     <script src="demos.js" ></script>
-
-    <title>RGraph demo: A Radial Scatter chart with a connecting line</title>
-
-    
-    
-    <meta name="description" content="A Radial Scatter chart with a connecting line" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>A Radial Scatter chart with a connecting line</h1>
 
-    <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
     
     <script>
         data  = [[252,63],[293,63],[5,80],[85,63],[95,65]];
@@ -48,28 +38,6 @@
         }).draw();
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.rscatter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="500" height="500"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

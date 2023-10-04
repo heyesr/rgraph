@@ -2,27 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.csv.js" ></script>
     <script src="../libraries/RGraph.rscatter.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: An RScatter chart using RGraphs CSV reader</title>
-
-    
-    
-    <meta name="description" content="A Radial Scatter chart using the CSV reader. The RGraph CSV reader reads remote files or an embedded CSV string." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-    
-
     <h1>A Radial Scatter chart importing CSV data</h1>
 
     <script>
@@ -37,44 +23,12 @@
         }
     </script>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="500" height="450" >[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="500" height="450" >[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here's a Radial Scatter chart - a circular Scatter chart. It's a variation on the regular Scatter
-        chart that might suit your data better than the traditional style of Scatter. Radial Scatter charts
-        are only available on  <code>canvas</code> - not  <code>SVG</code>.
-    </p>
-    
-    <p>
-        Each point has two values - the angle of the point in degrees and the absolute magnitude. If
-        your values for the angle are initially in a relative format then you would need to convert
-        them first. You could do that with the following example code:
-    </p>
-    
-    <pre class="code">
-arr = [[10,10],[5,10]];
-max = 10;
-for (var i=0; i&lt;arr.length; i++) {
-    arr[i][0] = arr[i][0] / max * 360;
-}
-console.log(arr);
-</pre>
 
-    <p>
-        All this snippet does is convert the data to proportional values based on the maximum value in the
-        array - so you would get an array of <code>[360, 180]</code> So one point would be placed on the north
-        axis and the other point would be placed on the south axis.
-    </p>
-    
-    <p>
-        The only other configuration is the labels being changed from being on all four axes to just the
-        'north' axis.
-    </p>
-    
-    <br clear="all" />
-    
     <script id="rgraph-demo-source-code">
         // Create the CSV reader with the URL of the CSV file and the
         // callback function.
@@ -110,41 +64,15 @@ console.log(arr);
                     marginLeft: 15,
                     marginRight: 15,
                     responsive: [
-                        {maxWidth:null,width:500,height:450,parentCss:{'float':'right',textAlign:'none'}},
-                        {maxWidth:900,width:400,height:300,parentCss: {'float':'none',textAlign:'center'}}
+                        {maxWidth:null,width:500,height:450},
+                        {maxWidth:900,width:400,height:300}
                     ]
                 }
             }).draw();
         });
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.rscatter.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="500" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the  <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
-
-    
 
 </body>
 </html>
