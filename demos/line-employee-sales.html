@@ -2,46 +2,27 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Line chart showing sales information</title>
-    <meta name="description" content="A Line chart showing multiple datasets and which has a dark color scheme. It also has a key and clears the canvas before it starts drawing." />
-
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
 </head>
 <body>
-
     <h1>A Line chart showing employee sales</h1>
     
-    <div style="float: left; margin-right: 25px">
-        <canvas id="cvs" width="575" height="450" data-image-src="page-demos-line-employee-sales.png">[No canvas support]</canvas><br />
+    <div id="rgraph-demo-html">
+        <div style="margin-right: 25px">
+            <canvas id="cvs" width="575" height="450" data-image-src="page-demos-line-employee-sales.png">[No canvas support]</canvas><br />
+        </div>
     </div>
     
-    
-    
-    <p>
-        A Line chart showing the employee sales by department. Since this chart is
-        a copy of a chart found on the Internet it uses the Line chart - though a
-        stacked or grouped Bar chart may represent the data better because the types
-        of furniture aren't related to each other.
-    </p>
-
-    <br clear="all" />
-    
     <script id="rgraph-demo-source-code">
-        // Create the Line chart
         new RGraph.Line({
             id: 'cvs',
             
-            // The four datasets that are shown on the chart - a multi-dimensional
-            // array.
+
             data: [
                 [190,165,47,121,30,72],
                 [12,180,10,80,25,75],
@@ -80,11 +61,6 @@
                 ]
             }
         
-        // Here we use the beforedraw event to clear the canvas to a dark
-        // color before the drawing is performed. Since it's the beforedraw
-        // event the call to the draw() function has to be after the on()
-        // function (otherwise the beforedraw event would have already run
-        // by the time that the event is added.
         }).on('beforedraw', function (obj)
         {
             // Clear the canvas to a specific color
@@ -95,38 +71,7 @@
         }).trace();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.key.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.bar.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="text-align: center"&gt;
-    &lt;canvas id="cvs" width="575" height="450"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
-
-
-
-
-
 
 </body>
 </html>

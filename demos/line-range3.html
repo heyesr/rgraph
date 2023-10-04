@@ -1,28 +1,18 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A range chart with regular lines</title>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
-    
-    <meta name="description" content="A range chart with regular lines" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>A range chart with regular lines</h1>
 
-    <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
-
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+    </div>
 
     <script>
         upper = [26,27,28,29,31,31,32,30,28,28,27,28,29,30,31,31,29,31,32,32,33,33,35,35,35,35,35,35,33,33,34,35,34,35,35,35,35,35,35,35,34,32,33,31,32,32,33,31,29,30,29,31,31,30,29,28,29,30,31,33,34,34,33,33,31,30,29,30,30,30,29,31,33,34,35,35,35,33,31,31,30,29,28,27,26,26,28,29,28,30,29,29,31,31,29,27,25,26,28,26];
@@ -91,31 +81,7 @@
         }).trace({frames: 180});
     </script>
 
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="700" height="350"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
 
 </body>
 </html>
-

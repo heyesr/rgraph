@@ -2,37 +2,18 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Line chart with color bands</title>
-    
-    
-    <meta name="description" content="A Line chart with color bands" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>A Line chart with color bands</h1>
-    
-    <p>
-        This is a demo that uses a gradient to achieve a banded look. Previously this demo used custom
-        coding to achieve the same effect. There are two separate gradients in use here - one for the
-        line color and one for the fill.
-    </p>
-    
-    <p>
-        This version of the chart is much easier and less code than the previous version.
-    </p>
 
-    <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
+    </div>
     
     <script>        
         // The data for both of the Line chart objects
@@ -124,32 +105,8 @@
             }
         }).draw();
     </script>
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="950" height="350"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
 
 </body>
 </html>

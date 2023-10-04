@@ -2,70 +2,32 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.csv.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Line chart fetching data using the CSV reader</title>
-
-    
-    <meta name="description" content="A simple Line chart that's using the CSV reader to get the data that's shown on the chart." />
-     
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-
     <h1>A Line chart using the CSV reader</h1>
-
 
     <script>
         if (!location.host) {
             document.write(`
 <div style="background-color: #ffc; border: 2px solid #cc0; border-radius: 5px; padding: 5px;">
     <b>Note:</b>
-    For browser security reasons the AJAX demos don't work offline.
+    For browser security reasons the <code>ajax</code> demos don't work offline.
     You can view the demos on the RGraph website here:
     <a href="https://www.rgraph.net/demos/index.html" target="_blank">https://www.rgraph.net/demos/index.html</a>
 </div>`);
         }
     </script>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="500" height="250" data-image-src="page-demos-line-csv-reader.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        A Line chart that's serving as a basic example of using the <code>CSV</code> Reader in conjunction with the <code>CSV</code>
-        reader. 
-    </p>
-    
-    <p>
-        The data that's being fetched is done with this line-of-code:
-    </p>
-    
-    <pre class="code">var data = csv.column(2);</pre>
-    
-    <p>
-        And what that does is fetch the whole of the third column (counting starts at zero). This column
-        of data is then given to the chart as its data. The <code>X-axis</code> labels for the chart are simply
-        hardcoded but they could quite easily be fetched from the first column of the <code>CSV</code> like this:
-    </p>
-    
-    <pre class="code">var labels = csv.column(0);</pre>
-    
-    <p>
-        The <code>responsive</code> function reduces the size of the <code>canvas</code> tag, reduces the size of the text
-        and rotates the <code>X-axis</code> labels to an angle of 45 degrees. It also adds a bottom <code>CSS</code> <code>margin</code>
-        and removes the <code>CSS</code> <code>float</code>.
-    </p>
-
-    <br clear="all" />
 
     <script id="rgraph-demo-source-code">
         // Create a new CSV connector object passing it the URL of the CSV file and a
@@ -89,42 +51,15 @@
                     xaxis: false,
                     yaxis: false,
                     responsive: [
-                        {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12,marginLeft: 35},parentCss: {marginBottom: 0,cssFloat: 'right',textAlign:'none'}},
-                        {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 20,textSize: 10,marginLeft: 45},parentCss: {marginBottom: '35px',cssFloat: 'none',textAlign:'center'}}
+                        {maxWidth: null, width:500,height:250, options: {xaxisLabelsAngle: 0,textSize: 12,marginLeft: 35},parentCss: {marginBottom: 0}},
+                        {maxWidth: 900,width: 400,height: 150,options: {xaxisLabelsAngle: 20,textSize: 10,marginLeft: 45},parentCss: {marginBottom: '35px'}}
                     ]
                 }
             }).draw();
         });
     </script>
 
-
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.csv.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float:right"&gt;
-    &lt;canvas id="cvs" width="500" height="250"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

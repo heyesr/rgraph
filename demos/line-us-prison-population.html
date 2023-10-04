@@ -2,28 +2,39 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Line chart showing US prison population</title>
-    
-    
-    <meta name="description" content="A Line chart with custom tickmarks and custom styled tooltips" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>A Line chart showing US prison population</h1>
 
-    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
+    
+        <div style="display: none"> 
+            <div id="1983"><a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America" rel="nofollow">Corrections Corporation of America</a> is founded</a></div> 
+            <div id="1984"><a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow">Sentencing Reform Act</a> passed</a></div> 
+            <div id="1993"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes law</a> enacted in Washington</div> 
+            <div id="1994"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota</div> 
+            <div id="1995"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Arkansas, Georgia, Maryland, Montana,<br/> New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,<br/> Utah, Vermont, Wisconsin</div> 
+            <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div> 
+            <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow">Substance Abuse and Crime Prevention Act</a> passed in California</div> 
+        </div>
+    
+        <style>
+            .tooltip {
+                background-color: #efefef !important;
+                font: 10px Arial, sans-serif !important;
+                padding: 3px;
+                border-color: #999 !important;
+                color: black !important;
+            }
+        </style>
+    </div>
 
     <script>
         data = [
@@ -87,76 +98,7 @@
         }
     </script>
 
-
-
-    <div style="display: none"> 
-        <div id="1983"><a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America" rel="nofollow">Corrections Corporation of America</a> is founded</a></div> 
-        <div id="1984"><a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow">Sentencing Reform Act</a> passed</a></div> 
-        <div id="1993"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes law</a> enacted in Washington</div> 
-        <div id="1994"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota</div> 
-        <div id="1995"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Arkansas, Georgia, Maryland, Montana,<br/> New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,<br/> Utah, Vermont, Wisconsin</div> 
-        <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div> 
-        <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow">Substance Abuse and Crime Prevention Act</a> passed in California</div> 
-    </div>
-
-    <style>
-        .tooltip {
-            background-color: #efefef !important;
-            font: 10px Arial, sans-serif !important;
-            padding: 3px;
-            border-color: #999 !important;
-            color: black !important;
-        }
-    </style>
-
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="display: none"&gt; 
-    &lt;div id="1983"&gt;&lt;a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America" rel="nofollow"&gt;Corrections Corporation of America&lt;/a&gt; is founded&lt;/a&gt;&lt;/div&gt; 
-    &lt;div id="1984"&gt;&lt;a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow"&gt;Sentencing Reform Act&lt;/a&gt; passed&lt;/a&gt;&lt;/div&gt; 
-    &lt;div id="1993"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes law&lt;/a&gt; enacted in Washington&lt;/div&gt; 
-    &lt;div id="1994"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota&lt;/div&gt; 
-    &lt;div id="1995"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in Arkansas, Georgia, Maryland, Montana,&lt;br/&gt; New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,&lt;br/&gt; Utah, Vermont, Wisconsin&lt;/div&gt; 
-    &lt;div id="1996"&gt;&lt;a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow"&gt;Three strikes laws&lt;/a&gt; enacted in Florida, Tennessee, Virginia&lt;/div&gt; 
-    &lt;div id="2000"&gt;&lt;a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow"&gt;Substance Abuse and Crime Prevention Act&lt;/a&gt; passed in California&lt;/div&gt; 
-&lt;/div&gt;
-
-&lt;style&gt;
-    .tooltip {
-        background-color: #efefef !important;
-        font: 10px Arial, sans-serif !important;
-        padding: 3px;
-        border-color: #999 !important;
-        color: black !important;
-    }
-&lt;/style&gt;
-
-&lt;canvas id="cvs" width="600" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
-    
 </body>
 </html>

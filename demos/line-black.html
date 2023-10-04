@@ -2,66 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A black-and-white Line chart</title>
-    <meta name="description" content="A black and green Line chart that has two datasets and uses the trace() effect to quickly animate the Lines." />
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
     <h1>A canvas-based black Line chart</h1>
     
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc" data-image-src="page-demos-line-black.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        This is quite an old demo of a Line chart but it has stood up through the years
-        very well and still looks very presentable.
-    </p>
-    
-    <p>
-        It's a black Line chart with two datasets that both use custom tickmarks.
-        These custom tickmarks are drawn by utilising the <code>RGraph.path</code> <code>API</code>
-        function. This is a function that makes drawing with the <code>canvas</code> <code>API</code>
-        far less verbose than it usually is.
-    </p>
-    
-    <p>
-        Before drawing commences, using the <code>beforedraw</code> event, the <code>canvas</code>
-        is cleared
-        to a plain black color. You might find this as a performance-enhancing tip
-        on various <code>canvas</code> performance articles though by the second frame you'll
-        not be drawing on a transparent <code>canvas</code> - so it might be a redundant
-        action.
-    </p>
-    
-    <p>
-        The <code>trace</code> Line chart effect is used here - but an options
-        object is passed
-        to the effects function call. This is just a regular <code>JavaScript</code> object which
-        contains a single property: <code>frames</code>
-        As the name suggests this stipulates the number of frames in the animation.
-        Lower numbers make for quicker animations that finish sooner.
-    </p>
-    
-    <p>
-        The <code>responsive</code> function changes the size of the text and the margins, changes the
-        <code>CSS</code> <code>float</code> to <code>none</code> and a <code>callback</code> function updates a global
-        variable that controls the size of the custom tickmarks. The <code>callback</code> function runs <b>after</b>
-        the chart has been redrawn so if you change anything here (as we're doing) then you need to redraw
-        the chart. That can be done by calling the <code>RGraph.redraw</code> function.
-    </p>
 
-    
-    
     <script id="rgraph-demo-source-code">
         tickmarkRadius = 6;
 
@@ -88,8 +42,8 @@
                 linewidth: 3,
                 textColor: '#eee',
                 responsive: [
-                    {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},parentCss:{'float':'right',textAlign:'none'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
-                    {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},parentCss:{'float':'none',textAlign:'center'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
+                    {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},parentCss:{textAlign:'none'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
+                    {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},parentCss:{textAlign:'center'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
                 ]
             }
         }).on('beforedraw', function (obj)
@@ -98,33 +52,8 @@
 
         }).trace({frames: 15});
     </script>
-
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
     
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;div style="float: right"&gt;
-    &lt;canvas id="cvs" width="600" height="250" style="border-radius: 5px; box-shadow: 3px 3px 3px #ccc"&gt;[No canvas support]&lt;/canvas&gt;
-&lt;/div&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>
-
 
 </body>
 </html>

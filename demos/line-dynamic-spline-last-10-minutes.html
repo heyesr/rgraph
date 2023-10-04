@@ -2,27 +2,18 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A dynamically updating spline Line chart showing values for the last 24 seconds (1 per second)</title>
-    
-    
-    <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example). It's updated once per second and shows the last 24 seconds of worth of data." />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>A dynamically updating spline Line chart showing values for the last 24 seconds (1 per second)</h1>
     
-    <div style="text-align: center">
-        <canvas id="cvs" width="800" height="400">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div>
+            <canvas id="cvs" width="800" height="400">[No canvas support]</canvas>
+        </div>
     </div>
        
     <script>
@@ -85,30 +76,6 @@
         })();
     </script>
 
-
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="800" height="250"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
     
 </body>

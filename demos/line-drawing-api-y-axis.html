@@ -2,7 +2,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js"></script>
     <script src="../libraries/RGraph.common.dynamic.js"></script>
     <script src="../libraries/RGraph.common.tooltips.js"></script>
@@ -10,35 +9,14 @@
     <script src="../libraries/RGraph.line.js"></script>
     <script src="../libraries/RGraph.drawing.yaxis.js"></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: A Line chart using the the drawing API Y-axis</title>
-    
-    
-    <meta name="description" content="A Line chart using the the drawing API Y-axis" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
     <h1>A Line chart using the the drawing API Y-axis</h1>
 
-    <canvas id="cvs" width="600" height="250" style="float: right">[No canvas support]</canvas>
-
-    <p>
-        Formerly an API function - the RGraph drawing API now supports a Y-axis
-		object by which you can have multiple Y axes. Now 
-        that it's a drawing API object you can now also give the Y-axis tooltips
-		and it supports the <code>click</code> and
-        <code>mousemove</code> events. It uses the same
-		<code>get()</code> and <code>set()</code> methods for configuration as
-		other drawing API
-        objects and the chart types and is automatically redrawn as necessary
-		so you don't need to worry about this. The full list
-        of options is shown below.
-
-    </p>
-
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
 
     <script>
         marginLeft = 120;
@@ -182,32 +160,8 @@
                 marginBottom: 35
             }
         }).draw();
-
     </script>
     
-
-    <br clear="all" />
-
-
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.tooltips.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.drawing.yaxis.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="300"&gt;
-    [No canvas support]
-&lt;/canvas&gt;
-</pre>
-    
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
 
 </body>

@@ -2,73 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.sheets.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>Demo: A Line chart importing data from Google Sheets</title>
-
-    
-    <meta name="description" content="A Line chart using the Google Sheets connector. If you use Google Sheets to store your data then RGraph can connect directly to Google to retrieve your data." />
-    
-    <!-- <RGRAPH_REMOVE> -->
     <meta name="robots" content="noindex, nofollow" />
-    <!-- </RGRAPH_REMOVE> -->
-
 </head>
 <body>
-
-    
-
     <h1>A Line chart using the Google Sheets connector</h1>
 
-    <div style="float: right" id="canvas-container">
-        <canvas id="cvs" width="600" height="250"  data-image-src="page-demos-line-sheets.png">[No canvas support]</canvas>
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="250"  data-image-src="page-demos-line-sheets.png">[No canvas support]</canvas>
+        </div>
     </div>
-    
-    <p>
-        Here we have a Line chart that is fetching its data and labels from a Google Sheet using the
-        connector utility that's provided with RGraph.
-    </p>
-    
-    <p>
-        The Sheets utility is created using the key of the spreadsheet - you can get this from the URL
-        of your spreadsheet. The <code>Line chart</code> in the arguments to the Sheets import utility (see
-        below) is the ID of the worksheet that's used.
-    </p>
-    
-    <pre class="code">
-<span>// The constructor call to the Sheets import utility showing the use of your OAuth ID, the key and
-// the worksheet to use.</span>
-new RGraph.Sheets(
-    'AIzaSyDCODMgxGo6q4qgkw8haCwXr__8d5r7IIg',
-    '1ncvARBgXaDjzuca9i7Jyep6JTv9kms-bbIzyAxbaT0E',
-    'Line chart',
-    function (sheet) {<span>/* Create the chart here */</span>});
-</pre>
-    
-    <p>
-        The data is retrieved using this: <code>sheet.get('B2:M2')</code> So this would get the <code>B</code> thru <code>M</code> columns on row <code>2</code>.
-    </p>
-    
-    <p>
-        The labels are fetched with this: <code>xaxisLabels: sheet.get('B1:M1')</code> which fetches the
-        <code>B</code> thru <code>M</code> columns on the first row.
-    </p>
-    
-    <p>
-        The other configuration for the chart is pretty standard stuff and the chart uses the
-        <code>trace</code> animation effect.
-    </p>
-    
-    <p>
-        <b>Note:</b> The Google Sheets connector works standalone - ie without the RGraph common library.
-        This means that you're free to use it in your own projects, without RGraph, if you want to.
-    </p>
-    
-    <br clear="all" />
     
     <script id="rgraph-demo-source-code">
         // Create a new RGraph Sheets instance that allows you to connect
@@ -127,30 +74,7 @@ new RGraph.Sheets(
         });
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="../libraries/RGraph.common.core.js" &gt;&lt;/script&gt;
-&lt;script src="../libraries/RGraph.common.sheets.js" &gt;&lt;/script&gt;
-&lt;script src="../libraries/RGraph.line.js" &gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250" style="float: right"&gt;[No canvas support]&lt;/canvas&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the <code>canvas</code> tag(s):
-    <pre id="dynamic-source-code"></pre>
     <script>showSource()</script>    
-
 
 </body>
 </html>

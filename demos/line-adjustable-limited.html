@@ -1,30 +1,20 @@
 <!DOCTYPE html >
 <html>
 <head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
-    
-    <title>RGraph demo: An adjustable Line chart with only one adjustable point</title>
-    
-    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-
-    
-    <meta name="description" content="An adjustable Line chart with only one adjustable point" />
-     
     <meta name="robots" content="noindex, nofollow" />
-
 </head>
 <body>
-
-    
-
     <h1>An adjustable Line chart with only one adjustable point</h1>
 
-
-    <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
-    <button style="padding: 5px; font-size: 16pt" onclick="line.set('outofboundsClip', !line.get('outofboundsClip')); RGraph.redraw()">Toggle the outofboundsClip option</button>
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+        <button style="padding: 5px; font-size: 16pt" onclick="line.set('outofboundsClip', !line.get('outofboundsClip')); RGraph.redraw()">Toggle the outofboundsClip option</button>
+    </div>
 
     <script>
         line = new RGraph.Line({
@@ -59,31 +49,7 @@
         }).draw();
     </script>
 
-
-
-
-
-
-
-    <p></p>
-
-    This goes in the documents header:
-    <pre class="code">
-&lt;script src="RGraph.common.core.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.common.dynamic.js"&gt;&lt;/script&gt;
-&lt;script src="RGraph.line.js"&gt;&lt;/script&gt;
-</pre>
-    
-    Put this where you want the chart to show up:
-    <pre class="code">
-&lt;canvas id="cvs" width="600" height="250"&gt;[No canvas support]&lt;/canvas&gt;&lt;br /&gt;
-&lt;button style="padding: 5px; font-size: 16pt" onclick="line.set('outofboundsClip', !line.get('outofboundsClip')); RGraph.redraw()"&gt;Toggle the outofboundsClip option&lt;/button&gt;
-</pre>
-
-This is the code that generates the chart - it should be placed AFTER the canvas tag(s):
-    <div id="dynamic-source-code"></div>
     <script>showSource()</script>
-
 
 </body>
 </html>
