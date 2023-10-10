@@ -162,6 +162,50 @@ samp {
     color: #c00;
 }
 
+
+/*
+* This facilitates the "copy" link in the top right of PRE code samples
+* sticky where it is instead of scrolling
+*/
+div.page-common-codeblock {
+    position: relative;
+    background-color: #eee;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+div.page-common-codeblock pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+div.page-common-codeblock span.copy-link {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    background-color: white;
+    border: 1px dashed gray;
+    padding: 2px 15px;
+    cursor:pointer;
+    font-size: 10pt;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 15px;
+}
+/*********************************/
+
+
+
+
+
 div#view-on-code-pen {
     -text-align: center;
 }
