@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic Bar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="750" height="250" data-image-src="page-demos-bar-basic.png">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+
+        obj = new RGraph.Bar({
+            id:'cvs',
+            data: [[1,3],[8,5],[6,1],[3,5],[1,9],[4,8],[5,4]],
+            options: {
+                colors: ['#c00','#00c'],
+                shadow: false,
+                linewidth: 3,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 8,
+                spline: true,
+                xaxisLabels: ['Alf','Quentin','Gary','Kevin','Pete','Lewis','Jo'],
+                xaxisLabelsOffsety: 3,
+                textSize: 22,
+                marginBottom: 60,
+                marginInner: 5,
+                labelsAbove: true,
+                labelsAboveUnitsPost: 'Kg',
+                labelsAboveSize: 14,
+                labelsAboveOffset: 5,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridDashArray: [1,15],
+                backgroundGridColor: '#000',
+                tooltips: 'Index: %{index}<br />Dataset: %{dataset}<br />Sequential index: %{seq}',
+                tooltipsCss: {
+                    fontSize: '25px',
+                    textAlign: 'left'
+                },
+                key: ['Jennifer','Taylor'],
+                keyPosition: 'margin',
+                keyLabelsSize: 20
+            }
+        }).wave();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
