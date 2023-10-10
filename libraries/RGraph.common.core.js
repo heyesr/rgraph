@@ -2140,6 +2140,11 @@
                         cacheContext.setLineDash([1,3]);
                     }
                     
+                    // Custom linedash
+                    if (RGraph.isArray(properties.backgroundGridDashArray)) {
+                        cacheContext.setLineDash(properties.backgroundGridDashArray);
+                    }
+                    
                     obj.context.beginPath();
         
 
@@ -2223,7 +2228,7 @@
 
 
         // Draw the title if one is set
-        if ( typeof args.object.properties.title == 'string') {
+        if ( typeof args.object.properties.title === 'string') {
             RGraph.drawTitle(args.object);
         }
     };
