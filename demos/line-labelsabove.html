@@ -1,0 +1,41 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.background.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart using the labelsAbove option</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [4,8,6,3,2,5,6,9],
+            options: {
+                backgroundGrid: false,
+                linewidth: 5,
+                shadow: false,
+                yaxis: false,
+                spline: true,
+                labelsAbove: true,
+                labelsAboveSize: 20,
+                labelsAboveUnitsPost: 'g',
+                labelsAboveOffsety: -5,
+                labelsAboveDecimals: 1
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
