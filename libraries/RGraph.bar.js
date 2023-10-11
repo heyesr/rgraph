@@ -58,6 +58,7 @@
             backgroundGridHlinesCount:  5,
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
+            backgroundGridDashArray:    null,
             backgroundGridThreedYaxis:  true,
             backgroundImage:            null,
             backgroundImageStretch:     true,

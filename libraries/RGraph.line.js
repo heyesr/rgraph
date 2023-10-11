@@ -71,6 +71,7 @@
             backgroundGridVlinesCount:  null,
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
+            backgroundGridDashArray:    null,
             backgroundHbars:            null,
             backgroundImage:            null,
             backgroundImageStretch:     true,
