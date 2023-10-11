@@ -4058,6 +4058,59 @@
 
 
     //
+    // A shortcut function to generate some radom data for
+    // Scatter chart points
+    //
+    // @param object conf The configuration that determines the
+    //                    points on the chart
+    // @param object An object of parameters. The obj can
+    //               contain the following keys:
+    //                o count:   Number of points to generate (20)
+    //                o xmin:    Minimum X value              (0)
+    //                o xmax:    Maximum X value              (10)
+    //                o ymin:    Minimum Y value              (0)
+    //                o ymax:    Maximum Y value              (10)
+    //                o tooltip: Whether to generate a tooltip
+    //                           index                        (false)
+    //
+    //@return An object of points suitable for the Scatter chart
+    //
+    RGraph.Scatter.random = function (conf)
+    {
+        // Defaults
+        if (!RGraph.isObject(conf))          conf = {};
+        if (!RGraph.isNumber(conf.count))    conf.count   = 20;
+        if (!RGraph.isNumber(conf.xmin))     conf.xmin    = 0;
+        if (!RGraph.isNumber(conf.xmax))     conf.xmax    = 10;
+        if (!RGraph.isNumber(conf.ymin))     conf.ymin    = 0;
+        if (!RGraph.isNumber(conf.ymax))     conf.ymax    = 10;
+        if (!RGraph.isBoolean(conf.tooltip)) conf.tooltip = false;
+
+        for (var i=0,data=[]; i<conf.count; ++i) {
+
+            var arr = {
+                x: RGraph.random(conf.xmin, conf.xmax),
+                y: RGraph.random(conf.ymin, conf.ymax)
+            };
+
+            if (conf.tooltip) {
+                arr.tooltip = 'X value: {1} Y value: {2}'.format(arr.x, arr.y);
+            }
+
+            data.push(arr);
+        }
+        
+        return data;
+    };
+
+
+
+
+
+
+
+
+    //
     // This is a shortcut-style function that makes making
     // drilldown chart much easier for the user.
     //
