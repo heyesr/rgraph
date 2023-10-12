@@ -11,8 +11,8 @@
     <h1>A DateTime Scatter chart</h1>
 
     <div id="rgraph-demo-html">
-        <div style="float: right" id="canvas-container">
-            <canvas id="cvs" width="600" height="200" data-image-src="page-demos-scatter-date-time-values.png">[No canvas support]</canvas>
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
         </div>
     </div>
 
@@ -73,8 +73,8 @@
                 // Add some responsive capabilities so that it
                 // fits well on smaller screens
                 responsive: [
-                    {maxWidth: null,width:600,height:200,options:{textSize:12},parentCss:{'float':'right',textAlign:'none'}},
-                    {maxWidth: 900,width:400,height:200,options:{textSize:10},parentCss:{'float':'none',textAlign:'center'}}
+                    {maxWidth: null,width:600,height:200,options:{textSize:12}},
+                    {maxWidth: 900,width:400,height:200,options:{textSize:10}}
                 ]
             }
         
