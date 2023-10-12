@@ -72,7 +72,7 @@
             anglesEnd:                  (2 * Math.PI),
 
             scale:                      false,
-            scaleMin:                   0,
+            scaleMin:                   null,
             scaleMax:                   null, // Defaults to the charts max value
             scaleDecimals:              0,
             scalePoint:                 '.',
@@ -382,7 +382,7 @@
             if (this.value > this.max) this.value = this.max;
             if (this.value < this.min) this.value = this.min;
 
-            if (RGraph.isArray(this.value) && RGraph.arraySum(this.value) > this.max) {
+            if (RGraph.isArray(this.value) && RGraph.arraySum(this.value) > (this.max - this.min) ) {
                 alert('[SEMI-CIRCULAR PROGRESS] Total value is over the maximum value');
             }
 
@@ -624,10 +624,10 @@
     
                 // Draw the path for the bar
                 this.pathBar({
-                    startValue: 0,
+                    startValue: this.min,
                     endValue:   this.max
                 });
-    
+
                 // Finish the paths and stroke/fill it
                 this.path(
                     'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
@@ -659,13 +659,13 @@
             //
             if (RGraph.isNumber(this.value)) {
 
-                // Begein anew...
+                // Begin anew...
                 this.context.beginPath();
-                
+
                 // Draw the path for the indicator bar (not
                 // stroking or filling it just yet)
                 this.pathBar({
-                    startValue: 0,
+                    startValue: this.min,
                     endValue: this.value
                 });
 
@@ -678,16 +678,16 @@
                     this.centerx,
                     this.centery,
                     this.radius,
-                    this.getAngle(0),
+                    this.getAngle(this.min),
                     this.getAngle(this.value),
                     this.width,
-                    this.getAngle(this.value) - this.getAngle(0)
+                    this.getAngle(this.value) - this.getAngle(this.min)
                 ]];
             
             // Draw multiple values on the meter
             } else if (RGraph.isArray(this.value)) {
 
-                for (var i=0,accValue=0; i<this.value.length; ++i) {
+                for (var i=0,accValue=this.min; i<this.value.length; ++i) {
 
                     this.context.beginPath();
                     this.pathBar({
@@ -1139,7 +1139,7 @@
                     options: {
                         'scale.max':         properties.scaleMax || this.max,
                         'scale.strict':      true,
-                        'scale.min':         properties.scaleMin,
+                        'scale.min':         properties.scaleMin || this.min,
                         'scale.thousand':    properties.scaleThousand,
                         'scale.point':       properties.scalePoint,
                         'scale.decimals':    properties.scaleDecimals,
@@ -1197,7 +1197,7 @@
 
 
                 //
-                // Draw the zero label
+                // Draw the minimum label
                 //
                 var xy = RGraph.getRadiusEndPoint({
                     cx:     this.centerx,
@@ -1220,14 +1220,14 @@
                     text:   typeof properties.scaleFormatter === 'function'
                               ? (properties.scaleFormatter)({
                                     object:     this,
-                                    number:     0,
+                                    number:     this.min,
                                     unitspre:   properties.scaleUnitsPre,
                                     unitspost:  properties.scaleUnitsPost,
                                     point:      properties.scalePoint,
                                     thousand:   properties.scaleThousand,
                                     formatter:  properties.scaleFormatter
                                 })
-                              : (properties.scaleUnitsPre || '') + properties.scaleMin.toFixed(properties.scaleDecimals).replace(/\./, properties.scalePoint) + (properties.scaleUnitsPost || '')
+                              : (properties.scaleUnitsPre || '') + (RGraph.isNumber(properties.scaleMin) ? properties.scaleMin : this.min).toFixed(properties.scaleDecimals).replace(/\./, properties.scalePoint) + (properties.scaleUnitsPost || '')
                 });
             }
         };
@@ -1470,19 +1470,22 @@
 
 
         //
-        // This function returns the appropriate angle (in radians) for the given
-        // Y value
+        // This function returns the appropriate angle (in radians)
+        // for the given value.
         // 
         // @param  int value The Y value you want the angle for
         // @returm int       The angle
         //
         this.getAngle = function (value)
         {
-            if (value > this.max || value < this.min) {
-                return null;
-            }
+            if (value > this.max) value = this.max;
+            if (value < this.min) value = this.min;
 
-            var angle = (value / this.max) * (properties.anglesEnd - properties.anglesStart)
+            //if (value > (this.max - this.min) || value < this.min) {
+            //    return null;
+            //}
+
+            var angle = ( (value - this.min) / (this.max - this.min)) * (properties.anglesEnd - properties.anglesStart)
                 angle += properties.anglesStart;
 
             return angle;
@@ -1737,6 +1740,10 @@
             
             // Do this if showing a single number
             if (RGraph.isNumber(this.value)) {
+
+                if (RGraph.isNull(this.currentValue)) {
+                    this.currentValue = this.min;
+                }
                 
                 var initial_value = this.currentValue,
                     diff          = this.value - Number(this.currentValue),
