@@ -11,7 +11,7 @@
     <h1>A basic Semi-circular Progress chart</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="300" height="200">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -23,7 +23,9 @@
             options: {
                 scaleDecimals: 1,
                 scaleUnitsPost: 'Kg',
-                labelsCenterSize: 30
+                labelsCenterSize:80,
+                labelsCenterOffsety: 20,
+                labelsCenterUnitsPost: '%'
             }
         }).draw();
     </script>
