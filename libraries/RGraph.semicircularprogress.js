@@ -50,6 +50,7 @@
             backgroundGridRadials:      true,
             backgroundGridRadialsCount: 10,
             backgroundBackdrop:         true,
+            backgroundBackdropColor:    null,
 
             colors:                     ['#0c0', '#f66', '#66f', 'yellow', 'pink','#ccc','#cc0','#0cc','#c0c'],
 
@@ -614,7 +615,9 @@
 
             //
             // Draw the background for the bar which is a similar
-            // color to the bar - just faded out a bit
+            // color to the bar - just faded out a bit. Now
+            // (13/10/2024) you customise this color with the
+            // backgroundBackdropColor property
             //
             if (properties.backgroundBackdrop) {
                 this.path(
@@ -632,9 +635,9 @@
                 this.path(
                     'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
                     properties.colorsStroke,
-                    properties.colors[0],
+                    properties.backgroundBackdropColor ? properties.backgroundBackdropColor: properties.colors[0],
                     properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
-                    'rgba(255,255,255,0.85)'
+                    properties.backgroundBackdropColor ? 'transparent' : 'rgba(255,255,255,0.85)'
                 );
             }
 
