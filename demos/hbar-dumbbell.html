@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A dumbbell Horizontal Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[3,4],[5,3],[4,8],[1,9],[4,6],[9,4],[8,5]],
+            options: {
+                colors: ['transparent'],
+                grouping: 'stacked',
+                textSize: 14,
+                yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false
+            }
+        }).on('draw', function (obj)
+        {
+            var coords = obj.coords;
+
+            coords.forEach(function (v, k, arr)
+            {
+
+                if (k % 2 === 0) {
+                
+                    var color1 = 'red';
+                    var color2 = '#000';
+
+                    obj.path(
+                        'lw 5 b m % % l % % s black     b a % % 10 0 6.29 false f %    b a % % 10 0 6.29 false f %',
+                        v[0], v[1] + (v[3] / 2),
+                        v[0] + v[2], v[1] + (v[3] / 2),
+                        v[0], v[1] + (v[3] / 2),color1,
+                        v[0] + v[2], v[1] + (v[3] / 2), color1
+                    );
+                }
+            });
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
