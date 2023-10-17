@@ -5886,7 +5886,7 @@
     //                       o colors  An array of colors for the gradient
     RGraph.linearGradient = function ()
     {
-        var args = arguments[0];
+        var args = RGraph.getArgs(arguments,'object,x1,y1,x2,y2,colors');
 
         var gradient = args.object.context.createLinearGradient(
             args.x1,
