@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.common.key.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An blue and red SVG Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="container" style="position: relative">
+            <div style="width: 750px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+         new RGraph.SVG.Bar({
+            id:'chart-container',
+            data: [[1,3],[8,5],[6,1],[3,5],[1,9],[4,8],[5,4]],
+            options: {
+                colors: ['#c00','#00c'],
+                xaxisLabels: ['Alf','Quentin','Gary','Kevin','Pete','Lewis','Jo'],
+                xaxisLabelsOffsety: 3,
+                textSize: 22,
+                marginBottom: 60,
+                marginInner: 5,
+                labelsAbove: true,
+                labelsAboveUnitsPost: 'Kg',
+                labelsAboveSize: 14,
+                labelsAboveOffset: 5,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridDashArray: [1,15],
+                backgroundGridColor: '#000',
+                tooltips: 'Index: %{index}<br />Dataset: %{dataset}<br />Sequential index: %{seq}',
+                tooltipsCss: {
+                    fontSize: '25px',
+                    textAlign: 'left'
+                },
+                key: ['Jennifer','Taylor']
+            }
+        }).wave();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
