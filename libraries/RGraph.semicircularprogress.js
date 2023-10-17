@@ -49,8 +49,8 @@
             backgroundGridCircles:      true,
             backgroundGridRadials:      true,
             backgroundGridRadialsCount: 10,
-            backgroundBackdrop:         true,
-            backgroundBackdropColor:    null,
+            backgroundFill:           true,
+            backgroundFillColor:      null,
 
             colors:                     ['#0c0', '#f66', '#66f', 'yellow', 'pink','#ccc','#cc0','#0cc','#c0c'],
 
@@ -303,11 +303,18 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
             
+            // backgroundBackdrop      => backgroundFill
+            // backgroundBackdropColor => backgroundFillColor
+            if (name === 'backgroundBackdrop')      name = 'backgroundFill';
+            if (name === 'backgroundBackdropColor') name = 'backgroundFillColor';
+            
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (   name === 'colors'
                 || name === 'keyColors'
                 || name === 'backgroundColor'
+                || name === 'backgroundFill'
+                || name === 'backgroundFillOpacity'
                ) {
                 this.colorsParsed = false;
             }
@@ -617,9 +624,9 @@
             // Draw the background for the bar which is a similar
             // color to the bar - just faded out a bit. Now
             // (13/10/2024) you customise this color with the
-            // backgroundBackdropColor property
+            // backgroundFillColor property
             //
-            if (properties.backgroundBackdrop) {
+            if (properties.backgroundFill) {
                 this.path(
                     'lw % b ',
                     this.linewidth
@@ -635,9 +642,9 @@
                 this.path(
                     'c s % f % sx % sy % sc % sb % f % sx 0 sy 0 sb 0 sc rgba(0,0,0,0) lw 1',
                     properties.colorsStroke,
-                    properties.backgroundBackdropColor ? properties.backgroundBackdropColor: properties.colors[0],
+                    properties.backgroundFillColor ? properties.backgroundFillColor: properties.colors[0],
                     properties.shadowOffsetx, properties.shadowOffsety, properties.shadow ? properties.shadowColor : 'rgba(0,0,0,0)', properties.shadowBlur,
-                    properties.backgroundBackdropColor ? 'transparent' : 'rgba(255,255,255,0.85)'
+                    properties.backgroundFillColor ? 'transparent' : 'rgba(255,255,255,0.85)'
                 );
             }
 
