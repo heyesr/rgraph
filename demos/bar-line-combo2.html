@@ -25,7 +25,7 @@
         yaxisTitleBold = true;
         labels         = data2.clone();
     
-        new RGraph.Bar({
+        bar1 = new RGraph.Bar({
             id: 'cvs',
             data: data.clone(),
             options: {
@@ -42,14 +42,18 @@
                 titleOffsety: 5,
                 yaxisTitle: 'Current year',
                 yaxisTitleBold: true,
-                xaxisLabels: data,
+                xaxisLabels: [],
                 xaxisLabelsSize: 10,
                 xaxisLabelsBold: true,
                 xaxisLabelsOffsety: -12
             }
-        }).wave();
+        }).wave(null, function (obj)
+        {
+            obj.set('xaxisLabels', data);
+            RGraph.redraw();
+        });
 
-        new RGraph.Bar({
+        bar2 = new RGraph.Bar({
             id: 'cvs',
             data: data2.clone(),
             options: {
@@ -64,12 +68,16 @@
                 marginTop: 200,
                 yaxisLabelsSpecific: ['','25','50','75','100'],
                 yaxisTitleBold: true,
-                xaxisLabels: labels,
+                xaxisLabels: [],
                 xaxisLabelsSize: 10,
                 xaxisLabelsBold: true,
                 xaxisLabelsOffsety: 14
             }
-        }).wave();
+        }).wave(null, function (obj)
+        {
+            obj.set('xaxisLabels', data2);
+            RGraph.redraw();
+        });
 
         new RGraph.Bar({
             id: 'cvs',
