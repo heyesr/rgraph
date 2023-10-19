@@ -1779,6 +1779,7 @@
             marginBottom = args.object.marginBottom,
             variant      = properties.variant
 
+            RGraph.fireCustomEvent(args.object, 'beforebackground');
 
             args.object.context.fillStyle = properties.textColor;
 
@@ -2242,6 +2243,9 @@
         if ( typeof args.object.properties.title === 'string') {
             RGraph.drawTitle(args.object);
         }
+        
+        // Fire the afterbackground event
+        RGraph.fireCustomEvent(args.object, 'afterbackground');
     };
 
 
