@@ -626,6 +626,17 @@
 
         //return temp;
     };
+    
+    //
+    // With this variation of the clone function you can do
+    // this:
+    //       arr1 = [1,2,3,4,5,6];
+    //       arr2 = arr1.clone();
+    //
+    Array.prototype.clone = function ()
+    {
+        return RGraph.arrayClone(this);
+    };
 
 
 
