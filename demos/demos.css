@@ -49,10 +49,11 @@ div#canvas-container img {
 
 
 /** Message styles **/
-div.page-common-messages-error {
+div.page-common-messages-error,
+div.page-common-messages-warning,
+div.page-common-messages-success,
+div.page-common-messages-notice {
     margin: 10px;
-    background-color: #f004;
-    border-left: 10px solid #f00;
     padding: 10px;
     line-height: 25px;
     border-top: 1px solid #ccc;
@@ -60,6 +61,11 @@ div.page-common-messages-error {
     border-bottom: 1px solid #ccc;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+}
+
+div.page-common-messages-error {
+    background-color: #f004;
+    border-left: 10px solid #f00;
 }
 
 div.page-common-messages-error span {
@@ -68,16 +74,8 @@ div.page-common-messages-error span {
 }
 
 div.page-common-messages-warning {
-    margin: 10px;
     background-color: #fff7d0;
-    padding: 10px;
     border-left: 10px solid #e7c000;
-    line-height: 25px;
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 div.page-common-messages-warning span {
@@ -86,16 +84,8 @@ div.page-common-messages-warning span {
 }
 
 div.page-common-messages-success {
-    margin: 10px;
     background-color: #0f04;
     border-left: 10px solid #0a0;
-    padding: 10px;
-    line-height: 25px;
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 
 div.page-common-messages-success span {
@@ -104,16 +94,8 @@ div.page-common-messages-success span {
 }
 
 div.page-common-messages-notice {
-    margin: 10px;
     background-color: #00f3;
-    padding: 10px;
-    line-height: 25px;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
     border-left: 10px solid #00f8;
-    border-right: 1px solid #ccc;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }
 div.page-common-messages-notice span {
     Color: #00f;
