@@ -1,0 +1,165 @@
+/*
+* 
+* Do not remove this: <!-- <RGRAPH_REMOVE> --> <!-- </RGRAPH_REMOVE> -->
+* 
+*/
+
+body {
+    font-family: Arial;
+}
+
+code {
+    padding: 3px;
+    background-color: #eee;
+    font-family: Monospace;
+    white-space: nowrap;
+}
+
+pre.code {
+    padding: 5px;
+    background-color: #eee;
+    margin-top: 0;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    padding: 15px;
+    position: relative;
+}
+
+pre.code span {
+    color: green;
+}
+
+pre.code span span {
+    color: red;
+}
+
+ul.bullets li{
+    list-style-image: url('/images/tick2.png');
+}
+/* Make all the canvas tags resize correctly when the browser shrinks */
+div#svg-container img,
+div#canvas-container img {
+    max-width: 100%;
+    height: 100%;
+}
+
+
+
+
+
+
+/** Message styles **/
+div.page-common-messages-error {
+    margin: 10px;
+    background-color: #f004;
+    border-left: 10px solid #f00;
+    padding: 10px;
+    line-height: 25px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.page-common-messages-error span {
+    color: red;
+    font-weight: bold;
+}
+
+div.page-common-messages-warning {
+    margin: 10px;
+    background-color: #fff7d0;
+    padding: 10px;
+    border-left: 10px solid #e7c000;
+    line-height: 25px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.page-common-messages-warning span {
+    Color: #aa0;
+    font-weight: bold;
+}
+
+div.page-common-messages-success {
+    margin: 10px;
+    background-color: #0f04;
+    border-left: 10px solid #0a0;
+    padding: 10px;
+    line-height: 25px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+div.page-common-messages-success span {
+    color: green;
+    font-weight: bold;
+}
+
+div.page-common-messages-notice {
+    margin: 10px;
+    background-color: #00f3;
+    padding: 10px;
+    line-height: 25px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 10px solid #00f8;
+    border-right: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+div.page-common-messages-notice span {
+    Color: #00f;
+    font-weight: bold;
+}
+/********************/
+
+
+
+
+
+
+
+/* A codeblock *******************/
+div.codeblock {
+    position: relative;
+    background-color: #eee;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+div.codeblock pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: 10px;
+    width: 100%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+}
+
+div.codeblock span.copy-link {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    background-color: white;
+    border: 1px dashed gray;
+    padding: 2px 15px;
+    cursor:pointer;
+    font-size: 10pt;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 15px;
+}
+/*********************************/
+
