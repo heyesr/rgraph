@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.drawing.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>An example of the drawing API line object used as a progress bar</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="100" style="border: 1px solid #ddd">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        // The min, max and value
+        min   = 0;
+        max   = 100;
+        value = 74;
+        
+        maxWidth = document.getElementById('cvs').width - 35 - 35;
+        barWidth = ((value - min) / (max - min)) * maxWidth;
+
+        // This drawing API Line object is the background
+        new RGraph.Drawing.Line({
+                 id: 'cvs',
+                coords: [[35,50],[665,50]],
+            options: {
+                linewidth: 50,
+                colorsStroke: 'pink'
+            }
+        }).draw();
+        
+        // Calculate the width
+
+        // This drawing API Line object is the indicator bar
+        new RGraph.Drawing.Line({
+                 id: 'cvs',
+                coords: [[35,50],[barWidth + 35,50]],
+            options: {
+                linewidth: 50,
+                colorsStroke: '#a00',
+                tooltips: [`<span style="font-size: 20pt">This is the level of the water-tower: ${value}%</span>`],
+                tooltipsPositionStatic: false,
+                tooltipsEffect: 'fade'
+            }
+        }).draw().on('tooltip', function (obj)
+        {
+            // Get the tooltip <div> from the RGraph registry
+            var tt = RGraph.Registry.get('tooltip');
+            
+            // Get the XY coords of the canvas
+            var canvasXY = RGraph.getCanvasXY(obj.canvas);
+
+            // Get the X coord of the horizontal center-point
+            var halfway  = ((obj.coords[1][0] - obj.coords[0][0]) / 2) + obj.coords[0][0];
+            
+            // Set the X and Y coords of the tooltip <div>
+            tt.style.left = halfway - (tt.offsetWidth / 2) + 'px';
+            tt.style.top  = canvasXY[1] + obj.coords[0][1]  - (obj.properties.linewidth / 2) - tt.offsetHeight  - 10 + 'px';
+            
+        });
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
