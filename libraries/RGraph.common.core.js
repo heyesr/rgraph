@@ -2244,8 +2244,8 @@
             RGraph.drawTitle(args.object);
         }
         
-        // Fire the afterbackground event
-        RGraph.fireCustomEvent(args.object, 'afterbackground');
+        // Fire the background event
+        RGraph.fireCustomEvent(args.object, 'background');
     };
 
 
