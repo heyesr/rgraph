@@ -4,78 +4,139 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.table.js" ></script>
-    <script src="../libraries/RGraph.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Bar chart importing data from an HTML table</h1>
-    
-    <div id="rgraph-demo-html">
-        <div>
-            <canvas id="cvs" width="950" height="300">[No canvas support]</canvas>
-        </div>
+    <h1>A Bar chart importing data from a table</h1>
 
-        <table id="myTable" border="1">
+    <div id="rgraph-demo-html">    
+        <style>
+            table#myTable {
+                border: 1px solid gray;
+                padding: 3px;
+            }
+
+            table#myTable td {
+                padding: 4px;
+                text-align: center;
+            }
+            
+            table#myTable td:nth-child(1) {
+                font-weight: bold;
+            }
+            
+            table#myTable tr:nth-child(even) td:nth-child(1n + 2) {
+                background-color: #ddd;
+            }
+            
+            table#myTable tr:nth-child(2n + 3) td:nth-child(1n + 2) {
+                background-color: #eee;
+            }
+        </style>
+    
+        <table cellspacing="0" id="myTable">
             <tr>
                 <td></td>
-                <td>Monday</td>
-                <td>Tuesday</td>
-                <td>Wednesday</td>
-                <td>Thursday</td>
-                <td>Friday</td>
-                <td>Saturday</td>
-                <td>Sunday</td>
+                <td>Richard</td>
+                <td>Bobby</td>
+                <td>Mabel</td>
+                <td>Jilly</td>
+                <td>Kevin</td>
+                <td>Olga</td>
+                <td>Holly</td>
             </tr>
             <tr>
-                <td>Richard</td>
-                <td>432.11</td>
-                <td>486.56</td>
-                <td>378.12</td>
-                <td>446.18</td>
-                <td>199.55</td>
-                <td>268.65</td>
-                <td>411.12</td>
+                <td>Monday</td>
+                <td>6%</td>
+                <td>7%</td>
+                <td>4%</td>
+                <td>12%</td>
+                <td>8%</td>
+                <td>4%</td>
+                <td>9%</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>1%</td>
+                <td>2%</td>
+                <td>3%</td>
+                <td>2%</td>
+                <td>8%</td>
+                <td>6%</td>
+                <td>3%</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>2%</td>
+                <td>4%</td>
+                <td>6%</td>
+                <td>2%</td>
+                <td>5%</td>
+                <td>7%</td>
+                <td>3%</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>3%</td>
+                <td>5%</td>
+                <td>8%</td>
+                <td>5%</td>
+                <td>6%</td>
+                <td>3%</td>
+                <td>6%</td>
             </tr>
         </table>
+        
+        <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
     </div>
-
+    
     <script>
-        RGraph.HTMLTable('myTable', function (table)
+        new RGraph.HTMLTable('myTable', function (table)
         {
-            var data         = table.row(1,1);
-            var labels       = table.row(0,1);
-            var labels_short = [];
+            
+            // Create the data for the chart
+            var data = [];
 
-            labels.forEach(function (v, k, a)
-            {
-                labels_short.push(v.substr(0,3));
-            });
+            // Get the data from the table and convert it to numbers
+            var numcols = table.numcols;
+            for (let i=0; i<(numcols - 1); ++i) {
+                data[i] = table.col(i + 1, 1);
+                
+                // Convert the strings to numbers
+                data[i] = data[i].map(v => parseInt(v));
+            }
 
-            var bar = new RGraph.Bar({
+            // Get the labels fom the table
+            var labels = table.row(0, 1);
+            
+            // Get the key (ie the names) from the table
+            var key = table.col(0,1)
+
+            // Configure and show the chart
+            new RGraph.Bar({
                 id: 'cvs',
                 data: data,
-                options:{
-                    title: 'A Bar chart importing from an HTML table',
-                    titleBold: true,
-                    titleSize: 16,
-                    backgroundGrid: false,
-                    xaxisColor: '#666',
-                    yaxisScaleUnitsPre: '$',
-                    
-                    corners: 'round',
+                options: {
+                    xaxisLabels: labels,
+                    marginInner: 10,
+                    xaxis: false,
+                    yaxis: false,
+                    backgroundGridVlines: false,
+                    backgroundGridBorder: false,
+                    xaxisLabels: labels,
+                    xaxisLabelsOffsety: 2,
+                    textSize: 16,
+                    colors: ['#010100','#fdb750','#fc2e20','#fd7f20'],
                     shadow: true,
-                    shadowBlur: 7,
-                    shadowOffsetx: 5,
-                    shadowOffsety: 5,
-                    colors: ['Gradient(#f99:red)'],
-                    tooltips: '<i>%{property:xaxisLabels[%{dataset}]}\'s sales income:</i><br /> <span style="font-size:28pt">$%{value}</span>',
-                    responsive: [
-                        {maxWidth: null, width: 950, height: 300, options:{textSize: 16,marginLeft: 75,marginInner: 35,xaxisLabels: labels}},
-                        {maxWidth: 950, width: 600, height: 200, options:{textSize: 12,marginLeft: 50,marginInner: 15,xaxisLabels: labels_short}}
-                    ]
+                    shadowOffsetx: 2,
+                    shadowOffsety: 2,
+                    shadowBlur: 2,
+                    key: key,
+                    keyPosition: 'margin',
+                    marginTop: 50
                 }
             }).wave();
         });
