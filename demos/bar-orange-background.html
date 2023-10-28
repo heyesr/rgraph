@@ -1,0 +1,41 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An orange Bar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="background-color: orange; display: inline-block; padding: 50px">
+            <canvas id="cvs" width="300" height="250" style="border: 3px solid black; background-color: white">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: '4,9,5,3',
+            options: {
+                colors: ['#85B6FE','#2DD998','#FFCD1F','#FFC7C1'],
+                colorsSequential: true,
+                colorsStroke: 'black',
+                linewidth: 5,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                marginLeft: 10,
+                marginInner: 8
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
