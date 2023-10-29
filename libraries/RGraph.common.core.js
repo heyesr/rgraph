@@ -2236,6 +2236,44 @@
             }
     
             args.object.context.stroke();
+            
+            
+            //
+            // Draw the backgroundBorder if requested
+            //
+            if (properties.backgroundBorder) {
+                
+                var color     = RGraph.isString(properties.backgroundBorderColor) ? properties.backgroundBorderColor : '#aaa';
+                var linewidth = RGraph.isNumber(properties.backgroundBorderLinewidth) ? properties.backgroundBorderLinewidth : 1;
+                
+                // Dashed background border
+                if (properties.backgroundBorderDashed && typeof args.object.context.setLineDash == 'function') {
+                    args.object.context.setLineDash([3,5]);
+                }
+                
+                // Dotted background grid
+                if (properties.backgroundBorderDotted && typeof args.object.context.setLineDash == 'function') {
+                    args.object.context.setLineDash([1,3]);
+                }
+                
+                // Custom linedash
+                if (RGraph.isArray(properties.backgroundBorderDashArray)) {
+                    args.object.context.setLineDash(properties.backgroundBorderDashArray);
+                }
+
+                args.object.path(
+                    'b lw % r % % % % s %',
+                    linewidth,
+                    args.object.properties.marginLeft,
+                    args.object.properties.marginTop,
+                    args.object.canvas.width  - args.object.properties.marginLeft - args.object.properties.marginRight,
+                    args.object.canvas.height - args.object.properties.marginTop  - args.object.properties.marginBottom,
+                    color
+                );
+                
+                // Reset the linedash
+                args.object.context.setLineDash([1,0]);
+            }
 
 
 

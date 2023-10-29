@@ -81,6 +81,12 @@
             backgroundGridDashed:      false,
             backgroundGridDotted:      false,
             backgroundColor:           null,
+            backgroundBorder:          false,
+            backgroundBorderLinewidth: 1,
+            backgroundBorderColor:     '#aaa',
+            backgroundBorderDashed:    false,
+            backgroundBorderDotted:    false,
+            backgroundBorderDashArray: null,
 
             linewidth:              1,
 

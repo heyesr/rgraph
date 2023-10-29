@@ -66,6 +66,13 @@
             backgroundImageH:                   null,
             backgroundImageAlign:               null,
             backgroundHbars:                    null,
+            backgroundBorder:                   false,
+            backgroundBorderLinewidth:          1,
+            backgroundBorderColor:              '#aaa',
+            backgroundBorderDashed:             false,
+            backgroundBorderDotted:             false,
+            backgroundBorderDashArray:          null,
+
 
             linewidth:                          1,
 

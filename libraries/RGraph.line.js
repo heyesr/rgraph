@@ -81,6 +81,12 @@
             backgroundImageH:           null,
             backgroundImageAlign:       null,
             backgroundColor:            null,
+            backgroundBorder:           false,
+            backgroundBorderLinewidth:  1,
+            backgroundBorderColor:      '#aaa',
+            backgroundBorderDashed:     false,
+            backgroundBorderDotted:     false,
+            backgroundBorderDashArray:  null,
 
             xaxis:                   true,
             xaxisLinewidth:          1,

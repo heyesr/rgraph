@@ -58,6 +58,13 @@
             backgroundGridVlinesCount: null,
             backgroundVbars:           [],
             backgroundHbars:           [],
+            backgroundBorder:          false,
+            backgroundBorderLinewidth: 1,
+            backgroundBorderColor:     '#aaa',
+            backgroundBorderDashed:    false,
+            backgroundBorderDotted:    false,
+            backgroundBorderDashArray: null,
+
 
             textSize:              12,
             textFont:              'Arial, Verdana, sans-serif',
