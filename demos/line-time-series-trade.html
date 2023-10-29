@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Time series plot of trade</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="padding: 25px; padding-bottom: 0;  padding-left: 0; background-color: #ddd; display: inline-block">
+            <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                320,318,325,324,329,330,
+                333,334,331,336,339,342,
+                320,316,318,326,333,339,
+                345,348,346,349,350,351,
+                355,342,335,339,345,346,
+                351,356,359,350,343,350,
+                356,364,368,370,371,372,
+                342,340,345,354,356,361,
+                366,372,376,377,380,384,
+                390,394,396,397,399,399
+            ],
+            options: {
+                backgroundColor: 'white',
+                backgroundGrid: false,
+                backgroundBorder: true,
+
+                marginInner: 15,
+                marginTop: 35,
+                marginLeft: 75,
+                marginBottom: 60,
+
+                colors: ['#0054A6'],
+                
+                tickmarksStyle: 'filledcircle',
+                
+                title: 'TimeSeries Plot of Trade',
+                
+                xaxis: false,
+                xaxisLabels: [1,6,12,18,24,30,36,42,48,54,60],
+                xaxisTitle: 'Month',
+                xaxisTitleBold: true,
+                xaxisTitleSize: 16,
+                
+                yaxis: false,
+                yaxisTitle: 'Trade',
+                yaxisTitleBold: true,
+                yaxisTitleSize: 16,
+                yaxisScaleMax: 400,
+                yaxisScaleMin: 300,
+                
+                linewidth: 1,
+                
+                shadow: false
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
