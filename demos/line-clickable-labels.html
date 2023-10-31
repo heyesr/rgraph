@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Using the Bar chart to make X-axis labels clickable</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [4,8,6,5,3,1,2,4,3,6,5,9],
+            options: {
+                colors: ['black'],
+                filled:true,
+                filledColors: ['#0002'],
+                xaxisLabels: RGraph.MONTHS_SHORT,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                marginInner: 30,
+                spline: true,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 5,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                yaxis: false,
+                textSize: 16
+            }
+        }).trace({frames: 6});
+
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [1,1,1,1,1,1,1,1,1,1,1,1],
+            options: {
+                marginBottom: 5,
+                marginTop: 315,
+                marginInner: 2,
+                colors: ['#0001'],
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                highlightStyle: 'none',
+                tooltips: function (index)
+                {
+                    return `${line.properties.xaxisLabels[index]}: ${line.data[0][index]}%`;
+                },
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
