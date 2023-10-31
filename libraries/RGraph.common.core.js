@@ -2262,7 +2262,7 @@
                 }
 
                 args.object.path(
-                    'b lw % r % % % % s %',
+                    'b lc square lw % r % % % % s %',
                     linewidth,
                     args.object.properties.marginLeft,
                     args.object.properties.marginTop,
