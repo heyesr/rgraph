@@ -137,6 +137,7 @@ pre.code {
     background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.5), transparent);
     padding: 15px;
     line-height: 20px !important;
+    border: 1px solid #bbb;
     
     /* Overflow added back in as it was causing small-screen errors */
     overflow: auto;
