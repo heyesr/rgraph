@@ -14,12 +14,16 @@
     <h1>Using the Bar chart to make X-axis labels clickable</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+        <canvas id="cvs1" width="750" height="350">[No canvas support]</canvas><br />
+        <canvas id="cvs2" width="750" height="350">[No canvas support]</canvas>
     </div>
     
     <script>
+        //
+        // First chart
+        //
         line = new RGraph.Line({
-            id: 'cvs',
+            id: 'cvs1',
             data: [4,8,6,5,3,1,2,4,3,6,5,9],
             options: {
                 colors: ['black'],
@@ -38,10 +42,10 @@
                 yaxis: false,
                 textSize: 16
             }
-        }).trace({frames: 6});
+        }).trace({frames: 60});
 
         bar = new RGraph.Bar({
-            id: 'cvs',
+            id: 'cvs1',
             data: [1,1,1,1,1,1,1,1,1,1,1,1],
             options: {
                 marginBottom: 5,
@@ -59,7 +63,60 @@
                 },
                 tooltipsCss: {
                     fontSize: '20pt'
-                }
+                },
+                highlightFill: '#0000'
+            }
+        }).draw();
+
+
+
+
+
+
+
+
+
+        //
+        // Second chart
+        //
+        bar_b = new RGraph.Bar({
+            id: 'cvs2',
+            data: [4,8,6,5,3,1,2,4,3,6,5,9],
+            options: {
+                colors: ['#ccc'],
+                xaxisLabels: RGraph.MONTHS_SHORT,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                marginInner: 5,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                yaxis: false,
+                textSize: 16
+            }
+        }).wave({frames: 60});
+
+        bar_c = new RGraph.Bar({
+            id: 'cvs2',
+            data: [1,1,1,1,1,1,1,1,1,1,1,1],
+            options: {
+                marginBottom: 5,
+                marginTop: 315,
+                marginInner: 2,
+                colors: ['#0001'],
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                highlightStyle: 'none',
+                tooltips: function (index)
+                {
+                    return `${bar_b.properties.xaxisLabels[index]}: ${bar_b.data[index]}%`;
+                },
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                highlightFill: '#0000'
             }
         }).draw();
     </script>
