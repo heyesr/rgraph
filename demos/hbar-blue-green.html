@@ -1,0 +1,51 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>     
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A blue and green Horizontal Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="450">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[12451,10854],[25178,23525],[30019,28576],[31476,29956],[29007,27136],[22023,20573]],
+            options: {
+                xaxis: false,
+                yaxis: false,
+                yaxisLabels: ['18-21','22-29','30-39','40-49','50-59','60+'],
+                colors: ['#55A7D6', '#70B558'],
+                labelsAbove: true,
+                labelsAboveSize: 10,
+                labelsAboveUnitsPre: '$',
+                textSize: 16,
+                marginTop: 35,
+                marginBottom: 75,
+                marginInner: 7,
+                backgroundGrid: false,
+                title: 'Average salary by age group',
+                titleBold: true,
+                titleSize: 18,
+                titleHalign: 'left',
+                titleX: 75,
+                titleY: 20,
+                key: ['2022','2021'],
+                keyPosition: 'margin',
+                keyPositionY: 415
+            }
+        }).wave();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
