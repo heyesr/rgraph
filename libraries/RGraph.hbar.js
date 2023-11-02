@@ -1728,7 +1728,7 @@
     
             RGraph.noShadow(this);
             this.context.strokeStyle = properties.colorsStroke;
-    
+
             for (var i=0; i<coords.length; ++i) {
 
                 if (properties.shadow) {
@@ -1754,9 +1754,9 @@
                 if (
                        properties.labelsAbove
                     && coords[i][6]
-                    && !RGraph.isNull(this.data[i])
+                    //&& !RGraph.isNull(this.data[i])
                    ) {
-    
+
                     var border = (coords[i][0] + coords[i][2] + 7 + this.context.measureText(properties.labelsAboveUnitsPre + this.coords[i][5] + properties.labelsAboveUnitsPost).width) > this.canvas.width ? true : false,
                         text   = RGraph.numberFormat({
                             object:    this,
