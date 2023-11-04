@@ -237,6 +237,14 @@
         str.match(/style="([^"]*)"/);
         var style = RegExp.$1;
         str = str.replace(/style="[^"]*"/,'');
+        
+        // Special case for stroke-dasharray: replace spaces with
+        // double pipe
+        str = str.replace(/stroke-dasharray="([0-9 ]+)"/,function (str, match)
+        {
+            str = match.replace(/ /, '||');
+            return 'stroke-dasharray="' + str + '"';
+        });
 
         // Split the string on spaces
         var parts = str.split(/ +/);
@@ -260,6 +268,11 @@
                 // Convert to a number
                 if (value.match(/^[-0-9.]+$/)) {
                     value = Number(value);
+                }
+                
+                // Take out double-pipe from the value
+                if (name === 'stroke-dasharray') {
+                    value = value.replace('||', ' ');
                 }
 
                 attr[name] = value;
@@ -1623,7 +1636,7 @@
     //
     // Draws the background
     //
-    //@param The chart object
+    // @param The chart object
     //
     RGraph.SVG.drawBackground = function (obj)
     {
@@ -1888,6 +1901,45 @@
 
         }
 
+
+
+//
+// Draw the backgroundBorder if requested
+//
+if (properties.backgroundBorder) {
+    
+    var color     = RGraph.SVG.isString(properties.backgroundBorderColor) ? properties.backgroundBorderColor : '#aaa';
+    var linewidth = RGraph.SVG.isNumber(properties.backgroundBorderLinewidth) ? properties.backgroundBorderLinewidth : 1;
+    var dasharray = '';
+    
+    // Dashed background border
+    if (properties.backgroundBorderDashed) {
+        dasharray = '3 5';
+    }
+    
+    // Dotted background grid
+    if (properties.backgroundBorderDotted) {
+        dasharray = '1 3';
+    }
+    
+    // Custom linedash
+    if (RGraph.SVG.isArray(properties.backgroundBorderDashArray)) {
+        dasharray = properties.backgroundBorderDashArray;
+    }
+
+    obj.create(
+        '<rect x="{1}" y="{2}" width="{3}" height="{4}" fill="transparent" stroke="{5}" stroke-width="{6}" {7} {8} style="pointer-events: none"'.format(
+            obj.properties.marginLeft,
+            obj.properties.marginTop,
+            obj.width - obj.properties.marginLeft - obj.properties.marginRight,
+            obj.height - obj.properties.marginTop - obj.properties.marginBottom,
+            color,
+            linewidth,
+            obj.properties.backgroundBorderDashed ? 'stroke-dasharray="3 5"' : '',
+            obj.properties.backgroundBorderDotted && !obj.properties.backgroundBorderDashed ? 'stroke-dasharray="1 3"' : ''
+        )
+    );
+}
 
 
 
