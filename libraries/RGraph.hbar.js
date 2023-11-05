@@ -1,5 +1,4 @@
     // o--------------------------------------------------------------------------------o
-    // o--------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:               |
     // |                                                                                |
     // |                         https://www.rgraph.net                                 |
@@ -373,6 +372,8 @@
             lineTickmarksSize:              5,
             lineTickmarksDrawNull:          false,
             lineTickmarksDrawNonNull:       false,
+            lineFilled:                     false,
+            lineFilledColor:                null,
 
 
             animationTraceClip:     1,
@@ -2138,6 +2139,7 @@
                 this.original_colors.highlightFill        = RGraph.arrayClone(properties.highlightFill);
                 this.original_colors.highlightStroke      = RGraph.arrayClone(properties.highlightStroke);
                 this.original_colors.annotatableColor     = RGraph.arrayClone(properties.annotatableColor);                
+                this.original_colors.lineFilledColor      = RGraph.arrayClone(properties.lineFilledColor);                
             }
 
             var colors = properties.colors;
@@ -2157,6 +2159,7 @@
             properties.highlightFill        = this.parseSingleColorForGradient(properties.highlightFill);
             properties.highlightStroke      = this.parseSingleColorForGradient(properties.highlightStroke);
             properties.annotatableColor     = this.parseSingleColorForGradient(properties.annotatableColor);
+            properties.lineFilledColor      = this.parseSingleColorForGradient(properties.lineFilledColor);
         };
 
 
@@ -3485,6 +3488,253 @@
                 this.canvas.width,this.canvas.height * this.properties.animationTraceClip
             ]);
 
+
+            
+            var lineCoords = [];
+
+            if (this.properties.lineSpline) {
+    
+                if (this.properties.lineShadow) {
+                    RGraph.setShadow({
+                        object: this,
+                        prefix: 'lineShadow'
+                    });
+                }
+    
+                // Set the line options:
+                //    lineJoin
+                //    lineCap
+                //    lineWidth
+                this.path(
+                    'lj % lc % lw %',
+                    this.properties.lineLinejoin,
+                    this.properties.lineLinecap,
+                    this.properties.lineLinewidth
+                );
+                
+                // Set this so that we can refer to the object
+                var obj = this;
+                var c = RGraph.arrayClone(this.coords);
+    
+                // Call the Spline() function and have it return the
+                // coordinates instead of drawing the line. This way
+                // we can draw the line and fill (if necessary) it
+                // instead of just the line being drawn.
+                var coordinates = Spline(c, {return: true});
+
+
+
+
+
+
+
+
+
+                //
+                // If the chart is to be filled - do that
+                //
+                if (this.properties.lineFilled) {
+                
+                    //
+                    // Start the path for the fill and also set the shadow color
+                    // to transparent so that no shadow is cast by the fill. It's
+                    // turned back to what has been requested further down after
+                    // the fill has been drawn.
+                    //
+                    this.path(
+                        'b lw 1 sc transparent m % % l % %',
+                        properties.yaxisPosition === 'right'
+                            ? this.canvas.width - properties.marginRight
+                            : properties.marginLeft,
+                        coordinates[0][coordinates[0].length - 1][1],
+                        properties.yaxisPosition === 'right'
+                            ? this.canvas.width - properties.marginRight
+                            : properties.marginLeft,
+                        coordinates[0][0][1]
+                    );
+                    
+                    RGraph.pathLine({
+                        context: this.context,
+                        coords:  coordinates[0],
+                        moveto:  false
+                    });
+                    
+                    this.path(
+                        'c f %',
+                        properties.lineFilledColor ? properties.lineFilledColor : properties.lineColor
+                    );
+                    
+                    // Set the shadow color back to whatever has been requested
+                    // because it was turned off just above so there's no shadow
+                    // cast by the fill that has just been drawn.
+                    this.context.shadowColor = this.properties.lineShadowColor;
+                }
+
+
+
+
+
+
+                //
+                // Now call the RGraph.drawLine() common function
+                // to draw the spline. This function draws the
+                // spline onto the canvas.
+                //
+                RGraph.drawLine({
+                    context:   this.context,
+                    coords:    coordinates[0],
+                    stroke:    this.properties.lineColor,
+                    linewidth: this.properties.lineLinewidth
+                });
+                
+                //
+                // Store the coordinates that were generated
+                // for the spline
+                //
+                this.coordsSpline = [];
+                this.coordsSpline[0] = RGraph.arrayClone(coordinates);
+
+            } else {
+
+
+
+
+
+                // Move to the first point
+                if (this.properties.yaxisPosition === 'right') {
+                    lineCoords.push([
+                        'm',
+                        this.coords[0][0],
+                        this.coords[0][1] + (this.coords[0][3] / 2)
+                    ]);
+                } else if (this.properties.yaxisPosition === 'center') {
+                    if (this.data[0] > 0) {
+                        lineCoords.push([
+                            'm',
+                            this.coords[0][0] + this.coords[0][2],
+                            this.coords[0][1] + (this.coords[0][3] / 2)
+                        ]);
+
+                    } else {
+
+                        lineCoords.push([
+                            'm',
+                            this.coords[0][0],
+                            this.coords[0][1] + (this.coords[0][3] / 2)
+                        ]);
+                    }
+                } else {
+                    lineCoords.push([
+                        'm',
+                        this.coords[0][0] + this.coords[0][2],
+                        this.coords[0][1] + (this.coords[0][3] / 2)
+                    ]);
+                }
+
+
+
+
+
+                // Draw a line to subsequent points unless
+                // that point is null, in which case move
+                // to it instead
+                for (let i=1; i<this.coords.length; ++i) {
+                    
+                    if (RGraph.isNull(this.data[i]) || RGraph.isNull(this.data[i - 1])) {
+                        var action = 'm';
+                    } else {
+                        var action = 'l'
+                    }
+                    
+                    if (this.properties.yaxisPosition === 'right') {
+                    
+                        lineCoords.push([
+                            action,
+                            this.coords[i][0],
+                            this.coords[i][1] + (this.coords[i][3] / 2)
+                        ]);
+
+                    } else if (this.properties.yaxisPosition === 'center') {
+                        if (this.data[i] > 0) {
+                        
+                            lineCoords.push([
+                                action,
+                                this.coords[i][0] + this.coords[i][2],
+                                this.coords[i][1] + (this.coords[i][3] / 2)
+                            ]);
+
+                        } else {
+                        
+                            lineCoords.push([
+                                action,
+                                this.coords[i][0],
+                                this.coords[i][1] + (this.coords[i][3] / 2)
+                            ]);
+                        }
+                    } else {
+                        lineCoords.push([
+                            action,
+                            this.coords[i][0] + this.coords[i][2],
+                            this.coords[i][1] + (this.coords[i][3] / 2)
+                        ]);
+                    }
+                }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            //
+            //  Draw the fill if it's been requested
+            //
+            if (this.properties.lineFilled) {
+
+                for (var i=0; i<lineCoords.length; ++i) {
+                    if (i === 0) {
+                        this.path(
+                            'b % % %',
+                            lineCoords[i][0],
+                            lineCoords[i][1],
+                            lineCoords[i][2]
+                        );
+                    } else {
+                        this.path(
+                            '% % %',
+                            lineCoords[i][0],
+                            lineCoords[i][1],
+                            lineCoords[i][2]
+                        );
+                    }
+                }
+
+                // Draw a line to the axis (be it on the left or
+                // on the right)
+                this.path(
+                    'l % % l % % c sx 0 sy 0 sb 0 sc transparent f %',
+                    properties.yaxisPosition === 'right'
+                        ? this.canvas.width - properties.marginRight
+                        : properties.marginLeft,
+                    lineCoords[lineCoords.length - 1][2],
+                    properties.yaxisPosition === 'right'
+                        ? this.canvas.width - properties.marginRight
+                        : properties.marginLeft,
+                    lineCoords[0][2],
+                    !RGraph.isNull(this.properties.lineFilledColor) ? this.properties.lineFilledColor : this.properties.lineColor
+                );
+            }
+
+
+
+
+
+
+
+
+
             if (this.properties.lineShadow) {
                 RGraph.setShadow({
                     object: this,
@@ -3503,98 +3753,41 @@
                 this.properties.lineLinewidth
             );
 
-            if (this.properties.lineSpline) {
-                
-                // Set this so that we can refer to the object
-                var obj = this;
-                var c = RGraph.arrayClone(this.coords);
 
-                Spline(c);
-
-            } else {
-
-
-
-
-
-                // Move to the first point
-                if (this.properties.yaxisPosition === 'right') {
-                    this.path(
-                        'b m % %',
-                        this.coords[0][0],
-                        this.coords[0][1] + (this.coords[0][3] / 2)
-                    );
-                } else if (this.properties.yaxisPosition === 'center') {
-                    if (this.data[0] > 0) {
+                //
+                // === PLOT THE COORDINATES =====================
+                //
+                //
+                // Plot the coords that have just been calculated
+                //
+                for (var i=0; i<lineCoords.length; ++i) {
+                    if (i === 0) {
                         this.path(
-                            'b m % %',
-                            this.coords[0][0] + this.coords[0][2],
-                            this.coords[0][1] + (this.coords[0][3] / 2)
+                            'b % % %',
+                            lineCoords[i][0],
+                            lineCoords[i][1],
+                            lineCoords[i][2]
                         );
-                    } else {
-                        this.path(
-                            'b m % %',
-                            this.coords[0][0],
-                            this.coords[0][1] + (this.coords[0][3] / 2)
-                        );
-                    }
-                } else {
-                    this.path(
-                        'b m % %',
-                        this.coords[0][0] + this.coords[0][2],
-                        this.coords[0][1] + (this.coords[0][3] / 2)
-                    );
-                }
-
-
-
-
-                // Draw a line to subsequent points unless
-                // that point is null, in which case move
-                // to it instead
-                for (let i=1; i<this.coords.length; ++i) {
-                    
-                    if (RGraph.isNull(this.data[i]) || RGraph.isNull(this.data[i - 1])) {
-                        var action = 'm';
-                    } else {
-                        var action = 'l'
-                    }
-                    
-                    if (this.properties.yaxisPosition === 'right') {
-                        this.path(
-                            '% % %',
-                            action,
-                            this.coords[i][0],
-                            this.coords[i][1] + (this.coords[i][3] / 2)
-                        );
-                    } else if (this.properties.yaxisPosition === 'center') {
-                        if (this.data[i] > 0) {
-                            this.path(
-                                '% % %',
-                                action,
-                                this.coords[i][0] + this.coords[i][2],
-                                this.coords[i][1] + (this.coords[i][3] / 2)
-                            );
-                        } else {
-                            this.path(
-                                '% % %',
-                                action,
-                                this.coords[i][0],
-                                this.coords[i][1] + (this.coords[i][3] / 2)
-                            );
-                        }
                     } else {
                         this.path(
                             '% % %',
-                            action,
-                            this.coords[i][0] + this.coords[i][2],
-                            this.coords[i][1] + (this.coords[i][3] / 2)
+                            lineCoords[i][0],
+                            lineCoords[i][1],
+                            lineCoords[i][2]
                         );
                     }
                 }
+
                 this.path('s ' + this.properties.lineColor);
             }
 
+
+
+
+
+
+            //
+            // === TICKMARKS ===================
             //
             // TODO Add more styles of tickmarks
             //
@@ -3633,6 +3826,9 @@
                         var x = v[0] + v[2],
                             y = v[1] + (v[3]/2);
                     }
+    
+    
+    
     
                     //
                     // Draw the various styles of tickmark
@@ -3706,11 +3902,12 @@
             // 
             // @param array  coords  The coordinates
             //
-            function Spline (coords)
+            function Spline (coords, opt = {})
             {
                 var context = obj.context;
 
-                obj.coordsSpline[0] = [];
+                //obj.coordsSpline[0] = [];
+                var coordsSpline = [[]];
 
                 var yCoords     = [],
                     interval    = (obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
@@ -3755,18 +3952,17 @@
                         yCoords.push(
                             ((j-1) * interval) + (t * (interval / 10)) + obj.properties.marginTop + halfsection
                         );
-    
+
                         obj.context.lineTo(
                             xCoord,
                             yCoords[yCoords.length - 1]
                         );
-    
-                        
-                        if (typeof index == 'number') {
-                            obj.coordsSpline[0].push(
-                                [xCoords[xCoords.length - 1], yCoords[yCoords.length - 1]]
-                            );
-                        }
+
+
+                        coordsSpline[0].push([
+                            xCoord,
+                            yCoords[yCoords.length - 1]
+                        ]);
                     }
                 }
 
@@ -3782,15 +3978,18 @@
                     last[1]
                 );
                 if (typeof index == 'number') {
-                    obj.coordsSpline[0].push(
-                        [
-                            last[0],
-                            last[1]
-                        ]
-                    );
+                    coordsSpline[0].push([
+                        last[0],
+                        last[1]
+                    ]);
                 }
                 
-                obj.context.stroke();
+                if (opt.return === true) {
+                    return coordsSpline;
+                } else {
+                    obj.coordsSpline = RGraph.arrayClone(coordsSpline);
+                    obj.context.stroke();
+                }
     
     
         
