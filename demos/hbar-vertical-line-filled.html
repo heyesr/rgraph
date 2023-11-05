@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A filled vertical spline using the canvas Horizontal Bar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+        <button style="cursor: pointer; font-size: 24pt" onclick="hbar.set('lineSpline', !hbar.get('lineSpline'));RGraph.clear(hbar.canvas);hbar.draw();">Toggle spline</button>
+    </div>
+        
+    <script>
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [12,56,45,32,84,25,12],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxisScaleUnitsPost: '%',
+                xaxis: false,
+                yaxis: false,
+                colors: ['#0000'],
+                textSize: 14,
+                title: 'A vertical spline chart',
+                titleBold: true,
+                titleX: 100,
+                titleHalign: 'left',
+                marginTop: 40,
+                marginInner: 100,
+
+                line: true,
+                lineColor: 'black',
+                lineLinewidth: 2,
+                lineFilled: true,
+                lineFilledColor: 'Gradient(#eee:#aaa)',
+                lineShadow: true,
+                lineShadowOffsetx: 2,
+                lineShadowOffsety: 2,
+                lineShadowColor: '#999',
+                lineSpline: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A multi-dataset filled vertical spline using the canvas Horizontal Bar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    </div>
+        
+    <script>
+        //
+        // This is the data for the chart
+        //
+        mainData = [
+            [4,8,6,4,5,6,4],
+            [6,4,6,7,8,9,6]
+        ];
+
+        //
+        // The configuration values shared by both charts
+        //
+        conf = {
+            yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+            xaxisScaleMax:15,
+            backgroundGridColor: '#aaa',
+            xaxisScaleUnitsPost: '%',
+            xaxis: false,
+            yaxis: false,
+            colors: ['#0000'],
+            textSize: 14,
+            title: 'A vertical spline chart',
+            titleBold: true,
+            titleX: 100,
+            titleHalign: 'left',
+            marginTop: 40,
+            marginInner: 100,
+
+            line: true,
+            lineLinewidth: 0.01,
+            lineFilled: true,
+            lineFilledColor: '#9f9',
+            lineShadow: true,
+            lineShadowOffsetx: 2,
+            lineShadowOffsety: 2,
+            lineShadowColor: '#999',
+            lineSpline: true
+        };
+
+        // Walk through the datasets in reverse and
+        // modify the config as necessary
+        for (let i=(mainData.length - 1); i>=0; i--) {
+
+            var data = mainData[i];
+            
+            // Add the two datasets together for the first dataset
+            if (i === 1) {
+                for (let j=0; j<mainData[1].length; ++j) {
+                    data[j] = mainData[0][j] + mainData[1][j];
+                }
+            } else {
+                
+                var hbar = RGraph.OR.getFirstObjectByType('hbar');
+
+                conf.lineFilledColor = '#f66';
+                conf.backgroundGrid  = false;
+                conf.xaxisScale      = false;
+                conf.yaxisLabels     = [];
+                conf.marginLeft      = hbar.properties.marginLeft;
+                conf.marginLeftAuto  = false;
+            }
+
+            new RGraph.HBar({
+                id: 'cvs',
+                data: data,
+                options: conf
+            }).draw();
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
