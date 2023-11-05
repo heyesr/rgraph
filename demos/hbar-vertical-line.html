@@ -39,16 +39,17 @@
             }
         }).trace({frames: 90}, function (obj)
         {
-            for (let i=0; i<30; ++i) {
+            for (let i=0; i<=30; ++i) {
                 setTimeout(function ()
                 {
                     obj.set({
                         colors: ['rgba(255,0,0,' + ((30-i) * 0.0333) + ')']
                     });
     
-                    if (i >= 30) {                
+                    if (i >= 30) {
+
                         obj.set({
-                            colors: 'rgba(255,0,0,0)'
+                            colors: ['transparent']
                         });
                     }
                     
