@@ -1449,7 +1449,9 @@
                     colors:              RGraph.SVG.arrayClone(properties.colors),
                     backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
                     highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor),
+                    lineColor:           RGraph.SVG.arrayClone(properties.lineColor),
+                    lineFilledColor:     RGraph.SVG.arrayClone(properties.lineFilledColor)
                 }
             }
 
@@ -1472,6 +1474,8 @@
             properties.backgroundGridColor = RGraph.SVG.parseColorLinear({object: this, color: properties.backgroundGridColor, direction: 'horizontal',start: properties.marginLeft,end: this.width - properties.marginRight});
             properties.highlightFill       = RGraph.SVG.parseColorLinear({object: this, color: properties.highlightFill, direction: 'horizontal',start: properties.marginLeft,end: this.width - properties.marginRight});
             properties.backgroundColor     = RGraph.SVG.parseColorLinear({object: this, color: properties.backgroundColor});
+            properties.lineColor           = RGraph.SVG.parseColorLinear({object: this, color: properties.lineColor});
+            properties.lineFilledColor     = RGraph.SVG.parseColorLinear({object: this, color: properties.lineFilledColor});
         };
 
 
@@ -2240,13 +2244,6 @@
         //
         this.drawLine = function ()
         {
-            // Set the clipping region so that the trace
-            //effect works
-            //RGraph.clipTo.start(this, [
-            //    0,0,
-            //    this.canvas.width,this.canvas.height * this.properties.animationTraceClip
-            //]);
-
             if (this.properties.lineShadow) {
                 RGraph.SVG.setShadow({
                     object:     this,
@@ -2262,9 +2259,58 @@
                 
                 // Set this so that we can refer to the object
                 var obj = this;
-                var c = RGraph.SVG.arrayClone(this.coords);
+                var c   = RGraph.SVG.arrayClone(this.coords);
 
-                Spline(c);
+                // Get the coordinates for the spline line
+                // coordinates
+                var coordinates = Spline(c, {return: true});
+                
+                // Draw a line back to the X axis (whichever side
+                // that may be)
+                if (this.properties.lineFilled) {
+                
+                    // Copy the coordinates array so that the coordinates of
+                    // the axis can bw added to it
+                    var fillAreaCoordinates = RGraph.SVG.arrayClone(coordinates);
+                
+                    // Add the coordinates that take the fill back
+                    // to the Y axis
+                    if (this.properties.yaxisPosition === 'right') {
+                        fillAreaCoordinates.push([this.width - this.properties.marginRight, coordinates[coordinates.length - 1][1]]);
+                        fillAreaCoordinates.push([this.width - this.properties.marginRight, coordinates[0][1]]);
+                    } else {
+                        fillAreaCoordinates.push([this.properties.marginLeft, coordinates[coordinates.length - 1][1]]);
+                        fillAreaCoordinates.push([this.properties.marginLeft, coordinates[0][1]]);
+                    }
+                
+                    RGraph.SVG.create({
+                        svg: obj.svg,
+                        parent: obj.svg.all,
+                        type: 'path',
+                        attr: {
+                            fill:              obj.properties.lineFilledColor,
+                            stroke:            'transparent',
+                            d:                 RGraph.SVG.create.pathString(fillAreaCoordinates),
+                            'clip-path':       obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                        }
+                    });
+                }
+                
+                RGraph.SVG.create({
+                    svg: obj.svg,
+                    parent: obj.svg.all,
+                    type: 'path',
+                    attr: {
+                        fill:              "transparent",
+                        stroke:            obj.properties.lineColor,
+                        'stroke-width':    obj.properties.lineLinewidth,
+                        'stroke-linejoin': 'round',
+                        'stroke-linecap':  'round',
+                        d:                 RGraph.SVG.create.pathString(coordinates),
+                        filter:            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                        'clip-path':       obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                    }
+                });
 
             } else {
             
@@ -2312,6 +2358,35 @@
                         action,x, y
                     );
                 }
+
+
+
+
+
+
+                if (properties.lineFilled) {
+                
+                    RGraph.SVG.create({
+                        svg:    this.svg,
+                        type:   'path',
+                        parent: this.svg.all,
+                        attr: {
+                            d: d + ' L ' + (properties.yaxisPosition === 'right' ? [this.width - this.properties.marginRight, y].join(' ') : [this.properties.marginLeft, y].join(' '))
+                                 + ' L ' + (properties.yaxisPosition === 'right' ? [this.width - this.properties.marginRight, this.coords[0].y + (this.coords[0].height / 2)] : [this.properties.marginLeft, (this.coords[0].y + (this.coords[0].height / 2))]).join(' ')
+                                 + ' z',
+                            stroke: 'transparent',
+                            fill:   !RGraph.SVG.isNull(this.properties.lineFilledColor) ? this.properties.lineFilledColor : this.properties.lineColor,
+                            'stroke-width': 0.001,
+                            'stroke-linecap': this.properties.lineLinecap,
+                            'stroke-linejoin': this.properties.lineLinejoin,
+                            //filter: this.properties.lineShadow ? 'url(#lineDropShadow_' + this.uid + ')' : '',
+                            'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                        }
+                    });
+                }
+
+
+
 
 
                 var path = RGraph.SVG.create({
@@ -2473,9 +2548,9 @@
             // 
             // @param array  coords  The coordinates
             //
-            function Spline (coords)
+            function Spline (coords, opt = {})
             {
-                obj.coordsSpline[0] = [];
+                var coordsSpline = [[]];
 
                 var yCoords     = [],
                     interval    = (obj.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
@@ -2527,7 +2602,7 @@
     
                         
                         if (typeof index == 'number') {
-                            obj.coordsSpline[0].push([
+                            coordsSpline[0].push([
                                 xCoords[xCoords.length - 1],
                                 yCoords[yCoords.length - 1]
                             ]);
@@ -2548,7 +2623,7 @@
                 ]);
 
                 if (typeof index === 'number') {
-                    obj.coordsSpline[0].push([
+                    coordsSpline[0].push([
                         last[0],
                         last[1]
                     ]);
@@ -2566,22 +2641,30 @@
                 //
                 // Create the path which depicts the spline
                 //
+                if (opt.return) {
 
-                RGraph.SVG.create({
-                    svg: obj.svg,
-                    parent: obj.svg.all,
-                    type: 'path',
-                    attr: {
-                        fill:              "transparent",
-                        stroke:            obj.properties.lineColor,
-                        'stroke-width':    obj.properties.lineLinewidth,
-                        'stroke-linejoin': 'round',
-                        'stroke-linecap':  'round',
-                        d:                 str,
-                        filter:            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
-                        'clip-path':       obj.isTrace ? 'url(#trace-effect-clip)' : ''
-                    }
-                });
+                    // The 'path' variable appears to contain all
+                    // of the coordinates.
+                    return path;
+
+                } else {
+
+                    RGraph.SVG.create({
+                        svg: obj.svg,
+                        parent: obj.svg.all,
+                        type: 'path',
+                        attr: {
+                            fill:              "transparent",
+                            stroke:            obj.properties.lineColor,
+                            'stroke-width':    obj.properties.lineLinewidth,
+                            'stroke-linejoin': 'round',
+                            'stroke-linecap':  'round',
+                            d:                 str,
+                            filter:            obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
+                            'clip-path':       obj.isTrace ? 'url(#trace-effect-clip)' : ''
+                        }
+                    });
+                }
 
     
         
