@@ -15,8 +15,10 @@
         
         <br />
         
+        <button style="cursor: pointer; font-size: 24pt" onclick="hbar1.set('lineFilled', !hbar1.get('lineFilled'));RGraph.SVG.clear(hbar1.svg);hbar1.draw();">Toggle filled</button>
         <button style="cursor: pointer; font-size: 24pt" onclick="hbar1.set('lineSpline', !hbar1.get('lineSpline'));RGraph.SVG.clear(hbar1.svg);hbar1.draw();">Toggle spline</button>
         <button style="cursor: pointer; font-size: 24pt" onclick="hbar1.set('yaxisPosition', hbar1.get('yaxisPosition') === 'right' ? 'left' : 'right');RGraph.SVG.clear(hbar1.svg);hbar1.draw();">Toggle Y axis position</button>
+        <button style="cursor: pointer; font-size: 24pt" onclick="hbar1.set('lineTickmarksStyle', hbar1.get('lineTickmarksStyle') === 'circle' ? 'none' : 'circle');RGraph.SVG.clear(hbar1.svg);hbar1.draw();">Toggle tickmarks</button>
     </div>
         
     <script>
@@ -52,6 +54,8 @@
                 //lineShadowOffsety:              0,
                 lineSpline:                       true,
                 //lineTickmarksDrawNonNull:       true
+                lineFilled:                       true,
+                lineFilledColor:                  '#ddd'
             }
         }).trace({frames: 90});
     </script>
