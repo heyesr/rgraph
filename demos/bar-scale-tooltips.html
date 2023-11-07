@@ -1,0 +1,81 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart with tooltips on the Y-axis labels</h1>
+
+    <div id="rgraph-demo-html" style="padding: 85px">
+        <canvas id="cvs" width="750" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        //
+        // This Bar chart is the Bar chart the you see on the page.
+        //
+        bar = new RGraph.Bar({
+            id:'cvs',
+            data: [1,8,6,3,5,4,6],
+            options: {
+                marginLeft: 75,
+                colors: ['#c00'],
+                textSize: 26,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                yaxisScaleUnitsPost: '%',
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).draw();
+
+        //
+        // Use the Bar chart scale for the HBar chart
+        // tooltips
+        //
+        tooltips = bar.scale2.labels.toReversed();
+        tooltips.push('0%');
+
+        //
+        // Draw the Horizontal Bar chart which covers the tooltips.
+        // This charts tooltips become the tooltips for the Bar
+        // chart labels.
+        //
+        hbar = new RGraph.HBar({
+            id:'cvs',
+            data: [1,1,1,1,1,1],
+            options: {
+                marginLeftAuto: false,
+                marginLeft: 0,
+                marginRight: 675,
+                marginTop: 0,
+                marginBottom: 5,
+                marginInner: 17,
+                backgroundGrid: false,
+                xaxisScale: false,
+                xaxis: false,
+                yaxis: false,
+                colors: ['#f000'],
+                tooltips: 'My scale: %{global:tooltips[%{dataset}]}',
+                tooltipsHighlight: false,
+                tooltipsEvent: 'mousemove',
+                tooltipsCss: {
+                    fontSize: '23pt',
+                    pointerEvents: 'none'
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
