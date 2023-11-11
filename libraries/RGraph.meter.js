@@ -104,7 +104,7 @@
             labelsValueBackgroundFill:   	'rgba(255,255,255,0.75)',
             labelsValueBackgroundStroke: 	'rgba(0,0,0,0)',
             labelsValueSpecific:          	null,
-            labelsValueAccessible:        	true,
+            labelsValueAccessible:        	false,
             labelsValueOffsetx:             0,
             labelsValueOffsety:             0,
             

@@ -156,6 +156,7 @@
             keyLinewidth:                  1,
             keyColors:                     null,
             keyInteractive:                false,
+            keyinteractiveKeyHighlightChartLinewidth: 20,
             keyInteractiveHighlightChartStroke: 'black',
             keyInteractiveHighlightChartFill: 'rgba(255,255,255,0.7)',
             keyInteractiveHighlightLabel:  'rgba(255,0,0,0.2)',
@@ -2040,7 +2041,7 @@
             
             for (var i=0; i<this.angles2.length; i+=1) {
                 this.context.beginPath();
-                    this.context.lineWidth = 2;
+                    this.context.lineWidth = properties.keyInteractiveHighlightChartLinewidth;
                     this.context.fillStyle = properties.keyInteractiveHighlightChartFill;
                     this.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
                     this.context.arc(segments[i][index][4], segments[i][index][5], segments[i][index][2], segments[i][index][0], segments[i][index][1], false);

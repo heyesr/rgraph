@@ -268,9 +268,10 @@
             keyLinewidth:          1,
             keyColors:             null,
             keyInteractive:        false,
-            keyInteractiveHighlightChartStroke: 'black',
-            keyInteractiveHighlightChartFill:'rgba(255,255,255,0.7)',
-            keyInteractiveHighlightLabel:'rgba(255,0,0,0.2)',
+            keyInteractiveHighlightChartLinewidth: 2,
+            keyInteractiveHighlightChartStroke:    'black',
+            keyInteractiveHighlightChartFill:      'rgba(255,255,255,0.7)',
+            keyInteractiveHighlightLabel:          'rgba(255,0,0,0.2)',
             keyLabelsColor:        null,
             keyLabelsFont:         null,
             keyLabelsSize:         null,
@@ -2243,7 +2244,8 @@
                     pre_linewidth = obj.context.lineWidth;
 
                 obj.path(
-                    'b lw 2 r % % % % f % s % lw %',
+                    'b lw % r % % % % f % s % lw %',
+                    properties.keyInteractiveHighlightChartLinewidth,
                     coords[0]- 0.5, coords[1] - 0.5, coords[2] + 1, coords[3] + 1,
                     properties.keyInteractiveHighlightChartFill,
                     properties.keyInteractiveHighlightChartStroke,

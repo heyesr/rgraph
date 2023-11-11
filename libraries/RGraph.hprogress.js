@@ -200,6 +200,7 @@
             keyColors:                          null,
             keyColorShape:                      'square',
             keyInteractive:                     false,
+            keyInteractiveHighlightChartLinewidth: 2,
             keyInteractiveHighlightChartStroke: 'black',
             keyInteractiveHighlightChartFill:   'rgba(255,255,255,0.7)',
             keyInteractiveHighlightLabel:       'rgba(255,0,0,0.2)',
@@ -220,7 +221,8 @@
 
             borderInner:                        true,
             
-            beveled:                            false,
+            corners:                             'square', // Can also be round
+            cornersRoundRadius:                   10,
 
             clearto:                            'rgba(0,0,0,0)'
         }
@@ -273,10 +275,6 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
-            
-            if (name === 'bevelled') {
-                name = 'beveled';
-            }
 
             // Set the colorsParsed flag to false if the colors
             // property is being set
@@ -393,14 +391,6 @@
             this.drawTickMarks();
             this.drawLabels();
             this.drawTitle();
-            
-            
-            //
-            // Draw the bevel effect if requested
-            //
-            if (properties.beveled) {
-                this.drawBevel();
-            }
     
     
             //
@@ -547,15 +537,40 @@
                     prefix: 'shadow'
                 });
             }
-    
-            // Draw the outline
+
+
+
+
+
+            //
+            // Draw the background
+            //
             this.context.fillStyle   = properties.backgroundColor;
             this.context.strokeStyle = properties.colorsStrokeOuter;
 
-            this.context.strokeRect(this.marginLeft, this.marginTop, this.width, this.height);
-            this.context.fillRect(this.marginLeft, this.marginTop, this.width, this.height);
+            if (properties.corners === 'round') {
+                this.context.beginPath();
+                this.path(
+                    'b rr % % % % % s % f %',
+                    this.marginLeft,
+                    this.marginTop,
+                    this.width,
+                    this.height,
+                    properties.cornersRoundRadius,
+                    properties.colorsStrokeOuter,
+                    properties.backgroundColor
+                );
+            } else {
+                this.context.fillStyle   = properties.backgroundColor;
+                this.context.strokeStyle = properties.colorsStrokeOuter;
+                
+                this.context.strokeRect(this.marginLeft, this.marginTop, this.width, this.height);
+                this.context.fillRect(this.marginLeft, this.marginTop, this.width, this.height);
+            }
     
+            //
             // Turn off any shadow
+            //
             RGraph.noShadow(this);
     
             this.context.fillStyle   = properties.colors[0];
@@ -591,22 +606,26 @@
             if (typeof this.value === 'number') {
 
                 if (properties.borderInner) {
-                    this.drawCurvedBar({
-                        x:      this.marginLeft,
-                        y:      this.marginTop + margin,
-                        width:  barWidth,
-                        height: this.height - margin - margin,
-                        stroke: properties.colorsStrokeInner
-                    });
+                    this.path(
+                        'b rr % % % % % s %',
+                        this.marginLeft,
+                        this.marginTop + margin,
+                        barWidth,
+                        this.height - margin - margin,
+                        properties.cornersRoundRadius,
+                        properties.colorsStrokeInner
+                    );
                 }
 
-                this.drawCurvedBar({
-                    x:      this.marginLeft,
-                    y:      this.marginTop + margin,
-                    width:  barWidth,
-                    height: this.height - margin - margin,
-                    fill:   properties.colors[0]
-                });
+                this.path(
+                    'b rr % % % % % f %',
+                    this.marginLeft,
+                    this.marginTop + margin,
+                    barWidth,
+                    this.height - margin - margin,
+                    properties.corners === 'round' ? properties.cornersRoundRadius : 0,
+                    properties.colors[0]
+                );
 
                 // Store the coords
                 this.coords.push([
@@ -627,25 +646,31 @@
                     var segmentLength = (this.value[i] / RGraph.arraySum(this.value)) * barWidth;
     
                     if (properties.borderInner) {
-                        this.drawCurvedBar({
-                            x:      startPoint,
-                            y:      this.marginTop + margin,
-                            width:  segmentLength,
-                            height: this.height - margin - margin,
-                            fill:   properties.colors[i],
-                            stroke: properties.colorsStrokeInner
-                        });
+                        this.path(
+                            'b rr % % % % % s %',
+                            startPoint,
+                            this.marginTop + margin,
+                            segmentLength,
+                            this.height - margin - margin,
+                            properties.corners === 'round' ? properties.cornersRoundRadius : 0,
+                            properties.colorsStrokeInner
+                        );
                     }
 
-                    this.drawCurvedBar({
-                        x:      startPoint,
-                        y:      this.marginTop + margin,
-                        width:  segmentLength,
-                        height: this.height - margin - margin,
-                        fill: properties.colors[i]
-                    });
-    
-    
+                    // DON'T use the RGraph.path() function for this
+                    this.context.beginPath();
+                    this.drawbarStackedSection(
+                        startPoint,
+                        this.marginTop + margin,
+                        segmentLength,
+                        this.height - margin - margin,
+                        i,
+                        i === (len - 1)
+                    );
+                    this.context.fillStyle = properties.colors[i];
+                    this.context.fill();
+
+
                     // Store the coords
                     this.coords.push([
                         startPoint,
@@ -653,7 +678,7 @@
                         segmentLength,
                         this.height - margin - margin
                     ]);
-    
+
                     startPoint += segmentLength;
                 }
             }
@@ -760,6 +785,39 @@
 
 
         //
+        // Draws the bar (or part of the bar in a stacked chart)
+        // accounting for rounded corners. This function deos not
+        // do a beginPath and nor does it stroke or fill the bar
+        // or set colors.
+        //
+        // @param x      number The X coord
+        // @param y      number The Y coord
+        // @param width  number The width of the bar
+        // @param height number The height of the bar
+        // @param index  number The index numbr of the bar (0-whatever)
+        //
+        this.drawbarStackedSection = function (x, y, width, height, index)
+        {
+            this.context.roundRect(
+                x,
+                y,
+                width,
+                height,
+                properties.corners === 'round' ? [
+                    (index === 0) ? this.properties.cornersRoundRadius : 0,
+                    (index === (this.value.length - 1) || typeof this.value === 'number') ? this.properties.cornersRoundRadius : 0,
+                    (index === (this.value.length - 1) || typeof this.value === 'number') ? this.properties.cornersRoundRadius : 0,
+                    (index === 0) ? this.properties.cornersRoundRadius : 0
+                ] : 0
+            );
+        };
+
+
+
+
+
+
+        //
         // The function that draws the tick marks. Apt name...
         //
         this.drawTickMarks = function ()
@@ -808,7 +866,11 @@
             if (!RGraph.isNull(properties.labelsSpecific)) {
                 return this.drawSpecificLabels();
             }
-    
+            
+            if (properties.labelsCount === 0) {
+                return;
+            }
+
             this.context.fillStyle = properties.textColor;
     
             var xPoints = [],
@@ -820,7 +882,8 @@
                 size    = properties.textSize,
                 offsetx = properties.labelsOffsetx,
                 offsety = properties.labelsOffsety;
-    
+
+
             for (i=0,len=this.scale2.labels.length; i<len; i++) {
 
                 if (properties.labelsPosition == 'top') {
@@ -837,7 +900,6 @@
                     object: this,
                     prefix: 'labels'
                 });
-
 
                 RGraph.text({
                 
@@ -936,12 +998,21 @@
                     idx = i;
 
                 this.context.beginPath();
-                this.drawCurvedBar({
-                    x: x,
-                    y: y,
-                    height: h,
-                    width: w
-                });
+
+
+if (properties.corners === 'round') {
+    this.path(
+        'r % % % %',
+        x,y,w,h
+    );
+
+} else {
+
+    this.path(
+        'r % % % %',
+        x,y,w,h
+    );
+}
     
                 if (this.context.isPointInPath(mouseX, mouseY)) {
                 
@@ -1010,7 +1081,7 @@
         //
         this.highlight = function (shape)
         {
-            var last = shape.index === this.coords.length - 1;
+            var isLast = shape.index === this.coords.length - 1;
 
             if (!properties.tooltipsHighlight) {
                 return;
@@ -1024,28 +1095,72 @@
             } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
                 for (var i=0; i<this.coords.length; ++i) {
                     if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b lw % r % % % % s % f %',
-                            properties.highlightLinewidth,
-                            this.coords[i][0] - 0.5,this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+                        if (this.properties.corners === 'round') {
+                            
+                            this.context.beginPath();
+                            this.context.lineWidth = properties.highlightLinewidth;
+
+                            this.drawbarStackedSection(
+                                this.coords[i][0],
+                                this.coords[i][1],
+                                this.coords[i][2],
+                                this.coords[i][3],
+                                i
+                            );
+
+                            this.context.strokeStyle = properties.highlightStroke;
+                            this.context.fillStyle   = properties.highlightFill;
+                            this.context.stroke();
+                            this.context.fill();
+
+                        } else {
+                            this.path(
+                                'b lw % r % % % % s % f %',
+                                properties.highlightLinewidth,
+                                this.coords[i][0] - 0.5,
+                                this.coords[i][1] - 0.5,
+                                this.coords[i][2] + 1,
+                                this.coords[i][3] + 1,
+                                properties.highlightStroke,
+                                properties.highlightFill
+                            );
+                        }
                     }
                 }
 
             } else {
-            
-                this.path('lw %', properties.highlightLinewidth);
 
-                this.drawCurvedBar({
-                    x:      shape.x - 0.5,
-                    y:      shape.y - 0.5,
-                    width:  shape.width + 1,
-                    height: shape.height + 1,
-                    stroke: properties.highlightStroke,
-                    fill:   properties.highlightFill
-                });
+                if (properties.corners === 'round') {
+
+                    this.context.beginPath();
+                    this.context.lineWidth = properties.highlightLinewidth;
+                
+                    this.drawbarStackedSection(
+                        shape.x,
+                        shape.y,
+                        shape.width,
+                        shape.height,
+                        shape.index
+                    );
+                
+                    this.context.strokeStyle = properties.highlightStroke;
+                    this.context.fillStyle   = properties.highlightFill;
+                    this.context.stroke();
+                    this.context.fill();
+                
+                } else {
+                
+                    this.path(
+                        'b lw % r % % % % s % f %',
+                        properties.highlightLinewidth,
+                        shape.x,
+                        shape.y,
+                        shape.width,
+                        shape.height,
+                        properties.highlightStroke,
+                        properties.highlightFill
+                    );
+                }
 
                 // Reset the linewidth
                 this.path('lw %', 1);
@@ -1370,66 +1485,6 @@
 
 
         //
-        // Draws the bevel effect
-        //
-        this.drawBevel = function ()
-        {
-            // In case of multiple segments - this adds up all the lengths
-            for (var i=0,len=0; i<this.coords.length; ++i) len += this.coords[i][2];
-    
-            this.context.save();
-                // Draw a path to clip to
-                this.context.beginPath();
-                this.context.rect(
-                    this.coords[0][0],
-                    this.coords[0][1],
-                    len,
-                    this.coords[0][3]
-                );
-                this.context.clip();
-
-                this.context.save();
-                    // Draw a path to clip to
-                    this.context.beginPath();
-                        this.drawCurvedBar({
-                            x: this.coords[0][0],
-                            y: this.coords[0][1],
-                            width: len,
-                            height: this.coords[0][3]
-                        });
-                        this.context.clip();
-                    
-                    // Now draw the rect with a shadow
-                    this.context.beginPath();
-    
-                        this.context.shadowColor = 'black';
-                        this.context.shadowOffsetX = 0;
-                        this.context.shadowOffsetY = 0;
-                        this.context.shadowBlur    = 15;
-                        
-                        this.context.lineWidth = 2;
-                        
-                        this.drawCurvedBar({
-                            x: this.coords[0][0] - 51,
-                            y: this.coords[0][1] - 1,
-                            width: len + 52,
-                            height: this.coords[0][3] + 2
-                        });
-                    
-                    this.context.stroke();
-        
-                this.context.restore();
-            this.context.restore();
-        };
-
-
-
-
-
-
-
-
-        //
         // Draw the titles
         //
         this.drawTitle = function ()
@@ -1445,27 +1500,52 @@
 
 
         //
-        // This function handles highlighting an entire data-series for the interactive
-        // key
+        // This function handles highlighting an entire data-series
+        // for the interactive key
         // 
         // @param int index The index of the data series to be highlighted
         //
         this.interactiveKeyHighlight = function (index)
         {
-            var coords = this.coords[index];
+            this.path(
+                'b lw %',
+                typeof properties.keyInteractiveHighlightChartLinewidth === 'number' ? properties.keyInteractiveHighlightChartLinewidth : 2
+            );
 
-            this.context.beginPath();
+            if (properties.corners === 'round') {
+                
 
-                this.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
-                this.context.lineWidth   = 2;
-                this.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
+                this.context.roundRect(
+                    
+                    this.coords[index][0],
+                    this.coords[index][1],
+                    this.coords[index][2],
+                    this.coords[index][3],
+                    
+                    [ // Corners
+                        index === 0 ? properties.cornersRoundRadius : 0,
+                        index === (this.coords.length - 1) ? properties.cornersRoundRadius : 0,
+                        index === (this.coords.length - 1) ? properties.cornersRoundRadius : 0,
+                        index === 0? properties.cornersRoundRadius : 0,
+                    ]
+                );
 
-                this.context.rect(coords[0] - 0.5, coords[1] - 0.5, coords[2] + 1, coords[3] + 1);
-            this.context.fill();
-            this.context.stroke();
-            
-            // Reset the linewidth
-            this.context.lineWidth = 1;
+                this.path(
+                    'f % s % lw 1',
+                    properties.keyInteractiveHighlightChartFill,
+                    properties.keyInteractiveHighlightChartStroke
+                );
+            } else {
+                this.path(
+                    'b r % % % % f % s % lw 1',
+                    this.coords[index][0],
+                    this.coords[index][1],
+                    this.coords[index][2],
+                    this.coords[index][3],
+                    properties.keyInteractiveHighlightChartFill,
+                    properties.keyInteractiveHighlightChartStroke
+                );
+            }
         };
 
 
@@ -1495,38 +1575,6 @@
     
             return this;
         };
-
-
-
-
-
-
-
-
-        //
-        // Draws a bar with a curved end.
-        // 
-        // DOESN'T DRAW A CURVED BAR ANY MORE - JUST A REGULAR SQUARE ENDED BAR
-        // 
-        // @param object opt The coords and colours
-        //
-        this.drawCurvedBar = function (opt)
-        {
-            this.path(
-                'b r % % % %',
-                opt.x, opt.y, opt.width, opt.height
-            );
-
-            if (opt.stroke) {
-                this.context.strokeStyle = opt.stroke;
-                this.context.stroke();
-            }
-            
-            if (opt.fill) {
-                this.context.fillStyle = opt.fill;
-                this.context.fill();
-            }
-        }
 
 
 

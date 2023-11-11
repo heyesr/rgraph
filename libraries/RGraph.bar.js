@@ -295,9 +295,10 @@
             keyPositionX:         null,
             keyPositionY:         null,
             keyInteractive:        false,
-            keyInteractiveHighlightChartStroke:'black',
-            keyInteractiveHighlightChartFill:'rgba(255,255,255,0.7)',
-            keyInteractiveHighlightLabel:'rgba(255,0,0,0.2)',
+            keyInteractiveHighlightChartLinewidth:  2,
+            keyInteractiveHighlightChartStroke:     'black',
+            keyInteractiveHighlightChartFill:       'rgba(255,255,255,0.7)',
+            keyInteractiveHighlightLabel:           'rgba(255,0,0,0.2)',
             keyHalign:             'right',
             keyColorShape:        'square',
             keyRounded:            true,
@@ -2620,7 +2621,7 @@ this.context.lineTo(
 
                     obj.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
                     obj.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
-                    obj.context.lineWidth   = 2;
+                    obj.context.lineWidth   = properties.keyInteractiveHighlightChartLinewidth;
                     obj.context.strokeRect(x, y, w, h);
                     obj.context.fillRect(x, y, w, h);
                 }

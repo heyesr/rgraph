@@ -249,6 +249,7 @@
             keyLinewidth:                   1,
             keyColors:                      null,
             keyInteractive:                 false,
+            keyInteractiveHighlightChartLinewidth: 2,
             keyInteractiveHighlightChartStroke: 'black',
             keyInteractiveHighlightChartFill: 'rgba(255,255,255,0.7)',
             keyInteractiveHighlightLabel:   'rgba(255,0,0,0.2)',
@@ -2502,7 +2503,7 @@
                 
                 this.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
                 this.context.fillStyle   = properties.keyInteractiveHighlightChartFill;
-                this.context.lineWidth   = 2;
+                this.context.lineWidth   = properties.keyInteractiveHighlightChartLinewidth;
                 this.context.lineJoin    = 'bevel';
                 
                 this.context.beginPath();
