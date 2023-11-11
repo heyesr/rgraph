@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>A segmented Meter chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        defaultColors = [
+            [0,20,'red'],
+            [20,40,'orange'],
+            [40,60,'yellow'],
+            [60,80,'green'],
+            [80,100,'#0f0']
+        ];
+        
+        // Create the Meter chart specifying the min/max/value
+        meter = new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+
+                // These are the colors for the segments on the main chart
+                colorsRanges: defaultColors,
+
+                // Turn off labels
+                labelsCount: 0,
+
+                linewidthSegments: 10,
+                textSize: 16,
+                colorsStroke: 'white',
+                segmentsRadiusStart: 150,
+                needleRadius: 130,
+                border: 0,
+                tickmarksSmallCount: 0,
+                tickmarksLargeCount: 0,
+                labelsValue: true,
+                labelsValueUnitsPost: '%',
+                labelsValueSize: 60,
+                labelsValueOffsety: 60,
+                labelsValueBackgroundFill: 'transparent',
+                needleType: 'pointer'
+            }
+        }).grow();
+        
+        // The setTimeout() function updates the meter every 3
+        // seconds
+        delay = 5000;
+        setTimeout(update = function ()
+        {
+            meter.value = Math.random() * 100;
+            meter.grow();
+            setTimeout(update, delay);
+        },delay)
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

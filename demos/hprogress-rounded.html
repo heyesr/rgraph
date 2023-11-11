@@ -1,0 +1,159 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hprogress.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A set of rounded Horizontal Progress bar examples</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs1" width="600" height="60">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="60">[No canvas support]</canvas>
+        <canvas id="cvs3" width="600" height="60">[No canvas support]</canvas>
+        <canvas id="cvs4" width="600" height="60">[No canvas support]</canvas>
+        <canvas id="cvs5" width="600" height="60">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.HProgress({
+                 id: 'cvs1',
+                min: 0,
+                max: 100,
+              value: [50,50],
+            options: {
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                colors: ['red','blue'],
+                backgroundColor: '#eee',
+                colorsStrokeInner: 'transparent',
+                colorsStrokeOuter: 'transparent',
+                labelsCount: 0,
+                corners: 'round',
+                cornersRoundRadius: 25,
+                tooltips: ['Alpha','Beta','Charlie'],
+                tooltipsCss: {
+                    fontSize: '28pt'
+                },
+                tooltipsOffsety: -30
+            }
+        }).on('draw', function (obj)
+        {
+            obj.path(
+                'b lw 10 rr % % % % % s black',
+                obj.properties.marginLeft - 5,
+                obj.properties.marginTop - 5,
+                obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight + 10,
+                obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom + 10,
+                obj.properties.cornersRoundRadius
+            );
+        }).grow();
+
+
+        new RGraph.HProgress({
+                 id: 'cvs2',
+                min: 0,
+                max: 100,
+              value: [33.3,20,20],
+            options: {
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                colors: ['red','blue','orange'],
+                backgroundColor: '#eee',
+                colorsStrokeInner: 'transparent',
+                colorsStrokeOuter: 'transparent',
+                labelsCount: 0,
+                corners: 'round',
+                cornersRoundRadius: 25,
+                tooltips: ['Alpha','Beta','Charlie'],
+                tooltipsCss: {
+                    fontSize: '28pt'
+                }
+            }
+        }).grow();
+
+
+        new RGraph.HProgress({
+                 id: 'cvs3',
+                min: 0,
+                max: 100,
+              value: 79,
+            options: {
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                colors: ['red'],
+                backgroundColor: 'pink',
+                colorsStrokeInner: 'transparent',
+                colorsStrokeOuter: 'transparent',
+                labelsCount: 0,
+                corners: 'round',
+                cornersRoundRadius: 25,
+                tooltips: ['Alpha','Beta','Charlie','Delta'],
+                tooltipsCss: {
+                    fontSize: '28pt'
+                }
+            }
+        }).grow();
+
+
+        new RGraph.HProgress({
+                 id: 'cvs4',
+                min: 0,
+                max: 100,
+              value: 19,
+            options: {
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                colors: ['#2A5783'],
+                backgroundColor: '#B9DDF1',
+                colorsStrokeInner: 'transparent',
+                colorsStrokeOuter: 'transparent',
+                labelsCount: 0,
+                corners: 'round',
+                tooltips: ['Alpha','Beta','Charlie','Delta'],
+                tooltipsCss: {
+                    fontSize: '28pt'
+                }
+            }
+        }).grow();
+
+
+
+        new RGraph.HProgress({
+                 id: 'cvs5',
+                min: 0,
+                max: 100,
+              value: 56,
+            options: {
+                marginTop: 10,
+                marginBottom: 10,
+                marginLeft: 10,
+                marginRight: 10,
+                colors: ['#EB6C1C'],
+                backgroundColor: '#FFDA66',
+                colorsStrokeInner: 'transparent',
+                colorsStrokeOuter: 'transparent',
+                labelsCount: 0,
+                corners: 'round',
+                adjustable: true
+            }
+        }).grow();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
