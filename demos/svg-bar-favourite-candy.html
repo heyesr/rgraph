@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart showing favourite candy types</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="container" style="position: relative">
+            <div style="width: 650px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        data = [4,10,7,8];
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: '4,10,7,8',
+            options: {
+                textColor: '#13497F',
+                colors: ['#98E57E','#FFA98C','#CCE5FF','#FFF0A6'],
+                tooltips: 'Consumption: %{property:_consumption[%{dataset}]}%',
+                _consumption: [15,13,12,16],
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                colorsSequential: true,
+                backgroundGridColor: '#4CA6FF',
+                backgroundGridHlinesCount: 7,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxisTitle: 'Number of students',
+                yaxisTitleBold: true,
+                yaxisTitleSize: 16,
+                yaxisScaleMax: 14,
+                yaxisLabelsCount: 7,
+                yaxisColor: '#4CA6FF',
+                yaxisLabelsColor: '#13497F',
+                xaxisColor: '#4CA6FF',
+                xaxisLabels: ['Green apple','Caramel','Butterscotch','Banana'],
+                xaxisLabelsBold: true,
+                xaxisLabelsSize: 16,
+                marginInner: 30,
+                marginLeft: 60,
+                title: 'Favourite candy',
+                titleBold: true,
+                titleSize: 26,
+                marginTop: 50
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
