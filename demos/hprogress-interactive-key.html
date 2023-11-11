@@ -14,12 +14,15 @@
     <h1>An example of a Horizontal Progress bar with an interactive key</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="150">[No canvas support]</canvas>
+        <canvas id="cvs1" width="600" height="150">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="150">[No canvas support]</canvas>
+        <canvas id="cvs3" width="600" height="120">[No canvas support]</canvas>
+        <canvas id="cvs4" width="600" height="120">[No canvas support]</canvas>
     </div>
 
     <script>
-        hprogress = new RGraph.HProgress({
-            id: 'cvs',
+        new RGraph.HProgress({
+            id: 'cvs1',
             min: 0,
             max: 100,
             value: [10,12,13,16,18],
@@ -27,6 +30,58 @@
                 key: ['Jim','Jack','Joseph','Jane', 'Jimmy'],
                 keyInteractive: true,
                 marginTop: 50
+            }
+        }).draw();
+
+        new RGraph.HProgress({
+            id: 'cvs2',
+            min: 0,
+            max: 100,
+            value: [10,12,13,16,18],
+            options: {
+                key: ['Jim','Jack','Joseph','Jane', 'Jimmy'],
+                keyInteractive: true,
+                marginTop: 50,
+                corners: 'round',
+                cornersRoundRadius: 50
+            }
+        }).draw();
+
+        new RGraph.HProgress({
+            id: 'cvs3',
+            min: 0,
+            max: 80,
+            value: 67,
+            options: {
+                key: ['Jim'],
+                keyInteractive: true,
+                keyInteractiveHighlightChartStroke: 'red',
+                keyInteractiveHighlightChartFill: '#fcc',
+                marginTop: 50,
+                corners: 'round',
+                cornersRoundRadius: 50,
+                colorsStrokeInner: '#0000',
+                colorsStrokeOuter: '#0000',
+                backgroundColor: '#ccc',
+                adjustable: true
+            }
+        }).draw();
+
+        new RGraph.HProgress({
+            id: 'cvs4',
+            min: 0,
+            max: 80,
+            value: 67,
+            options: {
+                key: ['Jim'],
+                keyInteractive: true,
+                keyInteractiveHighlightChartStroke: 'red',
+                keyInteractiveHighlightChartFill: '#fcc',
+                marginTop: 50,
+                colorsStrokeInner: '#0000',
+                colorsStrokeOuter: '#0000',
+                backgroundColor: '#ccc',
+                adjustable: true
             }
         }).draw();
     </script>
