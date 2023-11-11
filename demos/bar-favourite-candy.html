@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -40,7 +42,12 @@
                 marginLeft: 60,
                 title: 'Favourite candy',
                 titleSize: 26,
-                marginTop: 50
+                marginTop: 50,
+                tooltips: 'Consumption: %{property:_consumption[%{dataset}]}%',
+                _consumption: [15,13,12,16],
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
             }
         }).draw();
     </script>
