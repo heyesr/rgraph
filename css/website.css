@@ -207,7 +207,7 @@ div.page-common-codeblock span.copy-link {
 
 
 div#view-on-code-pen {
-    -text-align: center;
+    margin: 10px;
 }
 
 div#view-on-code-pen div {
