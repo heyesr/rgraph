@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart showing website traffic</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="250" style="background-color: black">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [0,92,128,110,162,112,158],
+            options: {
+                    colors: ['#0B81D4'],
+                    xaxis: false,
+                    yaxis: false,
+                    backgroundGridBorder: false,
+                    backgroundGridVlines: false,
+                    linewidth: 5,
+                    tickmarksStyle: 'filledcircle',
+                    tickmarksSize: 5,
+                    textColor: '#ddd',
+                    textSize: 10,
+                    xaxisLabels: ['23rd Nov','24th Nov','25th Nov','26th Nov','27th Nov','28th Nov','29th Nov'],
+                    xaxisLabelsOffsety: 5,
+                    yaxisScaleMax: 170,
+                    yaxisScaleUnitsPost: ' MB',
+                    marginTop: 15,
+                    marginLeft: 75
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
