@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Gantt chart with rounded ends</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        data = [
+            {start: 31, duration: 28, linewidth: 5, color: 'red', label: 'Richard'},
+            {start: 0,  duration: 28, linewidth: 5, color: 'red', label: 'Rachel'},
+            {start: 12, duration: 28, linewidth: 5, color: 'red', label: 'Fred'},
+            {start: 59, duration: 14, linewidth: 5, color: 'red', label: 'Barney'},
+            {start: 59, duration: 21, linewidth: 5, color: 'red', label: 'Gloria', complete: 98},
+            {start: 46, duration: 31, linewidth: 5, color: 'red', label: 'Paul', complete: 98},
+            {start: 80, duration: 21, linewidth: 5, color: 'red', label: 'Harry', complete: 98},
+            {start: 94, duration: 17, linewidth: 5, color: 'red', label: 'Shane', complete: 50}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsComplete: true,
+                backgroundGridVlinesCount: 4,
+                corners: 'round',
+                cornersRoundRadius: 5,
+                marginInner: 4,
+                tooltips: '<span style="font-size: 20pt">An example tooltip!</span><br /><table style="margin-left: auto; margin-right: auto"><tr><td style="text-align: right">Dataset:</td><td>%{dataset}</td></tr><tr><td style="text-align: right">Index:</td> <td>%{index}</td></tr><tr><td style="text-align: right">Sequential:</td><td>%{sequential_index}</td></tr></table>',
+                tooltipsCss: {
+                    fontSize: '14pt'
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -232,6 +232,9 @@
             adjustable:               false,
             adjustableOnly:           null,
             
+            corners:                  'square',
+            cornersRoundRadius:       25,
+            
             clearto:                  'rgba(0,0,0,0)'
         }
 
@@ -713,12 +716,24 @@
                     top    = this.coords[i][1],
                     width  = this.coords[i][2],
                     height = this.coords[i][3];
-    
-                if (   mouseX >= left
-                    && mouseX <= (left + width)
-                    && mouseY >= top
-                    && mouseY <= (top + height)
-                   ) {
+
+                //
+                // Draw a rect on the chart to test the click but
+                // don't fill or stroke it.
+                //
+                this.rect(
+                    this.context,
+                    left,
+                    top,
+                    width,
+                    height,
+                    {
+                     begin:  true,
+                     radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                    }
+                );
+
+                if (this.context.isPointInPath(mouseX, mouseY)) {
 
                     if (RGraph.parseTooltipText && properties.tooltips) {
                         var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
@@ -798,11 +813,17 @@
                 this.context.lineWidth = (typeof ev.linewidth === 'number' ? ev.linewidth : 1);
 
                 if (ev.linewidth !== 0) {
-                    this.context.strokeRect(
+                    this.rect(
+                        this.context,
                         barStartX,
                         barStartY + properties.marginInner,
                         barWidth,
-                        this.barHeight - (2 * properties.marginInner)
+                        this.barHeight - (2 * properties.marginInner),
+                        {
+                         stroke: this.context.strokeStyle,
+                         begin:  true,
+                         radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                        }
                     );
                 }
             }
@@ -814,11 +835,17 @@
                 this.context.fillStyle = ev.background ? ev.background : properties.colorsDefault;
             }
 
-            this.context.fillRect(
+            this.rect(
+                this.context,
                 barStartX,
                 barStartY + properties.marginInner,
                 barWidth,
-                this.barHeight - (2 * properties.marginInner)
+                this.barHeight - (2 * properties.marginInner),
+                {
+                 fill:   this.context.fillStyle,
+                 begin:  true,
+                 radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                }
             );
     
             // Work out the completeage indicator
@@ -829,12 +856,19 @@
 
                 this.context.fillStyle = ev.color ? ev.color : '#0c0';
 
-                // Draw the percent complete bar if the complete option is given
-                this.context.fillRect(
+                // Draw the percent complete bar if the complete
+                // option is given
+                this.rect(
+                    this.context,
                     barStartX,
                     barStartY + properties.marginInner,
                     (ev.complete / 100) * barWidth,
-                    this.barHeight - (2 * properties.marginInner)
+                    this.barHeight - (2 * properties.marginInner),
+                    {
+                     fill:   this.context.fillStyle,
+                     begin:  true,
+                     radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                    }
                 );
                 
                 // Don't necessarily have to draw the label
@@ -944,11 +978,18 @@
             if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
                 for (var i=0; i<this.coords.length; ++i) {
                     if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b r % % % % s % f %',
-                            this.coords[i][0] - 0.5,this.coords[i][1] - 0.5,this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
+                        this.rect(
+                            this.context,
+                            this.coords[i][0] - 0.5,
+                            this.coords[i][1] - 0.5,
+                            this.coords[i][2] + 1,
+                            this.coords[i][3] + 1,
+                            {
+                             fill:   this.properties.highlightFill,
+                             stroke: this.properties.highlightStroke,
+                             begin:  true,
+                             radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                            }
                         );
                     }
                 }
@@ -959,7 +1000,19 @@
             if (typeof properties.highlightStyle === 'function') {
                 (properties.highlightStyle)(shape);
             } else {
-                RGraph.Highlight.rect(this, shape);
+                this.rect(
+                    this.context,
+                    shape.x,
+                    shape.y,
+                    shape.width,
+                    shape.height,
+                    {
+                     fill:   this.properties.highlightFill,
+                     stroke: this.properties.highlightStroke,
+                     begin:  true,
+                     radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
+                    }
+                );
             }
         };
 
@@ -1635,6 +1688,61 @@
             // then move the tooltip down
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + (coords[3] / 2) + 5 + 'px';
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function draws a single bar on the chart
+        // accounting for whether the rects should be rounded
+        // or not.
+        //
+        // @param x      number The X coordinate of the rectangle
+        // @param y      number The Y coordinate of the rectangle
+        // @param width  number The width of the rectangle
+        // @param height number The height of the rectangle
+        // @param object opt    Various options including:
+        //                       begin   bool  Whether a beginPath
+        //                                     is performed
+        //                       radius int    The extent of the
+        //                                     rounding. Set to 0 if
+        //                                     rounded corners are
+        //                                     not desired
+        //                       stroke  mixed The color of the
+        //                                     stroke. If left null
+        //                                     there is no stroke.
+        //                       fill    mixed The color of the
+        //                                     fill. If left null
+        //                                     there is no fill
+        //
+        this.rect = function (context, x, y, width, height, opt = {})
+        {
+            var context = this.context;
+
+            if (opt.begin) {
+                context.beginPath();
+            }
+
+            if (RGraph.isNumber(opt.radius) && opt.radius > 0) {
+                context.roundRect(x, y, width, height, opt.radius);
+            } else {
+                context.rect(x, y, width, height);
+            }
+            
+            if (opt.stroke) {
+                context.strokeStyle = opt.stroke;
+                context.stroke();
+            }
+            
+            if (opt.fill) {
+                context.fillStyle = opt.fill;
+                context.fill();
             }
         };
 
