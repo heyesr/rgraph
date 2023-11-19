@@ -19,32 +19,39 @@
     <script id="rgraph-demo-source-code">
         new RGraph.Bar({
             id: 'cvs',
-            data: '4,10,7,8',
+            data: [4,10,7,8],
             options: {
+                _consumption: [15,13,12,16],
+                
                 textColor: '#13497F',
                 colors: ['#98E57E','#FFA98C','#CCE5FF','#FFF0A6'],
                 colorsSequential: true,
+                
                 backgroundGridColor: '#4CA6FF',
                 backgroundGridHlinesCount: 7,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
+                
                 yaxisTitle: 'Number of students',
                 yaxisTitleBold: true,
                 yaxisTitleSize: 16,
                 yaxisScaleMax: 14,
                 yaxisLabelsCount: 7,
                 yaxisColor: '#4CA6FF',
+                
                 xaxisColor: '#4CA6FF',
                 xaxisLabels: ['Green apple','Caramel','Butterscotch','Banana'],
                 xaxisLabelsBold: true,
                 xaxisLabelsSize: 16,
+                
                 marginInner: 30,
                 marginLeft: 60,
+                marginTop: 50,
+                
                 title: 'Favourite candy',
                 titleSize: 26,
-                marginTop: 50,
+
                 tooltips: 'Consumption: %{property:_consumption[%{dataset}]}%',
-                _consumption: [15,13,12,16],
                 tooltipsCss: {
                     fontSize: '20pt'
                 }
