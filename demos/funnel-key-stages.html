@@ -1,0 +1,79 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A customised Funnel chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div>
+            <canvas id="cvs" width="650" height="500" style="border: 1px solid gray">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        // Create the Funnel chart and configure it so that it has a
+        // large left margin (enough space for the labels),
+        new RGraph.Funnel({
+            id: 'cvs',
+            data: [100,75,50,25],
+            options: {
+                title: 'A "key stages of plan CD1" funnel',
+                titleSubtitle: 'Each stage is depicted by a separate color',
+                
+                marginTop: 75,
+                
+                linewidth: 0,
+                
+                colors: ['#3EB0BB','#EE7E34','#677E9D','#388E90'],
+                
+                backgroundBars: true,
+                backgroundBarsColors: [
+                    'Gradient(#3EB0BB:white)',
+                    'Gradient(#EE7E34:white)',
+                    'Gradient(#677E9D:white)'
+                ],
+                backgroundBarsOpacity: .25,
+                
+                labels: ['Introduction (75%)', 'Site visit (50%)', 'Finalisation (25%)'],
+                labelsItalic: true,
+                labelsBold: false,
+                labelsColor: 'gray',
+                labelsX: 10,
+                
+                // This can also be set to 'edge' and controls the vertical positioning
+                // of the labels
+                labelsPosition: 'section',
+
+                // Tooltips for the chart that use the new formatted tooltips feature
+                tooltips: '%{property:labels[%{index}]}',
+
+                // These are CSS styles for the tooltips that are displayed.
+                // The names are exactly the same as CSS properties (the JavaScript
+                // versions of the names)
+                tooltipsCss: {
+                    fontSize: '26pt'
+                },
+
+                key: ['Introduction','Site visit','Finalisation'],
+                keyPosition: 'margin',
+                responsive: [
+                    {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 15,  marginLeft: 300}},
+                    {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
+                ]
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
