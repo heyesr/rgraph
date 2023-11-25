@@ -15,73 +15,84 @@
     </div>
         
     <script>
+        // The HBar objects are held in this variable
+        objects = [];
+
         //
         // This is the data for the chart
         //
-        mainData = [
+        data = [
             [4,8,6,4,5,6,4],
-            [6,4,6,7,8,9,6]
+            [6,4,6,7,8,9,6],
+            [4,8,6,4,3,5,2],
+            [8,6,4,5,8,8,4],
+            [8,7,6,8,6,4,8]
         ];
 
         //
-        // The configuration values shared by both charts
+        // The configuration values shared by all three charts
         //
         conf = {
-            yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-            xaxisScaleMax:15,
+            xaxisScaleMax:40,
             backgroundGridColor: '#aaa',
+            backgroundGridHlines: false,
+            backgroundGridBorder: false,
             xaxisScaleUnitsPost: '%',
             xaxis: false,
             yaxis: false,
             colors: ['#0000'],
             textSize: 14,
-            title: 'A vertical spline chart',
+            title: 'A stacked vertical spline',
             titleBold: true,
-            titleX: 100,
-            titleHalign: 'left',
-            marginTop: 40,
+            marginTop: 50,
+            marginLeft: 120,
+            marginLeftAuto: false,
             marginInner: 100,
-
+            yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
             line: true,
             lineLinewidth: 0.01,
             lineFilled: true,
-            lineFilledColor: '#9f9',
             lineShadow: true,
             lineShadowOffsetx: 2,
             lineShadowOffsety: 2,
             lineShadowColor: '#999',
-            lineSpline: true
+            lineSpline: true,
+            
+            // Normally this property is a string - it gets set to
+            // string further down
+            lineFilledColor: ['#f99','#9f9','#99f','#f9f','#fff500']
         };
 
-        // Walk through the datasets in reverse and
-        // modify the config as necessary
-        for (let i=(mainData.length - 1); i>=0; i--) {
+        // Walk through the datasets and
+        // modify the data as necessary 
+        // to get a stacking effect
+        for (var i=1; i<data.length; ++i) {
+            for (var j=0; j<data[i].length; ++j) {
+                data[i][j] += data[i-1][j];
+            }
+        }
+        
+        
+        
+        for (var i=(data.length - 1); i>=0; --i) {
 
-            var data = mainData[i];
-            
-            // Add the two datasets together for the first dataset
-            if (i === 1) {
-                for (let j=0; j<mainData[1].length; ++j) {
-                    data[j] = mainData[0][j] + mainData[1][j];
-                }
-            } else {
-                
-                var hbar = RGraph.OR.getFirstObjectByType('hbar');
-
-                conf.lineFilledColor = '#f66';
+            if (i < (data.length - 1)) {
                 conf.backgroundGrid  = false;
                 conf.xaxisScale      = false;
-                conf.yaxisLabels     = [];
-                conf.marginLeft      = hbar.properties.marginLeft;
-                conf.marginLeftAuto  = false;
+                conf.yaxisLabels     = null;
             }
 
-            new RGraph.HBar({
+
+            objects[i] = new RGraph.HBar({
                 id: 'cvs',
-                data: data,
-                options: conf
+                data: data[i],
+                options: {
+                    ...conf,
+                    lineFilledColor: conf.lineFilledColor[i]
+                }
             }).draw();
         }
+
     </script>
 
     <script>showSource()</script>
