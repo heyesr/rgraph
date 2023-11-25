@@ -3339,6 +3339,10 @@
                     return true;
                 }
             }
+
+        } else if (typeof properties.tooltips === 'string') {
+            return true;
+
         } else if (typeof properties.tooltips === 'function') {
             return true;
         }
@@ -6978,8 +6982,8 @@
                 case 'c':context.closePath();break;
                 case 'm':context.moveTo(parseFloat(p[i+1]),parseFloat(p[i+2]));i+=2;break;
                 case 'l':context.lineTo(parseFloat(p[i+1]),parseFloat(p[i+2]));i+=2;break;
-                case 's':if(p[i+1])context.strokeStyle=p[i+1];context.stroke();i++;break;
-                case 'f':if(p[i+1]){context.fillStyle=p[i+1];}context.fill();i++;break;
+                case 's':if(p[i+1]&&p[i+1]!=='null')context.strokeStyle=p[i+1];context.stroke();i++;break;
+                case 'f':if(p[i+1]&&p[i+1]!=='null'){context.fillStyle=p[i+1];}context.fill();i++;break;
                 case 'qc':context.quadraticCurveTo(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]));i+=4;break;
                 case 'bc':context.bezierCurveTo(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]),parseFloat(p[i+5]),parseFloat(p[i+6]));i+=6;break;
                 case 'r':context.rect(parseFloat(p[i+1]),parseFloat(p[i+2]),parseFloat(p[i+3]),parseFloat(p[i+4]));i+=4;break;
