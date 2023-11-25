@@ -693,7 +693,14 @@
         this.redrawFunnel = function ()
         {
         };
-        
+
+
+
+
+
+
+
+
         //
         // Draws the background bars. This is called AFTER the .draw() function
         // and manages to draw the background bars behind the funnel by utilising
