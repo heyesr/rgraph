@@ -1796,21 +1796,18 @@
 
 
                     RGraph.text({
-                    
                    object: this,
-
                      font: textConf.font,
                      size: textConf.size,
                     color: textConf.color,
                      bold: textConf.bold,
                    italic: textConf.italic,
-
-                        x:          x + properties.labelsAboveOffsetx,
-                        y:          y + properties.labelsAboveOffsety,
-                        text:       text,
-                        valign:     'center',
-                        halign:     halign,
-                        tag:        'labels.above'
+                        x: x + properties.labelsAboveOffsetx,
+                        y: y + properties.labelsAboveOffsety,
+                     text: text,
+                   valign: 'center',
+                   halign: halign,
+                      tag: 'labels.above'
                     });
                 }
             }
