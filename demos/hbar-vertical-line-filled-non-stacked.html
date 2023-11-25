@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A multi-dataset filled vertical spline using the canvas Horizontal Bar chart (non-stacked)</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    </div>
+        
+    <script>
+        //
+        // This is the data for the chart
+        //
+        data = [
+            [4,8,6,4,5,6,4],
+            [6,4,6,7,8,5,6],
+            [6,9,2,6,7,10,6]
+        ];
+
+        //
+        // The configuration values shared by all three charts
+        //
+        config = {
+            backgroundGridGrid: false,
+            backgroundGridColor: '#aaa',
+            backgroundGridHlines: false,
+            backgroundGridBorder: false,
+            xaxisScaleUnitsPost: '%',
+            xaxisScale: false,
+            xaxis: false,
+            yaxis: false,
+            colors: ['#0000'],
+            textSize: 14,
+            title: 'A stacked vertical spline',
+            titleBold: true,
+            marginTop: 50,
+            marginLeft: 120,
+            marginLeftAuto: false,
+            marginInner: 100,
+            
+            line: true,
+            lineLinewidth: 2,
+            lineFilled: true,
+            lineShadow: false,
+            lineSpline: true,
+            
+            // Normally this property is a string - it gets set to
+            // string further down
+            lineFilledColor: ['#f007','#0f07','#00f7']
+        };
+        
+        
+        
+        for (var i=(data.length - 1); i>=0; --i) {
+
+            if (i === 0) {
+                config.backgroundGrid  = true;
+                config.xaxisScale      = true;
+                config.xaxisLabelsBold = true;
+                config.yaxisLabels     = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+                config.yaxisLabelsBold = true;
+            }
+
+
+            new RGraph.HBar({
+                id: 'cvs',
+                data: data[i],
+                options: {
+                    ...config,
+                    lineFilledColor: config.lineFilledColor[i]
+                }
+            }).draw();
+        }
+
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
