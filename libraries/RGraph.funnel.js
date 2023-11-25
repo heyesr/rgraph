@@ -44,8 +44,12 @@
         //
         this.properties =
         {
-            colorsStroke: 'rgba(0,0,0,0)',
-            colors: ['red','green','gray','black','pink','orange','blue','yellow','green','red'],
+            backgroundBars:         false,
+            backgroundBarsOpacity:  0.25,
+            backgroundBarsColors:   null,
+
+            colorsStroke:           'rgba(0,0,0,0)',
+            colors:                 ['red','green','gray','black','pink','orange','blue','yellow','green','red'],
 
             marginLeft:           35,
             marginRight:          35,
@@ -336,6 +340,7 @@
             // Draw the title using the new drawTitle() function
             RGraph.drawTitle(this);
             
+            // Draw the funnel
             this.drawFunnel();
 
             
@@ -408,18 +413,42 @@
             //
             RGraph.installInlineResponsive(this);
 
-
-
-
-
-
-
-
-            
-
-
-
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draws a single background bar if requested. This
+        // function is called by the drawFunnel() function
+        // once the coordinates have been calculated.
+        //
+        // @param number index The zero-indexed number of the
+        //                     segment
+        // @param The coordinates of the section
+        //
+        this.drawBackgroundBar = function (index, coords)
+        {
+            var color = (RGraph.isArray(properties.backgroundBarsColors) && properties.backgroundBarsColors[index])
+                            ? properties.backgroundBarsColors[index]
+                            : properties.colors[index];
+
+            if (properties.backgroundBars && this.data[index] && color && index < (this.data.length - 1) ) {
+                this.path(
+                    'b ga % r % % % % f % ga 1',
+                    properties.backgroundBarsOpacity,
+                    0,
+                    coords[1],
+                    this.canvas.width,
+                    coords[5] - coords[3],
+                    color
+                );
+            }
         };
 
 
@@ -495,6 +524,11 @@
                 var y3 = accheight + curheight;
                 var x4 = center - halfNextWidth;
                 var y4 = accheight + curheight;
+
+                // Draw a background bar?
+                if (properties.backgroundBars) {
+                    this.drawBackgroundBar(i, [x1, y1, x2, y2, x3, y3, x4, y4]);
+                }
     
                 if (nextwidth && i < this.data.length - 1) {
 
@@ -926,11 +960,19 @@
                 colors[i] = this.parseSingleColorForHorizontalGradient(colors[i]);
             }
             
-            var keyColors = properties.keyColors;
-            if (keyColors) {
-                for (var i=0; i<keyColors.length; ++i) {
-                    keyColors[i] = this.parseSingleColorForHorizontalGradient(keyColors[i]);
+            var backgroundBarsColors = properties.backgroundBarsColors;
+            
+            if (backgroundBarsColors) {
+                for (var i=0; i<backgroundBarsColors.length; ++i) {
+                    backgroundBarsColors[i] = this.parseSingleColorForHorizontalGradient(backgroundBarsColors[i]);
                 }
+            }
+            
+
+            var colors = properties.colors;
+    
+            for (var i=0; i<colors.length; ++i) {
+                colors[i] = this.parseSingleColorForHorizontalGradient(colors[i]);
             }
             
             
