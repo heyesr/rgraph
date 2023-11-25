@@ -25,13 +25,16 @@
                 [7.0,6.9,9.5,14.5,18.2,21.5,25.2,26.5,23.3,18.3,13.9,9.6],
                 [0.2,0.8,5.7,11.3,17.0,22.0,24.8,24.1,20.1,14.1,8.6, 2.5]
             ],
-            options: {
-                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            options: {                
                 shadow: false,
-                backgroundGridBorder: true,
+
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 xaxis: false,
+                
                 yaxis: false,
+                
                 colors: ['#0f0','#76D0FF'],
+                
                 tickmarksStyle: function (obj, data, value, index, x, y, color, prevX, prevY)
                 {
                     obj.path(
@@ -39,8 +42,11 @@
                         x, y, tickmarkRadius, RGraph.TWOPI
                     );
                 },
+
                 linewidth: 3,
+
                 textColor: '#eee',
+
                 responsive: [
                     {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},parentCss:{textAlign:'none'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
                     {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},parentCss:{textAlign:'center'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
