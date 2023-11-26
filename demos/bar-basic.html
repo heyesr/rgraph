@@ -14,21 +14,15 @@
     
     <div id="rgraph-demo-html">
         <div id="canvas-container">
-            <canvas id="cvs" width="750" height="250" >[No canvas support]</canvas>
+            <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
         </div>
     </div>
 
     <script id="rgraph-demo-source-code">
-        // Create the new Bar chart. Nothing special is being done here - note
-        // though that when you create a new RGraph object you don't necessarily
-        // need to assign the chart object to a variable - like it isn't here.
         new RGraph.Bar({
             id: 'cvs',
             data: '12,18,10,9,6,20,18',
             options: {
-                
-                // Add some X-axis labels - you can use a newline character (\n) to make
-                // the label span multiple lines
                 yaxisScaleUnitsPost: 'k',
                 colors: ['red'],
                 title: 'A basic Bar chart',
@@ -48,7 +42,7 @@
             }
         }).draw();
     </script>
-    
+
     <script>showSource()</script>
 
 </body>
