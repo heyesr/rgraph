@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart using the glass variant</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="650" height="350" >[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [400,500,800,300,500,600,700],
+            options: {
+                horizontalLines:[{
+                    value: 'average',
+                    labelPosition: 'left',
+                    color: 'black'
+                }],
+                variant: 'glass',
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                title: 'A simple Bar chart with an average line',
+                titleSize: 16,
+                colors: [
+                    'rgb(230,0,0)',    'rgb(0,128,0)',
+                    'rgb(0,82,204)',   'rgb(24,43,70)',
+                    'rgb(82,204,163)', 'rgb(153,102,51)',
+                    'rgb(51,153,51)'
+                ],
+                colorsSequential: true,
+                xaxisLabels: RGraph.DAYS_LONG,
+                xaxisLabelsAngle: 25,
+                xaxisLabelsOffsety: 5,
+                textSize: 16,
+                marginBottom: 75,
+                marginLeft: 50,
+                marginTop: 50,
+                tooltips: '%{property:xaxisLabels[%{dataset}]}<br />%{value_formatted}',
+                tooltipsCss: {
+                    color: 'black',
+                    backgroundColor: 'white',
+                    border: '2px solid black',
+                    padding: '3px',
+                },
+                tooltipsPointerCss: {
+                    border: '2px solid black',
+                    borderLeft: 'none',
+                    borderTop: 'none',
+                    transform: 'rotate(45deg) translateY(3px)'
+                },
+                tooltipsFormattedDecimals: 1,
+                tooltipsEvent: 'mousemove',
+                responsive: [
+                    {maxWidth:null,width:600,height:300,options: {}},
+                    {maxWidth:900,width:500,height:200,options: {}}
+                ]
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
