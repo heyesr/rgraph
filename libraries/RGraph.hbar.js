@@ -226,6 +226,7 @@
             labelsAboveItalic:     null,
             labelsAboveOffsetx:    0,
             labelsAboveOffsety:    0,
+            labelsAboveBackground: 'transparent',
             
             labelsInbar:                  false,
             labelsInbarHalign:            'center',
@@ -1807,6 +1808,9 @@
                      text: text,
                    valign: 'center',
                    halign: halign,
+               bounding: (properties.labelsAboveBackground !== 'transparent'),
+               boundingFill: properties.labelsAboveBackground,
+               boundingStroke: 'transparent',
                       tag: 'labels.above'
                     });
                 }
