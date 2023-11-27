@@ -1190,7 +1190,7 @@
                                           y: y,
                                       width: barWidth,
                                      height: height,
-                                     radius: 5,
+                                     radius: RGraph.isNumber(properties.cornersRoundRadius) ? properties.cornersRoundRadius : 5,
                                     roundtl: this.data[i] > 0,
                                     roundtr: this.data[i] > 0,
                                     roundbl: this.data[i] < 0,
@@ -1355,11 +1355,12 @@ this.context.lineTo(
 
                                 this.context.beginPath();
                                 this.context.fillStyle = grad;
-                                this.context.rect(
+                                this.context.roundRect(
                                     x + hmargin + 3,
                                     y + (this.data[i] > 0 ? 3 : 0),
                                     (barWidth / 2) - 2,
-                                    height - 2
+                                    height - 2,
+                                    this.data[i] > 0 ? ([RGraph.isNumber(properties.cornersRoundRadius) ? properties.cornersRoundRadius - 3 : 5, 0,0,0]) : [0,0,0,RGraph.isNumber(properties.cornersRoundRadius) ? properties.cornersRoundRadius : 5]
                                 );
                                 this.context.fill();
                             }
