@@ -102,7 +102,7 @@
             labelsAboveFont:      null,
             labelsAbovePoint:     '.',
             labelsAboveThousand:  ',',
-            labelsAboveBackground:'rgba(0,0,0,0)',
+            labelsAboveBackground:'transparent',
             labelsAboveAngle:     null,
             labelsAboveOffset:    null,
             labelsAboveOffsetx:   0,
