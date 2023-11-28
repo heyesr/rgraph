@@ -26,15 +26,19 @@
             id: 'cvs',
             data: [100,75,50,25],
             options: {
+                // Specify a title and a subtitle for the chart
                 title: 'A "key stages of plan CD1" funnel',
                 titleSubtitle: 'Each stage is depicted by a separate color',
                 
+                // Specify the top margin - other margins are set
+                // in the responsive() function
                 marginTop: 75,
                 
-                linewidth: 0,
-                
+                // Set the colors
                 colors: ['#3EB0BB','#EE7E34','#677E9D','#388E90'],
                 
+                // Turn on background bars for the chart and set
+                // the colours to be semi-opaque gradients
                 backgroundBars: true,
                 backgroundBarsColors: [
                     'Gradient(#3EB0BB:white)',
@@ -43,7 +47,8 @@
                 ],
                 backgroundBarsOpacity: .25,
                 
-                labels: ['Introduction (75%)', 'Site visit (50%)', 'Finalisation (25%)'],
+                // Set the labels and their style
+                labels: ['Signup (100%)', 'Introduction (75%)', 'Site visit (50%)', 'Final (25%)'],
                 labelsItalic: true,
                 labelsBold: false,
                 labelsColor: 'gray',
@@ -51,20 +56,25 @@
                 
                 // This can also be set to 'edge' and controls the vertical positioning
                 // of the labels
-                labelsPosition: 'section',
+                labelsPosition: 'edge',
 
-                // Tooltips for the chart that use the new formatted tooltips feature
+                // Tooltips for the chart that use the formatted
+                // tooltips feature
                 tooltips: '%{property:labels[%{index}]}',
 
-                // These are CSS styles for the tooltips that are displayed.
-                // The names are exactly the same as CSS properties (the JavaScript
-                // versions of the names)
+                // These are CSS styles for the tooltips that are
+                // displayed. The names are exactly the same as CSS
+                // properties (the JavaScript versions of the names)
                 tooltipsCss: {
                     fontSize: '26pt'
                 },
 
+                // Define a key and have it positioned in the margin
                 key: ['Introduction','Site visit','Finalisation'],
                 keyPosition: 'margin',
+                
+                // Set the responsive configuration so the chart
+                // adapts to a smaller screen
                 responsive: [
                     {maxWidth: null, width:650, height:400, options: {labelsSize: 26, marginRight: 15,  marginLeft: 300}},
                     {maxWidth: 900,  width:400, height:300, options: {labelsSize: 18, marginRight: 25, marginLeft: 100}}
