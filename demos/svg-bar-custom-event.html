@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG basic Bar chart with a custom event listener</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="container" style="position: relative">
+            <div style="width: 750px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        data = [213,268,542,355,129,785,465,654,123,653,452,584];
+        
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                marginLeft: 75,
+                marginInner: 5,
+                marginRight: 50,
+                marginBottom: 100,
+                colors: ['Gradient(red:red:red:white:white)'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxisTickmarks: false,
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                yaxisTickmarks: false,
+                yaxisScaleMax: 1000,
+                xaxisLinewidth: 3,
+                yaxisLinewidth: 3,
+                labelsAbove: true,
+                labelsAboveSize: 12,
+                textSize: 16
+            }
+        }).draw();
+        
+        // Get hold of all of the rect elements (ie the bars)
+        var rects = bar.svg.getElementsByTagName('rect');
+        
+        //
+        // Loop through the bars adding an event listener if
+        // the value is over 450
+        //
+        for (let i=0; i<rects.length; ++i) {
+            
+            // Get the data-value attribute from the <rect> tag
+            var value = rects[i].getAttribute('data-value');
+            
+            // If the value is over 450 add an event listener and
+            // have the pointer change when the mouse is moved
+            // over it
+            if (parseInt(value) > 450) {
+                
+                rects[i].addEventListener('click', function ()
+                {
+                    alert('Over 450!');
+                });
+            
+                //
+                // Since we're looping through the bars - take
+                // this opportunity to add a CSS property to
+                // the bar
+                //
+                rects[i].style.cursor = 'pointer';
+            }
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

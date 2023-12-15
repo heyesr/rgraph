@@ -1,0 +1,104 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An adjustable SVG Bar chart styled to look like a Vertical Progress bar</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 130px; height: 400px" id="chart-container"></div><br />
+        <input type="text" style="font-size: 20pt; padding: 3px" id="readout" value="73" size="5" />
+    </div>
+        
+    <script>
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                colors: ['#eee'],
+                marginLeft: 50,
+                marginRight: 5,
+                backgroundGrid: false,
+                colorsStroke: '#ccc',
+                marginInner: 10,
+                yaxis: false,
+                yaxisScale: false,
+                xaxis: false,
+                linewidth: .5,
+                shadow: true,
+                shadowOpacity: .1
+            }
+        }).draw();
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [73],
+            options: {
+                yaxisScaleMax: 100,
+                yaxisTextColor: '#666',
+                shadow: true,
+                shadowOffsetx: 1,
+                shadowOffsety: 1,
+                shadowBlur: 1,
+                titleColor: '#666',
+                colors: ['Gradient(red:#fcc)'],
+                colorsSequential: true,
+                backgroundGrid: false,
+                tooltips: ['Monday was an average day'],
+                marginLeft: 50,
+                marginRight: 5,
+                marginInner: 10,
+                marginInner: 15,
+                marginInnerGrouped: 10,
+                xaxis: false,
+                yaxisScaleUnitsPost: '%',
+                yaxis: false,
+                adjustable: true,
+                labelsAbove: true,
+                labelsAboveUnitsPost: '%'
+            }
+        }).draw()
+        
+        //
+        // This event fires when adjusting begins
+        //
+        .on('adjustbegin', obj => {            
+            console.log(obj.coords[obj.adjusting_mousedown.index].element.getAttribute('data-value'))
+        })
+
+        //
+        // This event fires during adjusting - similar to the
+        // mousemove event
+        //
+        .on('adjust', obj => {
+
+            // Log the value to the text element
+            var value = obj.coords[0].element.getAttribute('data-value');
+            document.getElementById('readout').value = parseFloat(value).toFixed(1);
+
+            console.log(value)
+        })
+
+        //
+        // This event fires when adjusting ends - similar to the
+        // mouseup event
+        //
+        .on('adjustend', obj => {
+            
+            // Log the value to the text element
+            var value = obj.coords[0].element.getAttribute('data-value');
+            document.getElementById('readout').value = parseFloat(value).toFixed(1);
+
+            console.log(obj.adjusting_mousedown_last.element.getAttribute('data-value'))
+        });
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
