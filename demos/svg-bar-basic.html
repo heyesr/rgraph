@@ -43,10 +43,12 @@
             }
         });
 
-        new RGraph.SVG.Bar({
+        bar = new RGraph.SVG.Bar({
             id: 'chart-container',
             data: data,
             options: {
+                marginLeft: 75,
+                marginInner: 5,
                 marginRight: 50,
                 marginBottom: 100,
                 colors: ['Gradient(red:red:red:white:white)'],
@@ -65,8 +67,6 @@
                 yaxisTitleSize: 18,
                 yaxisTitleBold: true,
                 labelsAbove: true,
-                marginLeft: 75,
-                marginInner: 5,
                 tooltips: 'This is a tooltip: %{value}',
                 tooltipsCss: {
                     fontSize: '20pt'

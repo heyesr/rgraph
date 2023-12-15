@@ -4412,17 +4412,19 @@ if (properties.backgroundBorder) {
     RGraph.SVG.fireCustomEvent = function (obj, name)
     {
         if (obj && obj.isRGraph) {
-            
-            var uid = obj.uid;
 
-            if (   typeof uid === 'string'
+            if (name.substr(0,2) !== 'on') {
+                name = 'on' + name;
+            }
+
+            if (   typeof obj.uid === 'string'
                 && typeof RGraph.SVG.events === 'object'
-                && typeof RGraph.SVG.events[uid] === 'object'
-                && RGraph.SVG.events[uid].length > 0) {
+                && typeof RGraph.SVG.events[obj.uid] === 'object'
+                && RGraph.SVG.events[obj.uid].length > 0) {
 
-                for(var j=0,len=RGraph.SVG.events[uid].length; j<len; ++j) {
-                    if (RGraph.SVG.events[uid][j] && RGraph.SVG.events[uid][j].event === name) {
-                        RGraph.SVG.events[uid][j].func(obj);
+                for(var j=0,len=RGraph.SVG.events[obj.uid].length; j<len; ++j) {
+                    if (RGraph.SVG.events[obj.uid][j] && RGraph.SVG.events[obj.uid][j].event === name) {
+                        RGraph.SVG.events[obj.uid][j].func(obj);
                     }
                 }
             }
@@ -6941,6 +6943,170 @@ if (properties.backgroundBorder) {
         RGraph.SVG.REG.get('rgraph-svg-runonce-functions')[id] = func;
         
         return func();
+    };
+    //
+    // Produce a rounded rectangle
+    //
+    //  @param options An object of various options
+    //                 for the rectangle:
+    //                   svg:       The SVG tag
+    //                   x:         The X coordinate
+    //                   y:         The Y coordinate
+    //                   width:     The width of the rectangle
+    //                   height:    The height of the rectangle
+    //                   radius:    The radius of the corners. At
+    //                              most this is the minimum of half
+    //                              the width and half the height.
+    //                              This can be a number, an array
+    //                              of a single number or an array
+    //                              of four numbers.
+    //                   stroke:    The stroke colour of the rect
+    //                   fill:      The fill colour of the rect
+    //                   linewidth: The line width of the stroke
+    //
+    // @return The path node (after it has been added to the scene)
+    //
+    // Example usage:
+    //
+    //    var node = RGraph.SVG.roundRect({
+    //        svg: bar.svg,
+    //        attr: {
+    //            x: 100,
+    //            y: 50,
+    //            width: 150,
+    //            height: 200,
+    //            radius: 15,
+    //            stroke: 'black',
+    //            fill: 'yellow',
+    //            linewidth: 1
+    //        }
+    //    });
+    //    
+    RGraph.SVG.roundRect = function (options)
+    {
+        var tl, tr, bl, br;
+        
+        // Allow for the x/y/width/height/radius being specified
+        // outside of the attr object.
+        if (options.attr && options.x)      options.attr.x      = options.x;
+        if (options.attr && options.y)      options.attr.y      = options.y;
+        if (options.attr && options.width)  options.attr.width  = options.width;
+        if (options.attr && options.height) options.attr.height = options.height;
+        if (options.attr && options.radius) options.attr.radius = options.radius;
+        
+        if (!options.x      && RGraph.SVG.isNumber(options.attr.x))      options.x      = options.attr.x;
+        if (!options.y      && RGraph.SVG.isNumber(options.attr.y))      options.y      = options.attr.y;
+        if (!options.width  && RGraph.SVG.isNumber(options.attr.width))  options.width  = options.attr.width;
+        if (!options.height && RGraph.SVG.isNumber(options.attr.height)) options.height = options.attr.height;
+        if (!options.radius && (RGraph.SVG.isNumber(options.attr.radius) || RGraph.SVG.isArray(options.attr.radius)) ) options.radius = options.attr.radius;
+
+        // Determine which corners are to be rounded
+        if (   RGraph.SVG.isNumber(options.radius)
+            || (RGraph.SVG.isArray(options.radius) && options.radius.length < 4 && RGraph.SVG.isNumber(options.radius[0])) ) {
+            
+            if (RGraph.SVG.isArray(options.radius)) {
+                options.radius = options.radius[0];
+            }
+
+            tl = Math.min(options.radius, Math.min(options.width, options.height) / 2);
+            tr = Math.min(options.radius, Math.min(options.width, options.height) / 2);
+            br = Math.min(options.radius, Math.min(options.width, options.height) / 2);
+            bl = Math.min(options.radius, Math.min(options.width, options.height) / 2);
+        
+        // Two numbers given for the radius - top and bottom
+        } else if (RGraph.SVG.isArray(options.radius) && options.radius.length >= 4) {
+            tl = Math.min(options.radius[0], Math.min(options.width, options.height) / 2);
+            tr = Math.min(options.radius[1], Math.min(options.width, options.height) / 2);
+            br = Math.min(options.radius[2], Math.min(options.width, options.height) / 2);
+            bl = Math.min(options.radius[3], Math.min(options.width, options.height) / 2);
+        } else {
+
+            //
+            // Set all the corners to 0
+            //
+            tl = tr = br = bl = 0;
+        }
+        
+        //
+        // Build the path for the rounded rect
+        //
+        var path = 'M {1} {2} '.format(
+            options.x + (options.width / 2),
+            options.y
+        );
+        
+        path += ' ' + RGraph.SVG.TRIG.getArcPath3({
+            cx: options.x + options.width - tr,
+            cy: options.y + tr,
+            start: 0,
+            end: RGraph.SVG.TRIG.HALFPI,
+            radius: tr
+        });
+
+        path += ' ' + RGraph.SVG.TRIG.getArcPath3({
+            cx: options.x + options.width - br,
+            cy: options.y + options.height - br,
+            start: RGraph.SVG.TRIG.HALFPI,
+            end: RGraph.SVG.TRIG.PI,
+            radius: br
+        });
+
+        path += ' ' + RGraph.SVG.TRIG.getArcPath3({
+            cx: options.x + bl,
+            cy: options.y + options.height - bl,
+            start: RGraph.SVG.TRIG.PI,
+            end: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
+            radius: bl
+        });
+
+        path += ' ' + RGraph.SVG.TRIG.getArcPath3({
+            cx: options.x + tl,
+            cy: options.y + tl,
+            start: RGraph.SVG.TRIG.PI + RGraph.SVG.TRIG.HALFPI,
+            end: RGraph.SVG.TRIG.TWOPI,
+            radius: tl
+        });
+
+
+
+
+
+
+
+
+        path += ' ' + path + ' z';
+
+
+
+
+
+        //
+        // Determine the attributes that are applied to the <path>
+        // element if they've been passed.
+        //
+        if (options.attr) {
+            var attr = options.attr;
+            attr.d = path;
+        } else {
+            var attr = {d: path};
+        }
+
+        //
+        // Add the path to the svg
+        //
+        var path = RGraph.SVG.create({
+            svg: options.svg,
+            parent: options.parent ? options.parent : null,
+            type: 'path',
+            attr: attr // Apply the attributes that were defined
+                       // above
+        });
+
+
+
+
+
+        return path;
     };
 
 

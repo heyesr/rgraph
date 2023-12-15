@@ -779,6 +779,186 @@
 
 
 
+            //
+            // Add the ajusting event listeners
+            //
+            if (properties.adjustable) {
+                
+                this.adjusting_mousedown = false;
+                var obj = this;
+                
+                //
+                // Set the parent of the SVG tag (the DIV tag)
+                // to have the pointer-events CSS property to
+                // none so that there's no selection oddities
+                //
+                this.svg.style.pointerEvents = 'none';
+
+
+
+
+
+
+
+                //
+                // The main function that updates the SVG <rect>
+                // element
+                //
+                RGraph.SVG.Bar.adjusting_mousemove_chart_update_function = function (opt)
+                {
+                    if (!opt || !opt.object) {
+                        return;
+                    }
+
+                    var index     = opt.object.getIndexByX(opt.event);
+                    var x         = opt.event.offsetX;
+                    var value     = opt.object.getValue(window.event);
+                    var xaxisY    = opt.object.height - opt.object.get('marginBottom');
+
+                    var barHeight = opt.object.getHeight(value);
+
+
+                    if (RGraph.SVG.isNumber(index)) {
+
+
+
+                        //
+                        // Set the new Cooordinates in the
+                        // coords array
+                        //
+                        opt.object.coords[index].element.setAttribute('y', xaxisY - barHeight);
+                        opt.object.coords[index].element.setAttribute('height', barHeight);
+
+                        //
+                        // Update the y coord and height values held
+                        // in the coords array
+                        //
+                        opt.object.coords[index].y      = xaxisY - barHeight;
+                        opt.object.coords[index].height = barHeight;
+
+                        //
+                        // Update the data-value attribute
+                        //
+                        opt.object.coords[index].element.setAttribute('data-value', value);
+
+                        //
+                        // Update the objects data
+                        //
+                        var data_index    = parseInt(opt.object.coords[index].element.getAttribute('data-index'));
+                        var data_subindex = parseInt(opt.object.coords[index].element.getAttribute('data-subindex'));
+
+                        // Grouped chart
+                        if (RGraph.SVG.isNumber(data_subindex) && data_subindex >= 0) {
+                            opt.object.data[data_index][data_subindex] = value;
+
+                        // Regular chart
+                        } else {
+
+                            opt.object.data[data_index] = value;
+                        }
+                        
+                        opt.object.coords[index].element.setAttribute('data-value',value);
+
+                    }
+                };
+
+
+
+
+
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousedown-listener', function ()
+                {
+                    obj.container.addEventListener('mousedown', function (e)
+                    {
+                        var index = obj.getIndexByX(e);
+    
+                        if (obj.coords && obj.coords[index]) {
+                            obj.adjusting_mousedown = {
+                                object:  obj,
+                                element: obj.coords[index].element,
+                                index:   index,
+                                event:   e
+                            };
+                            
+                            // Add this so that people can get the
+                            // details of the adjusting if they need
+                            // to
+                            obj.adjusting_mousedown_last = obj.adjusting_mousedown;
+                            
+                            // Fire the adjustbegin event
+                            RGraph.SVG.fireCustomEvent(obj, 'adjustbegin');
+                        }
+    
+                        RGraph.SVG.Bar.adjusting_mousemove_chart_update_function(obj.adjusting_mousedown);
+
+                        //
+                        // Redraw the SVG
+                        //
+                        var tmp = obj.adjusting_mousedown;
+                        RGraph.SVG.redraw(obj.svg);
+                        obj.adjusting_mousedown = tmp;
+    
+                    }, false);
+                });
+
+
+
+
+
+
+
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousemove-listener', function ()
+                {
+                    obj.container.addEventListener('mousemove', function (e)
+                    {
+                        if (obj.adjusting_mousedown) {
+
+                            RGraph.SVG.Bar.adjusting_mousemove_chart_update_function(obj.adjusting_mousedown);
+                            
+                            var tmp = obj.adjusting_mousedown;
+                            obj.adjusting_mousedown = null;
+                            RGraph.SVG.redraw(obj.svg);
+                            obj.adjusting_mousedown = tmp;
+    
+                            obj.adjusting_mousedown_last = {
+                                object:  obj,
+                                element: obj.coords[tmp.index].element,
+                                event:   e
+                            };
+
+                            // Fire the beforedraw event
+                            RGraph.SVG.fireCustomEvent(obj, 'adjust');
+                        }
+                    }, false);
+                });
+
+
+
+                RGraph.SVG.runOnce('svg-bar-adjusting-window-mouseup-listener', function ()
+                {
+                    window.addEventListener('mouseup', function (e)
+                    {
+                        for (let i=0,objects=RGraph.SVG.OR.objects; i<objects.length; ++i) {
+                            if (objects[i].adjusting_mousedown) {
+                                // Fire the beforedraw event
+                                RGraph.SVG.fireCustomEvent(objects[i], 'adjustend');
+                                objects[i].adjusting_mousedown = false;
+                            }
+                        }
+                    }, false);
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
             // Draw any custom lines that have been defined
             RGraph.SVG.drawHorizontalLines(this);
 
@@ -799,12 +979,6 @@
                 this.firstDraw = false;
                 RGraph.SVG.fireCustomEvent(this, 'onfirstdraw');
             }
-
-
-
-
-
-
 
             // Fire the draw event
             RGraph.SVG.fireCustomEvent(this, 'ondraw');
@@ -1477,6 +1651,81 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
             y = this.height - properties.marginBottom - y;
 
             return y;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function can be used to retrieve the relevant index
+        // based on the given X coordinate
+        // 
+        // @param int x The X coordinate
+        //
+        this.getIndexByX = function (e)
+        {
+            var x = e.offsetX;
+
+            // Go thru the coords looking for an element wich
+            // fits the X coord (if any).
+            for (let i=0; i<this.coords.length; ++i) {
+                if (x >= this.coords[i].x && x <= (this.coords[i].x + this.coords[i].width)  ) {
+                    return i;
+                }
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function can be used to retrieve the value for the
+        // given coordinate.
+        // 
+        // @param int e The event object
+        //
+        this.getValue = function (e)
+        {
+            var graphHeight = this.height - this.properties.marginTop - this.properties.marginBottom;
+            var coordY      = graphHeight - (e.offsetY - this.properties.marginTop);
+            var value       = ((this.scale.max - this.min) / graphHeight) * coordY;
+
+            // Constrain the value to the maximum and minimum
+            if (value > this.scale.max) value = this.scale.max;
+            if (value < this.scale.min) value = this.scale.min;
+
+            return value;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function can be used to retrieve the height of a
+        // bar for a given value.
+        // 
+        // @param int value The value to get the height for
+        //
+        this.getHeight = function (value)
+        {
+            var graphHeight = this.height - this.properties.marginTop - this.properties.marginBottom;
+            var height      = (graphHeight / (this.scale.max - this.scale.min)) * value;
+
+            return height;
         };
 
 

@@ -376,7 +376,9 @@
             RGraph.SVG.drawTitle(this);
 
 
+            //
             // Ajusting
+            //
             if (properties.adjustable) {
                 
                 this.adjusting_mousedown = false;
