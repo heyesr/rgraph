@@ -510,7 +510,7 @@
             }
 
             // Set the ymin to zero if it's set mirror
-            if (properties.yaxisScaleMin === 'mirror' || properties.yaxisScaleMin === 'middle' || properties.yaxisScaleMin === 'center') {
+            if (properties.yaxisScaleMin === 'mirror' || properties.yaxisScaleMin === 'middle' || properties.yaxisScaleMin === 'center' || this.mirrorScale) {
                 this.mirrorScale = true;
                 var mirrorScale = true;
                 properties.yaxisScaleMin   = 0;
@@ -796,6 +796,13 @@
 
 
 
+                //
+                // Fix the scale
+                //
+                this.properties.yaxisScaleMax = this.scale.max;
+
+
+
 
 
 
@@ -826,20 +833,21 @@
                         // Set the new Cooordinates in the
                         // coords array
                         //
-                        opt.object.coords[index].element.setAttribute('y', xaxisY - barHeight);
-                        opt.object.coords[index].element.setAttribute('height', barHeight);
+                        //opt.object.coords[index].element.setAttribute('y', xaxisY - barHeight);
+                        //opt.object.coords[index].element.setAttribute('height', Math.abs(barHeight));
+
 
                         //
                         // Update the y coord and height values held
                         // in the coords array
                         //
-                        opt.object.coords[index].y      = xaxisY - barHeight;
-                        opt.object.coords[index].height = barHeight;
+                        //opt.object.coords[index].y      = xaxisY - barHeight;
+                        //opt.object.coords[index].height = barHeight;
 
                         //
                         // Update the data-value attribute
                         //
-                        opt.object.coords[index].element.setAttribute('data-value', value);
+                        //opt.object.coords[index].element.setAttribute('data-value', value);
 
                         //
                         // Update the objects data
@@ -858,7 +866,6 @@
                         }
                         
                         opt.object.coords[index].element.setAttribute('data-value',value);
-
                     }
                 };
 
@@ -866,7 +873,7 @@
 
 
 
-                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousedown-listener', function ()
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousedown-listener-' + this.id, function ()
                 {
                     obj.container.addEventListener('mousedown', function (e)
                     {
@@ -907,14 +914,14 @@
 
 
 
-                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousemove-listener', function ()
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousemove-listener-' + this.id, function ()
                 {
                     obj.container.addEventListener('mousemove', function (e)
                     {
                         if (obj.adjusting_mousedown) {
 
                             RGraph.SVG.Bar.adjusting_mousemove_chart_update_function(obj.adjusting_mousedown);
-                            
+
                             var tmp = obj.adjusting_mousedown;
                             obj.adjusting_mousedown = null;
                             RGraph.SVG.redraw(obj.svg);
@@ -926,7 +933,7 @@
                                 event:   e
                             };
 
-                            // Fire the beforedraw event
+                            // Fire the adjust event
                             RGraph.SVG.fireCustomEvent(obj, 'adjust');
                         }
                     }, false);
@@ -934,7 +941,7 @@
 
 
 
-                RGraph.SVG.runOnce('svg-bar-adjusting-window-mouseup-listener', function ()
+                RGraph.SVG.runOnce('svg-bar-adjusting-window-mouseup-listener-' + this.id, function ()
                 {
                     window.addEventListener('mouseup', function (e)
                     {
@@ -1091,7 +1098,7 @@
                         if (this.data[i] < 0) {
                             y = this.getYCoord(0);
                         }
-                    } else if (this.scale.min < 0 && this.scale.max < 0) {
+                    } else if (this.scale.min < 0 && this.scale.max <= 0) {
                         height = (Math.abs(this.data[i]) - Math.abs(this.scale.max)) / (Math.abs(this.scale.min) - Math.abs(this.scale.max)) * this.graphHeight;
                         y = properties.marginTop;
                     }
@@ -1697,9 +1704,22 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
         this.getValue = function (e)
         {
             var graphHeight = this.height - this.properties.marginTop - this.properties.marginBottom;
-            var coordY      = graphHeight - (e.offsetY - this.properties.marginTop);
-            var value       = ((this.scale.max - this.min) / graphHeight) * coordY;
 
+            if (this.mirrorScale) {
+                var coordY = (graphHeight / 2) - (e.offsetY - this.properties.marginTop);
+                var value  = ((this.scale.max - this.min) / graphHeight) * coordY;
+            
+            } else if (properties.yaxisScaleMax === 0 && properties.yaxisScaleMin < 0) {
+                var coordY = graphHeight - (e.offsetY - this.properties.marginTop);
+                var value  = ((this.scale.max - this.min) / graphHeight) * coordY;
+                var value = value - Math.abs(this.scale.min);
+
+            } else {
+
+                var coordY = graphHeight - (e.offsetY - this.properties.marginTop);
+                var value  = (((this.scale.max - this.scale.min) / graphHeight) * coordY) + this.scale.min;
+            }
+            
             // Constrain the value to the maximum and minimum
             if (value > this.scale.max) value = this.scale.max;
             if (value < this.scale.min) value = this.scale.min;
@@ -1722,8 +1742,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
         //
         this.getHeight = function (value)
         {
-            var graphHeight = this.height - this.properties.marginTop - this.properties.marginBottom;
-            var height      = (graphHeight / (this.scale.max - this.scale.min)) * value;
+            var height = (this.graphHeight / (this.scale.max - this.scale.min)) * value;
 
             return height;
         };
