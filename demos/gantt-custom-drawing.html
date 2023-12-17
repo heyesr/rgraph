@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -24,9 +26,9 @@
 
         var data = [
             {start: 10,  duration: 150,  label: 'George', color: colors.main, border: 'transparent', complete: 67, background: colors.background},
-            {start: 40,  duration: 25,  label: 'Jerry',  color: colors.main, border: 'transparent', complete: 48, background: colors.background},
-            {start: 120, duration: 198, label: 'Hanna',  color: colors.main, border: 'transparent', complete: 19, background: colors.background},
-            {start: 240, duration: 47,  label: 'Kim',    color: colors.main, border: 'transparent', complete: 38, background: colors.background}
+            {start: 40,  duration: 25,   label: 'Jerry',  color: colors.main, border: 'transparent', complete: 48, background: colors.background},
+            {start: 120, duration: 198,  label: 'Hanna',  color: colors.main, border: 'transparent', complete: 19, background: colors.background},
+            {start: 240, duration: 47,   label: 'Kim',    color: colors.main, border: 'transparent', complete: 38, background: colors.background}
         ];
 
         var gantt = new RGraph.Gantt({
@@ -40,7 +42,7 @@
                 backgroundGridVlinesCount: 12,
                 textSize: 16,
                 labelsCompleteOffsetx: 10,
-                tooltips: 'This is a tooltip! (%{dataset})',
+                tooltips: 'This is a tooltip! (Dataset: %{dataset})',
                 tooltipsCss: {
                     fontSize: '16pt'
                 },
