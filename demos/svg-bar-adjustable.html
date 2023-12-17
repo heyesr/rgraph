@@ -8,19 +8,37 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>An adjustable SVG Bar chart</h1>
+    <h1>Various adjustable SVG Bar charts</h1>
 
     <div id="rgraph-demo-html">
         <div id="container">
-            <div style="width: 750px; height: 300px" id="chart-container"></div>
+            <div style="width: 750px; height: 300px" id="chart-container1"></div>
+            <input type="text" style="width: 750px; font-size: 20pt" id="out-start" />
+            <input type="text" style="width: 750px; font-size: 20pt" id="out-during" />
+            <input type="text" style="width: 750px; font-size: 20pt" id="out-end" />
+
+            <div style="width: 950px; height: 300px" id="chart-container2"></div>
+            <div style="width: 950px; height: 300px" id="chart-container3"></div>
+            <div style="width: 950px; height: 300px" id="chart-container4"></div>
+            <div style="width: 950px; height: 300px" id="chart-container5"></div>
+            <div style="width: 950px; height: 300px" id="chart-container6"></div>
+            <div style="width: 950px; height: 300px" id="chart-container7"></div>
+            <div style="width: 950px; height: 300px" id="chart-container8"></div>
         </div>
+        
+        <style>
+            input[type=text] {
+                box-shadow: 2px 2px 2px #ddd;
+                margin: 5px;
+            }
+        </style>
     </div>
 
     <script>
-        data = [213,268,542,355,129,785,465,654,123,653,452,584,486];
+        data = [213,268,542,355,129,785,465,654,123,653,452,584,];
 
         new RGraph.SVG.Bar({
-            id: 'chart-container',
+            id: 'chart-container1',
             data: data,
             options: {
                 marginLeft: 75,
@@ -42,30 +60,134 @@
                 labelsAbove: true,
                 adjustable: true
             }
-
-        //
-        // This event fires when adjusting begins
-        //
         }).wave().on('adjustbegin', function (obj)
         {
-            $c(obj.data);
-
-        //
-        // This event fires during adjusting - similar to the
-        // mousemove event
-        //
+            document.getElementById('out-start').value = 
+                `Started adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
+        
         }).on('adjust', function (obj)
         {
-            $c(obj.data);
+            document.getElementById('out-during').value = 
+                `During adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
         
-        //
-        // This event fires when adjusting ends - similar to the
-        // mouseup event
-        //
         }).on('adjustend', function (obj)
         {
-            $c(obj.data);
+            document.getElementById('out-end').value = 
+                `Finished adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
         });
+        
+        
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container2',
+            data: [[4,5,3],[8,1,5],[5,1,3],[9,5,2],[4,7,7],[8,8,5],[2,6,9],[4,9,5],[3,6,4],[8,4,5],[8,4,7],[8,6,3]],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false
+            }
+        }).wave();
+        
+        
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container3',
+            data:[7,5,4,1,4,2,7,4,5,4],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleMin: 'mirror'
+            }
+        }).draw();
+        
+        
+
+
+        bar4 = new RGraph.SVG.Bar({
+            id: 'chart-container4',
+            data: [[2,-3,-5],[-8,4,4],[-5,8,-2]],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScaleMin: 'mirror'
+            }
+        }).draw();
+        
+        
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container5',
+            data:[-20,45,21,-14,77,80,41,-20,58,44],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxisLinewidth: 5,
+                xaxisTickmarks: false,
+                yaxis: false,
+                yaxisScaleMin: -20,
+                yaxisScaleMax: 80
+            }
+        }).draw();
+        
+        
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container6',
+            data: [[-1,0,1],[-2,4,4],[-5,8,-2]],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                yaxis: false,
+                yaxisScaleMin: -15,
+                yaxisScaleMax: 10,
+                labelsAbove: true,
+                labelsAboveUnitsPost: '%'
+            }
+        }).draw();
+        
+        
+
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container7',
+            data: [-3,-4,-1,-6,-4,-7],
+            options: {
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                adjustable: true,
+                marginInner: 15,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                yaxis: false,
+                yaxisScaleMin: -15,
+                yaxisScaleMax: 10,
+                labelsAbove: true,
+                labelsAboveUnitsPost: '%'
+            }
+        }).draw();
     </script>
 
     <script>showSource()</script>
