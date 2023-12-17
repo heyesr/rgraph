@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Horizontal Bar chart showing average times</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="800">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+
+        var data = [
+            [155,52],[162,65],
+            [142,67],[134,68],
+            [157,66],[136,87],
+            [170,70],[131,75],
+            [134,56],[139,44],
+            [89,32], [96,27],
+            [95,24], [99,29],
+            [82,29], [95,27],
+            [105,24],[97,20],
+            [114,22],[101,24],
+            [117,25],[132,21],
+            [134,25],[143,54]
+        ];
+
+        var labels = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+
+        // Draw the chart
+        var bar = new RGraph.HBar({
+            id: 'cvs',
+            data: data,
+            options: {
+                key: ['First Time','Second Time'],
+                keyPosition: 'margin',
+                title: 'Average Time by Hour',
+                xaxisScaleMax: 300,
+                xaxisLabelsCount: 6,
+                backgroundGridVlinesCount: 6,
+                backgroundGrid: true,
+                textSize: 12,
+                textColor: 'gray',
+                xaxisColor: 'gray',
+                yaxisColor: 'gray',
+                marginTop: 60,
+                labelsAbove: true,
+                labelsAboveUnitsPost: 'm',
+                titleSize: 18,
+                titleBold: true,
+                colors: ['red','#0c0'],
+                grouping: 'stacked',
+                yaxisLabels: labels,
+                colorsStroke: 'rgba(0,0,0,0)',
+                labelsInbar: true,
+                labelsInbarColor: 'white',
+                labelsInbarBold: true,
+                labelsInbarOffsety: 2
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

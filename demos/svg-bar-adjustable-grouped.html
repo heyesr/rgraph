@@ -1,0 +1,74 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An adjustable SVG Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="container">
+            <div style="width: 750px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        data = [213,268,542,355,129,785,465,654,123,653,452,584,486];
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                marginLeft: 75,
+                marginInner: 5,
+                marginRight: 50,
+                marginBottom: 100,
+                colors: ['Gradient(red:red:red:white:white)'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+                xaxisTitle: '1994',
+                xaxisTitleBold: true,
+                yaxis: false,
+                yaxisScaleMax: 1000,
+                yaxisTitle: 'Sales for the year',
+                yaxisTitleSize: 18,
+                yaxisTitleBold: true,
+                labelsAbove: true,
+                adjustable: true
+            }
+
+        //
+        // This event fires when adjusting begins
+        //
+        }).wave().on('adjustbegin', function (obj)
+        {
+            $c(obj.data);
+
+        //
+        // This event fires during adjusting - similar to the
+        // mousemove event
+        //
+        }).on('adjust', function (obj)
+        {
+            $c(obj.data);
+        
+        //
+        // This event fires when adjusting ends - similar to the
+        // mouseup event
+        //
+        }).on('adjustend', function (obj)
+        {
+            $c(obj.data);
+        });
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
