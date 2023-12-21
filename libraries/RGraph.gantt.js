@@ -83,7 +83,7 @@
             marginInner:           2,
 
             labelsInbar:            null,
-            labelsInbarBgcolor:     null,
+            labelsInbarBackground:     null,
             labelsInbarAlign:       'left',
             labelsInbarSize:        null,
             labelsInbarFont:        null,
@@ -340,6 +340,14 @@
                 }
 
                 return this;
+            }
+
+            // Fix labelsInBar* name
+            name = name.replace('labelsInBar','labelsInbar');
+
+            // Property name change
+            if (name === 'labelsInbarBgcolor') {
+                name = 'labelsInbarBackground';
             }
 
             properties[name] = value;
@@ -953,8 +961,9 @@
                     text:         label,
                     valign:       'center',
                     halign:       halign,
-                    bounding:     typeof properties.labelsInbarBgcolor == 'string',
-                    boundingFill: typeof properties.labelsInbarBgcolor === 'string' ? properties.labelsInbarBgcolor : null,
+                    bounding:     typeof properties.labelsInbarBackground == 'string',
+                    boundingStroke: 'transparent',
+                    boundingFill: typeof properties.labelsInbarBackground === 'string' ? properties.labelsInbarBackground : null,
                     tag:          'labels.inbar'
                 });
             }

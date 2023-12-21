@@ -488,6 +488,14 @@
 
                 return this;
             }
+            
+            // Fix labelsInBar* name
+            name = name.replace('labelsInBar','labelsInbar');
+            
+            // Property name change
+            if (name === 'labelsInbarBgcolor') {
+                name = 'labelsInbarBackground';
+            }
 
             properties[name] = value;
 
