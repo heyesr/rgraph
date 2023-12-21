@@ -1450,3 +1450,7 @@ div#page-download div#download-button {
     float: none;
     display: none;
 }
+div.page-video p.intro {
+    background-color: #eee;
+    padding: 15px;
+}
