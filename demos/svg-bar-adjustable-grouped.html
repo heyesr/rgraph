@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>An adjustable SVG Bar chart</h1>
+    <h1>An adjustable, grouped SVG Bar chart</h1>
 
     <div id="rgraph-demo-html">
         <div id="container">
@@ -17,17 +17,20 @@
     </div>
 
     <script>
-        data = [213,268,542,355,129,785,465,654,123,653,452,584,486];
+        data = [[213,268],[542,355],[129,785],[465,654],[123,653],[452,584],[486,421]];
 
         new RGraph.SVG.Bar({
             id: 'chart-container',
             data: data,
             options: {
                 marginLeft: 75,
-                marginInner: 5,
+                marginInner: 15,
                 marginRight: 50,
                 marginBottom: 100,
-                colors: ['Gradient(red:red:red:white:white)'],
+                colors: [
+                    'Gradient(red:red:red:white:white)',
+                    'Gradient(blue:blue:blue:white:white)'
+                ],
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
