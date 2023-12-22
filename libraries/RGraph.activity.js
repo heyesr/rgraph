@@ -184,10 +184,10 @@
         // Add the reverse look-up table  for property names
         // so that property names can be specified in any case.
         //
-        this.properties_lowercase = [];
+        this.properties_lowercase_map = [];
         for (var i in this.properties) {
-            if (RGraph.isString(i)) {
-                this.properties_lowercase[i.toLowerCase()] = i;
+            if (typeof i === 'string') {
+                this.properties_lowercase_map[i.toLowerCase()] = i;
             }
         }
 
@@ -225,15 +225,21 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
-            
+
+
+
+
+
+
             // Go through all of the properties and make sure
             // that they're using the correct capitalisation
-            var correctPropertyName = this.properties_lowercase[name.toLowerCase()];
-            
-            if (correctPropertyName && correctPropertyName !== name) {
-                name = correctPropertyName;
-            }
-            
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
+
+
+
+
+
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (
@@ -274,6 +280,10 @@
         //
         this.get = function (name)
         {
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
             return properties[name];
         };
 
