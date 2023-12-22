@@ -179,7 +179,17 @@
 
             clearto:                            'rgba(0,0,0,0)'
         }
-
+        
+        //
+        // Add the reverse look-up table  for property names
+        // so that property names can be specified in any case.
+        //
+        this.properties_lowercase = [];
+        for (var i in this.properties) {
+            if (RGraph.isString(i)) {
+                this.properties_lowercase[i.toLowerCase()] = i;
+            }
+        }
 
         // Check for support
         if (!this.canvas) {
@@ -215,7 +225,14 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
-
+            
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            var correctPropertyName = this.properties_lowercase[name.toLowerCase()];
+            
+            if (correctPropertyName && correctPropertyName !== name) {
+                name = correctPropertyName;
+            }
             
             // Set the colorsParsed flag to false if the colors
             // property is being set
@@ -279,10 +296,14 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+
+
+
+
+            // Translate half a pixel for antialiasing purposes -
+            // but only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // MUST be the first thing done to the canvas!
             //
             if (!this.canvas.__rgraph_aa_translated__) {
                 this.context.translate(0.5,0.5);
