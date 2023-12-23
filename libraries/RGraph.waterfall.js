@@ -306,6 +306,7 @@
             crosshairsColor:                   '#333',
             crosshairsHline:                   true,
             crosshairsVline:                   true,
+            crosshairsLinewidth:               1,
 
             annotatable:                       false,
             annotatableLinewidth:              1,
@@ -1184,6 +1185,55 @@
             }
             
             this.context.stroke();
+        };
+
+
+
+
+
+
+
+
+        //
+        // When you click on the chart, this method can return the
+        // Y value at that point.
+        // 
+        // @param object e The event object
+        //
+        this.getValue = function (arg)
+        {
+            if (arg.length == 2) {
+                var mouseX = arg[0];
+                var mouseY = arg[1];
+            } else {
+                var mouseCoords = RGraph.getMouseXY(arg);
+                var mouseX      = mouseCoords[0];
+                var mouseY      = mouseCoords[1];
+            }
+    
+            var obj = this;
+            var xaxispos =  properties.xaxisPosition;
+    
+            if (mouseY <  properties.marginTop) {
+                return xaxispos === 'bottom' || xaxispos === 'center' ? this.max : this.min;
+            } else if (mouseY > (this.canvas.height -  properties.marginBottom)) {
+                return xaxispos === 'bottom' ? this.min : this.max;
+            }
+
+            if ( properties.xaxisPosition == 'center') {
+                var value = (( (obj.grapharea / 2) - (mouseY -  properties.marginTop)) / obj.grapharea) * (obj.max - obj.min);
+                value *= 2;
+                value > 0 ? value += this.min : value -= this.min;
+                return value;
+            } else if ( properties.xaxisPosition == 'top') {
+                var value = ((obj.grapharea - (mouseY -  properties.marginTop)) / obj.grapharea) * (obj.max - obj.min);
+                value = Math.abs(obj.max - value) * -1;
+                return value;
+            } else {
+                var value = ((obj.grapharea - (mouseY -  properties.marginTop)) / obj.grapharea) * (obj.max - obj.min);
+                value += obj.min;
+                return value;
+            }
         };
 
 
