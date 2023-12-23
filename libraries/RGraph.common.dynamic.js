@@ -1497,9 +1497,10 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                         );
                     }
                 
-                // Draw a horizontal line for bar/line/scatter charts
+                // Draw a horizontal line for bar/line/scatter/waterfall charts
                 } else {
                     if (obj.properties.crosshairsHline) {
+
                         obj.path(
                             'b ld % lw % m % % l % % s %',
                             linedash,
