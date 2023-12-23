@@ -5,14 +5,11 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
     <h1>A switch animation effect</h1>
-
-    <span style="font-weight: bold; color: red;">Requires jQuery</span>
 
     <div id="rgraph-demo-html">
         <div id="canvas-container" style="display: inline-block">
@@ -117,57 +114,49 @@
 
         // This is the click event handler that swaps the canvas tag width/height/opacity
         // CSS properties. It's added using jQuery to BOTH canvas tags.
-        $('canvas').click(function (e)
+        document.getElementById('cvs1').onclick =
+        document.getElementById('cvs2').onclick = function (e)
         {
             var id = e.target.id;
+            var el1 = document.getElementById('cvs1');
+            var el2 = document.getElementById('cvs2');
     
-            // If the canvas that was clicked on was cvs1 then do this
-            // (hide cvs1 and show cvs2)
             if (id === 'cvs1') {
-                $('#cvs1').css({
-                    width: 0,
-                    height: 0,
-                    top: '125px',
-                    left: '300px',
-                    opacity: 0,
-                    transform: 'rotate(180deg)'
-                });
+                // If the canvas that was clicked on was cvs1 then do this
+                // (hide cvs1 and show cvs2)
+                el1.style.width     = 0;
+                el1.style.height    = 0;
+                el1.style.top       = '125px';
+                el1.style.left      = '300px';
+                el1.style.opacity   = 0;
+                el1.style.transform = 'rotate(180deg)';
     
-                $('#cvs2').css({
-                    width: '600px',
-                    height: '250px',
-                    top: 0,
-                    left: 0,
-                    opacity: 1,
-                    transform: 'rotate(0)'
-                });
-
-
-
+                el2.style.width     = '600px';
+                el2.style.height    = '250px';
+                el2.style.top       = 0;
+                el2.style.left      = 0;
+                el2.style.opacity   = 1;
+                el2.style.transform = 'rotate(0)';
 
             // If the canvas that was clicked on was cvs2 then do this
             // (hide cvs2 and show cvs1)
             } else {
     
-                $('#cvs2').css({
-                    width: 0,
-                    height: 0,
-                    top: '125px',
-                    left: '300px',
-                    opacity: 0,
-                    transform: 'rotate(180deg)'
-                });
+                el2.style.width     = 0;
+                el2.style.height    = 0;
+                el2.style.top       = '125px';
+                el2.style.left      = '300px';
+                el2.style.opacity   = 0;
+                el2.style.transform = 'rotate(180deg)';
     
-                $('#cvs1').css({
-                    width: '600px',
-                    height: '250px',
-                    top: 0,
-                    left: 0,
-                    opacity: 1,
-                    transform: 'rotate(0)'
-                });
+                el1.style.width     = '600px';
+                el1.style.height    = '250px';
+                el1.style.top       = 0;
+                el1.style.left      = 0;
+                el1.style.opacity   = 1;
+                el1.style.transform = 'rotate(0)';
             }
-        });
+        }
     </script>
     
     <script>showSource()</script>
