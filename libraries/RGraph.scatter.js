@@ -598,7 +598,9 @@
 
             // Go through all of the properties and make sure
             // that they're using the correct capitalisation
-            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+            if (typeof name === 'string') {
+                name = this.properties_lowercase_map[name.toLowerCase()] || name;
+            }
 
             // Reset the colorsParsed flag if required
             if (   name === 'backgroundVbars'

@@ -177,7 +177,9 @@
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
             // Ensure the correct capitalisation
-            name = this.properties_lowercase[name.toLowerCase()] || name;
+            if (typeof name === 'string') {
+                name = this.properties_lowercase_map[name.toLowerCase()] || name;
+            }
 
             // Set the colorsParsed flag to false if the colors
             // property is being set
