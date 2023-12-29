@@ -111,10 +111,10 @@
         // Add the reverse look-up table  for property names
         // so that property names can be specified in any case.
         //
-        this.properties_lowercase = [];
+        this.properties_lowercase_map = [];
         for (var i in this.properties) {
             if (RGraph.isString(i)) {
-                this.properties_lowercase[i.toLowerCase()] = i;
+                this.properties_lowercase_map[i.toLowerCase()] = i;
             }
         }
 
@@ -212,7 +212,7 @@
         this.get = function (name)
         {
             // Ensure the correct capitalisation
-            name = this.properties_lowercase[name.toLowerCase()] || name;
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
 
             return properties[name];
         };
