@@ -383,6 +383,17 @@
             clearto:                'rgba(0,0,0,0)'
         }
 
+        //
+        // Add the reverse look-up table  for property names
+        // so that property names can be specified in any case.
+        //
+        this.properties_lowercase_map = [];
+        for (var i in this.properties) {
+            if (typeof i === 'string') {
+                this.properties_lowercase_map[i.toLowerCase()] = i;
+            }
+        }
+        
         // Check for support
         if (!this.canvas) {
             alert('[HBAR] No canvas support');
@@ -456,6 +467,10 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (
@@ -516,6 +531,10 @@
         //
         this.get = function (name)
         {
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
             return properties[name];
         };
 
@@ -3526,12 +3545,20 @@
                 // Set this so that we can refer to the object
                 var obj = this;
                 var c = RGraph.arrayClone(this.coords);
-    
+
                 // Call the Spline() function and have it return the
                 // coordinates instead of drawing the line. This way
                 // we can draw the line and fill (if necessary) it
                 // instead of just the line being drawn.
                 var coordinates = Spline(c, {return: true});
+
+                // Add the coordinates of the end of the last
+                // bar to the array of coord that we've got
+                coordinates[0].push([
+                    this.coords[this.coords.length - 1][0] + (properties.yaxisPosition === 'right' ? 0 : this.coords[this.coords.length - 1][2]),
+                    this.coords[this.coords.length - 1][1] + (this.coords[this.coords.length - 1][3] / 2)
+                ]);
+
 
 
 

@@ -199,6 +199,17 @@
         }
 
 
+        //
+        // Add the reverse look-up table  for property names
+        // so that property names can be specified in any case.
+        //
+        this.properties_lowercase_map = [];
+        for (var i in this.properties) {
+            if (typeof i === 'string') {
+                this.properties_lowercase_map[i.toLowerCase()] = i;
+            }
+        }
+
 
         // Easy access to  properties and the path function
         var properties = this.properties;
@@ -224,6 +235,10 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
+
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
 
             
             // Set the colorsParsed flag to false if the colors
@@ -267,6 +282,10 @@
         //
         this.get = function (name)
         {
+            // Go through all of the properties and make sure
+            // that they're using the correct capitalisation
+            name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
             return properties[name];
         };
 

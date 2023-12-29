@@ -10170,12 +10170,13 @@
     RGraph.pathLine = function ()
     {
         var args = RGraph.getArgs(arguments, 'context,coords,moveto,reverse');
-        
+
         if (args.reverse) {
             args.coords = RGraph.arrayReverse(args.coords);
         }
 
         // Path the line
+
         for (var i=0; i<args.coords.length; ++i) {
             if (i === 0 && args.moveto !== false) {
                 args.context.moveTo(args.coords[i][0], args.coords[i][1]);
@@ -10205,7 +10206,7 @@
     RGraph.drawLine = function ()
     {
         var args = RGraph.getArgs(arguments, 'context,coords,moveto,stroke');
-        
+
         // Start
         args.context.beginPath();
         

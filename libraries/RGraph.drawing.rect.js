@@ -110,6 +110,17 @@
         }
 
         //
+        // Add the reverse look-up table  for property names
+        // so that property names can be specified in any case.
+        //
+        this.properties_lowercase = [];
+        for (var i in this.properties) {
+            if (RGraph.isString(i)) {
+                this.properties_lowercase[i.toLowerCase()] = i;
+            }
+        }
+
+        //
         // A simple check that the browser has canvas support
         //
         if (!this.canvas) {
@@ -164,7 +175,10 @@
         this.set = function (name)
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
-            
+
+            // Ensure the correct capitalisation
+            name = this.properties_lowercase[name.toLowerCase()] || name;
+
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (
@@ -207,6 +221,9 @@
         //
         this.get = function (name)
         {
+            // Ensure the correct capitalisation
+            name = this.properties_lowercase[name.toLowerCase()] || name;
+
             return properties[name];
         };
 
