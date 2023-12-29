@@ -1441,6 +1441,46 @@ div#page-download div#download-button {
     font-size: 20pt;
 }
 
+
+div#page-common-right-floated-donate-container {
+    float: right;
+    text-align: center;
+    width: 200px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    background-image: linear-gradient(90deg,#eee, #eee);
+    border-radius: 15px;
+    position: relative;
+    line-height: 25px;
+    margin-bottom: 20px;
+}
+div#page-common-right-floated-donate-container form {
+    line-height: 15px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+div#page-common-right-floated-donate-container form input[type=submit] {
+    border: 0;
+    background-color: none;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 12pt;
+    cursor: pointer;
+    color: #00c;
+}
+div#page-common-right-floated-donate-container span {
+    background-color: #0a0;
+    padding: 0 25px 0 25px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+    line-height: 45px;
+}
+
+div#page-common-right-floated-donate-container span  b{
+    color: white;
+}
+
 #page-reference-index .contents-list-container {
     width: 33%;
     float: left;

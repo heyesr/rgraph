@@ -138,6 +138,14 @@
     #advantages-largescreen{
         display:none;
     }
+
+    div#page-common-right-floated-donate-container {
+        float: none;
+        fposition: relative;
+        width: calc(100% - 50px);
+        margin-left: 25px;
+        margin-right: 25px;
+    }
 }
 
 
