@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart configured as a Histogram</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [0,1,3,4,4,5,5,6,6,6,7,7,8,7,8,9,6,4,3,1,1,2,1,1],
+            options: {
+                marginLeft: 60,
+                marginbottom: 60,
+                marginInner: 0,
+                xaxis: false,
+                backgroundGrid: false,
+                xaxisTitle: 'Tickets logged by hour of day',
+                xaxisTitleOffsety: 15,
+                xaxisTitleSize: 20,
+                yaxisTitleSize: 20,
+                yaxisTitle: 'Frequency',
+                yaxistickmarkslastbottom: false
+            }
+        }).draw();
+        
+        new RGraph.Drawing.XAxis({
+            id: 'cvs',
+            y: 190,
+            options: {
+                marginLeft: 60,
+                xaxisScale: true,
+                xaxisScaleMax: 24,
+                xaxisScaleLabelsCount: 4,
+                xaxisTickmarksCount: 4,
+                xaxisScaleUnitsPost: ':00',
+                xaxistickmarkslastleft: false
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
