@@ -22,13 +22,9 @@
         obj       = null;
         obj2      = null;
         data      = [];
-        l         = 0; // The letter 'L' - NOT a one
         numvalues = 1200;
-        updates   = 0;
-        clipValue = 50;
-
-
-
+        clipValue = 25;
+        delay     = 16.666;
 
         // Pre-pad the data array with null values
         for (var i=0; i<numvalues; ++i) {
@@ -67,7 +63,6 @@
                         xaxisTickmarksCount: 0,
                         yaxisLabelsCount: 5,
                         yaxis: false,
-                        //yaxisScaleMax: 250,
                         xaxisTickmarksCount: 6,
                         xaxisTitle: 'Last 60 seconds',
                         xaxisTitleItalic: true,
@@ -76,10 +71,7 @@
                         marginTop: 45
                     }
                 }).on('beforedraw', function (obj)
-                {
-                    // Get the context with alpha turned off
-                    obj.context = obj.canvas.getContext('2d', {alpha: false});
-                    
+                {                    
                     // Clear the canvas to a solid white color
                     RGraph.clear(obj.canvas, 'white');
                     
@@ -133,9 +125,6 @@
                 // Install clipping before the chart is drawn
                 }).on('beforedraw', function (obj)
                 {
-                    // Get the context with alpha turned off
-                    obj.context = obj.canvas.getContext('2d', {alpha: false});
-
                     // Get the Y coordinate at which to clip to
                     var boundary = obj.getYCoord(clipValue) || obj.properties.marginTop;
 
@@ -175,14 +164,18 @@
             // Set the new data on the charts
             obj.original_data[0]  = data;
             obj2.original_data[0] = data;
-            
+
+
+
+
             // Redraw the two charts
             RGraph.redraw();
-            
-            // Call this function again after a few milliseconds
-            setTimeout(drawGraph, 16.666);
 
-            updates++;
+
+
+
+            // Call this function again after a few milliseconds
+            setTimeout(drawGraph, delay);
         }
     
         drawGraph();
