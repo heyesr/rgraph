@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic, black and white line chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [4,5,4,3,8,4,9,5,6,7,4,8,8,9,7,8,9,12,10,11,14,12,13,15,12,15,16,13,15],
+                [8,6,4,5,1,3,5,4,8,6,4,3,5,8,4,6,4,9,5,1,2,3,4,5,6,8,4,8,8],
+            ],
+            options: {
+                colors: ['black','black'],
+                backgroundGridVlines: false,
+                shadow: false,
+                title: 'Power lever angle',
+                xaxisTickmarksCount: 4,
+                xaxisTickmarksLength: 5,
+                yaxisTickmarksLength: 5,
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4'],
+                xaxisLabelsPosition: 'section',
+                xaxisLabelsOffsety: 3,
+                marginTop: 40,
+                responsive: [
+                    {maxWidth:900, width:400, height:150, options: {tickmarksStyle: null,textSize: 14}},
+                    {maxWidth:null, width:750, height:250, options: {tickmarksStyle: 'filledcircle',textSize:18}}
+                ]
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
