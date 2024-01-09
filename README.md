@@ -9,7 +9,7 @@ canvas only.
 
 Now it has support for over 60 responsive chart types across SVG and canvas, multiple data source import
 capability (including CSV files, Google Sheets, AJAX and documentation for using server data), animations,
-JSON and AJAX support and more besides. RGraph is licensed using the MIT license. When it was started  in 2008 it used SVN for source control and was moved on to GitHub in 2021.
+JSON and AJAX support and more besides. RGraph is licensed using the GPLv2 and an inexpensive commercial license. When it was started  in 2008 it used SVN for source control and was moved on to GitHub in 2021.
 
 <br clear="all" />
     
