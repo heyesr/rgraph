@@ -1,11 +1,13 @@
-    // o--------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:               |
-    // |                                                                                |
-    // |                         https://www.rgraph.net                                 |
-    // |                                                                                |
-    // | RGraph is licensed under the Open Source MIT license. That means that it's     |
-    // | totally free to use and there are no restrictions on what you can do with it!  |
-    // o--------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:                |
+    // |                                                                                 |
+    // |                       https://www.rgraph.net/license.html                       |
+    // |                                                                                 |
+    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
+    // | free to use and there are no restrictions on what you can use RGraph for!       |
+    // | If the GPL license does not suit you however, then there's an inexpensive       |
+    // | commercial license option avaiilable. See the URL above for more details.       |
+    // o---------------------------------------------------------------------------------o
 
     RGraph              = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
     RGraph.Effects      = RGraph.Effects || {};
