@@ -2477,8 +2477,16 @@
 
                 // Now draw the X labels for the left hand side
                 if (properties.leftVisible || properties.rightVisible) {
-                    for (var i=0; i<this.scale2.labels.length; ++i) {
-                        
+                    
+                    // Determine how many labels ther are
+                    var len = this.scale2.labels.length;
+                    if (this.properties.xaxisScaleSpecific && this.properties.xaxisScaleSpecific.length) {
+                        len = (this.properties.xaxisScaleSpecific.length);
+                        this.properties.xaxisScaleZerostart = false;
+                    }
+
+                    for (var i=0; i<len; ++i) {
+
                         // Draw the scale for the left-hand-side
                         if (properties.leftVisible) {
                             RGraph.text({
@@ -2491,17 +2499,21 @@
                                 italic: textConf.italic,
                                 color:  textConf.color,
         
-                                x:      this.marginLeft + ((grapharea / this.scale2.labels.length) * i) - properties.xaxisLabelsOffsetx,
+                                x:      this.marginLeft + ((grapharea / (!RGraph.isNull(this.properties.xaxisScaleSpecific) ? len - 1 : len)) * i) - properties.xaxisLabelsOffsetx,
                                 y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
                                 
-                                text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[this.scale2.values.length - i - 1]) : this.scale2.labels[this.scale2.labels.length - i - 1],
+                                text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string') ? this.properties.xaxisScaleSpecific[i] : (typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[len - i - 1]) : this.scale2.labels[len - i - 1]),
                                 
                                 valign: 'top',
                                 halign: 'center',
                                 tag:    'scale'
                             });
                         }
-    
+
+                        if (RGraph.isArray(this.properties.xaxisScaleSpecific)) {
+                            var reversed_labels = this.properties.xaxisScaleSpecific.toReversed();
+                        }
+
     
     
     
@@ -2517,11 +2529,12 @@
                                 italic: textConf.italic,
                                 color:  textConf.color,
         
-                                x:      this.marginLeft+ grapharea + properties.marginCenter + ((grapharea / this.scale2.labels.length) * (i + 1)) + properties.xaxisLabelsOffsetx,
+                                x:      this.marginLeft + grapharea + properties.marginCenter + ((grapharea / (!RGraph.isNull(this.properties.xaxisScaleSpecific) ? len - 1 : len) ) * (i + (RGraph.isArray(this.properties.xaxisScaleSpecific) ? 0 : 1) )) + properties.xaxisLabelsOffsetx,
                                 y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
-                                
-                                text:   this.scale2.labels[i],
-                                text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[i]) : this.scale2.labels[i],
+
+                                text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string')
+                                            ? reversed_labels[i]
+                                            : (typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[i]) : this.scale2.labels[i]),
                                 
                                 valign: 'top',
                                 halign: 'center',
