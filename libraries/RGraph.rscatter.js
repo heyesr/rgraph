@@ -290,7 +290,7 @@
         //
         for (var i=0,idx=0; i<this.data.length; ++i) {
             for (var j=0,len=this.data[i].length; j<len; j+=1,idx+=1) {
-                this['$' + idx] = {}
+                this['$' + idx] = {};
             }
         }
 
