@@ -1,4 +1,4 @@
-@media screen and (max-width: 1200px){
+    @media screen and (width <= 1200px){
     img#github-share {
         display:none;
     }
@@ -14,7 +14,14 @@
     }
 }
 
-@media screen and (max-width: 1200px){
+
+@media screen and (width <= 1215px){
+    #page-index-chart-types-image {
+        float: none !important;
+    }
+}
+
+@media screen and (width <= 1200px){
     p#floated-para {
         display:none;
     }
@@ -90,22 +97,22 @@
 
 
 
-@media only screen and (max-width: 950px){
-    #sidebar-background-images-first,
-    #sidebar-background-images-second,
-    #sidebar-background-images-third,
-    #sidebar-background-images-fourth,
-    #sidebar-background-images-fifth {
-        background-attachment:scroll;
+@media only screen and (width <= 950px){
+}
+
+
+
+@media only screen and (width <= 900px){
+    div#page-common-right-floated-information-bar {
+        display: none;
+    }
+    
+    div#main-body-container {
+        padding-right: 20px !important;
     }
 }
 
-
-
-@media only screen and (max-width: 900px){
-}
-
-@media screen and (max-width: 875px){
+@media screen and (width <= 875px){
     h1 {
         font-size:2.5em;
     }
@@ -123,7 +130,7 @@
 
 
 
-@media screen and (min-width: 700px){
+@media screen and (width >= 700px){
     #advantages-smallscreen{
         display:none;
     }
@@ -131,25 +138,17 @@
         display:inline;
     }
 }
-@media screen and (max-width: 700px){
+@media screen and (width <= 700px){
     #advantages-smallscreen{
         display:inline;
     }
     #advantages-largescreen{
         display:none;
     }
-
-    div#page-common-right-floated-donate-container {
-        float: none;
-        fposition: relative;
-        width: calc(100% - 50px);
-        margin-left: 25px;
-        margin-right: 25px;
-    }
 }
 
 
-@media screen and (max-width: 650px){
+@media screen and (width <= 650px){
     #header-image {
         display: none;
     }
@@ -158,19 +157,19 @@
     }
 }
 
-@media screen and (max-width: 600px){
+@media screen and (width <= 600px){
     div#frontpage-latest-version-large{
         display:none;
     }
 }
 
-@media screen and (max-width: 600px){
+@media screen and (width <= 600px){
     .news-item-images{
         margin-right:none;float:none;
     }
 }
 
-@media screen and (max-width: 500px){
+@media screen and (width <= 500px){
     #aboutpage img#author-photo-smallscreen{
         display:none!important;
     }
@@ -182,7 +181,7 @@
     }
 }
 
-@media screen and (max-width: 450px){
+@media screen and (width <= 450px){
     img#front-page-rgraph-logo-text{
         display:none;
     }
@@ -191,10 +190,10 @@
     }
 }
 
-@media screen and (max-width: 400px){
+@media screen and (width <= 400px){
     
 }
 
-@media screen and (max-width: 350px){
+@media screen and (width <= 350px){
     
 }
