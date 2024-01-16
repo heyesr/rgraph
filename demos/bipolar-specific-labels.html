@@ -1,0 +1,35 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic Bipolar chart with specific labels</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="900" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: [355,255,466,844,945,844,155],
+            right: [153,425,684,514,645,846,165],
+            options: {
+                backgroundGridVlines: false,
+                xaxis: false,
+                xaxisScaleSpecific: ['High','Medium','Low','None'],
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 18
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+    
+</body>
+</html>
