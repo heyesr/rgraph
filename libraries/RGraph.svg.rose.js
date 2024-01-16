@@ -401,16 +401,16 @@
 
 
             // Allow the user to override the calculated centerx/y/radius
-            this.centerx = typeof properties.centerx === 'number' ? properties.centerx : this.centerx;
-            this.centery = typeof properties.centery === 'number' ? properties.centery : this.centery;
-            this.radius  = typeof properties.radius  === 'number' ? properties.radius  : this.radius;
+            this.centerx = (typeof properties.centerx === 'number' ? properties.centerx : this.centerx);
+            this.centery = (typeof properties.centery === 'number' ? properties.centery : this.centery);
+            this.radius  = (typeof properties.radius  === 'number' ? properties.radius  : this.radius);
             
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
             if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centerx);
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centery);
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
 
 
 

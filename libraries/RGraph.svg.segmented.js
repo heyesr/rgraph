@@ -259,9 +259,9 @@
 
 
             // Allow the user to override the calculated centerx/y/radius
+            this.radius  = typeof properties.radius  === 'number' ? properties.radius  : this.radius;
             this.centerx = typeof properties.centerx === 'number' ? properties.centerx : this.centerx;
             this.centery = typeof properties.centery === 'number' ? properties.centery : this.centery;
-            this.radius  = typeof properties.radius  === 'number' ? properties.radius  : this.radius;
 
             //
             // Allow the centerx/centery/radius to be a plus/minus
