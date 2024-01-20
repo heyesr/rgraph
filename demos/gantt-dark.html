@@ -12,18 +12,18 @@
     <h1>A basic Gantt chart</h1>
     
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="1100" height="300" style="background-color: black">[No canvas support]</canvas>
+        <canvas id="cvs" width="1000" height="300" style="background-color: black">[No canvas support]</canvas>
     </div>
 
     <script>
         worked = [
-            [0,1,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,0,1,0,1,1,0,0],
             [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
-            [0,1,1,0,1,0,0,0,1,0,0,0,0,1,0,1,1,0,1,1,0,1,0,1],
-            [0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,1],
-            [1,1,1,1,0,0,1,1,0,1,0,1,0,0,1,1,1,0,0,1,0,0,0,0],
-            [0,1,0,1,1,1,1,0,1,0,0,1,1,1,0,1,0,1,0,1,0,1,0,1],
-            [1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1]
+            [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         ];
 
         data_bg = [];
@@ -43,15 +43,14 @@
                         color: '#333'
                     });
 
-                if (v2) {
-                    row.push({
-                        start: k2,
-                        duration: 1,
-                        complete: 100,
-                        color: '#0c0',
-                        label: RGraph.DAYS_LONG[k]
-                    });
-                }
+                row.push({
+                    start: k2,
+                    duration: 1,
+                    complete: v2 ? 100 : 0,
+                    color: '#0c0',
+                    background:'#333',
+                    label: RGraph.DAYS_LONG[k]
+                });
             });
             
             data.push(row);
@@ -76,7 +75,11 @@
                 backgroundColor: 'black',
                 colorsDefault: 'black',
                 title: 'Completed work hours for X corp',
-                titleOffsety: 10
+                titleOffsety: 10,
+                xaxisLabels:[
+                    '00','01','02','03','04','05','06','07','08','09','10','11',
+                    '12','13','14','15','16','17','18','19','20','21','22','23',
+                ],
             }
         }).on('draw', function (obj)
         {
@@ -107,10 +110,6 @@
                 cornersRoundRadius: 100,
                 labelsComplete: false,
                 backgroundGrid: false,
-                xaxisLabels:[
-                    '00','01','02','03','04','05','06','07','08','09','10','11',
-                    '12','13','14','15','16','17','18','19','20','21','22','23',
-                ],
                 xaxisLabelsSize: 16
             }
         }).on('draw', function (obj)
