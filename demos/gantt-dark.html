@@ -58,51 +58,14 @@
         });
 
 
-        // The background Gantt chart
-        new RGraph.Gantt({
-            id: 'cvs',
-            data: data_bg,
-            options: {
-                marginLeft: 150,
-                marginTop: 45,
-                textSize: 20,
-                textColor: 'white',
-                xaxisScaleMax: 24,
-                corners: 'round',
-                cornersRoundRadius: 25,
-                labelsComplete: false,
-                backgroundGrid: false,
-                backgroundColor: 'black',
-                colorsDefault: 'black',
-                title: 'Completed work hours for X corp',
-                titleOffsety: 10,
-                xaxisLabels:[
-                    '00','01','02','03','04','05','06','07','08','09','10','11',
-                    '12','13','14','15','16','17','18','19','20','21','22','23',
-                ],
-            }
-        }).on('draw', function (obj)
-        {
-            for (var i=0; i<obj.coords.length; ++i) {
-                var x = obj.coords[i][0],
-                    y = obj.coords[i][1],
-                    w = obj.coords[i][2],
-                    h = obj.coords[i][3];
-                
-                obj.path(
-                    'b lw 2 rr % % % % 5 s black',
-                    x+1, y+1, w-2, h-2
-                );
-            }
-        }).draw();
-
-
         gantt = new RGraph.Gantt({
             id: 'cvs',
             data: data,
             options: {
                 marginTop: 45,
                 marginLeft: 150,
+                marginBottom: 5,
+                marginRight: 5,
                 textSize: 20,
                 textColor: 'white',
                 xaxisScaleMax: 24,
@@ -110,10 +73,13 @@
                 cornersRoundRadius: 100,
                 labelsComplete: false,
                 backgroundGrid: false,
-                xaxisLabelsSize: 16
+                xaxisLabelsSize: 16,
+                title: 'Completed work hours for X corp',
+                titleOffsety: 10,
             }
         }).on('draw', function (obj)
         {
+            // Make all of the rects look rounded
             for (var i=0; i<obj.coords.length; ++i) {
                 var x = obj.coords[i][0],
                     y = obj.coords[i][1],
