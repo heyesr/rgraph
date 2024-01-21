@@ -1,0 +1,169 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A timesheet-style dynamic Gantt chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="1000" height="300" style="background-color: black">[No canvas support]</canvas><br />
+        <button style="font-size: 20pt; cursor: pointer" onclick="if (confirm('Are you sure that you want to reset the data')) {reset();RGraph.redraw();location.href = location.href;}">Reset</button>
+    </div>
+
+    <script>    
+        // The "raw" original data (that could, for example,
+        // come from a server
+        function load ()
+        {
+            if (window.localStorage && window.localStorage['gantt-hourly-data'] && RGraph.isArray(JSON.parse(localStorage['gantt-hourly-data']))) {
+
+                var worked = JSON.parse(window.localStorage['gantt-hourly-data']);
+
+            } else {
+
+                var worked = [
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                ];
+            }
+    
+            // Init this
+            var data = [];
+            
+            worked.forEach(function (v, k, arr)
+            {
+                // New row
+                var row = [];
+    
+                // Go through each "row" of data and create the
+                // require array of objects for the Gantt chart
+                worked[k].forEach(function (v2,k2,arr2)
+                {
+                    // Once saved the element is an object - NOT a
+                    // number - so account for that
+                    if (RGraph.isObject(v2) && RGraph.isNumber(v2.complete)) {
+                        v2 = v2.complete;
+                    }
+
+                    row.push({
+                        start: k2,
+                        duration: 1,
+                        complete: v2 ? 100 : 0,
+                        color: '#0c0',
+                        background:'#333',
+                        label: RGraph.DAYS_LONG[k]
+                    });
+                });
+                
+                data.push(row);
+            });
+            
+            return data;
+        }
+
+
+
+
+        function save (data)
+        {
+            window.localStorage['gantt-hourly-data'] = JSON.stringify(data);
+        }
+
+
+
+
+        function reset ()
+        {
+            window.localStorage['gantt-hourly-data'] = null;
+        }
+
+
+
+
+        // Create the Gantt chart
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: load(),
+            options: {
+                marginTop: 45,
+                marginLeft: 150,
+                marginBottom: 35,
+                marginRight: 5,
+                textSize: 20,
+                textColor: 'white',
+                xaxisScaleMax: 24,
+                corners: 'round',
+                cornersRoundRadius: 100,
+                labelsComplete: false,
+                backgroundGrid: false,
+                xaxisLabelsSize: 16,
+                title: 'Completed work hours for X corp',
+                titleOffsety: 10,
+                xaxisLabels: [
+                    '00','01','02','03','04','05','06','07','08','09','10','11',
+                    '12','13','14','15','16','17','18','19','20','21','22','23'
+                ]
+            }
+        }).on('draw', function (obj)
+        {
+            // Make all of the rects look rounded
+            for (var i=0; i<obj.coords.length; ++i) {
+                var x = obj.coords[i][0],
+                    y = obj.coords[i][1],
+                    w = obj.coords[i][2],
+                    h = obj.coords[i][3];
+                
+                obj.path(
+                    'b lw 2 rr % % % % 5 s black',
+                    x+1, y+1, w-2, h-2
+                );
+            }
+        }).draw().on('mousemove', function (e)
+        {
+            var obj   = e.target.__object__;
+            var shape = obj.getShape(e);
+
+            // Set the cursor to the pointer
+            if (shape) {
+                return true;
+            }
+
+        }).on('click', function(e)
+        {
+            var obj     = e.target.__object__;
+            var shape   = obj.getShape(e);
+            var dataset = shape.dataset;
+            var index   = shape.index;
+            var on      = obj.data[dataset][shape.index].complete > 0;
+
+
+            // Turn the hour "off"
+            if (on) {
+                obj.data[dataset][index].complete = 0;
+            
+            // Turn the hour "on"
+            } else {
+                obj.data[dataset][index].complete = 100;
+            }
+            
+            RGraph.redraw();
+
+            save(obj.data);
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>
