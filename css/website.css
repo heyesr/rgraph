@@ -752,9 +752,7 @@ div#front-page-download-buttons span#download-button {
     position: relative;
     margin: -10px 10px 10px 10px;
     background-color: #0b0;
-    -background-image: linear-gradient(225deg, #060, #0a0);
-    transition: transform linear .25s;
-    width: 200px;
+    width: 150px;
     box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
@@ -770,7 +768,7 @@ div#front-page-download-buttons span#front-page-setup-introduction-button {
     background-color: #f00;
     -background-image: linear-gradient(225deg, #c00, #f00);
     transition: transform linear .25s;
-    width: 200px;
+    width: 150px;
     box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
