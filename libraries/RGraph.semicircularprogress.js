@@ -463,11 +463,14 @@
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.width   === 'number') this.width   = properties.width;
-            
-            // Allow specify the centerx/centery/radius as a string for adjustments
-            if (RGraph.isString(properties.centerx)) this.centerx += Number(properties.centerx);
-            if (RGraph.isString(properties.centery)) this.centery += Number(properties.centery);
-            if (RGraph.isString(properties.radius))  this.radius  += Number(properties.radius);
+
+            //
+            // Allow the centerx/centery/radius to be a plus/minus
+            //
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += Number(properties.radius);
+            if (typeof properties.width   === 'string' && properties.width.match(/^\+|-\d+$/) )   this.width   += Number(properties.width);
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += Number(properties.centerx);
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += Number(properties.centery);
 
             this.coords = [];
 

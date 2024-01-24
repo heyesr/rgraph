@@ -367,7 +367,14 @@
             if (properties.key && properties.key.length > 0 && this.canvas.width > this.canvas.height) this.centerx = 5 + this.radius;
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
-    
+
+
+            //
+            // Allow the centerx/centery/radius to be a plus/minus
+            //
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
             
             //
             // Allow custom setting of the radius

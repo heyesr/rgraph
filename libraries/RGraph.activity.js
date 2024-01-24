@@ -376,6 +376,14 @@
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.radius  === 'number') this.radius  = properties.radius;
+            
+            //
+            // Allow the centerx/centery/radius to be a plus/minus
+            //
+
+            if (typeof this.properties.radius  === 'string' && this.properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(this.properties.radius);
+            if (typeof this.properties.centerx === 'string' && this.properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(this.properties.centerx);
+            if (typeof this.properties.centery === 'string' && this.properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(this.properties.centery);
 
             // The width variable is the width of an individual ring
             this.width = typeof properties.width === 'number' ? properties.width : ((this.radius * 0.75) / this.value.length);

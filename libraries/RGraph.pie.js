@@ -470,6 +470,14 @@
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
 
+
+            //
+            // Allow the centerx/centery/radius to be a plus/minus
+            //
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
+
     
             if (this.radius <= 0) {
                 return;

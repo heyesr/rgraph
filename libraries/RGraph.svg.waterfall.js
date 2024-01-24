@@ -312,6 +312,8 @@
             titleFont:            null,
             titleBold:            null,
             titleItalic:          null,
+            titleOffsetx:         0,
+            titleOffsety:         0,
 
             titleSubtitle:        null,
             titleSubtitleSize:    null,
