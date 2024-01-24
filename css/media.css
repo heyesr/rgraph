@@ -1,6 +1,6 @@
-    @media screen and (width <= 1200px){
-    img#github-share {
-        display:none;
+@media screen and (width <= 1215px){
+    #page-index-chart-types-image {
+        display: none;
     }
     
     ul#front-page-advantages-list {
@@ -14,10 +14,9 @@
     }
 }
 
-
-@media screen and (width <= 1215px){
-    #page-index-chart-types-image {
-        float: none !important;
+@media screen and (width <= 1200px){
+    img#github-share {
+        display:none;
     }
 }
 
