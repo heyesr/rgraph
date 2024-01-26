@@ -31,12 +31,26 @@
     </div>
 
     <script>
-        new RGraph.SVG.Waterfall({
+        function getTotal ()
+        {
+            return w.data[w.data.length - 1];
+        }
+
+        w = new RGraph.SVG.Waterfall({
             id: 'chart-container',
             data: [4,8,6,6,5,6,3],
             options: {
 
-                tooltips: '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                tooltips: [
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Results for %{property:xaxisLabels[%{index}]}</h2> %{list}',
+                    '<h2>Total: %{function:getTotal()}</h2>'
+                ],
                 tooltipsEffect: 'none',
                 
                 // The type of the list (ordered or unordered)
@@ -64,18 +78,7 @@
                 title: 'A demonstration of a tooltip list',
                 titleBold: true
             }
-        }).draw().on('tooltip', function (obj)
-        {
-            // Hide the tooltip for the total column
-            var e   = window.event;
-            var idx = e.target.getAttribute('data-index');
-
-            if ((parseInt(idx) + 1) === obj.data.length) {
-
-                RGraph.SVG.removeHighlight();
-                RGraph.SVG.hideTooltip();
-            }
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>
