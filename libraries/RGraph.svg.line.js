@@ -358,7 +358,7 @@
             keyLabelsFont:  null,
             keyLabelsColor:  null,
             
-            dasharray: [1,0],
+            dasharray: null,
             dashed: false,
             dotted: false,
             
@@ -376,7 +376,7 @@
             nullBridge:                 false,
             nullBridgeLinewidth:        null,
             nullBridgeColors:           null, // Can be null, a string or an object
-            nullBridgeDashArray:        [5,5]
+            nullBridgeDashArray:        null
         };
 
         //
@@ -1218,7 +1218,7 @@
                         stroke: properties['colors'][index],
                         'fill':'none',
                         'stroke-width':  this.hasMultipleDatasets && properties.filled && properties.filledAccumulative ? 0.1 : (RGraph.SVG.isArray(properties.linewidth) ? properties.linewidth[index] : properties.linewidth + 0.01),
-                        'stroke-dasharray': properties.dasharray,
+                        'stroke-dasharray': properties.dasharray ? properties.dasharray : '',
                         'stroke-linecap': this.getLinecap({index: index}),
                         'stroke-linejoin': this.getLinejoin({index: index}),
                         filter: properties.shadow ? 'url(#dropShadow)' : '',
@@ -1249,7 +1249,7 @@
                         d: path2,
                         stroke: properties.colors[index],
                         'fill':'none',
-                        'stroke-dasharray': properties.dasharray,
+                        'stroke-dasharray': properties.dasharray ? properties.dasharray : '',
                         'stroke-width': this.hasMultipleDatasets && properties.filled && properties.filledAccumulative ? 0.1 : (RGraph.SVG.isArray(properties.linewidth) ? properties.linewidth[index]: properties.linewidth + 0.01),
                         'stroke-linecap': this.getLinecap({index: index}),
                         'stroke-linejoin': this.getLinejoin({index: index}),
@@ -1608,7 +1608,7 @@
                             d: path,
                             stroke: color,
                             'fill':'none',
-                            'stroke-dasharray': properties.dasharray,
+                            'stroke-dasharray': properties.dasharray ? properties.dasharray : '',
                             'stroke-width':  linewidth + 0.01,
                             'stroke-linecap': this.getLinecap({index: i}),
                             'stroke-linejoin': this.getLinejoin({index: i}),
@@ -1669,7 +1669,7 @@
                             d: path,
                             stroke: color,
                             'fill':'none',
-                            'stroke-dasharray': properties.dasharray,
+                            'stroke-dasharray': properties.dasharray ? properties.dasharray : '',
                             'stroke-width':  linewidth + 0.01,
                             'stroke-linecap': this.getLinecap({index: i}),
                             'stroke-linejoin': this.getLinejoin({index: i}),
@@ -2510,7 +2510,7 @@
                     fill: 'rgba(0,0,0,0)',
                     stroke: color,
                     'stroke-width': linewidth,
-                    'stroke-dasharray': dasharray,
+                    'stroke-dasharray': dasharray ? dasharray : '',
                     
                     'class': 'rgraph_line_{1}_trendline_{2}'.format(
                         this.id,
@@ -2596,7 +2596,7 @@
                                             ? properties.nullBridgeColors
                                             : ((typeof properties.nullBridgeColors === 'object' && !RGraph.SVG.isNull(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx]),
                                 'fill': 'transparent',
-                                'stroke-dasharray': properties.nullBridgeDashArray,
+                                'stroke-dasharray': properties.nullBridgeDashArray ? properties.nullBridgeDashArray : '',
                                 'stroke-width':  typeof properties.nullBridgeLinewidth === 'number' ? properties.nullBridgeLinewidth : properties.linewidth,
                                 'stroke-linecap': this.getLinecap({index: i}),
                                 'stroke-linejoin': this.getLinejoin({index: i}),
