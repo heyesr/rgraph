@@ -2234,7 +2234,8 @@
 
             // Reset the line dash
             if (typeof args.object.context.setLineDash == 'function') {
-                args.object.context.setLineDash([1,0]);
+                //args.object.context.setLineDash([1, 0]); // Old
+                args.object.context.setLineDash([]); // New - should be faster
             }
     
             args.object.context.stroke();
@@ -2274,7 +2275,8 @@
                 );
                 
                 // Reset the linedash
-                args.object.context.setLineDash([1,0]);
+                //args.object.context.setLineDash([1,0]);  // Old
+                args.object.context.setLineDash([]);// New - should be faster
             }
 
 
@@ -7717,7 +7719,7 @@
 
             // Draw the axis
             obj.path(
-                'lw % b m % % l % % s %',
+                'lc square lw % b m % % l % % s %',
                 properties.xaxisLinewidth,
                 properties.marginLeft - (isSketch ? 5 : 0),
                 
@@ -8375,7 +8377,7 @@
 
             // Draw the axis
             obj.path(
-                'lw % b m % % l % % s %',
+                'lc square lw % b m % % l % % s %',
                 properties.yaxisLinewidth,
                 x - (isSketch ? 5 : 0),     properties.marginTop - (isSketch ? 2 : 0),                
                 x + (isSketch ? 7 : 0),     obj.canvas.height - properties.marginBottom  + (isSketch ? 2 : 0),
