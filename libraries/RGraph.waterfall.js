@@ -654,7 +654,6 @@
 
             // Progressively Draw the chart
             RGraph.Background.draw(this);
-    
             this.drawAxes();
             this.drawBars();
             this.drawLabels();
@@ -1081,12 +1080,15 @@
 
 
                     //
-                    // Draw the bar, first accounting for negative heights
+                    // Draw the bar, first accounting for
+                    // negative heights
                     //
                     if (h < 0) {
                         h = Math.abs(h);
                         y = y - h;
                     }
+
+
 
                     this.context.rect(
                         x + properties.barOffsetx,
@@ -1094,6 +1096,8 @@
                         w,
                         Math.floor(h)
                     );
+
+
 
                     this.coords.push([x, y, w, h]);
                     
@@ -1105,11 +1109,59 @@
 
                 this.context.stroke();
                 this.context.fill();
+
+
+                // If this is the first bar and the X axis is at
+                // the top - cover the top of the bar so that it
+                // doesn't cover the X axis
+                if (i === 0) {
+                    
+                    if (properties.xaxisPosition.toLowerCase() === 'bottom' || properties.xaxisPosition === 'center') {
+                        y = y + h;
+                    }
+                
+                    // Redraw a bit of the X axis
+                    this.path(
+                        'b lw % m % % l % % s %',
+                        properties.xaxisLinewidth,
+                        x - 1,
+                        y,
+                        x + 1 + w,
+                        y,
+                        properties.xaxisColor
+                    );
+                    
+                    // Reset the linewidth
+                    this.path('lw %', properties.linewidth);
+                    
+                    // Alter the coordinates to account for the Xaxis being
+                    // drawn over the bars
+                    if (properties.xaxisPosition === 'center') {
+                        this.coords[0][3] = this.coords[0][3] - (this.properties.xaxisLinewidth / 2);
+                    } else if (properties.xaxisPosition === 'top') {
+                        this.coords[0][3] = this.coords[0][3] - (this.properties.xaxisLinewidth / 2);
+                        this.coords[0][1] = this.coords[0][1] + (this.properties.xaxisLinewidth / 2);
+                    } else {
+                        this.coords[0][3] = this.coords[0][3] - (this.properties.xaxisLinewidth / 2);
+                    }
+                }
             }
 
             // Store the total
             this.total = runningTotal;
 
+
+
+
+
+
+
+
+
+            //
+            // Draw the final "total" bar on the right-hand-side if
+            // required
+            //
             if (properties.total) {
 
                 // This is the height of the final bar
@@ -1146,14 +1198,44 @@
                     this.context.fillStyle = properties.colors[2];
                 }
 
+
+
+
+
+                // Adjust the coordinates of the final bar in
+                // order to take account of the X axis width
+                if (this.properties.xaxisPosition === 'center') {
+
+                    //value is positive
+                    if (y < this.getYCoord(0)) {
+                        h -= (this.properties.xaxisLinewidth / 2);
+                    
+                    // Value is negative
+                    } else {
+
+                        y += (this.properties.xaxisLinewidth / 2);
+                        h -= (this.properties.xaxisLinewidth / 2);
+                    }
+                } else if (this.properties.xaxisPosition === 'top') {                
+                    y += (this.properties.xaxisLinewidth / 2);
+                    h -= (this.properties.xaxisLinewidth / 2);
+                } else {
+                    h -= (this.properties.xaxisLinewidth / 2);
+                }
+
+
+
+
+                // Draw the final total bar
                 this.path(
                     'b r % % % % s % f %',
                     x + properties.barOffsetx, y + properties.barOffsety, w, h,
                     this.context.strokeStyle,this.context.fillStyle
                 );
 
-                // This is set so that the next iteration of the loop will be able to
-                // access THIS iterations coordinates
+                // This is set so that the next iteration of the
+                // loop will be able to access THIS iterations
+                // coordinates
                 var previousCoords = [x, y, w, Math.abs(h)];
 
                 // Add the coordinates to the coords array (the previousCooords array, at
