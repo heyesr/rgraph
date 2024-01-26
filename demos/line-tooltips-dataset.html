@@ -6,6 +6,7 @@
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>    
@@ -27,10 +28,10 @@
                 
                 // Some custom properties that are used in the
                 // tooltips
-                values: [58.3,42.5,62.7],
-                names: ['Bob','David','Gary'],
+                _values: [58.3,42.5,62.7],
+                _names: ['Bob','David','Gary'],
                 
-                tooltipsDataset: '<span style="font-style: italic">Results for <b>%{property:names[%{dataset}]}</b>:</span><br /><span style="font-size: 30pt">%{property:values[%{dataset}]}%</span>',
+                tooltipsDataset: '<span style="font-style: italic">Results for <b>%{property:_names[%{dataset}]}</b>:</span><br /><span style="font-size: 30pt">%{property:_values[%{dataset}]}%</span>',
                 
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
