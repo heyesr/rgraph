@@ -1726,7 +1726,8 @@
         this.drawTick = function (lineData, xPos, yPos, color, isShadow, prevX, prevY, tickmarks, index, dataset)
         {
             // Reset the linedash setting for drawing the tickmarks
-            this.context.setLineDash([1,1]);
+            //this.context.setLineDash([1,1]);
+            this.context.setLineDash([]);
 
             // Allow for the tickmarksColor property
             if (properties.tickmarksColor) {
@@ -2261,7 +2262,8 @@
             this.context.stroke();
             this.context.beginPath();            
             if (properties.dashed || properties.dotted) {
-                this.context.setLineDash([1,0]);
+                //this.context.setLineDash([1,0]);
+                this.context.setLineDash([]);
             }
         };
 

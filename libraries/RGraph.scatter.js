@@ -1568,7 +1568,8 @@
                 // Set the linedash back to the default
                 //
                 if (properties.lineDash && typeof this.context.setLineDash === 'function') {
-                    this.context.setLineDash([1,0]);
+                    //this.context.setLineDash([1,0]);
+                    this.context.setLineDash([]);
                 }
             }
 
