@@ -1532,6 +1532,57 @@
 
 
         //
+        // The Bar chart grow effect
+        //
+        this.grow = function ()
+        {
+            var opt    = arguments[0] || {},
+                frames = opt.frames || 30,
+                frame  = 0,
+                obj    = this;
+
+            this.draw();
+
+            //
+            // Copy the data
+            //
+            var data = RGraph.SVG.arrayClone(this.data);
+
+            var iterate = function ()
+            {
+                var multiplier = frame / frames;
+
+                // Loop through the data and modify the values
+                for (var i=0; i<data.length; ++i) {
+                    obj.data[i] = multiplier * data[i];
+                }
+
+                if (frame++ < frames) {
+                    RGraph.SVG.redraw();
+                    RGraph.SVG.FX.update(iterate);
+
+                } else {
+
+                    RGraph.SVG.redraw();
+                    
+                    if (opt.callback) {
+                        (opt.callback)(obj);
+                    }
+                }
+            };
+
+            iterate();
+
+            return this;
+        };
+
+
+
+
+
+
+
+        //
         // Set the options that the user has provided
         //
         for (i in conf.options) {
