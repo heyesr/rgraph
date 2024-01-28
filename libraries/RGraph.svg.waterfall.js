@@ -111,6 +111,7 @@
         this.data             = conf.data;
         this.type             = 'waterfall';
         this.coords           = [];
+        this.coordsConnectors = [];
         this.colorsParsed     = false;
         this.originalColors   = {};
         this.gradientCounter  = 1;
@@ -1016,19 +1017,27 @@
                         parent: this.svg.all,
                         attr: {
                             x1: x1,
-                            y1: y1 + 0.5,
+                            y1: y1,
                             x2: x2,
-                            y2: y2 + 0.5,
+                            y2: y2,
                             stroke: properties.colorsConnectors || properties.colorsStroke,
                             'stroke-width': properties.linewidth,
                             'data-index': i,
                             'data-original-x1': x1,
-                            'data-original-y1': y1 + 0.5,
+                            'data-original-y1': y1,
                             'data-original-x2': x2,
-                            'data-original-y2': y2 + 0.5
+                            'data-original-y2': y2
                         }
                     });
-
+                    
+                    // Store the connector details
+                    this.coordsConnectors[i] = {
+                        x1: x1,
+                        y1: y1,
+                        x2: x2,
+                        y2: y2,
+                        element: line
+                    };
                 }
             }
         };
@@ -1534,14 +1543,28 @@
         //
         // The Bar chart grow effect
         //
+        // @param  object opt Options to control the effect
+        // @return object     The "this" object (so that you can
+        //                    chain the object)
         this.grow = function ()
         {
-            var opt    = arguments[0] || {},
-                frames = opt.frames || 30,
-                frame  = 0,
-                obj    = this;
+            var opt             = arguments[0] || {},
+                frames          = opt.frames || 30,
+                frame           = 0,
+                obj             = this,
+                originalHeights = [],
+                originalY       = [];
 
             this.draw();
+            
+            // Get the origin
+            var xaxisY = this.getYCoord(0)
+            
+            // Make an array of the original heights and y values
+            for (let i=0; i<obj.coords.length; ++i) {
+                originalHeights.push(obj.coords[i].height);
+                originalY.push(obj.coords[i].y);
+            }
 
             //
             // Copy the data
@@ -1551,14 +1574,46 @@
             var iterate = function ()
             {
                 var multiplier = frame / frames;
+                
 
                 // Loop through the data and modify the values
                 for (var i=0; i<data.length; ++i) {
+                    
+                    // Update the data
                     obj.data[i] = multiplier * data[i];
+                    var y      = xaxisY - originalY[i];
+                    var height = originalHeights[i];
+
+                    // Update the y coordinate of the bar
+                    obj.coords[i].element.setAttribute(
+                        'y',
+                        xaxisY - (y * multiplier)
+                    );
+                    
+
+                    // Update the height
+                    obj.coords[i].element.setAttribute(
+                        'height',
+                        multiplier * originalHeights[i]
+                    );
+                    
+                    // if there's a corresponding connector update the Y coords of
+                    // that too
+                    if (obj.coordsConnectors[i]) {
+                        if (obj.data[i] > 0) {
+                            obj.coordsConnectors[i].element.setAttribute('y1', xaxisY - (y * multiplier) );
+                            obj.coordsConnectors[i].element.setAttribute('y2', xaxisY - (y * multiplier) );
+                        } else {
+                            obj.coordsConnectors[i].element.setAttribute('y1', xaxisY - (y * multiplier) + (multiplier * height) );
+                            obj.coordsConnectors[i].element.setAttribute('y2', xaxisY - (y * multiplier) + (multiplier * height) );
+                        }
+                    }
                 }
 
+                //
+                // Restart the loop or end the amnimation
+                //
                 if (frame++ < frames) {
-                    RGraph.SVG.redraw();
                     RGraph.SVG.FX.update(iterate);
 
                 } else {
