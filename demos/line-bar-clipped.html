@@ -61,8 +61,10 @@
         clip_coords = RGraph.arrayClone(line.coordsSpline[0]);
         clip_coords.unshift([0,line.canvas.height]);
         clip_coords.push([line.canvas.width,line.canvas.height]);
+        
+        // Start clipping
         RGraph.clipTo.start(line, clip_coords);
-            
+
             // Now draw the bar chart
             new RGraph.Bar({
                 id: 'cvs',
