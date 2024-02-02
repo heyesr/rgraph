@@ -10453,6 +10453,22 @@
 
 
 
+    //
+    // A convenient way to get the last element in the array:
+    //
+    // foo = [8,6,6,7,4,2,3,8];
+    // foo.last(); // 8
+    //
+    Array.prototype.last = function ()
+    {
+        return this[this.length - 1];
+    };
+
+
+
+
+
+
 
     //
     // Polyfill for the String.protfotype.substr() method which may not be included on some devices
