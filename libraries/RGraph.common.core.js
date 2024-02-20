@@ -7606,7 +7606,7 @@
         if (arguments.length === 1 && typeof arguments[0] === 'object') {
             
             var args = RGraph.getArgs(arguments, 'path,args');
-            
+
             RGraph.path({
                 object: this,
                   path: args.path,
@@ -9501,7 +9501,6 @@
     RGraph.clipTo.start = function ()
     {
         var args = RGraph.getArgs(arguments, 'object,dimensions');
-        
         RGraph.clipTo.object = args.object;
 
         // Record the state of the antialiasing flag so that it can
@@ -9509,62 +9508,52 @@
         // is called.
         RGraph.clipTo.__rgraph_aa_translated__ = args.object.canvas.__rgraph_aa_translated__ ;
 
-        if (typeof args.dimensions === 'string') {
-            if (args.dimensions === 'tophalf') {
+        if (RGraph.isString(args.dimensions)) {
+            
+            if (args.dimensions === 'lefthalf') {
+
+                var graphWidth = (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight);
 
                 args.object.path(
                     'sa b r % % % % cl',
                     0,
                     0,
-                    args.object.canvas.width,
-                    args.object.canvas.height / 2
-                );
-            
-            } else if (args.dimensions === 'bottomhalf') {
-                args.object.path(
-                    'sa b r % % % % cl',
-                    0,
-                    args.object.canvas.height / 2,
-                    args.object.canvas.width,
-                    args.object.canvas.height / 2
-                );
-            
-            } else if (args.dimensions === 'lefthalf') {
-                args.object.path(
-                    'sa b r % % % % cl',
-                    0,
-                    0,
-                    args.object.canvas.width / 2,
+                    args.object.properties.marginLeft + (graphWidth / 2),
                     args.object.canvas.height
                 );
             
             } else if (args.dimensions === 'righthalf') {
+            
+                var graphWidth = (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight);
+
                 args.object.path(
                     'sa b r % % % % cl',
-                    args.object.canvas.width / 2,
+                    (graphWidth / 2) + args.object.properties.marginLeft,
                     0,
-                    args.object.canvas.width / 2,
+                    (graphWidth / 2) + args.object.properties.marginRight,
                     args.object.canvas.height
                 );
-
 
 
 
             //
             // Clip to the top part of the chart whilst taking
-            // into account the margins. So you have different
+            // into account the margins. So you can have different
             // margin sizes and still clip to the top part of
             // the chart
             //
-            } else if (args.dimensions === 'tophalf.margins') {
+            } else if (args.dimensions === 'tophalf') {
+
+                var graphHeight = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom;
 
                 args.object.path(
                     'sa b r % % % % cl',
                     0,
                     0,
                     args.object.canvas.width,
-                    ((args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) / 2) + args.object.properties.marginTop
+                    args.object.properties.marginTop + (graphHeight / 2)
                 );
+
 
 
 
@@ -9575,90 +9564,64 @@
             // margin sizes and still clip to the bottom part of
             // the chart
             //
-            } else if (args.dimensions === 'bottomhalf.margins') {
+            } else if (args.dimensions === 'bottomhalf') {
 
-                var grapharea = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom;
+                var graphHeight = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom;
 
                 args.object.path(
                     'sa b r % % % % cl',
                     0,
-                    ((args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) / 2) + args.object.properties.marginTop,
+                    (graphHeight / 2) + args.object.properties.marginTop,
                     args.object.canvas.width,
-                    args.object.canvas.height
+                    (graphHeight / 2) + args.object.properties.marginBottom
                 );
 
 
 
-
-            //
-            // Clip to the left part of the chart whilst taking
-            // into account the margins. So you have different
-            // margin sizes and still clip to the left part of
-            // the chart
-            //
-            } else if (args.dimensions === 'lefthalf.margins') {
-
-                args.object.path(
-                    'sa b r % % % % cl',
-                    0,
-                    0,
-                    args.object.properties.marginLeft + ((args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2),
-                    args.object.canvas.height
-                );
+            // Clip to horizontal percentages
+            } else if (args.object.properties.clip.match(/^[xX]:([-.0-9]+)%-([-.0-9]+)%$/)) {
 
 
+                var from   = Number(RegExp.$1),
+                    to     = Number(RegExp.$2),
+                    width = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
+                    height = args.object.canvas.height,
+                    x      = (from  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) + args.object.properties.marginLeft,
+                    y      = 0;
 
-
-            //
-            // Clip to the right part of the chart whilst taking
-            // into account the margins. So you have different
-            // margin sizes and still clip to the left part of
-            // the chart
-            //
-            } else if (args.dimensions === 'righthalf.margins') {
-
-                args.object.path(
-                    'sa b r % % % % cl',
-                    args.object.properties.marginLeft + ((args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2),
-                    0,
-                    (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) / 2,
-                    args.object.canvas.height
-                );
+                    args.object.path(
+                        'sa b r % % % % cl',
+                        x,y,width,height
+                    );
             
-            //
-            // Clip to a section of the canvas
-            //
-            } else if (args.dimensions.match(/^((?:h|v)bar) +([-.0-9]+) ?- ?([-.0-9]+)$/i)) {
+            
+            // Clip to vertical percentages
+            } else if (args.object.properties.clip.match(/^(?:[yY]:)?([-.0-9]+)%-([-.0-9]+)%$/)) {
 
-                var type         = RegExp.$1.toLowerCase(),
-                    start        = parseFloat(RegExp.$2),
-                    end          = parseFloat(RegExp.$3),
-                    marginTop    = args.object.properties.marginTop,
-                    marginBottom = args.object.properties.marginBottom,
-                    marginLeft   = args.object.properties.marginLeft,
-                    marginRight  = args.object.properties.marginRight,
-                    graphWidth   = args.object.canvas.width - marginLeft - marginRight,
-                    graphHeight  = args.object.canvas.height - marginTop - marginBottom;
+                var from   = Number(RegExp.$1),
+                    to     = Number(RegExp.$2),
+                    height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
+                    x      = 0,
+                    y      = (from / 100) * height + args.object.properties.marginTop,
+                    width  = args.object.canvas.width,
+                    height = ((to - from)  / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom);
+                
+                args.object.path(
+                    'sa ' + 'b r % % % %' + ' cl',
+                    x,y,width,height
+                );
 
-                if (type === 'hbar') {
-                    args.object.path(
-                        'sa b r % % % % cl',
-                        0,
-                        marginTop + (graphHeight * start),
-                        args.object.canvas.width,
-                        (end - start) * (args.object.canvas.height - marginTop - marginBottom)
-                    );
-
-                } else if (type === 'vbar') {
-
-                    args.object.path(
-                        'sa b r % % % % cl',
-                        marginLeft + (graphWidth * start),
-                        0,
-                        (end - start) * (args.object.canvas.width - marginLeft - marginRight),
-                        args.object.canvas.height
-                    );
+                //
+            // Clip to scale values - since all of the
+            // charts handle scales differently this is
+            // handled by worker functions on each object
+            } else if (args.object.properties.clip.match(/^(?:scale:) *([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
+                if (args.object.clipToScaleWorker) {
+                    args.object.clipToScaleWorker(args.object.properties.clip);
+                } else {
+                    console.log('The scale: clipping option isn\'t implemented for this chart type (' + args.object.type + ')');
                 }
+
 
             // Clip to an RGraph path
             } else {
@@ -9680,13 +9643,17 @@
                 );
             }
             
+            // Save the path so it doesn't have to be rebuilt 
+            // if/when it comes to testing it
+            RGraph.clipTo.path = 'b ' + path.join(' ');
+            
             // Build the string path
             path = 'sa b ' + path.join(' ') + ' cl';
             
             // Run the path
             args.object.path(path);
 
-        // Clip to a singledimension array of four coordinates
+        // Clip to a single-dimension array of x/y/width/height
         // (x/y/w/h)
         } else if (RGraph.isArray(args.dimensions)) {
             args.object.path(
@@ -9705,18 +9672,179 @@
 
 
 
+
     //
     // Ends clipping that has been started by the
     // RGraph.clipTo.start() function
     //
     RGraph.clipTo.end = function ()
     {
-        // Reset the antialiasing flag to what it was when
-        // we started
-        RGraph.clipTo.object.canvas.__rgraph_aa_translated__ = RGraph.clipTo.__rgraph_aa_translated__;
-
-        RGraph.path(RGraph.clipTo.object, 'rs');
+        if (RGraph.clipTo.object){
+            // Reset the antialiasing flag to what it was when
+            // we started
+            RGraph.clipTo.object.canvas.__rgraph_aa_translated__ = RGraph.clipTo.__rgraph_aa_translated__;
+    
+            RGraph.path(RGraph.clipTo.object, 'rs');
+        }
     };
+
+
+
+
+
+
+
+
+    //
+    // Test whether a point is within the clipped area or not
+    //
+    // @param  object  obj The chart object
+    // @param  integer x   The X coordinate to test
+    // @param  integer y   The Y coordinate to test
+    // @return boolean     true/false whether the point is
+    //                     within the path
+    //
+    RGraph.clipTo.test = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'object,x,y');
+
+
+
+
+        if (args.object.properties.clip) {
+
+
+
+
+            // Test that the cursor is over the left half
+            if (args.object.properties.clip === 'lefthalf') {
+                if (   args.x > 0
+                    && args.x < (args.object.canvas.width / 2)
+                    && args.y > 0
+                    && args.y < args.object.canvas.height
+                   ) {
+                    return true;
+                }
+
+
+
+
+            // Test that the cursor is over the right half
+            } else if (args.object.properties.clip === 'righthalf') {
+                if (   args.x > (args.object.canvas.width / 2)
+                    && args.x < args.object.canvas.width
+                    && args.y > 0
+                    && args.y < args.object.canvas.height
+                   ) {
+                    return true;
+                }
+
+
+
+
+            // Test that the cursor is over the top half
+            } else if (args.object.properties.clip === 'tophalf') {
+                if (   args.x > 0
+                    && args.x < args.object.canvas.width
+                    && args.y > 0
+                    && args.y < (args.object.canvas.height / 2)
+                   ) {
+                    return true;
+                }
+
+
+
+
+            // Test that the cursor is over the bottom half
+            } else if (args.object.properties.clip === 'bottomhalf') {
+                if (   args.x > 0
+                    && args.x < args.object.canvas.width
+                    && args.y > (args.object.canvas.height / 2)
+                    && args.y < args.object.canvas.height
+                   ) {
+                    return true;
+                }
+
+
+
+
+            // Test that the cursor is within the clipped rect
+            } else if (
+                          RGraph.isArray(args.object.properties.clip)
+                       && RGraph.isNumber(args.object.properties.clip[0])
+                       && RGraph.isNumber(args.object.properties.clip[1])
+                       && RGraph.isNumber(args.object.properties.clip[2])
+                       && RGraph.isNumber(args.object.properties.clip[3])
+                      ) {
+
+                if (   args.x > args.object.properties.clip[0]
+                    && args.x < (args.object.properties.clip[0] + args.object.properties.clip[2])
+                    && args.y > args.object.properties.clip[1]
+                    && args.y < (args.object.properties.clip[1] + args.object.properties.clip[3])
+                   ) {
+                    return true;
+                }
+
+
+
+
+            // Test that the cursor is within the clipped path
+            } else if (RGraph.isArray(args.object.properties.clip) && RGraph.isArray(args.object.properties.clip[0])) {
+
+                args.object.path(RGraph.clipTo.path);
+                return args.object.context.isPointInPath(args.x, args.y);
+
+
+
+
+            // Test that the cursor is within the given X percentages range
+            } else if (args.object.properties.clip.match(/^[xX]:([-.0-9]+)%-([-.0-9]+)%$/)) {
+                
+                var from   = Number(RegExp.$1),
+                    to     = Number(RegExp.$2),
+                    width = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
+                    height = args.object.canvas.height,
+                    x      = (from  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) + args.object.properties.marginLeft,
+                    y      = 0;
+
+                return (
+                           args.x > x
+                        && args.y > y
+                        && args.x < (x + width)
+                        && args.y < (y + height)
+                       );
+
+
+            // Test that the cursor is within the given Y percentages range
+            } else if (args.object.properties.clip.match(/^[yY]:([-.0-9]+)%-([-.0-9]+)%$/)) {
+                
+                var from   = Number(RegExp.$1),
+                    to     = Number(RegExp.$2),
+                    height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
+                    x      = 0,
+                    y      = (from / 100) * height + args.object.properties.marginTop,
+                    width  = args.object.canvas.width,
+                    height = ((to - from)  / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom);
+                
+                
+                return (
+                           args.x > x
+                        && args.y > y
+                        && args.x < (x + width)
+                        && args.y < (y + height)
+                       );
+            }
+
+            return false;
+        }
+    };
+
+
+
+
+
+
+
 
     //
     // Parses a string such as this:
@@ -10239,7 +10367,6 @@
             }
             
     };
-
 
 
 

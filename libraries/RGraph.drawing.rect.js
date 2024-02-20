@@ -73,6 +73,11 @@
         //
         this.properties =
         {
+            marginTop:             35, // Used for clipping
+            marginBottom:          35, // Used for clipping
+            marginLeft:            35, // Used for clipping
+            marginRight:           35, // Used for clipping
+
             colorsStroke:    'rgba(0,0,0,0)',
             colorsFill:      'red',
             
@@ -108,7 +113,9 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             
-            clearto:   'rgba(0,0,0,0)'
+            clearto:   'rgba(0,0,0,0)',
+            
+            clip:      null
         }
 
         //
@@ -250,6 +257,21 @@
 
 
 
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+            
+            
+            
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -328,6 +350,16 @@
             //
             RGraph.installEventListeners(this);
     
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
 
             //
             // Fire the onfirstdraw event
@@ -416,7 +448,12 @@
                     width  = coords[2],
                     height = coords[3];
     
-                if (mouseX >= left && mouseX <= (left + width) && mouseY >= top && mouseY <= (top + height)) {
+                if (   mouseX >= left
+                    && mouseX <= (left + width)
+                    && mouseY >= top
+                    && mouseY <= (top + height)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
 
                     if (RGraph.parseTooltipText && properties.tooltips) {
                         var tooltip = RGraph.parseTooltipText(properties.tooltips, 0);

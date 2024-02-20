@@ -568,7 +568,8 @@
             }
 
             //
-            // Populate the colors array for the purposes of generating the key
+            // Populate the colors array for the purposes of
+            // generating the key
             //
             if (typeof properties.key === 'object' && RGraph.isArray(properties.key) && properties.key[0]) {
 
@@ -597,6 +598,25 @@
                     properties.tooltips.push(this.data[i][j][3]);
                 }
             }
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+            
+            
+            
+            
+            
+            
+            
+            
     
     
     
@@ -653,6 +673,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
 
 
 
@@ -1306,10 +1333,11 @@
                     tooltip = this.coords[i][3];
     
                 if (
-                    mouseX < (x + offset) &&
-                    mouseX > (x - offset) &&
-                    mouseY < (y + offset) &&
-                    mouseY > (y - offset)
+                       mouseX < (x + offset)
+                    && mouseX > (x - offset)
+                    && mouseY < (y + offset)
+                    && mouseY > (y - offset)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                    ) {
 
                     if (RGraph.parseTooltipText) {
@@ -1932,6 +1960,50 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.data[0].length;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getRadius(from),
+                r2 = this.getRadius(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = 0;
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = Math.max(this.canvas.width, this.canvas.height);
+            }
+
+            this.path(
+                'sa b a % % % 0 6.29 false       a % % % 6.29 0 true    cl',
+                this.centerx, this.centery, r1,
+                this.centerx, this.centery, r2,
+            );
         };
 
 

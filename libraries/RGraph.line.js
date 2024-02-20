@@ -630,6 +630,7 @@
 
 
 
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -786,7 +787,10 @@
     
                 this.max   = this.scale2.max ? this.scale2.max : 0;
             }
-    
+
+
+
+
             //
             // Setup the context menu if required
             //
@@ -808,7 +812,15 @@
             this.halfgrapharea  = this.grapharea / 2;
             this.halfTextHeight = properties.textSize / 2;
     
-   
+
+            //
+            // Install clipping before anything is drawn but after
+            // everything has been calculated (eg maximum values
+            // etc)
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
     
             if (properties.variant == '3d') {
                 RGraph.draw3DAxes(this);
@@ -1235,7 +1247,15 @@
             // Draw any custom lines that have been defined
             RGraph.drawHorizontalLines(this);
             
-            
+
+
+
+
+
+            //
+            // End clipping
+            //
+            RGraph.clipTo.end();
 
     
     
@@ -2395,6 +2415,7 @@
                     && mouseX >= (x - properties.tooltipsHotspotSize)
                     && mouseY <= (y + properties.tooltipsHotspotSize)
                     && mouseY >= (y - properties.tooltipsHotspotSize)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                    ) {
     
                         if (RGraph.parseTooltipText) {
@@ -2885,7 +2906,7 @@
                 y += this.marginTop;
     
             } else {
-    
+
                 if (!allowOutOfBounds && ((value < this.min || value > this.max) && properties.outofbounds == false) ) {
                     return null;
                 }
@@ -2893,7 +2914,7 @@
                 y = ((value - this.min) / (this.max - this.min)) * this.grapharea;
     
     
-                
+
                 // Inverted Y labels
                 if ( properties.yaxisScaleInvert) {
                     y = this.grapharea - y;
@@ -5321,6 +5342,54 @@
 
             this.context.globalAlpha = 1;
         };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+    
+            var width  = this.canvas.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+        
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+            this.path(
+                'sa b r % % % % cl',
+                x, y, width, height
+            );
+        };
+
 
 
 

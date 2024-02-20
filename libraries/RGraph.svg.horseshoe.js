@@ -84,7 +84,7 @@
 
 
 
-
+        this.type            = 'horseshoe';
         this.min             = RGraph.SVG.stringsToNumbers(conf.min);
         this.max             = RGraph.SVG.stringsToNumbers(conf.max);
         this.value           = RGraph.SVG.stringsToNumbers(conf.value);
@@ -94,12 +94,13 @@
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG tag is created!
         this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
+        this.clipid          = null; // Used to clip the canvas
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
         this.width           = Number(this.svg.getAttribute('width'));
         this.height          = Number(this.svg.getAttribute('height'));
-        this.type            = 'horseshoe';
         this.colorsParsed    = false;
         this.originalColors  = {};
         this.gradientCounter = 1;
@@ -169,7 +170,9 @@
             endsStroke:            null,
             endsColor:             null,
 
-            adjustable:            false
+            adjustable:            false,
+            
+            clip: null
         };
 
 
@@ -236,8 +239,9 @@
             // Reset this to prevent it from growing
             this.nodes = {};
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -278,6 +282,46 @@
             // Parse the colors for gradients
             RGraph.SVG.resetColorsToOriginalValues({object:this});
             this.parseColors();
+            
+            
+            
+            
+            
+            
+            
+            
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 
 
@@ -337,8 +381,7 @@
                     obj.value        = value;
                     obj.currentValue = value;
 
-                    RGraph.SVG.clear(obj.svg);
-                    obj.draw();
+                    RGraph.SVG.redraw(obj.svg);
                 };
 
 
@@ -498,7 +541,7 @@
                 var rect = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'rect',
-                    parent: this.svg.all, 
+                    parent: this.svgAllGroup, 
                     attr: {
                         fill: properties.backgroundColor,
                         x: 0,
@@ -537,7 +580,7 @@
 
             RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
                     d: path + ' ' + path2 + ' z',
@@ -573,7 +616,7 @@
 
             RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
                     d: path + ' ' + path2 + ' z',
@@ -591,7 +634,7 @@
                 // Start of bar
                 RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'circle',
                     attr: {
                         cx: this.centerx,
@@ -615,7 +658,7 @@
 
                 RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'circle',
                     attr: {
                             cx: endpoint[0],
@@ -688,7 +731,7 @@
 
                 var text = RGraph.SVG.text({
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     tag:    'labels.center',
                     
                     text:   typeof properties.labelsCenterSpecific === 'string' ? properties.labelsCenterSpecific : label,
@@ -957,6 +1000,76 @@
             
             return this;
         };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var a1 = this.getAngle(from),
+                a2 = this.getAngle(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                a1 = this.getAngle(this.min);
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                a2 = this.getAngle(this.max);
+            }
+
+    
+            var path = RGraph.SVG.TRIG.getArcPath3({
+                cx:     this.centerx,
+                cy:     this.centery,
+                radius: Math.max(this.width, this.height),
+                start:  a1 + RGraph.SVG.TRIG.HALFPI,
+                end:    a2 + RGraph.SVG.TRIG.HALFPI,
+                anticlockwise: false
+            });
+    
+
+            RGraph.SVG.create({
+                svg: this.svg,
+                parent: clipPath,
+                type: 'path',
+                attr: {
+                    d: 'M {1} {2} {3} z'.format(
+                        this.centerx,
+                        this.centery,
+                        path
+                    )
+                }
+            });
+            
+            // Now set the clip-path attribute on the
+            // all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
+        };
+
 
 
 

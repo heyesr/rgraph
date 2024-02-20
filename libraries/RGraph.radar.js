@@ -431,6 +431,7 @@
 
 
 
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -576,6 +577,39 @@
                 this.max = this.scale2.max;
             }
 
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
             this.drawBackground();
             this.drawAxes();
             this.drawCircle();
@@ -638,6 +672,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
 
             //
             // This installs the Radar chart specific area listener
@@ -1451,6 +1492,7 @@
                     && mouseX > (x - 5)
                     && mouseY > (y - 5)
                     && mouseY < (y + 5)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                    ) {
 
                     if (RGraph.parseTooltipText) {
@@ -2348,6 +2390,47 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.data.length;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getRadius(from),
+                r2 = this.getRadius(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = 0;
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = Math.max(this.canvas.width, this.canvas.height);
+            }
+
+            this.path(
+                'sa b a % % % 0 6.29 false       a % % % 6.29 0 true    cl',
+                this.centerx, this.centery, r1,
+                this.centerx, this.centery, r2,
+            );
         };
 
 

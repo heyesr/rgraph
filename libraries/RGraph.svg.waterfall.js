@@ -100,16 +100,18 @@
 
 
 
+        this.type             = 'waterfall';
         this.id               = conf.id;
         this.uid              = RGraph.SVG.createUID();
         this.container        = document.getElementById(this.id);
-        this.layers          = {}; // MUST be before the SVG tag is created!
+        this.layers           = {}; // MUST be before the SVG tag is created!
         this.svg              = RGraph.SVG.createSVG({object: this,container: this.container});
-        this.isRGraph        = true;
-        this.isrgraph        = true;
-        this.rgraph          = true;
-        this.data             = conf.data;
-        this.type             = 'waterfall';
+        this.svgAllGroup      = RGraph.SVG.createAllGroup(this);
+        this.clipid           = null; // Used to clip the canvas
+        this.isRGraph         = true;
+        this.isrgraph         = true;
+        this.rgraph           = true;
+        this.data             = RGraph.SVG.arrayClone(conf.data);
         this.coords           = [];
         this.coordsConnectors = [];
         this.colorsParsed     = false;
@@ -175,6 +177,7 @@
             linewidth:            1,
 
             yaxis:                true,
+            yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 5,
             yaxisColor:           'black',
@@ -212,6 +215,7 @@
             yaxisTitleValign:          null,
 
             xaxis:                true,
+            xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
             xaxisLabels:          null,
@@ -339,7 +343,9 @@
             keyLabelsSize:    null,
             keyLabelsColor:   null,
             keyLabelsBold:    null,
-            keyLabelsItalic:  null
+            keyLabelsItalic:  null,
+            
+            clip: null
         };
 
 
@@ -400,8 +406,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -452,7 +459,6 @@
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
 
 
 
@@ -533,7 +539,7 @@
             // Set the ymin to zero if it's set mirror
             if (mirrorScale) {
                 this.scale = RGraph.SVG.getScale({
-                    object: this,
+                    object:    this,
                     numlabels: properties.yaxisLabelsCount,
                     unitsPre:  properties.yaxisScaleUnitsPre,
                     unitsPost: properties.yaxisScaleUnitsPost,
@@ -543,7 +549,7 @@
                     round:     false,
                     thousand:  properties.yaxisScaleThousand,
                     decimals:  properties.yaxisScaleDecimals,
-                    strict:    typeof properties.yaxisScaleMax === 'number',
+                    strict:    true,
                     formatter: properties.yaxisScaleFormatter
                 });
             }
@@ -553,6 +559,29 @@
             this.min      = this.scale.min;
             properties.yaxisScaleMax = this.scale.max;
             properties.yaxisScaleMin = this.scale.min;
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+
+
+
 
 
 
@@ -867,7 +896,7 @@
                 var rect = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'rect',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x: x,
                         y: y,
@@ -1014,7 +1043,7 @@
                     var line = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'line',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             x1: x1,
                             y1: y1,
@@ -1097,7 +1126,7 @@
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'rect',
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 attr: {
                     stroke: properties.highlightStroke,
                     fill: properties.highlightFill,
@@ -1285,7 +1314,7 @@
 
                         RGraph.SVG.text({
                             object:     this,
-                            parent:     this.svg.all,
+                            parent:     this.svgAllGroup,
                             tag:        'labels.above',
                             
                             text:       str,
@@ -1618,7 +1647,9 @@
 
                 } else {
 
-                    RGraph.SVG.redraw();
+                    //RGraph.SVG.redraw();
+                    obj.svgAllGroup.replaceChildren();
+                    obj.draw();
                     
                     if (opt.callback) {
                         (opt.callback)(obj);
@@ -1629,6 +1660,68 @@
             iterate();
 
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param object clipPath The <clipPath> node
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var width  = this.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'rect',
+                parent: clipPath,
+                attr: {
+                    x:      x,
+                    y:      y,
+                    width:  width,
+                    height: height
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 

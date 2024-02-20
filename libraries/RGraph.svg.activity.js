@@ -84,7 +84,7 @@
 
 
 
-
+        this.type            = 'activity';
         this.min             = RGraph.SVG.stringsToNumbers(conf.min);
         this.max             = RGraph.SVG.stringsToNumbers(conf.max);
         this.value           = RGraph.SVG.stringsToNumbers(conf.value);
@@ -94,12 +94,13 @@
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG tag is created!
         this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
+        this.clipid          = null; // Used to clip the canvas
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
         this.width           = Number(this.svg.getAttribute('width'));
         this.height          = Number(this.svg.getAttribute('height'));
-        this.type            = 'activity';
         this.colorsParsed    = false;
         this.originalColors  = {};
         this.gradientCounter = 1;
@@ -217,7 +218,9 @@
 
             highlightStroke:                    'rgba(0,0,0,0)',
             highlightFill:                      'rgba(255,255,255,0.7)',
-            highlightLinewidth:                 1
+            highlightLinewidth:                 1,
+            
+            clip: null
         };
 
         //
@@ -293,16 +296,16 @@
             // Reset this to prevent it from growing
             this.nodes = {};
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should the first thing that's done in the.draw() function
+            // except for the onbeforedraw event and the
+            // installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
 
 
             // Create the defs tag if necessary
-            RGraph.SVG.createDefs(this);
-
+            this.defs = RGraph.SVG.createDefs(this);
 
 
             // Add these
@@ -329,7 +332,7 @@
             if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
             if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
             if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
-            
+
             
             
             // Parse the colors for gradients
@@ -345,6 +348,33 @@
                 properties.width  = (this.radius * 0.75) / this.value.length;
                 properties.width -= (2 * properties.marginInner);
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip && !this.clipid) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+
+
+
 
 
 
@@ -425,8 +455,9 @@
                     obj.value[index] = value;
                     obj.currentValue = RGraph.SVG.arrayClone(value);
 
-                    RGraph.SVG.clear(obj.svg);
-                    obj.draw();
+                    //RGraph.SVG.clear(obj.svg);
+                    //obj.draw();
+                    RGraph.SVG.redraw(obj.svg);
                 };
 
 
@@ -465,8 +496,7 @@
                 this.adjusting_event_listeners_installed = true;
             }
 
-            // Add the event listener that clears the highlight rect if
-            // there is any. Must be MOUSEDOWN (ie before the click event)
+            // Add the event listener that clears the highlight
             var obj = this; document.body.addEventListener('mouseup', function (e)
             {
                 obj.removeHighlight();
@@ -564,9 +594,19 @@
         //                         that is to be applied to the new
         //                         node.
         //
-        this.create = function (definition)
+        this.create = function (str)
         {
-            return RGraph.SVG.create.call(this, definition, arguments[1], arguments[2]);
+            var def = RGraph.SVG.create.parseStr(this, str);
+            def.svg = this.svg;
+            
+            // By default the parent is the SVG tag - but if
+            // requested then change it to the tag that has
+            // been given
+            if (arguments[1]) {
+                def.parent = arguments[1];
+            }
+
+            return RGraph.SVG.create(def);
         };
 
 
@@ -607,12 +647,13 @@
         //
         this.drawBackground = function ()
         {
+
             // First thing to do is clear the canvas to the backgroundColor
-            if (properties.backgroundColor) {
+            if (   properties.backgroundColor) {
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'rect',
-                    parent: this.svg.all, 
+                    parent: this.svgAllGroup, 
                     attr: {
                         fill: properties.backgroundColor,
                         x: 0,
@@ -642,7 +683,7 @@
                    RGraph.SVG.create({
                         svg: this.svg,
                         type: 'circle',
-                        parent: this.svg.all, 
+                        parent: this.svgAllGroup, 
                         attr: {
                             fill: 'transparent',
                             stroke: properties.backgroundGridColor,
@@ -693,7 +734,7 @@
                         RGraph.SVG.create({
                             svg: this.svg,
                             type: 'path',
-                            parent: this.svg.all, 
+                            parent: this.svgAllGroup, 
                             attr: {
                                 fill: 'transparent',
                                 stroke: properties.backgroundGridColor,
@@ -745,7 +786,7 @@
 
                     // Draw the background ring
                     var path = RGraph.SVG.donut({
-                        svg:         this.svg.all,
+                        svg:         this.svgAllGroup,
                         cx:          this.centerx,
                         cy:          this.centery,
                         innerRadius: inner,
@@ -774,7 +815,7 @@
                 var group = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         'data-index': i
                     }
@@ -1058,7 +1099,7 @@
             var highlightGroup = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'g',
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 attr: {
                     fill:   properties.highlightFill,
                     stroke: properties.highlightStroke,
@@ -1169,7 +1210,7 @@
 
                 var text = RGraph.SVG.text({
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     tag:    'labels.center',
                     
                     text:   typeof properties.labelsCenterSpecific === 'string' ? properties.labelsCenterSpecific : label,
@@ -1235,7 +1276,7 @@
 
                     RGraph.SVG.text({
                         object: this,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         
                          color: textConf.color,
                           font: textConf.font,
@@ -1288,7 +1329,7 @@
 
                         svg_images[i] = RGraph.SVG.create({
                             svg:  this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'image',
                             attr: {
                                 href: properties.icons[i],
@@ -1574,9 +1615,8 @@
                 
                 // Increment the frame
                 frame++;
-    
-                RGraph.SVG.clear(obj.svg);
-                RGraph.SVG.redraw();
+
+                RGraph.SVG.redraw(obj.svg);
             
                 if (frame <= frames) {
                     RGraph.SVG.FX.update(iterator);
@@ -1680,6 +1720,73 @@
                 - tooltip.offsetHeight              // The height of the tooltip
                 - 10                                 // An arbitrary amount
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var a1 = this.getAngle(from),
+                a2 = this.getAngle(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                a1 = this.getAngle(this.min);
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                a2 = this.getAngle(this.max);
+            }
+
+            var arcPath = RGraph.SVG.TRIG.getArcPath3({
+                cx:     this.centerx,
+                cy:     this.centery,
+                r:      Math.max(this.width, this.height),
+                start:  a1 + RGraph.SVG.TRIG.HALFPI,
+                end:    a2 + RGraph.SVG.TRIG.HALFPI,
+         anticlockwise: false,
+                lineto: true
+            });
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'path',
+                parent: clipPath,
+                attr: {
+                    d: 'M {1} {2} {3} '.format(
+                        this.centerx,
+                        this.centery,
+                        arcPath
+                    )
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 

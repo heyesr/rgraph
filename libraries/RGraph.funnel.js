@@ -316,7 +316,19 @@
         {
             // Fire the onbeforedraw event
             RGraph.fireCustomEvent(this, 'onbeforedraw');
-    
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
 
 
 
@@ -403,6 +415,16 @@
 
 
     
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
+
 
             //
             // Fire the onfirstdraw event
@@ -848,7 +870,10 @@
                 );
 
     
-                if (this.context.isPointInPath(x, y)) {
+                if (
+                       this.context.isPointInPath(x, y)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
                     
                     if (RGraph.parseTooltipText && properties.tooltips) {
                         var tooltip = RGraph.parseTooltipText(properties.tooltips, i);

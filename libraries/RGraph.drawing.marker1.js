@@ -80,6 +80,11 @@
         //
         this.properties =
         {
+            marginTop:             35, // Used for clipping
+            marginBottom:          35, // Used for clipping
+            marginLeft:            35, // Used for clipping
+            marginRight:           35, // Used for clipping
+
             colorsStroke:       'black',
             colorsFill:         'white',
             
@@ -124,7 +129,9 @@
             
             align:              'center',
             
-            clearto:            'rgba(0,0,0,0)'
+            clearto:            'rgba(0,0,0,0)',
+            
+            clip:               null
         }
 
         //
@@ -258,6 +265,20 @@
             RGraph.fireCustomEvent(this, 'onbeforedraw');
 
 
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -387,6 +408,18 @@
             RGraph.installEventListeners(this);
     
 
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
+
             //
             // Fire the onfirstdraw event
             //
@@ -471,7 +504,10 @@
             this.context.beginPath();
             this.drawMarker();
     
-            if (this.context.isPointInPath(mouseXY[0], mouseXY[1])) {
+            if (
+                    this.context.isPointInPath(mouseXY[0], mouseXY[1])
+                 && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+               ) {
 
                 if (RGraph.parseTooltipText && properties.tooltips) {
                     var tooltip = RGraph.parseTooltipText(properties.tooltips, 0);

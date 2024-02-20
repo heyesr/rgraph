@@ -73,6 +73,11 @@
         //
         this.properties =
         {
+            marginTop:                  35, // Used for clipping
+            marginBottom:               35, // Used for clipping
+            marginLeft:                 35, // Used for clipping
+            marginRight:                35, // Used for clipping
+
             linewidth:                  1,
             linecap:                    'round',
             linejoin:                   'round',
@@ -110,7 +115,9 @@
 
             text:                    null,
 
-            clearto:                 'rgba(0,0,0,0)'
+            clearto:                 'rgba(0,0,0,0)',
+            
+            clip:                    null
         }
 
         //
@@ -240,6 +247,21 @@
             RGraph.fireCustomEvent(this, 'onbeforedraw');
 
 
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but
             // only if it hasn't been done already
             //
@@ -313,6 +335,19 @@
             RGraph.installEventListeners(this);
     
 
+
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
+
             //
             // Fire the onfirstdraw event
             //
@@ -378,12 +413,12 @@
         //
         this.pathLine = function (coords, initial = 'm')
         {
-            this.path(
-                '% % %',
-                initial,
-                coords[0][0],
-                coords[0][1]
-            );
+            // don't use the path function here
+            if (initial === 'm') {
+                this.context.moveTo(coords[0][0], coords[0][1]);
+            } else if (initial === 'l') {
+                this.context.lineTo(coords[0][0], coords[0][1]);
+            }
 
             // Draw lines to subsequent coords
             for (var i=1,len=coords.length; i<len; ++i) {
@@ -399,7 +434,8 @@
 
 
         //
-        // Draw the Poly but doesn't stroke or fill - that's left to other functions
+        // Draw the Poly but doesn't stroke or fill - that's left
+        // to other functions
         //
         this.drawLine = function (opt)
         {
@@ -411,7 +447,7 @@
             }
 
             var coords = this.coords;
-            
+
             this.path('b');
             this.pathLine(coords);
 
@@ -459,7 +495,10 @@
             this.context.strokeStyle = old_strokestyle;
 
     
-            if (this.context.isPointInStroke(mouseX, mouseY)) {
+            if (
+                   this.context.isPointInStroke(mouseX, mouseY)
+                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+               ) {
 
                 if (RGraph.parseTooltipText && properties.tooltips) {
                     var tooltip = RGraph.parseTooltipText(properties.tooltips, 0);

@@ -91,18 +91,23 @@
 
 
 
-
-        this.id               = conf.id;
+        this.type            = 'line';
+        this.id              = conf.id;
         this.uid             = RGraph.SVG.createUID();
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG tag is created!
-        this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svg             = RGraph.SVG.createSVG({
+               object: this,
+            container: this.container
+        });
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
         this.width           = Number(this.svg.getAttribute('width'));
         this.height          = Number(this.svg.getAttribute('height'));
         this.firstDraw        = true; // After the first draw this will be false
+        this.clipid           = null; // Used to clip the canvas
 
 
 
@@ -123,7 +128,6 @@
             this.data = [[]];
         }
 
-        this.type            = 'line';
         this.coords          = [];
         this.coords2         = [];
         this.coordsSpline    = [];
@@ -184,6 +188,7 @@
             filledAccumulative: false,
             
             yaxis:                true,
+            yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
             yaxisColor:           'black',
@@ -221,6 +226,7 @@
             yaxisTitleValign:          null,
 
             xaxis:                true,
+            xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
             xaxisLabels:          null,
@@ -284,6 +290,7 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
             tooltipsDataset:                 null,
+            tooltipsHotspotSize:             5,
 
             //highlightStroke: 'rgba(0,0,0,0)',
             //highlightFill: 'rgba(255,255,255,0.7)',
@@ -376,7 +383,9 @@
             nullBridge:                 false,
             nullBridgeLinewidth:        null,
             nullBridgeColors:           null, // Can be null, a string or an object
-            nullBridgeDashArray:        null
+            nullBridgeDashArray:        null,
+            
+            clip: null
         };
 
         //
@@ -435,6 +444,13 @@
         {
             // Fire the beforedraw event
             RGraph.SVG.fireCustomEvent(this, 'onbeforedraw');
+            
+            
+            
+            
+            
+            
+            
 
 
 
@@ -451,8 +467,10 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+
+            // Should the first thing that's done in the.draw() function
+            // except for the onbeforedraw event and the
+            // installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -473,6 +491,11 @@
 
             // Create the defs tag
             RGraph.SVG.createDefs(this);
+
+
+
+
+
 
 
 
@@ -605,7 +628,7 @@
             if (properties.filled && properties.filledAccumulative) {
                 var max = RGraph.SVG.arrayMax(tmp)
             } else {
-                var max = RGraph.SVG.arrayMax(values);
+                var max = RGraph.SVG.arrayMax(values, true);
             }
 
 
@@ -661,6 +684,7 @@
             //
             // Set the ymin to zero if it's szet mirror
             if (this.mirrorScale) {
+
                 this.scale = RGraph.SVG.getScale({
                     object: this,
                     numlabels: properties.yaxisLabelsCount,
@@ -672,7 +696,7 @@
                     round:     false,
                     thousand:  properties.yaxisScaleThousand,
                     decimals:  properties.yaxisScaleDecimals,
-                    strict:    typeof properties.yaxisScaleMax === 'number',
+                    strict:    true,
                     formatter: properties.yaxisScaleFormatter
                 });
             }
@@ -681,10 +705,49 @@
             this.max      = this.scale.max;
             this.min      = this.scale.min;
             
-            // Taken out 14/01/18 so that the scale is not fixed across draws
+            // Taken out 14/01/18 so that the scale is not fixed
+            // across draws
+            //
             //properties.yaxisScaleMax = this.scale.max;
             //properties.yaxisScaleMin = this.scale.min;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 
 
@@ -734,7 +797,8 @@
                 this.drawLine(this.data[i], i);
             }
 
-            // Always redraw the liines now so that tickmarks are drawn
+            // Always redraw the liines now so that tickmarks
+            // are drawn
             this.redrawLines();
 
 
@@ -1119,7 +1183,7 @@
                 this.filledGroups[index] = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         'class': 'rgraph_filled_line_' + index
                     }
@@ -1211,7 +1275,7 @@
 
                 var line = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: properties.filled ? this.filledGroups[index] : this.svg.all,
+                    parent: properties.filled ? this.filledGroups[index] : this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: str,
@@ -1243,7 +1307,7 @@
 
                 var line = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: properties.filled ? this.filledGroups[index] : this.svg.all,
+                    parent: properties.filled ? this.filledGroups[index] : this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: path2,
@@ -1266,17 +1330,22 @@
 
             if (properties.tooltips && properties.tooltips.length) {
 
-                if (!this.svg.all.line_tooltip_hotspots) {
+                if (!document.getElementsByClassName('rgraph_hotspots').length) {
 
                     var group = RGraph.SVG.create({
                         svg: this.svg,
     
-                        // Taken out on 11/12/17 so that hotspots can sit in this group
-                        //parent: this.svg.all,
+                        // Taken out on 11/12/17 so that hotspots
+                        // can sit in this group
+                        //
+                        // Put back in on 4/2/2024 so that clipping
+                        // works correctly
+                        //
+                        parent: this.svgAllGroup,
     
                         type: 'g',
                         attr: {
-                            'fill': 'transparent',
+                            fill: 'transparent',
                             className: "rgraph_hotspots"
                         },
                         style: {
@@ -1284,10 +1353,12 @@
                         }
                     });
                     
-                    // Store the group so it can be easily got to later on
-                    this.svg.all.line_tooltip_hotspots = group;
+                    // Store the group so it can be easily got
+                    // to later on
+                    this.svgAllGroup.line_tooltip_hotspots = group;
+                
                 } else {
-                    group = this.svg.all.line_tooltip_hotspots;
+                    group = this.svgAllGroup.line_tooltip_hotspots;
                 }
                 
 
@@ -1301,12 +1372,12 @@
 
                         var hotspot = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: group,
+                            parent: this.svgAllGroup,
                             type: 'circle',
                             attr: {
                                 cx: this.coords2[index][i][0],
                                 cy: this.coords2[index][i][1],
-                                r: 10,
+                                r: properties.tooltipsHotspotSize,
                                 fill: 'transparent',
                                 'data-dataset': index,
                                 'data-index': i
@@ -1332,7 +1403,7 @@
                                     RGraph.SVG.REG.get('tooltip').__object__.uid === obj.uid) { // Added on the 27th/6/2019
                                     return;
                                 }
-                                
+
                                 obj.removeHighlight();
 
                                 RGraph.SVG.hideTooltip();
@@ -1350,7 +1421,7 @@
                                 // Highlight the chart here
                                 var outer_highlight1 = RGraph.SVG.create({
                                     svg: obj.svg,
-                                    parent: obj.svg.all,
+                                    parent: obj.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: obj.coords2[dataset][index][0],
@@ -1367,7 +1438,7 @@
 
                                 var outer_highlight2 = RGraph.SVG.create({
                                     svg: obj.svg,
-                                    parent: obj.svg.all,
+                                    parent: obj.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: obj.coords2[dataset][index][0],
@@ -1384,7 +1455,7 @@
 
                                 var inner_highlight1 = RGraph.SVG.create({
                                     svg: obj.svg,
-                                    parent: obj.svg.all,
+                                    parent: obj.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: obj.coords2[dataset][index][0],
@@ -1400,7 +1471,7 @@
 
                                 var inner_highlight2 = RGraph.SVG.create({
                                     svg: obj.svg,
-                                    parent: obj.svg.all,
+                                    parent: obj.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: obj.coords2[dataset][index][0],
@@ -1459,7 +1530,7 @@
                             if (style === 'filledcircle' || (i === 0 || i === data.length - 1) ) {
                                 var circle = RGraph.SVG.create({
                                     svg: this.svg,
-                                    parent: this.svg.all,
+                                    parent: this.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: coords[index][i][0],
@@ -1468,6 +1539,9 @@
                                         'fill': properties.colors[index],
                                         filter: properties.shadow? 'url(#dropShadow)' : '',
                                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    },
+                                    style: {
+                                        pointerEvents: 'none'
                                     }
                                 });
                             }
@@ -1482,7 +1556,7 @@
 
                                 var outerCircle = RGraph.SVG.create({
                                     svg: this.svg,
-                                    parent: this.svg.all,
+                                    parent: this.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: coords[index][i][0],
@@ -1491,12 +1565,15 @@
                                         'fill': properties.colors[index],
                                         filter: properties.shadow? 'url(#dropShadow)' : '',
                                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    },
+                                    style: {
+                                        pointerEvents: 'none'
                                     }
                                 });
 
                                 var innerCircle = RGraph.SVG.create({
                                     svg: this.svg,
-                                    parent: this.svg.all,
+                                    parent: this.svgAllGroup,
                                     type: 'circle',
                                     attr: {
                                         cx: coords[index][i][0],
@@ -1504,6 +1581,9 @@
                                         r: size,
                                         'fill': fill,
                                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    },
+                                    style: {
+                                        pointerEvents: 'none'
                                     }
                                 });
 
@@ -1519,7 +1599,7 @@
                             
                                 var rect = RGraph.SVG.create({
                                     svg: this.svg,
-                                    parent: this.svg.all,
+                                    parent: this.svgAllGroup,
                                     type: 'rect',
                                     attr: {
                                         x:      coords[index][i][0] - size,
@@ -1530,6 +1610,9 @@
                                         'stroke': properties.colors[index],
                                         'fill': fill,
                                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    },
+                                    style: {
+                                        pointerEvents: 'none'
                                     }
                                 });
                             }
@@ -1544,7 +1627,7 @@
 
                                 var rect = RGraph.SVG.create({
                                     svg: this.svg,
-                                    parent: this.svg.all,
+                                    parent: this.svgAllGroup,
                                     type: 'rect',
                                     attr: {
                                         x:      coords[index][i][0] - size,
@@ -1553,6 +1636,9 @@
                                         height: size + size + linewidth,
                                         'fill': fill,
                                         'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
+                                    },
+                                    style: {
+                                        pointerEvents: 'none'
                                     }
                                 });
                             }
@@ -1602,7 +1688,7 @@
 
                     RGraph.SVG.create({
                         svg: this.svg,
-                        parent: properties.filled ? this.filledGroups[i] : this.svg.all,
+                        parent: properties.filled ? this.filledGroups[i] : this.svgAllGroup,
                         type: 'path',
                         attr: {
                             d: path,
@@ -1663,7 +1749,7 @@
 
                     RGraph.SVG.create({
                         svg: this.svg,
-                        parent: properties.filled ? this.filledGroups[i] : this.svg.all,
+                        parent: properties.filled ? this.filledGroups[i] : this.svgAllGroup,
                         type: 'path',
                         attr: {
                             d: path,
@@ -1977,7 +2063,7 @@
 
                         RGraph.SVG.text({
                             object:     this,
-                            parent:     this.svg.all,
+                            parent:     this.svgAllGroup,
                             tag:        'labels.above',
                             text:       str,
                             x:          parseFloat(this.coords2[dataset][i][0]) + properties.labelsAboveOffsetx,
@@ -2110,7 +2196,7 @@
                 var errorbarLine = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x,
                         y1: y,
@@ -2126,7 +2212,7 @@
                 var errorbarCap = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x - halfCapWidth,
                         y1: y1,
@@ -2155,7 +2241,7 @@
                 var errorbarLine = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x,
                         y1: y,
@@ -2170,7 +2256,7 @@
                 var errorbarCap = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x - halfCapWidth,
                         y1: y3,
@@ -2499,7 +2585,7 @@
             // Draw the line
             var line = RGraph.SVG.create({
                 svg: obj.svg,
-                parent: obj.svg.all,
+                parent: obj.svgAllGroup,
                 type: 'line',
                 attr: {
                     x1: Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin),
@@ -2525,7 +2611,7 @@
                 grid = els[0];
 
             // Remove the trendline from the DOM
-            obj.svg.all.removeChild(line);
+            obj.svgAllGroup.removeChild(line);
             
             // Now re-add it immedately after the background grid
             grid.insertAdjacentElement('afterend', line);
@@ -2588,7 +2674,7 @@
                         // Create the path and add it to the SVG document
                         var node = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: path,
@@ -2708,7 +2794,7 @@
                 var node = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         fill: properties.filled ? '#0000' : 'none',
                         d: path,
@@ -2843,6 +2929,68 @@
             } else {
                 return 'round';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param object clipPath The <clipPath> node
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var width  = this.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'rect',
+                parent: clipPath,
+                attr: {
+                    x:      x,
+                    y:      y,
+                    width:  width,
+                    height: height
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
         
 

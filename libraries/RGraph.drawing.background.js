@@ -166,7 +166,9 @@
             yaxisTitleY:      null,
             yaxisTitlePos:    null,
 
-            clearto:          'rgba(0,0,0,0)'
+            clearto:          'rgba(0,0,0,0)',
+            
+            clip:             null
         }
 
         //
@@ -305,6 +307,21 @@
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
 
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -358,7 +375,18 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
-    
+
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
 
             //
             // Fire the onfirstdraw event
@@ -436,12 +464,18 @@
             var mouseXY = RGraph.getMouseXY(e),
                 mouseX  = mouseXY[0],
                 mouseY  = mouseXY[1];
+            
+            // Draw a path to test
+            this.path(
+                'b r % % % %',
+                this.marginLeft,
+                this.marginTop,
+                this.canvas.width - this.marginRight - this.marginLeft,
+                this.canvas.height - this.marginTop - this.marginBottom
+            );
 
-            if (
-                   mouseX >= this.marginLeft
-                && mouseX <= (this.canvas.width - this.marginRight)
-                && mouseY >= this.marginTop
-                && mouseY <= (this.canvas.height - this.marginBottom)
+            if (   this.context.isPointInPath(mouseX, mouseY)
+                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                ) {
 
                 if (RGraph.parseTooltipText && properties.tooltips) {

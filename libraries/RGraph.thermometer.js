@@ -389,6 +389,45 @@
                 this.height
             ];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
+
+
+
+
             // Draw the background
             this.drawBackground();
 
@@ -451,6 +490,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
     
 
             //
@@ -891,7 +937,10 @@
                 
                 this.pathBar();
     
-                if (this.context.isPointInPath(mouseX, mouseY)) {    
+                if (
+                       this.context.isPointInPath(mouseX, mouseY)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {    
                 
                     var tooltip = RGraph.parseTooltipText ? RGraph.parseTooltipText(properties.tooltips, i) : '';
     
@@ -1411,6 +1460,49 @@
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + (coords[3] / 2) + 5 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var y1 = this.getYCoord(from),
+                y2 = this.getYCoord(to);
+
+            // Change the angle if the number is "min"
+            if (RegExp.$1 === 'min') {
+                y1 = this.canvas.height;
+            }
+
+            // Change the angle if the number is "max"
+            if (RegExp.$2 === 'max') {
+                y2 = 0;
+            }
+
+            this.path(
+                'sa b r % % % % cl',
+                0,y2,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
+            );
         };
 
 

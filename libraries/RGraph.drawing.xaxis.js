@@ -146,7 +146,9 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
 
-            clearto:   'rgba(0,0,0,0)'
+            clearto:                    'rgba(0,0,0,0)',
+            
+            clip:                       null
         }
 
         //
@@ -271,6 +273,22 @@
 
 
 
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+            
+            
+            
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -326,7 +344,18 @@
             // This installs the event listeners
             RGraph.installEventListeners(this);
     
-    
+
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
 
             // Fire the onfirstdraw event
             if (this.firstDraw) {
@@ -404,6 +433,7 @@
                 && mouseX <= (this.canvas.width - this.marginRight)
                 && mouseY >= this.y - (properties.xaxisTickmarksAlign ==  'top' ? (properties.textSize * 1.5) + 5 : 0)
                 && mouseY <= (this.y + (properties.xaxisTickmarksAlign ==  'top' ? 0 : (properties.textSize * 1.5) + 5))
+                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                ) {
                 
                 var x = this.marginLeft;

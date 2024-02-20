@@ -256,7 +256,7 @@
             //
             if (this.value > this.max) this.value = this.max;
             if (this.value < this.min) this.value = this.min;
-    
+
             //
             // Set the current value
             //
@@ -313,6 +313,34 @@
             }
     
 
+
+
+
+
+
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             //
             // Draw the meter and its label
             //
@@ -345,6 +373,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
 
 
 
@@ -1013,6 +1048,56 @@
         this.cancelStopAnimation = function ()
         {
             this.stopAnimationRequested = false;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var a1 = this.getAngle(from),
+                a2 = this.getAngle(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                a1 = this.getAngle(this.min);
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                a2 = this.getAngle(this.max);
+            }
+
+            this.path(
+                'sa b          m % %    a % % % % % false    c cl',
+                
+                this.centerx,
+                this.centery,
+                
+                this.centerx,
+                this.centery,
+                Math.max(this.canvas.width, this.canvas.height),
+                a1 - 0.01, a2 + 0.01
+            );
         };
 
 

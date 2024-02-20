@@ -556,11 +556,16 @@
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
-            
+
+
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
-            // MUST be the first thing done!
+            // MUST be the first thing done after clipping is installed!
             //
             if (!this.canvas.__rgraph_aa_translated__) {
                 this.context.translate(0.5,0.5);
@@ -673,6 +678,119 @@
 
 
 
+            //
+            // Work out the max value
+            //
+            if (properties.yaxisScaleMax) {
+
+                this.scale2 = RGraph.getScale({object: this, options: {
+                    'scale.max':         properties.yaxisScaleMax,
+                    'scale.strict':      properties.yaxisScaleRound ? false : true,
+                    'scale.min':         properties.yaxisScaleMin,
+                    'scale.thousand':    properties.yaxisScaleThousand,
+                    'scale.point':       properties.yaxisScalePoint,
+                    'scale.decimals':    properties.yaxisScaleDecimals,
+                    'scale.labels.count':properties.yaxisLabelsCount,
+                    'scale.round':       properties.yaxisScaleRound,
+                    'scale.units.pre':   properties.yaxisScaleUnitsPre,
+                    'scale.units.post':  properties.yaxisScaleUnitsPost,
+                    'scale.formatter':   properties.yaxisScaleFormatter
+                }});
+
+            } else {
+
+                //
+                // If errorbars are given as a number then convert the nuumber to an
+                // array.
+                //
+                var errorbars = properties.errorbars;
+
+                if (typeof errorbars === 'number') {
+
+                    var value = errorbars;
+
+                    properties.errorbars = [];
+
+                    for (var i=0; i<this.data.length; ++i) {
+                        if (typeof this.data[i] === 'number') {
+                            properties.errorbars.push([value, null]);
+
+                        } else if (typeof this.data[i] === 'object' && !RGraph.isNull(this.data[i])) {
+                            for (var j=0; j<this.data[i].length; ++j) {
+                                properties.errorbars.push([value, null]);
+                            }
+                        }
+                    }
+
+                    errorbars = properties.errorbars;
+                }
+
+
+
+
+
+
+
+
+                for (i=0; i<this.data.length; ++i) {
+                    if (typeof this.data[i] == 'object') {
+                        var value = properties.grouping === 'grouped' ? Number(RGraph.arrayMax(this.data[i], true)) : Number(RGraph.arraySum(this.data[i]));
+
+                    } else {
+                        var value = Number(this.data[i]);
+                    }
+
+                    this.max = Math.max(Math.abs(this.max), Math.abs(value) +
+
+                        Number(
+                            (
+                                   typeof properties.errorbars === 'object'
+                                && typeof properties.errorbars[i] === 'object'
+                                && !RGraph.isNull(properties.errorbars[i])
+                                && typeof properties.errorbars[i][0] === 'number'
+                            ) ? properties.errorbars[i][0]  : 0
+                        )
+                    );
+                }
+
+
+
+
+
+
+
+                this.scale2 = RGraph.getScale({object: this, options: {
+                    'scale.max':         this.max,
+                    'scale.min':         properties.yaxisScaleMin,
+                    'scale.thousand':    properties.yaxisScaleThousand,
+                    'scale.point':       properties.yaxisScalePoint,
+                    'scale.decimals':    properties.yaxisScaleDecimals,
+                    'scale.labels.count':properties.yaxisLabelsCount,
+                    'scale.round':       properties.yaxisScaleRound,
+                    'scale.units.pre':   properties.yaxisScaleUnitsPre,
+                    'scale.units.post':  properties.yaxisScaleUnitsPost,
+                    'scale.formatter':   properties.yaxisScaleFormatter
+                }});
+
+                this.max = this.scale2.max;
+            }
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
 
 
             // Now draw the background on to the main canvas
@@ -765,6 +883,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
 
 
             //
@@ -903,102 +1028,6 @@
                 decimals = properties.yaxisScaleDecimals;
 
 
-            //
-            // Work out the max value
-            //
-            if (properties.yaxisScaleMax) {
-
-                this.scale2 = RGraph.getScale({object: this, options: {
-                    'scale.max':         properties.yaxisScaleMax,
-                    'scale.strict':      properties.yaxisScaleRound ? false : true,
-                    'scale.min':         properties.yaxisScaleMin,
-                    'scale.thousand':    properties.yaxisScaleThousand,
-                    'scale.point':       properties.yaxisScalePoint,
-                    'scale.decimals':    properties.yaxisScaleDecimals,
-                    'scale.labels.count':properties.yaxisLabelsCount,
-                    'scale.round':       properties.yaxisScaleRound,
-                    'scale.units.pre':   properties.yaxisScaleUnitsPre,
-                    'scale.units.post':  properties.yaxisScaleUnitsPost,
-                    'scale.formatter':   properties.yaxisScaleFormatter
-                }});
-
-            } else {
-
-                //
-                // If errorbars are given as a number then convert the nuumber to an
-                // array.
-                //
-                var errorbars = properties.errorbars;
-
-                if (typeof errorbars === 'number') {
-
-                    var value = errorbars;
-
-                    properties.errorbars = [];
-
-                    for (var i=0; i<this.data.length; ++i) {
-                        if (typeof this.data[i] === 'number') {
-                            properties.errorbars.push([value, null]);
-
-                        } else if (typeof this.data[i] === 'object' && !RGraph.isNull(this.data[i])) {
-                            for (var j=0; j<this.data[i].length; ++j) {
-                                properties.errorbars.push([value, null]);
-                            }
-                        }
-                    }
-
-                    errorbars = properties.errorbars;
-                }
-
-
-
-
-
-
-
-
-                for (i=0; i<this.data.length; ++i) {
-                    if (typeof this.data[i] == 'object') {
-                        var value = properties.grouping === 'grouped' ? Number(RGraph.arrayMax(this.data[i], true)) : Number(RGraph.arraySum(this.data[i]));
-
-                    } else {
-                        var value = Number(this.data[i]);
-                    }
-
-                    this.max = Math.max(Math.abs(this.max), Math.abs(value) +
-
-                        Number(
-                            (
-                                   typeof properties.errorbars === 'object'
-                                && typeof properties.errorbars[i] === 'object'
-                                && !RGraph.isNull(properties.errorbars[i])
-                                && typeof properties.errorbars[i][0] === 'number'
-                            ) ? properties.errorbars[i][0]  : 0
-                        )
-                    );
-                }
-
-
-
-
-
-
-
-                this.scale2 = RGraph.getScale({object: this, options: {
-                    'scale.max':         this.max,
-                    'scale.min':         properties.yaxisScaleMin,
-                    'scale.thousand':    properties.yaxisScaleThousand,
-                    'scale.point':       properties.yaxisScalePoint,
-                    'scale.decimals':    properties.yaxisScaleDecimals,
-                    'scale.labels.count':properties.yaxisLabelsCount,
-                    'scale.round':       properties.yaxisScaleRound,
-                    'scale.units.pre':   properties.yaxisScaleUnitsPre,
-                    'scale.units.post':  properties.yaxisScaleUnitsPost,
-                    'scale.formatter':   properties.yaxisScaleFormatter
-                }});
-
-                this.max = this.scale2.max;
-            }
 
             //
             // if the chart is adjustable fix the scale so that it doesn't change.
@@ -2048,7 +2077,10 @@ this.context.lineTo(
                     }
                 }
 
-                if (this.context.isPointInPath(mouseX, mouseY)) {
+                if (
+                       this.context.isPointInPath(mouseX, mouseY)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
 
 
                     if (properties.tooltips && RGraph.parseTooltipText) {
@@ -4001,6 +4033,53 @@ this.context.lineTo(
             }
 
             return num;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+    
+            var width  = this.canvas.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+        
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+            this.path(
+                'sa b r % % % % cl',
+                x, y, width, height
+            );
         };
 
 

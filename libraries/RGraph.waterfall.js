@@ -547,6 +547,9 @@
             //
             // Draw the background image
             //
+            // TODO Can this be moved further down where all the
+            //      drawing occurs?
+            //
             RGraph.drawBackgroundImage(this);
 
 
@@ -648,7 +651,31 @@
 
             this.max = this.scale2.max;
             this.min = this.scale2.min;
-    
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             // Draw the background hbars
             RGraph.drawBars(this)
 
@@ -702,6 +729,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
             
             
             // Draw a key if necessary
@@ -1374,10 +1408,13 @@
                     width  = this.coords[i][2],
                     height = this.coords[i][3];
     
-                if (   mouseX >= left
+                if (
+                       mouseX >= left
                     && mouseX <= (left + width)
                     && mouseY >= top
-                    && mouseY <= top + height) {
+                    && mouseY <= top + height
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
                     
                     var tooltip = RGraph.parseTooltipText ? RGraph.parseTooltipText(properties.tooltips, i) : null;
     
@@ -2037,6 +2074,58 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.properties.total ? 3 : 2;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            if (this.properties.xaxisPosition === 'top') {
+
+                var y1 = this.getYCoord(from),
+                    y2 = this.getYCoord(to);
+
+                if (RegExp.$1 === 'min') y1 -= this.properties.marginTop;
+                if (RegExp.$2 === 'max') y2 = 0;
+
+                this.path(
+                    'sa b r % % % % cl',
+                    0,y1,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
+                );
+
+            } else {
+
+                var y1 = this.getYCoord(from),
+                    y2 = this.getYCoord(to);
+
+                if (RegExp.$1 === 'min') y1 = this.canvas.height;
+                if (RegExp.$2 === 'max') y2 = 0;
+
+                this.path(
+                    'sa b r % % % % cl',
+                    0,y2,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
+                );
+            }
         };
 
 

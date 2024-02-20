@@ -91,17 +91,18 @@
 
 
 
-
+        this.type             = 'bar';
         this.id               = conf.id;
         this.uid              = RGraph.SVG.createUID();
         this.container        = document.getElementById(this.id);
         this.layers           = {}; // MUST be before the SVG tag is created!
         this.svg              = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup      = RGraph.SVG.createAllGroup(this);
+        this.clipid           = null; // Used to clip the canvas
         this.isRGraph         = true;
         this.isrgraph         = true;
         this.rgraph           = true;
         this.data             = conf.data;
-        this.type             = 'bar';
         this.coords           = [];
         this.coords2          = [];
         this.stackedBackfaces = [];
@@ -170,6 +171,7 @@
             marginInnerRight:     0,
 
             yaxis:                true,
+            yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
             yaxisColor:           'black',
@@ -207,6 +209,7 @@
             yaxisTitleValign:     null,
 
             xaxis:                true,
+            xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
             xaxisLabels:          null,
@@ -332,7 +335,8 @@
             keyLabelsSize:    null,
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
-            keyLabelsFont:    null
+            keyLabelsFont:    null,
+            clip:             null
         };
 
         //
@@ -397,8 +401,9 @@
             RGraph.SVG.fireCustomEvent(this, 'onbeforedraw');
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should the first thing that's done in the.draw()
+            // function except for the onbeforedraw event and the
+            // installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -411,14 +416,13 @@
             } else {
 
                 // Set the skew transform on the all group if necessary
-                this.svg.all.setAttribute('transform', 'skewY(5)');
+                this.svgAllGroup.setAttribute('transform', 'skewY(5)');
             }
 
 
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
             
 
 
@@ -523,7 +527,7 @@
                     values.push(RGraph.SVG.arraySum(this.data[i]) + errorbar);
                 }
             }
-            var max = RGraph.SVG.arrayMax(values);
+            var max = RGraph.SVG.arrayMax(values, true);
 
             // A custom, user-specified maximum value
             if (typeof properties.yaxisScaleMax === 'number') {
@@ -541,6 +545,7 @@
             //
             // Generate an appropiate scale
             //
+
             this.scale = RGraph.SVG.getScale({
                 object:    this,
                 numlabels: properties.yaxisLabelsCount,
@@ -559,7 +564,8 @@
 
 
             //
-            // Get the scale a second time if the ymin should be mirored
+            // Get the scale a second time if the ymin should be
+            // mirored
             //
             // Set the ymin to zero if it's set mirror
             if (mirrorScale) {
@@ -574,7 +580,7 @@
                     round:     false,
                     thousand:  properties.yaxisScaleThousand,
                     decimals:  properties.yaxisScaleDecimals,
-                    strict:    typeof properties.yaxisScaleMax === 'number',
+                    strict:    true,
                     formatter: properties.yaxisScaleFormatter
                 });
             }
@@ -596,6 +602,19 @@
 
 
 
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
 
 
 
@@ -628,7 +647,7 @@
                 // Draw the 3D Y axis
                 RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: 'M {1} {2} L {3} {4} L {5} {6} L {7} {8}'.format(
@@ -660,7 +679,7 @@
                 this.threed_xaxis_group = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         className: 'rgraph_3d_bar_xaxis_negative'
                     }
@@ -671,7 +690,7 @@
                 // Draw the 3D X axis
                 RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: 'M {1} {2} L {3} {4} L {5} {6} L {7} {8}'.format(
@@ -894,7 +913,7 @@
 
 
 
-                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousedown-listener-' + this.id, function ()
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousedown-listener-' + this.uid, function ()
                 {
                     obj.container.addEventListener('mousedown', function (e)
                     {
@@ -935,7 +954,7 @@
 
 
 
-                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousemove-listener-' + this.id, function ()
+                RGraph.SVG.runOnce('svg-bar-adjusting-svg-mousemove-listener-' + this.uid, function ()
                 {
                     obj.container.addEventListener('mousemove', function (e)
                     {
@@ -946,6 +965,7 @@
                             var tmp = obj.adjusting_mousedown;
                             obj.adjusting_mousedown = null;
                             RGraph.SVG.redraw(obj.svg);
+
                             obj.adjusting_mousedown = tmp;
     
                             obj.adjusting_mousedown_last = {
@@ -1135,7 +1155,7 @@
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'rect',
-                        parent: properties.variant === '3d' && this.data[i] < 0 ? this.threed_xaxis_group : this.svg.all, 
+                        parent: properties.variant === '3d' && this.data[i] < 0 ? this.threed_xaxis_group : this.svgAllGroup, 
                         attr: {
                             stroke: properties.colorsStroke,
                             fill: properties.colorsSequential ? (properties.colors[sequentialIndex] ? properties.colors[sequentialIndex] : properties.colors[properties.colors.length - 1]) : properties.colors[0],
@@ -1247,6 +1267,7 @@
                             {
                                 e.target.style.cursor = 'pointer'
                             }, false);
+
                         })(i, sequentialIndex);
                     }
 
@@ -1318,7 +1339,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                         // Add the rect tag
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: properties.variant === '3d' && this.data[i][j] < 0 ? this.threed_xaxis_group : this.svg.all,
+                            parent: properties.variant === '3d' && this.data[i][j] < 0 ? this.threed_xaxis_group : this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 stroke: properties.colorsStroke,
@@ -1489,7 +1510,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
 
                             var rect = RGraph.SVG.create({
                                 svg: this.svg,
-                                parent: this.svg.all,
+                                parent: this.svgAllGroup,
                                 type: 'rect',
                                 attr: {
                                     fill: 'white',
@@ -1511,7 +1532,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                         // Create the visible bar
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 stroke: properties.colorsStroke,
@@ -1789,7 +1810,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
             
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'rect',
                 attr: {
                     stroke: properties.highlightStroke,
@@ -1946,7 +1967,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
 
                     RGraph.SVG.text({
                         object:     this,
-                        parent:     this.svg.all,
+                        parent:     this.svgAllGroup,
                         tag:        'labels.above',
 
                         text:       str,
@@ -2068,7 +2089,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var face = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: properties.variant === '3d' && opt.value < 0  ? this.threed_xaxis_group : this.svg.all,
+                    parent: properties.variant === '3d' && opt.value < 0  ? this.threed_xaxis_group : this.svgAllGroup,
                     attr: {
                         stroke: properties.colorsStroke,
                         fill: color,
@@ -2124,7 +2145,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var face = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: properties.variant === '3d' && opt.value < 0  ? this.threed_xaxis_group : this.svg.all,
+                    parent: properties.variant === '3d' && opt.value < 0  ? this.threed_xaxis_group : this.svgAllGroup,
                     attr: {
                         stroke: properties.colorsStroke,
                         fill: color,
@@ -2208,7 +2229,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var errorbarLine = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x1,
                         y1: parseFloat(element.getAttribute('y')),
@@ -2223,7 +2244,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var errorbarCap = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: parseFloat(errorbarLine.getAttribute('x1')) - (capwidth / 2),
                         y1: errorbarLine.getAttribute('y2'),
@@ -2255,7 +2276,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                     var errorbarLine = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'line',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             x1: x1,
                             y1: parseFloat(element.getAttribute('y')),
@@ -2270,7 +2291,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                     var errorbarCap = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'line',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             x1: parseFloat(errorbarLine.getAttribute('x1')) - (capwidth / 2),
                             y1: errorbarLine.getAttribute('y2'),
@@ -2305,7 +2326,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var errorbarLine = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: x1,
                         y1: y1,
@@ -2320,7 +2341,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 var errorbarCap = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'line',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         x1: parseFloat(errorbarLine.getAttribute('x1')) - (capwidth / 2),
                         y1: errorbarLine.getAttribute('y2'),
@@ -2350,7 +2371,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                     var errorbarLine = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'line',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             x1: x1,
                             y1: this.getYCoord(parseFloat(datapoint + min)),
@@ -2365,7 +2386,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                     var errorbarCap = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'line',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             x1: parseFloat(errorbarLine.getAttribute('x1')) - (capwidth / 2),
                             y1: errorbarLine.getAttribute('y1'),
@@ -2838,6 +2859,66 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
             if(parseFloat(args.tooltip.style.top) < 0) {
                 args.tooltip.style.top = parseFloat(args.tooltip.style.top) + 20 + 'px';
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param object clipPath The <clipPath> node
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var width  = this.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'rect',
+                parent: clipPath,
+                attr: {
+                    x:      x,
+                    y:      y,
+                    width:  width,
+                    height: height
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 

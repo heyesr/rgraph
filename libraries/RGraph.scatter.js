@@ -694,6 +694,12 @@
 
 
 
+
+
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -871,7 +877,22 @@
     
             this.grapharea = this.canvas.height - this.marginTop - this.marginBottom;
     
-    
+
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
 
             // Progressively Draw the chart
             RGraph.Background.draw(this);
@@ -1066,6 +1087,13 @@
             // This installs the event listeners
             //
             RGraph.installEventListeners(this);
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
 
 
             //
@@ -1788,8 +1816,11 @@
 
                         let coords = this.coordsMarimekko[i][j];
 
-                        if (    mouseX > coords[0] && mouseX < (coords[0] + coords[2])
-                             && mouseY > coords[1] && mouseY < (coords[1] + coords[3])
+                        if (    mouseX > coords[0]
+                             && mouseX < (coords[0] + coords[2])
+                             && mouseY > coords[1]
+                             && mouseY < (coords[1] + coords[3])
+                             && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                             ) {
                             // Determine the tooltip
                             var tooltip = null;
@@ -1831,10 +1862,11 @@
                         var tooltip = this.data[set][i][3];
         
                         if (typeof y == 'number') {
-                            if (mouseX <= (x + offset) &&
-                                mouseX >= (x - offset) &&
-                                mouseY <= (y + offset) &&
-                                mouseY >= (y - offset)) {
+                            if (   mouseX <= (x + offset)
+                                && mouseX >= (x - offset)
+                                && mouseY <= (y + offset)
+                                && mouseY >= (y - offset)
+                                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)) {
                         
     
     
@@ -4053,6 +4085,53 @@
             }
 
             return false;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            var width  = this.canvas.width,
+                y1     = this.getYCoord(from, true),
+                y2     = this.getYCoord(to, true),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+            this.path(
+                'sa b r % % % % cl',
+                x, y, width, height
+            );
         };
 
 

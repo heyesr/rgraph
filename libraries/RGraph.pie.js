@@ -432,6 +432,20 @@
 
 
 
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -720,6 +734,13 @@
             //
             if (properties.events == true) {
                 RGraph.installEventListeners(this);
+            }
+            
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
             }
     
 
@@ -1585,33 +1606,35 @@
                 
                 this.path('c');
                     
-                if (!this.context.isPointInPath(mouseX, mouseY)) {
-                    continue;
-                }
+                if (
+                       this.context.isPointInPath(mouseX, mouseY)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
 
-                if (angles[i][0] < 0) angles[i][0] += RGraph.TWOPI;
-                if (angles[i][1] > RGraph.TWOPI) angles[i][1] -= RGraph.TWOPI;
-                
-                //
-                // Get the tooltip for the returned shape
-                //
-                if (RGraph.parseTooltipText && properties.tooltips) {
-                    var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
+                    if (angles[i][0] < 0) angles[i][0] += RGraph.TWOPI;
+                    if (angles[i][1] > RGraph.TWOPI) angles[i][1] -= RGraph.TWOPI;
+                    
+                    //
+                    // Get the tooltip for the returned shape
+                    //
+                    if (RGraph.parseTooltipText && properties.tooltips) {
+                        var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
+                    }
+    
+                    return {
+                       object: this,
+                            x: angles[i][2],
+                            y: angles[i][3],
+                       radius: this.radius,
+                   angleStart: angles[i][0],
+                     angleEnd: angles[i][1],
+                        index: i,
+                      dataset: 0,
+              sequentialIndex: i,
+                        label: properties.labels && typeof properties.labels[i] === 'string' ? properties.labels[i] : null,
+                      tooltip: typeof tooltip === 'string' ? tooltip : null
+                    };
                 }
-
-                return {
-                   object: this,
-                        x: angles[i][2],
-                        y: angles[i][3],
-                   radius: this.radius,
-               angleStart: angles[i][0],
-                 angleEnd: angles[i][1],
-                    index: i,
-                  dataset: 0,
-          sequentialIndex: i,
-                    label: properties.labels && typeof properties.labels[i] === 'string' ? properties.labels[i] : null,
-                  tooltip: typeof tooltip === 'string' ? tooltip : null
-                };
             }
             
             return null;

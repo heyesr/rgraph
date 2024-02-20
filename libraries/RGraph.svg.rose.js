@@ -110,11 +110,14 @@
 
 
 
+        this.type            = 'rose';
         this.id              = conf.id;
         this.uid             = RGraph.SVG.createUID();
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG tag is created!
         this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
+        this.clipid          = null; // Used to clip the canvas
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
@@ -122,7 +125,6 @@
         this.height          = Number(this.svg.getAttribute('height'));
         this.data            = RGraph.SVG.arrayClone(conf.data);
         this.originalData    = RGraph.SVG.arrayClone(conf.data);
-        this.type            = 'rose';
         this.angles          = [];
         this.angles2         = [];
         this.colorsParsed    = false;
@@ -286,7 +288,9 @@
             variant: 'normal',
             
             effectGrowMultiplier:       1,// Do not delete this
-            effectRoundrobinMultiplier: 1 // Do not delete this
+            effectRoundrobinMultiplier: 1, // Do not delete this
+            
+            clip: null
         };
 
 
@@ -350,8 +354,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -493,6 +498,46 @@
             });
 
             this.max = this.scale.max;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             
             
@@ -663,7 +708,7 @@
                 // Create the background grid group tag
                 var grid = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'g',
                     attr: {
                         className: 'rgraph_radar_grid',
@@ -874,7 +919,7 @@
                 var group = RGraph.SVG.create({
                     svg: this.svg,
                     type:'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         id: 'rgraph_rose_segments_' + this.uid
                     }
@@ -1211,7 +1256,7 @@
                 var group = RGraph.SVG.create({
                     svg: this.svg,
                     type:'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         id: 'rgraph_rose_segments_' + this.uid
                     }
@@ -1625,7 +1670,7 @@
                     var group = RGraph.SVG.create({
                         svg: this.svg,
                         type:'g',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             id: 'rgraph_rose_scale_labels_' + this.uid
                         }
@@ -1728,7 +1773,7 @@
                 var group = RGraph.SVG.create({
                     svg: this.svg,
                     type:'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         id: 'rgraph_rose_circular_labels_' + this.uid
                     }
@@ -1877,7 +1922,7 @@
 
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
                     d: 'M {1} {2} '.format(arcPath_array[1], arcPath_array[2]) + arcPath + ' ' + arcPath2 + ' z',
@@ -2409,6 +2454,82 @@
                 - 10                    // An arbitrary amount
                 + coords.y
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // main function.
+        //
+        // @param object clipPath The parent cipPath element
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getRadius(from),
+                r2 = this.getRadius(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = 0;
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = Math.max(this.width, this.height);
+            }
+
+    
+            var path1 = RGraph.SVG.TRIG.getArcPath3({
+                cx:     this.centerx,
+                cy:     this.centery,
+                radius: r1,
+                start:  0,
+                end:    RGraph.SVG.TRIG.TWOPI,
+                anticlockwise: false
+            });
+
+    
+            var path2 = RGraph.SVG.TRIG.getArcPath3({
+                cx:     this.centerx,
+                cy:     this.centery,
+                radius: r2,
+                start:  RGraph.SVG.TRIG.TWOPI,
+                end:    0,
+                anticlockwise: true
+            });
+    
+
+            RGraph.SVG.create({
+                svg: this.svg,
+                parent: clipPath,
+                type: 'path',
+                attr: {
+                    d: 'M {1} {2} {3} {4} z'.format(
+                        this.centerx,
+                        this.centery,
+                        path1,
+                        path2
+                    )
+                }
+            });
+            
+            // Now set the clip-path attribute on the
+            // all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 

@@ -561,10 +561,78 @@
 
 
 
+            
+
+            
+            // Reset this so that it doesn't grow uncontrollably
+            this.yaxisTitleSize = 0;
+
+
+            // Calculate the size of the labels regardless of anything else
+            if ( properties.yaxisLabels) {
+            
+                var labels     =  properties.yaxisLabels,
+                    marginName =  properties.yaxisPosition === 'right' ? 'marginRight' : 'marginLeft';
+
+                var textConf = RGraph.getTextConf({
+                    object: this,
+                    prefix: 'yaxisLabels'
+                });
+
+                for (var i=0,len=0; i<labels.length; i+=1) {
+                    
+                    var length = RGraph.measureText(
+                        labels[i],
+                        textConf.bold,
+                        textConf.font,
+                        textConf.size
+                    )[0] || 0;
+
+                    this.yaxisLabelsSize = Math.max(len, length);
+                    len = this.yaxisLabelsSize;
+                }
+
+                // Is a title Specified? If so accommodate that
+                if ( properties.yaxisTitle) {
+
+                    var textConf = RGraph.getTextConf({
+                        object: this,
+                        prefix: 'yaxisTitle'
+                    });
+
+                    var titleSize = RGraph.measureText(
+                         properties.yaxisTitle,
+                        textConf.bold,
+                        textConf.font,
+                        textConf.size
+                    ) || [];
+
+
+                    this.yaxisTitleSize += titleSize[1];
+                    properties[marginName]    += this.yaxisTitleSize;
+                }
+            }
+
+
+            //
+            // Accomodate autosizing the left/right margin
+            //
+            if (properties.marginLeftAuto) {
+                var name =  properties.yaxisPosition === 'right' ? 'marginRight' : 'marginLeft';
+
+                this.set(
+                    name,
+                    this.yaxisLabelsSize + this.yaxisTitleSize + 10
+                );
+            }
+
+
+
+
+
+
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
-            //
-            // MUST be the first thing done!
             //
             if (!this.canvas.__rgraph_aa_translated__) {
                 this.context.translate(0.5,0.5);
@@ -624,71 +692,10 @@
                 // Don't want to do this again
                 this.colorsParsed = true;
             }
-            
 
             
-            // Reset this so that it doesn't grow uncontrollably
-            this.yaxisTitleSize = 0;
+            // *** marginLeftAuto calculation was here ***
 
-
-            // Calculate the size of the labels regardless of anything else
-            if ( properties.yaxisLabels) {
-            
-                var labels     =  properties.yaxisLabels,
-                    marginName =  properties.yaxisPosition === 'right' ? 'marginRight' : 'marginLeft';
-
-                var textConf = RGraph.getTextConf({
-                    object: this,
-                    prefix: 'yaxisLabels'
-                });
-
-                for (var i=0,len=0; i<labels.length; i+=1) {
-                    
-                    var length = RGraph.measureText(
-                        labels[i],
-                        textConf.bold,
-                        textConf.font,
-                        textConf.size
-                    )[0] || 0;
-
-                    this.yaxisLabelsSize = Math.max(len, length);
-                    len = this.yaxisLabelsSize;
-                }
-
-                // Is a title Specified? If so accommodate that
-                if ( properties.yaxisTitle) {
-
-                    var textConf = RGraph.getTextConf({
-                        object: this,
-                        prefix: 'yaxisTitle'
-                    });
-
-                    var titleSize = RGraph.measureText(
-                         properties.yaxisTitle,
-                        textConf.bold,
-                        textConf.font,
-                        textConf.size
-                    ) || [];
-
-
-                    this.yaxisTitleSize += titleSize[1];
-                    properties[marginName]    += this.yaxisTitleSize;
-                }
-            }
-
-            
-
-            //
-            // Accomodate autosizing the left/right margin
-            //
-            if (properties.marginLeftAuto) {
-                var name =  properties.yaxisPosition === 'right' ? 'marginRight' : 'marginLeft';
-
-                this.set(
-                    name,
-                    this.yaxisLabelsSize + this.yaxisTitleSize + 10
-                );
-            }
 
 
 
@@ -728,7 +735,88 @@
             this.halfgrapharea  = this.grapharea / 2;
             this.halfTextHeight = properties.textSize / 2;
             this.halfway        = Math.round((this.graphwidth / 2) + this.marginLeft);
+
+
+
+
+
+            //////////////////////
+            // SCALE GENERATION //
+            //////////////////////
+
+            
+
+            //
+            // Work out the max value
+            //
+            if ( properties.xaxisScaleMax) {
+
+                this.scale2 = RGraph.getScale({object: this, options: {
+                    'scale.max':           properties.xaxisScaleMax,
+                    'scale.min':           properties.xaxisScaleMin,
+                    'scale.decimals':      Number( properties.xaxisScaleDecimals),
+                    'scale.point':         properties.xaxisScalePoint,
+                    'scale.thousand':      properties.xaxisScaleThousand,
+                    'scale.round':         properties.xaxisScaleRound,
+                    'scale.units.pre':     properties.xaxisScaleUnitsPre,
+                    'scale.units.post':    properties.xaxisScaleUnitsPost,
+                    'scale.labels.count':  properties.xaxisLabelsCount,
+                    'scale.strict':       true
+                 }});
+
+                this.max = this.scale2.max;
     
+            } else {
+
+                var grouping = properties.grouping;
+
+                for (i=0; i<this.data.length; ++i) {
+                    if (typeof this.data[i] == 'object') {
+                        var value = grouping == 'grouped' ? Number(RGraph.arrayMax(this.data[i], true)) : Number(RGraph.arraySum(this.data[i]));
+                    } else {
+                        var value = Number(Math.abs(this.data[i]));
+                    }
+    
+                    this.max = Math.max(Math.abs(this.max), Math.abs(value));
+                }
+
+                this.scale2 = RGraph.getScale({object: this, options: {
+                    'scale.max':          this.max,
+                    'scale.min':           properties.xaxisScaleMin,
+                    'scale.decimals':     Number( properties.xaxisScaleDecimals),
+                    'scale.point':         properties.xaxisScalePoint,
+                    'scale.thousand':      properties.xaxisScaleThousand,
+                    'scale.round':         properties.xaxisScaleRound,
+                    'scale.units.pre':     properties.xaxisScaleUnitsPre,
+                    'scale.units.post':    properties.xaxisScaleUnitsPost,
+                    'scale.labels.count':  properties.xaxisLabelsCount
+                }});
+
+
+                this.max = this.scale2.max;
+                this.min = this.scale2.min;
+            }
+    
+            if ( properties.xaxisScaleDecimals == null && Number(this.max) == 1) {
+                this.set('xaxisScaleDecimals', 1);
+            }
+
+
+
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
     
     
     
@@ -799,6 +887,18 @@
             //
             RGraph.installEventListeners(this);
     
+
+
+
+            //
+            // End clipping
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.end();
+            }
+
+
+
 
             //
             // Fire the onfirstdraw event
@@ -965,63 +1065,10 @@
 
             var prevX = 0,
                 prevY = 0;
-            
-    
-            //
-            // Work out the max value
-            //
 
-            if ( properties.xaxisScaleMax) {
-
-                this.scale2 = RGraph.getScale({object: this, options: {
-                    'scale.max':           properties.xaxisScaleMax,
-                    'scale.min':           properties.xaxisScaleMin,
-                    'scale.decimals':     Number( properties.xaxisScaleDecimals),
-                    'scale.point':         properties.xaxisScalePoint,
-                    'scale.thousand':      properties.xaxisScaleThousand,
-                    'scale.round':         properties.xaxisScaleRound,
-                    'scale.units.pre':     properties.xaxisScaleUnitsPre,
-                    'scale.units.post':    properties.xaxisScaleUnitsPost,
-                    'scale.labels.count':  properties.xaxisLabelsCount,
-                    'scale.strict':       true
-                 }});
-
-                this.max = this.scale2.max;
-    
-            } else {
-
-                var grouping = properties.grouping;
-
-                for (i=0; i<this.data.length; ++i) {
-                    if (typeof this.data[i] == 'object') {
-                        var value = grouping == 'grouped' ? Number(RGraph.arrayMax(this.data[i], true)) : Number(RGraph.arraySum(this.data[i]));
-                    } else {
-                        var value = Number(Math.abs(this.data[i]));
-                    }
-    
-                    this.max = Math.max(Math.abs(this.max), Math.abs(value));
-                }
-
-                this.scale2 = RGraph.getScale({object: this, options: {
-                    'scale.max':          this.max,
-                    'scale.min':           properties.xaxisScaleMin,
-                    'scale.decimals':     Number( properties.xaxisScaleDecimals),
-                    'scale.point':         properties.xaxisScalePoint,
-                    'scale.thousand':      properties.xaxisScaleThousand,
-                    'scale.round':         properties.xaxisScaleRound,
-                    'scale.units.pre':     properties.xaxisScaleUnitsPre,
-                    'scale.units.post':    properties.xaxisScaleUnitsPost,
-                    'scale.labels.count':  properties.xaxisLabelsCount
-                }});
-
-
-                this.max = this.scale2.max;
-                this.min = this.scale2.min;
-            }
-    
-            if ( properties.xaxisScaleDecimals == null && Number(this.max) == 1) {
-                this.set('xaxisScaleDecimals', 1);
-            }
+            ///////////////////////////////
+            // SCALE GENERATION WAS HERE //
+            ///////////////////////////////
             
             //
             // This is here to facilitate sequential colors
@@ -1941,7 +1988,10 @@
 
 
 
-                if (this.context.isPointInPath(mouseX, mouseY)) {
+                if (
+                       this.context.isPointInPath(mouseX, mouseY)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                   ) {
 
                     if (RGraph.parseTooltipText) {
                         var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
@@ -2117,12 +2167,12 @@
         // 
         // @param number value The value to get the coord for
         //
-        this.getXCoord = function (value)
+        this.getXCoord = function (value, outofbounds = false)
         {
             if ( properties.yaxisPosition == 'center') {
         
                 // Range checking
-                if (value > this.max || value < (-1 * this.max)) {
+                if (outofbounds === false && value > this.max || value < (-1 * this.max)) {
                     return null;
                 }
     
@@ -2133,7 +2183,7 @@
             } else {
             
                 // Range checking
-                if (value > this.max || value < 0) {
+                if (outofbounds === false && value > this.max || value < 0) {
                     return null;
                 }
 
@@ -4113,6 +4163,54 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            var height = this.canvas.height,
+                x1     = this.getXCoord(from, true),
+                x2     = this.getXCoord(to, true),
+                width  = Math.abs(x2 - x1),
+                x      = Math.min(x1, x2),
+                y      = 0;
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                width += this.properties.marginRight;
+            }
+
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                x = 0;
+                width = x2;
+            }
+//$a([x, y, width, height]);
+            this.path(
+                'sa b r % % % % cl',
+                x, y, width, height
+            );
         };
 
 

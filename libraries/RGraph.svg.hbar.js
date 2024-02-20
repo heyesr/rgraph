@@ -99,19 +99,20 @@
 
 
 
-
+        this.type             = 'hbar';
         this.id               = conf.id;
         this.uid              = RGraph.SVG.createUID();
         this.container        = document.getElementById(this.id);
         this.layers           = {}; // MUST be before the SVG tag is created!
         this.svg              = RGraph.SVG.createSVG({object: this,container: this.container});
-        this.isRGraph        = true;
-        this.isrgraph        = true;
-        this.rgraph          = true;
+        this.svgAllGroup      = RGraph.SVG.createAllGroup(this);
+        this.clipid           = null; // Used to clip the canvas
+        this.isRGraph         = true;
+        this.isrgraph         = true;
+        this.rgraph           = true;
         this.width            = Number(this.svg.getAttribute('width'));
         this.height           = Number(this.svg.getAttribute('height'));
         this.data             = conf.data;
-        this.type             = 'hbar';
         this.coords           = [];
         this.coords2          = [];
         this.coordsSpline     = [];
@@ -181,6 +182,7 @@
             marginInnerBottom:        0,
 
             xaxis:                true,
+            xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
             xaxisColor:           'black',
@@ -219,6 +221,7 @@
             xaxisTitleValign:     null,
 
             yaxis:                true,
+            yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
             yaxisTickmarksCount: 5,
@@ -380,7 +383,9 @@
             lineShadowOffsetx:              2,
             lineShadowOffsety:              2,
             lineSpline:                     false,
-            lineTickmarksDrawNonNull:       false
+            lineTickmarksDrawNonNull:       false,
+            
+            clip:                           null
         };
 
 
@@ -453,8 +458,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
             
@@ -465,7 +471,6 @@
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
 
 
             //
@@ -608,7 +613,7 @@
             // Set the xmin to zero if it's set mirror
             if (this.mirrorScale) {
                 this.scale = RGraph.SVG.getScale({
-                    object: this,
+                    object:    this,
                     numlabels: properties.xaxisLabelsCount,
                     unitsPre:  properties.xaxisScaleUnitsPre,
                     unitsPost: properties.xaxisScaleUnitsPost,
@@ -618,7 +623,7 @@
                     round:     false,
                     thousand:  properties.xaxisScaleThousand,
                     decimals:  properties.xaxisScaleDecimals,
-                    strict:    typeof properties.xaxisScaleMax === 'number',
+                    strict:    true,
                     formatter: properties.xaxisScaleFormatter
                 });
             }
@@ -629,6 +634,39 @@
 
             this.min      = this.scale.min;
             properties.xaxisScaleMin = this.scale.min;
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -910,7 +948,7 @@
 
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         type: 'rect',
                         attr: {
                             stroke: properties.colorsStroke,
@@ -1085,7 +1123,7 @@
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
                             type: 'rect',
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             attr: {
                                 stroke: properties['colorsStroke'],
                                 fill: fill,
@@ -1204,7 +1242,7 @@
 
                             var rect = RGraph.SVG.create({
                                 svg: this.svg,
-                                parent: this.svg.all,
+                                parent: this.svgAllGroup,
                                 type: 'rect',
                                 attr: {
                                     x: properties.yaxisPosition === 'right' ? this.getXCoord(0) - fullWidth : this.getXCoord(0),
@@ -1227,7 +1265,7 @@
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
                             type: 'rect',
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             attr: {
                                 stroke: properties['colorsStroke'],
                                 fill: properties.colorsSequential ? (properties.colors[sequentialIndex] ? properties.colors[sequentialIndex] : properties.colors[properties.colors.length - 1]) : (properties.colors[j] ? properties.colors[j] : properties.colors[properties.colors.length - 1]),
@@ -1419,7 +1457,7 @@
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'rect',
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 attr: {
                     stroke: properties.highlightStroke,
                     fill: properties.highlightFill,
@@ -1655,7 +1693,7 @@
                     var text = RGraph.SVG.text({
                         
                         object:     this,
-                        parent:     this.svg.all,
+                        parent:     this.svgAllGroup,
                         tag:        'labels.above',
                         
                         text:       str,
@@ -1765,7 +1803,7 @@
     
                         var text = RGraph.SVG.text({
                             object:     this,
-                            parent:     this.svg.all,
+                            parent:     this.svgAllGroup,
                             tag:        'labels.inbar',
                             text:       str,
                             x:          x,
@@ -2306,7 +2344,7 @@
                 
                     RGraph.SVG.create({
                         svg: obj.svg,
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         type: 'path',
                         attr: {
                             fill:              obj.properties.lineFilledColor,
@@ -2319,7 +2357,7 @@
                 
                 RGraph.SVG.create({
                     svg: obj.svg,
-                    parent: obj.svg.all,
+                    parent: obj.svgAllGroup,
                     type: 'path',
                     attr: {
                         fill:              "transparent",
@@ -2348,8 +2386,11 @@
                             this.coords[0].y + (this.coords[0].height / 2)
                         );
                     } else {
+
+                        var v = Number(this.coords[0].element.getAttribute('data-value'));
+
                         d = 'M {1} {2} '.format(
-                            this.coords[0].x + this.coords[0].width,
+                            this.coords[0].x + (v < 0 ? 0 : this.coords[0].width),
                             this.coords[0].y + (this.coords[0].height / 2)
                         );
                     }
@@ -2370,7 +2411,7 @@
                         var y       = this.coords[i].y + (this.coords[i].height / 2);
                     } else {
                         var action  = 'L';
-                        var x       = this.coords[i].x + (this.properties.yaxisPosition === 'right' ? 0 : this.coords[i].width);
+                        var x       = this.coords[i].x + (this.properties.yaxisPosition === 'right' ? (this.data[i] < 0 ? this.coords[i].width : 0) : (this.data[i] < 0 ? 0 : this.coords[i].width) );
                         var y       = this.coords[i].y + (this.coords[i].height / 2);
                     }
 
@@ -2390,7 +2431,7 @@
                     RGraph.SVG.create({
                         svg:    this.svg,
                         type:   'path',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             d: d + ' L ' + (properties.yaxisPosition === 'right' ? [this.width - this.properties.marginRight, y].join(' ') : [this.properties.marginLeft, y].join(' '))
                                  + ' L ' + (properties.yaxisPosition === 'right' ? [this.width - this.properties.marginRight, this.coords[0].y + (this.coords[0].height / 2)] : [this.properties.marginLeft, (this.coords[0].y + (this.coords[0].height / 2))]).join(' ')
@@ -2413,7 +2454,7 @@
                 var path = RGraph.SVG.create({
                     svg:    this.svg,
                     type:   'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         d:      d,
                         stroke: this.properties.lineColor,
@@ -2471,13 +2512,37 @@
                                 || obj.properties.lineTickmarksStyle.indexOf('end') === -1
                                ) {
 
+
+
+                                    var x = v.x;
+                                    var y = v.y + (v.height / 2);
+
+                                    // Adjust the tickmark if the
+                                    // Y-axis position is on the left
+                                    // and the value is positive
+                                    if (   obj.properties.yaxisPosition === 'left'
+                                        && Number(v.element.getAttribute('data-value')) > 0
+                                       ) {
+                                        x += v.width;
+                                    }
+
+                                    // Adjust the tickmark if the
+                                    // Y-axis position is on the right
+                                    // and the value is negative
+                                    if (   obj.properties.yaxisPosition === 'right'
+                                        && Number(v.element.getAttribute('data-value')) < 0
+                                       ) {
+                                        x += v.width;
+                                    }
+
+
                                 RGraph.SVG.create({
                                     svg:  obj.svg,
                                     type: 'circle',
-                                    parent: obj.svg.all,
+                                    parent: obj.svgAllGroup,
                                     attr: {
-                                        cx:          v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
-                                        cy:          v.y + (v.height/2),
+                                        cx:          x,
+                                        cy:          y,
                                         r:           obj.properties.lineTickmarksSize,
                                         fill:        obj.properties.lineColor,
                                         filter:      obj.properties.lineShadow ? 'url(#lineDropShadow_' + obj.uid + ')' : '',
@@ -2491,10 +2556,10 @@
                                     RGraph.SVG.create({
                                         svg:    obj.svg,
                                         type:   'circle',
-                                        parent: obj.svg.all,
+                                        parent: obj.svgAllGroup,
                                         attr: {
-                                            cx:         v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width),
-                                            cy:         v.y + (v.height/2),
+                                            cx:         x,
+                                            cy:         y,
                                             r:          RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
                                                           ? (obj.properties.lineTickmarksSize - obj.properties.lineTickmarksLinewidth)
                                                           : (obj.properties.lineTickmarksSize - 3),
@@ -2518,13 +2583,35 @@
                                    (obj.properties.lineTickmarksStyle.indexOf('end') >= 0 && isEndTick)
                                 || obj.properties.lineTickmarksStyle.indexOf('end') === -1
                                ) {
+
+                                    var x = v.x - obj.properties.lineTickmarksSize + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth);
+                                    var y = v.y + (v.height / 2) - obj.properties.lineTickmarksSize;
+
+                                    // Adjust the tickmark if the
+                                    // Y-axis position is on the left
+                                    // and the value is positive
+                                    if (   obj.properties.yaxisPosition === 'left'
+                                        && Number(v.element.getAttribute('data-value')) > 0
+                                       ) {
+                                        x += v.width;
+                                    }
+
+                                    // Adjust the tickmark if the
+                                    // Y-axis position is on the right
+                                    // and the value is negative
+                                    if (   obj.properties.yaxisPosition === 'right'
+                                        && Number(v.element.getAttribute('data-value')) < 0
+                                       ) {
+                                        x += v.width;
+                                    }
+
                                     RGraph.SVG.create({
                                         svg:    obj.svg,
                                         type:   'rect',
-                                        parent: obj.svg.all,
+                                        parent: obj.svgAllGroup,
                                         attr: {
-                                            x:           v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - obj.properties.lineTickmarksSize,
-                                            y:           v.y + (v.height / 2) - obj.properties.lineTickmarksSize,
+                                            x:           x,
+                                            y:           y,
                                             width:       obj.properties.lineTickmarksSize * 2,
                                             height:      obj.properties.lineTickmarksSize * 2,
                                             fill:        obj.properties.lineColor,
@@ -2535,13 +2622,15 @@
 
                                 // Draw the center part of the rect tickmark
                                 if (obj.properties.lineTickmarksStyle.indexOf('filled') < 0) {
+                                
+                                
                                     RGraph.SVG.create({
                                         svg:    obj.svg,
                                         type:   'rect',
-                                        parent: obj.svg.all,
+                                        parent: obj.svgAllGroup,
                                         attr: {
-                                            x:           v.x + (obj.properties.yaxisPosition === 'right' ? 0 : v.width) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
-                                            y:           v.y + (v.height / 2) - (obj.properties.lineTickmarksSize) + (RGraph.SVG.isNull(obj.properties.lineTickmarksLinewidth) ? 3 : obj.properties.lineTickmarksLinewidth),
+                                            x:           x + (obj.properties.lineTickmarksLinewidth),
+                                            y:           y + (obj.properties.lineTickmarksLinewidth),
                                             width:       RGraph.SVG.isNumber(obj.properties.lineTickmarksLinewidth)
                                                             ? (obj.properties.lineTickmarksSize * 2) - (2 * obj.properties.lineTickmarksLinewidth)
                                                             : (obj.properties.lineTickmarksSize * 2) - 3 - 3,
@@ -2584,7 +2673,11 @@
                 //
 
                 for (var i=0; i<coords.length;++i) {
-                    coords[i] = Number(coords[i].x) + (obj.properties.yaxisPosition === 'right' ? 0 : Number(coords[i].width));
+                    coords[i] = Number(coords[i].x) +
+                                    (obj.properties.yaxisPosition === 'right'
+                                        ? (obj.data[i] < 0 ? Number(coords[i].width) : 0)
+                                        : (obj.data[i] < 0 ? 0 : Number(coords[i].width))
+                                    );
                 }
 
     
@@ -2634,9 +2727,19 @@
     
                 // Draw the last section
                 var last = [
-                    obj.coords[obj.coords.length - 1].x + (obj.properties.yaxisPosition === 'right'  ? 0 : obj.coords[obj.coords.length - 1].width),
+                    obj.coords[obj.coords.length - 1].x + (obj.properties.yaxisPosition === 'right'  ? obj.coords[obj.coords.length - 1].width : 0),
                     obj.coords[obj.coords.length - 1].y + (obj.coords[obj.coords.length - 1].height / 2)
                 ];
+                
+                // Adjust the position of the last point
+                if (obj.properties.yaxisPosition === 'left' && obj.coords[j - 1].element.getAttribute('data-value') > 0) {
+                    last[0] += obj.coords[obj.coords.length - 1].width;
+                }
+                
+                // Adjust the position of the last point
+                if (obj.properties.yaxisPosition === 'right' && obj.coords[j - 1].element.getAttribute('data-value') > 0) {
+                    last[0] -= obj.coords[obj.coords.length - 1].width;
+                }
 
                 path.push([
                     last[0],
@@ -2672,7 +2775,7 @@
 
                     RGraph.SVG.create({
                         svg: obj.svg,
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         type: 'path',
                         attr: {
                             fill:              "transparent",
@@ -2770,6 +2873,68 @@
             iterator();
             
             return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param object clipPath The <clipPath> node
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var height  = this.height,
+                x1     = this.getXCoord(from),
+                x2     = this.getXCoord(to),
+                width  = Math.abs(x2 - x1),
+                y      = 0,
+                x      = Math.min(x1, x2);
+
+
+            // Increase the width if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                width += this.properties.marginRight;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                x = 0;
+                width += this.properties.marginLeft;
+            }
+
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'rect',
+                parent: clipPath,
+                attr: {
+                    x:      x,
+                    y:      y,
+                    width:  width,
+                    height: height
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 

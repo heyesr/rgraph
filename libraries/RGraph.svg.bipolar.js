@@ -92,18 +92,20 @@
 
 
 
+        this.type                  = 'bipolar';
         this.id                    = conf.id;
         this.uid                   = RGraph.SVG.createUID();
         this.container             = document.getElementById(this.id);
         this.layers                = {}; // MUST be before the SVG tag is created!
         this.svg                   = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup           = RGraph.SVG.createAllGroup(this);
+        this.clipid                = null; // Used to clip the canvas
         this.isRGraph              = true;
         this.isrgraph              = true;
         this.rgraph                = true;
         this.data                  = [conf.left, conf.right];
         this.left                  = conf.left;
         this.right                 = conf.right;
-        this.type                  = 'bipolar';
         this.coords                = [];
         this.coordsLeft            = [];
         this.coordsRight           = [];
@@ -314,7 +316,9 @@
             keyLabelsBold:   null,
             keyLabelsItalic: null,
             keyLabelsFont:   null,
-            keyLabelsColor:  null
+            keyLabelsColor:  null,
+            
+            clip:            null
         };
 
         //
@@ -414,8 +418,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should the first thing that's done in the.draw() function
+            // except for the onbeforedraw event and the
+            // installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -430,7 +435,6 @@
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
             
 
 
@@ -532,6 +536,51 @@
             properties.yaxisScaleMax = this.scale.max;
             properties.yaxisScaleMin = this.scale.min;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
 
             // Draw the background first
@@ -805,7 +854,7 @@
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         d: 'M {1} {2} L {3} {4}'.format(
                             properties.marginLeft,
@@ -827,7 +876,7 @@
                 var foo2 = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         d: 'M {1} {2} L {3} {4}'.format(
                             this.width - properties.marginRight,
@@ -857,7 +906,7 @@
 
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -880,7 +929,7 @@
 
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -911,7 +960,7 @@
 
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -935,7 +984,7 @@
 
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -971,7 +1020,7 @@
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         d: 'M {1} {2} L {3} {4}'.format(
                             properties.marginLeft + this.graphWidth,
@@ -994,7 +1043,7 @@
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         d: 'M {1} {2} L {3} {4}'.format(
                             properties.marginLeft + this.graphWidth + properties.marginCenter,
@@ -1029,7 +1078,7 @@
     
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -1052,7 +1101,7 @@
     
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -1091,7 +1140,7 @@
     
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -1114,7 +1163,7 @@
     
                         RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'path',
                             attr: {
                                 d: 'M{1} {2} L{3} {4}'.format(
@@ -1165,7 +1214,7 @@
                 var text = RGraph.SVG.text({
                     
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     tag:    'labels.yaxis',
                     
                     text:   properties.yaxisLabels && properties.yaxisLabels[i] ? properties.yaxisLabels[i] : '',
@@ -1206,7 +1255,7 @@
             var text = RGraph.SVG.text({
                 
                 object:     this,
-                parent:     this.svg.all,
+                parent:     this.svgAllGroup,
                 
                 text:       str,
                 
@@ -1235,7 +1284,7 @@
                 RGraph.SVG.text({
                     
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     
                     text:   this.scale.labels[i],
                     
@@ -1270,7 +1319,7 @@
             var text = RGraph.SVG.text({
                 
                 object: this,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 tag:    'labels.xaxis',
                 
                 text:   (typeof properties.xaxisScaleFormatter == 'function') ?
@@ -1299,7 +1348,7 @@
                 RGraph.SVG.text({
                     
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     tag:    'labels.xaxis',
                     
                     text:   this.scale.labels[i],
@@ -1383,7 +1432,7 @@
 
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         type: 'rect',
                         attr: {
                             x:                       x,
@@ -1502,7 +1551,7 @@
 
                             var rect = RGraph.SVG.create({
                                 svg: this.svg,
-                                parent: this.svg.all,
+                                parent: this.svgAllGroup,
                                 type: 'rect',
                                 attr: {
                                     fill: '#eee',
@@ -1526,7 +1575,7 @@
 
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 x:                      x,
@@ -1662,7 +1711,7 @@
 
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 x:                      x,
@@ -1801,7 +1850,7 @@
 
                     var rect = RGraph.SVG.create({
                         svg: this.svg,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         type: 'rect',
                         attr: {
                             x:                       x,
@@ -1904,7 +1953,7 @@
 
                             var rect = RGraph.SVG.create({
                                 svg: this.svg,
-                                parent: this.svg.all,
+                                parent: this.svgAllGroup,
                                 type: 'rect',
                                 attr: {
                                     fill: '#eee',
@@ -1938,7 +1987,7 @@
 
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 x:                       x,
@@ -2073,7 +2122,7 @@
 
                         var rect = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'rect',
                             attr: {
                                 x:                      x,
@@ -2351,7 +2400,7 @@
 
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'rect',
                 attr: {
                     'stroke-width': properties.highlightLinewidth,
@@ -2486,7 +2535,7 @@
                                 RGraph.SVG.text({
 
                                     object:     this,
-                                    parent:     this.svg.all,
+                                    parent:     this.svgAllGroup,
                                     tag:        'labels.above',
 
                                     text:       str,
@@ -2567,7 +2616,7 @@
                             RGraph.SVG.text({
                                 
                                 object:     this,
-                                parent:     this.svg.all,
+                                parent:     this.svgAllGroup,
                                 tag:        'labels.above',
                                 
                                 text:       str,
@@ -2653,7 +2702,7 @@
                                 RGraph.SVG.text({
                                     
                                     object:     this,
-                                    parent:     this.svg.all,
+                                    parent:     this.svgAllGroup,
                                     tag:        'labels.above',
 
                                     text:       str,
@@ -3527,6 +3576,110 @@ obj.stackedBackfacesRight[i].setAttribute('width', accWidth);
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 10                             // An arbitrary amount
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            var match1 = RegExp.$1;
+            var match2 = RegExp.$2;
+
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (match1 === 'min') from = 0; else from = Number(match1);
+            if (match2 === 'max') to   = this.scale.max; else to = Number(match2);
+
+
+
+            var x1 = this.getLeftXCoord(to);
+            var x2 = this.getLeftXCoord(from);
+            var x3 = this.getRightXCoord(from);
+            var x4 = this.getRightXCoord(to);
+
+            for (var i=0; i<2; ++i) {
+                
+                // LEFT-HAND-SIDE
+                if (i === 0) {
+                    // Change the X if the number is "min"
+                    if (match1 === 'min') {
+                        x2 += (this.properties.marginCenter / 2);
+                    }
+            
+                    // Change the width if the number is "max"
+                    if (match2 === 'max') {
+                        x1 = 0;
+                    }
+            
+
+                    RGraph.SVG.create({
+                        svg:    this.svg,
+                        type:   'rect',
+                        parent: clipPath,
+                        attr: {
+                            x:      x1,
+                            y:      0,
+                            width:  Math.abs(x1 - x2),
+                            height: this.height
+                        }
+                    });
+
+                    // Now set the clip-path attribute on the first
+                    // Line charts all-elements group
+                    this.svgAllGroup.setAttribute(
+                        'clip-path',
+                        'url(#' + clipPath.id + ')'
+                    );
+                
+                // RIGHT-HAND-SIDE
+                } else {
+
+                    // Change the X if the number is "min"
+                    if (match1 === 'min') {
+                        x3 -= (this.properties.marginCenter / 2);
+                    }
+            
+                    // Change the width if the number is "max"
+                    if (match2 === 'max') {
+                        x4 = this.width;
+                    }
+            
+
+                    RGraph.SVG.create({
+                        svg:    this.svg,
+                        type:   'rect',
+                        parent: clipPath,
+                        attr: {
+                            x:      x3,
+                            y:      0,
+                            width:  Math.abs(x4 - x3),
+                            height: this.height
+                        }
+                    });
+
+                    // Now set the clip-path attribute on the first
+                    // Line charts all-elements group
+                    this.svgAllGroup.setAttribute(
+                        'clip-path',
+                        'url(#' + clipPath.id + ')'
+                    );
+                };
+            }
         };
 
 

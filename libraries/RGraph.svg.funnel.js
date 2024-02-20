@@ -98,6 +98,7 @@
 
         // Convert strings to numbers
         conf.data = RGraph.SVG.stringsToNumbers(conf.data);
+        
         //if (typeof conf.data === 'string') {
         //    conf.data = conf.data.split(/,|\|/);
         //}
@@ -119,11 +120,14 @@
 
 
 
+        this.type            = 'funnel';
         this.id              = conf.id;
         this.uid             = RGraph.SVG.createUID();
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG element is created!
         this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
+        this.clipid          = null; // Used to clip the canvas
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
@@ -131,7 +135,6 @@
         this.height          = Number(this.svg.getAttribute('height'));
         this.data            = RGraph.SVG.arrayClone(conf.data);
         this.originalData    = RGraph.SVG.arrayClone(conf.data);
-        this.type            = 'funnel';
         this.coords          = [];
         this.colorsParsed    = false;
         this.originalColors  = {};
@@ -260,7 +263,9 @@
             keyLabelsSize:    null,
             keyLabelsColor:   null,
             keyLabelsBold:    null,
-            keyLabelsItalic:  null
+            keyLabelsItalic:  null,
+
+            clip: null
         };
 
         //
@@ -329,8 +334,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should the first thing that's done in the.draw() function
+            // except for the onbeforedraw event and the
+            // installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -359,7 +365,6 @@
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
 
 
             this.graphWidth  = this.width - properties.marginLeft - properties.marginRight;
@@ -393,6 +398,22 @@
             // Parse the colors for gradients
             RGraph.SVG.resetColorsToOriginalValues({object:this});
             this.parseColors();
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
 
 
             
@@ -620,7 +641,7 @@
                     var path = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'path',
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4} L {5} {6} L {7} {8} z'.format(
                                 coords.x1,
@@ -804,7 +825,7 @@
             // Create the group that the labels are added to
             var labelsGroup = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'g'
             });
             
@@ -913,7 +934,7 @@
 
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
                     d: path,

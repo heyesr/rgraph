@@ -99,19 +99,20 @@
 
 
 
-
+        this.type            = 'pie';
         this.id              = conf.id;
         this.uid             = RGraph.SVG.createUID();
         this.container       = document.getElementById(this.id);
         this.layers          = {}; // MUST be before the SVG tag is created!
         this.svg             = RGraph.SVG.createSVG({object: this,container: this.container});
+        this.svgAllGroup     = RGraph.SVG.createAllGroup(this);
+        this.clipid          = null; // Used to clip the canvas
         this.isRGraph        = true;
         this.isrgraph        = true;
         this.rgraph          = true;
         this.width           = Number(this.svg.getAttribute('width'));
         this.height          = Number(this.svg.getAttribute('height'));
         this.data            = conf.data;
-        this.type            = 'pie';
         this.angles          = [];
         this.colorsParsed    = false;
         this.originalColors  = {};
@@ -238,7 +239,9 @@
             keyLabelsFont:    null,
             keyLabelsSize:    null,
             keyLabelsBold:    null,
-            keyLabelsItalic:  null
+            keyLabelsItalic:  null,
+            
+            clip: null
         };
 
         //
@@ -322,8 +325,9 @@
 
 
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -345,6 +349,18 @@
             RGraph.SVG.createDefs(this);
 
 
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
 
 
             this.graphWidth  = this.width - properties.marginLeft - properties.marginRight;
@@ -697,7 +713,7 @@
 
                 var arc = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: path,
@@ -855,7 +871,7 @@
 
                 RGraph.SVG.text({
                     object: this,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     tag:    'labels',
                     
                     text:   typeof labels[i] === 'string' ? labels[i] : '',
@@ -938,7 +954,7 @@
                     // Draw the text
                     RGraph.SVG.text({
                         object:     this,
-                        parent:     this.svg.all,
+                        parent:     this.svgAllGroup,
                         tag:        'labels.ingraph',
                         x:          this.angles[i].cx + xy[0],
                         y:          this.angles[i].cy + xy[1],
@@ -1038,7 +1054,7 @@
                 if (labels[index].text) {
                     var stick = RGraph.SVG.create({
                         svg: this.svg,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         type: 'path',
                         attr: {
                             d: 'M {1} {2} L {3} {4}'.format(
@@ -1094,7 +1110,7 @@
                     RGraph.SVG.text({
                         
                         object: this,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         tag:    'labels.sticks',
                         
                         text:   typeof labels_right[i].text === 'string' ? labels_right[i].text : '',
@@ -1141,7 +1157,7 @@
                     RGraph.SVG.text({
                         
                         object: this,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         tag:    'labels.sticks',
                         
                         text:   typeof labels_left[i].text === 'string' ? labels_left[i].text : '',
@@ -1214,7 +1230,7 @@
             
                 var highlight = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: path,
@@ -1231,7 +1247,7 @@
             
                 var highlight = RGraph.SVG.create({
                     svg: this.svg,
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     type: 'path',
                     attr: {
                         d: segment.getAttribute('d'),

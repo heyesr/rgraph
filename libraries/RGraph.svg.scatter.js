@@ -94,19 +94,20 @@
 
 
 
-
+        this.type             = 'scatter';
         this.id               = conf.id;
         this.uid              = RGraph.SVG.createUID();
         this.container        = document.getElementById(this.id);
-        this.layers          = {}; // MUST be before the SVG tag is created!
+        this.layers           = {}; // MUST be before the SVG tag is created!
         this.svg              = RGraph.SVG.createSVG({object: this,container: this.container});
-        this.isRGraph        = true;
-        this.isrgraph        = true;
-        this.rgraph          = true;
+        this.svgAllGroup      = RGraph.SVG.createAllGroup(this);
+        this.clipid           = null; // Used to clip the canvas
+        this.isRGraph         = true;
+        this.isrgraph         = true;
+        this.rgraph           = true;
         this.width            = Number(this.svg.getAttribute('width'));
         this.height           = Number(this.svg.getAttribute('height'));
         this.data             = conf.data;
-        this.type             = 'scatter';
         this.coords           = [];
         this.coords2          = [];
         this.colorsParsed     = false;
@@ -169,6 +170,7 @@
             errorbarsCapwidth:    10,
 
             yaxis:                true,
+            yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
             yaxisColor:           'black',
@@ -201,6 +203,7 @@
             yaxisTitleValign:          null,
 
             xaxis:                true,
+            xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
             xaxisLabels:          null,
@@ -343,7 +346,9 @@
             trendlineDashArray:         null,
             trendlineClipping:          null,
             
-            outofbounds: true
+            outofbounds: true,
+
+            clip: null
         };
 
         //
@@ -465,8 +470,9 @@
             // Reset the sequential counter
             this.sequential = 0;
 
-            // Should the first thing that's done inthe.draw() function
-            // except for the onbeforedraw event
+            // Should be the first(ish) thing that's done in the
+            // .draw() function except for the onbeforedraw event
+            // and the installation of clipping.
             this.width  = Number(this.svg.getAttribute('width'));
             this.height = Number(this.svg.getAttribute('height'));
 
@@ -514,7 +520,6 @@
 
             // Create the defs tag if necessary
             RGraph.SVG.createDefs(this);
-
 
 
 
@@ -591,7 +596,7 @@
             // Set the ymin to zero if it's set mirror
             if (mirrorScale) {
                 this.scale = RGraph.SVG.getScale({
-                    object: this,
+                    object:    this,
                     numlabels: properties.yaxisLabelsCount,
                     unitsPre:  properties.yaxisScaleUnitsPre,
                     unitsPost: properties.yaxisScaleUnitsPost,
@@ -601,7 +606,7 @@
                     round:     false,
                     thousand:  properties.yaxisScaleThousand,
                     decimals:  properties.yaxisScaleDecimals,
-                    strict:    typeof properties.yaxisScaleMax === 'number',
+                    strict:    true,
                     formatter: properties.yaxisScaleFormatter
                 });
             }
@@ -614,6 +619,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
             // Draw the background first
             RGraph.SVG.drawBackground(this);
@@ -638,7 +680,7 @@
             var dataset_group = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'g',
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 attr: {
                     className: 'scatter_datasets_' + this.uid
                 }
@@ -650,7 +692,7 @@
                 var group = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'g',
-                    parent: this.svg.all,
+                    parent: this.svgAllGroup,
                     attr: {
                         id: 'scatter_line_' + i + this.uid
                     }
@@ -926,7 +968,7 @@
                     if (!group_tooltip_hotspots) {
                         var group_tooltip_hotspots = RGraph.SVG.create({
                             svg: this.svg,
-                            parent: this.svg.all,
+                            parent: this.svgAllGroup,
                             type: 'g',
                             attr: {
                                 className: 'rgraph-scatter-tooltip-hotspots'
@@ -936,7 +978,7 @@
 
                     var rect = RGraph.SVG.create({
                         svg:  this.svg,
-                        parent: this.svg.all,
+                        parent: this.svgAllGroup,
                         type: 'rect',
                         parent: group_tooltip_hotspots,
                         attr: {
@@ -1564,7 +1606,7 @@
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'circle',
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 attr: {
                     stroke: properties.highlightStroke,
                     fill: properties.highlightFill,
@@ -1655,7 +1697,7 @@
             // Add the text to the scene
             var text = RGraph.SVG.text({
                 object:     this,
-                parent:     this.svg.all,
+                parent:     this.svgAllGroup,
                 tag:        'labels.above',
 
                 text:       str,
@@ -2251,7 +2293,7 @@
 
             var line = RGraph.SVG.create({
                 svg: this.svg,
-                parent: this.svg.all,
+                parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
                     d: 'M{1} {2} L{3} {4}'.format(
@@ -2273,6 +2315,68 @@
                     'clip-path': 'url(#trace-effect-clip)'
                 }
             });
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles clipping to scale values. Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally.
+        //
+        // @param object clipPath The <clipPath> node
+        //
+        this.clipToScaleWorker = function (clipPath)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var width  = this.width,
+                y1     = this.getYCoord(from),
+                y2     = this.getYCoord(to),
+                height = Math.abs(y2 - y1),
+                x      = 0,
+                y      = Math.min(y1, y2);
+
+
+            // Increase the height if the maximum value is "max"
+            if (RegExp.$2 === 'max') {
+                y = 0;
+                height += this.properties.marginTop;
+            }
+        
+            // Increase the height if the minimum value is "min"
+            if (RegExp.$1 === 'min') {
+                height += this.properties.marginBottom;
+            }
+
+
+            RGraph.SVG.create({
+                svg:    this.svg,
+                type:   'rect',
+                parent: clipPath,
+                attr: {
+                    x:      x,
+                    y:      y,
+                    width:  width,
+                    height: height
+                }
+            });
+            
+            // Now set the clip-path attribute on the first
+            // Line charts all-elements group
+            this.svgAllGroup.setAttribute(
+                'clip-path',
+                'url(#' + clipPath.id + ')'
+            );
         };
 
 
