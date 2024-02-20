@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Line chart demonstrating the updated structure</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 300px" id="chart-container"></div><br>
+        <button onclick="document.querySelector('g.all-elements-bar').replaceChildren()" style="font-size: 20pt; cursor:pointer">Clear the Bar chart</button>
+        <button onclick="document.querySelector('g.all-elements-bar').replaceChildren(); bar.draw()" style="font-size: 20pt; cursor:pointer">Redraw the Bar chart</button>
+    </div>
+        
+    <script>
+        data = [4,3,5,6,7,4,2,6,5,9,5,6];
+        
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: data,
+            options: {
+                colors: ['#ccc'],
+                xaxislabels: RGraph.SVG.MONTHS_SHORT
+            }
+        }).wave();
+
+        line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                colors:['red'],
+                linewidth: 4,
+                shadow: true,
+                spline: true,
+                marginInner: 30,
+                tickmarksStyle: 'circle'
+            }
+        }).trace();
+    </script>
+
+    <script>showSource()</script>
+    
+</body>
+</html>

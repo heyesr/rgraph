@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An dual-color SVG Line chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        data = [4,5,3,6,-2,-1,-2,8];
+
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: opt = {
+                linewidth: 3,
+                xaxisLinewidth: 3,
+                xaxisTickmarks: false,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                backgroundGrid: false,
+                marginInner: 25,
+                textSize: 18,
+                clip: '-50%-80%',
+                yaxisScaleMin: -2,
+                yaxisScaleMax: 8,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                colors: ['red'],
+                title: 'An offset dual-color chart',
+                spline: true,
+                tickmarksStyle: 'endcircle'
+            }
+        }).trace();
+
+
+
+
+
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,
+            options: {
+                ...opt,
+                
+                colors: ['#000'],
+                clip: '80%-150%',
+                spline: true
+            }
+        }).trace();
+
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
