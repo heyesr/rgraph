@@ -12,91 +12,47 @@
     <h1>SVG Pie charts based meters</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            div#svg-container{
-                position: relative;
-                background-color: black;
-                height: 325px;
-                width: 610px;
-                margin: 25px;
-            }
-    
-            div#svg-container div {
-                float: left;
-                width: 200px;
-                height: 200px;
-            }
-            
-            
-            div#chart-container4,
-            div#chart-container5,
-            div#chart-container6 {
-                position: absolute !important;
-                left: 0 !important;
-                top: 180px !important;
-                width: 600px !important;
-                height: 70px !important;
-            }
-            
-            div#chart-container5 {top: 210px !important;}
-            div#chart-container6 {top: 240px !important;}
-        </style>
-    
-        <div id="svg-container">
-            <div id="chart-container1"></div>
-            <div id="chart-container2"></div>
-            <div id="chart-container3"></div>
-            <div id="chart-container4"></div>
-            <div id="chart-container5"></div>
-            <div id="chart-container6"></div>
-        </div>
+        <div id="chart-container" style="background-color: black; width: 610px; height: 325px"></div>
     </div>
         
     <script id="rgraph-demo-source-code">
-        // Create the first Pie chart. It uses the roundRobin() effect and is
-        // configured to appear as a donut chart. With there being only two
-        // values given to the chart it makes the donut chart look like a
-        // circular Progress bar.
+        // Create the first Pie chart. It uses the roundRobin()
+        // effect and is configured to appear as a donut chart.
+        // With there being only two values given to the chart
+        // it makes the donut chart look like a circular Progress
+        // bar.
+        
+        //
+        // Background for the right-most pie chart
+        //
+        pie1b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                centerx: 500,
+                centery: 100,
+                radius: 90,
+                colors: ['#aaa'],
+                donut: true,
+                donutWidth: 20
+            }
+        }).draw();
+
         pie1 = new RGraph.SVG.Pie({
-            id: 'chart-container1',
+            id: 'chart-container',
             data: [15,85],
             options: {
-                colors: ['red', 'transparent'],
+                centerx: 500,
+                centery: 100,
+                radius: 90,
+                colors: ['red', '#0000'],
                 donut: true,
-                donutWidth: 10
+                donutWidth: 20
             }
         }).on('draw', function (obj)
         {
-            // This serves as the background for the chart. Just setting the second color of
-            // the Pie chart to gray gives a different style compared to adding this circle
-            // as the 'background'.
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r: obj.radius,
-                    fill: 'gray'
-                }
-            });
-
-            // This smaller black circle turns the gray circle that was just added
-            // into a donut.
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r: obj.radius - obj.properties.donutWidth,
-                    fill: 'black'
-                }
-            });
-
-            // Add the text label that indicates the 'value' of the first Pie segment
+            // Add the text label that indicates the 'value' of the
+            // first Pie segment
             RGraph.SVG.text({
                 object: obj,
                 parent: obj.svg.all,
@@ -105,7 +61,7 @@
                 y:      obj.centery,
                 halign: 'center',
                 valign: 'center',
-                size:   20,
+                size:   40,
                 bold:   true,
                 color:  '#999'
             });
@@ -116,10 +72,10 @@
                 parent: obj.svg.all,
                 text:   'Charles',
                 x:      obj.centerx,
-                y:      obj.centery + 15,
+                y:      obj.centery + 20,
                 halign: 'center',
                 valign: 'top',
-                size:   12,
+                size:   16,
                 bold:   true,
                 color:  '#999'
             });
@@ -135,42 +91,38 @@
 
 
 
+        //
+        // Background for the middle pie chart
+        //
+        pie2b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                centerx: 300,
+                centery: 100,
+                radius: 90,
+                colors: ['#aaa'],
+                donut: true,
+                donutWidth: 20
+            }
+        }).draw();
 
         // Add the second 'meter' that shows Rickys progress
-        new RGraph.SVG.Pie({
-            id: 'chart-container2',
+        pie2 = new RGraph.SVG.Pie({
+            id: 'chart-container',
             data: [50,50],
             options: {
+                centerx: 300,
+                centery: 100,
+                radius: 90,
                 colors: ['red', 'transparent'],
                 donut: true,
-                donutWidth: 10
+                donutWidth: 20
             }
         }).on('draw', function (obj)
         {
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r: obj.radius,
-                    fill: 'gray'
-                }
-            });
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r:  obj.radius - obj.properties.donutWidth,
-                    fill: 'black'
-                }
-            });
-
-            // Add the text label that indicates the 'value' of the second Pie segment
+            // Add the text label that indicates the 'value' of the
+            // second Pie segment
             RGraph.SVG.text({
                 object: obj,
                 parent: obj.svg.all,
@@ -179,21 +131,22 @@
                 y:      obj.centery,
                 halign: 'center',
                 valign: 'center',
-                size:   20,
+                size:   40,
                 bold: true,
                 color:  '#999'
             });
 
-            // Add the smaller text label that sits under the main percentage label.
+            // Add the smaller text label that sits under the main
+            // percentage label.
             RGraph.SVG.text({
                 object: obj,
-                parent: obj.svg.all,
+                parent: obj.svgAllElements,
                 text:   'Ricky',
                 x:      obj.centerx,
-                y:      obj.centery + 15,
+                y:      obj.centery + 20,
                 halign: 'center',
                 valign: 'top',
-                size:   12,
+                size:   16,
                 bold: true,
                 color:  '#999'
             });
@@ -208,41 +161,41 @@
 
 
 
+
+        //
+        // Background for the left-most pie chart
+        //
+        pie3b = new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [100],
+            options: {
+                centerx: 100,
+                centery: 100,
+                radius: 90,
+                colors: ['#aaa'],
+                donut: true,
+                donutWidth: 20
+            }
+        }).draw();
+        
         // Add the third 'meter' that shows Freddys progress
-        new RGraph.SVG.Pie({
-            id: 'chart-container3',
+        pie3 = new RGraph.SVG.Pie({
+            id: 'chart-container',
             data: [42,58],
             options: {
+                centerx: 100,
+                centery: 100,
+                radius: 90,
                 colors: ['red', 'transparent'],
                 donut: true,
-                donutWidth: 10
+                donutWidth: 20
             }
         }).on('draw', function (obj)
         {
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r: obj.radius,
-                    fill: 'gray'
-                }
-            });
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'circle',
-                parent: obj.layers.background1,
-                attr: {
-                    cx: obj.centerx,
-                    cy: obj.centery,
-                    r: obj.radius - obj.properties.donutWidth,
-                    fill: 'black'
-                }
-            });
-
-            // Add the text label that indicates the 'value' of the third Pie segment
+            //
+            // Add the text label that indicates the 'value' of the
+            // third Pie segment
+            //
             RGraph.SVG.text({
                 object: obj,
                 parent: obj.svg.all,
@@ -251,7 +204,7 @@
                 y:      obj.centery,
                 halign: 'center',
                 valign: 'center',
-                size:   20,
+                size:   40,
                 bold: true,
                 color:  '#999'
             });
@@ -262,14 +215,19 @@
                 parent: obj.svg.all,
                 text:   'Freddy',
                 x:      obj.centerx,
-                y:      obj.centery + 15,
+                y:      obj.centery + 20,
                 halign: 'center',
                 valign: 'top',
-                size:   12,
+                size:   16,
                 bold: true,
                 color:  '#999'
             });
         }).roundRobin({frames: 45});
+
+
+
+
+
 
         // This is the common configuration for the red progress bars
         conf = {
@@ -281,20 +239,16 @@
             colors: ['red'],
             marginTop: 40,
             marginBottom: 5,
-            backgroundGrid: false
+            backgroundGrid: false,
+            colors: ['red'],
+            backgroundColor:'gray',
+            marginInner: -1
         };
 
-        
-
-        // These Horizontal Bar charts become the gray backgrounds for the progress bars
-        new RGraph.SVG.HBar({id: 'chart-container4', data: [100], options: conf}).on('beforedraw', function (obj) {var prop = obj.properties;prop.colors = ['gray'];prop.title = 'Overall 16%';prop.titleSize = 22;prop.titleColor = '#666';prop.titleBold = true;}).draw();
-        new RGraph.SVG.HBar({id: 'chart-container5', data: [100], options: conf}).on('beforedraw', function (obj) {obj.properties.colors = ['gray']}).draw();
-        new RGraph.SVG.HBar({id: 'chart-container6', data: [100], options: conf}).on('beforedraw', function (obj) {obj.properties.colors = ['gray']}).draw();
-
-        // These Horizontal Bar charts become the red foregrounds for the progress bars
-        new RGraph.SVG.HBar({id: 'chart-container4', data: [16], options: conf}).grow();
-        new RGraph.SVG.HBar({id: 'chart-container5', data: [88], options: conf}).grow();
-        new RGraph.SVG.HBar({id: 'chart-container6', data: [74], options: conf}).grow();
+        // These Horizontal Bar charts become the progress bars
+        new RGraph.SVG.HBar({id: 'chart-container', data: [42], options: {...conf, marginTop: 205,marginBottom: 95}}).grow();
+        new RGraph.SVG.HBar({id: 'chart-container', data: [50], options: {...conf, marginTop: 245,marginBottom: 55}}).grow();
+        new RGraph.SVG.HBar({id: 'chart-container', data: [15], options: {...conf, marginTop: 285,marginBottom: 15}}).grow();
     </script>
 
     <script>showSource()</script>

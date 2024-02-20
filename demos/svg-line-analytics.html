@@ -12,46 +12,14 @@
     <h1>A mock-up of Google Analytics</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            div#chart-container1 {
-                width: 600px;
-                height: 200px;
-            }
-    
-            div#chart-container2,
-            div#chart-container3,
-            div#chart-container4,
-            div#chart-container5,
-            div#chart-container6,
-            div#chart-container7 {
-                position: relative;
-                float: left;
-                width: 200px;
-                height: 60px;
-                border-right: 1px solid #ccc;
-                box-sizing: border-box;
-                margin-bottom: 15px;
-            }
-        </style>
-    
-        <div style="text-align: center">
-            <div style="width: 615px; height: 350px">
-                <div id="chart-container1"></div>
-                <div id="chart-container2"></div>
-                <div id="chart-container3"></div>
-                <div id="chart-container4"></div>
-                <div id="chart-container5"></div>
-                <div id="chart-container6"></div>
-                <div id="chart-container7"></div>
-            </div>
-        </div>
+        <div id="chart-container" style="border: 1px solid gray; width: 600px; height: 300px"></div>
     </div>
 
     <script id="rgraph-demo-source-code">
         // Create the main, larger Line chart. The configuration makes
         // it look like Google Analytics.
         l1 = new RGraph.SVG.Line({
-            id: 'chart-container1',
+            id: 'chart-container',
             data: [22,61,64,35,91,59,62,91,124,94,77,196,309,147,102,107,199,36,0,0,0,0,0,0],
             options: {
                 key: ['Pageviews'],
@@ -59,6 +27,9 @@
                 keyTextSize: 10,
                 keyOffsetx: -220,
                 marginTop: 35,
+                marginLeft: 35,
+                marginRight: 15,
+                marginBottom: 165,
                 filled: true,
                 colors: ['#058DC7'],
                 linewidth: 3,
@@ -88,10 +59,6 @@
         // Set some global configuration values that are inherited by the
         // following charts (ie the smaller charts).
         RGraph.SVG.GLOBALS.backgroundGrid = false;
-        RGraph.SVG.GLOBALS.marginLeft     = 15;
-        RGraph.SVG.GLOBALS.marginRight    = 15;
-        RGraph.SVG.GLOBALS.marginTop      = 15;
-        RGraph.SVG.GLOBALS.marginBottom   = 5;
         RGraph.SVG.GLOBALS.filled         = true;
         RGraph.SVG.GLOBALS.colors         = ['#058DC7'];
         RGraph.SVG.GLOBALS.filledColors   = ['#E6F4FA'];
@@ -105,37 +72,35 @@
         // These are the smaller charts. There's no configuration values
         // that are set here because the default values have been set
         // above.
-        l2 = new RGraph.SVG.Line({id: 'chart-container2',data: [4,6,8,5,2,3,5,4,6,7,8,7,8,5,6,8,9,8,0,0,0,0,0,0]}).draw();
-        l3 = new RGraph.SVG.Line({id: 'chart-container3',data: [1,6,3,5,2,4,5,6,8,7,8,6,8,9,4,7,5,4,0,0,0,0,0,0]}).draw();
-        l4 = new RGraph.SVG.Line({id: 'chart-container4',data: [3,6,8,4,2,3,8,9,4,6,5,6,7,8,8,8,6,5,0,0,0,0,0,0]}).draw();
-        l5 = new RGraph.SVG.Line({id: 'chart-container5',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0]}).draw();
-        l6 = new RGraph.SVG.Line({id: 'chart-container6',data: [1,2,3,4,5,2,3,4,6,3,5,2,3,5,4,2,4,5,0,0,0,0,0,0]}).draw();
-        l7 = new RGraph.SVG.Line({id: 'chart-container7',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0]}).draw();
+        l2 = new RGraph.SVG.Line({id: 'chart-container',data: [4,6,8,5,2,3,5,4,6,7,8,7,8,5,6,8,9,8,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 35,marginRight: 415}}).draw();
+        l3 = new RGraph.SVG.Line({id: 'chart-container',data: [1,6,3,5,2,4,5,6,8,7,8,6,8,9,4,7,5,4,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 235,marginRight: 215}}).draw();
+        l4 = new RGraph.SVG.Line({id: 'chart-container',data: [3,6,8,4,2,3,8,9,4,6,5,6,7,8,8,8,6,5,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 435,marginRight: 15}}).draw();
+        l5 = new RGraph.SVG.Line({id: 'chart-container',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 35,marginRight: 415}}).draw();
+        l6 = new RGraph.SVG.Line({id: 'chart-container',data: [1,2,3,4,5,2,3,4,6,3,5,2,3,5,4,2,4,5,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 235,marginRight: 215}}).draw();
+        l7 = new RGraph.SVG.Line({id: 'chart-container',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 435,marginRight: 15}}).draw();
 
         // Add some text to the smaller charts. Because the smaller charts
         // each have their own SVG tags the coordinates can be the same.
         // This is the smaller text in the top left corner.
-        x    = 5;
-        y    = 10;
         size = 8;
-        RGraph.SVG.text({object: l2, x: x, y: y, text: 'Sessions',size: size});
-        RGraph.SVG.text({object: l3, x: x, y: y, text: 'Users',size: size});
-        RGraph.SVG.text({object: l4, x: x, y: y, text: 'Pageviews',size: size});
-        RGraph.SVG.text({object: l5, x: x, y: y, text: 'Pages/Session',size: size});
-        RGraph.SVG.text({object: l6, x: x, y: y, text: 'Avg session duration',size: size});
-        RGraph.SVG.text({object: l7, x: x, y: y, text: 'Bounce rate',size: size});
+        RGraph.SVG.text({object: l2, x: 15,  y: 170, text: 'Sessions',size: size});
+        RGraph.SVG.text({object: l3, x: 215, y: 170, text: 'Users',size: size});
+        RGraph.SVG.text({object: l4, x: 415, y: 170, text: 'Pageviews',size: size});
+        RGraph.SVG.text({object: l5, x: 15,  y: 240, text: 'Pages/Session',size: size});
+        RGraph.SVG.text({object: l6, x: 215, y: 240, text: 'Avg session duration',size: size});
+        RGraph.SVG.text({object: l7, x: 415, y: 240, text: 'Bounce rate',size: size});
 
         // Add some more text to the top right of each SVG tag that acts as
         // the titles for the charts. Like the above text - the X and Y
         // coordinates can be the same because of the multiple SVG tags.
         y    = 30;
         size = 16;
-        RGraph.SVG.text({object: l2, x: x, y: y, text: '527',size: size});
-        RGraph.SVG.text({object: l3, x: x, y: y, text: '444',size: size});
-        RGraph.SVG.text({object: l4, x: x, y: y, text: '2178',size: size});
-        RGraph.SVG.text({object: l5, x: x, y: y, text: '4.13',size: size});
-        RGraph.SVG.text({object: l6, x: x, y: y, text: '00:03:55',size: size});
-        RGraph.SVG.text({object: l7, x: x, y: y, text: '60.91%',size: size});
+        RGraph.SVG.text({object: l2, x: 15,  y: 175, text: '527',      size: size, valign: 'top'});
+        RGraph.SVG.text({object: l3, x: 215, y: 175, text: '444',      size: size, valign: 'top'});
+        RGraph.SVG.text({object: l4, x: 415, y: 175, text: '2178',     size: size, valign: 'top'});
+        RGraph.SVG.text({object: l5, x: 15,  y: 245, text: '4.13',     size: size, valign: 'top'});
+        RGraph.SVG.text({object: l6, x: 215, y: 245, text: '00:03:55', size: size, valign: 'top'});
+        RGraph.SVG.text({object: l7, x: 415, y: 245, text: '60.91%',   size: size, valign: 'top'});
     </script>
 
     <script>showSource()</script>

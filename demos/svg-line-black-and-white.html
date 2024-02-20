@@ -11,9 +11,7 @@
     <h1>An SVG black and white Line chart</h1>
     
     <div id="rgraph-demo-html">
-        <div>
-            <div id="chart-container" style="width:600px; height: 250px"></div>
-        </div>
+<div id="chart-container" style="width:600px; height: 250px"></div>
     </div>
     
     <script id="rgraph-demo-source-code">
@@ -28,7 +26,7 @@
             RGraph.SVG.create({
                 svg: obj.svg,
                 type: 'path',
-                parent: obj.svg.all,
+                parent: obj.svg.svgAllGroup,
                 attr: {
                     d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
                         prop.marginLeft - 20 + 5,

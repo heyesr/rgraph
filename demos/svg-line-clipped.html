@@ -9,55 +9,10 @@
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-    <h1>An SVG clipped red and black Line chart</h1>
+    <h1>An SVG clipped red and green Line chart</h1>
     
     <div id="rgraph-demo-html">
-        <style>
-            #container {
-                position: relative;
-                width: 700px;
-                height: 300px;
-            }
-            
-            #wrapper1 {
-                position: absolute;
-                top: 0px;
-                left: 0;
-                width: 700px;
-                height: 150px;
-                overflow: hidden;
-            }
-            
-            #wrapper2 {
-                position: absolute;
-                top: 150px;
-                left: 0;
-                width: 700px;
-                height: 150px;
-                overflow: hidden;
-            }
-            
-            #chart-container1 {
-                width: 700px;
-                height: 300px;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-            
-            #chart-container2 {
-                width: 700px;
-                height: 300px;
-                position: absolute;
-                top: -150px;
-                left: 0;
-            }
-        </style>
-    
-        <div id="container">
-            <div id="wrapper1">   <div id="chart-container1"></div>   </div>
-            <div id="wrapper2">   <div id="chart-container2"></div>   </div>
-        </div>
+        <div id="chart-container" style="width: 700px; height: 300px"></div>
     </div>
 
     <script>
@@ -70,12 +25,9 @@
         yaxisScaleMax   = 10;
         linewidth       = 2;
 
-
-
-
         // Create the green part of the line
         line = new RGraph.SVG.Line({
-            id: 'chart-container1',
+            id: 'chart-container',
             data: data,
             options: {
                 textSize: 16,
@@ -93,12 +45,13 @@
                 spline: true,
                 xaxisColor: '#666',
                 tickmarksStyle:'circle',
-                tickmarksSize:4,
+                tickmarksSize: 4,
                 yaxisLabelsCount:10,
                 tooltips: 'Quantity of sales: %{value}',
                 tooltipsCss: {
                     fontSize: '16pt'
-                }
+                },
+                clip: '-50%-50%'
             }
         }).trace();
 
@@ -107,7 +60,7 @@
 
         // Create the red part of the line
         line2 = new RGraph.SVG.Line({
-            id: 'chart-container2',
+            id: 'chart-container',
             data: data,
             options: {
                 textSize: 16,
@@ -130,14 +83,16 @@
                 backgroundGridVlines: false,
                 spline: true,
                 tickmarksStyle:'circle',
-                tickmarksSize:4,
+                tickmarksSize: 4,
                 yaxisLabelsCount:10,
                 tooltips: 'Quantity of sales: %{value}',
                 tooltipsCss: {
                     fontSize: '16pt'
-                }
+                },
+                clip: '50%-150%'
             }
         }).trace();
+
     </script>
 
     <script>showSource()</script>

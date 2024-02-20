@@ -17,10 +17,10 @@
     </div>
     
     <script>
-        line = new RGraph.Line({
+        line1    = new RGraph.Line({
             id: "cvs",
-            data: [4,8,5,2,6,7,9,1,5,4,3,8],
-            options: {
+            data: DATA = [4,8,5,2,6,7,9,1,5,4,3,8],
+            options: OPTIONS = {
                 xaxisLabels: ["Alf","Bob","Cal","Dug","Edd","Fay","Gof","Hal","Ind","Jay","Kev","Lou"],
                 textSize: 14,
                 spline: true,
@@ -31,13 +31,29 @@
                 marginInner: 10,
                 tickmarksStyle: "filledcircle",
                 tickmarksSize: 3,
-                shadow: false
+                shadow: false,
+                clip: 'tophalf',
+                horizontalLines: [{
+                    value: 5,
+                    label:''
+                }]
             }
         }).draw();
         
-        line.canvas.onclick = function (e)
+        
+        line2 = new RGraph.Line({
+            id: "cvs",
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['black'],
+                clip: 'bottomhalf' 
+            }
+        }).draw();
+        
+        line1.canvas.onclick = function (e)
         {
-            var indexes = line.closest({
+            var indexes = line1.closest({
                 event: e,
                 tolerance: 25, // Optional - defaults to 25
                 xonly: true    // Optional - defaults to false
@@ -47,9 +63,16 @@
                 return;
             }
 
-            var value = line.getValue(e);
+            var value = line1.getValue(e);
     
-            line.growPoint({
+            line1.growPoint({
+                index:   indexes.index,
+                value:   value,
+                dataset: 0,  // Optional - defaults to 0
+                frames:  15  // Optional - defaults to 15
+            });
+    
+            line2.growPoint({
                 index:   indexes.index,
                 value:   value,
                 dataset: 0,  // Optional - defaults to 0

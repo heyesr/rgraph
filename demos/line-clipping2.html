@@ -44,14 +44,10 @@
                 4,10,10,3,2,4,-5,-4,-5,-6,-1,9,1,2,3,5,7,4,-2,-2,6,2,3,4,
                 4,8,6,2,3,5,1,4,9,5,6,4,-3,-8,-10,-5,6,4,5,1,2,3,4,6
             ],  
-            options: opt
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'hbar -0.05-0.333');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
+            options: {
+                ...opt,
+                clip: '66.666%-150%'
+            }
         }).draw();
 
 
@@ -73,15 +69,9 @@
                         // the options from above
                 colors: ['yellow'],
                 filledColors: ['rgba(255,255,128,0.5)'],
-                xaxisLabels: null
+                xaxisLabels: null,
+            clip: '33.333%-66.666%'
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'hbar 0.336-0.666');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
         }).draw();
 
 
@@ -103,15 +93,9 @@
                         // the options from above
                 colors: ['#0f0'],
                 filledColors: ['rgba(128,255,128,0.25)'],
-                xaxisLabels: null
+                xaxisLabels: null,
+                clip: '-50%-33.333%'
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'hbar 0.666-1.05');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
         }).draw();
     </script>
     

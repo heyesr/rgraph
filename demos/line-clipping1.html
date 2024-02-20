@@ -8,20 +8,17 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A dual-color Line chart that uses RGraph events to install clipping</h1>
+    <h1>A dual-color Line chart that uses clipping</h1>
 
     <div id="rgraph-demo-html">
-        <div>
-            <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
-        </div>
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
     </div>
 
     <script>
         // The first line chart is clipped to the top half of the
         // canvas so you only see the top half of the chart. The
-        // clipping is installed by the beforedraw event and then
-        // removed by the draw event. As a result you only see the
-        // top half of the chart (which is red)
+        // clipping is installed by the clip: option.   As a result
+        // you only see the top half of the chart (which is red)
         new RGraph.Line({
             id: 'cvs',
             data: data = [
@@ -44,31 +41,14 @@
                 spline: true,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 xaxisTickmarksCount: 12,
-                xaxisColor: 'gray'
+                xaxisColor: 'gray',
+                clip: 'tophalf'
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'tophalf');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
         }).trace();
 
 
-
-
-
-
-
-
-
-
-
-
         // This the chart object that shows the bottom half of the
-        // chart. Again, clipping is used to accomplish this and is again
-        // installed by the beforedraw and removed by the draw events.
+        // chart. Again, clipping is used to accomplish this.
         // This chart uses blue colors instead instead of red.
         new RGraph.Line({
             id: 'cvs',
@@ -77,16 +57,10 @@
                 ...opt, // Use the ES6 spread operator to combine
                         // the options from above
                 colors: ['blue'],
+                clip: 'bottomhalf',
                 filledColors: ['rgba(128,128,255,0.25)'],
                 xaxisLabels: null
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'bottomhalf');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
         }).trace();
     </script>
     

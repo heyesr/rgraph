@@ -9,55 +9,10 @@
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-    <h1>An SVG clipped chart with an offset X axis</h1>
+    <h1>An SVG clipped chart with an offset X-axis</h1>
     
-    <div id="rgraph-demo-html">
-        <style>
-            #container {
-                position: relative;
-                width: 700px;
-                height: 300px;
-            }
-            
-            #wrapper1 {
-                position: absolute;
-                top: 0px;
-                left: 0;
-                width: 700px;
-                height: 219px;
-                overflow: hidden;
-            }
-            
-            #wrapper2 {
-                position: absolute;
-                top: 219px;
-                left: 0;
-                width: 700px;
-                height: 81px;
-                overflow: hidden;
-            }
-            
-            #chart-container1 {
-                width: 700px;
-                height: 300px;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-            
-            #chart-container2 {
-                width: 700px;
-                height: 300px;
-                position: absolute;
-                top: -219px;
-                left: 0;
-            }
-        </style>
-    
-        <div id="container">
-            <div id="wrapper1">   <div id="chart-container1"></div>   </div>
-            <div id="wrapper2">   <div id="chart-container2"></div>   </div>
-        </div>
+    <div id="rgraph-demo-html">    
+        <div id="chart-container" style="border: 1px solid gray;width: 700px; height: 300px"></div>
     </div>
 
     <script>
@@ -83,6 +38,7 @@
             tooltipsCss: {
                 fontSize: '16pt'
             },
+            title: 'A sample title for the chart',
             xaxisLabels: [
                 '','Jan','','','Feb','','','Mar','',
                 '','Apr','','','May','','','Jun','',
@@ -97,18 +53,22 @@
 
         // Create the green part of the line
         line = new RGraph.SVG.Line({
-            id: 'chart-container1',
+            id: 'chart-container',
             data: data = [4,5,15,5,-3,-2,-1,-5,-5,5,13,9,11,18,5,1,3,5,5,-5,-4,-5,-2,3],
-            options: opt
+            options: {
+                ...opt,
+                clip: '-50%-80%'
+            }
         }).trace();
 
 
         // Create the red part of the line
         line2 = new RGraph.SVG.Line({
-            id: 'chart-container2',
+            id: 'chart-container',
             data: data,
             options: {
                 ...opt, // Reuse the configuration
+                clip: '80%-150%',
                 colors: ['red'],
                 filledColors: ['rgba(255,0,0,0.25)'],
             }

@@ -11,49 +11,36 @@
     <h1>A red Line chart that uses clipping to restrict drawing to a circle</h1>
 
     <div id="rgraph-demo-html">
-        <div>
-            <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
-        </div>
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
     </div>
 
-    <script>
-        opt = {
-            textSize: 15,
-            xaxisPosition: 'center',
-            yaxis: false,
-            backgroundGridHlinesCount: 10,
-            backgroundGridVlines: false,
-            backgroundGridBorder: false,
-            shadow: false,
-            linewidth: 0.5,
-            colors: ['red'],
-            filled: true,
-            filledColors:['rgba(255,128,128,0.25)'],
-            marginInner: 15,
-            spline: true,
-            xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-            xaxisTickmarksCount: 12
-        };
-        
+    <script>        
         data = [
             4,10,10,3,2,4,-5,-4,-5,-6,-1,9,1,2,3,5,7,4,-2,-2,6,2,3,4,
             4,8,6,2,3,5,1,4,9,5,6,4,-3,-8,-10,-5,6,4,5,1,2,3,4,6
         ];
 
-
-
-
         new RGraph.Line({
             id: 'cvs',
             data: data,  
-            options: opt
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clipTo.start(obj, 'b a 200 150 100 0 6.29 false s #aaa');
-
-        }).on('draw', function (obj)
-        {
-            RGraph.clipTo.end();
+            options: {                
+                textSize: 15,
+                xaxisPosition: 'center',
+                yaxis: false,
+                backgroundGridHlinesCount: 10,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                linewidth: 0.5,
+                colors: ['red'],
+                filled: true,
+                filledColors:['rgba(255,128,128,0.25)'],
+                marginInner: 15,
+                spline: true,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisTickmarksCount: 12,
+                clip: 'b a 200 150 100 0 6.29 false s #ddd'
+            }
         }).draw();
     </script>
     

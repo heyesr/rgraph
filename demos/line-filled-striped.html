@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A striped line chart</h1>
+    <h1>A striped line chart (now using clipping)</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="800" height="300">[No canvas support]</canvas>
@@ -17,10 +17,10 @@
     <script>
         new RGraph.Line({
             id: 'cvs',
-            data: [8,7,6,5,8,7,9,8,6,5,8,3,4,1,1,9,5,7,8,5,6,9,8,7],
-            options: {
-                tickmarksStyle: 'circle',
-                tickmarksSize: 5,
+            data: DATA = [8,7,6,5,8,7,9,8,6,5,8,3,4,1,1,9,5,7,8,5,6,9,8,7],
+            options: OPTIONS = {
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 3,
                 linewidth: 2,
                 marginInner: 5,
                 shadow: false,
@@ -47,38 +47,63 @@
                     '','Oct','',
                     '','Nov','',
                     '','Dec',''
-                ]
+                ],
+                colors: ['#aa0'],
+                filledColors: ['rgba(248,231,209,0.75)']
             }
-        }).draw().exec(function (obj)
+        }).on('firstdraw', function (obj)
         {
-            // The fill
-            var grad = obj.context.createLinearGradient(0,15,0,275);
-            grad.addColorStop(0, 'rgba(248,231,209,0.75)');
-            grad.addColorStop(0.6, 'rgba(248,231,209,0.5)');
-            grad.addColorStop(0.6, 'rgba(220,234,216,0.75)');
-            grad.addColorStop(0.8, 'rgba(220,234,216,0.5)');
-            grad.addColorStop(0.8, 'rgba(132,208,248,0.75)');
-            grad.addColorStop(1.0, 'rgba(132,208,248,0.5)');
-            
-            obj.set({
-                filledColors: grad
-            });
+            // A global
+            boundaryY1 = obj.getYCoord(4);
 
-            // The stroke
-            var grad2 = obj.context.createLinearGradient(0,25,0,275);
-            grad2.addColorStop(0, 'orange');
-            grad2.addColorStop(0.6, 'orange');
-            grad2.addColorStop(0.6, 'green');
-            grad2.addColorStop(0.8, 'green');
-            grad2.addColorStop(0.8, 'blue');
-            grad2.addColorStop(1.0, 'blue');
-            
-            obj.set({
-                colors: [grad2]
-            });
+            obj.set('clip', [0,0,obj.canvas.width, boundaryY1]);
             
             RGraph.redraw();
-        });
+
+        }).draw();
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['rgba(220,234,216,0.5)'],
+                colors: ['#0a0'],
+                filledColors: ['rgba(220,234,216,0.5)']
+            }
+        }).on('firstdraw', function(obj)
+        {
+            // A global
+            boundaryY2 = obj.getYCoord(2);
+
+            obj.set('clip', [0,boundaryY1,obj.canvas.width, boundaryY2]);
+            
+            RGraph.redraw();
+        }).draw();
+
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['#2288AE'],
+                yaxisScale: false,
+                filledColors: ['rgba(132,208,248,0.5)']
+            }
+        }).on('firstdraw', function(obj)
+        {
+            boundaryY3 = obj.getYCoord(2);
+            obj.set('clip', [0,boundaryY2,obj.canvas.width, boundaryY3]);
+            RGraph.redraw();
+        }).draw();
+
     </script>
     
     <script>showSource()</script>
