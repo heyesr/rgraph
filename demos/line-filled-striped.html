@@ -49,16 +49,9 @@
                     '','Dec',''
                 ],
                 colors: ['#aa0'],
-                filledColors: ['rgba(248,231,209,0.75)']
+                filledColors: ['rgba(248,231,209,0.75)'],
+                clip: 'scale:4-max'
             }
-        }).on('firstdraw', function (obj)
-        {
-            // A global
-            boundaryY1 = obj.getYCoord(4);
-
-            obj.set('clip', [0,0,obj.canvas.width, boundaryY1]);
-            
-            RGraph.redraw();
 
         }).draw();
 
@@ -72,16 +65,9 @@
                 ...OPTIONS,
                 colors: ['rgba(220,234,216,0.5)'],
                 colors: ['#0a0'],
-                filledColors: ['rgba(220,234,216,0.5)']
+                filledColors: ['rgba(220,234,216,0.5)'],
+                clip: 'scale:2-4'
             }
-        }).on('firstdraw', function(obj)
-        {
-            // A global
-            boundaryY2 = obj.getYCoord(2);
-
-            obj.set('clip', [0,boundaryY1,obj.canvas.width, boundaryY2]);
-            
-            RGraph.redraw();
         }).draw();
 
 
@@ -95,13 +81,9 @@
                 ...OPTIONS,
                 colors: ['#2288AE'],
                 yaxisScale: false,
-                filledColors: ['rgba(132,208,248,0.5)']
+                filledColors: ['rgba(132,208,248,0.5)'],
+                clip: 'scale:min-2'
             }
-        }).on('firstdraw', function(obj)
-        {
-            boundaryY3 = obj.getYCoord(2);
-            obj.set('clip', [0,boundaryY2,obj.canvas.width, boundaryY3]);
-            RGraph.redraw();
         }).draw();
 
     </script>

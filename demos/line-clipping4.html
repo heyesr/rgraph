@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.drawing.image.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -16,19 +15,6 @@
     </div>
 
     <script>
-        // The watermark image
-        new RGraph.Drawing.Image({
-            id: 'cvs',
-            x: 85,
-            y: 65,
-            src: '/images/logo-250x250.png',
-            options: {
-                colorsAlpha: 0.25,
-                width: 128,
-                height: 128
-            }
-        }).draw();
-
         line = new RGraph.Line({
             id: 'cvs',
             data: data = [
