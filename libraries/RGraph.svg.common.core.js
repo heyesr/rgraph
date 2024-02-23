@@ -7252,32 +7252,52 @@ if (properties.backgroundBorder) {
                 var clipPathRect = obj.create('<rect x="{1}" y="0" width="{2}" height="{3}">'.format(obj.properties.marginLeft + halfWidth, halfWidth + obj.properties.marginRight, obj.height),clipPath);
             
             // HORIZONTAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^[xX]:([-.0-9]+)%-([-.0-9]+)%$/)) {
-    
-                var from   = Number(RegExp.$1),
-                    to     = Number(RegExp.$2),
-                    width  = obj.width - obj.properties.marginLeft - obj.properties.marginRight,
+            } else if (obj.properties.clip.match(/^x:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
+
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+
+                from   = Number(from);
+                to     = Number(to);
+
+                var width  = obj.width - obj.properties.marginLeft - obj.properties.marginRight,
                     x      = (from / 100) * width + obj.properties.marginLeft,
                     y      = 0,
                     width  = ((to - from)  / 100) * (obj.width - obj.properties.marginLeft - obj.properties.marginRight),
                     height = obj.height;
-    
+
                 var clipPathRect = obj.create('<rect x="{1}" y="{2}" width="{3}" height="{4}">'.format(
                     x, y, width, height
                 ),clipPath);
             
             // VERTICAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^(?:[yY]:)?([-.0-9]+)%-([-.0-9]+)%$/)) {
+            } else if (obj.properties.clip.match(/^y:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
     
-                var from   = Number(RegExp.$1);
-                var to     = Number(RegExp.$2);
-                var height = obj.height - obj.properties.marginTop - obj.properties.marginBottom;
-    
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+
+                from   = Number(from);
+                to     = Number(to);
+
                 var x      = 0,
-                    y      = (from / 100) * height + obj.properties.marginTop,
                     width  = obj.width,
-                    height = ((to - from)  / 100) * (obj.height - obj.properties.marginTop - obj.properties.marginBottom);
-    
+                    //y1     = ((to - from) / 100) * (obj.height - obj.properties.marginTop - obj.properties.marginBottom),
+                    y2     = (to / 100) * (obj.height - obj.properties.marginTop - obj.properties.marginBottom);
+                    y      = obj.height - obj.properties.marginBottom - y2,
+                    height = (obj.height - obj.properties.marginTop - obj.properties.marginBottom) * ( (to - from) / 100);
+
                 var clipPathRect = obj.create('<rect x="{1}" y="{2}" width="{3}" height="{4}">'.format(
                     x, y, width, height
                 ),clipPath);
@@ -7507,7 +7527,7 @@ if (properties.backgroundBorder) {
     {
 
         //
-        // Allow for this type of formatting: {myVar} $myVar $myVar$ %myVar% [myVar]
+        // Allow for this type of formatting: {myVar}
         //
         if (arguments.length === 0) {
         

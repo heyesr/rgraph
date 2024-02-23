@@ -542,15 +542,6 @@
                 // Don't want to do this again
                 this.colorsParsed = true;
             }
-    
-            
-            //
-            // Draw the background image
-            //
-            // TODO Can this be moved further down where all the
-            //      drawing occurs?
-            //
-            RGraph.drawBackgroundImage(this);
 
 
 
@@ -671,6 +662,12 @@
 
 
 
+    
+            
+            //
+            // Draw the background image
+            //
+            RGraph.drawBackgroundImage(this);
 
 
 

@@ -9509,7 +9509,7 @@
         RGraph.clipTo.__rgraph_aa_translated__ = args.object.canvas.__rgraph_aa_translated__ ;
 
         if (RGraph.isString(args.dimensions)) {
-            
+
             if (args.dimensions === 'lefthalf') {
 
                 var graphWidth = (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight);
@@ -9523,7 +9523,7 @@
                 );
             
             } else if (args.dimensions === 'righthalf') {
-            
+
                 var graphWidth = (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight);
 
                 args.object.path(
@@ -9579,12 +9579,22 @@
 
 
             // Clip to horizontal percentages
-            } else if (args.object.properties.clip.match(/^[xX]:([-.0-9]+)%-([-.0-9]+)%$/)) {
+            } else if (args.dimensions.match(/^x:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
 
 
-                var from   = Number(RegExp.$1),
-                    to     = Number(RegExp.$2),
-                    width = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+
+                from   = Number(from);
+                to     = Number(to);
+
+                var width = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
                     height = args.object.canvas.height,
                     x      = (from  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) + args.object.properties.marginLeft,
                     y      = 0;
@@ -9596,15 +9606,28 @@
             
             
             // Clip to vertical percentages
-            } else if (args.object.properties.clip.match(/^(?:[yY]:)?([-.0-9]+)%-([-.0-9]+)%$/)) {
+            } else if (args.dimensions.match(/^y:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+    
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
 
-                var from   = Number(RegExp.$1),
-                    to     = Number(RegExp.$2),
-                    height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+
+                from   = Number(from);
+                to     = Number(to);
+
+                var height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
                     x      = 0,
                     y      = (from / 100) * height + args.object.properties.marginTop,
                     width  = args.object.canvas.width,
-                    height = ((to - from)  / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom);
+                    //y1     = ((to - from) / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom),
+                    y2     = (to / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom),
+                    y      = args.object.canvas.height - args.object.properties.marginBottom - y2,
+                    height = (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) * ( (to - from) / 100);
                 
                 args.object.path(
                     'sa ' + 'b r % % % %' + ' cl',
@@ -9615,7 +9638,8 @@
             // Clip to scale values - since all of the
             // charts handle scales differently this is
             // handled by worker functions on each object
-            } else if (args.object.properties.clip.match(/^(?:scale:) *([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
+            } else if (args.dimensions.match(/^(?:scale:) *([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
+
                 if (args.object.clipToScaleWorker) {
                     args.object.clipToScaleWorker(args.object.properties.clip);
                 } else {
@@ -10633,7 +10657,7 @@
     String.prototype.format = function()
     {
         //
-        // Allow for this type of formatting: {myVar} $myVar $myVar$ %myVar% [myVar]
+        // Allow for this type of formatting: {myVar}
         //
         if (arguments.length === 0) {
         
