@@ -29,7 +29,8 @@
                 filledColors: ['#ccf'],
                 shadow: false,
                 backgroundGridVlines: false,
-                backgroundGridBorder: false
+                backgroundGridBorder: false,
+                marginRight: 50
             }
         }).trace(animationOptions);
 
@@ -49,9 +50,23 @@
                 yaxisScale: false,
                 xaxis: false,
                 yaxis: false,
-                shadow: false
+                shadow: false,
+                marginRight: 50
             }
-        }).trace(animationOptions);
+        }).trace(animationOptions, function (obj)
+        {
+            setTimeout(function ()
+            {
+                RGraph.text({
+                    object: obj,
+                    text: '+10.23',
+                    x: obj.coords.last()[0] + 5,
+                    y: obj.coords.last()[1],
+                    color: 'green',
+                    valign: 'center'
+                });
+            }, 100);
+        });
 
 
 
@@ -69,9 +84,23 @@
                 xaxis: false,
                 yaxis: false,
                 shadow: false,
-                yaxisScale: false
+                yaxisScale: false,
+                marginRight: 50
             }
-        }).trace(animationOptions);
+        }).trace(animationOptions, function (obj)
+        {
+            setTimeout(function ()
+            {
+                RGraph.text({
+                    object: obj,
+                    text: '-4.26',
+                    x: obj.coords.last()[0] + 5,
+                    y: obj.coords.last()[1],
+                    color: 'red',
+                    valign: 'center'
+                });
+            }, 100);
+        });
 
 
 
@@ -88,9 +117,10 @@
                 backgroundGrid: false,
                 xaxis: false,
                 yaxisScale: false,
-                yaxis: false
+                yaxis: false,
+                marginRight: 50
             }
-        }).trace(animationOptions);
+        }).trace();
     </script>
     
     <script>showSource()</script>
