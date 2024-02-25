@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.activity.js" ></script>
+    <script src="demos.js"></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A multi-colored Activity meter chart using clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                // Clip to the bottom-right quarter
+                clip: 'b m 250 250 a 250 250 500 0 1.57 false',
+                
+                colors: ['red','blue','yellow'],
+                width: 45
+            }
+        }).draw();
+        
+        new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                // Clip to the bottom-left quarter
+                clip: 'b m 250 250 a 250 250 500 1.57 3.14 false',
+                
+                width: 45
+            }
+        }).draw();
+        
+        new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                // Clip to the top-left quarter
+                clip: 'b m 250 250 a 250 250 500 3.14 4.71 false',
+                
+                colors: ['lime','orange','green'],
+                width: 45
+            }
+        }).draw();
+
+        new RGraph.Activity({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                colors: ['blue','pink','orange'],
+                
+                // Clip to the top-right quarter
+                clip: 'b m 250 250 a 250 250 500 4.71 6.29 false',
+                
+                width: 45
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart using the new clipping feature</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="650" height="300" data-image-src="page-demos-bar-3d-effect-multi-row.png">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <br clear="both" />
+
+    <script id="rgraph-demo-source-code">
+        // This Bar chart draws the positive, red bars
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [4,8,null,4,30,20,,,,,6,4,,,5,8,7,9,5,9],
+            options: {
+                yaxisScaleMin: -10,
+                yaxisScaleMax: 40,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,
+                clip: 'scale:0-max'
+            }
+        }).draw();
+
+        // This Bar chart draws the negative, black bars
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [null,null,-6,null,null,null,-1,-35,-21,-12,null,null,-8,-6,null,null,null,null,null,null],
+            options: {
+                colors: ['black'],
+                yaxisScaleMin: -10,
+                yaxisScaleMax: 40,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                yaxis: false,clip: 'scale:min-0'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
