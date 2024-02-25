@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart with future prediction</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        animationOptions = {frames: 30};
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: [9,6,8,-5,-4,-2,0,null,null,null,null,null,null,null],
+            options: {
+                xaxisLabels: ['2018','2019','2020','2021','2022','2023','2024','2025','2026','2027','2028','2029','2030','2031'],
+                yaxisScaleMax: 10,
+                xaxisPosition: 'center',
+                filled: true,
+                colors: ['blue'],
+                filledColors: ['#ccf'],
+                shadow: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false
+            }
+        }).trace(animationOptions);
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: [null,null,null,null,null,null,0,1,2,3,4,5,6,7],
+            options: {
+                yaxisScaleMax: 10,
+                xaxisPosition: 'center',
+                filled: true,
+                colors: ['green'],
+                filledColors: ['#cfc'],
+                backgroundGrid: false,
+                yaxisScale: false,
+                xaxis: false,
+                yaxis: false,
+                shadow: false
+            }
+        }).trace(animationOptions);
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: [null,null,null,null,null,null,0,-1,-2,-3,-4,-5,-6,-7],
+            options: {
+                yaxisScaleMax: 10,
+                xaxisPosition: 'center',
+                filled: true,
+                colors: ['red'],
+                filledColors: ['#fcc'],
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                shadow: false,
+                yaxisScale: false
+            }
+        }).trace(animationOptions);
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: [null,null,null,null,null,null,0,0.5,1,1.5,2,2.5,3,3.5],
+            options: {
+                shadow: false,
+                dashed: true,
+                yaxisScaleMax: 10,
+                xaxisPosition: 'center',
+                colors: ['blue'],
+                backgroundGrid: false,
+                xaxis: false,
+                yaxisScale: false,
+                yaxis: false
+            }
+        }).trace(animationOptions);
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
