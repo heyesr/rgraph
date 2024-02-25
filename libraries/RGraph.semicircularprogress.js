@@ -459,7 +459,7 @@
             this.width   = this.radius / 3;
              
             // User specified centerx/y/radius
-            if (typeof properties.radius  === 'number') this.radius = properties.radius;
+            if (typeof properties.radius  === 'number') this.radius  = properties.radius;
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.width   === 'number') this.width   = properties.width;
