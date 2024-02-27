@@ -1,0 +1,41 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>A simple Rose chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script id="rgraph-demo-source-code">
+        // This is a simple example of the Rose chart that's been configured
+        // with some labels that are positioned around the Rose chart.
+        rose = new RGraph.Rose({
+            id: 'cvs',
+            data: [4,6,3,5,2,8,9],
+            options: {
+                labels: ['Luna','Kevin','Richard','John','Dave','Bob','Paul'],
+                responsive: [
+                    {maxWidth: null,width:600,height:400,options:{textSize:12}},
+                    {maxWidth: 900,width:400,height:300,options:{textSize:10}}
+                ]
+            }
+        
+        // Draw the chart and add some responsive capabilities. The chart doesn't change much - it
+        // mostly just reduces in size.
+        }).draw();
+    </script>
+
+    <script>showSource()</script>    
+
+</body>
+</html>

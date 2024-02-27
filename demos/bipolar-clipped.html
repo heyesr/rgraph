@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bipolar chart that uses clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: [8,4,6,5,2,5,8],
+            right: [4,8,6,3,9,5,2],
+            options: OPTIONS = {
+                colors: ['red'],
+                clip: 'lefthalf',
+                yaxisLabels:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                textSize: 16,
+                textFont: 'Verdana',
+                xaxisLabelsSize: 12,
+                xaxisTitle: 'Quantity sold (%)',
+                marginBottom: 75,
+                title: 'A Bipolar chart with clipping',
+                marginTop: 55
+            }
+        }).wave();
+
+        new RGraph.Bipolar({
+            id: 'cvs',
+            left: [8,4,6,5,2,5,8],
+            right: [12,19,16,14,25,23,26],
+            options: {
+                ...OPTIONS,
+                colors: ['black'],
+                clip: 'righthalf'
+            }
+        }).wave();
+    </script>
+
+    <script>showSource()</script>
+    
+</body>
+</html>

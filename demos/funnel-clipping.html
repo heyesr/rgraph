@@ -1,0 +1,43 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Funnel chart using clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Funnel({
+            id: 'cvs',
+            data: [100,42,34,23],
+            options: {
+                clip: 'lefthalf',
+                tooltips: 'The left half of the funnel chart.'
+            }
+        }).draw();
+
+        new RGraph.Funnel({
+            id: 'cvs',
+            data: [100,42,34,23],
+            options: {
+                clip: 'righthalf',
+                tooltips: 'The right half of the funnel chart.',
+                colors: ['black','gray','#aaa','#eee']
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
