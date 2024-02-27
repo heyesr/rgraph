@@ -2133,6 +2133,58 @@
 
 
         //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done
+        // centrally in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            if (this.properties.xaxisPosition === 'top') {
+
+                var y1 = this.getYCoord(from),
+                    y2 = this.getYCoord(to);
+
+                if (RegExp.$1 === 'min') y1 -= this.properties.marginTop;
+                if (RegExp.$2 === 'max') y2 = 0;
+
+                this.path(
+                    'sa b r % % % % cl',
+                    0,y1,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
+                );
+
+            } else {
+
+                var y1 = this.getYCoord(from),
+                    y2 = this.getYCoord(to);
+
+                if (RegExp.$1 === 'min') y1 = this.canvas.height;
+                if (RegExp.$2 === 'max') y2 = 0;
+
+                this.path(
+                    'b r % % % %',
+                    0,y2,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
+                );
+            }
+        };
+
+
+
+
+
+
+
+
+        //
         // Now, because canvases can support multiple charts, canvases must always be registered
         //
         RGraph.register(this);

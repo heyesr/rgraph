@@ -1215,12 +1215,12 @@
 
             // Change the radius if the number is "min"
             if (RegExp.$1 === 'min') {
-                a1 = -RGraph.PI;
+                a1 = RGraph.HALFPI;
             }
 
             // Change the radius if the number is "max"
             if (RegExp.$2 === 'max') {
-                a2 = 0;
+                a2 = RGraph.TWOPI + RGraph.HALFPI;
             }
 
             this.path(

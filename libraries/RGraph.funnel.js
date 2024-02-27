@@ -850,7 +850,7 @@
             var mouseCoords = RGraph.getMouseXY(e);
             var x           = mouseCoords[0];
             var y           = mouseCoords[1];        
-    
+
             for (i=0,len=coords.length; i<len; ++i) {
             
                 var segment = coords[i]
@@ -872,7 +872,7 @@
     
                 if (
                        this.context.isPointInPath(x, y)
-                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, x, y) : true)
                    ) {
                     
                     if (RGraph.parseTooltipText && properties.tooltips) {

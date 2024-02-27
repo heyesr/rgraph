@@ -9634,10 +9634,14 @@
                     x,y,width,height
                 );
 
-                //
+            //
             // Clip to scale values - since all of the
             // charts handle scales differently this is
             // handled by worker functions on each object
+            //
+            // IF YOU UPDATE THIS REGEXP THEN IT NEEDS TO BE
+            // UPDATED FURTHER DOWN IN THE CODE TOO
+            //
             } else if (args.dimensions.match(/^(?:scale:) *([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
 
                 if (args.object.clipToScaleWorker) {
@@ -9666,19 +9670,19 @@
                     )
                 );
             }
-            
+
             // Save the path so it doesn't have to be rebuilt 
             // if/when it comes to testing it
             RGraph.clipTo.path = 'b ' + path.join(' ');
-            
+
             // Build the string path
-            path = 'sa b ' + path.join(' ') + ' cl';
-            
+            path = 'sa ' + RGraph.clipTo.path + ' cl';
+
             // Run the path
             args.object.path(path);
 
         // Clip to a single-dimension array of x/y/width/height
-        // (x/y/w/h)
+        // (x/y/w/h) A rectangle in other words.
         } else if (RGraph.isArray(args.dimensions)) {
             args.object.path(
                 'sa b r % % % % cl',
@@ -9736,12 +9740,11 @@
 
 
         if (args.object.properties.clip) {
-
-
-
+        
+            var clip = args.object.properties.clip;
 
             // Test that the cursor is over the left half
-            if (args.object.properties.clip === 'lefthalf') {
+            if (clip === 'lefthalf') {
                 if (   args.x > 0
                     && args.x < (args.object.canvas.width / 2)
                     && args.y > 0
@@ -9754,7 +9757,7 @@
 
 
             // Test that the cursor is over the right half
-            } else if (args.object.properties.clip === 'righthalf') {
+            } else if (clip === 'righthalf') {
                 if (   args.x > (args.object.canvas.width / 2)
                     && args.x < args.object.canvas.width
                     && args.y > 0
@@ -9767,7 +9770,7 @@
 
 
             // Test that the cursor is over the top half
-            } else if (args.object.properties.clip === 'tophalf') {
+            } else if (clip === 'tophalf') {
                 if (   args.x > 0
                     && args.x < args.object.canvas.width
                     && args.y > 0
@@ -9780,7 +9783,7 @@
 
 
             // Test that the cursor is over the bottom half
-            } else if (args.object.properties.clip === 'bottomhalf') {
+            } else if (clip === 'bottomhalf') {
                 if (   args.x > 0
                     && args.x < args.object.canvas.width
                     && args.y > (args.object.canvas.height / 2)
@@ -9794,17 +9797,17 @@
 
             // Test that the cursor is within the clipped rect
             } else if (
-                          RGraph.isArray(args.object.properties.clip)
-                       && RGraph.isNumber(args.object.properties.clip[0])
-                       && RGraph.isNumber(args.object.properties.clip[1])
-                       && RGraph.isNumber(args.object.properties.clip[2])
-                       && RGraph.isNumber(args.object.properties.clip[3])
+                          RGraph.isArray(clip)
+                       && RGraph.isNumber(clip[0])
+                       && RGraph.isNumber(clip[1])
+                       && RGraph.isNumber(clip[2])
+                       && RGraph.isNumber(clip[3])
                       ) {
 
-                if (   args.x > args.object.properties.clip[0]
-                    && args.x < (args.object.properties.clip[0] + args.object.properties.clip[2])
-                    && args.y > args.object.properties.clip[1]
-                    && args.y < (args.object.properties.clip[1] + args.object.properties.clip[3])
+                if (   args.x > clip[0]
+                    && args.x < (clip[0] + clip[2])
+                    && args.y > clip[1]
+                    && args.y < (clip[1] + clip[3])
                    ) {
                     return true;
                 }
@@ -9812,8 +9815,13 @@
 
 
 
+
+
+
+
+
             // Test that the cursor is within the clipped path
-            } else if (RGraph.isArray(args.object.properties.clip) && RGraph.isArray(args.object.properties.clip[0])) {
+            } else if (RGraph.isArray(clip) && RGraph.isArray(clip[0])) {
 
                 args.object.path(RGraph.clipTo.path);
                 return args.object.context.isPointInPath(args.x, args.y);
@@ -9822,47 +9830,85 @@
 
 
             // Test that the cursor is within the given X percentages range
-            } else if (args.object.properties.clip.match(/^[xX]:([-.0-9]+)%-([-.0-9]+)%$/)) {
+            } else if (clip.match(/^x:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
+            
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+            
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+            
+                from   = Number(from);
+                to     = Number(to);
                 
-                var from   = Number(RegExp.$1),
-                    to     = Number(RegExp.$2),
-                    width = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
+                var width  = ((to - from)  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight),
                     height = args.object.canvas.height,
                     x      = (from  / 100) * (args.object.canvas.width - args.object.properties.marginLeft - args.object.properties.marginRight) + args.object.properties.marginLeft,
                     y      = 0;
-
-                return (
-                           args.x > x
-                        && args.y > y
-                        && args.x < (x + width)
-                        && args.y < (y + height)
-                       );
+            
+                args.object.path(
+                    'b r % % % %',
+                    x,y,width,height
+                );
+            
+                return args.object.context.isPointInPath(args.x, args.y);
 
 
             // Test that the cursor is within the given Y percentages range
-            } else if (args.object.properties.clip.match(/^[yY]:([-.0-9]+)%-([-.0-9]+)%$/)) {
-                
-                var from   = Number(RegExp.$1),
-                    to     = Number(RegExp.$2),
-                    height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
+            } else if (clip.match(/^y:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+            
+                from = from.replace(/min/, '-200');
+                from = from.replace(/max/, '200');
+                to   = to.replace(/min/, '-200');
+                to   = to.replace(/max/, '200');
+            
+                from   = Number(from);
+                to     = Number(to);
+            
+                var height = args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom,
                     x      = 0,
                     y      = (from / 100) * height + args.object.properties.marginTop,
                     width  = args.object.canvas.width,
-                    height = ((to - from)  / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom);
+                    //y1     = ((to - from) / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom),
+                    y2     = (to / 100) * (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom),
+                    y      = args.object.canvas.height - args.object.properties.marginBottom - y2,
+                    height = (args.object.canvas.height - args.object.properties.marginTop - args.object.properties.marginBottom) * ( (to - from) / 100);
                 
-                
-                return (
-                           args.x > x
-                        && args.y > y
-                        && args.x < (x + width)
-                        && args.y < (y + height)
-                       );
-            }
+                    args.object.path(
+                        'b r % % % %',
+                        x,y,width,height
+                    );
 
-            return false;
+                return args.object.context.isPointInPath(args.x, args.y);
+
+
+
+
+
+
+            // Test that the cursor is within the clipped scale
+            //
+            // IF YOU UPDATE THIS REGEXP THEN IT NEEDS TO BE
+            // UPDATED FURTHER UP IN THE CODE TOO
+            //
+            } else if (clip.match(/^(?:scale:) *([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
+                if (args.object.clipToScaleTestWorker) {
+                    args.object.clipToScaleTestWorker(clip);
+                    
+                    return args.object.context.isPointInPath(args.x, args.y);
+                } else {
+                    console.log('The scale: clipping option isn\'t implemented for this chart type (' + args.object.type + ')');
+                }
+            }
         }
     };
-
 
 
 
@@ -10704,8 +10750,8 @@
         });
 
         
-        // Save percentage signs that are escaped with either another
-        // percent or a backslash
+        // Save percentage signs that are escaped with either
+        // another percent or a backslash
         s = s.replace(/(?:%|\\)%(\d)/g,'__PPEERRCCEENNTT__$1');
 
         s = s.replace(/%(\d+)/g, function(str, idx)

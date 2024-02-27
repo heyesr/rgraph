@@ -4087,6 +4087,83 @@ for (var i=0; i<2; ++i) {
 
 
         //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done
+        // centrally in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            var match1 = RegExp.$1;
+            var match2 = RegExp.$2;
+
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (match1 === 'min') from = 0; else from = Number(match1);
+            if (match2 === 'max') to   = this.scale2.max; else to = Number(match2);
+
+
+
+            var [x1, x2] = this.getXCoord(from);
+            var [x3, x4] = this.getXCoord(to);
+
+for (var i=0; i<2; ++i) {
+    
+    // LEFT-HAND-SIDE
+    if (i === 0) {
+        // Change the X if the number is "min"
+        if (match1 === 'min') {
+            x1 += (this.properties.marginCenter / 2);
+        }
+
+        // Change the width if the number is "max"
+        if (match2 === 'max') {
+            x3 = 0;
+        }
+
+        this.path(
+            'b r % % % %',
+            x3, 0, x1 - x3, this.canvas.height
+        );
+    
+    // RIGHT-HAND-SIDE
+    } else {
+
+        // Change the X if the number is "min"
+        if (match1 === 'min') {
+            var rightX = this.properties.marginLeft + this.axisWidth + (this.properties.marginCenter / 2);
+        } else {
+            var rightX = x2;
+        }
+
+        // Change the width if the number is "max"
+        if (match2 === 'max') {
+            var rightW = (this.canvas.width / 2);
+        } else {
+            var rightW = x4 - rightX;
+        }
+
+        this.path(
+            'r % % % %',
+            rightX, 0, rightW, this.canvas.height
+        );
+    };
+
+    }
+}
+
+
+
+
+
+
+
+
+        //
         // Objects are now always registered so that when RGraph.redraw()
         // is called this chart will be redrawn.
         //

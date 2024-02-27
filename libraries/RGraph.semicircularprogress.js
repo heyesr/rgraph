@@ -2083,6 +2083,52 @@
 
 
         //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done centrally
+        // in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getAngle(from),
+                r2 = this.getAngle(to);
+            
+            // Change the angle if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = RGraph.TWOPI + RGraph.HALFPI;
+            }
+        
+            // Change the angle if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = RGraph.HALFPI;
+            }
+
+            this.path(
+                'b m % % a % % % % % false c',
+                this.centerx, this.centery,
+                this.centerx, this.centery,
+                Math.max(this.canvas.width, this.canvas.height),
+                r1, r2
+            );
+        };
+
+
+
+
+
+
+
+
+        //
         // The chart is now always registered
         //
         RGraph.register(this);

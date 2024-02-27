@@ -1699,9 +1699,14 @@
                     centerY     = angles[i][5],// - (properties.variant.indexOf('3d') !== -1 ? properties.variantThreedDepth : 0);
                     mouseXY     = RGraph.getMouseXY(e),
                     mouseX      = mouseXY[0] - centerX,
-                    mouseY      = mouseXY[1] - centerY;
+                    mouseY      = mouseXY[1] - centerY,
+                    
+                    // Odd that this is necessary
+                    origMouseX  = mouseXY[0],
+                    origMouseY  = mouseXY[1];
     
-                // New click testing (the 0.01 is there because Opera doesn't like 0 as the radius)
+                // New click testing (the 0.01 is there because
+                // Opera doesn't like 0 as the radius)
                 this.path(
                     'b a % % % % % % a % % % % % % c',
                     centerX, centerY, radiusStart ? radiusStart : 0.01, angleStart, angleEnd, false,
@@ -1713,7 +1718,7 @@
     
                 if (
                        this.context.isPointInPath(mouseXY[0], mouseXY[1])
-                    && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
+                    && (this.properties.clip ? RGraph.clipTo.test(this, origMouseX, origMouseY) : true)
                    ) {
 
                     angles[i][6] = i;
@@ -2783,6 +2788,48 @@
 
             this.path(
                 'sa b a % % % 0 6.29 false       a % % % 6.29 0 true    cl',
+                this.centerx, this.centery, r1,
+                this.centerx, this.centery, r2,
+            );
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles testing the scale clipping Because
+        // each chart handles scales differently, a worker function
+        // is needed instead of it all being done centrally in the
+        // RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getRadius(from),
+                r2 = this.getRadius(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = 0;
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = Math.max(this.canvas.width, this.canvas.height);
+            }
+
+            this.path(
+                'b m % % a % % % 0 6.29 false       a % % % 6.29 0 true',
+                this.centerx, this.centery,
                 this.centerx, this.centery, r1,
                 this.centerx, this.centery, r2,
             );

@@ -81,10 +81,10 @@
             marginTop:            35,
             marginBottom:         35,
 
-            linewidth:             1,
+            linewidth:             2,
 
-            colorsStroke:           '#aaa',
-            colors:                ['rgba(255,0,0,0.75)','rgba(0,255,255,0.25)','rgba(255,0,0,0.5)', 'red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
+            colorsStroke:           'black',
+            colors:                ['rgba(255,0,0,0.25)','rgba(0,255,255,0.25)','rgba(255,0,0,0.5)', 'red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
             colorsAlpha:          null,
             circle:                0,
 
@@ -158,8 +158,6 @@
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
 
-            linewidth:             1,
-
             key:                   null,
             keyBackground:        'white',
             keyShadow:            false,
@@ -229,10 +227,6 @@
             highlightFill:         'rgba(255,255,255,0.7)',
             highlightPointRadius: 2,
 
-            resizable:              false,
-            resizeHandleAdjust:   [0,0],
-            resizeHandleBackground: null,
-
             scaleMax:              null,
             scaleDecimals:         0,
             scalePoint:            '.',
@@ -254,10 +248,11 @@
 
             axesColor:           'rgba(0,0,0,0)',
 
-            highlights:           false,
-            highlightsStroke:    '#ddd',
-            highlightsFill:      null,
-            highlightsRadius:    3,
+            highlights:           true,
+            highlightsStroke:    'black',
+            highlightsFill:      'white',
+            highlightsLinewidth: null,
+            highlightsRadius:    5,
             highlightStyleInvertStroke: 'transparent',
             highlightStyleInvertFill: 'rgba(255,255,255,0.7)',
 
@@ -1639,9 +1634,16 @@
                 for (var dataset=0; dataset <this.data.length; ++dataset) {
                     for (var index=0; index<this.data[dataset].length; ++index) {
                         this.context.beginPath();
+                            
+                            if (RGraph.isNumber(properties.highlightsLinewidth)) {
+                                this.context.lineWidth = properties.highlightsLinewidth;
+                            }
+
                             this.context.strokeStyle = properties.highlightsStroke;
-                            this.context.fillStyle = properties.highlightsFill ? properties.highlightsFill : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
+                            this.context.fillStyle   = properties.highlightsFill ? properties.highlightsFill : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
+
                             this.context.arc(this.coords[sequentialIdx][0], this.coords[sequentialIdx][1], radius, 0, RGraph.TWOPI, false);
+
                         this.context.stroke();
                         this.context.fill();
                         ++sequentialIdx;
@@ -2428,6 +2430,47 @@
 
             this.path(
                 'sa b a % % % 0 6.29 false       a % % % 6.29 0 true    cl',
+                this.centerx, this.centery, r1,
+                this.centerx, this.centery, r2,
+            );
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done centrally
+        // in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
+
+            var r1 = this.getRadius(from),
+                r2 = this.getRadius(to);
+
+            // Change the radius if the number is "min"
+            if (RegExp.$1 === 'min') {
+                r1 = 0;
+            }
+
+            // Change the radius if the number is "max"
+            if (RegExp.$2 === 'max') {
+                r2 = Math.max(this.canvas.width, this.canvas.height);
+            }
+
+            this.path(
+                'b a % % % 0 6.29 false       a % % % 6.29 0 true',
                 this.centerx, this.centery, r1,
                 this.centerx, this.centery, r2,
             );

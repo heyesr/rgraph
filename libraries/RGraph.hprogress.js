@@ -1973,6 +1973,49 @@ if (properties.corners === 'round') {
 
 
         //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done
+        // centrally in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = this.min; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.max; else to   = Number(RegExp.$2);
+
+            var x1 = this.getXCoord(from),
+                x2 = this.getXCoord(to);
+
+            // Change the angle if the number is "min"
+            if (RegExp.$1 === 'min') {
+                x1 = 0;
+            }
+
+            // Change the angle if the number is "max"
+            if (RegExp.$2 === 'max') {
+                x2 = this.canvas.width;
+            }
+
+            this.path(
+                'b r % % % %',
+                x1,0,Math.max(x1,x2) - Math.min(x1,x2), this.canvas.height
+            );
+        };
+
+
+
+
+
+
+
+
+        //
         // Register the object for redrawing
         //
         RGraph.register(this);

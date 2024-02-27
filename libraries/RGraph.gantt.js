@@ -1883,6 +1883,50 @@
 
 
         //
+        // This function handles TESTING clipping to scale values.
+        // Because each chart handles scales differently, a worker
+        // function is needed instead of it all being done
+        // centrally in the RGraph.clipTo.start() function.
+        //
+        // @param string clip The clip string as supplied by the
+        //                    user in the chart configuration
+        //
+        this.clipToScaleTestWorker = function (clip)
+        {
+            // The Regular expression is actually done by the
+            // calling RGraph.clipTo.start() function  in the core
+            // library
+            if (RegExp.$1 === 'min') from = 0; else from = Number(RegExp.$1);
+            if (RegExp.$2 === 'max') to   = this.properties.xaxisScaleMax; else to = Number(RegExp.$2);
+
+            var x     = this.marginLeft + (((from - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin)) * this.graphArea)
+                width = ((to-from) / (properties.xaxisScaleMax - properties.xaxisScaleMin) ) * this.graphArea;
+
+            // Change the X if the number is "min"
+            if (RegExp.$1 === 'min') {
+                x = 0;
+                width += this.properties.marginLeft;
+            }
+
+            // Change the width if the number is "max"
+            if (RegExp.$2 === 'max') {
+                width = this.canvas.width - x;
+            }
+
+            this.path(
+                'b r % % % %',
+                x, 0, width, this.canvas.height
+            );
+        };
+
+
+
+
+
+
+
+
+        //
         // Register the object
         //
         RGraph.register(this);
