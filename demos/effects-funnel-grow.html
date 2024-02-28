@@ -1,0 +1,34 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Funnel chart grow effect</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="450">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Funnel({
+            id: 'cvs',
+            data: [100,80,53,40,23],
+            options: {
+                labels: ['Start','Step 1','Step2','Step 3','Finish'],
+                marginLeft: 150,
+                labelsX: 50,
+                labelsSticks: true,
+                textSize: 18
+            }
+        }).grow();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

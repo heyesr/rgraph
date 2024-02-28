@@ -183,8 +183,7 @@
             annotatable:           false,
             annotatableColor:     'black',
 
-            resizable:                   false,
-            resizableHandleBackground: null,
+            effectGrowMultiplier: 1,
 
             clearto:   'rgba(0,0,0,0)'
         }
@@ -561,14 +560,18 @@
                 var halfNextWidth = (nextwidth / 2);
                 var center        = this.marginLeft + (firstwidth / 2);
 
-                var x1 = center - halfCurWidth;
-                var y1 = accheight;
-                var x2 = center + halfCurWidth;
-                var y2 = accheight;
-                var x3 = center + halfNextWidth;
-                var y3 = accheight + curheight;
-                var x4 = center - halfNextWidth;
-                var y4 = accheight + curheight;
+                //
+                // These are the coordinates for the Funnel
+                // segment
+                //
+                var x1 = center - halfCurWidth,
+                    y1 = accheight * properties.effectGrowMultiplier,
+                    x2 = center + halfCurWidth,
+                    y2 = accheight * properties.effectGrowMultiplier,
+                    x3 = center + halfNextWidth,
+                    y3 = (accheight + curheight) * properties.effectGrowMultiplier,
+                    x4 = center - halfNextWidth,
+                    y4 = (accheight + curheight) * properties.effectGrowMultiplier;
 
                 // Draw a background bar?
                 if (properties.backgroundBars) {
@@ -1349,6 +1352,87 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.data.length - 1;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Pie chart grow
+        // 
+        // Gradually increases the vertical size of the
+        // Funnel chart
+        // 
+        // @param object   OPTIONAL An object of options
+        // @param function OPTIONAL A callback function
+        //
+        this.grow = function ()
+        {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                canvas   = this.canvas,
+                opt      = arguments[0] ? arguments[0] : {},
+                frames   = opt.frames || 30,
+                frame    = 0,
+                callback = arguments[1] ? arguments[1] : function () {};
+
+            var iterator = function ()
+            {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+                obj.set('effectGrowMultiplier', frame / frames);
+                
+                RGraph.redrawCanvas(canvas);
+    
+                if (frame++ < frames) {
+                    RGraph.Effects.updateCanvas(iterator);
+                
+                } else {
+
+                    RGraph.redrawCanvas(obj.canvas);
+
+
+                    callback(obj);
+                }
+            };
+    
+            iterator();
+            
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Couple of functions that allow you to control the
+        // animation effect
+        //
+        this.stopAnimation = function ()
+        {
+            this.stopAnimationRequested = true;
+        };
+
+        this.cancelStopAnimation = function ()
+        {
+            this.stopAnimationRequested = false;
         };
 
 
