@@ -9936,6 +9936,69 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Test that the cursor is within the given radius
+            // percentages range
+            } else if (clip.match(/^r:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
+            
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+            
+                from = from.replace(/min/, '0');
+                from = from.replace(/max/, '2000');
+                to   = to.replace(/min/, '0');
+                to   = to.replace(/max/, '2000');
+
+                from = Number(from);
+                to   = Number(to);
+
+                // Get the radius, centerx and centery from the
+                // object
+                if (!RGraph.isNumber(args.object.centerx) || !RGraph.isNumber(args.object.centery) || !RGraph.isNumber(args.object.radius)) {
+                    alert('[RGRAPH CLIPPING] To use the r: syntax the object (Type: {1}, ID: {2}, UID: {3}) must support the centerx, centery and radius properties.'.format(
+                        args.object.type,
+                        args.object.id,
+                        args.object.uid
+                    ));
+                }
+                
+                var centerx = args.object.centerx,
+                    centery = args.object.centery,
+                    r1      = (from / 100) * args.object.radius,
+                    r2      = (to / 100) * args.object.radius;
+
+                args.object.path(
+                    'sa ' + 'b    a % % % 0 6.29 false    a % % % 6.29 0 true    cl',
+                    centerx, centery, r1,
+                    centerx, centery, r2
+                );
+
+                return args.object.context.isPointInPath(args.x, args.y);
+
+
+
+
+
+
+
+
+
+
+
+
             // Test that the cursor is within the clipped scale
             //
             // IF YOU UPDATE THIS REGEXP THEN IT NEEDS TO BE

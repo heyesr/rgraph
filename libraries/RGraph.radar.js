@@ -84,7 +84,7 @@
             linewidth:             2,
 
             colorsStroke:           'black',
-            colors:                ['rgba(255,0,0,0.25)','rgba(0,255,255,0.25)','rgba(255,0,0,0.5)', 'red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
+            colors:                ['rgba(255,0,0,0.9925)','rgba(0,255,255,0.9925)','rgba(255,0,0,0.5)', 'red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
             colorsAlpha:          null,
             circle:                0,
 
@@ -223,9 +223,9 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:       'gray',
-            highlightFill:         'rgba(255,255,255,0.7)',
-            highlightPointRadius: 2,
+            highlightStroke:            'gray',
+            highlightFill:              'rgba(255,255,255,0.7)',
+            highlightPointRadius:       2,
 
             scaleMax:              null,
             scaleDecimals:         0,
@@ -248,13 +248,11 @@
 
             axesColor:           'rgba(0,0,0,0)',
 
-            highlights:           true,
-            highlightsStroke:    'black',
-            highlightsFill:      'white',
-            highlightsLinewidth: null,
-            highlightsRadius:    5,
-            highlightStyleInvertStroke: 'transparent',
-            highlightStyleInvertFill: 'rgba(255,255,255,0.7)',
+            tickmarks:           true,
+            tickmarksStroke:     null,
+            tickmarksFill:       'white',
+            tickmarksLinewidth:  null,
+            tickmarksRadius:     5,
 
             fillClick:           null,
             fillMousemove:       null,
@@ -330,7 +328,7 @@
 
 
         //
-        // A simple setter
+        // A setter
         //
         this.set = function (name)
         {
@@ -342,9 +340,9 @@
                 name = this.properties_lowercase_map[name.toLowerCase()] || name;
             }
 
-            if (name === 'labelsOffset') {
-                name = 'labelsOffsetRadius';
-            }
+            // Some compatibilty accommodation
+            if (name === 'labelsOffset') {name = 'labelsOffsetRadius';}
+            if (name.startsWith('highlights')) {name = name.replace(/^highlights/,'tickmarks');}
             
             // Change backgroundCircles to backgroundGrid
             if (name.startsWith('backgroundCircles')) {
@@ -622,7 +620,7 @@
                 this.context.clip();
     
                 this.drawChart();
-                this.drawHighlights();
+                //this.drawTickmarks();
             this.context.restore();
             
             //
@@ -982,7 +980,8 @@
                     
     
                     //
-                    // Now go through the coords and draw the chart itself
+                    // Now go through the coords and draw the chart
+                    // itself
                     //
                     // 18/5/2012 - colorsStroke can now be an array of colors as well as a single color
                     //
@@ -1024,6 +1023,8 @@
         
                 this.context.fill();
                 this.context.stroke();
+                
+                this.drawTickmarks(dataset);
             }
             
             // Reset the globalAlpha
@@ -1520,7 +1521,8 @@
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape
         // 
         // @param object shape The shape to highlight
         //
@@ -1618,38 +1620,40 @@
 
 
         //
-        // This draws highlights on the points
+        // This draws tickmarks on the points
         //
-        this.drawHighlights = function ()
+        // @param number dataset The index of the dataset to
+        //                       draw tickmarks for
+        //
+        this.drawTickmarks = function (dataset)
         {
-            if (properties.highlights) {
+            if (properties.tickmarks) {
                 
-                var sequentialIdx = 0;
-                var dataset       = 0;
-                var index         = 0;
-                var radius        = properties.highlightsRadius;
+                var index  = 0;
+                var radius = properties.tickmarksRadius;
                 
-    
-                
-                for (var dataset=0; dataset <this.data.length; ++dataset) {
-                    for (var index=0; index<this.data[dataset].length; ++index) {
-                        this.context.beginPath();
-                            
-                            if (RGraph.isNumber(properties.highlightsLinewidth)) {
-                                this.context.lineWidth = properties.highlightsLinewidth;
-                            }
+                for (var index=0; index<this.data[dataset].length; ++index) {
+                    this.context.beginPath();
+                        
+                        if (RGraph.isNumber(properties.tickmarksLinewidth)) {
+                            this.context.lineWidth = properties.tickmarksLinewidth;
+                        }
 
-                            this.context.strokeStyle = properties.highlightsStroke;
-                            this.context.fillStyle   = properties.highlightsFill ? properties.highlightsFill : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
+                        this.context.strokeStyle = properties.tickmarksStroke ? properties.tickmarksStroke : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
+                        this.context.fillStyle   = properties.tickmarksFill ? properties.tickmarksFill : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
 
-                            this.context.arc(this.coords[sequentialIdx][0], this.coords[sequentialIdx][1], radius, 0, RGraph.TWOPI, false);
+                        this.context.arc(
+                            this.coords2[dataset][index][0],
+                            this.coords2[dataset][index][1],
+                            radius,
+                            0,
+                            RGraph.TWOPI,
+                            false
+                        );
 
-                        this.context.stroke();
-                        this.context.fill();
-                        ++sequentialIdx;
-                    }
-                }
-                
+                    this.context.stroke();
+                    this.context.fill();
+                }                
             }
         };
 
