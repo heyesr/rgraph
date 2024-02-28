@@ -68,37 +68,10 @@
                         xaxisTitleItalic: true,
                         title: 'Bandwidth used  (Mb/s)',
                         textSize: 16,
-                        marginTop: 45
+                        marginTop: 45,
+                        clip: 'scale:25-max'
                     }
-                }).on('beforedraw', function (obj)
-                {                    
-                    // Clear the canvas to a solid white color
-                    RGraph.clear(obj.canvas, 'white');
-                    
-                    // Get the Y coordinate at which to clip to
-                    var boundary = obj.getYCoord(clipValue) || obj.properties.marginTop;
-
-                    // Install clipping before the chart is drawn
-                    RGraph.clipTo.start(obj, [0,0,obj.canvas.width, boundary]);
-                
-                // Get rid of clipping
-                }).on('draw', function (obj)
-                {
-                    RGraph.clipTo.end(obj);
                 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -113,28 +86,19 @@
                     id: 'cvs',
                     data: [],
                     options: {
+                        
                         // Copy the configuration of the first
                         // chart with spread operator
                         ...opt,
                         
                         // Change the color of the line freom green
                         // to red
-                        colors: ['red']
+                        colors: ['red'],
+                        
+                        // Change the clipping so only the bottom
+                        // is drawn
+                        clip: 'scale:min-25'
                     }
-
-                // Install clipping before the chart is drawn
-                }).on('beforedraw', function (obj)
-                {
-                    // Get the Y coordinate at which to clip to
-                    var boundary = obj.getYCoord(clipValue) || obj.properties.marginTop;
-
-                    // Install clipping before the chart is drawn
-                    RGraph.clipTo.start(obj, [0,boundary,obj.canvas.width, obj.canvas.height]);
-                
-                // Get rid of clipping
-                }).on('draw', function (obj)
-                {
-                    RGraph.clipTo.end(obj);
                 });
             }
 
