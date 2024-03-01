@@ -288,7 +288,9 @@
             origin:                         0 - (Math.PI / 2),
 
             clearto:                        'rgba(0,0,0,0)',
-            events:                         true
+            events:                         true,
+            
+            clip:                           null
         }
 
         //
@@ -432,20 +434,6 @@
 
 
 
-
-
-            //
-            // Install clipping
-            //
-            // MUST be the first thing that's done after the
-            // beforedraw event
-            //
-            if (!RGraph.isNull(this.properties.clip)) {
-                RGraph.clipTo.start(this, this.properties.clip);
-            }
-
-
-
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
@@ -507,6 +495,36 @@
                 // Don't want to do this again
                 this.colorsParsed = true;
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Install clipping
+            //
+            // MUST be the first thing that's done after the
+            // beforedraw event
+            //
+            if (!RGraph.isNull(this.properties.clip)) {
+                RGraph.clipTo.start(this, this.properties.clip);
+            }
+
+
+
+
+
+
+
+
 
 
             if (properties.variant.indexOf('3d') > 0) {
