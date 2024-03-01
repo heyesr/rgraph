@@ -7317,44 +7317,44 @@ if (properties.backgroundBorder) {
 
 
 
-// RADIAL PERCENTAGES
-} else if (obj.properties.clip.match(/^r:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
-
-    // Accommodate the min/max keywords
-    var from = RegExp.$1,
-        to   = RegExp.$2;
-
-    from = from.replace(/min/, '0');
-    from = from.replace(/max/, '2000');
-    to   = to.replace(/min/, '0');
-    to   = to.replace(/max/, '2000');
-
-    from   = Number(from);
-    to     = Number(to);
-
-    // Get the radius, centerx and centery from the
-    // object
-    if (!RGraph.SVG.isNumber(obj.centerx) || !RGraph.SVG.isNumber(obj.centery) || !RGraph.SVG.isNumber(obj.radius)) {
-        alert('[RGRAPH CLIPPING] To use the r: syntax the object (Type: {1}, ID: {2}, UID: {3}) must support the centerx, centery and radius properties.'.format(
-            obj.type,
-            obj.id,
-            obj.uid
-        ));
-    }
-
-    var centerx = obj.centerx,
-        centery = obj.centery,
-        r1      = (from / 100) * obj.radius,
-        r2      = (to / 100) * obj.radius;
-
-    var donut = RGraph.SVG.donut({
-        svg: obj.svg,
-     parent: clipPath,
-         cx: centerx,
-         cy: centery,
-innerRadius: r1,
-outerRadius: r2
-    });
+            // RADIAL PERCENTAGES
+            } else if (obj.properties.clip.match(/^r:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+            
+                // Accommodate the min/max keywords
+                var from = RegExp.$1,
+                    to   = RegExp.$2;
+            
+                from = from.replace(/min/, '0');
+                from = from.replace(/max/, '2000');
+                to   = to.replace(/min/, '0');
+                to   = to.replace(/max/, '2000');
+            
+                from   = Number(from);
+                to     = Number(to);
+            
+                // Get the radius, centerx and centery from the
+                // object
+                if (!RGraph.SVG.isNumber(obj.centerx) || !RGraph.SVG.isNumber(obj.centery) || !RGraph.SVG.isNumber(obj.radius)) {
+                    alert('[RGRAPH CLIPPING] To use the r: syntax the object (Type: {1}, ID: {2}, UID: {3}) must support the centerx, centery and radius properties.'.format(
+                        obj.type,
+                        obj.id,
+                        obj.uid
+                    ));
+                }
+            
+                var centerx = obj.centerx,
+                    centery = obj.centery,
+                    r1      = (from / 100) * obj.radius,
+                    r2      = (to / 100) * obj.radius;
+            
+                var donut = RGraph.SVG.donut({
+                    svg: obj.svg,
+                 parent: clipPath,
+                     cx: centerx,
+                     cy: centery,
+            innerRadius: r1,
+            outerRadius: r2
+                });
 
 
 
