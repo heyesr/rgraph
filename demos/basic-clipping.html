@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic example of clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="650" height="300" data-image-src="page-demos-bar-3d-effect-multi-row.png">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <br clear="both" />
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: DATA = [4,8,6,6,3,6,5,8,8,4,5,1],
+            options: {
+                clip: 'scale:min-5',
+                xaxisLabels: RGraph.MONTHS_SHORT
+            }
+        }).draw();
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                clip: 'scale:5-max',
+                colors: ['black']
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

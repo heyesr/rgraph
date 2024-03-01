@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Donut chart using clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="600" height="350" data-image-src="page-demos-donut-3d.png">[No canvas support]</canvas>
+        </div>
+    </div>    
+
+    <script id="rgraph-demo-source-code">
+        labels = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];
+
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: DATA = [4,8,6,3,5,2,5],
+            options: {
+                variant: 'donut',
+                clip: 'r:min-75%'
+            }
+        }).draw();
+
+        pie = new RGraph.Pie({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                labels: labels,
+                variant: 'donut',
+                clip: 'r:75%-max',
+                colors: ['green','blue','red','pink','yellow','lightgreen','#396489']
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gantt.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Gantt chartusing clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="800" height="350">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        DATA = [
+            {start: 31, duration: 28,  label: 'Richard', linewidth: 0},
+            {start: 0,  duration: 28,  label: 'Rachel', linewidth: 0},
+            {start: 12, duration: 28,  label: 'Fred', linewidth: 0},
+            {start: 59, duration: 14,  label: 'Barney', linewidth: 0},
+            {start: 59, duration: 21,  label: 'Gloria', linewidth: 0},
+            {start: 46, duration: 31,  label: 'Paul', linewidth: 0},
+            {start: 80, duration: 21,  label: 'Harry', linewidth: 0},
+            {start: 94, duration: 17,  label: 'Shane', linewidth: 0},
+            {start: 34, duration: 14,  label: 'Kyle', linewidth: 0},
+            {start: 64, duration: 14,  label: 'Cynthia', linewidth: 0},
+            {start: 13, duration: 61,  label: 'Mabel', linewidth: 0},
+            {start: 34, duration: 31,  label: 'Paul', linewidth: 0},
+            {start: 80, duration: 22,  label: 'Kiffen', linewidth: 0},
+            {start: 0,  duration: 115, label: 'John', linewidth: 0}
+        ];
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colorsDefault: 'red',
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsComplete: true,
+                backgroundGridVlinesCount: 4,
+                clip:'x:min-20%',
+                textColor: 'green',
+                xaxisLabelsSize: 16
+            }
+        }).draw();
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colorsDefault: 'cyan',
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsComplete: true,
+                backgroundGridVlinesCount: 4,
+                clip:'x:20%-80%',
+                textColor: 'blue',
+                xaxisLabelsSize: 16
+            }
+        }).draw();
+
+        new RGraph.Gantt({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colorsDefault: 'pink',
+                xaxisLabels: ['January', 'February', 'March', 'April'],
+                xaxisScaleMax: 122,
+                labelsComplete: true,
+                backgroundGridVlinesCount: 4,
+                clip:'x:80%-max',
+                textColor: 'red',
+                xaxisLabelsSize: 16
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

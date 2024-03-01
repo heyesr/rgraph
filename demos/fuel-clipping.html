@@ -1,0 +1,51 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.fuel.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>A Fuel chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="200" height="200">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Fuel({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 78,
+            options: {
+                clip: 'lefthalf',
+                scaleVisible: true,
+                scaleUnitsPost: '%',
+                textSize: 9,
+                needleColor: 'red'
+            }
+        }).grow();
+
+        new RGraph.Fuel({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 78,
+            options: {
+                colors: ['green'],
+                clip: 'righthalf',
+                scaleVisible: true,
+                scaleUnitsPost: '%',
+                textSize: 9,
+                needleColor: 'green'
+            }
+        }).grow();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
