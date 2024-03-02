@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Waterfall chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Waterfall({
+            id: 'cvs',
+            data: [4,9,5,-2,-6,-3,5],
+            options: {
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabelsBold: true,
+                textSize: 18,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Total']
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

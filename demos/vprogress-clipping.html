@@ -1,0 +1,43 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.vprogress.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Cwerical Progress bar with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="100" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 68,
+            options: {
+                clip: 'lefthalf'
+            }
+        }).grow();
+
+        new RGraph.VProgress({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 28,
+            options: {
+                clip: 'righthalf',
+                colors: ['red']
+            }
+        }).grow({frames: 90});
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
