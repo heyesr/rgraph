@@ -9,7 +9,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>    
-    <h1>An example of the drawing API image object with a circular border</h1>
+    <h1>An example of the drawing API image object with rounded corners</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -33,17 +33,18 @@
         
         var img = new RGraph.Drawing.Image({
             id: 'cvs',
-            x: 25 + 45,
-            y: 25 + 45,
-            src: '../images/logo.png',
+            x: 25 + 75,
+            y: 25 + 27,
+            src: '../images/rgraph-text-only.png',
             options: {
+                width: 88,
+                height: 25,
                 halign: 'center',
                 valign: 'center',
-                alpha: 1,
                 border: true,
                 borderColor: '#ccc',
                 borderLinewidth: 2,
-                borderRadius: 50,
+                borderRadius: 5,
                 colorsBackground: 'white',
                 shadow: true,
                 shadowColor: '#ddd'
