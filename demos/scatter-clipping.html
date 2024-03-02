@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Scatter chart with clipping</h1>
+
+    <div id="rgraph-demo-html">    
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        DATA = [
+            [[2,8],  [3,6],  [4,8],  [5,18],  [6,15]],
+            [[16,1],  [18,5],  [21,5],  [24,6],  [25,10]]
+        ];
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                xaxisScaleMax: 31,
+                backgroundGridVlinesCount: 4,
+                xaxisLabels: ['Week 1','Week 2','Week 3','Week 4'],
+                textSize: 16,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 8,
+                colorsDefault: 'red',
+                clip: 'b a 300 150 100 0 6.29 false s gray'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

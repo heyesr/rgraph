@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.meter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A clipped Meter chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250" style="border-radius: 15px">[No canvas support]</canvas>
+    </div>
+
+    <script id="source">
+        meter = new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+                clip: 'r:0%-50%'
+            }
+        }).draw();
+
+        meter = new RGraph.Meter({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 75,
+            options: {
+                colorsGreenColor: 'cyan',
+                colorsYellowColor: 'blue',
+                colorsRedColor: 'pink',
+                clip: 'r:50%-max'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

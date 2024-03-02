@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A multi-color Pie chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: DATA = [8,6,4,3,8,4,6],
+            options: {
+                clip: 'r:0%-25%',
+                exploded: 15,
+                colorsStroke: 'transparent'
+            }
+        }).draw();
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colors: ['pink','yellow','green','lightblue','gray','black','#00f'],
+                clip: 'r:25%-50%',
+                exploded: 15,
+                colorsStroke: 'transparent'
+            }
+        }).draw();
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colors: ['blue','pink','gray','#fcc','black','white','pink'],
+                clip: 'r:50%-75%',
+                exploded: 15,
+                colorsStroke: 'transparent'
+            }
+        }).draw();
+
+        new RGraph.Pie({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colors: ['cyan','red','#eee','red','pink','black','#efc558'],
+                clip: 'r:75%-max',
+                exploded: 15,
+                colorsStroke: 'transparent'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

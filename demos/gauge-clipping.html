@@ -1,0 +1,61 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Gauge chart using clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="350" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: 3.29,
+            options: {
+                labelsValue: true,
+                labelsValueDecimals: 2,
+                labelsValueBounding: false,
+                labelsValueYPos: 0.3,
+                labelsValueUnitsPost: '%',
+                labelsValueSize: 20,
+                textSize: 18,
+                colorsGreenColor: '#afa',
+                colorsGreenWidth: 15,
+                colorsRedWidth: 15,
+                colorsYellowWidth: 15,
+                labelsCentered: true,
+                labelsOffsetAngle: 0,
+                labelsOffsetRadius: 25,
+                labelsOffsetx: 0,
+                labelsOffsety: 0,
+                blarg: ['Aa','Bb','Cc','Dd','Ee','Ff'],
+                labelsSpecific: '%{property:blarg[%{index}]}',
+                labelsCount: 4,
+                clip: 'lefthalf'
+            }
+        }).draw();
+
+        new RGraph.Gauge({
+            id: 'cvs',
+            min: 0,
+            max: 10,
+            value: 3.29,
+            options: {
+                clip: 'righthalf'
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.thermometer.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Thermometer chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="100" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Thermometer({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 68,
+            options: {
+                colorsBackground: 'white',
+                bulbRadius: 50,
+                scaleVisible: true,
+                marginLeft: 25,
+                marginRight: 25,
+                marginTop: 25,
+                marginBottom: 25,
+                clip: 'lefthalf'
+            }
+        }).draw();
+
+        new RGraph.Thermometer({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 68,
+            options: {
+            colors: ['pink'],
+                colorsBackground: 'white',
+                bulbRadius: 50,
+                scaleVisible: true,
+                marginLeft: 25,
+                marginRight: 25,
+                marginTop: 25,
+                marginBottom: 25,
+                clip: 'righthalf'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

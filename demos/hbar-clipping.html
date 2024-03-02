@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.csv.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An HBar hart using clipping</h1>
+        
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script id="rgraph-demo-source-code">
+        
+        DATA_POSITIVE = [1,8,6,4,9,2,6];
+        DATA_NEGATIVE = [-7,-4,-8,-1,-2,-8,-6];
+
+        new RGraph.HBar({
+            id: 'cvs',
+            data: DATA_POSITIVE,
+            options: OPTIONS = {
+                xaxisScaleMin: -10,
+                xaxisScaleMax: 20,
+                xaxisLabelsCount: 3,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: '#333',
+                backgroundGridVlinesCount: 3,
+                clip: 'scale:0-max',
+                xaxis: false,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                textSize: 16,
+                yaxisLabels: RGraph.DAYS_LONG
+            }
+        }).wave();
+
+        new RGraph.HBar({
+            id: 'cvs',
+            data: DATA_NEGATIVE,
+            options: {
+                ...OPTIONS,
+                colors: ['black'],
+                clip: 'scale:min-0',
+            }
+        }).wave();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

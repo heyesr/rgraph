@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.hprogress.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Horizontal Progress bar using clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="160">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.HProgress({
+                 id: 'cvs',
+                min: 0,
+                max: 100,
+              value: 88,
+            options: {
+                clip: 'scale: min-5',
+                textSize: 16,
+                colors: ['red']
+            }
+        }).draw();
+
+        new RGraph.HProgress({
+                 id: 'cvs',
+                min: 0,
+                max: 100,
+              value: 88,
+            options: {
+                clip: 'scale: 5-15',
+                textSize: 16,
+                colors: ['yellow']
+            }
+        }).draw();
+
+        new RGraph.HProgress({
+                 id: 'cvs',
+                min: 0,
+                max: 100,
+              value: 88,
+            options: {
+                clip: 'scale: 15-max',
+                textSize: 16,
+                colors: ['green']
+            }
+        }).draw();
+
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

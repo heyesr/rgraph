@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.segmented.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Segmented donut chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Segmented({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                clip: 'b m 150 150 a 150 150 2000 0 1.57 false',
+                colors: ['red']
+            }
+        }).roundRobin();
+
+        new RGraph.Segmented({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                clip: 'b m 150 150 a 150 150 2000 3.14 4.71 false',
+                colors: ['blue']
+            }
+        }).roundRobin();
+        
+        new RGraph.Segmented({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                clip: 'b m 150 150 a 150 150 2000 1.57 3.14 false',
+                colors: ['yellow']
+            }
+        }).roundRobin();
+
+        new RGraph.Segmented({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                clip: 'b m 150 150 a 150 150 2000 4.71 6.29 false',
+                colors: ['green']
+            }
+        }).roundRobin();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

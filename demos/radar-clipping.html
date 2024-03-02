@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="demos.js" ></script>
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>A Radar chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Radar({
+            id: 'cvs',
+            data: DATA = [4,3,8,4,6,7,5],
+            options: {
+                labels: ['Jeff','Luis','Norman','Janice','Bill','Henry','Kev'],
+                clip: 'r:0%-35%',
+                textSize: 16
+            }
+        }).draw();
+
+        new RGraph.Radar({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                labels: ['Jeff','Luis','Norman','Janice','Bill','Henry','Kev'],
+                clip: 'r:35%-max',
+                colorsStroke: 'gray',
+                colors: ['blue'],
+                textSize: 16
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

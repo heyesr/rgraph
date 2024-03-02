@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rscatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Radial Scatter chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        for (var i=0,DATA = []; i<360; i+=2) {
+            DATA.push([i*2, i]);
+        }
+
+        new RGraph.RScatter({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colorsDefault: 'red',
+                clip: 'r:0%-50%'
+            }
+        }).draw();
+
+        new RGraph.RScatter({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                colorsDefault: 'green',
+                clip: 'r:50%-max'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
