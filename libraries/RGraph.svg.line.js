@@ -797,7 +797,7 @@
                 this.drawLine(this.data[i], i);
             }
 
-            // Always redraw the liines now so that tickmarks
+            // Always redraw the lines now so that tickmarks
             // are drawn
             this.redrawLines();
 

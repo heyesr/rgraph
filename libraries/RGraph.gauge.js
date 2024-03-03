@@ -6,7 +6,7 @@
     // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
     // | free to use and there are no restrictions on what you can use RGraph for!       |
     // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option avaiilable. See the URL above for more details.details.       |
+    // | commercial license option available. See the URL above for more details.        |
     // o---------------------------------------------------------------------------------o
 
     RGraph = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
