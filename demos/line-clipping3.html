@@ -8,10 +8,16 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A red Line chart that uses clipping to restrict drawing to a circle</h1>
+    <h1>A Line chart using clipping to restrict drawing to a circle that moves with the mouse</h1>
+
+    <p>
+        <a href="svg-line-clipping3.html">
+            See a canvas version of this demo is also available
+        </a>.
+    </p>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
+        <canvas id="cvs" width="900" height="300" style="border: 1px solid gray">[No canvas support]</canvas>
     </div>
 
     <script>        
@@ -20,7 +26,7 @@
             4,8,6,2,3,5,1,4,9,5,6,4,-3,-8,-10,-5,6,4,5,1,2,3,4,6
         ];
 
-        new RGraph.Line({
+        line = new RGraph.Line({
             id: 'cvs',
             data: data,  
             options: {                
@@ -38,10 +44,16 @@
                 marginInner: 15,
                 spline: true,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                xaxisTickmarksCount: 12,
-                clip: 'b a 200 150 100 0 6.29 false s #ddd'
+                xaxisTickmarksCount: 12
             }
         }).draw();
+        
+        document.getElementById('cvs').onmousemove = function (e)
+        {
+            var [mouseX, mouseY] = RGraph.getMouseXY(e);
+            line.set('clip',`circle:${mouseX},${mouseY},100`);
+            RGraph.redraw(line.canvas);
+        };
     </script>
     
     <script>showSource()</script>

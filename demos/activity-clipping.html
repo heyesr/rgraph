@@ -8,10 +8,12 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A multi-colored Activity meter chart using clipping</h1>
+    <h1>Activity meter charts using clipping</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+        <canvas id="cvs" width="300" height="300">[No canvas support]</canvas>
+        <canvas id="cvs2" width="300" height="300">[No canvas support]</canvas>
+        <canvas id="cvs3" width="300" height="300" style="border: 1px solid gray">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -22,11 +24,15 @@
             value: [9,7,5],
             options: {
                 // Clip to the bottom-right quarter
-                clip: 'b m 250 250 a 250 250 500 0 1.57 false',
+                clip: 'b m 150 150 a 150 150 500 0 1.57 false',
+                backgroundColor: null,
                 
                 colors: ['red','blue','yellow'],
-                width: 45
+                width: 25
             }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas,'black');
         }).draw();
         
         new RGraph.Activity({
@@ -36,9 +42,9 @@
             value: [9,7,5],
             options: {
                 // Clip to the bottom-left quarter
-                clip: 'b m 250 250 a 250 250 500 1.57 3.14 false',
-                
-                width: 45
+                clip: 'b m 150 150 a 150 150 500 1.57 3.14 false',
+                backgroundColor: null,
+                width: 25
             }
         }).draw();
         
@@ -49,10 +55,10 @@
             value: [9,7,5],
             options: {
                 // Clip to the top-left quarter
-                clip: 'b m 250 250 a 250 250 500 3.14 4.71 false',
-                
+                clip: 'b m 150 150 a 150 150 500 3.14 4.71 false',
+                backgroundColor: null,
                 colors: ['lime','orange','green'],
-                width: 45
+                width: 25
             }
         }).draw();
 
@@ -63,13 +69,79 @@
             value: [9,7,5],
             options: {
                 colors: ['blue','pink','orange'],
-                
+                backgroundColor: null,
                 // Clip to the top-right quarter
-                clip: 'b m 250 250 a 250 250 500 4.71 6.29 false',
+                clip: 'b m 150 150 a 150 150 500 4.71 6.29 false',
                 
-                width: 45
+                width: 25
             }
         }).draw();
+
+
+
+
+
+
+
+
+
+
+
+
+        new RGraph.Activity({
+            id: 'cvs2',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                backgroundColor: null,
+                // Clip to a segment
+                clip: 'segment:150,150,300,0,3.15',
+                
+                width: 25
+            }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'black');
+        }).draw();
+
+        new RGraph.Activity({
+            id: 'cvs2',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                backgroundColor: null,
+                // Clip to a segment
+                clip: 'segment:150,150,300,3.14,6.29',
+                colors: ['#999','#bbb','#ddd'],
+                width: 25
+            }
+            
+        }).draw();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        new RGraph.Activity({
+            id: 'cvs3',
+            min: 0,
+            max: 10,
+            value: [9,7,5],
+            options: {
+                clip: 'scale:0-7',
+                width: 25
+            }
+        }).grow();
     </script>
 
     <script>showSource()</script>
