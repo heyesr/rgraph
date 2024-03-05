@@ -2582,6 +2582,23 @@ if (properties.backgroundBorder) {
 
 
     //
+    // With this variation of the clone function you can do
+    // this:
+    //       arr1 = [1,2,3,4,5,6];
+    //       arr2 = arr1.clone();
+    //
+    Array.prototype.clone = function ()
+    {
+        return RGraph.SVG.arrayClone(this);
+    };
+
+
+
+
+
+
+
+    //
     // Converts an the truthy values to falsey values and vice-versa
     //
     RGraph.SVG.arrayInvert = function (arr)
@@ -3761,7 +3778,8 @@ if (properties.backgroundBorder) {
         }
 
         //
-        // Make circles start at the top instead of the right hand side
+        // Make circles start at the top instead of the
+        // right-hand-side
         //
         options.start -= (Math.PI / 2);
         options.end   -= (Math.PI / 2);
@@ -7360,6 +7378,110 @@ if (properties.backgroundBorder) {
 
 
 
+
+
+
+
+
+
+
+            //
+            // CLIP TO A SEGMENT
+            //
+            } else if (obj.properties.clip.match(/^(?:segment|arc): *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+)$/i)) {
+                
+                var centerx = RegExp.$1,
+                    centery = RegExp.$2,
+                    radius  = RegExp.$3,
+                    start   = RegExp.$4,
+                    end     = RegExp.$5;
+
+                // If radians has been stipulated then get rid of it
+                start = start.replace(/rad$/, '');
+                end   = end.replace(/rad$/, '');
+                
+                // Convert degrees to radians for the start angle
+                if (start.match(/deg$/)) {
+                    start = parseFloat(start);
+                    start = start * (RGraph.SVG.TRIG.PI / 180);
+                }
+                
+                // Convert degrees to radians for the end angle
+                if (end.match(/deg$/)) {
+                    end = parseFloat(end);
+                    end = end * (RGraph.SVG.TRIG.PI / 180);
+                }
+                
+                // Limit the end angle to TWOPI
+                if (end > RGraph.SVG.TRIG.TWOPI) end = RGraph.SVG.TRIG.TWOPI;
+
+                // Create an arc path
+                var path = RGraph.SVG.TRIG.getArcPath3({
+                    cx:     centerx,
+                    cy:     centery,
+                    r:      radius,
+                    start:  start,
+                    end:    end,
+                    anticlockwise: false,
+                    lineto: true
+                });
+                
+                // Add the path to the all group
+                var arc = RGraph.SVG.create({
+                    svg:    obj.svg,
+                    parent: clipPath,
+                    type:   'path',
+                    attr: {
+                        d: str = 'M {1} {2} {3} z'.format(centerx, centery, path)
+                    }
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // CLIP TO A CIRCLE
+            //
+            } else if (obj.properties.clip.match(/^circle: *([-.0-9]+) *, *([-.0-9]+) *, *([-.0-9]+)$/i)) {
+                
+                var centerx = RegExp.$1,
+                    centery = RegExp.$2,
+                    radius  = RegExp.$3;
+                
+                // Add the path to the all group
+                var circle = RGraph.SVG.create({
+                    svg:    obj.svg,
+                    parent: clipPath,
+                    type:   'circle',
+                    attr: {
+                        cx: centerx,
+                        cy: centery,
+                         r: radius
+                    }
+                });
+                
+                // Add the path to the all group
+                var circle = RGraph.SVG.create({
+                    svg:    obj.svg,
+                    parent: obj.svgAllGroup,
+                    type:   'circle',
+                    attr: {
+                        cx: centerx,
+                        cy: centery,
+                         r: radius,
+                         fill: 'none',
+                         stroke: '#ddd',
+                         'stroke-linewidth': 1
+                    }
+                });
 
 
 

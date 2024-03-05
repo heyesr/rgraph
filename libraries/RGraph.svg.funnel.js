@@ -413,6 +413,11 @@
                     'clip-path',
                     'url(#{1})'.format(this.clipid)
                 );
+            } else {
+                // No clipping - so ensure that there's no clip-path
+                // attribute
+                this.clipid = null;
+                this.svgAllGroup.removeAttribute('clip-path');
             }
 
 
@@ -757,7 +762,7 @@
                     RGraph.SVG.create({
                         svg: this.svg,
                         type: 'rect',
-                        parent: this.layers.background1,
+                        parent: this.svgAllGroup,
                         attr: {
                             x: 0,
                             y: coords.y1,

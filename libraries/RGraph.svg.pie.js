@@ -349,20 +349,6 @@
             RGraph.SVG.createDefs(this);
 
 
-
-            // Install clipping if requested
-            if (this.properties.clip) {
-
-                this.clipid = RGraph.SVG.installClipping(this);
-
-                // Add the clip ID to the all group
-                this.svgAllGroup.setAttribute(
-                    'clip-path',
-                    'url(#{1})'.format(this.clipid)
-                );
-            }
-
-
             this.graphWidth  = this.width - properties.marginLeft - properties.marginRight;
             this.graphHeight = this.height - properties.marginTop - properties.marginBottom;
 
@@ -409,7 +395,38 @@
                 }
             }
 
-            
+
+
+
+
+
+
+
+
+
+
+
+            // Install clipping if requested
+            if (this.properties.clip) {
+
+                this.clipid = RGraph.SVG.installClipping(this);
+
+                // Add the clip ID to the all group
+                this.svgAllGroup.setAttribute(
+                    'clip-path',
+                    'url(#{1})'.format(this.clipid)
+                );
+            } else {
+                // No clipping - so ensure that there's no clip-path
+                // attribute
+                this.clipid = null;
+                this.svgAllGroup.removeAttribute('clip-path');
+            }
+
+
+
+
+
 
             // Draw the segments
             this.drawSegments({shadow: true});

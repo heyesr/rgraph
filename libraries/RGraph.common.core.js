@@ -9677,6 +9677,91 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            // Clip to a SEGMENT
+            } else if (args.dimensions.match(/^(?:segment|arc): *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+)$/i)) {
+                
+                var centerx = RegExp.$1,
+                    centery = RegExp.$2,
+                    radius  = RegExp.$3,
+                    start   = RegExp.$4,
+                    end     = RegExp.$5;
+
+                // If radians has been stipulated then get rid of it
+                start = start.replace(/rad$/, '');
+                end   = end.replace(/rad$/, '');
+                
+                // Convert degrees to radians for the start angle
+                if (start.match(/deg$/)) {
+                    start = parseFloat(start);
+                    start = start * (RGraph.PI / 180);
+                }
+                
+                // Convert degrees to radians for the end angle
+                if (end.match(/deg$/)) {
+                    end = parseFloat(end);
+                    end = end * (RGraph.PI / 180);
+                }
+
+                args.object.path(
+                    'sa b    m % %    a % % % % % false  c  cl',
+                    centerx, centery,
+                    centerx, centery, radius, start - RGraph.HALFPI, end - RGraph.HALFPI
+                );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Clip to a CIRCLE
+            } else if (args.dimensions.match(/^circle: *([-.0-9]+) *, *([-.0-9]+) *, *([-.0-9]+)$/i)) {
+                
+                var centerx = RegExp.$1,
+                    centery = RegExp.$2,
+                    radius  = RegExp.$3;
+
+                args.object.path(
+                    `sa b    a % % % 0 ${RGraph.TWOPI} false  s #ddd    cl`,
+                    centerx, centery, radius,
+                );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //
             // Clip to scale values - since all of the
             // charts handle scales differently this is
@@ -10774,7 +10859,8 @@
 
 
     //
-    // Polyfill for the String.protfotype.substr() method which may not be included on some devices
+    // Polyfill for the String.protfotype.substr() method which
+    // may not be included on some devices
     //
     // @param  number start  The start index. Zero-indexed and can also be negtive - in which case
     //                       the counting starts from the end of the string
