@@ -1,0 +1,54 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Gauge chart with clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 300px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Gauge({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 78,
+            options: OPTIONS = {
+                clip: 'lefthalf',
+                adjustable: true,
+                labelsIngraphUnitsPost: '%',
+                labelsIngraphSize: 16,
+                labelsIngraphBold: true,
+                labelsIngraphDecimals: 1,
+                centerpinRadius: 10,
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+            }
+        }).draw();
+        
+        new RGraph.SVG.Gauge({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 78,
+            options: CONF = {
+                ... OPTIONS,
+                clip: 'righthalf',
+                textColor: 'red'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

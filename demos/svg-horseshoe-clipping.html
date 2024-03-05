@@ -1,0 +1,50 @@
+<!DOCTYPE html >
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.horseshoe.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Horseshoe meter with clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 350px; height: 350px" id="chart-container"></div>
+    </div>
+
+    <script>
+        h1 = new RGraph.SVG.Horseshoe({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 68,
+            options: {
+                labelsCenterSize: 75,
+                labelsCenterUnitsPost: '%',
+                width: 15,
+                clip: 'r:50%-max',
+            }
+        }).draw();
+
+        h2 = new RGraph.SVG.Horseshoe({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 68,
+            options: {
+                labelsCenterSize: 75,
+                labelsCenterUnitsPost: '%',
+                width: 15,
+                clip: 'r:0%-50%',
+                textColor: 'red'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart using a custom clipping-based roundRobin effect</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="container" style="position: relative">
+            <div style="width: 750px; height: 300px; opacity: 0" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        clip = 'segment:350,150,500,0,end';
+
+        bar = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [88,45,48,23,53,12,45],
+            options: {
+                backgroundGrid: false,
+                backgroundColor: '#eee',
+                xaxisLabels: RGraph.SVG.DAYS_SHORT,
+                textSize: 18
+            }
+        }).draw();
+        
+        for (let i=0; i<=60; ++i) {
+            (function ()
+            {
+                setTimeout(function ()
+                {
+                    if (bar.container.style.opacity === '0') {
+                        bar.container.style.opacity = 1;
+                    }
+
+                    var angle = i * 7;
+                    
+                    bar.set('clip', clip.replace(/end/, angle + 'deg'));
+                    RGraph.SVG.redraw();
+                    
+                    if (i >= 60) {
+                        bar.set('clip', null);
+                        RGraph.SVG.redraw();
+                    }
+                }, i * 35);
+            })();
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Horizontal Bar chart showing clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 750px; height: 300px"></div>
+    </div>
+
+    <script>
+        hbar1 = new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [3650, 2300, 1950, 1600, 1350],
+            options: {
+                xaxisScaleMin: 'mirror',
+                clip: 'righthalf',
+                marginInner: 10
+            }
+        }).wave();
+
+        hbar2 = new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [-2350, -1700, -1200, -690, -2940],
+            options: {
+                xaxisScaleMax: hbar1.max,
+                xaxisScaleMin: 'mirror',
+                colors: ['black'],
+                clip: 'lefthalf',
+                marginInner: 10
+            }
+        }).wave();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

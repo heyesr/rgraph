@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Line chart using clipping to restrict drawing to a circle that moves with the mouse</h1>
+
+    <p>
+        <a href="line-clipping3.html">
+            See a canvas version of this demo is also available
+        </a>.
+    </p>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>        
+        data = [
+            4,10,10,3,2,4,-5,-4,-5,-6,-1,9,1,2,3,5,7,4,-2,-2,6,2,3,4,
+            4,8,6,2,3,5,1,4,9,5,6,4,-3,-8,-10,-5,6,4,5,1,2,3,4,6
+        ];
+
+        line = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: data,  
+            options: {                
+                textSize: 15,
+                yaxisScaleMin: 'mirror',
+                yaxis: false,
+                backgroundGridHlinesCount: 10,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                linewidth: 0.5,
+                colors: ['red'],
+                filled: true,
+                filledColors:['rgba(255,128,128,0.25)'],
+                marginInner: 15,
+                spline: true,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2
+            }
+        }).draw();
+        
+        document.getElementById('chart-container').onmousemove = function (e)
+        {
+            var [mouseX, mouseY] = RGraph.SVG.getMouseXY(e);
+            line.set('clip', `circle:${mouseX},${mouseY},100`);
+            RGraph.SVG.redraw();
+        };
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart with clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 750px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        DATA = [23,35,45,62,42,13,51,23,34];
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: DATA.clone(),
+            options: {
+                clip:   'y:min-33.333%',
+                colors: ['red'],
+                xaxisLabels:['Alex','Rich','Harry','Xander','Vera','Kev','Jill','Pete','Lou'],
+                textBold: true,
+                textSize: 16,
+                textItalic: true,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 3,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                yaxis: false
+            }
+        }).grow();
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: DATA.clone(),
+            options: {
+                clip:   'y:33.333%-66.666%',
+                colors: ['blue'],
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                yaxis: false,
+                textBold: true,
+                textSize: 16,
+                textItalic: true,
+            }
+        }).grow();
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: DATA.clone(),
+            options: {
+                clip:   'y:66.666%-max',
+                colors: ['green'],
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                yaxis: false,
+                textBold: true,
+                textSize: 16,
+                textItalic: true,
+            }
+        }).grow();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

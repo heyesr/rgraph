@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Pie chart thats clipped</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 350px; height: 300px; border: 1px solid #ddd" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [4,8,6,5,3,5,6,8],
+            options: {
+                labels: ['David','Paul','Molly','Rachel','Jobe','Lucy','John','Bob'],
+                labelsSticks: false,
+                exploded: 5,
+                clip: 'tophalf'
+            }              
+        }).roundRobin({frames: 90});
+
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [4,8,6,5,3,5,6,8],
+            options: {
+                colors: ['red','white','red','white','red','white','red','white',],
+                labels: ['David','Paul','Molly','Rachel','Jobe','Lucy','John','Bob'],
+                labelsSticks: false,
+                exploded: 5,
+                clip: 'bottomhalf'
+            }              
+        }).roundRobin({frames: 90});
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

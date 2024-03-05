@@ -1,0 +1,51 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.funnel.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Funnel chart showing clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 650px; height: 500px" id="chart-container"></div>
+    </div>
+        
+    <script>
+        new RGraph.SVG.Funnel({
+            id: 'chart-container',
+            data: [100,75,50,25],
+            options: {
+                labels: ['Monday','Tuesday','Wednesday'],
+                labelsHalign: 'left',
+                marginLeft: 200,
+                textBold: true,
+                textSize: 20,
+                backgroundBars: true,
+                clip: 'lefthalf'
+            }
+        }).draw();
+
+        new RGraph.SVG.Funnel({
+            id: 'chart-container',
+            data: [100,75,50,25],
+            options: {
+                colors: ['pink','cyan','gray'],
+                labels: ['Monday','Tuesday','Wednesday'],
+                labelsHalign: 'left',
+                marginLeft: 200,
+                textBold: true,
+                textSize: 20,
+                backgroundBars: true,
+                clip: 'righthalf'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

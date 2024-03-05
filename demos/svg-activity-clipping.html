@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.activity.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Activity meter with clipping</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 350px; height: 350px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Activity({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: [23,35,45],
+            options: {
+                clip:   'r:0%-50%',
+                colors: ['yellow','blue','red']
+            }
+        }).grow();
+
+        new RGraph.SVG.Activity({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: [23,35,45],
+            options: {
+                clip:   'r:50%-max',
+                colors: ['gray','#eee','black']
+            }
+        }).grow();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
