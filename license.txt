@@ -1,7 +1,7 @@
 
 Copyright (c) 2024 RGraph: Beautiful javascript charts for websites
 
-RGraph is dual-licensed under the Open Source GPL license. Under
+RGraph is licensed under the Open Source GPL license. Under
 this license you can use RGraph as much as you wish and
 change it, if required, to suit your needs.
 
