@@ -1,0 +1,90 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>    
+    <h1>A multi-color line filled chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="margin-left: 50px">
+            <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA = [1,3,5,2,5,6,8,4,4,5,3,6],
+            options: OPTIONS = {
+                spline: true,
+                tickmarksStyle: 'dot',
+                tickmarksSize: 6,
+                yaxisScaleMax: 10,
+                marginInner: 5,
+                marginBottom: 30,
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                xaxis: false,
+                yaxis: false,
+                shadow: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                textSize: 18,
+                filled: true,
+                filledColors: ['#F8D3D7'],
+                colors: ['#FF642C'],
+                clip: 'scale:7.5-max'
+            }
+        }).draw();
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                filledColors: ['#FFE1D8'],
+                colors: ['orange'],
+                clip: 'scale:5-7.5'
+            }
+        }).draw();
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                filledColors: ['#E0F9EE'],
+                colors: ['#5ADDAA'],
+                clip: 'scale:2.5-5'
+            }
+        }).draw();
+
+
+
+
+        new RGraph.Line({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                filledColors: ['#DAF0FF'],
+                colors: ['#2BB3FF'],
+                clip: 'scale:min-2.5'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
