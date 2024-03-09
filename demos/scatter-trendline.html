@@ -3,12 +3,17 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Scatter chart with a trendline</h1>
+    <h1>An adjustable  Scatter chart with a trendline</h1>
+    
+    <p>
+        Drag the points around and see the effect on the trendline.
+    </p>
 
     <div id="rgraph-demo-html">    
         <div style="background-color: #cff; display: inline-block">
@@ -85,6 +90,8 @@
                 marginLeft: 75,
                 marginRight: 45,
                 marginBottom: 75,
+                
+                adjustable: true,   
 
                 xaxisScaleMax: 50000,
                 xaxisScale:true,

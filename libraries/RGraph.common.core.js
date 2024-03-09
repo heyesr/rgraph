@@ -9490,7 +9490,7 @@
     // Start clipping the canvas. You can give various
     // different arguments to the function in order to
     // clip the canvas to suit your needs See the API
-    //documentation for examples of all possibilities:
+    // documentation for examples of all possibilities:
     //
     //      https://www.rgraph.net/canvas/api.html
     //

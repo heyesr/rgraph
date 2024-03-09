@@ -426,11 +426,6 @@
                 // attribute
                 this.clipid = null;
                 this.svgAllGroup.removeAttribute('clip-path');
-            } else {
-                // No clipping - so ensure that there's no clip-path
-                // attribute
-                this.clipid = null;
-                this.svgAllGroup.removeAttribute('clip-path');
             }
             
             

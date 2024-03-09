@@ -421,6 +421,13 @@
             }
 
 
+
+
+            // This is the group that the background bars will
+            // sit in
+            this.nodes.backgroundBars = this.create('<g id="backgroundBars-group"></g>', this.svgAllGroup);
+
+
             
 
             // Draw the chart
@@ -759,10 +766,14 @@
 
                     var coords = this.coords[i];
 
+                    // Add the background bars to the group that
+                    // was created for them. This means that they
+                    // will appear at the back of the Funnel
+                    // allowing tooltips to function correctly.
                     RGraph.SVG.create({
                         svg: this.svg,
                         type: 'rect',
-                        parent: this.svgAllGroup,
+                        parent: this.nodes.backgroundBars,
                         attr: {
                             x: 0,
                             y: coords.y1,
