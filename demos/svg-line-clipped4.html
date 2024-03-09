@@ -1,0 +1,181 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A novel Line chart showing a two year comparison</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="border: 1px solid gray; width: 800px; height: 300px"></div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+
+        //
+        // These are default values that get applied to both
+        // charts using the spread operator
+        //
+        conf = {
+            backgroundGridVlines: false,
+            backgroundGridBorder: false,
+            xaxis: false,
+            yaxis: false,
+            yaxisScaleMax: 25,
+            linewidth: 3,
+            filled: true,
+            textSize: 18,
+            marginInner: 10,
+            marginBottom: 70,
+            marginLeft: 45,
+            marginRight: 15,
+            xaxisLabels: RGraph.SVG.MONTHS_SHORT,
+            xaxisTitle: '(Use your mouse to drag the dividing line)',
+            xaxisTitleSize: 12,
+            xaxisTitleBold: true,
+            xaxisTitleItalic: true,
+            xaxisTitleOffsety: 10,
+            titleSize: 30,
+            titleBold: true,
+            titleItalic: true,                
+            titleY: 70,
+            titleValign: 'top',
+            spline: true
+        };
+
+
+
+
+
+
+
+
+        //
+        // Create the red Line chart
+        //
+        line1 = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                8,5,8,3,3,2,5,8,6,3,4,6,5,6,8,7,7,7,8,7,9,8,7,8,
+                11,12,10,9,13,12,15,16,12,14,13,18,15,16,17,19
+            ],
+            options: {
+                ...conf,
+                filledColors: ['#f002'],
+                clip: 'lefthalf',
+                title: '2008',
+                titleX: 45,
+                titleHalign: 'left'
+            }
+        }).trace();
+
+
+
+
+
+
+
+
+        //
+        // Create the blue Line chart
+        //
+        line2 = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                9,4,5,3,1,6,8,6,3,5,
+                6,1,5,3,1,6,8,6,3,5,
+                1,8,5,3,1,6,8,6,3,5,
+                8,3,5,3,1,6,8,6,3,5
+            ],
+            options: {
+                ...conf,
+                colors: ['blue'],
+                filledColors: ['#00f2'],
+                clip: 'righthalf',
+                title: '2018',
+                titleX: 775,
+                titleHalign: 'right'
+            }
+        }).trace();
+
+
+
+
+
+
+
+        //
+        // Create the black dividing line between the red chart
+        // and the blue chart
+        //
+        l1 = RGraph.SVG.create({
+            svg: line1.svg,
+            type: 'line',
+            attr: {
+                id: 'myLine',
+                x1: 415, // Sart at the middle of the canvas
+                x2: 415, // Sart at the middle of the canvas
+                y1: 35,
+                y2: 230 ,
+                stroke: 'black',
+                'stroke-width': 2
+            }
+        });
+
+
+
+
+
+
+
+
+        //
+        // Add a mousemove event listener to the container <div>
+        //
+        document.querySelector('#chart-container').onmousemove = function (e)
+        {
+            var [mouseX, mouseY] = RGraph.SVG.getMouseXY(e);
+            var arr1 = [0,0,mouseX,300];
+            var arr2 = [mouseX,0,800 - mouseX,300];
+            
+            line1.set('clip', arr1);
+            line2.set('clip', arr2);
+            
+            //
+            // Add the black divider line
+            //
+            l1 = document.getElementById('myLine');
+
+            l1.setAttribute('x1', mouseX);
+            l1.setAttribute('x2', mouseX);
+
+
+            //
+            // Set the new positions and widths of the clipping rects.
+            // This could be omitted and a simple redraw used
+            // instead - but doing it this way is faster. Because of
+            // this speed increase it enables the use of splines
+            // and the movement of the dividing line still be smooth.
+            //
+
+            // Set the new width on the first clipping rect(for
+            // the red chart)
+            var rect = document.getElementById(line1.clipid).getElementsByTagName('rect')[0];
+            rect.setAttribute('width', mouseX);
+            
+            // Set the new width on the second clipping rect(for
+            // the blue chart)
+            var rect = document.getElementById(line2.clipid).getElementsByTagName('rect')[0];
+            rect.setAttribute('x', mouseX);
+            rect.setAttribute('width', 800 - mouseX);
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
