@@ -3,12 +3,14 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Horizontal Bar chart/vertical Line chart</h1>
+    <h1>A Horizontal Bar chart/vertical Line chart with tooltips</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="600">[No canvas support]</canvas>
@@ -29,6 +31,14 @@
                 textSize: 18,
                 title: 'A vertical line chart',
                 marginTop: 50,
+                
+                tooltips: '%{property:yaxisLabels[%{dataset}]}: %{value}%',
+                tooltipsHotspotShape: 'point',
+                tooltipsEvent: 'mousemove',
+                tooltipsOffsety: -3,
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
 
                 line: true,
                 lineLinejoin:                   'round',
@@ -42,19 +52,14 @@
             for (let i=0; i<=30; ++i) {
                 setTimeout(function ()
                 {
-                    obj.set({
-                        colors: ['rgba(255,0,0,' + ((30-i) * 0.0333) + ')']
-                    });
+                    obj.set('colors', ['rgba(255,0,0,' + ((30-i) * 0.0333) + ')']);
     
                     if (i >= 30) {
-
-                        obj.set({
-                            colors: ['transparent']
-                        });
+                        obj.set('colors', ['transparent']);
                     }
                     
                     RGraph.redraw();
-                }, i * 25);
+                }, i * 15);
             }
         });
     </script>
