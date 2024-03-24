@@ -1,0 +1,124 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart configured to show two images</h1>
+    
+    <p>
+        A slight variation on the <code>Line chart</code> clipping
+        demo
+        that allows you to slide between two charts - this demo
+        allows you to slide between two images - here it's just a
+        color image and a grayscale version of it - but you get
+        the idea. It could equally be two pictures of a street for
+        example - one old and another up-to-date.
+    </p>
+
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 800px; height: 200px"></div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        bar1 = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [0],
+            options: {
+                backgroundGrid: false,
+                backgroundImage: '../images/group-photo-grayscale.jpg',
+                backgroundImageStretch: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                clip: 'lefthalf',
+                marginTop: 0,
+                marginBottom: 0,
+                marginLeft: 0,
+                marginRight: 0
+            }
+        }).draw();
+
+
+
+        bar2 = new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [0],
+            options: {
+                backgroundGrid: false,
+                backgroundImage: '../images/group-photo.jpg',
+                backgroundImageStretch: false,
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                clip: 'righthalf',
+                marginTop: 0,
+                marginBottom: 0,
+                marginLeft: 0,
+                marginRight: 0
+            }
+        }).draw();
+
+        //
+        // Create the black dividing line between the red chart
+        // and the blue chart
+        //
+        l1 = RGraph.SVG.create({
+            svg: bar1.svg,
+            type: 'line',
+            attr: {
+                id: 'separator-line',
+                x1: 400, // Sart at the middle of the canvas
+                x2: 400, // Sart at the middle of the canvas
+                y1: 0,
+                y2: 300 ,
+                stroke: 'black',
+                'stroke-width': 10
+            }
+        });
+
+
+
+        // 
+        //  Add a mousemove event listener to the container <div>
+        // 
+        document.querySelector('#chart-container').onmousemove = function (e)
+        {
+            //
+            // Determine the positions of the clipping ares
+            // depending on the mouse coords
+            //
+            var [mouseX, mouseY] = RGraph.SVG.getMouseXY(e);
+            var arr1 = [0,0,mouseX,300];
+            var arr2 = [mouseX,0,800 - mouseX,300];
+            
+            //
+            // Set the clipping areas on the chart objects
+            //
+            bar1.set('clip', arr1);
+            bar2.set('clip', arr2);
+            
+            // 
+            //  Add the black divider line
+            // 
+            l1 = document.getElementById('separator-line');
+    
+            l1.setAttribute('x1', mouseX);
+            l1.setAttribute('x2', mouseX);
+
+            //
+            // There's not a whole lot being drawn on the SVG so
+            // a call to the redraw function can be used.
+            //
+            RGraph.SVG.redraw();
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

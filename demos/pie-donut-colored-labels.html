@@ -1,0 +1,105 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Pie chart with colored labels</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script id="rgraph-demo-source-code">
+
+        labels = [];
+        data   = [20,10,10,50];
+        descs  = ['Alto','Nuevo ingreso','Inconsistente','Sildo'];
+        data.map(function (v,k,arr)
+        {
+            labels[k] = v + '%';
+        });
+
+        pie1 = new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                colors: ['red','green','orange','blue'],
+                exploded: 10,
+                linewidth: 7,
+                variant: 'donut',
+                variantDonutWidth: 30,
+                shadow: false,
+                radius: '-20'
+            }
+        }).draw();
+        
+        colors = RGraph.arrayClone(pie1.properties.colors);
+
+        pie2 = new RGraph.Pie({
+            id: 'cvs',
+            data: data,
+            options: {
+                colors:['transparent','transparent','transparent','blue'],
+                colorsStroke: 'white',
+                linewidth: 7,
+                variant: 'donut',
+                variantDonutWidth: 50,
+                shadow: false,
+                radius: '-10',
+                labelsCenter: 'Technolas',
+                labels: labels,
+                labelsSize: 22,
+                labelsBold: true,
+                labelsList: false,
+                labelsRadiusOffset: 30,
+                labelsColor: 'white'
+            }
+        }).draw();
+        
+        counter = 0;
+        for (var i in pie2.coordsText) {
+            if (RGraph.isNumeric(i)) {
+
+                let v = pie2.coordsText[i];
+
+                if (v.tag === 'labels') {
+
+                    pie2.path(
+                        'gco destination-over b rr % % % % 8 f % gco source-over',
+                        v.x - 20,
+                        v.y,
+                        v.width + 40,
+                        v.height + 15,
+                        pie1.properties.colors[counter]
+                    );
+                    
+                    RGraph.text({
+                        object: pie2,
+                        text: descs[counter],
+                        font: 'helvetica',
+                        x: v.x + (v.width / 2),
+                        y: v.y + 45,
+                        color: '#fff',
+                        bold: true,
+                        halign: 'center'
+                    });
+                    
+                    counter++;
+                }
+            }
+        }
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
