@@ -14,14 +14,14 @@
 // Module pattern
 (function (win, doc, undefined)
 {
-    var ua  = navigator.userAgent;
+    var ua = navigator.userAgent;
 
     //
     // This is used in two functions, hence it's here
     //
-    RGraph.tooltips     = {};
-    RGraph.tooltips.css = 
-    RGraph.tooltips.style = {
+    RGraph.tooltips       = {};
+    RGraph.tooltips.style = {};
+    RGraph.tooltips.styleDefaults = {
         display:    'inline-block',
         position:   'absolute',
         padding:    '6px',
@@ -62,7 +62,7 @@
         // Set the CSS transition effect on the tooltips default
         // object if the effect is set to slide
         if (args.object.properties.tooltipsEffect === 'slide') {
-            RGraph.tooltips.style.transition = 'left ease-out .25s, top ease-out .25s'
+            RGraph.tooltips.styleDefaults.transition = 'left ease-out .25s, top ease-out .25s'
         }
 
         if (RGraph.SHOW_TOOLTIP_TIMER) {
@@ -140,19 +140,22 @@
         var tooltipObj       = document.createElement('DIV');
         tooltipObj.className = args.object.get('tooltipsCssClass');
 
-        // Add the default CSS to the tooltip
-        for (var i in RGraph.tooltips.style) {
+
+        // Apply the styles that are on the defaults object
+        for (var i in RGraph.tooltips.styleDefaults) {
             if (typeof i === 'string') {
+                tooltipObj.style[i] = substitute(RGraph.tooltips.styleDefaults[i]);
+            }
+        }
+
+
+        // Add the styles that have been given by the user
+        // to the *** default styles object ***
+        for (var i in RGraph.tooltips.style) {
+            if (typeof i === 'string' && i !== 'defaults') {
                 tooltipObj.style[i] = substitute(RGraph.tooltips.style[i]);
             }
         }
-
-        for (var i in RGraph.tooltips.css) {
-            if (typeof i === 'string') {
-                tooltipObj.style[i] = substitute(RGraph.tooltips.css[i]);
-            }
-        }
-
         //
         // If the tooltipsCss property is populated then add those values
         // to the tooltip

@@ -593,6 +593,12 @@
 
             // Draw the background first
             RGraph.SVG.drawBackground(this);
+            
+            
+            //
+            // Create the group that the first bar will site in
+            //
+            this.create('<g id="first-bar-group"></g>', this.svgAllGroup);
 
 
 
@@ -901,7 +907,11 @@
                 var rect = RGraph.SVG.create({
                     svg: this.svg,
                     type: 'rect',
-                    parent: this.svgAllGroup,
+
+                    // Add the bar to the first-bar-group if
+                    // drawing the first bar
+                    parent: i === 0 ? document.getElementById('first-bar-group') : this.svgAllGroup,
+
                     attr: {
                         x: x,
                         y: y,

@@ -324,6 +324,7 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotYonly:       false,
             tooltipsHotspotIgnore:      null,
+            tooltipsHotspotShape:       'rect',
 
             highlightFill:         'rgba(255,255,255,0.7)',
             highlightStroke:       'rgba(0,0,0,0)',
@@ -830,6 +831,19 @@
             RGraph.Background.draw(this);
     
             this.drawbars();
+            
+            //
+            // Fix negative width coordinates. ie If the width is
+            // negative move the X coordinate and change the negative
+            // width to positive
+            //
+            for (let i=0; i<this.coords.length; ++i) {
+                if (this.coords[i][2] < 0) {
+                    this.coords[i][0] += this.coords[i][2];
+                    this.coords[i][2] = Math.abs(this.coords[i][2]);
+                }
+            }
+            
             this.drawAxes();
             this.drawLabels();
             
@@ -1956,18 +1970,47 @@
                     }
                 }
 
-                // Recreate the path/rectangle so that it can be tested
-                //  ** DO NOT STROKE OR FILL IT **
+                // Recreate the path/rectangle so that it can be
+                // tested
+                //           ** DO NOT STROKE OR FILL IT **
+                //
                 if (properties.tooltipsHotspotYonly) {
-                    this.path(
-                        'b r % % % % ',
-                        this.marginLeft, top, this.canvas.width - this.marginRight - this.marginLeft, height
-                    );
+
+                    if (this.properties.tooltipsHotspotShape === 'point') {
+                        this.path(
+                            'b a % % 7 0 6.29 ',
+                            left + width
+                        );
+                    } else {
+
+                        this.path(
+                            'b r % % % % ',
+                            this.marginLeft, top, this.canvas.width - this.marginRight - this.marginLeft, height
+                        );
+                    }
+
                 } else {
-                    this.path(
-                        'b r % % % %',
-                        left,top,width,height
-                    );
+
+                    if (this.properties.tooltipsHotspotShape === 'point') {
+                        if (this.data_arr[idx] > 0 ) {
+                            // Positive
+                            this.path(
+                                'b a % % 7 0 6.29 false ',
+                                left + (this.properties.yaxisPosition === 'right' ? 0 : width), top + (height / 2)
+                            );
+                        } else {
+                            // Negative
+                            this.path(
+                                'b a % % 7 0 6.29 false',
+                                left, top + (height / 2)
+                            );
+                        }
+                    } else {
+                        this.path(
+                            'b r % % % %',
+                            left,top,width,height
+                        );
+                    }
                 }
 
                 //
@@ -2111,7 +2154,20 @@
                         );
                     }
                 }
-            
+            // Circular highlighting (for vertical lines)
+            } else if (this.properties.tooltipsHotspotShape === 'point') {
+                
+                var index = shape.sequentialIndex;
+
+                this.path(
+                    'b a % % % 0 6.29 false s % f %',
+                    this.coords[index][0] + this.coords[index][2],
+                    this.coords[index][1] + (this.coords[index][3] / 2),
+                    this.properties.lineTickmarksSize,
+                    this.properties.highlightStroke,
+                    this.properties.highlightFill
+                );
+
             // Standard higlight
             } else {
                 RGraph.Highlight.rect(this, shape);
@@ -3449,22 +3505,61 @@
                 canvasXY = RGraph.getCanvasXY(obj.canvas)
                 coords   = this.coords[args.index];
 
-            // Position the tooltip in the X direction
-            args.tooltip.style.left = (
-                canvasXY[0]                      // The X coordinate of the canvas
-                + coords[0]                      // The X coordinate of the point on the chart
-                + (coords[2] / 2)                // Add half of the width of the bar
-                - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
-                + obj.properties.tooltipsOffsetx // Add any user defined offset
-            ) + 'px';
 
-            args.tooltip.style.top  = (
-                  canvasXY[1]                    // The Y coordinate of the canvas
-                + coords[1]                      // The Y coordinate of the bar on the chart
-                - tooltip.offsetHeight           // The height of the tooltip
-                - 10                             // An arbitrary amount
-                + obj.properties.tooltipsOffsety // Add any user defined offset
-            ) + 'px';
+
+
+
+
+
+            //
+            // Position the tooltip when the hotspot is a point.
+            // This is commonly used for vertical lines.
+            //
+            if (this.properties.tooltipsHotspotShape === 'point') {
+
+                // Position the tooltip in the X direction
+                args.tooltip.style.left = (
+                    canvasXY[0]                      // The X coordinate of the canvas
+                    + coords[0]                      // The X coordinate of the point on the chart
+                    + (this.properties.yaxisPosition === 'right' ? 0 : coords[2]) // Add the width of the bar if the yaxisPosition is  'left'
+                    - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
+                    + obj.properties.tooltipsOffsetx // Add any user defined offset
+                ) + 'px';
+    
+                args.tooltip.style.top  = (
+                      canvasXY[1]                       // The Y coordinate of the canvas
+                    + coords[1] + (coords[3] / 2)       // The Y coordinate of the bar on the chart plus half of the height
+                    - tooltip.offsetHeight              // The height of the tooltip
+                    - 12                                // An arbitrary amount
+                    + obj.properties.tooltipsOffsety    // Add any user defined offset
+                    - this.properties.lineTickmarksSize // Take off tickmarksize
+                ) + 'px';
+            
+            //
+            // Position the tooltip based on a rect. This is used
+            // for regular HBar charts.
+            //
+            } else {
+                // Position the tooltip in the X direction
+                args.tooltip.style.left = (
+                    canvasXY[0]                      // The X coordinate of the canvas
+                    + coords[0]                      // The X coordinate of the point on the chart
+                    + (coords[2] / 2)                // Add half of the width of the bar
+                    - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
+                    + obj.properties.tooltipsOffsetx // Add any user defined offset
+                ) + 'px';
+    
+                args.tooltip.style.top  = (
+                      canvasXY[1]                    // The Y coordinate of the canvas
+                    + coords[1]                      // The Y coordinate of the bar on the chart
+                    - tooltip.offsetHeight           // The height of the tooltip
+                    - 10                             // An arbitrary amount
+                    + obj.properties.tooltipsOffsety // Add any user defined offset
+                ) + 'px';
+            }
+
+
+
 
 
 
@@ -3565,6 +3660,7 @@
         //
         this.drawLine = function ()
         {
+
             // Set the clipping region so that the trace
             //effect works
             RGraph.clipTo.start(this, [
@@ -3606,12 +3702,15 @@
                 // instead of just the line being drawn.
                 var coordinates = Spline(c, {return: true});
 
+                // 23rd March 2025 - Taken out due to a spurious
+                // line being drawn.
+                //
                 // Add the coordinates of the end of the last
                 // bar to the array of coord that we've got
-                coordinates[0].push([
-                    this.coords[this.coords.length - 1][0] + (properties.yaxisPosition === 'right' ? 0 : this.coords[this.coords.length - 1][2]),
-                    this.coords[this.coords.length - 1][1] + (this.coords[this.coords.length - 1][3] / 2)
-                ]);
+                //coordinates[0].push([
+                //    this.coords[this.coords.length - 1][0] + (properties.yaxisPosition === 'right' ? 0 : this.coords[this.coords.length - 1][2]),
+                //    this.coords[this.coords.length - 1][1] + (this.coords[this.coords.length - 1][3] / 2)
+                //]);
 
 
 
@@ -3672,6 +3771,7 @@
                 // to draw the spline. This function draws the
                 // spline onto the canvas.
                 //
+
                 RGraph.drawLine({
                     context:   this.context,
                     coords:    coordinates[0],
@@ -3716,9 +3816,10 @@
                         ]);
                     }
                 } else {
+
                     lineCoords.push([
                         'm',
-                        this.coords[0][0] + this.coords[0][2],
+                        this.data_arr[0] < 0 ? this.coords[0][0] : this.coords[0][0] + this.coords[0][2],
                         this.coords[0][1] + (this.coords[0][3] / 2)
                     ]);
                 }
@@ -3737,9 +3838,9 @@
                     } else {
                         var action = 'l'
                     }
-                    
+
                     if (this.properties.yaxisPosition === 'right') {
-                    
+
                         lineCoords.push([
                             action,
                             this.coords[i][0],
@@ -3747,8 +3848,8 @@
                         ]);
 
                     } else if (this.properties.yaxisPosition === 'center') {
-                        if (this.data[i] > 0) {
-                        
+
+                        if (this.data_arr[i] > 0) {
                             lineCoords.push([
                                 action,
                                 this.coords[i][0] + this.coords[i][2],
@@ -3756,7 +3857,7 @@
                             ]);
 
                         } else {
-                        
+
                             lineCoords.push([
                                 action,
                                 this.coords[i][0],
@@ -3764,9 +3865,10 @@
                             ]);
                         }
                     } else {
+
                         lineCoords.push([
                             action,
-                            this.coords[i][0] + this.coords[i][2],
+                            this.coords[i][0] + (this.data_arr[i] < 0 ? 0: this.coords[i][2]),
                             this.coords[i][1] + (this.coords[i][3] / 2)
                         ]);
                     }
@@ -3899,7 +4001,7 @@
                     //
                     if (isNull && !obj.properties.lineTickmarksDrawNull) return;
                     if (!isNull && prevIsNull && nextIsNull && !obj.properties.lineTickmarksDrawNonNull) return;
-                    
+
                     // Determine the X and Y coordinates for the
                     // tickmark
                     var x, y;
@@ -3915,8 +4017,13 @@
                                 y = v[1] + (v[3]/2);
                         }
                     } else {
-                        var x = v[0] + v[2],
-                            y = v[1] + (v[3]/2);
+                        if (obj.data[k] < 0) {
+                            var x = v[0],
+                                y = v[1] + (v[3]/2);
+                        } else {
+                            var x = v[0] + v[2],
+                                y = v[1] + (v[3]/2);
+                        }
                     }
     
     
@@ -4001,8 +4108,8 @@
                 //obj.coordsSpline[0] = [];
                 var coordsSpline = [[]];
 
-                var yCoords     = [],
-                    interval    = (obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
+                var yCoords  = [],
+                    interval = (obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / coords.length;
 
                 obj.context.beginPath();
                 obj.context.strokeStyle = obj.properties.lineColor;
@@ -4013,7 +4120,7 @@
                 // format
                 //
                 for (var i=0; i<coords.length;++i) {
-                    coords[i] = Number(coords[i][0]) + (obj.properties.yaxisPosition === 'right' ? 0 : Number(coords[i][2]) );
+                    coords[i] = Number(coords[i][0]) + (obj.properties.yaxisPosition === 'right' || obj.data_arr[i] < 0 ? 0 : Number(coords[i][2]) );
                 }
 
     
@@ -4037,7 +4144,7 @@
                 var halfsection = ((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) / 2
 
                 for (var j=1; j<P.length-2; ++j) {
-                    for (var t=0; t<10; ++t) {
+                    for (var t=0; t<=10; ++t) {
                         
                         var xCoord = Spline( t/10, P[j-1], P[j], P[j+1], P[j+2] );
 
@@ -4058,7 +4165,7 @@
                     }
                 }
 
-    
+
                 // Draw the last section
                 var last = [
                     obj.coords[obj.coords.length - 1][0] + (obj.properties.yaxisPosition === 'right' ? 0 : obj.coords[obj.coords.length - 1][2]),
@@ -4069,7 +4176,7 @@
                     last[0],
                     last[1]
                 );
-                if (typeof index == 'number') {
+                if (typeof index === 'number') {
                     coordsSpline[0].push([
                         last[0],
                         last[1]
