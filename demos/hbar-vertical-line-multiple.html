@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
@@ -16,6 +18,11 @@
     </div>
     
     <script>
+        RGraph.tooltips.style = {
+            fontSize: '20pt'
+        };
+
+
         hbar1 = new RGraph.HBar({
             id: 'cvs',
             data: [5,4,6,3,5,4,8],
@@ -30,9 +37,14 @@
                 xaxis: false,
                 yaxis: false,
                 colors: ['transparent'],
+                textSize: 16,
                 key: ['Luis','Pablo','Ricardo'],
                 keyPosition: 'margin',
                 keyColors: ['red','black','green'],
+                
+                tooltips: 'The red line: %{value}',
+                tooltipsHotspotShape: 'point',
+                tooltipsEvent: 'mousemove',
                 
                 line: true,
                 lineSpline: true,
@@ -55,10 +67,15 @@
             options: {
                 backgroundGrid: false,
                 xaxis: false,
+                xaxisScale: false,
                 yaxis: false,
                 colors: ['transparent'],
                 marginLeftAuto: false,
                 marginLeft: hbar1.properties.marginLeft,
+                
+                tooltips: 'The black line: %{value}',
+                tooltipsHotspotShape: 'point',
+                tooltipsEvent: 'mousemove', 
                 
                 line: true,
                 lineSpline: true,
@@ -74,17 +91,21 @@
 
 
 
-
         hbar3 = new RGraph.HBar({
             id: 'cvs',
             data: [8,2,6,8,9,6,9],
             options: {
                 backgroundGrid: false,
                 xaxis: false,
+                xaxisScale: false,
                 yaxis: false,
                 colors: ['transparent'],
                 marginLeftAuto: false,
                 marginLeft: hbar1.properties.marginLeft,
+                
+                tooltips: 'The green line: %{value}',
+                tooltipsHotspotShape: 'point',
+                tooltipsEvent: 'mousemove',
                 
                 line: true,
                 lineSpline: true,
