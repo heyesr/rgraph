@@ -11,9 +11,6 @@
 <body>
     <h1>A Line chart with color bands (using clipping)</h1>
 
-    <p>
-        Slightly more code - but much simpler to understand.
-    </p>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
@@ -40,6 +37,7 @@
                 backgroundGridHlinesCount: 4,
                 xaxis: false,
                 yaxis: false,
+                yaxisScaleDecimals: 1,
                 spline: true,
                 yaxisScaleUnitsPost: '%',
                 marginLeft: 50,
@@ -93,7 +91,7 @@
             data: DATA,
             options: {
                 ...OPTIONS,
-                clip: 'scale:7.5-10',
+                clip: 'scale:7.5-max',
                 colors: ['red'],
                 filledColors: ['#F8D3D7']
             }
