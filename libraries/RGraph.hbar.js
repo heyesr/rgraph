@@ -41,6 +41,7 @@
         this.coords                 = [];
         this.coords2                = [];
         this.coordsText             = [];
+        this.coordsLines            = [];
         this.coordsSpline           = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
@@ -3694,7 +3695,7 @@
                 
                 // Set this so that we can refer to the object
                 var obj = this;
-                var c = RGraph.arrayClone(this.coords);
+                var c   = RGraph.arrayClone(this.coords);
 
                 // Call the Spline() function and have it return the
                 // coordinates instead of drawing the line. This way
@@ -3784,7 +3785,20 @@
                 // for the spline
                 //
                 this.coordsSpline = [];
-                this.coordsSpline[0] = RGraph.arrayClone(coordinates);
+                this.coordsSpline[0] = RGraph.arrayClone(coordinates[0]);
+
+                //
+                // Now generate the coordinates of the points of the
+                // line from the coordinates of the bars.
+                //
+                this.coordsLines = [[]];
+                for (let i=0; i<this.coords.length; ++i) {
+                    this.coordsLines[0].push([
+                        this.coords[i][0] + this.coords[i][2],
+                        this.coords[i][1] + (this.coords[i][3] / 2),
+                    ]);
+                }
+
 
             } else {
 
@@ -3919,6 +3933,27 @@
                     lineCoords[0][2],
                     !RGraph.isNull(this.properties.lineFilledColor) ? this.properties.lineFilledColor : this.properties.lineColor
                 );
+            }
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Add the coords to the obj.coordsLine variable
+            //
+            this.coordsLines = [[]];
+            for (let i=0; i<lineCoords.length; ++i) {
+                this.coordsLines[0].push([
+                    lineCoords[1],
+                    lineCoords[2]
+                ]);
             }
 
 
