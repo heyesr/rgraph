@@ -16,6 +16,9 @@
     //
     RGraph.RScatter = function (conf)
     {
+        // Save the original data
+        this.unmodified_data = conf.data.clone();
+
        // Store the data set(s)
         this.data = RGraph.arrayClone(conf.data);
 
@@ -50,6 +53,8 @@
         this.colorsParsed      = false;
         this.coordsText        = [];
         this.original_colors   = [];
+        this.coords            = [];
+        this.coords2           = [];
         this.firstDraw         = true; // After the first draw this will be false
 
 
@@ -982,7 +987,7 @@
             
             
                         obj.drawTick(x, y, color);
-                        
+
                         // Populate the coords array with the coordinates and the tooltip
 
                         obj.coords.push([x, y, color, tooltip]);
@@ -1743,14 +1748,14 @@
         //
         this.explode = function ()
         {
-            var obj       = this,
-                callback  = arguments[2],
-                opt       = arguments[0] || {},
-                frames    = opt.frames || 15,
-                frame     = 0,
-                callback  = arguments[1] || function () {},
-                step      = 1 / frames,
-                original  = RGraph.clone(this.data);
+            var obj      = this,
+                callback = arguments[2],
+                opt      = arguments[0] || {},
+                frames   = opt.frames || 15,
+                frame    = 0,
+                callback = arguments[1] || function () {},
+                step     = 1 / frames,
+                original = RGraph.clone(this.data);
 
             // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
             // and then animate
@@ -1773,6 +1778,10 @@
                 if (frame++ < frames) {
                     RGraph.Effects.updateCanvas(iterator);
                 } else {
+                    
+                    // Put the data back to the original
+                    obj.data = original.clone();
+
                     RGraph.redrawCanvas(obj.canvas);
                     callback(obj);
                 }

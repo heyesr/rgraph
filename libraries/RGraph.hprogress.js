@@ -27,7 +27,6 @@
         this.max                    = RGraph.stringsToNumbers(max);
         this.value                  = RGraph.stringsToNumbers(value);
         this.type                   = 'hprogress';
-        this.coords                 = [];
         this.isRGraph               = true;
         this.isrgraph               = true;
         this.rgraph                 = true;
@@ -35,6 +34,7 @@
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.colorsParsed           = false;
+        this.coords                 = [];
         this.coordsText             = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false

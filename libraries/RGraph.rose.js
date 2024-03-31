@@ -22,10 +22,11 @@
         this.canvas                 = document.getElementById(this.id);
         this.context                = this.canvas.getContext ? this.canvas.getContext("2d") : null;
         this.data                   = conf.data;
+        this.unmodified_data        = RGraph.arrayClone(this.data);
         this.canvas.__object__      = this;
         this.type                   = 'rose';
         this.isRGraph               = true;
-        this.isrgraph              = true;
+        this.isrgraph               = true;
         this.rgraph                 = true;
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
@@ -2469,6 +2470,131 @@
                 }
             }
             
+            iterator();
+
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // (new) Rose chart Wave effect. This is a rewrite that
+        // should be smoother because it just uses a single loop
+        // and not setTimeout
+        //
+        // @param object   OPTIONAL An object map of options. You
+        //                          specify 'frames' here to give
+        //                          the number of frames in the
+        //                          effect.
+        // @param function OPTIONAL A function that will be called
+        //                          when the effect is complete.
+        //
+        this.wave = function ()
+        {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+            
+            // Reset the data to the original
+            this.data = RGraph.arrayClone(this.unmodified_data);
+
+
+            var obj = this,
+                opt = arguments[0] || {};
+
+            opt.frames      =  opt.frames || 60;
+            opt.startFrames = [];
+            opt.counters    = [];
+
+            var framespersegment = opt.frames / 2,
+                frame            = -1,
+                callback         = arguments[1] || function () {},
+                original         = RGraph.arrayClone(this.data);
+
+
+            for (var i=0,len=this.data.length; i<len; i+=1) {
+                opt.startFrames[i] = ((opt.frames / 2) / (this.data.length - 1)) * i;
+
+                if (typeof this.data[i] === 'object' && this.data[i]) {
+                    opt.counters[i] = [];
+                    for (var j=0; j<this.data[i].length; j++) {
+                        opt.counters[i][j] = 0;
+                    }
+                } else {
+                    opt.counters[i]    = 0;
+                }
+            }
+
+            //
+            // This stops the chart from jumping
+            //
+            obj.draw();
+            obj.set('scaleMax', this.scale2.max);
+            RGraph.clear(this.canvas);
+
+
+            function iterator ()
+            {
+                if (obj.stopAnimationRequested) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+
+                    // Reset the data
+                    obj.data = RGraph.arrayClone(obj.unmodified_data);
+
+                    return;
+                }
+
+                ++frame;
+
+                for (let i=0,len=obj.data.length; i<len; i+=1) {
+                        if (frame > opt.startFrames[i]) {
+                            if (typeof obj.data[i] === 'number') {
+
+                                obj.data[i] = Math.min(
+                                    Math.abs(original[i]),
+                                    Math.abs(original[i] * ( (opt.counters[i]++) / framespersegment))
+                                );
+
+                                // Make the number negative if the original was
+                                if (original[i] < 0) {
+                                    obj.data[i] *= -1;
+                                }
+                            } else if (!RGraph.isNull(obj.data[i])) {
+                                for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
+
+                                    obj.data[i][j] = Math.min(
+                                        Math.abs(original[i][j]),
+                                        Math.abs(original[i][j] * ( (opt.counters[i][j]++) / framespersegment))
+                                    );
+
+                                    // Make the number negative if the original was
+                                    if (original[i][j] < 0) {
+                                        obj.data[i][j] *= -1;
+                                    }
+                                }
+                            }
+                        } else {
+                            obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNull(obj.data[i]) ? null : 0);
+                        }
+                }
+
+
+                if (frame >= opt.frames) {
+
+                    callback(obj);
+                } else {
+
+                    RGraph.redrawCanvas(obj.canvas);
+                    RGraph.Effects.updateCanvas(iterator);
+                }
+            }
+
             iterator();
 
             return this;

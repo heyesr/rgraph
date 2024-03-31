@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
@@ -25,6 +27,11 @@
             id: 'cvs',
             data: [4,6,8,5,9,6,4,8,4,6,12,2,8,6,4,3,2,5,9],
             options: {
+                line: true,
+                lineColor: 'transparent',
+                tooltips: ['A','B','C','D','E','F','B','H','I','J','K','L','M','N','O','Q','R','S','T'],
+                tooltipsHotspotShape: 'point',
+                tooltipsEvent: 'mousemove',
                 marginBottom: 35,
                 xaxis: false,
                 yaxis: false,

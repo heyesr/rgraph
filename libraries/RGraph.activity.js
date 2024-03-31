@@ -730,9 +730,10 @@
 
 
             //
-            // By calling the RGraph.text() function with a blank string the text accessible wrapper DIV
-            // will be created and the responsive function will work as expected (ie the css: and parentCss:
-            // options).
+            // By calling the RGraph.text() function with a blank
+            // string the text accessible wrapper DIV will be
+            // created and the responsive function will work
+            // as expected (ie the css: and parentCss: options).
             //
             RGraph.text({
                 object: this,

@@ -106,7 +106,6 @@
         this.canvas.__object__      = this;
         this.context                = this.canvas.getContext ? this.canvas.getContext('2d') : null;
         this.max                    = 0;
-        this.coords                 = [];
         this.type                   = 'scatter';
         this.isRGraph               = true;
         this.isrgraph               = true;
@@ -114,9 +113,9 @@
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.colorsParsed           = false;
+        this.coords                 = [];
         this.coordsText             = [];
         this.coordsBubble           = [];
-        this.coords_trendline       = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
         this.stopAnimationRequested = false;// Used to control the animations

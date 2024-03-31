@@ -30,9 +30,9 @@
         this.min                    = RGraph.stringsToNumbers(conf.min);
         this.max                    = RGraph.stringsToNumbers(conf.max);
         this.value                  = RGraph.stringsToNumbers(conf.value);
-        this.coords                 = [];
         this.graphArea              = [];
         this.currentValue           = null;
+        this.coords                 = [];
         this.coordsText             = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false

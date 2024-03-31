@@ -27,7 +27,6 @@
         this.max                    = RGraph.stringsToNumbers(conf.max);
         this.value                  = RGraph.stringsToNumbers(conf.value);
         this.type                   = 'semicircularprogress';
-        this.coords                 = [];
         this.isRGraph               = true;
         this.isrgraph               = true;
         this.rgraph                 = true;
@@ -35,6 +34,7 @@
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.colorsParsed           = false;
+        this.coords                 = [];
         this.coordsText             = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
