@@ -5664,7 +5664,8 @@
         if (properties.tooltipsHighlight) {
     
             //
-            // Draw a rectangle on the canvas to highlight the appropriate area
+            // Draw a rectangle on the canvas to highlight the
+            // appropriate area
             //
             args.object.context.beginPath();
                 args.object.context.strokeStyle = properties.highlightStroke;

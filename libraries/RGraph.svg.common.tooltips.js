@@ -735,7 +735,7 @@
         // Add the pointer if requested. The background color is updated to match the
         // tooltip a further down.
         if (opt.object.properties.tooltipsPointer) {
-            opt.text += '<div id="RGraph_tooltipsPointer"></div>';
+            opt.text += '<div id="RGraph_tooltipsPointer_' + opt.object.id + '"></div>';
         }
 
 
@@ -812,7 +812,7 @@
 // prevent an error bein thrown should a
 // Content-Security-Policy header using style-src
 // be in place
-var pointerObj = document.getElementById('RGraph_tooltipsPointer');
+var pointerObj = document.getElementById('RGraph_tooltipsPointer_' + opt.object.id + '');
 if (pointerObj) {
     var styles     = window.getComputedStyle(tooltipObj, false);
     
@@ -863,7 +863,7 @@ if (pointerObj) {
         if (opt.object.properties.tooltipsPointer) {
 
             var styles = window.getComputedStyle(tooltipObj, false);
-            var pointer = document.getElementById('RGraph_tooltipsPointer');
+            var pointer = document.getElementById('RGraph_tooltipsPointer_' + opt.object.id + '');
 
             pointer.style.backgroundColor = styles.backgroundColor;
 
@@ -876,7 +876,7 @@ if (pointerObj) {
 
             if (opt.object.properties.tooltipsPointerCss) {
             
-                var pointerDiv = document.getElementById('RGraph_tooltipsPointer');
+                var pointerDiv = document.getElementById('RGraph_tooltipsPointer_' + opt.object.id + '');
             
                 for(property in opt.object.properties.tooltipsPointerCss) {
                     if (typeof property === 'string') {
@@ -970,7 +970,7 @@ if (parseInt(tooltipObj.style.left) < 0) {
     left = left + (width * 0.1 * 4);
     
     tooltipObj.style.left = left + 'px';
-    var pointer =  document.getElementById('RGraph_tooltipsPointer');
+    var pointer =  document.getElementById('RGraph_tooltipsPointer_' + opt.object.id + '');
 
     if (pointer) {
         (function (pointer)
@@ -993,7 +993,7 @@ if (parseInt(tooltipObj.style.left) < 0) {
     left = left - (width * 0.1 * 4);
     
     tooltipObj.style.left = left + 'px';
-    var pointer = document.getElementById('RGraph_tooltipsPointer');
+    var pointer = document.getElementById('RGraph_tooltipsPointer_' + opt.object.id + '');
     
     (function (pointer)
     {

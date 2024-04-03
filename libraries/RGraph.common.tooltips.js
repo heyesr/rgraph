@@ -782,7 +782,7 @@
             // Styles are applied to the pointer below to
             // circumvent a Content-Security-Policy header
             // problem
-            args.text += '<div id="RGraph_tooltipsPointer"></div>';
+            args.text += '<div id="RGraph_tooltipsPointer_' + args.object.id + '"></div>';
 
 
 
@@ -797,7 +797,7 @@
                 // will be able to retrieve it
                 setTimeout(function ()
                 {
-                    var pointerObj = document.getElementById('RGraph_tooltipsPointer');
+                    var pointerObj = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
 
                     for (var i in args.object.properties.tooltipsPointerCss) {
                         if (typeof i === 'string') {
@@ -893,7 +893,7 @@
     // be in place
     setTimeout(function ()
     {
-        var pointerObj = document.getElementById('RGraph_tooltipsPointer');
+        var pointerObj = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
         var styles     = window.getComputedStyle(tooltipObj, false);
 
         if (pointerObj) {
@@ -947,7 +947,7 @@
         if (args.object.properties.tooltipsPointer) {
 
             var styles = window.getComputedStyle(tooltipObj, false);
-            var pointer = document.getElementById('RGraph_tooltipsPointer');
+            var pointer = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
 
             pointer.style.backgroundColor = styles['background-color'];
 
@@ -960,7 +960,7 @@
 
             if (args.object.properties.tooltipsPointerCss) {
             
-                var pointerDiv = document.getElementById('RGraph_tooltipsPointer');
+                var pointerDiv = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
             
                 for(property in args.object.properties.tooltipsPointerCss) {
                     if (typeof property === 'string') {
@@ -1055,7 +1055,7 @@
             left = left + (width * 0.1 * 4);
             
             tooltipObj.style.left = left + 'px';
-            var pointer = document.getElementById('RGraph_tooltipsPointer');
+            var pointer = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
 
             (function (pointer)
             {
@@ -1080,7 +1080,7 @@
             left = left - (width * 0.1 * 4);
             
             tooltipObj.style.left = left + 'px';
-            var pointer = document.getElementById('RGraph_tooltipsPointer');
+            var pointer = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
 
             (function (pointer)
             {

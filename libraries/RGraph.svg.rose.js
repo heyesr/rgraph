@@ -287,6 +287,7 @@
             segmentsAngleOffset: 0,
             variant: 'normal',
             
+            effectWaveMultiplier:       1,// Do not delete this
             effectGrowMultiplier:       1,// Do not delete this
             effectRoundrobinMultiplier: 1, // Do not delete this
             
@@ -2069,6 +2070,114 @@
         //
         this.roundRobin = function ()
         {
+        };
+
+
+
+
+
+
+
+
+        //
+        // Rose chart Wave effect.
+        // 
+        // @param object OPTIONAL An object map of options. You specify 'frames'
+        //                        here to give the number of frames in the effect
+        //                        and also callback to specify a callback function
+        //                        thats called at the end of the effect
+        //
+        this.wave = function ()
+        {            
+            // Reset the data to the original
+            this.data = RGraph.SVG.arrayClone(this.originalData);
+
+            // If there's only one segment call the grow function
+            // instead
+            if (this.data.length === 1) {
+                return this.grow(arguments[0], arguments[1]);
+            }
+
+            var obj = this,
+                opt = arguments[0] || {};
+
+            opt.frames      =  opt.frames || 90;
+            opt.startFrames = [];
+            opt.counters    = [];
+
+            var framesperbar = opt.frames / 3,
+                frame        = -1,
+                callback     = arguments[1] || function () {},
+                original     = RGraph.SVG.arrayClone(this.originalData);
+
+
+            for (var i=0,len=this.data.length; i<len; i+=1) {
+                
+                opt.startFrames[i] = ((opt.frames / 2) / (this.data.length - 1)) * i;
+
+                if (typeof this.data[i] === 'object' && this.data[i]) {
+                    opt.counters[i] = [];
+                    for (var j=0; j<this.data[i].length; j++) {
+                        opt.counters[i][j] = 0;
+                    }
+                } else {
+                    opt.counters[i]    = 0;
+                }
+            }
+
+            //
+            // This stops the chart from jumping
+            //
+            obj.draw();
+            obj.set('scaleMax', obj.scale.max);
+            RGraph.SVG.clear(obj.svg);
+
+
+            function iterator ()
+            {
+                ++frame;
+                
+
+                for (let i=0,len=obj.data.length; i<len; i+=1) {
+                    if (frame > opt.startFrames[i]) {
+                        
+                        properties.effectWaveMultiplier = RGraph.SVG.FX.getEasingMultiplier(opt.frames, frame,0);
+                        
+                        if (typeof obj.data[i] === 'number') {
+
+                            obj.originalData[i] = Math.min(
+                                Math.abs(original[i]),
+                                Math.abs(original[i] * ( (opt.counters[i]++) / framesperbar))
+                            ) * properties.effectWaveMultiplier;
+
+                        } else if (!RGraph.SVG.isNull(obj.data[i])) {
+
+                            for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
+                                obj.originalData[i][j] = Math.min(
+                                    Math.abs(original[i][j]),
+                                    // ((frame - opt.startFrames[i]) / framesperbar) * originalHeight,
+                                    Math.abs(original[i][j] * (frame - opt.startFrames[i]) / framesperbar)
+                                ) * properties.effectWaveMultiplier;
+                            }
+                        }
+                    } else {
+                        obj.originalData[i] = typeof obj.originalData[i] === 'object' && obj.originalData[i] ? RGraph.SVG.arrayPad([], obj.originalData[i].length, 0) : (RGraph.SVG.isNull(obj.originalData[i]) ? null : 0);
+                    }
+                }
+
+
+                if (frame >= opt.frames) {
+                    callback(obj);
+                } else {
+
+                    RGraph.SVG.redraw(obj.svg);
+                    RGraph.SVG.FX.update(iterator);
+                }
+            }
+
+            iterator();
+
+            return this;
         };
 
 

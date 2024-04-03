@@ -5043,9 +5043,9 @@ if (properties.backgroundBorder) {
     // @param number frames The total number of frames
     // @param number frame  The frame number
     //
-    RGraph.SVG.FX.getEasingMultiplier = function (frames, frame)
+    RGraph.SVG.FX.getEasingMultiplier = function (frames, frame, pow=3)
     {
-        var multiplier = Math.pow(Math.sin((frame / frames) * RGraph.SVG.TRIG.HALFPI), 3);
+        var multiplier = Math.pow(Math.sin((frame / frames) * RGraph.SVG.TRIG.HALFPI), pow);
 
         return multiplier;
     };

@@ -110,6 +110,7 @@
         this.data             = conf.data;
         this.coords           = [];
         this.coords2          = [];
+        this.coordsBubble     = [];
         this.colorsParsed     = false;
         this.originalColors   = {};
         this.gradientCounter  = 1;
@@ -327,10 +328,15 @@
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
             
-            bubble:            false,
-            bubbleMaxValue:    null,
-            bubbleMaxRadius:   null,
-            bubbleColorsSolid: false,
+            bubble:              false,
+            bubbleMaxValue:      null,
+            bubbleMaxRadius:     null,
+            bubbleColorsSolid:   false,
+            bubbleShadow:        false,
+            bubbleShadowOffsetx: 2,
+            bubbleShadowOffsety: 2,
+            bubbleShadowBlur:    1,
+            bubbleShadowColor:   '#aaa',
             
             errorbars:            null,
             errorbarsColor:       'black',
@@ -529,8 +535,9 @@
             
             
             // Prevents these from growing
-            this.coords  = [];
-            this.coords2 = [];
+            this.coords       = [];
+            this.coords2      = [];
+            this.coordsBubble = [];
 
 
 
@@ -896,6 +903,20 @@
             }
 
             //
+            // Create the <g> tag that the bubbles are added to
+            // if a bubble chart has been requested. If not -
+            // then this group sits empty.
+            //
+            this.svgBubbleGroup = RGraph.SVG.create({
+                svg: this.svg,
+                type: 'g',
+                parent: this.svgAllGroup,
+                attr: {
+                    className: 'scatter_bubble_dataset_' + index + '_' + this.uid
+                }
+            });
+
+            //
             // Create the <g> tag that the datapoints are added to
             //
             var group = RGraph.SVG.create({
@@ -960,7 +981,10 @@
                 //
                 // Add tooltip highlight to the point
                 //
-                if ( (typeof data[i].tooltip === 'string' && data[i].tooltip) || (typeof data[i].tooltip === 'number') || (typeof properties.tooltips === 'string') ) {
+                if (   (typeof data[i].tooltip === 'string' && data[i].tooltip)
+                    || (typeof data[i].tooltip === 'number')
+                    || (typeof properties.tooltips === 'string')
+                   ) {
 
                     // Convert the tooltip to a string
                     data[i].tooltip = String(data[i].tooltip);
@@ -984,16 +1008,31 @@
                     var rect = RGraph.SVG.create({
                         svg:  this.svg,
                         parent: this.svgAllGroup,
-                        type: 'rect',
+                        type: RGraph.SVG.isNumber(this.data[index][i].z) ? 'circle' : 'rect',
                         parent: group_tooltip_hotspots,
                         attr: {
+                            // If the hotspot is a circle (for a
+                            // bubble chart) then these attributes
+                            // are here to size it
+                            cx: this.coords2[index][i].x,
+                            cy: this.coords2[index][i].y,
+                            r:  this.data[index][i].z ? this.coordsBubble[index][i].z : this.coords2[index][i].r,
+                        
+                            // If the hotspot is a rect then these are
+                            // the rect sizing attributes
                             x: ret.x - (ret.size / 2),
                             y: ret.y - (ret.size / 2),
                             width: ret.size,
                             height: ret.size,
-                            fill: 'transparent',
+
                             stroke: 'transparent',
-                            'stroke-width': 3
+                            fill: 'transparent',
+                            'stroke-width': 3,
+                            'data-dataset': index,
+                            'data-index': i,
+                            'data-x': this.data[index][i].x,
+                            'data-y': this.data[index][i].y,
+                            'data-z': this.data[index][i].z
                         },
                         style: {
                             cursor: 'pointer'
@@ -1007,6 +1046,19 @@
                     {
                         rect.addEventListener(properties.tooltipsEvent, function (e)
                         {
+                            // TODO work out the bubble radius
+                            // so the highlight can be increased
+                            // in size
+                            var isBubble = false
+;
+                            if (RGraph.SVG.isNumber(obj.data[dataset][index].z)) {
+                                var isBubble = true;
+                                var bubbleMaxRadius = obj.get('bubbleMaxRadius');
+                                var bubbleMaxValue  = obj.get('bubbleMaxValue');
+                                var bubbleValue     = obj.data[dataset][index].z;
+                                var bubbleWidth     = bubbleValue / bubbleMaxValue * bubbleMaxRadius;
+                            }
+
                             var tooltip = RGraph.SVG.REG.get('tooltip');
 
                             if (tooltip && tooltip.__dataset__ === dataset && tooltip.__index__ === index && tooltip.__object__.uid === obj.uid) {
@@ -1028,7 +1080,7 @@
 
                             // Highlight the shape that has been clicked on
                             if (RGraph.SVG.REG.get('tooltip')) {
-                                obj.highlight(this);
+                                obj.highlight(this, {width: isBubble ? bubbleWidth : null});
                             }
                             
                         }, false);
@@ -1196,8 +1248,7 @@
 
             // Bubble charts are drawn by their own function
             if (properties.bubble) {
-                //return this.drawBubble(opt, conf);
-                this.drawBubble(opt, conf);
+                var bubbleRet = this.drawBubble(opt, conf);
             }
 
 
@@ -1349,6 +1400,7 @@
 
                 case 'cross':
                 default:
+
                     var mark = RGraph.SVG.create({
                         svg: this.svg,
                         type: 'path',
@@ -1389,6 +1441,7 @@
             mark.setAttribute('data-original-color', conf.color);
             mark.setAttribute('data-original-coordx', coordX);
             mark.setAttribute('data-original-coordy', coordY);
+            mark.setAttribute('data-original-coordz', bubbleRet ? bubbleRet.z : null);
             mark.setAttribute('data-size', conf.size);
             mark.setAttribute('data-sequential', seq);
             mark.setAttribute('data-type', conf.type);
@@ -1408,9 +1461,28 @@
 
 
 
+        //
         // Draw a bubble on a bubble chart
+        //
+        // @param opt object  The internal configuration of the point
+        // @param conf object The configuration of the point as supplied by the user
+        //
         this.drawBubble = function (opt, conf)
         {
+            // Check whether this point has a z: value
+            if (typeof conf.z !== 'number') {
+                return;
+            }
+            
+            //
+            // Check that the coords array exists
+            //
+            if (!RGraph.SVG.isArray(this.coordsBubble[opt.datasetIdx])) {
+                this.coordsBubble[opt.datasetIdx] = [];
+            }
+
+
+
             var size = (conf.z / properties.bubbleMaxValue) * properties.bubbleMaxRadius;
 
             var color = RGraph.SVG.parseColorRadial({
@@ -1426,13 +1498,14 @@
             var circle = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'circle',
+                parent: this.svgBubbleGroup,
                 attr: {
                     cx: opt.coordx,
                     cy: opt.coordy,
                     r: size,
                     fill: color,
                     'fill-opacity': conf.opacity,
-                    'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : '',
+                    'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                 }
             });
 
@@ -1444,13 +1517,42 @@
             circle.setAttribute('data-original-coordx', opt.coordx);
             circle.setAttribute('data-original-coordy', opt.coordy);
             circle.setAttribute('data-size', size);
+            circle.setAttribute('data-r', size);
             circle.setAttribute('data-sequential', opt.sequential);
             circle.setAttribute('data-type', 'bubble');
+            circle.setAttribute('data-x', conf.x);
+            circle.setAttribute('data-y', conf.y);
+            circle.setAttribute('data-z', conf.z);
+
+
+
+            //
+            // Set a shadow if requested
+            //
+            if (this.properties.bubbleShadow) {
+                RGraph.SVG.setShadow({
+                    object:  this,
+                    offsetx: this.properties.bubbleShadowOffsetx,
+                    offsety: this.properties.bubbleShadowOffsety,
+                    blur:    this.properties.bubbleShadowBlur,
+                    color:   this.properties.bubbleShadowColor,
+                    id:      'bubble-chart-dropshadow'
+                });
+            
+                circle.setAttribute('filter', 'url(#bubble-chart-dropshadow)');
+            }
+
+            this.coordsBubble[opt.datasetIdx][opt.index] = {
+                x: opt.coordx,
+                y: opt.coordy,
+                z: size
+            };
+
 
             return {
                 x: opt.coordx,
                 y: opt.coordy,
-                z: opt.coordz
+                z: size
             };
         };
 
@@ -1598,23 +1700,42 @@
 
 
         //
-        // This function can be used to highlight a bar on the chart
+        // This function can be used to highlight a bar on the
+        // chart
+        //
+        // TODO On bubble charts need to highlight the entire
+        //      bubble.
         // 
         // @param object rect The rectangle to highlight
         //
-        this.highlight = function (rect)
+        this.highlight = function (rect, opt = {})
         {
-            var cx      = parseFloat(rect.getAttribute('x')) + (parseFloat(rect.getAttribute('width')) / 2),
-                cy      = parseFloat(rect.getAttribute('y')) + (parseFloat(rect.getAttribute('height')) / 2),
-                radius  = parseFloat(rect.getAttribute('width')) + 1;
-            
+            // Get the center point and size of the rect
+            // on the chart and then cover it with a
+            // circle
+            if (rect.toString().toLowerCase().indexOf('circle') > 0) {
+                var cx     = rect.getAttribute('cx'),
+                    cy     = rect.getAttribute('cy'),
+                    radius = rect.getAttribute('r');
+
+            } else {
+                var cx      = parseFloat(rect.getAttribute('x')) + (parseFloat(rect.getAttribute('width')) / 2),
+                    cy      = parseFloat(rect.getAttribute('y')) + (parseFloat(rect.getAttribute('height')) / 2),
+                    radius  = parseFloat(rect.getAttribute('width')) + 1;
+
+            }
+
+            if (RGraph.SVG.isNumber(opt.width)) {
+                radius = opt.width + 1;
+            }
+
             var highlight = RGraph.SVG.create({
                 svg: this.svg,
                 type: 'circle',
                 parent: this.svgAllGroup,
                 attr: {
                     stroke: properties.highlightStroke,
-                    fill: properties.highlightFill,
+                    fill:   properties.highlightFill,
                     cx: cx,
                     cy: cy,
                     r: radius,

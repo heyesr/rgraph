@@ -26,7 +26,6 @@
         this.max                    = RGraph.stringsToNumbers(conf.max);
         this.value                  = RGraph.stringsToNumbers(conf.value);
         this.type                   = 'vprogress';
-        this.coords                 = [];
         this.isRGraph               = true;
         this.isrgraph               = true;
         this.rgraph                 = true;
@@ -34,6 +33,7 @@
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.colorsParsed           = false;
+        this.coords                 = [];
         this.coordsText             = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
@@ -449,13 +449,13 @@
             // Figure out the width and height
             this.width  = this.canvas.width - this.marginLeft - this.marginRight;
             this.height = this.canvas.height - this.marginTop - this.marginBottom;
-            this.coords = [];
 
 
 
             //
-            // Stop this growing uncontrollably
+            // Stop these growing uncontrollably
             //
+            this.coords     = [];
             this.coordsText = [];
 
 
@@ -892,7 +892,7 @@
         // @param y      number The Y coord
         // @param width  number The width of the bar
         // @param height number The height of the bar
-        // @param index  number The index numbr of the bar (0-whatever)
+        // @param index  number The index number of the bar (0-whatever)
         //
         this.drawbarStackedSection = function (x, y, width, height, index)
         {

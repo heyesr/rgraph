@@ -26,10 +26,10 @@
         this.isRGraph               = true;
         this.isrgraph               = true;
         this.rgraph                 = true;
-        this.coords                 = [];
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.colorsParsed           = false;
+        this.coords                 = [];
         this.coordsText             = [];
         this.original_colors        = [];
         this.original_data          = RGraph.arrayClone(conf.data);

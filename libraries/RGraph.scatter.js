@@ -1859,15 +1859,33 @@
                         var x = this.coords[set][i][0];
                         var y = this.coords[set][i][1];
                         var tooltip = this.data[set][i][3];
-        
-                        if (typeof y == 'number') {
-                            if (   mouseX <= (x + offset)
-                                && mouseX >= (x - offset)
-                                && mouseY <= (y + offset)
-                                && mouseY >= (y - offset)
-                                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)) {
                         
-    
+                        var bubbleMin  = this.properties.bubbleMin;
+                        var bubbleMax  = this.properties.bubbleMax;
+                        var bubbleData = this.properties.bubbleData;
+                        var maxWidth   = this.properties.bubbleWidth;
+                        var isBubble   =    RGraph.isNumber(bubbleMin)
+                                         && RGraph.isNumber(bubbleMax)
+                                         && RGraph.isArray(bubbleData)
+                                         && RGraph.isNumber(bubbleData[i]);
+                        if (isBubble) {
+                            
+                            // Get the width of the bubble from the coordinates
+                            var bubbleWidth = this.coordsBubble[set][i][2];
+
+                            // Get the mouse distance from the center
+                            // of the point
+                            var hypLength = RGraph.getHypLength(mouseX, mouseY, x, y);
+                        }
+                        
+                        // Add highlight so that we can observe the hotspot
+                        //this.path('lw 1 b a % % % 0 6.29 false s gray', x, y, bubbleWidth)
+                        
+                        if (typeof y == 'number') {
+                            if (   ((isBubble && hypLength <= bubbleWidth) || (mouseX <= (x + offset) && mouseX >= (x - offset) && mouseY <= (y + offset) && mouseY >= (y - offset)))
+                                && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)) {
+
+
     
                                 if (RGraph.parseTooltipText) {
                                     var tooltip = RGraph.parseTooltipText(this.data[set][i][3], 0);
@@ -2197,12 +2215,30 @@
                     properties.highlightStroke
                 );
             } else {
+
                 // Boxplot highlight
                 if (shape.height) {
                     RGraph.Highlight.rect(this, shape);
-        
+                
+                // Bubble chart highlight
+                } else if (
+                              RGraph.isNumber(this.properties.bubbleMin)
+                           && RGraph.isNumber(this.properties.bubbleMax)
+                           && RGraph.isNumber(this.properties.bubbleWidth)
+                           && RGraph.isArray(this.properties.bubbleData)
+                           && this.properties.bubbleData[shape.index]
+                          ) {
+                    var value = this.properties.bubbleData[shape.index];
+                    var min   = this.properties.bubbleMin;
+                    var max   = this.properties.bubbleMax;
+                    var width = this.properties.bubbleWidth;
+
+                    this.properties.highlightPointRadius = (value - min) / (max - min) * width / 2;
+                    RGraph.Highlight.point(this, shape);
+
                 // Point highlight
                 } else {
+                    this.properties.highlightPointRadius = this.properties.tickmarkSize;
                     RGraph.Highlight.point(this, shape);
                 }
             }
@@ -2380,6 +2416,14 @@
 
             // Loop through all the points (first dataset)
             for (var i=0; i<this.coords[dataset].length; ++i) {
+            
+                //
+                // Is there a bubble data-piece for this point?
+                // If not the skip it.
+                //
+                if (!RGraph.isNumber(data[i])) {
+                    continue;
+                }
 
                 data[i] = Math.max(data[i], min);
                 data[i] = Math.min(data[i], max);
