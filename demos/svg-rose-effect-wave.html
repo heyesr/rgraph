@@ -1,0 +1,32 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.rose.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Animated SVG Rose charts using the roundrobin() effect</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 450px; height: 400px" id="chart-container"></div>
+    </div>
+        
+    <script>
+        rose= new RGraph.SVG.Rose({
+            id: 'chart-container',
+            data: [8,4,9,6,3,2,5,6,4,2],
+            //data: [[4,8,9],[8,6,5],[3,2,5],[4,5,1],[5,8,9],[2,2,2],[5,2,3],[8,4,6]],
+            options: {
+                colors:['gradient(#c33:red)']
+            }
+        }).wave();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
