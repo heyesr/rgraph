@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.svg.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -16,14 +17,14 @@
 
     <script>
         dataset1 = [
-            {x: 10, y: 5, z: 10, color: 'red'},
-            {x: 20, y: 8, z: 8, color: 'yellow'},
-            {x: 30, y: 2, z: 3, color: 'blue'},
-            {x: 40, y: 5, z: 5, color: 'pink'},
-            {x: 50, y: 3, z: 6, color: 'black'},
-            {x: 60, y: 8, z: 1, color: 'magenta'},
-            {x: 70, y: 9, z: 2, color: 'cyan'},
-            {x: 80, y: 4, z: 8, color: 'red'}
+            {x: 10, y: 5, z: 10, color: 'red',     tooltip: 'A red bubble'},
+            {x: 20, y: 8, z: 8,  color: 'yellow',  tooltip: 'A yellow bubble'},
+            {x: 30, y: 2, z: 3,  color: 'blue',    tooltip: 'A blue bubble'},
+            {x: 40, y: 5, z: 5,  color: 'pink',    tooltip: 'A pink bubble'},
+            {x: 50, y: 3, z: 6,  color: 'black',   tooltip: 'A black bubble'},
+            {x: 60, y: 8, z: 1,  color: 'magenta', tooltip: 'A magenta bubble'},
+            {x: 70, y: 9, z: 2,  color: 'cyan',    tooltip: 'A cyan bubble'},
+            {x: 80, y: 4, z: 8,  color: 'red',     tooltip: 'A red bubble'}
         ];
 
         var scatter = new RGraph.SVG.Scatter({
@@ -41,7 +42,11 @@
                 backgroundGridBorder: false,
                 yaxis: false,
                 colors: ['blue', 'red'],
-                title: 'A Scatter/Bubble chart'
+                title: 'A Scatter/Bubble chart',
+                tooltipsEvent: 'click',
+                tooltipsCss: {
+                    fontSize: '16pt'
+                }
             }
         }).trace();
     </script>
