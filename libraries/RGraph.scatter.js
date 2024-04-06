@@ -73,6 +73,43 @@
 
 
 
+
+
+
+
+        //
+        // Create the sequential indexes map arrays
+        //
+        this.dataIndexMapGroupedToSequential = [];
+        this.dataIndexMapSequentialToGrouped = [];
+        
+        for (let dataset=0,seq=0; dataset<this.data.length; ++dataset) {
+            for (let index=0; index<this.data[dataset].length; ++index,++seq) {
+        
+            // Ensure the arrays are initialised
+                if (!RGraph.isArray(this.dataIndexMapGroupedToSequential[dataset])) {
+                    this.dataIndexMapGroupedToSequential[dataset] = [];
+                }
+                if (!RGraph.isArray(this.dataIndexMapGroupedToSequential[dataset][index])) {
+                    this.dataIndexMapGroupedToSequential[dataset][index] = [];
+                }
+                
+                this.dataIndexMapGroupedToSequential[dataset][index] = seq;
+                this.dataIndexMapSequentialToGrouped[seq] = [dataset, index];
+            }
+        }
+                //
+        // End of creating the sequential indexes map arrays
+        //
+
+
+
+
+
+
+
+
+
         // If necessary convert X/Y values passed as strings
         // to numbers
         for (var i=0,len=this.data.length; i<len; ++i) { // Datasets
@@ -1860,6 +1897,8 @@
                         var y = this.coords[set][i][1];
                         var tooltip = this.data[set][i][3];
                         
+                        var seq = this.dataIndexMapGroupedToSequential[set][i];
+
                         var bubbleMin  = this.properties.bubbleMin;
                         var bubbleMax  = this.properties.bubbleMax;
                         var bubbleData = this.properties.bubbleData;
@@ -1867,9 +1906,9 @@
                         var isBubble   =    RGraph.isNumber(bubbleMin)
                                          && RGraph.isNumber(bubbleMax)
                                          && RGraph.isArray(bubbleData)
-                                         && RGraph.isNumber(bubbleData[i]);
+                                         && RGraph.isNumber(bubbleData[seq]);
                         if (isBubble) {
-                            
+
                             // Get the width of the bubble from the coordinates
                             var bubbleWidth = this.coordsBubble[set][i][2];
 
@@ -2226,9 +2265,9 @@
                            && RGraph.isNumber(this.properties.bubbleMax)
                            && RGraph.isNumber(this.properties.bubbleWidth)
                            && RGraph.isArray(this.properties.bubbleData)
-                           && this.properties.bubbleData[shape.index]
+                           && RGraph.isNumber(this.properties.bubbleData[shape.sequentialIndex])
                           ) {
-                    var value = this.properties.bubbleData[shape.index];
+                    var value = this.properties.bubbleData[shape.sequentialIndex];
                     var min   = this.properties.bubbleMin;
                     var max   = this.properties.bubbleMax;
                     var width = this.properties.bubbleWidth;
@@ -2261,7 +2300,7 @@
         this.getObjectByXY = function (e)
         {
             var mouseXY = RGraph.getMouseXY(e);
-    
+
             if (
                    mouseXY[0] > (this.marginLeft - 3)
                 && mouseXY[0] < (this.canvas.width - this.marginRight + 3)
@@ -2270,6 +2309,33 @@
                 ) {
     
                 return this;
+            
+            //
+            // Do this if a bubble chart is being shown to
+            // accommodate bubbles that are outside of the
+            // graphArea
+            //
+            } else if (
+                          RGraph.isArray(this.properties.bubbleData)
+                       && RGraph.isNumber(this.properties.bubbleMax)
+                       && RGraph.isNumber(this.properties.bubbleMin)
+                       && RGraph.isNumber(this.properties.bubbleWidth)
+                      ) {
+                      
+                    // Draw a rectangle which matches the
+                    // graphArea - except that it's bigger by half-a-bubbles
+                    // width to accommodate them poking out at the adges of
+                    // the canvas
+                    var halfBubble = this.properties.bubbleWidth / 2;
+                    
+                    if (
+                           mouseXY[0] > (this.marginLeft - halfBubble)
+                        && mouseXY[0] < (this.canvas.width - this.marginRight + halfBubble)
+                        && mouseXY[1] > (this.marginTop - halfBubble)
+                        && mouseXY[1] < ((this.canvas.height - this.marginBottom) + halfBubble)
+                       ) {
+                        return this;
+                    }
             }
         };
 
@@ -2406,30 +2472,45 @@
         //
         this.drawBubble = function (dataset)
         {
-            var data  = RGraph.isArray(properties.bubbleData) && RGraph.isArray(properties.bubbleData[dataset]) ? properties.bubbleData[dataset] : properties.bubbleData;
-            var min   = RGraph.isArray(properties.bubbleMin) ? properties.bubbleMin[dataset] : properties.bubbleMin;
-            var max   = RGraph.isArray(properties.bubbleMax) ? properties.bubbleMax[dataset] : properties.bubbleMax;
-            var width = RGraph.isArray(properties.bubbleWidth) ? properties.bubbleWidth[dataset] : properties.bubbleWidth;
+            //
+            // First things first, linearize the bubbleData array.
+            // Doing this allows you to give the array as both
+            // linear and multi-dimensional (for qwhen you have
+            // multiple datasets)
+            //
+            properties.bubbleData = RGraph.arrayLinearize(properties.bubbleData);
+
+            // Now that the bubbleData is linearised this is not
+            // really necessary
+            //var data  = RGraph.isArray(properties.bubbleData) && RGraph.isArray(properties.bubbleData[dataset]) ? properties.bubbleData[dataset] : properties.bubbleData;
+            
+            var data  = this.properties.bubbleData;
+            var min   = RGraph.isArray(this.properties.bubbleMin)   ? this.properties.bubbleMin[dataset]   : this.properties.bubbleMin;
+            var max   = RGraph.isArray(this.properties.bubbleMax)   ? this.properties.bubbleMax[dataset]   : this.properties.bubbleMax;
+            var width = RGraph.isArray(this.properties.bubbleWidth) ? this.properties.bubbleWidth[dataset] : this.properties.bubbleWidth;
 
             // Initialise the coordinates array
             this.coordsBubble[dataset] = [];
 
-            // Loop through all the points (first dataset)
-            for (var i=0; i<this.coords[dataset].length; ++i) {
-            
+            // Loop through all the points (ALL datasets now)
+            for (var index=0; index<this.coords[dataset].length; ++index) {
+
+                // Get the sequential index
+                var seq = this.dataIndexMapGroupedToSequential[dataset][index];
+
                 //
                 // Is there a bubble data-piece for this point?
                 // If not the skip it.
                 //
-                if (!RGraph.isNumber(data[i])) {
+                if (!RGraph.isNumber(data[seq])) {
                     continue;
                 }
 
-                data[i] = Math.max(data[i], min);
-                data[i] = Math.min(data[i], max);
+                data[seq] = Math.max(data[seq], min);
+                data[seq] = Math.min(data[seq], max);
 
-                var radius = (((data[i] - min) / (max - min) ) * width) / 2,
-                    color  = this.data[dataset][i][2] ? this.data[dataset][i][2] : properties.colorsDefault;
+                var radius = (((data[seq] - min) / (max - min) ) * width) / 2,
+                    color  = this.data[dataset][index][2] ? this.data[dataset][index][2] : this.properties.colorsDefault;
 
 
 
@@ -2453,22 +2534,22 @@
                 this.context.beginPath();
                 this.context.fillStyle = RGraph.radialGradient({
                     object: this,
-                    x1:     this.coords[dataset][i][0] + (radius / 2.5),
-                    y1:     this.coords[dataset][i][1] - (radius / 2.5),
+                    x1:     this.coords[dataset][index][0] + (radius / 2.5),
+                    y1:     this.coords[dataset][index][1] - (radius / 2.5),
                     r1:     0,
-                    x2:     this.coords[dataset][i][0] + (radius / 2.5),
-                    y2:     this.coords[dataset][i][1] - (radius / 2.5),
+                    x2:     this.coords[dataset][index][0] + (radius / 2.5),
+                    y2:     this.coords[dataset][index][1] - (radius / 2.5),
                     r2:     radius,
                     colors: [
-                        properties.colorsBubbleGraduated ? 'white' : color,
+                        this.properties.colorsBubbleGraduated ? 'white' : color,
                         color
                     ]
                 });
 
                 // Draw the bubble
                 this.context.arc(
-                    this.coords[dataset][i][0],
-                    this.coords[dataset][i][1],
+                    this.coords[dataset][index][0],
+                    this.coords[dataset][index][1],
                     radius,
                     0,
                     RGraph.TWOPI,
@@ -2476,7 +2557,7 @@
                 );
 
                 if (this.properties.colorsBubbleStroke) {
-                    this.context.lineWidth = this.properties.bubbleLinewidth;
+                    this.context.lineWidth   = this.properties.bubbleLinewidth;
                     this.context.strokeStyle = this.properties.colorsBubbleStroke;
                     this.context.stroke();
                 }
@@ -2488,9 +2569,9 @@
                     RGraph.noShadow(this);
                 }
 
-                this.coordsBubble[dataset][i] = [
-                    this.coords[dataset][i][0],
-                    this.coords[dataset][i][1],
+                this.coordsBubble[dataset][index] = [
+                    this.coords[dataset][index][0],
+                    this.coords[dataset][index][1],
                     radius,
                     this.context.fillStyle
                 ];
