@@ -29,6 +29,7 @@
         this.subTotal               = 0;
         this.angles                 = [];
         this.data                   = data;
+        this.originalData           = data.clone();
         this.properties             = [];
         this.type                   = 'pie';
         this.isRGraph               = true;
@@ -45,6 +46,7 @@
         this.firstDraw              = true; // After the first draw this will be false
         this.exploding              = null;
         this.stopAnimationRequested = false;// Used to control the animations
+        this.waveRadiusMultiplier   = RGraph.arrayFill([], this.data.length, 1);
 
 
 
@@ -355,11 +357,10 @@
             // that they're using the correct capitalisation
             if (typeof name === 'string') {
                 name = this.properties_lowercase_map[name.toLowerCase()] || name;
-            }
 
-            // Accommodate some BC
-            if (name === 'labelsOffsetRadius') {
-                name = 'labelsRadiusOffset';
+                // Accommodate some BC
+                if (name.toLowerCase() === 'labelsoffsetradius') { name = 'labelsRadiusOffset'; }
+                if (name.toLowerCase() === 'labelsoffsetr')      { name = 'labelsRadiusOffset'; }
             }
             
             // Set the colorsParsed flag to false if the colors
@@ -573,6 +574,8 @@
             
             for (var action=0; action<2; action+=1) {
                 for (var i=0; i<len; i++) {
+                
+                    var r = this.radius * this.waveRadiusMultiplier[i];
     
                     this.context.beginPath();
      
@@ -854,13 +857,6 @@
         //
         this.drawSegment = function (radians, color, last, index)
         {
-            // IE7/8/ExCanvas fix (when there's only one segment the Pie chart doesn't display
-            //if (RGraph.ISOLD && radians == RGraph.TWOPI) {
-            //    radians -= 0.0001;
-            //} else if (RGraph.ISOLD && radians == 0) {
-            //    radians = 0.001;
-            //}
-
             var subTotal = this.subTotal;
                 radians  = radians * properties.effectRoundrobinMultiplier;
     
@@ -892,14 +888,15 @@
                     var t         = subTotal + (radians / 2);
                     var x         = (Math.cos(t) * explosion);
                     var y         = (Math.sin(t) * explosion);
-                    var r         = this.radius;
                 
                     this.context.moveTo(this.centerx + x, this.centery + y);
                 } else {
                     var x = 0;
                     var y = 0;
-                    var r = this.radius;
                 }
+                
+                var r = this.radius;
+                r    *= this.waveRadiusMultiplier[index];
     
                 //
                 // Calculate the angles
@@ -2897,6 +2894,104 @@
     
             iterator();
             
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Pie chart wave effect
+        // 
+        // Grows the Pie chart segment by segment in a wave pattern
+        //  - gradually incrementing the size of the wave property
+        // 
+        // @param object     Options for the effect
+        // @param function   An optional callback function to call when the animation completes
+        //
+        this.wave = function ()
+        {
+
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+
+            // If there's only one bar call the grow function instead
+            if (this.data.length === 1) {
+                return this.grow(arguments[0], arguments[1]);
+            }
+
+            var obj = this,
+                opt = arguments[0] || {};
+
+            opt.frames      =  opt.frames || 60;
+            opt.startFrames = [];
+            opt.counters    = [];
+
+            var framespersegment = opt.frames / 2,
+                frame            = -1,
+                callback         = arguments[1] || function () {},
+                original         = this.originalData.clone();
+
+            //
+            // turn off the labels option whilst animating
+            //
+            var originalLabels = this.get('labels');
+            this.set('labels', false);
+
+            for (var i=0,len=obj.data.length; i<len; i+=1) {
+                opt.startFrames[i] = ((opt.frames / 2) / (obj.data.length - 1)) * i;
+                opt.counters[i] = 0;
+            }
+
+            // Initialise all of the wave multipliers to zero
+            for (let i=0; i<this.data.length; ++i) {
+                this.waveRadiusMultiplier[i] = 0;
+            }
+
+            RGraph.clear(obj.canvas);
+
+            function iterator ()
+            {
+                if (obj.stopAnimationRequested) {
+
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+
+                    // Reset the data
+                    obj.data = RGraph.arrayClone(obj.originalData);
+
+                    return;
+                }
+
+                ++frame;
+
+                for (let i=0,len=obj.data.length; i<len; i+=1) {
+                    if (frame > opt.startFrames[i]) {
+                        obj.waveRadiusMultiplier[i] = Math.min(1, opt.counters[i]++ / framespersegment);
+                    }
+                }
+
+
+                if (frame >= opt.frames) {
+                    obj.set('labels', originalLabels);
+                    obj.waveRadiusMultiplier = RGraph.arrayFill([], obj.originalData.length, 1);
+                    RGraph.redrawCanvas(obj.canvas);
+                    callback(obj);
+
+                } else {
+
+                    RGraph.redrawCanvas(obj.canvas);
+                    RGraph.Effects.updateCanvas(iterator);
+                }
+            }
+
+            iterator();
+
             return this;
         };
 
