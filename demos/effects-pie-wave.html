@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Pie chart wave effect</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs1" width="600" height="300">[No canvas support]</canvas>
+        <canvas id="cvs2" width="600" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        pie1 = new RGraph.Pie({
+            id: 'cvs1',
+            data: [8,10,4,8,7,5],
+            options: {
+                labels: ['Charlie','Bobby','Paul','Olga','Lucy','Hugh'],
+                textSize: 18,
+                shadow: false
+            }
+        }).wave();
+
+        pie2 = new RGraph.Pie({
+            id: 'cvs2',
+            data: [8,10,4,8,7,5],
+            options: {
+                labels: ['Charlie','Bobby','Paul','Olga','Lucy','Hugh'],
+                textSize: 18,
+                shadow: false,
+                variant: 'donut'
+            }
+        }).wave();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
