@@ -600,12 +600,19 @@
     RGraph.arrayClone = function ()
     {
         var args = RGraph.getArgs(arguments, 'array');
+        var c;
 
-        if(args.array === null || typeof args.array !== 'object') {
-            return args.array;
+        if (window.structuredClone) {
+            c = window.structuredClone(args.array);
+        } else {
+            if(args.array === null || typeof args.array !== 'object') {
+                return args.array;
+            }
+
+            c = JSON.parse(JSON.stringify(args.array));
         }
 
-        return JSON.parse(JSON.stringify(args.array));
+        return c;
 
         //var temp = RGraph.isArray(args.array) ? [] : {};
         //
@@ -635,7 +642,7 @@
     //       arr1 = [1,2,3,4,5,6];
     //       arr2 = arr1.clone();
     //
-    Array.prototype.clone = function ()
+    Object.prototype.clone = function ()
     {
         return RGraph.arrayClone(this);
     };
