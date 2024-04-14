@@ -772,7 +772,7 @@
 
 
             // Loop thru the data drawing the bars
-            for (var i=0; i<(this.data.length); ++i) {
+            for (var i=0; i<this.data.length; ++i) {
             
                 var prevValue    = this.data[i - 1],
                     nextValue    = this.data[i + 1],
@@ -864,7 +864,7 @@
 
                 // This handles an intermediate total
                 if (this.data[i] === null || typeof this.data[i] === 'undefined') {
-                    
+
                     var axisY = this.getYCoord(0);
                     
                     if (prevValue < 0) {
@@ -910,7 +910,7 @@
 
                     // Add the bar to the first-bar-group if
                     // drawing the first bar
-                    parent: i === 0 ? document.getElementById('first-bar-group') : this.svgAllGroup,
+                    parent: (i === 0 || (properties.total && i === (this.data.length - 1))) ? document.getElementById('first-bar-group') : this.svgAllGroup,
 
                     attr: {
                         x: x,
