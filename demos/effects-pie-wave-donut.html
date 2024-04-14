@@ -1,0 +1,49 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.effects.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Pie chart wave effect on a donut chart</h1>
+    
+    <p>
+        A demonstration of the new <code>Pie chart</code>
+        <code>wave</code> effect on a
+        <code>Donut chart</code> combined with the
+        <code>callback</code> function which then adjusts the
+        <code>donut</code> width.
+    </p>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [4,8,2,6,9,5],
+            options: {
+                shadow: false,
+                labels: ['Brian','Olga','Vicki','Lucy','Bobby','Paul'],
+                labelsList: 0,
+                labelsSize: 18,
+                linewidth: 5,
+                variant: 'donut'
+            }
+        //}).wave({frames: 180});
+        }).wave({frames: 180}, function (obj)
+        {
+            obj.set('variantDonutWidth', obj.radius / 2);
+            obj.animate({variantDonutWidth: 125});
+        });
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
