@@ -1003,6 +1003,7 @@ div#boxout-container div.image-container {
 
 div#dropdown-menu-smallscreen-container {
     display: flex;
+    justify-content: center;
 }
 
 ul.dropdown-menu-smallscreen li {
