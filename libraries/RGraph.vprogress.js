@@ -63,7 +63,8 @@
             marginInner:                    0,
 
 
-            backgroundColor:                'Gradient(#ccc:#eee:#efefef)',
+            //backgroundColor:                'Gradient(#ccc:#eee:#efefef)',
+            backgroundColor:                '#eee',
 
             shadow:                         false,
             shadowColor:                    'rgba(0,0,0,0.5)',

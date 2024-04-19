@@ -57,7 +57,8 @@
             tickmarksInnerCount:                0,
             tickmarksOuterCount:                0,
 
-            backgroundColor:                    'Gradient(#ccc:#eee:#efefef)',
+            //backgroundColor:                    'Gradient(#ccc:#eee:#efefef)',
+            backgroundColor:                    '#eee',
 
             marginLeft:                         35,
             marginRight:                        35,
