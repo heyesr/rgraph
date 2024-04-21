@@ -28,9 +28,10 @@
                 marginRight: 15,
                 marginTop: 15,
                 marginBottom: 35,
-                marginInner: 7
+                marginInner: 7,
+                marginInner: 10
             }
-        }).grow();
+        }).draw();
         
         var coords = hprogress.coords[0];
         var x      = hprogress.getXCoord(55);
@@ -43,7 +44,7 @@
             width: x - hprogress.marginLeft,
             height: hprogress.canvas.height - hprogress.marginTop - hprogress.marginBottom - 10,
             options: {
-                colorsFill: 'Gradient(rgba(255,0,0,0.5):rgba(255,0,0,0):rgba(255,0,0,0))'
+                colorsFill: '#f008'
             }
         }).draw();
         
