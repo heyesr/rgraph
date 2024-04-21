@@ -599,10 +599,11 @@
     //
     RGraph.arrayClone = function ()
     {
-        var args = RGraph.getArgs(arguments, 'array');
+        var args = RGraph.getArgs(arguments, 'array,options');
         var c;
+        var structuredClone = !args.options || args.options.structuredClone;
 
-        if (window.structuredClone) {
+        if (window.structuredClone && structuredClone) {
             c = window.structuredClone(args.array);
         } else {
             if(args.array === null || typeof args.array !== 'object') {
@@ -610,7 +611,7 @@
             }
 
             c = JSON.parse(JSON.stringify(args.array));
-        }
+         }
 
         return c;
 
@@ -644,7 +645,7 @@
     //
     Object.prototype.clone = function ()
     {
-        return RGraph.arrayClone(this);
+        return RGraph.arrayClone(this, arguments[0]);
     };
 
 

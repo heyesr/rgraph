@@ -128,6 +128,7 @@
             labelsAxesColor:               null,
             labelsAxesBold:                null,
             labelsAxesItalic:              null,
+            labelsAxesBackground:          'rgba(255,255,255,0.8)',
             labelsAxesCount:               5,
             labelsAxesOffsetx:             0,
             labelsAxesOffsety:             0,
@@ -210,10 +211,6 @@
             annotatable:                   false,
             annotatableColor:              'black',
             annotatableLinewidth:          1,
-
-            resizable:                     false,
-            resizableHandleAdjust:         [0,0],
-            resizableHandleBackground:     null,
 
             adjustable:                    false,
 
@@ -907,7 +904,7 @@
             //
             // A non-equi-angular Rose chart
             //
-            if (typeof properties.variant == 'string' && properties.variant.indexOf('non-equi-angular') !== -1) {
+            if (typeof properties.variant === 'string' && properties.variant.indexOf('non-equi-angular') !== -1) {
 
                 var total=0;
                 for (var i=0; i<data.length; ++i) {
@@ -941,6 +938,12 @@
     
                         var startAngle = (this.startRadians * properties.animationRoundrobinFactor) - RGraph.HALFPI + margin;
                         var endAngle   = ((this.startRadians + segmentRadians) * properties.animationRoundrobinFactor) - RGraph.HALFPI - margin;
+                        
+                        // Allow for the segments to be offset
+                        if (RGraph.isNumber(this.properties.anglesOffset)) {
+                            startAngle += this.properties.anglesOffset;
+                            endAngle   += this.properties.anglesOffset;
+                        }
     
                         var exploded  = this.getExploded(i, startAngle, endAngle, properties.exploded);
                         var explodedX = exploded[0];
@@ -1031,6 +1034,15 @@
     
                             var startAngle = (this.startRadians * properties.animationRoundrobinFactor) - RGraph.HALFPI + margin;
                             var endAngle   = (this.startRadians * properties.animationRoundrobinFactor) + (segmentRadians * properties.animationRoundrobinFactor) - RGraph.HALFPI - margin;
+                            
+                            //
+                            // If theres an offset specified for the
+                            // segments - apply that
+                            //
+                            if (RGraph.isNumber(this.properties.anglesOffset)) {
+                                startAngle += this.properties.anglesOffset;
+                                endAngle   += this.properties.anglesOffset;
+                            }
     
                             var exploded  = this.getExploded(i, startAngle, endAngle, properties.exploded);
                             var explodedX = exploded[0];
@@ -1088,7 +1100,13 @@
 
                             var startAngle = (this.startRadians * properties.animationRoundrobinFactor) - RGraph.HALFPI + margin;
                             var endAngle  = (this.startRadians * properties.animationRoundrobinFactor)+ (segmentRadians * properties.animationRoundrobinFactor) - RGraph.HALFPI - margin;
-                        
+
+                            // Allow for the segments to be offset
+                            if (RGraph.isNumber(this.properties.anglesOffset)) {
+                                startAngle += this.properties.anglesOffset;
+                                endAngle   += this.properties.anglesOffset;
+                            }
+
                             var exploded  = this.getExploded(i, startAngle, endAngle, properties.exploded);
                             var explodedX = exploded[0];
                             var explodedY = exploded[1];
@@ -1386,7 +1404,7 @@
             }
     
     
-            var color = 'rgba(255,255,255,0.8)';
+            var color = this.properties.labelsAxesBackground;
     
             // The "North" axis labels
             if (axes.indexOf('n') > -1) {
@@ -1619,7 +1637,7 @@
                     // MJLR bug fix 21/04/2020 - label positions ignored anglesStart property
                     a = a + properties.anglesStart;
                 }
-    
+
                 var x = centerx + (Math.cos(a) * radius);
                 var y = centery + (Math.sin(a) * radius);
     
