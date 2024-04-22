@@ -67,6 +67,7 @@
             radius:                         null,
             
             anglesStart:                    0,            
+            anglesOffset:                   0,            
             
             linewidth:                      1,
             

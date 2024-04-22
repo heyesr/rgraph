@@ -601,7 +601,7 @@
     {
         var args = RGraph.getArgs(arguments, 'array,options');
         var c;
-        var structuredClone = !args.options || args.options.structuredClone;
+        var structuredClone = args.options && args.options.structuredClone;
 
         if (window.structuredClone && structuredClone) {
             c = window.structuredClone(args.array);
@@ -614,29 +614,83 @@
          }
 
         return c;
-
-        //var temp = RGraph.isArray(args.array) ? [] : {};
-        //
-        //for (var i in args.array) {
-        //    if (typeof i === 'string' || typeof i === 'number' ) {
-        //        if (typeof args.array[i]  === 'number') {
-        //            temp[i] = (function (arg) {return Number(arg);})(args.array[i]);
-        //        
-        //        } else if (typeof args.array[i]  === 'string') {
-        //            temp[i] = (function (arg) {return String(arg);})(args.array[i]);
-        //        
-        //        } else if (typeof args.array[i] === 'function') {
-        //            temp[i] = args.array[i];
-        //        
-        //        } else {
-        //            temp[i] = RGraph.arrayClone(args.array[i]);
-        //        }
-        //    }
-        //}
-
-        //return temp;
     };
+
+
+
+
+
+
+
+
+
+    //
+    // An updated clone function that works better
+    //
+    // @param obj mixed The variable to clone and
+    //                  return a copy of.
+    //
+    RGraph.arrayClone = function (obj,options)
+    {
+        var ret             = null;
+        var structuredClone = options && options.structuredClone;
+
+        if (typeof obj === 'undefined') {
+            return undefined;
+        }
+
+        if (RGraph.isNull(obj)) {
+            return null;
+        }
+
+        if (window.structuredClone && structuredClone) {
+            ret = window.structuredClone(obj);
+        } else {
+
+            switch(typeof obj)
+            {
+                case 'string':
+                    ret = (function (str){return String(str)})(obj);
+                    break;
+                
+                case 'number':
+                    ret = (function (num){return Number(num)})(obj);
+                    break;
+
+                case 'boolean':
+                    ret = obj;
+                    break;
     
+                case 'object':
+                    if (obj.constructor.toString().indexOf('Array') >= 0) {
+                        ret = new Array();
+                        for (i in obj) {
+                            ret[i] = RGraph.arrayClone(obj[i]);
+                        }
+                    } else if (obj.constructor.toString().indexOf('Object') >= 0) {
+                        ret = new Object();
+                        for (i in obj) {
+                            ret[i] = RGraph.arrayClone(obj[i]);
+                        }
+                    }
+                    break;
+                
+                case 'function':
+                    ret = obj;
+                    break;
+            }
+        }
+        
+        return ret;
+    };
+
+
+
+
+
+
+
+
     //
     // With this variation of the clone function you can do
     // this:

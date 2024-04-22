@@ -1519,14 +1519,14 @@ if (properties.corners === 'round') {
         {
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
-                this.original_colors.colors              = RGraph.arrayClone(properties.colors);
-                this.original_colors.tickmarksInnerColor = RGraph.arrayClone(properties.tickmarksInnerColor);
-                this.original_colors.tickmarksOuterColor = RGraph.arrayClone(properties.tickmarksOuterColor);
-                this.original_colors.colorsStrokeInner   = RGraph.arrayClone(properties.colorsStrokeInner);
-                this.original_colors.colorsStrokeOuter   = RGraph.arrayClone(properties.colorsStrokeOuter);
-                this.original_colors.highlightFill       = RGraph.arrayClone(properties.highlightFill);
-                this.original_colors.highlightStroke     = RGraph.arrayClone(properties.highlightStroke);
-                this.original_colors.backgroundColor     = RGraph.arrayClone(properties.backgroundColor);
+                this.original_colors.colors              = RGraph.arrayClone(properties.colors, {structuredClone: false});
+                this.original_colors.tickmarksInnerColor = RGraph.arrayClone(properties.tickmarksInnerColor, {structuredClone: false});
+                this.original_colors.tickmarksOuterColor = RGraph.arrayClone(properties.tickmarksOuterColor, {structuredClone: false});
+                this.original_colors.colorsStrokeInner   = RGraph.arrayClone(properties.colorsStrokeInner, {structuredClone: false});
+                this.original_colors.colorsStrokeOuter   = RGraph.arrayClone(properties.colorsStrokeOuter, {structuredClone: false});
+                this.original_colors.highlightFill       = RGraph.arrayClone(properties.highlightFill, {structuredClone: false});
+                this.original_colors.highlightStroke     = RGraph.arrayClone(properties.highlightStroke, {structuredClone: false});
+                this.original_colors.backgroundColor     = RGraph.arrayClone(properties.backgroundColor, {structuredClone: false});
             }
 
             var colors = properties.colors;
