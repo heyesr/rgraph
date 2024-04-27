@@ -17,9 +17,9 @@
 
     <script>
         data   = [28,19,39,45];
-        values = RGraph.SVG.clone(data);
+        values = RGraph.SVG.arrayClone(data);
         labels = ['John','Fred','Mark','Andy'];
-
+$c(values)
         activity = new RGraph.SVG.Activity({
             id: 'chart-container',
             min: 0,

@@ -23,11 +23,11 @@
         data2          = [20,40,60,70,90,30,40,70,60,80,20,30];
         marginLeft     = 75;
         yaxisTitleBold = true;
-        labels         = data2.clone();
+        labels         = RGraph.arrayClone(data2);
     
         bar1 = new RGraph.Bar({
             id: 'cvs',
-            data: data.clone(),
+            data: RGraph.arrayClone(data),
             options: {
                 xaxis: false,
                 yaxis: false,
@@ -55,7 +55,7 @@
 
         bar2 = new RGraph.Bar({
             id: 'cvs',
-            data: data2.clone(),
+            data: RGraph.arrayClone(data2),
             options: {
                 xaxis: false,
                 xaxisPosition: 'top',

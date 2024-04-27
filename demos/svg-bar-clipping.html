@@ -19,7 +19,7 @@
 
         new RGraph.SVG.Bar({
             id: 'chart-container',
-            data: DATA.clone(),
+            data: RGraph.SVG.arrayClone(DATA),
             options: {
                 clip:   'y:min-33.333%',
                 colors: ['red'],
@@ -33,11 +33,11 @@
                 backgroundGridVlines: false,
                 yaxis: false
             }
-        }).grow();
+        }).grow({frames: 90});
 
         new RGraph.SVG.Bar({
             id: 'chart-container',
-            data: DATA.clone(),
+            data: RGraph.SVG.arrayClone(DATA),
             options: {
                 clip:   'y:33.333%-66.666%',
                 colors: ['blue'],
@@ -48,11 +48,11 @@
                 textSize: 16,
                 textItalic: true,
             }
-        }).grow();
+        }).grow({frames: 90});
 
         new RGraph.SVG.Bar({
             id: 'chart-container',
-            data: DATA.clone(),
+            data: RGraph.SVG.arrayClone(DATA),
             options: {
                 clip:   'y:66.666%-max',
                 colors: ['green'],
@@ -63,7 +63,7 @@
                 textSize: 16,
                 textItalic: true,
             }
-        }).grow();
+        }).grow({frames: 90});
     </script>
 
     <script>showSource()</script>
