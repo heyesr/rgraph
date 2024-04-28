@@ -58,7 +58,7 @@
                 //
                 // NB Don't need to do this for this chart type
                 //if (name === 'colors') {
-                //    this.originalColors = RGraph.SVG.arrayClone(value);
+                //    this.originalColors = RGraph.SVG.arrayClone(value, true);
                 //    this.colorsParsed = false;
                 //}
             }
@@ -1359,10 +1359,10 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
             // Save the original colors so that they can be restored when the canvas is reset
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:                  RGraph.SVG.arrayClone(properties.colors),
-                    backgroundFill:          RGraph.SVG.arrayClone(properties.backgroundFill),
-                    backgroundStroke:        RGraph.SVG.arrayClone(properties.backgroundStroke),
-                    labelsIngraphBackground: RGraph.SVG.arrayClone(properties.labelsIngraphBackground)
+                    colors:                  RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundFill:          RGraph.SVG.arrayClone(properties.backgroundFill, true),
+                    backgroundStroke:        RGraph.SVG.arrayClone(properties.backgroundStroke, true),
+                    labelsIngraphBackground: RGraph.SVG.arrayClone(properties.labelsIngraphBackground, true)
                 }
             }
 

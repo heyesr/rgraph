@@ -57,7 +57,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -488,7 +488,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -737,7 +737,7 @@
                         fill: properties.colors[i],
                         stroke: properties.colorsStroke,
                         'stroke-width': properties.linewidth,
-                        'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                        'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
                         'data-index': i,
                         'data-value': value,
                         'data-start-angle': this.angles[i].start,
@@ -1309,8 +1309,8 @@
             // Save the original colors so that they can be restored when the canvas is reset
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:        RGraph.SVG.arrayClone(properties.colors),
-                    highlightFill: RGraph.SVG.arrayClone(properties.highlightFill)
+                    colors:        RGraph.SVG.arrayClone(properties.colors, true),
+                    highlightFill: RGraph.SVG.arrayClone(properties.highlightFill, true)
                 }
             }
             
@@ -1353,7 +1353,7 @@
         {
             var obj          = this,
                 opt          = arguments[0] || {},
-                data         = RGraph.SVG.arrayClone(this.data),
+                data         = RGraph.SVG.arrayClone(this.data, true),
                 frame        = 1,
                 frames       = opt.frames || 30,
                 callback     = typeof opt.callback === 'function' ? opt.callback : function () {},
@@ -1361,6 +1361,7 @@
                 textColor    = properties.textColor,
                 ingraph      = properties.labelsIngraph,
                 multiplier   = 0;
+
             
             // Set the text colors to transparent
             properties.textColor     = 'rgba(0,0,0,0)';
@@ -1371,8 +1372,7 @@
             obj.draw();
             
             // Now get the resulting angles
-            var angles = RGraph.SVG.arrayClone(this.angles);
-
+            var angles = RGraph.SVG.arrayClone(this.angles, true);
 
             function iterator ()
             {

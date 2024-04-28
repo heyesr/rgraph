@@ -17,7 +17,7 @@
     RGraph.RScatter = function (conf)
     {
         // Save the original data
-        this.unmodified_data = conf.data.clone();
+        this.unmodified_data = RGraph.arrayClone(conf.data);
 
        // Store the data set(s)
         this.data = RGraph.arrayClone(conf.data);
@@ -611,7 +611,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
             
@@ -682,7 +682,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -813,7 +813,7 @@
                     this.context.strokeStyle = properties.backgroundGridColor;
                     this.context.beginPath();
                     
-                    if (RGraph.isNull(properties.backgroundGridCirclesCount)) {
+                    if (RGraph.isNullish(properties.backgroundGridCirclesCount)) {
                         properties.backgroundGridCirclesCount = properties.labelsAxesCount;
                     }
 
@@ -1755,7 +1755,7 @@
                 frame    = 0,
                 callback = arguments[1] || function () {},
                 step     = 1 / frames,
-                original = RGraph.clone(this.data);
+                original = RGraph.arrayClone(this.data);
 
             // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
             // and then animate
@@ -1780,7 +1780,7 @@
                 } else {
                     
                     // Put the data back to the original
-                    obj.data = original.clone();
+                    obj.data = RGraph.arrayClone(original);
 
                     RGraph.redrawCanvas(obj.canvas);
                     callback(obj);
@@ -1851,12 +1851,12 @@
             
             // The tooltipsFormattedKeyColors property has been specified so use that if
             // there's a relevant color
-            if (!RGraph.isNull(properties.tooltipsFormattedKeyColors) && typeof properties.tooltipsFormattedKeyColors === 'object' && typeof properties.tooltipsFormattedKeyColors[specific.dataset] === 'string') {
+            if (!RGraph.isNullish(properties.tooltipsFormattedKeyColors) && typeof properties.tooltipsFormattedKeyColors === 'object' && typeof properties.tooltipsFormattedKeyColors[specific.dataset] === 'string') {
                 color = properties.tooltipsFormattedKeyColors[specific.dataset];
             }
             
             // Figure out the correct label to use if one has indeed been specified
-            label = (!RGraph.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[specific.dataset] === 'string')
+            label = (!RGraph.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && typeof properties.tooltipsFormattedKeyLabels[specific.dataset] === 'string')
                 ? properties.tooltipsFormattedKeyLabels[specific.dataset]
                 : '';
 

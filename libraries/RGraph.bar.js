@@ -395,7 +395,7 @@
         // grouped bars
         //
         for (var i=0; i<data.length; ++i) {
-            if (typeof data[i] === 'object' && !RGraph.isNull(data[i])) {
+            if (typeof data[i] === 'object' && !RGraph.isNullish(data[i])) {
                 this.stackedOrGrouped = true;
             }
         }
@@ -715,7 +715,7 @@
                         if (typeof this.data[i] === 'number') {
                             properties.errorbars.push([value, null]);
 
-                        } else if (typeof this.data[i] === 'object' && !RGraph.isNull(this.data[i])) {
+                        } else if (typeof this.data[i] === 'object' && !RGraph.isNullish(this.data[i])) {
                             for (var j=0; j<this.data[i].length; ++j) {
                                 properties.errorbars.push([value, null]);
                             }
@@ -746,7 +746,7 @@
                             (
                                    typeof properties.errorbars === 'object'
                                 && typeof properties.errorbars[i] === 'object'
-                                && !RGraph.isNull(properties.errorbars[i])
+                                && !RGraph.isNullish(properties.errorbars[i])
                                 && typeof properties.errorbars[i][0] === 'number'
                             ) ? properties.errorbars[i][0]  : 0
                         )
@@ -782,7 +782,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -887,7 +887,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -2428,7 +2428,7 @@ this.context.lineTo(
 
                         if (typeof this.data[indexes[0]] == 'number') {
                             this.data[indexes[0]] = Number(value);
-                        } else if (!RGraph.isNull(this.data[indexes[0]])) {
+                        } else if (!RGraph.isNullish(this.data[indexes[0]])) {
                             this.data[indexes[0]][indexes[1]] = Number(value);
                         }
                     } else if (typeof this.data[shape.sequentialIndex] == 'number') {
@@ -3118,7 +3118,7 @@ this.context.lineTo(
                                 if (original[i] < 0) {
                                     obj.data[i] *= -1;
                                 }
-                            } else if (!RGraph.isNull(obj.data[i])) {
+                            } else if (!RGraph.isNullish(obj.data[i])) {
                                 for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
 
                                     obj.data[i][j] = Math.min(
@@ -3133,7 +3133,7 @@ this.context.lineTo(
                                 }
                             }
                         } else {
-                            obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNull(obj.data[i]) ? null : 0);
+                            obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNullish(obj.data[i]) ? null : 0);
                         }
                 }
 
@@ -3373,7 +3373,7 @@ this.context.lineTo(
 
                 // Alter the Bar chart data depending on the frame
                 for (var j=0,len=obj.original_data.length; j<len; ++j) {
-                    if (typeof obj.data[j] === 'object' && !RGraph.isNull(obj.data[j])) {
+                    if (typeof obj.data[j] === 'object' && !RGraph.isNullish(obj.data[j])) {
                         for (var k=0,len2=obj.data[j].length; k<len2; ++k) {
                             if (obj.firstDraw || !opt.data) {
                                 obj.data[j][k] = easingMultiplier * obj.original_data[j][k];
@@ -3509,7 +3509,7 @@ this.context.lineTo(
                 var groupedIndexes = RGraph.sequentialIndexToGrouped(i, this.data);
 
                 // Determine if this is 
-                if (typeof this.data[groupedIndexes[0]] === 'object' && !RGraph.isNull(this.data[groupedIndexes[0]])) {
+                if (typeof this.data[groupedIndexes[0]] === 'object' && !RGraph.isNullish(this.data[groupedIndexes[0]])) {
                     var isGrouped = true,
                         group     = groupedIndexes[0],
                         subgroup  = groupedIndexes[1];
@@ -3553,7 +3553,7 @@ this.context.lineTo(
                             color
                         );
                     }
-                } else if (typeof errorbars[i] === 'object' && !RGraph.isNull(errorbars[i])) {
+                } else if (typeof errorbars[i] === 'object' && !RGraph.isNullish(errorbars[i])) {
 
                     var positiveLength = Math.abs(this.getYCoord(errorbars[i][0]) - this.getYCoord(0));
 
@@ -3572,7 +3572,7 @@ this.context.lineTo(
                         halfwidth = 0;
                     }
 
-                    if (!RGraph.isNull(errorbars[i][0])) {
+                    if (!RGraph.isNullish(errorbars[i][0])) {
 
                         this.path(
                             'b m % % l % % l % % l % % s %',
@@ -3630,7 +3630,7 @@ this.context.lineTo(
         //
         this.isAdjustable = function (shape)
         {
-            if (RGraph.isNull(properties.adjustableOnly) || !RGraph.isArray(properties.adjustableOnly)) {
+            if (RGraph.isNullish(properties.adjustableOnly) || !RGraph.isArray(properties.adjustableOnly)) {
                 return true;
             }
 
@@ -3687,13 +3687,13 @@ this.context.lineTo(
             var label;
 
             if (this.stackedOrGrouped) {
-                label = (!RGraph.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
+                label = (!RGraph.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
                              ? properties.tooltipsFormattedKeyLabels[index]
                              : '';
 
             } else {
 
-                label = (   !RGraph.isNull(properties.tooltipsFormattedKeyLabels)
+                label = (   !RGraph.isNullish(properties.tooltipsFormattedKeyLabels)
                          && typeof properties.tooltipsFormattedKeyLabels === 'object'
                          && properties.tooltipsFormattedKeyLabels[specific.index])
                              ? properties.tooltipsFormattedKeyLabels[specific.index]

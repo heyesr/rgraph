@@ -29,7 +29,7 @@
         this.subTotal               = 0;
         this.angles                 = [];
         this.data                   = data;
-        this.originalData           = data.clone();
+        this.originalData           = RGraph.arrayClone(data);
         this.properties             = [];
         this.type                   = 'pie';
         this.isRGraph               = true;
@@ -515,7 +515,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -760,7 +760,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
     
@@ -1171,7 +1171,7 @@
 
                 // Null values do not get labels displayed. Also,
                 // null or undefined labels aren't displayed either
-                if (RGraph.isNull(this.data[i])) {
+                if (RGraph.isNullish(this.data[i])) {
                     continue;
                 }
 
@@ -1510,7 +1510,7 @@
                 var radians = segment[1] - segment[0];
     
                 this.context.beginPath();
-                this.context.strokeStyle = typeof properties.labelsSticksColors === 'string' ? properties.labelsSticksColors : (!RGraph.isNull(properties.labelsSticksColors) ? properties.labelsSticksColors[i] : 'gray');
+                this.context.strokeStyle = typeof properties.labelsSticksColors === 'string' ? properties.labelsSticksColors : (!RGraph.isNullish(properties.labelsSticksColors) ? properties.labelsSticksColors[i] : 'gray');
                 this.context.lineWidth   = linewidth;
                 
                 if (typeof properties.labelsSticksColor === 'string') {
@@ -2935,7 +2935,7 @@
             var framespersegment = opt.frames / 2,
                 frame            = -1,
                 callback         = arguments[1] || function () {},
-                original         = this.originalData.clone();
+                original         = RGraph.arrayClone(this.originalData);
 
             //
             // turn off the labels option whilst animating
@@ -3327,7 +3327,7 @@
             if (properties.variant.indexOf('donut') >= 0) {
 
                 // Determine the radius
-                if (RGraph.isNull(properties.variantDonutWidth)) {
+                if (RGraph.isNullish(properties.variantDonutWidth)) {
                     var radius = (this.radius / 2) + (this.radius / 4);
                 } else {
                     var radius = (this.radius - properties.variantDonutWidth) + (properties.variantDonutWidth / 2);

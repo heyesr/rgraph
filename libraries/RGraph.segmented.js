@@ -326,7 +326,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -377,7 +377,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -533,7 +533,7 @@
             //
             // Set the text size
             //
-            if (RGraph.isNull(properties.textSize)) {
+            if (RGraph.isNullish(properties.textSize)) {
                 properties.textSize = this.radius / 2.5;
             }
 
@@ -687,7 +687,7 @@
             if (typeof width === 'string') {
                 width = (this.radius / 2) + parseFloat(width);
             
-            } else if (RGraph.isNull(width)) {
+            } else if (RGraph.isNullish(width)) {
                 width = this.radius / 2;
             }
 

@@ -62,7 +62,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -111,7 +111,7 @@
         this.isRGraph         = true;
         this.isrgraph         = true;
         this.rgraph           = true;
-        this.data             = RGraph.SVG.arrayClone(conf.data);
+        this.data             = RGraph.SVG.arrayClone(conf.data, true);
         this.coords           = [];
         this.coordsConnectors = [];
         this.colorsParsed     = false;
@@ -133,7 +133,7 @@
         // Note the indexes of total columns
         //
         for (var i=0; i<this.data.length; ++i) {
-            if (RGraph.SVG.isNull(this.data[i])) {
+            if (RGraph.SVG.isNullish(this.data[i])) {
                 this.totalColumns[i] = true;
             }
         }
@@ -626,7 +626,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -794,7 +794,7 @@
 
 
                 // Work out the starting coord
-                if (RGraph.SVG.isNull(prevValue)) {
+                if (RGraph.SVG.isNullish(prevValue)) {
                     
                     if (currentValue > 0) {
                         y = this.getYCoord(prevTotal) - height;
@@ -951,7 +951,7 @@
 
 
                 // Add the tooltips
-                if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips[i] || typeof properties.tooltips === 'string') ) {
+                if (!RGraph.SVG.isNullish(properties.tooltips) && (properties.tooltips[i] || typeof properties.tooltips === 'string') ) {
 
                     var obj = this;
 
@@ -1178,10 +1178,10 @@
             // the canvas is cleared
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:              RGraph.SVG.arrayClone(properties.colors),
-                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
-                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:              RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor, true),
+                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 
@@ -1225,9 +1225,9 @@
                     var num    = this.data[i],
                         total  = total + num;
 
-                    if (typeof num === 'number' || RGraph.SVG.isNull(num)) {
+                    if (typeof num === 'number' || RGraph.SVG.isNullish(num)) {
                         
-                        if (RGraph.SVG.isNull(num)) {
+                        if (RGraph.SVG.isNullish(num)) {
                             num = total;
                         }
 
@@ -1477,7 +1477,7 @@
             }
         
             // Change the color for the last bar
-            if ( (specific.index + 1) === this.data.length || RGraph.SVG.isNull(this.data[specific.index])) {
+            if ( (specific.index + 1) === this.data.length || RGraph.SVG.isNullish(this.data[specific.index])) {
                 color = colors[2];
             }
 
@@ -1488,7 +1488,7 @@
             if (properties.tooltipsFormattedKeyLabels && typeof properties.tooltipsFormattedKeyLabels === 'object') {
             
                 var isLast      = specific.index === (this.data.length - 1);
-                var isNull      = RGraph.SVG.isNull(this.data[specific.index]);
+                var isNull      = RGraph.SVG.isNullish(this.data[specific.index]);
                 var isPositive  = specific.value > 0;
                 var isNegative  = specific.value < 0;
 
@@ -1513,7 +1513,7 @@
             // Calculate the subtotal for null values which are
             // within the dataset
             //
-            if (RGraph.SVG.isNull(this.data[specific.index])) {
+            if (RGraph.SVG.isNullish(this.data[specific.index])) {
                 
                 // Calculate the total thus far
                 for (var i=0,value=0; i<=specific.index; ++i) {
@@ -1613,7 +1613,7 @@
             //
             // Copy the data
             //
-            var data = RGraph.SVG.arrayClone(this.data);
+            var data = RGraph.SVG.arrayClone(this.data, true);
 
             var iterate = function ()
             {

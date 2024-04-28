@@ -942,8 +942,8 @@
                 //
                 // Add the tooltip if necessary
                 //
-                if (   !RGraph.SVG.isNull(properties.tooltips)
-                    && (!RGraph.SVG.isNull(properties.tooltips[i]) || typeof properties.tooltips === 'string')
+                if (   !RGraph.SVG.isNullish(properties.tooltips)
+                    && (!RGraph.SVG.isNullish(properties.tooltips[i]) || typeof properties.tooltips === 'string')
                    ) {
 
                     var obj = this;
@@ -1584,7 +1584,7 @@
             }
 
             //this.currentValue = this.currentValue || obj.min;
-            if (RGraph.SVG.isNull(this.currentValue)) {
+            if (RGraph.SVG.isNullish(this.currentValue)) {
                 
                 this.currentValue = [];
                 

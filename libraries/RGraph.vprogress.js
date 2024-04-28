@@ -471,7 +471,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -519,7 +519,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
             
@@ -952,7 +952,7 @@
         //
         this.drawLabels = function ()
         {
-            if (!RGraph.isNull(properties.labelsSpecific)) {
+            if (!RGraph.isNullish(properties.labelsSpecific)) {
                 return this.drawSpecificLabels();
             }
     
@@ -1784,7 +1784,7 @@ if (properties.corners === 'round') {
     
             if (typeof this.value === 'object') {
     
-                if (RGraph.isNull(this.currentValue)) {
+                if (RGraph.isNullish(this.currentValue)) {
                     this.currentValue = [];
                     for (var i=0; i<this.value.length; ++i) {
                         this.currentValue[i] = 0;

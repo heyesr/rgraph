@@ -184,7 +184,7 @@
                         // ========================================================================
     
 
-                        if (!RGraph.isNull(obj) && RGraph.tooltip) {
+                        if (!RGraph.isNullish(obj) && RGraph.tooltip) {
 
                             var shape = obj.getShape(e);
 
@@ -655,7 +655,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                         if (   shape
                             && (tooltips && tooltips[shape.index] || shape.tooltip)
                             && tooltips_event.indexOf('mousemove')  !== -1
-                            && (   RGraph.isNull(current_tooltip)             // Is there a tooltip being shown?
+                            && (   !current_tooltip             // Is there a tooltip being shown?
                                 || obj.uid != current_tooltip.__object__.uid  // Same object?
                                 || (current_tooltip.__index__ != shape.sequentialIndex) // Same datapiece index? [UPDATE ON 29/10/2019 TO TRY AND MATCH THE sequentialIndex]
                                 || (typeof shape.dataset === 'number' && shape.dataset != current_tooltip.__shape__.dataset) // Different dataset index
@@ -868,7 +868,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                             // truthy then allow adjusting, otherwise don't.
                             //
                             if (
-                                   RGraph.isNull(obj.properties.adjustableOnly)
+                                   RGraph.isNullish(obj.properties.adjustableOnly)
                                 || typeof obj.properties.adjustableOnly === 'undefined'
                                 ||
                                    (
@@ -1109,7 +1109,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             }
         }
 
-        if (!RGraph.isNull(obj)) {
+        if (!RGraph.isNullish(obj)) {
             if (obj.getShape && obj.getShape(e)) {
 
                 var shape = obj.getShape(e);
@@ -1140,7 +1140,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
             //
             // Now go through the key coords and see if it's over that.
             //
-            if (!RGraph.isNull(obj) && obj.get('keyInteractive')) {
+            if (!RGraph.isNullish(obj) && obj.get('keyInteractive')) {
                 for (var j=0; j<obj.coords.key.length; ++j) {
                     if (mouseX > obj.coords.key[j][0] && mouseX < (obj.coords.key[j][0] + obj.coords.key[j][2]) && mouseY > obj.coords.key[j][1] && mouseY < (obj.coords.key[j][1] + obj.coords.key[j][3])) {
                         var pointer = true;
@@ -1162,7 +1162,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 //            
 //            var index = shape.object.type == 'scatter' ? shape.index_adjusted : shape.index;
 //
-//            if (!RGraph.isNull(obj['$' + index]) && typeof obj['$' + index].onmousemove == 'function') {
+//            if (!RGraph.isNullish(obj['$' + index]) && typeof obj['$' + index].onmousemove == 'function') {
 //                var str = (obj['$' + index].onmousemove).toString();
 //                if (str.match(/pointer/) && str.match(/cursor/) && str.match(/style/)) { 
 //                    var pointer = true;
@@ -1375,7 +1375,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
         } else if (typeof tooltips === 'object' && typeof tooltips[idx] == 'function') {
             var text = tooltips[idx](idx);
         
-        } else if (typeof tooltips === 'object' && (RGraph.isNull(tooltips[idx]) || typeof tooltips[idx] === 'undefined') ) {
+        } else if (typeof tooltips === 'object' && (RGraph.isNullish(tooltips[idx]) || typeof tooltips[idx] === 'undefined') ) {
             return null;
 
         } else if (typeof tooltips[idx] == 'string' && tooltips[idx]) {

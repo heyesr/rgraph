@@ -57,7 +57,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -123,8 +123,8 @@
         this.rgraph          = true;
         this.width           = Number(this.svg.getAttribute('width'));
         this.height          = Number(this.svg.getAttribute('height'));
-        this.data            = RGraph.SVG.arrayClone(conf.data);
-        this.originalData    = RGraph.SVG.arrayClone(conf.data);
+        this.data            = RGraph.SVG.arrayClone(conf.data, true);
+        this.originalData    = RGraph.SVG.arrayClone(conf.data, true);
         this.angles          = [];
         this.angles2         = [];
         this.colorsParsed    = false;
@@ -371,7 +371,7 @@
 
 
             // Reset the data back to the original values
-            this.data = RGraph.SVG.arrayClone(this.originalData);
+            this.data = RGraph.SVG.arrayClone(this.originalData, true);
 
 
 
@@ -576,7 +576,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -968,7 +968,7 @@
 
 
                 // Is the data piece an array or a number?
-                if (typeof this.data[i] === 'object' && !RGraph.SVG.isNull(this.data[i])) {
+                if (typeof this.data[i] === 'object' && !RGraph.SVG.isNullish(this.data[i])) {
                 
                     // Create a group for the parts of this segment
                     if (!document.getElementById('rose_' + this.uid + '_segment_group_' + i)) {
@@ -1043,7 +1043,7 @@
                                 stroke: properties.colorsStroke,
                                 'stroke-width': properties.linewidth,
                                 
-                                'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[seq] : '',
+                                'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[seq] : '',
                                 'data-index': i,
                                 'data-centerx': cx,
                                 'data-centery': cy,
@@ -1171,7 +1171,7 @@
                             stroke: properties.colorsStroke,
                             'stroke-width': properties.linewidth,
                             
-                            'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                            'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
                             'data-index': i,
                             'data-centerx': cx,
                             'data-centery': cy,
@@ -1320,7 +1320,7 @@
 
 
                 // A stacked non-equi-angular segment
-                if (typeof this.data[i][0] === 'object' && !RGraph.SVG.isNull(this.data[i][0])) {
+                if (typeof this.data[i][0] === 'object' && !RGraph.SVG.isNullish(this.data[i][0])) {
 
                     if (!document.getElementById('rgraph_rose_' + this.uid + '_segment_group_' + i)) {
                         var segment_group = RGraph.SVG.create({
@@ -1398,7 +1398,7 @@
                                 'fill-opacity':      properties.colorsOpacity,
                                 stroke:              properties.colorsStroke,
                                 'stroke-width':      properties.linewidth,
-                                'data-tooltip':      (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                                'data-tooltip':      (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
                                 'data-centerx':      cx,
                                 'data-centery':      cy,
                                 'data-index':        i,
@@ -1525,7 +1525,7 @@
                             stroke: properties.colorsStroke,
                             'stroke-width': properties.linewidth,
                             
-                            'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                            'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
                             'data-centerx': cx,
                             'data-centery': cy,
                             'data-index': i,
@@ -1973,8 +1973,8 @@
             // Save the original colors so that they can be restored when the canvas is reset
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:        RGraph.SVG.arrayClone(properties.colors),
-                    highlightFill: RGraph.SVG.arrayClone(properties.highlightFill)
+                    colors:        RGraph.SVG.arrayClone(properties.colors, true),
+                    highlightFill: RGraph.SVG.arrayClone(properties.highlightFill, true)
                 }
             }
             
@@ -2014,7 +2014,7 @@
 
             if (properties.variant === 'non-equi-angular') {
                 for (var i=0; i<this.data.length; ++i) {
-                    if (!RGraph.SVG.isNull(this.data[i])) {
+                    if (!RGraph.SVG.isNullish(this.data[i])) {
                         if (typeof this.data[i][0] === 'number') {
                             max = Math.max(max, this.data[i][0]);
                         } else if (typeof this.data[i][0] === 'object'){
@@ -2024,7 +2024,7 @@
                 }
             } else {
                 for (var i=0; i<this.data.length; ++i) {
-                    if (!RGraph.SVG.isNull(this.data[i])) {
+                    if (!RGraph.SVG.isNullish(this.data[i])) {
                         if (typeof this.data[i] === 'number') {
                             max = Math.max(max, this.data[i]);
                         } else if (typeof this.data[i] === 'object') {
@@ -2090,7 +2090,7 @@
         this.wave = function ()
         {            
             // Reset the data to the original
-            this.data = RGraph.SVG.arrayClone(this.originalData);
+            this.data = RGraph.SVG.arrayClone(this.originalData, true);
 
             // If there's only one segment call the grow function
             // instead
@@ -2108,7 +2108,7 @@
             var framesperbar = opt.frames / 3,
                 frame        = -1,
                 callback     = arguments[1] || function () {},
-                original     = RGraph.SVG.arrayClone(this.originalData);
+                original     = RGraph.SVG.arrayClone(this.originalData, true);
 
 
             for (var i=0,len=this.data.length; i<len; i+=1) {
@@ -2150,7 +2150,7 @@
                                 Math.abs(original[i] * ( (opt.counters[i]++) / framesperbar))
                             ) * properties.effectWaveMultiplier;
 
-                        } else if (!RGraph.SVG.isNull(obj.data[i])) {
+                        } else if (!RGraph.SVG.isNullish(obj.data[i])) {
 
                             for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
                                 obj.originalData[i][j] = Math.min(
@@ -2161,7 +2161,7 @@
                             }
                         }
                     } else {
-                        obj.originalData[i] = typeof obj.originalData[i] === 'object' && obj.originalData[i] ? RGraph.SVG.arrayPad([], obj.originalData[i].length, 0) : (RGraph.SVG.isNull(obj.originalData[i]) ? null : 0);
+                        obj.originalData[i] = typeof obj.originalData[i] === 'object' && obj.originalData[i] ? RGraph.SVG.arrayPad([], obj.originalData[i].length, 0) : (RGraph.SVG.isNullish(obj.originalData[i]) ? null : 0);
                     }
                 }
 
@@ -2471,7 +2471,7 @@
             // REGULAR CHART
             if (typeof this.data[specific.dataset] === 'number') {
                 label = properties.tooltipsFormattedKeyLabels[specific.dataset] || '';
-                color = !RGraph.SVG.isNull(properties.tooltipsFormattedKeyColors) && properties.tooltipsFormattedKeyColors[specific.index]
+                color = !RGraph.SVG.isNullish(properties.tooltipsFormattedKeyColors) && properties.tooltipsFormattedKeyColors[specific.index]
                             ? properties.tooltipsFormattedKeyColors[specific.index]
                             : color;
 
@@ -2503,7 +2503,7 @@
             // STACKED REGULAR CHART
             } else if (typeof this.data[specific.dataset] === 'object') {
                 //label = properties.tooltipsFormattedKeyLabels[specific.dataset] || '';
-                color = !RGraph.SVG.isNull(properties.tooltipsFormattedKeyColors) && properties.tooltipsFormattedKeyColors[index]
+                color = !RGraph.SVG.isNullish(properties.tooltipsFormattedKeyColors) && properties.tooltipsFormattedKeyColors[index]
                             ? properties.tooltipsFormattedKeyColors[index]
                             : color;
             }

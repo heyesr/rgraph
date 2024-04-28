@@ -54,7 +54,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
                 
@@ -756,7 +756,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -1588,9 +1588,9 @@
 
 
             // Determine the color
-             if (!RGraph.SVG.isNull(properties.lineColors) && properties.lineColors && properties.lineColors[opt.index]) {
+             if (!RGraph.SVG.isNullish(properties.lineColors) && properties.lineColors && properties.lineColors[opt.index]) {
                 color = properties.lineColors[opt.index];
-             } else if (!RGraph.SVG.isNull(properties.colors) && properties.colors.length && typeof properties.colors[opt.index] === 'string') {
+             } else if (!RGraph.SVG.isNullish(properties.colors) && properties.colors.length && typeof properties.colors[opt.index] === 'string') {
                 color = properties.colors[opt.index];
             } else if (typeof properties.lineColors === 'string') {
                 color = properties.lineColors;
@@ -1871,10 +1871,10 @@
             // the canvas is cleared
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:              RGraph.SVG.arrayClone(properties.colors),
-                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
-                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:              RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor, true),
+                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 
@@ -2346,7 +2346,7 @@
                 strokeDasharray = '1, 4';
             }
             
-            if (!RGraph.SVG.isNull(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
+            if (!RGraph.SVG.isNullish(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
                 strokeDasharray = String(properties.trendlineDashArray).replace(/[|]/, '');
             }
 

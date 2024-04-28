@@ -56,7 +56,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -121,9 +121,9 @@
 
         // Convert single datasets to a multi-dimensional format
         if (RGraph.SVG.isArray(conf.data) && RGraph.SVG.isArray(conf.data[0])) {
-            this.data = RGraph.SVG.arrayClone(conf.data);
+            this.data = RGraph.SVG.arrayClone(conf.data, true);
         } else if (RGraph.SVG.isArray(conf.data)) {
-            this.data = [RGraph.SVG.arrayClone(conf.data)];
+            this.data = [RGraph.SVG.arrayClone(conf.data, true)];
         } else {
             this.data = [[]];
         }
@@ -135,7 +135,7 @@
         this.colorsParsed    = false;
         this.originalColors  = {};
         this.gradientCounter = 1;
-        this.originalData    = RGraph.SVG.arrayClone(this.data);
+        this.originalData    = RGraph.SVG.arrayClone(this.data, true);
         this.filledGroups    = [];
 
 
@@ -516,7 +516,7 @@
             this.coordsSpline = [];
             
             // Reset the data back to the original
-            this.data = RGraph.SVG.arrayClone(this.originalData);
+            this.data = RGraph.SVG.arrayClone(this.originalData, true);
 
             
             // Set this to zero
@@ -551,7 +551,7 @@
                 // Go through the error bars and convert numbers to objects
                 for (var i=0; i<this.data_seq.length; ++i) {
     
-                    if (typeof properties.errorbars[i] === 'undefined' || RGraph.SVG.isNull(properties.errorbars[i]) ) {
+                    if (typeof properties.errorbars[i] === 'undefined' || RGraph.SVG.isNullish(properties.errorbars[i]) ) {
                         properties.errorbars[i] = {max: null, min: null};
                     
                     } else if (typeof properties.errorbars[i] === 'number') {
@@ -843,7 +843,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -1008,7 +1008,7 @@
             // Go through the coordinates and create the path that draws the line
             for (var i=0; i<coords.length; ++i) {
 
-                if (i === 0 || RGraph.SVG.isNull(data[i]) || RGraph.SVG.isNull(data[i - 1])) {
+                if (i === 0 || RGraph.SVG.isNullish(data[i]) || RGraph.SVG.isNullish(data[i - 1])) {
                     var action = 'M';
 
                 } else {
@@ -1024,7 +1024,7 @@
 
                 path.push(action + '{1} {2}'.format(
                     coords[i][0],
-                    RGraph.SVG.isNull(data[i]) ? 0 : coords[i][1]
+                    RGraph.SVG.isNullish(data[i]) ? 0 : coords[i][1]
                 ));
             }
 
@@ -1043,7 +1043,7 @@
 
             for (var k=0; k<coords.length; ++k) {
                 
-                this.coords.push(RGraph.SVG.arrayClone(coords[k]));
+                this.coords.push(RGraph.SVG.arrayClone(coords[k], true));
 
                 this.coords[this.coords.length - 1].x      = coords[k][0];
                 this.coords[this.coords.length - 1].y      = coords[k][1];
@@ -1054,7 +1054,7 @@
             }
 
             // The coords2 array
-            this.coords2[index] = RGraph.SVG.arrayClone(coords);
+            this.coords2[index] = RGraph.SVG.arrayClone(coords, true);
 
             for (var k=0; k<coords.length; ++k) {
                 
@@ -1115,7 +1115,7 @@
                     }
 
                 } else {
-                    var fillPath = RGraph.SVG.arrayClone(path);
+                    var fillPath = RGraph.SVG.arrayClone(path, true);
                 }
 
 
@@ -1127,7 +1127,7 @@
 
                 if (index > 0 && properties.filledAccumulative) {
                     
-                    var path2 = RGraph.SVG.arrayClone(path);
+                    var path2 = RGraph.SVG.arrayClone(path, true);
                     
                     if (index > 0 && properties.filledAccumulative) {
                         if (properties.spline) {
@@ -1174,7 +1174,7 @@
                 ));
 
                 for (var i=0; i<this.data[index].length; ++i) {
-                    if (!RGraph.SVG.isNull(this.data[index][i])) {
+                    if (!RGraph.SVG.isNullish(this.data[index][i])) {
                         fillPath.push('L{1} {2}'.format(
                             this.coords2[index][i][0],
                             this.getYCoord(0)
@@ -1297,7 +1297,7 @@
 
             } else {
 
-                var path2 = RGraph.SVG.arrayClone(path);
+                var path2 = RGraph.SVG.arrayClone(path, true);
 
                 if (properties.filled && properties.filledAccumulative && index > 0) {
                     for (var i=this.coords2[index - 1].length-1; i>=0; --i) {
@@ -1373,7 +1373,7 @@
                      ++i,++this.tooltipsSequentialIndex
                     ) {
 
-                    if (!RGraph.SVG.isNull(this.originalData[index][i]) && (properties.tooltips[this.tooltipsSequentialIndex] || typeof properties.tooltips === 'string') && this.coords2[index][i][0] && this.coords2[index][i][1]) {
+                    if (!RGraph.SVG.isNullish(this.originalData[index][i]) && (properties.tooltips[this.tooltipsSequentialIndex] || typeof properties.tooltips === 'string') && this.coords2[index][i][0] && this.coords2[index][i][1]) {
 
                         var hotspot = RGraph.SVG.create({
                             svg: this.svg,
@@ -1730,10 +1730,10 @@
 
                     // Create the path from the coordinates
                     for (var j=0; j<this.coords2[i].length; ++j) {
-                        if (j === 0 || RGraph.SVG.isNull(this.data[i][j]) || RGraph.SVG.isNull(this.data[i][j - 1])) {
+                        if (j === 0 || RGraph.SVG.isNullish(this.data[i][j]) || RGraph.SVG.isNullish(this.data[i][j - 1])) {
                             path += 'M{1} {2} '.format(
                                 this.coords2[i][j][0],
-                                RGraph.SVG.isNull(this.data[i][j]) ? 0 : this.coords2[i][j][1]
+                                RGraph.SVG.isNullish(this.data[i][j]) ? 0 : this.coords2[i][j][1]
                             );
                         } else {
                             if (properties.stepped) {
@@ -1805,7 +1805,7 @@
 
             var y;
 
-            if (!allowOutOfBounds && RGraph.SVG.isNull(value)) {
+            if (!allowOutOfBounds && RGraph.SVG.isNullish(value)) {
                 return null;
             }
 
@@ -1984,11 +1984,11 @@
         {
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:              RGraph.SVG.arrayClone(properties.colors),
-                    filledColors:        RGraph.SVG.arrayClone(properties.filledColors),
-                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
-                    //highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:              RGraph.SVG.arrayClone(properties.colors, true),
+                    filledColors:        RGraph.SVG.arrayClone(properties.filledColors, true),
+                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor, true),
+                    //highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 
@@ -2654,13 +2654,13 @@
                     readData = true;
                 }
 
-                if (RGraph.SVG.isNull(data[i]) && readData) {
+                if (RGraph.SVG.isNullish(data[i]) && readData) {
                     
                     start = i - 1;
 
                     for (var j=(i+1); j<data.length; ++j) {
 
-                        if (RGraph.SVG.isNull(data[j])) {
+                        if (RGraph.SVG.isNullish(data[j])) {
                             continue;
                         } else {
                             end = j;
@@ -2685,7 +2685,7 @@
                                 d: path,
                                 stroke: typeof properties.nullBridgeColors === 'string'
                                             ? properties.nullBridgeColors
-                                            : ((typeof properties.nullBridgeColors === 'object' && !RGraph.SVG.isNull(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx]),
+                                            : ((typeof properties.nullBridgeColors === 'object' && !RGraph.SVG.isNullish(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx]),
                                 'fill': 'transparent',
                                 'stroke-dasharray': properties.nullBridgeDashArray ? properties.nullBridgeDashArray : '',
                                 'stroke-width':  typeof properties.nullBridgeLinewidth === 'number' ? properties.nullBridgeLinewidth : properties.linewidth,

@@ -114,7 +114,7 @@
             // If the tooltipsCss property is populated the add those values
             // to the tooltip
             //
-            if (!RGraph.SVG.isNull(obj.properties.tooltipsCss)) {
+            if (!RGraph.SVG.isNullish(obj.properties.tooltipsCss)) {
                 for (var i in obj.properties.tooltipsCss) {
                     if (typeof i === 'string') {
                         tooltipObj.style[i] = substitute(obj.properties.tooltipsCss[i]);
@@ -437,7 +437,7 @@
 
 
                     // Add each row of data
-                    if (typeof properties.tooltipsFormattedTableData === 'object' && !RGraph.SVG.isNull(properties.tooltipsFormattedTableData)) {
+                    if (typeof properties.tooltipsFormattedTableData === 'object' && !RGraph.SVG.isNullish(properties.tooltipsFormattedTableData)) {
                         str += '<tbody>';
                         for (var i=0; i<properties.tooltipsFormattedTableData[specific.sequentialIndex].length; ++i) {
                             str += '<tr>';
@@ -542,7 +542,7 @@
                 //
                 // Special case for the Waterfall chart and mid totals
                 //
-                if (opt.object.type === 'waterfall' && specific.index != opt.object.data.length - 1 && RGraph.SVG.isNull(value)) {
+                if (opt.object.type === 'waterfall' && specific.index != opt.object.data.length - 1 && RGraph.SVG.isNullish(value)) {
                     
                     for (var i=0,tot=0; i<specific.index; ++i) {
                         tot += opt.object.data[i];
@@ -784,7 +784,7 @@
         }
 
         // Add the group
-        if (typeof opt.group === 'number' || RGraph.SVG.isNull(opt.group)) {
+        if (typeof opt.group === 'number' || RGraph.SVG.isNullish(opt.group)) {
             tooltipObj.__group__ = opt.group;
         }
 

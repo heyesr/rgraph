@@ -211,9 +211,11 @@
             return args[0];
         } else {
             for (var i in names) {
-                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
-                
-                count += 1;
+                if (RGraph.isString(i)) {
+                    ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
+                    
+                    count += 1;
+                }
             }
         }
 
@@ -589,6 +591,9 @@
 
 
     //
+    //
+    // *** OLD VERSION OF THE CLONE FUNCTION ***
+    //
     // Makes a clone of an ARRAY
     //
     // @param args object An object containg the array to clone
@@ -597,24 +602,24 @@
     //
     // @param args mixed The object to clone
     //
-    RGraph.arrayClone = function ()
-    {
-        var args = RGraph.getArgs(arguments, 'array,options');
-        var c;
-        var structuredClone = args.options && args.options.structuredClone;
-
-        if (window.structuredClone && structuredClone) {
-            c = window.structuredClone(args.array);
-        } else {
-            if(args.array === null || typeof args.array !== 'object') {
-                return args.array;
-            }
-
-            c = JSON.parse(JSON.stringify(args.array));
-         }
-
-        return c;
-    };
+    //RGraph.arrayClone = function ()
+    //{
+    //    var args = RGraph.getArgs(arguments, 'array,options');
+    //    var c;
+    //    var structuredClone = args.options && args.options.structuredClone;
+    //
+    //    if (window.structuredClone && structuredClone) {
+    //        c = window.structuredClone(args.array);
+    //    } else {
+    //        if(args.array === null || typeof args.array !== 'object') {
+    //            return args.array;
+    //        }
+    //
+    //        c = JSON.parse(JSON.stringify(args.array));
+    //     }
+    //
+    //    return c;
+    //};
 
 
 
@@ -627,92 +632,67 @@
     //
     // An updated clone function that works better
     //
-    // @param obj mixed The variable to clone and
-    //                  return a copy of.
+    // @param array mixed The variable to clone and
+    //                    return a copy of. Doesn't
+    //                    clone objects.
+    // @param objects boolean Whether to clone objects or not,
+    //                        default is no to
     //
-    RGraph.arrayClone = function (obj,options)
+    RGraph.arrayClone = function (array, objects = false, maxdepth = 5)
     {
-        var ret             = null;
-        var structuredClone = options && options.structuredClone;
+        // This is here to limit recurusion
+        if (maxdepth < 0) {
+            return;
+        }
 
-        if (typeof obj === 'undefined') {
+        var ret = null;
+
+        // Account for undefined values
+        if (typeof array === 'undefined') {
             return undefined;
         }
 
-        if (RGraph.isNull(obj)) {
+        // Account for null values
+        if (typeof array === 'object' && !array) {
             return null;
         }
 
-        if (window.structuredClone && structuredClone) {
-            ret = window.structuredClone(obj);
-        } else {
 
-            switch(typeof obj)
-            {
-                case 'string':
-                    ret = (function (str){return String(str)})(obj);
-                    break;
-                
-                case 'number':
-                    ret = (function (num){return Number(num)})(obj);
-                    break;
+        switch(typeof array)
+        {
+            case 'string':
+                ret = (function (str){return String(str)})(array);
+                break;
+            
+            case 'number':
+                ret = (function (num){return Number(num)})(array);
+                break;
 
-                case 'boolean':
-                    ret = obj;
-                    break;
-    
-                case 'object':
-                    if (obj.constructor.toString().indexOf('Array') >= 0) {
-                        ret = new Array();
-                        for (i in obj) {
-                            ret[i] = RGraph.arrayClone(obj[i]);
-                        }
-                    } else if (obj.constructor.toString().indexOf('Object') >= 0) {
-                        ret = new Object();
-                        for (i in obj) {
-                            ret[i] = RGraph.arrayClone(obj[i]);
-                        }
+            case 'boolean':
+                ret = array;
+                break;
+
+            case 'object':
+                if (array.constructor.toString().indexOf('Array') >= 0) {
+                    ret = new Array();  
+                    for (var i=0; i<array.length; ++i) {
+                        ret[i] = RGraph.arrayClone(array[i], objects, maxdepth - 1);
                     }
-                    break;
-                
-                case 'function':
-                    ret = obj;
-                    break;
-            }
+                } else if (array.constructor.toString().indexOf('Object') > 0 && objects) {
+                    ret = new Object();
+                    for (var i in array) {
+                        ret[i] = RGraph.arrayClone(array[i], true, maxdepth - 1);
+                    }
+                }
+                break;
+            
+            case 'function':
+                ret = array;
+                break;
         }
-        
+
         return ret;
     };
-
-
-
-
-
-
-
-
-    //
-    // With this variation of the clone function you can do
-    // this:
-    //       arr1 = [1,2,3,4,5,6];
-    //       arr2 = arr1.clone();
-    //
-    Object.prototype.clone = function ()
-    {
-        return RGraph.arrayClone(this, arguments[0]);
-    };
-
-
-
-
-
-
-
-
-    //
-    // An alias of the above function
-    //
-    RGraph.clone = RGraph.arrayClone;
 
 
 
@@ -743,7 +723,7 @@
             return args.array;
         }
         
-        if (RGraph.isNull(args.array)) {
+        if (RGraph.isNullish(args.array)) {
             return 0;
         }
 
@@ -793,7 +773,7 @@
             return args.array;
         }
         
-        if (RGraph.isNull(args.array)) {
+        if (RGraph.isNullish(args.array)) {
             return 0;
         }
 
@@ -874,7 +854,7 @@
         }
         
         // Account for null
-        if (RGraph.isNull(args.array)) {
+        if (RGraph.isNullish(args.array)) {
             return 0;
         }
 
@@ -931,7 +911,7 @@
 
             for (let i in args.source) {
 
-                if (RGraph.isNull(args.source[i])) {
+                if (RGraph.isNullish(args.source[i])) {
                     if (!RGraph.isUndefined(args.options.value)) {
                         arr.push(args.options.value);
                     }
@@ -960,12 +940,12 @@
                 if (RGraph.isArray(args.source[i]) || RGraph.isObject(args.source[i])) {
                     arr[i] = RGraph.arrayRemoveNull(args.source[i], args.options);
 
-                } else if (!RGraph.isNull(args.source[i])) {
+                } else if (!RGraph.isNullish(args.source[i])) {
                     Object.defineProperty(arr, i, {
                         value: args.source[i]
                     });
                 
-                } else if (RGraph.isNull(args.source[i])) {
+                } else if (RGraph.isNullish(args.source[i])) {
                     if (!RGraph.isUndefined(args.options.value)) {
                         arr[i] = args.options.value;
                     }
@@ -1417,7 +1397,7 @@
             // Necessary any more ? var titleSize = textConf.size;
             
             // Set the default subtitle size if it's null
-            if (RGraph.isNull(obj.properties.titleSubtitleSize)) {
+            if (RGraph.isNullish(obj.properties.titleSubtitleSize)) {
                 obj.properties.titleSubtitleSize = textConf.size - 4;
             }
         
@@ -1799,7 +1779,7 @@
         //
         // First clear the canvas
         //
-        if (RGraph.isNull(args.clear) || (typeof args.clear === 'boolean' && args.clear !== false) ) {
+        if (RGraph.isNullish(args.clear) || (typeof args.clear === 'boolean' && args.clear !== false) ) {
             var color = args.color || args.canvas.__object__.get('clearto') || 'transparent';
             RGraph.clear(args.canvas, args.color);
         }
@@ -1944,7 +1924,7 @@
 
                 if (typeof properties.yaxisTitlePos == 'number') {
                     var yaxis_title_pos = properties.yaxisTitlePos * marginLeft;
-                } else if (args.object.type === 'hbar' && RGraph.isNull(properties.yaxisTitlePos) ) {
+                } else if (args.object.type === 'hbar' && RGraph.isNullish(properties.yaxisTitlePos) ) {
                     var yaxis_title_pos = properties.marginLeft - args.object.yaxisLabelsSize;
                 } else {
 
@@ -2190,7 +2170,7 @@
                                 obj.set('backgroundGridHlinesCount', obj.data.length);
                             
                             // HBar
-                            } else if (obj.type === 'hbar' && RGraph.isNull(properties.backgroundGridHlinesCount) ) {
+                            } else if (obj.type === 'hbar' && RGraph.isNullish(properties.backgroundGridHlinesCount) ) {
                                 obj.set('backgroundGridHlinesCount', obj.data.length);
                             }
                         }
@@ -2502,9 +2482,9 @@
             
 
             // Perform some bounds checking
-            if(RGraph.isNull(start))start = args.object.scale2.max
+            if(RGraph.isNullish(start))start = args.object.scale2.max
             if (start > args.object.scale2.max) start = args.object.scale2.max;
-            if (RGraph.isNull(length)) length = args.object.scale2.max - start;
+            if (RGraph.isNullish(length)) length = args.object.scale2.max - start;
             if (start + length > args.object.scale2.max) length = args.object.scale2.max - start;
             if (start + length < (-1 * args.object.scale2.max) ) length = (-1 * args.object.scale2.max) - start;
 
@@ -3401,7 +3381,7 @@
 
         if (typeof properties.tooltips == 'object' && properties.tooltips) {
             for (var i=0,len=properties.tooltips.length; i<len; ++i) {
-                if (!RGraph.isNull(args.object.get('tooltips')[i])) {
+                if (!RGraph.isNullish(args.object.get('tooltips')[i])) {
                     return true;
                 }
             }
@@ -3534,7 +3514,7 @@
     RGraph.ObjectRegistry.clear = function ()
     {
         if (   typeof arguments[0] === 'object'
-            && !RGraph.isNull(arguments)
+            && !RGraph.isNullish(arguments)
             && (typeof arguments[0].canvas === 'object' || typeof arguments[0].id === 'string')
            ) {
 
@@ -4143,7 +4123,7 @@
             
             case 'object':
                 // In case of null
-                if (RGraph.isNull(args.object)) {
+                if (RGraph.isNullish(args.object)) {
                     str += 'null';
                 } else {
                     str += 'Object {' + '\n'
@@ -5595,7 +5575,7 @@
 
         while (--args.index >= 0) {
 
-            if (RGraph.isNull(args.data[group])) {
+            if (RGraph.isNullish(args.data[group])) {
                 group++;
                 grouped_index = 0;
                 continue;
@@ -6551,19 +6531,43 @@
 
 
     //
-    // Returns true/false as to whether the given variable is null or not
+    // Returns true/false as to whether the given variable is
+    // null or not.
     // 
-    // @param  args object An object consisting of:
-    //                      o arg
-    // OR
+    // @param mixed obj The argument to check
     //
-    // @param mixed arg The argument to check
-    //
-    RGraph.isNull = function ()
+    RGraph.isNull = function (obj)
     {
-        var args = RGraph.getArgs(arguments, 'arg');
+        if (typeof obj === 'object' && !obj) {
+            return true;
+        }
+    
+        return false;
+    };
 
-        if (typeof args.arg === 'object' && !args.arg) {
+
+
+
+
+
+
+
+    //
+    // Returns true/false as to whether the given variable is
+    // null or not. This function also returns true if the
+    // variable is undefined
+    // 
+    // @param mixed obj The argument to check
+    //
+    RGraph.isNullish = function (obj)
+    {
+        // Check for undefined
+        if (RGraph.isUndefined(obj)) {
+            return true;
+        }
+
+        // Check for null
+        if (RGraph.isNull(obj)) {
             return true;
         }
     
@@ -6836,7 +6840,7 @@
 
 
 
-        if (typeof args.string === 'object' && !RGraph.isNull(args.string)) {
+        if (typeof args.string === 'object' && !RGraph.isNullish(args.string)) {
             for (var i=0,len=args.string.length; i<len; i+=1) {
                 args.string[i] = RGraph.stringsToNumbers(
                     args.string[i],
@@ -7188,8 +7192,8 @@
         var font   = typeof properties[prefix + 'Font']   === 'string'  ? properties[prefix + 'Font']   : properties.textFont,
             size   = typeof properties[prefix + 'Size']   === 'number'  ? properties[prefix + 'Size']   : properties.textSize,
             color  = typeof properties[prefix + 'Color']  === 'string'  ? properties[prefix + 'Color']  : properties.textColor,
-            bold   = !RGraph.isNull(properties[prefix + 'Bold'])        ? properties[prefix + 'Bold']   : properties.textBold,
-            italic = !RGraph.isNull(properties[prefix + 'Italic'])      ? properties[prefix + 'Italic'] : properties.textItalic;
+            bold   = !RGraph.isNullish(properties[prefix + 'Bold'])        ? properties[prefix + 'Bold']   : properties.textBold,
+            italic = !RGraph.isNullish(properties[prefix + 'Italic'])      ? properties[prefix + 'Italic'] : properties.textItalic;
 
         return {
             font:   font,
@@ -7231,8 +7235,8 @@
         //
         conf.sort(function (a, b)
         {
-            var aNull = RGraph.isNull(a.maxWidth);
-            var bNull = RGraph.isNull(b.maxWidth);
+            var aNull = RGraph.isNullish(a.maxWidth);
+            var bNull = RGraph.isNullish(b.maxWidth);
             
             if (aNull && bNull) return 0;
             if (aNull && !bNull) return -1;
@@ -7259,8 +7263,8 @@
         for (var i=0; i<conf.length; ++i) {
         
             // Set the minimum and maximum
-            conf[i].minWidth = RGraph.isNull(conf[i].minWidth) ?      0 : conf[i].minWidth;
-            conf[i].maxWidth = RGraph.isNull(conf[i].maxWidth) ? 100000 : conf[i].maxWidth;
+            conf[i].minWidth = RGraph.isNullish(conf[i].minWidth) ?      0 : conf[i].minWidth;
+            conf[i].maxWidth = RGraph.isNullish(conf[i].maxWidth) ? 100000 : conf[i].maxWidth;
             
             // Create the media query string
             var str = 'screen and (min-width: %1px) and (max-width: %2px)'.format(
@@ -7487,7 +7491,7 @@
                 //
                 // If a maxWidth is stipulated test that
                 //
-                if (!matched && (document.documentElement.clientWidth <= conf[i].maxWidth || RGraph.isNull(conf[i].maxWidth))) {
+                if (!matched && (document.documentElement.clientWidth <= conf[i].maxWidth || RGraph.isNullish(conf[i].maxWidth))) {
 
                     matched = true;
 
@@ -7732,7 +7736,7 @@
         // null and undefined values to empty strings.
         //
         if (   typeof properties.xaxisLabels === 'object'
-            && !RGraph.isNull(properties.xaxisLabels)
+            && !RGraph.isNullish(properties.xaxisLabels)
             && properties.xaxisLabels.length) {
             
             for (var i=0; i<properties.xaxisLabels.length; ++i) {
@@ -7931,7 +7935,7 @@
 
                     // Don't draw the LEFT tickmark if there's a Y axis on the left or if specifically
                     // told not to
-                    if (RGraph.isNull(properties.xaxisTickmarksLastLeft)) {
+                    if (RGraph.isNullish(properties.xaxisTickmarksLastLeft)) {
 
                         if ( i === 0 && properties.yaxis && properties.yaxisPosition === 'left' && !(properties.xaxisScaleMax > 0 && properties.xaxisScaleMin < 0) ) {
                             continue;
@@ -7943,7 +7947,7 @@
                     
                     // Don't draw the RIGHT tickmark if there's a Y axis on the right or if specifically
                     // told not to
-                    if (RGraph.isNull(properties.xaxisTickmarksLastRight)) {
+                    if (RGraph.isNullish(properties.xaxisTickmarksLastRight)) {
                         if (   i === xaxisTickmarksCount && properties.yaxis && properties.yaxisPosition === 'right') {
                             continue;
                         }
@@ -8191,7 +8195,7 @@
                         halign = 'left';
                     }
 
-                    if (RGraph.isNull(x)) {
+                    if (RGraph.isNullish(x)) {
                         continue;
                     }
 
@@ -8519,7 +8523,7 @@
 
                     // Don't draw the TOP tickmark if there's an X axis at the top or if specifically
                     // told not to
-                    if (RGraph.isNull(properties.yaxisTickmarksLastTop)) {
+                    if (RGraph.isNullish(properties.yaxisTickmarksLastTop)) {
                         if (i === 0 && properties.xaxis && properties.xaxisPosition === 'top') {
                             continue;
                         }
@@ -8529,7 +8533,7 @@
                     
                     // Don't draw the BOTTOM tickmark if there's an X axis at the bottom or if specifically
                     // told not to
-                    if (RGraph.isNull(properties.yaxisTickmarksLastBottom)) {
+                    if (RGraph.isNullish(properties.yaxisTickmarksLastBottom)) {
 
                         if (i === yaxisTickmarksCount && properties.xaxis && properties.xaxisPosition === 'bottom') {
                             continue;
@@ -9390,7 +9394,7 @@
 
     RGraph.GET.parse = function ()
     {
-        if (!RGraph.isNull(RGraph.GET.__parts__)) {
+        if (!RGraph.isNullish(RGraph.GET.__parts__)) {
             return RGraph.GET.__parts__;
         }
 
@@ -10994,7 +10998,7 @@
         var args = arguments;
         
         for (var i in args) {
-            if (RGraph.isNull(args[i])) {
+            if (RGraph.isNullish(args[i])) {
                 args[i] = 'null';
             }
         }

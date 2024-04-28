@@ -466,7 +466,7 @@
         //
         // Store the original data. This also allows for giving arguments as one big array.
         //
-        if (typeof this.original_data[0] === 'number' || RGraph.isNull(this.original_data[0])) {
+        if (typeof this.original_data[0] === 'number' || RGraph.isNullish(this.original_data[0])) {
             this.original_data = [RGraph.arrayClone(this.original_data)];
         }
 
@@ -818,7 +818,7 @@
             // everything has been calculated (eg maximum values
             // etc)
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
     
@@ -1036,7 +1036,7 @@
                     for (var j=0,len2=this.coords2[i].length; j<len2; ++j) {
                         if (typeof this.coords2[i][j] == 'object' && typeof this.coords2[i][j][0] == 'number' && typeof this.coords2[i][j][1] == 'number') {
 
-                            var tickmarks = typeof properties.tickmarksStyle == 'object' && !RGraph.isNull(properties.tickmarksStyle) ? properties.tickmarksStyle[i] : properties.tickmarksStyle;
+                            var tickmarks = typeof properties.tickmarksStyle == 'object' && !RGraph.isNullish(properties.tickmarksStyle) ? properties.tickmarksStyle[i] : properties.tickmarksStyle;
                             this.context.strokeStyle =  properties.colors[i];
                             this.drawTick(
                                 this.coords2[i],
@@ -1133,7 +1133,7 @@
     
                 for (var i=0; i<len; ++i) {
     
-                    if (!RGraph.isNull(this.coords[i][1])) {
+                    if (!RGraph.isNullish(this.coords[i][1])) {
                         if (i == 0) {
                             this.context.moveTo(this.coords[i][0], this.coords[i][1]);
                         } else {
@@ -1152,7 +1152,7 @@
                 }
                 
                 for (var i=this.coords.length - 1; i>=len; --i) {
-                    if (!RGraph.isNull(this.coords[i][1])) {
+                    if (!RGraph.isNullish(this.coords[i][1])) {
                         if (i == (this.coords.length - 1)) {
                             this.context.moveTo(this.coords[i][0], this.coords[i][1]);
                         } else {
@@ -1757,7 +1757,7 @@
             // Various conditions mean no tick
             if (this.hidden(dataset)) {
                 return;
-            } else if (RGraph.isNull(yPos)) {
+            } else if (RGraph.isNullish(yPos)) {
                 return false;
             } else if ((yPos > (this.canvas.height - this.marginBottom)) && !properties.outofbounds) {
                 return;
@@ -2087,7 +2087,7 @@
             //
             if (properties.filledRange && properties.filled) {
             
-                if (RGraph.isNull(properties.filledRangeThreshold)) {
+                if (RGraph.isNullish(properties.filledRangeThreshold)) {
                     properties.filledRangeThreshold        = this.ymin
                     properties.filledRangeThresholdColors = [properties.filledColors, properties.filledColors]
                 }
@@ -2119,7 +2119,7 @@
                             
                             
                             for (var i=0; i<len; ++i) {
-                                if (!RGraph.isNull(this.coords[i][1])) {
+                                if (!RGraph.isNullish(this.coords[i][1])) {
                                     if (i == 0) {
                                         this.context.moveTo(this.coords[i][0], this.coords[i][1])
                                     } else {
@@ -2130,7 +2130,7 @@
     
     
                             for (var i=this.coords.length - 1; i>=len; --i) {
-                                if (RGraph.isNull(this.coords[i][1])) {
+                                if (RGraph.isNullish(this.coords[i][1])) {
                                     this.context.moveTo(this.coords[i][0], this.coords[i][1])
                                 } else {
                                     this.context.lineTo(this.coords[i][0], this.coords[i][1])
@@ -2323,8 +2323,8 @@
                     this.context.moveTo(coords[0][0], coords[0][1]);
                     for (var j=1; j<coords.length; ++j) {
                         if (
-                            RGraph.isNull(coords[j][1])
-                            || (coords[j - 1] && RGraph.isNull(coords[j-1][1]))
+                            RGraph.isNullish(coords[j][1])
+                            || (coords[j - 1] && RGraph.isNullish(coords[j-1][1]))
                            ) {
                             this.context.moveTo(coords[j][0], coords[j][1]);
                         } else {
@@ -2565,7 +2565,7 @@
                     coords  = this.coords[i];
                 
                 // Don't draw a label for null values
-                if (RGraph.isNull(coords[1])) {
+                if (RGraph.isNullish(coords[1])) {
                     continue;
                 }
                 
@@ -3075,7 +3075,7 @@
             //
             // Key colors
             //
-            if (!RGraph.isNull(properties.keyColors)) {
+            if (!RGraph.isNullish(properties.keyColors)) {
                 for (var i=0; i<properties.keyColors.length; ++i) {
                     properties.keyColors[i] = this.parseSingleColorForGradient(properties.keyColors[i]);
                 }
@@ -3084,7 +3084,7 @@
             //
             // Background horizontal bars colors
             //
-            if (!RGraph.isNull(properties.backgroundHbars)) {
+            if (!RGraph.isNullish(properties.backgroundHbars)) {
                 for (var i=0; i<properties.backgroundHbars.length; ++i) {
                     properties.backgroundHbars[i][2] = this.parseSingleColorForGradient(properties.backgroundHbars[i][2]);
                 }
@@ -3252,8 +3252,8 @@
                 } else {
                     for (var i=0,len=coords.length; i<len; i+=1) {
                         if (   i == 0
-                            || RGraph.isNull(coords[i][1])
-                            || (typeof coords[i - 1][1] != undefined && RGraph.isNull(coords[i - 1][1]))) {
+                            || RGraph.isNullish(coords[i][1])
+                            || (typeof coords[i - 1][1] != undefined && RGraph.isNullish(coords[i - 1][1]))) {
                             this.context.moveTo(coords[i][0], coords[i][1]);
                         } else {
                             this.context.lineTo(coords[i][0], coords[i][1]);
@@ -3398,7 +3398,7 @@
 
 
 
-                    } else if (typeof errorbars[i] === 'object' && !RGraph.isNull(errorbars[i])) {
+                    } else if (typeof errorbars[i] === 'object' && !RGraph.isNullish(errorbars[i])) {
 
                         var positiveLength = this.getYCoord(this.min) - this.getYCoord(this.min + errorbars[i][0]),
                             negativeLength = this.getYCoord(this.min) - this.getYCoord(this.min + errorbars[i][1]);
@@ -3423,7 +3423,7 @@
                         }
 
 
-                        if (!RGraph.isNull(errorbars[i][0])) {
+                        if (!RGraph.isNullish(errorbars[i][0])) {
 
                             this.path(
                                 'lc square b  m % % l % % l % % m % % l % % s %',
@@ -4097,7 +4097,7 @@
         //
         this.isAdjustable = function (shape)
         {
-            if (RGraph.isNull(properties.adjustableOnly)) {
+            if (RGraph.isNullish(properties.adjustableOnly)) {
                 return true;
             }
 
@@ -4572,11 +4572,11 @@
                     readData = true;
                 }
 
-                if (RGraph.isNull(data[i]) && readData) {
+                if (RGraph.isNullish(data[i]) && readData) {
                     start = i - 1;
                     
                     for (var j=(i+1); j<data.length; ++j) {
-                        if (RGraph.isNull(data[j])) {
+                        if (RGraph.isNullish(data[j])) {
                             continue;
                         } else {
                             end = j;
@@ -4591,7 +4591,7 @@
                             this.coords2[datasetIdx][end][0], this.coords2[datasetIdx][end][1],
                             typeof properties.nullBridgeColors === 'string'
                                 ? properties.nullBridgeColors
-                                : ((typeof properties.nullBridgeColors === 'object' && !RGraph.isNull(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx])
+                                : ((typeof properties.nullBridgeColors === 'object' && !RGraph.isNullish(properties.nullBridgeColors) && properties.nullBridgeColors[datasetIdx]) ? properties.nullBridgeColors[datasetIdx] : properties.colors[datasetIdx])
                         );
                         
                         start = null;

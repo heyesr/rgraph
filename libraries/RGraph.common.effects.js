@@ -572,6 +572,7 @@
     //
     RGraph.Effects.Common.expand = function ()
     {
+
         // This function gets added to the chart object - so the this
         // variable is the chart object
         var obj       = this;

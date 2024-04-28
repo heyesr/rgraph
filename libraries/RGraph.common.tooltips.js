@@ -160,7 +160,7 @@
         // If the tooltipsCss property is populated then add those values
         // to the tooltip
         //
-        if (!RGraph.isNull(args.object.properties.tooltipsCss)) {
+        if (!RGraph.isNullish(args.object.properties.tooltipsCss)) {
             for (var i in args.object.properties.tooltipsCss) {
                 if (typeof i === 'string') {
                     tooltipObj.style[i] = substitute(args.object.properties.tooltipsCss[i]);
@@ -507,7 +507,7 @@
 
 
                     // Add each row of data
-                    if (typeof properties.tooltipsFormattedTableData === 'object' && !RGraph.isNull(properties.tooltipsFormattedTableData)) {
+                    if (typeof properties.tooltipsFormattedTableData === 'object' && !RGraph.isNullish(properties.tooltipsFormattedTableData)) {
                         str += '<tbody>';
 
                         for (var i=0; i<properties.tooltipsFormattedTableData[specific.sequentialIndex].length; ++i) {
@@ -790,7 +790,7 @@
             // If the tooltipsPointerCss property is populated then do the
             // substitution on those too
             //
-            if (!RGraph.isNull(args.object.properties.tooltipsPointerCss)) {
+            if (!RGraph.isNullish(args.object.properties.tooltipsPointerCss)) {
                 
                 // This is in a timer to allow the tooltip (and the pointer) to be
                 // added to the document. Then the document.getElementById('') method

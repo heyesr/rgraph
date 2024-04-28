@@ -700,8 +700,8 @@
             // Save the original colors so that they can be restored when the canvas is reset
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:          RGraph.SVG.arrayClone(properties.colors),
-                    backgroundColor: RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:          RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundColor: RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 

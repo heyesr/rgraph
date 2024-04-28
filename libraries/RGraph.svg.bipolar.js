@@ -56,7 +56,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -618,7 +618,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -734,7 +734,7 @@
             
             // Draw the LEFT background
             properties.marginRight = this.width - (properties.marginLeft + this.graphWidth);
-            if (RGraph.SVG.isNull(properties.backgroundGridHlinesCount)) {
+            if (RGraph.SVG.isNullish(properties.backgroundGridHlinesCount)) {
                 var resetToNull = true;
                 properties.backgroundGridHlinesCount = this.left.length;
             }
@@ -780,7 +780,7 @@
             properties.marginRight = originalMarginRight;
             properties.marginLeft  = this.width - (properties.marginRight + this.graphWidth);
 
-            if (RGraph.SVG.isNull(properties.backgroundGridHlinesCount)) {
+            if (RGraph.SVG.isNullish(properties.backgroundGridHlinesCount)) {
                 properties.backgroundGridHlinesCount = this.right.length;
             }
 
@@ -1414,7 +1414,7 @@
                 if (typeof this.left[i] === 'number') {
 
                     var color   = properties.colors[this.sequentialIndex],
-                        tooltip = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                        tooltip = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                         y       = properties.marginTop + ((this.graphHeight / this.left.length) * i) + properties.marginInner,
                         width   = this.getWidth(this.left[i]),
                         x       = properties.marginLeft + this.graphWidth - width,
@@ -1424,7 +1424,7 @@
                     // If the colorsLeft option is set then change
                     // the colors option to that.
                     //
-                    if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                    if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                         
                         // Save the initial colors value
                         properties.colorsInitial = properties.colors;
@@ -1504,7 +1504,7 @@
                     // If the colorsLeft option is set then change
                     // the colors option back to what it was.
                     //
-                    if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                    if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                         properties.colors = properties.colorsInitial;
                     }
 
@@ -1519,7 +1519,7 @@
                     for (var j=0; j<this.left[i].length; ++j) {
 
                         var color    = properties.colors[this.sequentialIndex],
-                            tooltip  = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                            tooltip  = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                             y        = properties.marginTop + ((this.graphHeight / this.left.length) * i) + properties.marginInner,
                             width    = this.getWidth(this.left[i][j]),
                             accWidth = accWidth + width,
@@ -1532,7 +1532,7 @@
                         // If the colorsLeft option is set then change
                         // the colors option to that.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                             
                             // Save the initial colors value
                             properties.colorsInitial = properties.colors;
@@ -1672,7 +1672,7 @@
                         // If the colorsLeft option is set then change
                         // the colors option back to what it was.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                             properties.colors = properties.colorsInitial;
                         }
                         
@@ -1693,7 +1693,7 @@
                     for (var j=0; j<this.left[i].length; ++j) {
 
                         var color    = properties.colors[this.sequentialIndex],
-                            tooltip  = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                            tooltip  = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                             height   = ((this.graphHeight / this.left.length) - properties.marginInner - properties.marginInner - (properties.marginInnerGrouped * (this.left[i].length - 1))) / this.left[i].length,
                             y        = properties.marginTop + ((this.graphHeight / this.left.length) * i) + properties.marginInner + (height * j) + (j * properties.marginInnerGrouped),
                             width    = this.getWidth(this.left[i][j]),
@@ -1704,7 +1704,7 @@
                         // If the colorsLeft option is set then change
                         // the colors option to that.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                             
                             // Save the initial colors value
                             properties.colorsInitial = properties.colors;
@@ -1800,7 +1800,7 @@
                         // If the colorsLeft option is set then change
                         // the colors option back to what it was.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsLeft)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsLeft)) {
                             properties.colors = properties.colorsInitial;
                         }
 
@@ -1833,7 +1833,7 @@
                 if (typeof this.right[i] === 'number') {
 
                     var color   = properties.colors[this.sequentialIndex],
-                        tooltip = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                        tooltip = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                         y       = properties.marginTop + ((this.graphHeight / this.right.length) * i) + properties.marginInner,
                         width   = this.getWidth(this.right[i]),
                         x       = properties.marginLeft + this.graphWidth + properties.marginCenter,
@@ -1843,7 +1843,7 @@
                     // If the colorsRight option is set then change
                     // the colors option to that.
                     //
-                    if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                    if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                         
                         // Save the initial colors value
                         properties.colorsInitial = properties.colors;
@@ -1906,7 +1906,7 @@
                     // If the colorsRight option is set then change
                     // the colors option back to what it was.
                     //
-                    if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                    if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                         properties.colors = properties.colorsInitial;
                     }
 
@@ -1922,7 +1922,7 @@
                     for (var j=0; j<this.right[i].length; ++j) {
 
                         var color    = properties.colors[this.sequentialIndex],
-                            tooltip  = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                            tooltip  = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                             y        = properties.marginTop + ((this.graphHeight / this.right.length) * i) + properties.marginInner,
                             width    = this.getWidth(this.right[i][j]),
                             x        = properties.marginLeft + this.graphWidth + properties.marginCenter + accWidth,
@@ -1936,7 +1936,7 @@
                         // If the colorsRight option is set then change
                         // the colors option to that.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                             
                             // Save the initial colors value
                             properties.colorsInitial = properties.colors;
@@ -2079,7 +2079,7 @@
                         // If the colorsRight option is set then change
                         // the colors option back to what it was.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                             properties.colors = properties.colorsInitial;
                         }
 
@@ -2104,7 +2104,7 @@
                     for (var j=0; j<this.right[i].length; ++j) {
 
                         var color    = properties.colors[this.sequentialIndex],
-                            tooltip  = RGraph.SVG.isNull(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
+                            tooltip  = RGraph.SVG.isNullish(properties.tooltips) ? null : properties.tooltips[this.sequentialIndex],
                             height   = ((this.graphHeight / this.right.length) - properties.marginInner - properties.marginInner - (properties.marginInnerGrouped * (this.right[i].length - 1))) / this.right[i].length,
                             y        = properties.marginTop + ((this.graphHeight / this.right.length) * i) + properties.marginInner + (height * j) + (j * properties.marginInnerGrouped),
                             width    = this.getWidth(this.right[i][j]),
@@ -2114,7 +2114,7 @@
                         // If the colorsRight option is set then change
                         // the colors option to that.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                             
                             // Save the initial colors value
                             properties.colorsInitial = properties.colors;
@@ -2229,7 +2229,7 @@
                         // If the colorsRight option is set then change
                         // the colors option back to what it was.
                         //
-                        if (!RGraph.SVG.isNull(properties.colorsRight)) {
+                        if (!RGraph.SVG.isNullish(properties.colorsRight)) {
                             properties.colors = properties.colorsInitial;
                         }
 
@@ -2259,7 +2259,7 @@
             var obj = this;
 
             // Add the tooltip events
-            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips[this.sequentialIndex] || typeof properties.tooltips === 'string') ) {
+            if (!RGraph.SVG.isNullish(properties.tooltips) && (properties.tooltips[this.sequentialIndex] || typeof properties.tooltips === 'string') ) {
                 //
                 // Add tooltip event listeners
                 //
@@ -2308,7 +2308,7 @@
             var x1 = this.getLeftXCoord(0),
                 x2 = this.getLeftXCoord(value);
 
-            if (RGraph.SVG.isNull(x1) || RGraph.SVG.isNull(x2)) {
+            if (RGraph.SVG.isNullish(x1) || RGraph.SVG.isNullish(x2)) {
                 return null;
             }
 
@@ -2443,10 +2443,10 @@
             // the canvas is cleared
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:              RGraph.SVG.arrayClone(properties.colors),
-                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
-                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:              RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor, true),
+                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 
@@ -2576,7 +2576,7 @@
 
 
                         // STACKED CHART
-                        } else if (!RGraph.SVG.isNull(value) && typeof value === 'object' && properties.grouping === 'stacked') {
+                        } else if (!RGraph.SVG.isNullish(value) && typeof value === 'object' && properties.grouping === 'stacked') {
 
                             for (var k=0,sum=0,width=0; k<this.coords2[seq].length; ++k) {
                                 sum += parseFloat(this.coords2[seq][k].element.getAttribute('data-value'));
@@ -2660,7 +2660,7 @@
 
 
                         // GROUPED CHART
-                        } else if (!RGraph.SVG.isNull(value) && typeof value === 'object' && properties.grouping === 'grouped') {
+                        } else if (!RGraph.SVG.isNullish(value) && typeof value === 'object' && properties.grouping === 'grouped') {
 
                             for (var k=0; k<value.length; ++k) {
                             
@@ -2692,7 +2692,7 @@
                                     formatter: typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter : null
                                 });
 
-                                if (val === 0 || RGraph.SVG.isNull(val) || val === '') {                                    
+                                if (val === 0 || RGraph.SVG.isNullish(val) || val === '') {                                    
                                     str = '';
                                 }
 
@@ -2732,7 +2732,7 @@
                             }
                             
                             seq--;
-                        } else if (RGraph.SVG.isNull(value)) {
+                        } else if (RGraph.SVG.isNullish(value)) {
                             --seq;
                         }
                     }
@@ -2863,7 +2863,7 @@
             // property was causing the smaller charts to rtain the larger charts titleX
             //position
 
-            //if (RGraph.SVG.isNull(properties.titleX)) {
+            //if (RGraph.SVG.isNullish(properties.titleX)) {
             //    properties.titleX = ((this.width - properties.marginLeft - properties.marginRight) / 2) + properties.marginLeft;
             //}
 
@@ -2885,8 +2885,8 @@
                 frames   = opt.frames || 30,
                 frame    = 0,
                 obj      = this,
-                left     = RGraph.SVG.arrayClone(this.left),
-                right    = RGraph.SVG.arrayClone(this.right),
+                left     = RGraph.SVG.arrayClone(this.left, true),
+                right    = RGraph.SVG.arrayClone(this.right, true),
                 seq      = 0;
 
             this.draw();
@@ -3146,8 +3146,8 @@
                 frame_left      = -1,
                 frame_right     = -1,
                 callback        = arguments[1] || function () {},
-                original_left   = RGraph.SVG.arrayClone(this.left),
-                original_right  = RGraph.SVG.arrayClone(this.right);
+                original_left   = RGraph.SVG.arrayClone(this.left, true),
+                original_right  = RGraph.SVG.arrayClone(this.right, true);
 
 
 
@@ -3240,7 +3240,7 @@
             for (var i=0,len=this.left.length; i<len; i+=1) {
                 if (typeof this.left[i] === 'number') {
                     this.left[i]  = 0;
-                } else if (typeof this.left[i] === 'object' && !RGraph.SVG.isNull(this.left[i])) {
+                } else if (typeof this.left[i] === 'object' && !RGraph.SVG.isNullish(this.left[i])) {
                     for (var j=0; j<this.left[i].length; ++j) {
                         this.left[i][j]  = 0;
                     }
@@ -3306,7 +3306,7 @@
 
                     if (frame_left >= startFrames_left[seq]) {
 
-                        var isNull = RGraph.SVG.isNull(obj.left[i]);
+                        var isNull = RGraph.SVG.isNullish(obj.left[i]);
 
                         // Regular bars
                         if (typeof obj.left[i] === 'number') {
@@ -3367,7 +3367,7 @@
                             obj.left[i] = null;
                         }
                     } else {
-                        obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.SVG.arrayPad({array: [], length: obj.left[i].length, value: 0}) : (RGraph.SVG.isNull(obj.left[i]) ? null : 0);
+                        obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.SVG.arrayPad({array: [], length: obj.left[i].length, value: 0}) : (RGraph.SVG.isNullish(obj.left[i]) ? null : 0);
                     }
                 }
 
@@ -3400,7 +3400,7 @@
             
                     if (frame_right >= startFrames_right[seq]) {
             
-                        var isNull = RGraph.SVG.isNull(obj.right[i]);
+                        var isNull = RGraph.SVG.isNullish(obj.right[i]);
             
                         // Regular bars
                         if (typeof obj.right[i] === 'number') {
@@ -3461,7 +3461,7 @@ obj.stackedBackfacesRight[i].setAttribute('width', accWidth);
                             obj.right[i] = null;
                         }
                     } else {
-                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNull(obj.right[i]) ? null : 0);
+                        obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.SVG.arrayPad({array: [], length: obj.right[i].length, value: 0}) : (RGraph.SVG.isNullish(obj.right[i]) ? null : 0);
                     }
                 }
             
@@ -3527,17 +3527,17 @@ obj.stackedBackfacesRight[i].setAttribute('width', accWidth);
         {
             var side = ((specific.dataset + 1) > this.left.length) ? 'right' : 'left';
 
-            var color = (!RGraph.SVG.isNull(properties.tooltipsFormattedKeyColors) && typeof properties.tooltipsFormattedKeyColors === 'object' && properties.tooltipsFormattedKeyColors[index])
+            var color = (!RGraph.SVG.isNullish(properties.tooltipsFormattedKeyColors) && typeof properties.tooltipsFormattedKeyColors === 'object' && properties.tooltipsFormattedKeyColors[index])
                             ? properties.tooltipsFormattedKeyColors[index]
                             : properties.colors[index];
 
             if (typeof this[side][specific.dataset2] === 'object') {
 
-                var label = (!RGraph.SVG.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
+                var label = (!RGraph.SVG.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
                                 ? properties.tooltipsFormattedKeyLabels[index]
                                 : '';
             } else {
-                var label = (!RGraph.SVG.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[specific.dataset2])
+                var label = (!RGraph.SVG.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[specific.dataset2])
                                 ? properties.tooltipsFormattedKeyLabels[specific.dataset2]
                                 : '';
             }

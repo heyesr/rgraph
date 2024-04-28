@@ -31,7 +31,7 @@
         this.uid                    = RGraph.createUID();
         this.canvas.uid             = this.canvas.uid ? this.canvas.uid : RGraph.createUID();
         this.data                   = data;
-        this.original_data          = RGraph.arrayClone(data);
+        this.original_data          = window.structuredClone(data);
         this.colorsParsed           = false;
         this.coordsText             = [];
         this.original_colors        = [];
@@ -297,6 +297,7 @@
 
 
 
+
         // Easy access to  properties and the path function
         var properties = this.properties;
         this.path      = RGraph.pathObjectFunction;
@@ -463,7 +464,7 @@
 
             // Set the number of horizontal grid lines to the same as that of the
             // data items that we have.
-            if (RGraph.isNull(properties.backgroundGridHlinesCount)) {
+            if (RGraph.isNullish(properties.backgroundGridHlinesCount)) {
                 this.set('backgroundGridHlinesCount', this.data.length);
             }
             
@@ -498,7 +499,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -572,7 +573,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -913,7 +914,7 @@
             }
             
             // Not entirely sure what this does...
-            if (RGraph.isNull(ev.complete)) {
+            if (RGraph.isNullish(ev.complete)) {
                 this.context.fillStyle = ev.color ? ev.color : properties.colorsDefault;
             } else {
                 this.context.fillStyle = ev.background ? ev.background : properties.colorsDefault;
@@ -1323,9 +1324,8 @@
         this.parseColors = function ()
         {
             // Save the original colors so that they can be restored when the canvas is reset
-            if (this.original_colors.length === 0) {
-                
-                this.original_colors.data                 = RGraph.arrayClone(this.data);
+            if (this.original_colors.length === 0) {                
+                this.original_colors.data                 = window.structuredClone(this.data);
                 this.original_colors.backgroundBarsColor1 = RGraph.arrayClone(properties.backgroundBarsColor1);
                 this.original_colors.backgroundBarsColor2 = RGraph.arrayClone(properties.backgroundBarsColor2);
                 this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor);
@@ -1363,7 +1363,7 @@
                 
                 // Single event
                 } else {
-                
+
                     if (typeof this.data[i].background === 'string') {
                         this.data[i].background = this.parseSingleColorForGradient(
                             this.data[i].background,
@@ -1518,7 +1518,7 @@
             this.cancelStopAnimation();
             
             // Reset the data to the original
-            this.data = RGraph.arrayClone(this.original_data);
+            this.data = window.structuredClone(this.original_data);
 
             var obj             = this,
                 opt             = arguments[0] || {},
@@ -1527,7 +1527,7 @@
                 context         = obj.context,
                 numFrames       = opt.frames || 30,
                 frame           = 0;
-                original_events = RGraph.arrayClone(obj.data);
+                original_events = window.structuredClone(obj.data);
 
             function iterator ()
             {
@@ -1541,7 +1541,6 @@
 
                 RGraph.clear(obj.canvas);
                 RGraph.redrawCanvas(obj.canvas);
-
 
                 if (frame <= numFrames) {
                     // Update the events
@@ -1612,7 +1611,10 @@
             //
             for (var i=0; i<this.original_colors.data.length; ++i) {
                 if (this.original_colors.data[i].background) {
-                    this.data[i].background = RGraph.arrayClone(this.original_colors.data[i].background);
+                    this.data[i].background =
+                        this.original_colors.data[i].background
+                            ? RGraph.arrayClone(this.original_colors.data[i].background)
+                            : null;
                 }
 
                 if (this.original_colors.data[i].color) {
@@ -1669,7 +1671,7 @@
         // Determines whether the Gant is adjustable or not
         this.isAdjustable = function (shape)
         {
-            if (RGraph.isNull(properties.adjustableOnly)) {
+            if (RGraph.isNullish(properties.adjustableOnly)) {
                 return true;
             
             } else if (RGraph.isArray(properties.adjustableOnly) && shape && properties.adjustableOnly[shape.sequentialIndex]) {

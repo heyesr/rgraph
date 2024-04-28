@@ -221,7 +221,7 @@
                 if ( (opt.type === 'a' || opt.type === 'image') && o === 'xlink:href') {
                     tag.setAttributeNS('http://www.w3.org/1999/xlink', o, String(opt.attr[o]));
                 } else {
-                    if (RGraph.SVG.isNull(opt.attr[o])) {
+                    if (RGraph.SVG.isNullish(opt.attr[o])) {
                         opt.attr[o] = '';
                     }
                     tag.setAttribute(name, String(opt.attr[o]));
@@ -938,7 +938,7 @@
         // Draw the X axis labels
         //
         } else {
-            if (typeof properties.xaxisLabels === 'object' && !RGraph.SVG.isNull(properties.xaxisLabels) ) {
+            if (typeof properties.xaxisLabels === 'object' && !RGraph.SVG.isNullish(properties.xaxisLabels) ) {
             
                 var angle = properties.xaxisLabelsAngle;
 
@@ -1803,7 +1803,7 @@
                 if (typeof properties.backgroundGridHlinesCount === 'number') {
                     var count = properties.backgroundGridHlinesCount;
                 } else if (obj.type === 'hbar' || obj.type === 'bipolar') {
-                    if (typeof properties.yaxisLabels === 'object' && !RGraph.SVG.isNull(properties.yaxisLabels) && properties.yaxisLabels.length) {
+                    if (typeof properties.yaxisLabels === 'object' && !RGraph.SVG.isNullish(properties.yaxisLabels) && properties.yaxisLabels.length) {
                         var count = properties.yaxisLabels.length;
                     } else if (obj.type === 'hbar') {
                         var count = obj.data.length;
@@ -1997,6 +1997,35 @@ if (properties.backgroundBorder) {
             return true;
         }
         
+        return false;
+    };
+
+
+
+
+
+
+
+
+    //
+    // Returns true/false as to whether the given variable is
+    // null or not. This function also returns true if the
+    // variable is undefined
+    // 
+    // @param mixed obj The argument to check
+    //
+    RGraph.SVG.isNullish = function (obj)
+    {
+        // Check for undefined
+        if (RGraph.SVG.isUndefined(obj)) {
+            return true;
+        }
+
+        // Check for null
+        if (RGraph.SVG.isNull(obj)) {
+            return true;
+        }
+    
         return false;
     };
 
@@ -2257,7 +2286,7 @@ if (properties.backgroundBorder) {
         }
         
         // Account for null
-        if (RGraph.SVG.isNull(arr)) {
+        if (RGraph.SVG.isNullish(arr)) {
             return 0;
         }
 
@@ -2291,7 +2320,7 @@ if (properties.backgroundBorder) {
             return arr;
         }
         
-        if (RGraph.SVG.isNull(arr)) {
+        if (RGraph.SVG.isNullish(arr)) {
             return 0;
         }
 
@@ -2335,7 +2364,7 @@ if (properties.backgroundBorder) {
             return arr;
         }
         
-        if (RGraph.SVG.isNull(arr)) {
+        if (RGraph.SVG.isNullish(arr)) {
             return 0;
         }
 
@@ -2415,7 +2444,7 @@ if (properties.backgroundBorder) {
         }
         
         // Account for null
-        if (RGraph.SVG.isNull(arr)) {
+        if (RGraph.SVG.isNullish(arr)) {
             return 0;
         }
 
@@ -2521,76 +2550,71 @@ if (properties.backgroundBorder) {
 
 
 
+
     //
-    // Makes a clone of an object
-    // 
-    // @param obj val The object to clone
+    // An updated clone function that works better
     //
-    RGraph.SVG.clone =
-    RGraph.SVG.arrayClone = function (obj)
+    // @param array mixed The variable to clone and
+    //                    return a copy of. Doesn't
+    //                    clone objects.
+    // @param maxdepth int The maximumdepth recursion sahould go
+    //
+    RGraph.SVG.arrayClone = function (array, objects = false, maxdepth = 5)
     {
-        //if(obj === null || typeof obj !== 'object') {
-        //    return obj;
-        //}
-
-        // Can't seem to stringify references to DOM nodes so this won't work. Bummer.
-        //
-        //return JSON.parse(JSON.stringify(obj));
-
-        if(obj === null || typeof obj !== 'object') {
-            return obj;
+        // This is here to limit recurusion
+        if (maxdepth < 0) {
+            return;
         }
 
-        if (RGraph.SVG.isArray(obj)) {
+        var ret = null;
 
-            var temp = [];
-    
-            for (var i=0,len=obj.length;i<len; ++i) {
-    
-                if (typeof obj[i]  === 'number') {
-                    temp[i] = (function (arg) {return Number(arg);})(obj[i]);
-    
-                } else if (typeof obj[i]  === 'string') {
-                    temp[i] = (function (arg) {return String(arg);})(obj[i]);
-              
-                } else if (typeof obj[i] === 'function') {
-                    temp[i] = obj[i];
-              
-                } else {
-                    temp[i] = RGraph.SVG.arrayClone(obj[i]);
-                }
-            }
-        } else if (typeof obj === 'object') {
-          
-            var temp = {};
+        // Account for undefined values
+        if (typeof array === 'undefined') {
+            return undefined;
+        }
+
+        // Account for null values
+        if (typeof array === 'object' && !array) {
+            return null;
+        }
+
+
+        switch(typeof array)
+        {
+            case 'string':
+                ret = (function (str){return String(str)})(array);
+                break;
             
-            for (var i in obj) {
-                if (typeof i === 'string') {
-                    temp[i] = obj[i];
+            case 'number':
+                ret = (function (num){return Number(num)})(array);
+                break;
+
+            case 'boolean':
+                ret = array;
+                break;
+
+            case 'object':
+                if (array.constructor.toString().indexOf('Array') >= 0) {
+                    ret = new Array();  
+                    for (var i=0; i<array.length; ++i) {
+                        ret[i] = RGraph.SVG.arrayClone(array[i], objects, maxdepth - 1);
+                    }
+                } else if (array.constructor.toString().indexOf('Object') > 0 && objects) {
+                    ret = new Object();
+                    for (var i in array) {
+                        ret[i] = RGraph.SVG.arrayClone(array[i], true, maxdepth - 1);
+                    }
                 }
-            }
+                break;
+            
+            case 'function':
+                ret = array;
+                break;
         }
 
-        return temp;
+        return ret;
     };
 
-
-
-
-
-
-
-
-    //
-    // With this variation of the clone function you can do
-    // this:
-    //       arr1 = [1,2,3,4,5,6];
-    //       arr2 = arr1.clone();
-    //
-    Array.prototype.clone = function ()
-    {
-        return RGraph.SVG.arrayClone(this);
-    };
 
 
 
@@ -2884,7 +2908,7 @@ if (properties.backgroundBorder) {
         //
         // Change null values to an empty string
         //
-        if (RGraph.SVG.isNull(str)) {
+        if (RGraph.SVG.isNullish(str)) {
             str = '';
         }
         
@@ -3409,7 +3433,7 @@ if (properties.backgroundBorder) {
 
         while (--index >= 0) {
 
-            if (RGraph.SVG.isNull(data[group])) {
+            if (RGraph.SVG.isNullish(data[group])) {
                 group++;
                 grouped_index = 0;
                 continue;
@@ -3995,7 +4019,7 @@ if (properties.backgroundBorder) {
             valign = 'bottom';
 
         // If theres key defined then move the title up
-        if (!RGraph.SVG.isNull(obj.properties.key)) {
+        if (!RGraph.SVG.isNullish(obj.properties.key)) {
             y -= 20;
         }
 
@@ -5185,7 +5209,7 @@ if (properties.backgroundBorder) {
 
 
 
-        if (typeof str === 'object'  && !RGraph.SVG.isNull(str)) {
+        if (typeof str === 'object'  && !RGraph.SVG.isNullish(str)) {
             for (var i=0,len=str.length; i<len; i+=1) {
                 str[i] = RGraph.SVG.stringsToNumbers(
                     str[i],
@@ -5498,12 +5522,12 @@ if (properties.backgroundBorder) {
             properties = obj.properties,
             index      = opt.index;
 
-        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNull(properties.errorbars) && typeof properties.errorbars[index] === 'number') {
+        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNullish(properties.errorbars) && typeof properties.errorbars[index] === 'number') {
             var value = properties.errorbars[index];
         } else if (   typeof properties.errorbars === 'object'
-                   && !RGraph.SVG.isNull(properties.errorbars)
+                   && !RGraph.SVG.isNullish(properties.errorbars)
                    && typeof properties.errorbars[index] === 'object'
-                   && !RGraph.SVG.isNull(properties.errorbars[index])
+                   && !RGraph.SVG.isNullish(properties.errorbars[index])
                    && typeof properties.errorbars[index].max === 'number'
                   ) {
             var value = properties.errorbars[index].max;
@@ -5534,9 +5558,9 @@ if (properties.backgroundBorder) {
             index      = opt.index;
 
         if (   typeof properties.errorbars === 'object'
-            && !RGraph.SVG.isNull(properties.errorbars)
+            && !RGraph.SVG.isNullish(properties.errorbars)
             && typeof properties.errorbars[index] === 'object'
-            && !RGraph.SVG.isNull(properties.errorbars[index])
+            && !RGraph.SVG.isNullish(properties.errorbars[index])
             && typeof properties.errorbars[index].min === 'number'
            ) {
             var value = properties.errorbars[index].min;
@@ -5568,7 +5592,7 @@ if (properties.backgroundBorder) {
 
         var color = properties.errorbarsColor || 'black';
 
-        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNull(properties.errorbars) && typeof properties.errorbars[index] === 'object' && !RGraph.SVG.isNull(properties.errorbars[index]) && typeof properties.errorbars[index].color === 'string') {
+        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNullish(properties.errorbars) && typeof properties.errorbars[index] === 'object' && !RGraph.SVG.isNullish(properties.errorbars[index]) && typeof properties.errorbars[index].color === 'string') {
             color = properties.errorbars[index].color;
         }
         
@@ -5596,7 +5620,7 @@ if (properties.backgroundBorder) {
 
         var linewidth = properties.errorbarsLinewidth || 1
 
-        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNull(properties.errorbars) && typeof properties.errorbars[index] === 'object' && !RGraph.SVG.isNull(properties.errorbars[index]) && typeof properties.errorbars[index].linewidth === 'number') {
+        if (typeof properties.errorbars === 'object' && !RGraph.SVG.isNullish(properties.errorbars) && typeof properties.errorbars[index] === 'object' && !RGraph.SVG.isNullish(properties.errorbars[index]) && typeof properties.errorbars[index].linewidth === 'number') {
             linewidth = properties.errorbars[index].linewidth;
         }
 
@@ -5625,9 +5649,9 @@ if (properties.backgroundBorder) {
         var capwidth = properties.errorbarsCapwidth || 10
 
         if (   typeof properties.errorbars === 'object'
-            && !RGraph.SVG.isNull(properties.errorbars)
+            && !RGraph.SVG.isNullish(properties.errorbars)
             && typeof properties.errorbars[index] === 'object'
-            && !RGraph.SVG.isNull(properties.errorbars[index])
+            && !RGraph.SVG.isNullish(properties.errorbars[index])
             && typeof properties.errorbars[index].capwidth === 'number'
             ) {
 
@@ -5651,7 +5675,7 @@ if (properties.backgroundBorder) {
     // *** two changes done:
     // ***  o Add the list of aliases as a object variable (eg this.aliases = {}; )
     // ***  o The bit that goes in the setter that calls the
-    // ***    RGraph.propertyNameAlias() function - copy this from the Bar chart object
+    // ***    RGraph.SVG.propertyNameAlias() function - copy this from the Bar chart object
     //
     RGraph.SVG.propertyNameAlias = function () {};
 
@@ -5713,8 +5737,8 @@ if (properties.backgroundBorder) {
         //
         conf.sort(function (a, b)
         {
-            var aNull = RGraph.SVG.isNull(a.maxWidth);
-            var bNull = RGraph.SVG.isNull(b.maxWidth);
+            var aNull = RGraph.SVG.isNullish(a.maxWidth);
+            var bNull = RGraph.SVG.isNullish(b.maxWidth);
             
             if (aNull && bNull) return 0;
             if (aNull && !bNull) return -1;
@@ -5740,8 +5764,8 @@ if (properties.backgroundBorder) {
         for (var i=0; i<conf.length; ++i) {
         
             // Set the minimum and maximum
-            conf[i].minWidth = RGraph.SVG.isNull(conf[i].minWidth) ?      0 : conf[i].minWidth;
-            conf[i].maxWidth = RGraph.SVG.isNull(conf[i].maxWidth) ? 100000 : conf[i].maxWidth;
+            conf[i].minWidth = RGraph.SVG.isNullish(conf[i].minWidth) ?      0 : conf[i].minWidth;
+            conf[i].maxWidth = RGraph.SVG.isNullish(conf[i].maxWidth) ? 100000 : conf[i].maxWidth;
             
             // Create the media query string
             var str = 'screen and (min-width: %1px) and (max-width: %2px)'.format(
@@ -5918,7 +5942,7 @@ if (properties.backgroundBorder) {
                 //
                 // If a maxWidth is stipulated test that
                 //
-                if (!matched && (document.documentElement.clientWidth <= conf[i].maxWidth || RGraph.SVG.isNull(conf[i].maxWidth))) {
+                if (!matched && (document.documentElement.clientWidth <= conf[i].maxWidth || RGraph.SVG.isNullish(conf[i].maxWidth))) {
                 
                     matched = true;
                     
@@ -6481,7 +6505,7 @@ if (properties.backgroundBorder) {
 
     RGraph.SVG.GET.parse = function ()
     {
-        if (!RGraph.SVG.isNull(RGraph.SVG.GET.__parts__)) {
+        if (!RGraph.SVG.isNullish(RGraph.SVG.GET.__parts__)) {
             return RGraph.SVG.GET.__parts__;
         }
 
@@ -7595,7 +7619,7 @@ if (properties.backgroundBorder) {
             
             case 'object':
                 // In case of null
-                if (RGraph.SVG.isNull(obj)) {
+                if (RGraph.SVG.isNullish(obj)) {
                     str += indent + 'null\n';
                 } else {
                     str += indent + 'Object {' + '\n'
@@ -7773,7 +7797,7 @@ if (properties.backgroundBorder) {
     // Note that isUndefined() should be used like this or you'll get an
     // error (ie with the window. prefix):
     //
-    //        RGraph.isUndefined(window.foo)
+    //        RGraph.SVG.isUndefined(window.foo)
     //
     RGraph.SVG.isString    = function (obj){return typeof obj === 'string';};
     RGraph.SVG.isNumber    = function (obj){return typeof obj === 'number';};

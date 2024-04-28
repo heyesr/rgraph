@@ -489,7 +489,7 @@
         //
         // Work out the maximum value and the sum
         //
-        if (RGraph.isNull(properties.scaleMax)) {
+        if (RGraph.isNullish(properties.scaleMax)) {
 
             // Work out the max
             var max = 0,
@@ -548,7 +548,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -646,7 +646,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -1764,7 +1764,7 @@
                     angles[i].tooltip         = tooltip ? tooltip : null;
                     angles[i].label           = (
                                                     typeof properties.labels === 'object'
-                                                 && !RGraph.isNull(properties.labels)
+                                                 && !RGraph.isNullish(properties.labels)
                                                  && typeof properties.labels[indexes[0]] === 'string'
                                                 )
                                                     ? properties.labels[angles[i].dataset]
@@ -2057,7 +2057,7 @@
             //
             // Key colors
             //
-            if (!RGraph.isNull(properties.keyColors)) {
+            if (!RGraph.isNullish(properties.keyColors)) {
                 for (var i=0; i<properties.keyColors.length; ++i) {
                     properties.keyColors[i] = this.parseSingleColorForGradient(properties.keyColors[i]);
                 }
@@ -2584,7 +2584,7 @@
                                 if (original[i] < 0) {
                                     obj.data[i] *= -1;
                                 }
-                            } else if (!RGraph.isNull(obj.data[i])) {
+                            } else if (!RGraph.isNullish(obj.data[i])) {
                                 for (let j=0,len2=obj.data[i].length; j<len2; j+=1) {
 
                                     obj.data[i][j] = Math.min(
@@ -2599,7 +2599,7 @@
                                 }
                             }
                         } else {
-                            obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNull(obj.data[i]) ? null : 0);
+                            obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, 0) : (RGraph.isNullish(obj.data[i]) ? null : 0);
                         }
                 }
 

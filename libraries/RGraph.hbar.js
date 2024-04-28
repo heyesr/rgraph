@@ -414,7 +414,7 @@
         // also to convert strings to numbers. And now also undefined values
         // (29/07/2016
         for (i=0,len=this.data.length; i<len; ++i) {
-            if (typeof this.data[i] === 'object' && !RGraph.isNull(this.data[i])) {
+            if (typeof this.data[i] === 'object' && !RGraph.isNullish(this.data[i])) {
                 this.stackedOrGrouped = true;
             }
         }
@@ -660,7 +660,7 @@
             // Set the correct number of horizontal grid lines if
             // it hasn't been set already
             //
-            if (RGraph.isNull(properties.backgroundGridHlines.count)) {
+            if (RGraph.isNullish(properties.backgroundGridHlines.count)) {
                 this.set('backgroundGridHlinesCount', this.data.length);
             }
 
@@ -816,7 +816,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
     
@@ -908,7 +908,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -1173,7 +1173,7 @@
                 this.context.beginPath();
 
                     // Standard (non-grouped and non-stacked) bars here
-                    if (typeof this.data[i] === 'number' || RGraph.isNull(this.data[i])) {
+                    if (typeof this.data[i] === 'number' || RGraph.isNullish(this.data[i])) {
 
                         var barHeight = height - (2 * vmargin),
                             barWidth  = ((this.data[i] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * this.graphwidth,
@@ -1313,7 +1313,7 @@
                             if (    properties.yaxisPosition !== 'right'
                                 && !( properties.yaxisPosition === 'center' && value < 0)
                                 && value >= 0
-                                && !RGraph.isNull(value)
+                                && !RGraph.isNullish(value)
                                ) {
 
                                 this.path(
@@ -1365,7 +1365,7 @@
                             //(even though having the X axis on the right implies a
                             //negative value)
                             //
-                            if (!RGraph.isNull(this.data[i][j])) this.data[i][j] = Math.abs(this.data[i][j]);
+                            if (!RGraph.isNullish(this.data[i][j])) this.data[i][j] = Math.abs(this.data[i][j]);
 
     
                             var last = (j === (this.data[i].length - 1) );
@@ -1491,7 +1491,7 @@
                                     offsetY = properties.variantThreedOffsety,
                                     value   = this.data[i][j];
 
-                                if (!RGraph.isNull(value)) {
+                                if (!RGraph.isNullish(value)) {
                                     this.path(
                                         'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
                                         barX, barY,
@@ -1504,7 +1504,7 @@
     
                                 if (    properties.yaxisPosition !== 'right'
                                     && !( properties.yaxisPosition === 'center' && value < 0)
-                                    && !RGraph.isNull(value)
+                                    && !RGraph.isNullish(value)
                                    ) {
 
                                     this.path(
@@ -1712,7 +1712,7 @@
                                 if (    properties.yaxisPosition !== 'right'
                                     && !( properties.yaxisPosition === 'center' && value < 0)
                                     && value >= 0
-                                    && !RGraph.isNull(value)
+                                    && !RGraph.isNullish(value)
                                    ) {
 
                                     this.path(
@@ -1850,7 +1850,7 @@
                 if (
                        properties.labelsAbove
                     && coords[i][6]
-                    //&& !RGraph.isNull(this.data[i])
+                    //&& !RGraph.isNullish(this.data[i])
                    ) {
 
                     var border = (coords[i][0] + coords[i][2] + 7 + this.context.measureText(properties.labelsAboveUnitsPre + this.coords[i][5] + properties.labelsAboveUnitsPost).width) > this.canvas.width ? true : false,
@@ -2536,7 +2536,7 @@
 
                         if (typeof this.data[indexes[0]] == 'number') {
                             this.data[indexes[0]] = Number(value);
-                        } else if (!RGraph.isNull(this.data[indexes[0]])) {
+                        } else if (!RGraph.isNullish(this.data[indexes[0]])) {
                             this.data[indexes[0]][indexes[1]] = Number(value);
                         }
                     } else if (typeof this.data[shape.dataset] == 'number') {
@@ -2584,7 +2584,7 @@
                     for (var i=0; i<data.length; ++i) {
                         if (typeof data[i] === 'number') {
                             ret.push(data[i]);
-                        } else if (typeof data[i] === 'object' && !RGraph.isNull(data[i])) {
+                        } else if (typeof data[i] === 'object' && !RGraph.isNullish(data[i])) {
                             for (var j=data[i].length-1; j>=0; j--) {
                                 ret.push(data[i][j]);
                             }
@@ -2743,10 +2743,10 @@
     
         //            if (typeof obj.data[j] === 'object' && obj.data[j]) {
         //                for (var k=0,len2=obj.data[j].length; k<len2; ++k) {
-        //                    obj.data[j][k] = RGraph.isNull(obj.data[j][k]) ? null : obj.original_data[j][k] * easingFactor;
+        //                    obj.data[j][k] = RGraph.isNullish(obj.data[j][k]) ? null : obj.original_data[j][k] * easingFactor;
         //                }
         //            } else {
-        //                obj.data[j] = RGraph.isNull(obj.data[j]) ? null : obj.original_data[j] * easingFactor;
+        //                obj.data[j] = RGraph.isNullish(obj.data[j]) ? null : obj.original_data[j] * easingFactor;
         //            }
         //        }
     
@@ -2862,7 +2862,7 @@
 
 
                 var scale = RGraph.getScale({object: this, options: {'scale.max':xmax}});
-                if (RGraph.isNull(this.get('xaxisScaleMax'))) {
+                if (RGraph.isNullish(this.get('xaxisScaleMax'))) {
                     this.set('xaxisScaleMax', scale.max);
                 }
             }
@@ -2887,7 +2887,7 @@
 
 
             // Stop the scale from changing by setting xaxisScaleMax (if it's not already set)
-            if (RGraph.isNull( properties.xaxisScaleMax)) {
+            if (RGraph.isNullish( properties.xaxisScaleMax)) {
 
                 var xmax = 0;
 
@@ -2950,7 +2950,7 @@
                 // Alter the Bar chart data depending on the frame
                 for (var j=0,len=obj.original_data.length; j<len; ++j) {
 
-                    if (typeof obj.data[j] === 'object' && !RGraph.isNull(obj.data[j])) {
+                    if (typeof obj.data[j] === 'object' && !RGraph.isNullish(obj.data[j])) {
                         for (var k=0,len2=obj.data[j].length; k<len2; ++k) {
                             if (obj.firstDraw || !opt.data) {
                                 if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
@@ -3129,7 +3129,7 @@
                             if (original[i] < 0) {
                                 obj.data[i] *= -1;
                             }
-                        } else if (!RGraph.isNull(obj.data[i])) {
+                        } else if (!RGraph.isNullish(obj.data[i])) {
                             for (var j=0,len2=obj.data[i].length; j<len2; j+=1) {
 
                                 if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
@@ -3156,7 +3156,7 @@
                             }
                         }
                     } else {
-                        obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0)) : (RGraph.isNull(obj.data[i]) ? null : (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0));
+                        obj.data[i] = typeof obj.data[i] === 'object' && obj.data[i] ? RGraph.arrayPad([], obj.data[i].length, (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0)) : (RGraph.isNullish(obj.data[i]) ? null : (properties.xaxisScaleMin > 0 ? properties.xaxisScaleMin : 0));
                     }
                 }
 
@@ -3236,7 +3236,7 @@
         //
         this.isAdjustable = function (shape)
         {
-            if (RGraph.isNull(properties.adjustableOnly)) {
+            if (RGraph.isNullish(properties.adjustableOnly)) {
                 return true;
             }
 
@@ -3468,13 +3468,13 @@
         this.tooltipsFormattedCustom = function (specific, index)
         {
            if (this.stackedOrGrouped) {
-                var label = (!RGraph.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
+                var label = (!RGraph.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
                                 ? properties.tooltipsFormattedKeyLabels[index]
                                 : '';
 
             } else {
                 var label = (
-                             !RGraph.isNull(properties.tooltipsFormattedKeyLabels)
+                             !RGraph.isNullish(properties.tooltipsFormattedKeyLabels)
                              && typeof properties.tooltipsFormattedKeyLabels === 'object'
                              && properties.tooltipsFormattedKeyLabels[specific.index]
                             )
@@ -3847,7 +3847,7 @@
                 // to it instead
                 for (let i=1; i<this.coords.length; ++i) {
                     
-                    if (RGraph.isNull(this.data[i]) || RGraph.isNull(this.data[i - 1])) {
+                    if (RGraph.isNullish(this.data[i]) || RGraph.isNullish(this.data[i - 1])) {
                         var action = 'm';
                     } else {
                         var action = 'l'
@@ -3931,7 +3931,7 @@
                         ? this.canvas.width - properties.marginRight
                         : properties.marginLeft,
                     lineCoords[0][2],
-                    !RGraph.isNull(this.properties.lineFilledColor) ? this.properties.lineFilledColor : this.properties.lineColor
+                    !RGraph.isNullish(this.properties.lineFilledColor) ? this.properties.lineFilledColor : this.properties.lineColor
                 );
             }
 
@@ -4026,9 +4026,9 @@
                 if (typeof obj.properties.lineTickmarksStyle === 'string') {
                     
                     var isEndTick  = (k === 0 || k === (arr.length - 1));
-                    var isNull     = RGraph.isNull(obj.data[k]);
-                    var prevIsNull = RGraph.isNull(obj.data[k - 1]);
-                    var nextIsNull = RGraph.isNull(obj.data[k + 1]);
+                    var isNull     = RGraph.isNullish(obj.data[k]);
+                    var prevIsNull = RGraph.isNullish(obj.data[k - 1]);
+                    var nextIsNull = RGraph.isNullish(obj.data[k + 1]);
                     var isLast     = k === (arr.length - 1);
 
                     //

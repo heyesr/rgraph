@@ -487,7 +487,7 @@
             }
             args.object.coords.key = [];
 
-    
+
     
             // Need to work out the length of the key first
             args.object.context.font = (args.object.properties.keyLabelsItalic ? 'italic ' : '') + (args.object.properties.keyLabelsBold ? 'bold ' : '') + text_size + 'pt ' + text_font;
@@ -551,7 +551,7 @@
             //  
             hpos -= (length / 2);
 
-    
+
             //
             // Override the horizontal/vertical positioning
             //
@@ -617,7 +617,7 @@
                 pos += hmargin;
 
     
-    
+
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
@@ -693,7 +693,7 @@
                     args.object.context.fill();
                 }
     
-    
+
     
                 //////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -720,7 +720,7 @@
                     });
                 args.object.context.fill();
                 pos += args.object.context.measureText(key[i]).width;
-            
+
                 args.object.coords.key[i] = [
                     ret.x,
                     ret.y,

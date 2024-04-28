@@ -56,7 +56,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -461,7 +461,7 @@
                 // Go through the error bars and convert numbers to objects
                 for (var i=0; i<this.data_seq.length; ++i) {
     
-                    if (typeof properties.errorbars[i] === 'undefined' || RGraph.SVG.isNull(properties.errorbars[i]) ) {
+                    if (typeof properties.errorbars[i] === 'undefined' || RGraph.SVG.isNullish(properties.errorbars[i]) ) {
                         properties.errorbars[i] = {max: null, min: null};
                     
                     } else if (typeof properties.errorbars[i] === 'number') {
@@ -779,7 +779,7 @@
             // Draw the key
             if (typeof properties.key !== null && RGraph.SVG.drawKey) {
                 RGraph.SVG.drawKey(this);
-            } else if (!RGraph.SVG.isNull(properties.key)) {
+            } else if (!RGraph.SVG.isNullish(properties.key)) {
                 alert('The drawKey() function does not exist - have you forgotten to include the key library?');
             }
 
@@ -1173,7 +1173,7 @@
                             'data-original-y': y,
                             'data-original-width': width,
                             'data-original-height': height,
-                            'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                            'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
                             'data-index': i,
                             'data-sequential-index': sequentialIndex,
                             'data-value': this.data[i],
@@ -1239,8 +1239,8 @@
 
 
                     // Add the tooltip data- attribute
-                    if (   !RGraph.SVG.isNull(properties.tooltips)
-                        && (!RGraph.SVG.isNull(properties.tooltips[sequentialIndex]) || typeof properties.tooltips === 'string')
+                    if (   !RGraph.SVG.isNullish(properties.tooltips)
+                        && (!RGraph.SVG.isNullish(properties.tooltips[sequentialIndex]) || typeof properties.tooltips === 'string')
                        ) {
 
                         var obj = this;
@@ -1361,7 +1361,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                                 'data-index': i,
                                 'data-subindex': j,
                                 'data-sequential-index': sequentialIndex,
-                                'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[sequentialIndex] : '',
+                                'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[sequentialIndex] : '',
                                 'data-value': this.data[i][j],
                                 filter: properties.shadow ? 'url(#dropShadow)' : ''
                             }
@@ -1434,7 +1434,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
 
 
                         // Add the tooltip data- attribute
-                        if (   !RGraph.SVG.isNull(properties.tooltips)
+                        if (   !RGraph.SVG.isNullish(properties.tooltips)
                             && (properties.tooltips[sequentialIndex] || typeof properties.tooltips === 'string')
                            ) {
 
@@ -1554,7 +1554,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                                 'data-index': i,
                                 'data-subindex': j,
                                 'data-sequential-index': sequentialIndex,
-                                'data-tooltip': (!RGraph.SVG.isNull(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[sequentialIndex] : '',
+                                'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[sequentialIndex] : '',
                                 'data-value': this.data[i][j]
                             }
                         });
@@ -1628,7 +1628,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
 
 
                         // Add the tooltip data- attribute
-                        if (   !RGraph.SVG.isNull(properties.tooltips)
+                        if (   !RGraph.SVG.isNullish(properties.tooltips)
                             && (properties.tooltips[sequentialIndex] || typeof properties.tooltips === 'string')
                            ) {
                         
@@ -1866,10 +1866,10 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
             // the canvas is cleared
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:              RGraph.SVG.arrayClone(properties.colors),
-                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor),
-                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor)
+                    colors:              RGraph.SVG.arrayClone(properties.colors, true),
+                    backgroundGridColor: RGraph.SVG.arrayClone(properties.backgroundGridColor, true),
+                    highlightFill:       RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundColor:     RGraph.SVG.arrayClone(properties.backgroundColor, true)
                 }
             }
 
@@ -2428,7 +2428,7 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
             //
             // Copy the data
             //
-            data = RGraph.SVG.arrayClone(this.data);
+            data = RGraph.SVG.arrayClone(this.data, true);
 
             this.draw();
 
@@ -2775,13 +2775,13 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
         this.tooltipsFormattedCustom = function (specific, index)
         {
             if (typeof this.data[0] === 'object') {
-                var label = (!RGraph.SVG.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
+                var label = (!RGraph.SVG.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
                                 ? properties.tooltipsFormattedKeyLabels[index]
                                 : '';
     
             } else {
 
-                var label = (   !RGraph.SVG.isNull(properties.tooltipsFormattedKeyLabels)
+                var label = (   !RGraph.SVG.isNullish(properties.tooltipsFormattedKeyLabels)
                             && typeof properties.tooltipsFormattedKeyLabels === 'object'
                             && properties.tooltipsFormattedKeyLabels[specific.index])
                                 ? properties.tooltipsFormattedKeyLabels[specific.index]

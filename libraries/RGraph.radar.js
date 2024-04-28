@@ -464,7 +464,7 @@
             // This defaults to true, but needs to be an array with a size matching the number of
             // labels.
             //
-            if (RGraph.isNull(properties.labelsAxesBoxed)) {
+            if (RGraph.isNullish(properties.labelsAxesBoxed)) {
                 properties.labelsAxesBoxed = [];
                 for (var i=0; i<( (RGraph.isArray(properties.labelsAxesSpecific) && properties.labelsAxesSpecific.length) || properties.labelsAxesCount || 5); ++i) {
                     properties.labelsAxesBoxed[i] = false;
@@ -587,7 +587,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -669,14 +669,14 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
             //
             // This installs the Radar chart specific area listener
             //
-            if ( (properties.fillClick || properties.fillMousemove || !RGraph.isNull(properties.fillTooltips)) && !this.__fill_click_listeners_installed__) {
+            if ( (properties.fillClick || properties.fillMousemove || !RGraph.isNullish(properties.fillTooltips)) && !this.__fill_click_listeners_installed__) {
                 this.addFillListeners();
                 this.__fill_click_listeners_installed__ = true;
             }
@@ -1897,7 +1897,7 @@
                             properties.fillMousemove(e, dataset);
                         }
                         
-                        if (!RGraph.isNull(fillTooltips)) {
+                        if (!RGraph.isNullish(fillTooltips)) {
                             e.target.style.cursor = 'pointer';
                         }
                     
@@ -1916,14 +1916,14 @@
             //
             // Add the click listener
             //
-            if (properties.fillClick || !RGraph.isNull(properties.fillTooltips)) {
+            if (properties.fillClick || !RGraph.isNullish(properties.fillTooltips)) {
                 this.canvas.addEventListener('click', func, false);
             }
     
             //
             // Add the mousemove listener
             //
-            if (properties.fillMousemove || !RGraph.isNull(properties.fillTooltips)) {
+            if (properties.fillMousemove || !RGraph.isNullish(properties.fillTooltips)) {
                 this.canvas.addEventListener('mousemove', func, false);
             }
         };
@@ -2286,13 +2286,13 @@
         //
         this.tooltipsFormattedCustom = function (specific, index)
         {
-            var color = (   !RGraph.isNull((properties.tooltipsFormattedKeyColors))
+            var color = (   !RGraph.isNullish((properties.tooltipsFormattedKeyColors))
                         && typeof properties.tooltipsFormattedKeyColors === 'object'
                         && properties.tooltipsFormattedKeyColors[i])
                            ? properties.tooltipsFormattedKeyColors[i]
                            : '';
 
-            var label = (   !RGraph.isNull((properties.tooltipsFormattedKeyLabels))
+            var label = (   !RGraph.isNullish((properties.tooltipsFormattedKeyLabels))
                         && typeof properties.tooltipsFormattedKeyLabels === 'object'
                         && properties.tooltipsFormattedKeyLabels[index])
                            ? properties.tooltipsFormattedKeyLabels[index]

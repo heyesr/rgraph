@@ -62,7 +62,7 @@
                 // If setting the colors, update the originalColors
                 // property too
                 if (name === 'colors') {
-                    this.originalColors = RGraph.SVG.arrayClone(value);
+                    this.originalColors = RGraph.SVG.arrayClone(value, true);
                     this.colorsParsed = false;
                 }
             }
@@ -458,7 +458,7 @@
             var obj = this;
 
             // Add the tooltip event listener
-            if (!RGraph.SVG.isNull(properties.tooltips) && (properties.tooltips.length || RGraph.SVG.isString(properties.tooltips)) ) {
+            if (!RGraph.SVG.isNullish(properties.tooltips) && (properties.tooltips.length || RGraph.SVG.isString(properties.tooltips)) ) {
 
 
                 for (var i=0; i<this.coords.length; ++i) {
@@ -1429,9 +1429,9 @@
             // Save the original colors so that they can be restored when the canvas is reset
             if (!Object.keys(this.originalColors).length) {
                 this.originalColors = {
-                    colors:          RGraph.SVG.arrayClone(properties.colors),
-                    highlightFill:   RGraph.SVG.arrayClone(properties.highlightFill),
-                    backgroundFill:  RGraph.SVG.arrayClone(properties.backgroundFill)
+                    colors:          RGraph.SVG.arrayClone(properties.colors, true),
+                    highlightFill:   RGraph.SVG.arrayClone(properties.highlightFill, true),
+                    backgroundFill:  RGraph.SVG.arrayClone(properties.backgroundFill, true)
                 }
             }
 
@@ -1492,7 +1492,7 @@
             //
             // Copy the data
             //
-            var value = RGraph.SVG.arrayClone(this.value);
+            var value = RGraph.SVG.arrayClone(this.value, true);
 
             this.draw();
 

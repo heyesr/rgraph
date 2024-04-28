@@ -650,7 +650,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -730,7 +730,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
             
@@ -939,8 +939,8 @@
                     if (typeof properties.labelsAboveTotalFont       === 'string')    textConf.font   = properties.labelsAboveTotalFont;
                     if (typeof properties.labelsAboveTotalColor      === 'string')    textConf.color  = properties.labelsAboveTotalColor;
                     if (typeof properties.labelsAboveTotalSize       === 'number')    textConf.size   = properties.labelsAboveTotalSize;
-                    if (!RGraph.isNull(properties.labelsAboveTotalBold))              textConf.bold   = properties.labelsAboveTotalBold;
-                    if (!RGraph.isNull(properties.labelsAboveTotalItalic))            textConf.italic = properties.labelsAboveTotalItalic;
+                    if (!RGraph.isNullish(properties.labelsAboveTotalBold))              textConf.bold   = properties.labelsAboveTotalBold;
+                    if (!RGraph.isNullish(properties.labelsAboveTotalItalic))            textConf.italic = properties.labelsAboveTotalItalic;
                     if (typeof properties.labelsAboveTotalUnitsPre  === 'string')     unitsPre        = properties.labelsAboveTotalUnitsPre;
                     if (typeof properties.labelsAboveTotalUnitsPost === 'string')     unitsPost       = properties.labelsAboveTotalUnitsPost;
                     if (typeof properties.labelsAboveTotalDecimals   === 'number')    decimals        = properties.labelsAboveTotalDecimals;
@@ -981,7 +981,7 @@
 
                 // Allow for specific labels
                 if (   typeof properties.labelsAboveSpecific === 'object'
-                    && !RGraph.isNull(properties.labelsAboveSpecific)
+                    && !RGraph.isNullish(properties.labelsAboveSpecific)
                    ) {
                    
                    if ( typeof properties.labelsAboveSpecific[i] === 'string' || typeof properties.labelsAboveSpecific[i] === 'number' ) {

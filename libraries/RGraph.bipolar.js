@@ -559,7 +559,7 @@
             //
             // Install clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -633,7 +633,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -731,7 +731,7 @@
                 // If the colorsLeft option is set then change
                 // the colors option to that.
                 //
-                if (!RGraph.isNull(properties.colorsLeft)) {
+                if (!RGraph.isNullish(properties.colorsLeft)) {
                     
                     // Save the initial colors value
                     properties.colorsInitial = properties.colors;
@@ -778,7 +778,7 @@
                 // If the colorsLeft option is set then change
                 // the colors option back to what it was.
                 //
-                if (!RGraph.isNull(properties.colorsLeft)) {
+                if (!RGraph.isNullish(properties.colorsLeft)) {
                     properties.colors = properties.colorsInitial;
                 }
 
@@ -793,7 +793,7 @@
                 // If the colorsRight option is set then change
                 // the colors option to that.
                 //
-                if (!RGraph.isNull(properties.colorsRight)) {
+                if (!RGraph.isNullish(properties.colorsRight)) {
                     
                     // Save the initial colors value
                     properties.colorsInitial = properties.colors;
@@ -907,7 +907,7 @@
                 // If the colorsRight option is set then change
                 // the colors option back to what it was.
                 //
-                if (!RGraph.isNull(properties.colorsRight)) {
+                if (!RGraph.isNullish(properties.colorsRight)) {
                     properties.colors = properties.colorsInitial;
                 }
 
@@ -1264,7 +1264,7 @@
                 for (var i=0; i<this.left.length; ++i) {
                     if (typeof this.left[i] === 'number') {
                         max = Math.max(max, this.left[i]);
-                    } else if (RGraph.isNull(this.left[i])) {
+                    } else if (RGraph.isNullish(this.left[i])) {
                         // Nada
                     } else {
                         max = Math.max(max, properties.grouping === 'stacked' ? RGraph.arraySum(this.left[i]) : RGraph.arrayMax(this.left[i]));
@@ -1275,7 +1275,7 @@
                 for (var i=0; i<this.right.length; ++i) {
                     if (typeof this.right[i] === 'number') {
                         max = Math.max(max, this.right[i]);
-                    } else if (RGraph.isNull(this.right[i])) {
+                    } else if (RGraph.isNullish(this.right[i])) {
                         // Nada
                     } else {
                         max = Math.max(max, properties.grouping === 'stacked' ? RGraph.arraySum(this.right[i]) : RGraph.arrayMax(this.right[i]));
@@ -1341,7 +1341,7 @@
             // If the colorsLeft option is set then change
             // the colors option to that.
             //
-            if (!RGraph.isNull(properties.colorsLeft)) {
+            if (!RGraph.isNullish(properties.colorsLeft)) {
                 
                 // Save the initial colors value
                 properties.colorsInitial = properties.colors;
@@ -1651,7 +1651,7 @@
                         sequentialColorIndex++;
                     }
                 // A grouped Bipolar chart - and this is also the default
-                } else if (typeof this.left[i] === 'object' && !RGraph.isNull(this.left[i])) {
+                } else if (typeof this.left[i] === 'object' && !RGraph.isNullish(this.left[i])) {
 
                     for (var j=0; j<this.left[i].length; ++j) {
 
@@ -1808,7 +1808,7 @@
             // If the colorsLeft option is set then change
             // the colors option back to what it was.
             //
-            if (!RGraph.isNull(properties.colorsLeft)) {
+            if (!RGraph.isNullish(properties.colorsLeft)) {
                 properties.colors = properties.colorsInitial;
             }
     
@@ -1873,7 +1873,7 @@
             // If the colorsLeft option is set then change
             // the colors option to that.
             //
-            if (!RGraph.isNull(properties.colorsRight)) {
+            if (!RGraph.isNullish(properties.colorsRight)) {
                 
                 // Save the initial colors value
                 properties.colorsInitial = properties.colors;
@@ -2409,7 +2409,7 @@
             // If the colorsRight option is set then change
             // the colors option back to what it was.
             //
-            if (!RGraph.isNull(properties.colorsRight)) {
+            if (!RGraph.isNullish(properties.colorsRight)) {
                 properties.colors = properties.colorsInitial;
             }
 
@@ -2521,7 +2521,7 @@
                                 italic: textConf.italic,
                                 color:  textConf.color,
         
-                                x:      this.marginLeft + ((grapharea / (!RGraph.isNull(this.properties.xaxisScaleSpecific) ? len - 1 : len)) * i) - properties.xaxisLabelsOffsetx,
+                                x:      this.marginLeft + ((grapharea / (!RGraph.isNullish(this.properties.xaxisScaleSpecific) ? len - 1 : len)) * i) - properties.xaxisLabelsOffsetx,
                                 y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
                                 
                                 text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string') ? this.properties.xaxisScaleSpecific[i] : (typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[len - i - 1]) : this.scale2.labels[len - i - 1]),
@@ -2551,7 +2551,7 @@
                                 italic: textConf.italic,
                                 color:  textConf.color,
         
-                                x:      this.marginLeft + grapharea + properties.marginCenter + ((grapharea / (!RGraph.isNull(this.properties.xaxisScaleSpecific) ? len - 1 : len) ) * (i + (RGraph.isArray(this.properties.xaxisScaleSpecific) ? 0 : 1) )) + properties.xaxisLabelsOffsetx,
+                                x:      this.marginLeft + grapharea + properties.marginCenter + ((grapharea / (!RGraph.isNullish(this.properties.xaxisScaleSpecific) ? len - 1 : len) ) * (i + (RGraph.isArray(this.properties.xaxisScaleSpecific) ? 0 : 1) )) + properties.xaxisLabelsOffsetx,
                                 y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
 
                                 text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string')
@@ -2729,7 +2729,7 @@
                             y:      coords[1] + (coords[3] / 2) + properties.labelsAboveOffsety,
                             text:   typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.left[i][j]) : RGraph.numberFormat({
                                 object:    this,
-                                number:    RGraph.isNull(this.left[i][j]) || isNaN(this.left[i][j]) ? '' : (properties.grouping === 'stacked' ? RGraph.arraySum(this.left[i]): Number(this.left[i][j])).toFixed(typeof properties.labelsAboveDecimals === 'number' ? properties.labelsAboveDecimals : 0),
+                                number:    RGraph.isNullish(this.left[i][j]) || isNaN(this.left[i][j]) ? '' : (properties.grouping === 'stacked' ? RGraph.arraySum(this.left[i]): Number(this.left[i][j])).toFixed(typeof properties.labelsAboveDecimals === 'number' ? properties.labelsAboveDecimals : 0),
                                 unitspre:  properties.labelsAboveUnitsPre,
                                 unitspost: properties.labelsAboveUnitsPost
                             }),
@@ -2813,7 +2813,7 @@
 
                             text:   typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.right[i][j]) : RGraph.numberFormat({
                                         object:    this,
-                                        number:    RGraph.isNull(this.right[i][j]) || isNaN(this.right[i][j]) ? '' : properties.grouping === 'stacked' ? RGraph.arraySum(this.right[i]).toFixed(properties.labelsAboveDecimals) : Number(this.right[i][j]).toFixed(typeof properties.labelsAboveDecimals === 'number' ? properties.labelsAboveDecimals : 0),
+                                        number:    RGraph.isNullish(this.right[i][j]) || isNaN(this.right[i][j]) ? '' : properties.grouping === 'stacked' ? RGraph.arraySum(this.right[i]).toFixed(properties.labelsAboveDecimals) : Number(this.right[i][j]).toFixed(typeof properties.labelsAboveDecimals === 'number' ? properties.labelsAboveDecimals : 0),
                                         unitspre:  properties.labelsAboveUnitsPre,
                                         unitspost: properties.labelsAboveUnitsPost
                                     }),
@@ -3505,7 +3505,7 @@
     
             // Stop the scale from changing by setting xaxisScaleMax (if it's
             // not already set)
-            if (RGraph.isNull(properties.xaxisScaleMax)) {
+            if (RGraph.isNullish(properties.xaxisScaleMax)) {
     
                 var xmax = 0;
     
@@ -3642,7 +3642,7 @@
                 for (var i=0,len=obj.left.length; i<len; i+=1) {
                         if (frame_left > opt.startFrames_left[i]) {
                         
-                        var isNull = RGraph.isNull(obj.left[i]);
+                        var isNullish = RGraph.isNullish(obj.left[i]);
                         
                         // Regular bars
                         if (typeof obj.left[i] === 'number') {
@@ -3672,11 +3672,11 @@
                                 }
                             }
                             
-                            if (isNull) {
+                            if (isNullish) {
                                 obj.left[i] = null;
                             }
                         } else {
-                            obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.arrayPad([], obj.left[i].length, 0) : (RGraph.isNull(obj.left[i]) ? null : 0);
+                            obj.left[i] = typeof obj.left[i] === 'object' && obj.left[i] ? RGraph.arrayPad([], obj.left[i].length, 0) : (RGraph.isNullish(obj.left[i]) ? null : 0);
                         }
 
                 }
@@ -3713,7 +3713,7 @@
                 for (var i=0,len=obj.right.length; i<len; i+=1) {
                         if (frame_right > opt.startFrames_right[i]) {
                         
-                            var isNull = RGraph.isNull(obj.right[i]);
+                            var isNull = RGraph.isNullish(obj.right[i]);
                         
                             if (typeof obj.left[i] === 'number') {
                                 obj.right[i] = Math.min(
@@ -3744,7 +3744,7 @@
                             }
 
                         } else {
-                            obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.arrayPad([], obj.right[i].length, 0) : (RGraph.isNull(obj.right[i]) ? null : 0);
+                            obj.right[i] = typeof obj.right[i] === 'object' && obj.right[i] ? RGraph.arrayPad([], obj.right[i].length, 0) : (RGraph.isNullish(obj.right[i]) ? null : 0);
                         }
                 }
 
@@ -3850,12 +3850,12 @@
 
             if (typeof this[side][specific.dataset2] === 'object') {
 
-                label = (!RGraph.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
+                label = (!RGraph.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[index])
                              ? properties.tooltipsFormattedKeyLabels[index]
                              : '';
 
             } else {
-                label = (!RGraph.isNull(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[specific.index])
+                label = (!RGraph.isNullish(properties.tooltipsFormattedKeyLabels) && typeof properties.tooltipsFormattedKeyLabels === 'object' && properties.tooltipsFormattedKeyLabels[specific.index])
                              ? properties.tooltipsFormattedKeyLabels[specific.index]
                              : '';
             }

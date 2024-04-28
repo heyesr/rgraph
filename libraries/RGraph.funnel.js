@@ -324,7 +324,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -417,7 +417,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -692,7 +692,7 @@
             //
             // Draws the labels
             //
-            if (!RGraph.isNull(properties.labels) && typeof properties.labels === 'object' && properties.labels.length > 0) {
+            if (!RGraph.isNullish(properties.labels) && typeof properties.labels === 'object' && properties.labels.length > 0) {
 
                 var font    = properties.textFont,
                     size    = properties.textSize,
@@ -1242,7 +1242,7 @@
             var color = properties.colors[specific.index];
             var label = RGraph.isString(properties.tooltipsFormattedKeyLabels[specific.index]) ? properties.tooltipsFormattedKeyLabels[specific.index] : '';
             
-            if (   !RGraph.isNull(properties.tooltipsFormattedKeyColors)
+            if (   !RGraph.isNullish(properties.tooltipsFormattedKeyColors)
                 && typeof properties.tooltipsFormattedKeyColors === 'object'
                 && typeof properties.tooltipsFormattedKeyColors[specific.index] === 'string')
                {

@@ -22,7 +22,7 @@
         this.data = new Array(conf.data.length);
 
         // Store the data set(s)
-        this.data = RGraph.arrayClone(conf.data);
+        this.data = RGraph.arrayClone(conf.data, true);
 
 
         // Convert objects to arrays
@@ -59,12 +59,12 @@
 
         // Account for just one dataset being given
         if (typeof conf.data === 'object' && typeof conf.data[0] === 'object' && (typeof conf.data[0][0] === 'number' || typeof conf.data[0][0] === 'string')) {
-            var tmp = RGraph.arrayClone(conf.data);
+            var tmp = RGraph.arrayClone(conf.data, true);
             conf.data = new Array();
-            conf.data[0] = RGraph.arrayClone(tmp);
+            conf.data[0] = RGraph.arrayClone(tmp, true);
         }
         
-        this.data = RGraph.arrayClone(conf.data);
+        this.data = RGraph.arrayClone(conf.data, true);
         
 
 
@@ -116,7 +116,7 @@
             for (var j=0,len2=this.data[i].length; j<len2; ++j) { // Points
 
                 // Handle the conversion of X values
-                if (typeof this.data[i][j] === 'object' && !RGraph.isNull(this.data[i][j]) && typeof this.data[i][j][0] === 'string') {
+                if (typeof this.data[i][j] === 'object' && !RGraph.isNullish(this.data[i][j]) && typeof this.data[i][j][0] === 'string') {
                     if (this.data[i][j][0].match(/^[.0-9]+$/)) {
                         this.data[i][j][0] = parseFloat(this.data[i][j][0]);
                     } else if (this.data[i][j][0] === '') {
@@ -125,7 +125,7 @@
                 }
 
                 // Handle the conversion of Y values
-                if (typeof this.data[i][j] === 'object' && !RGraph.isNull(this.data[i][j]) && typeof this.data[i][j][1] === 'string') {
+                if (typeof this.data[i][j] === 'object' && !RGraph.isNullish(this.data[i][j]) && typeof this.data[i][j][1] === 'string') {
                     if (this.data[i][j][1].match(/[.0-9]+/)) {
                         this.data[i][j][1] = parseFloat(this.data[i][j][1]);
                     } else if (this.data[i][j][1] === '') {
@@ -136,7 +136,7 @@
         }
         
         // Store a copy of the data that won't be touched
-        this.unmodified_data = RGraph.arrayClone(this.data);
+        this.unmodified_data = RGraph.arrayClone(this.data, true);
 
         this.id                     = conf.id;
         this.canvas                 = document.getElementById(this.id);
@@ -562,7 +562,7 @@
             for (var j=0; j<this.data[i].length; ++j) {
                 
                 // Convert null data points to an empty erray
-                if ( RGraph.isNull(this.data[i][j]) ) {
+                if ( RGraph.isNullish(this.data[i][j]) ) {
                     this.data[i][j] = [];
                 }
 
@@ -887,7 +887,7 @@
 
                 for (i=0,len=this.data.length; i<len; i+=1) {
                     for (j=0,len2=this.data[i].length; j<len2; j+=1) {
-                        if (!RGraph.isNull(this.data[i][j]) && this.data[i][j][1] != null) {
+                        if (!RGraph.isNullish(this.data[i][j]) && this.data[i][j][1] != null) {
                             this.max = Math.max(this.max, typeof this.data[i][j][1] == 'object' ? RGraph.arrayMax(this.data[i][j][1]) : Math.abs(this.data[i][j][1]));
                         }
                     }
@@ -923,7 +923,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
 
@@ -1127,7 +1127,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -1246,7 +1246,7 @@
                 var data_points = this.data[i];
                 
                 // Allow for null points
-                if (RGraph.isNull(data_points[j])) {
+                if (RGraph.isNullish(data_points[j])) {
                     continue;
                 }
 
@@ -1610,7 +1610,7 @@
                         if (j > 0) prevY = this.coords[i][j - 1][1];
                         currY = yPos;
     
-                        if (j == 0 || RGraph.isNull(prevY) || RGraph.isNull(currY)) {
+                        if (j == 0 || RGraph.isNullish(prevY) || RGraph.isNullish(currY)) {
                             this.context.moveTo(xPos, yPos);
                         } else {
                         
@@ -1962,7 +1962,7 @@
     
     
     
-                        } else if (RGraph.isNull(y)) {
+                        } else if (RGraph.isNullish(y)) {
                             // Nothing to see here
     
     
@@ -2044,7 +2044,7 @@
                     var x_val = this.data[set][point][0];
                     var y_val = this.data[set][point][1];
                     
-                    if (!RGraph.isNull(y_val)) {
+                    if (!RGraph.isNullish(y_val)) {
                         
                         // Use the top most value from a box plot
                         if (RGraph.isArray(y_val)) {
@@ -2592,23 +2592,23 @@
         {
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
-                this.original_colors.data                 = RGraph.arrayClone(this.data);
-                this.original_colors.backgroundVbars      = RGraph.arrayClone(properties.backgroundVbars);
-                this.original_colors.backgroundHbars      = RGraph.arrayClone(properties.backgroundHbars);
-                this.original_colors.lineColors           = RGraph.arrayClone(properties.lineColors);
-                this.original_colors.colorsDefault        = RGraph.arrayClone(properties.colorsDefault);
-                this.original_colors.crosshairsColor      = RGraph.arrayClone(properties.crosshairsColor);
-                this.original_colors.highlightStroke      = RGraph.arrayClone(properties.highlightStroke);
-                this.original_colors.highlightFill        = RGraph.arrayClone(properties.highlightFill);
-                this.original_colors.backgroundBarsColor1 = RGraph.arrayClone(properties.backgroundBarsColor1);
-                this.original_colors.backgroundBarsColor2 = RGraph.arrayClone(properties.backgroundBarsColor2);
-                this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor);
-                this.original_colors.backgroundColor      = RGraph.arrayClone(properties.backgroundColor);
-                this.original_colors.axesColor            = RGraph.arrayClone(properties.axesColor);
-                this.original_colors.marimekkoColors      = RGraph.arrayClone(properties.marimekkoColors);
-                this.original_colors.marimekkoColorsStroke= RGraph.arrayClone(properties.marimekkoColorsStroke);
-                this.original_colors.marimekkoLabelsIngraphBackgroundStroke= RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundStroke);
-                this.original_colors.marimekkoLabelsIngraphBackgroundFill  = RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundFill);
+                this.original_colors.data                 = RGraph.arrayClone(this.data, true);
+                this.original_colors.backgroundVbars      = RGraph.arrayClone(properties.backgroundVbars, true);
+                this.original_colors.backgroundHbars      = RGraph.arrayClone(properties.backgroundHbars, true);
+                this.original_colors.lineColors           = RGraph.arrayClone(properties.lineColors, true);
+                this.original_colors.colorsDefault        = RGraph.arrayClone(properties.colorsDefault, true);
+                this.original_colors.crosshairsColor      = RGraph.arrayClone(properties.crosshairsColor, true);
+                this.original_colors.highlightStroke      = RGraph.arrayClone(properties.highlightStroke, true);
+                this.original_colors.highlightFill        = RGraph.arrayClone(properties.highlightFill, true);
+                this.original_colors.backgroundBarsColor1 = RGraph.arrayClone(properties.backgroundBarsColor1, true);
+                this.original_colors.backgroundBarsColor2 = RGraph.arrayClone(properties.backgroundBarsColor2, true);
+                this.original_colors.backgroundGridColor  = RGraph.arrayClone(properties.backgroundGridColor, true);
+                this.original_colors.backgroundColor      = RGraph.arrayClone(properties.backgroundColor, true);
+                this.original_colors.axesColor            = RGraph.arrayClone(properties.axesColor, true);
+                this.original_colors.marimekkoColors      = RGraph.arrayClone(properties.marimekkoColors, true);
+                this.original_colors.marimekkoColorsStroke= RGraph.arrayClone(properties.marimekkoColorsStroke, true);
+                this.original_colors.marimekkoLabelsIngraphBackgroundStroke= RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundStroke, true);
+                this.original_colors.marimekkoLabelsIngraphBackgroundFill  = RGraph.arrayClone(properties.marimekkoLabelsIngraphBackgroundFill, true);
             }
 
 
@@ -2628,7 +2628,7 @@
                             if (typeof this.data[dataset][i][1][6] == 'string') this.data[dataset][i][1][6] = this.parseSingleColorForGradient(this.data[dataset][i][1][6]);
                         }
                         
-                        if (!RGraph.isNull(this.data[dataset][i])) {
+                        if (!RGraph.isNullish(this.data[dataset][i])) {
                             this.data[dataset][i][2] = this.parseSingleColorForGradient(this.data[dataset][i][2]);
                         }
                     }
@@ -2932,7 +2932,7 @@
                 this.context.setLineDash([1,4]);
             }
             
-            if (!RGraph.isNull(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
+            if (!RGraph.isNullish(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
                 this.context.setLineDash(properties.trendlineDashArray);
             }
 
@@ -3078,7 +3078,7 @@
                 originX   = this.properties.xaxisScaleMax / 2,
                 originY   = 0,
                 step      = 1 / frames,
-                original  = RGraph.arrayClone(this.unmodified_data);
+                original  = RGraph.arrayClone(this.unmodified_data, true);
 
             // First draw the chart, set the yaxisScaleMax to the maximum value that's calculated
             // and then animate
@@ -3159,7 +3159,7 @@
             this.set('animationTraceClip', 1);
             
             // Reset the data
-            this.data = RGraph.arrayClone(this.unmodified_data);
+            this.data = RGraph.arrayClone(this.unmodified_data, true);
 
             this.stopAnimationRequested = true;
         };
@@ -3189,12 +3189,12 @@
                 for (var j=0,len2=this.original_colors.data[i].length; j<len2;++j) {
 
                     // The color for the point
-                    this.data[i][j][2] = RGraph.arrayClone(this.original_colors.data[i][j][2]);
+                    this.data[i][j][2] = RGraph.arrayClone(this.original_colors.data[i][j][2], true);
                     
                     // Handle boxplots
                     if (typeof this.data[i][j][1] === 'object') {
-                        this.data[i][j][1][5] = RGraph.arrayClone(this.original_colors.data[i][j][1][5]);
-                        this.data[i][j][1][6] = RGraph.arrayClone(this.original_colors.data[i][j][1][6]);
+                        this.data[i][j][1][5] = RGraph.arrayClone(this.original_colors.data[i][j][1][5], true);
+                        this.data[i][j][1][6] = RGraph.arrayClone(this.original_colors.data[i][j][1][6], true);
                     }
                 }
             }
@@ -3290,7 +3290,7 @@
         {
             // The tooltipsFormattedKeyColors property has been specified so use that if
             // there's a relevant color
-            if (   !RGraph.isNull(properties.tooltipsFormattedKeyColors)
+            if (   !RGraph.isNullish(properties.tooltipsFormattedKeyColors)
                 && typeof properties.tooltipsFormattedKeyColors === 'object'
                 && typeof properties.tooltipsFormattedKeyColors[specific.dataset] === 'string'
                ) {
@@ -3952,7 +3952,7 @@
         //
         this.drawMarimekko = function ()
         {
-            var data = RGraph.arrayClone(this.properties.marimekkoData);
+            var data = RGraph.arrayClone(this.properties.marimekkoData, true);
 
             // Calculate the total of all the X values
             for (var i=0,totalX=0; i<data.length; ++i) {
@@ -4200,7 +4200,7 @@
         //
         this.isAdjustable = function (shape)
         {
-            if (RGraph.isNull(properties.adjustableOnly)) {
+            if (RGraph.isNullish(properties.adjustableOnly)) {
                 return true;
             }
 
@@ -4411,7 +4411,7 @@
         // Create the Scatter chart (it's actually an XY line chart
         var obj = new RGraph.Scatter({
             id: opt.id,
-            data: RGraph.arrayClone(opt.data),
+            data: RGraph.arrayClone(opt.data, true),
             options: opt.options
         });
 
@@ -4462,10 +4462,10 @@
                         obj.set({
                             xaxisScaleMin: original.xaxisScaleMin,
                             xaxisScaleMax: original.xaxisScaleMax,
-                            xaxisLabels: RGraph.arrayClone(opt.options.xaxisLabels)
+                            xaxisLabels: RGraph.arrayClone(opt.options.xaxisLabels, true)
                         });
                 
-                        obj.data[0] = RGraph.arrayClone(opt.data);
+                        obj.data[0] = RGraph.arrayClone(opt.data, true);
                         
                         RGraph.redraw();
                     }]]

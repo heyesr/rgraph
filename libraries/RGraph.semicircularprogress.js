@@ -491,7 +491,7 @@
             // MUST be the first thing that's done after the
             // beforedraw event
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.start(this, this.properties.clip);
             }
             
@@ -556,7 +556,7 @@
             //
             // End clipping
             //
-            if (!RGraph.isNull(this.properties.clip)) {
+            if (!RGraph.isNullish(this.properties.clip)) {
                 RGraph.clipTo.end();
             }
 
@@ -889,7 +889,7 @@
                 //
                 // Allow for a specific label
                 //
-                if (!RGraph.isNull(properties.labelsMinSpecific)) {
+                if (!RGraph.isNullish(properties.labelsMinSpecific)) {
                     var text = properties.labelsMinSpecific;
                 } else {
     
@@ -981,7 +981,7 @@
                 //
                 // Allow for a specific label
                 //
-                if (!RGraph.isNull(properties.labelsMaxSpecific)) {
+                if (!RGraph.isNullish(properties.labelsMaxSpecific)) {
                     var text = properties.labelsMaxSpecific;
                 } else {
                     var text = RGraph.numberFormat({
@@ -1050,7 +1050,7 @@
                 //
                 // Allow for a specific label
                 //
-                if (!RGraph.isNull(properties.labelsCenterSpecific)) {
+                if (!RGraph.isNullish(properties.labelsCenterSpecific)) {
                     var text = properties.labelsCenterSpecific;
                 } else {
 
@@ -1802,7 +1802,7 @@
             // Do this if showing a single number
             if (RGraph.isNumber(this.value)) {
 
-                if (RGraph.isNull(this.currentValue)) {
+                if (RGraph.isNullish(this.currentValue)) {
                     this.currentValue = this.min;
                 }
                 
@@ -1818,8 +1818,8 @@
                     increment     = [];
                 
                 for (var i=0; i<this.value.length; ++i) {
-                    initial_value[i] = RGraph.isNull(this.currentValue) ? 0 : this.currentValue[i];
-                    diff[i]          = this.value[i] - Number(RGraph.isNull(this.currentValue) ? 0 : this.currentValue[i]);
+                    initial_value[i] = RGraph.isNullish(this.currentValue) ? 0 : this.currentValue[i];
+                    diff[i]          = this.value[i] - Number(RGraph.isNullish(this.currentValue) ? 0 : this.currentValue[i]);
                     increment[i]     = diff[i]  / numFrames;
                 }
             }
