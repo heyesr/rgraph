@@ -2273,6 +2273,26 @@ if (properties.backgroundBorder) {
 
 
     //
+    // A convenient way to get the last element in the array:
+    //
+    // foo = [8,6,6,7,4,2,3,8];
+    // RGraph.arrayLast(foo); // 8
+    //
+    // @param array array The array to get the last element from
+    //
+    RGraph.SVG.arrayLast = function (array)
+    {
+        return array[array.length - 1];
+    };
+
+
+
+
+
+
+
+
+    //
     // An array sum function
     // 
     // @param  array arr The  array to calculate the total of
@@ -7678,24 +7698,6 @@ if (properties.backgroundBorder) {
     window.$cl = function (v)
     {
         return console.log(v);
-    };
-
-
-
-
-
-
-
-
-    //
-    // A convenient way to get the last element in the array:
-    //
-    // foo = [8,6,6,7,4,2,3,8];
-    // foo.last(); // 8
-    //
-    Array.prototype.last = function ()
-    {
-        return this[this.length - 1];
     };
 
 

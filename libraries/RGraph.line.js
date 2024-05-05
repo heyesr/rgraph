@@ -32,6 +32,7 @@
         this.coordsText             = [];
         this.coordsSpline           = [];
         this.coordsAxes             = {xaxis: [], yaxis: []};
+        this.coordsTrendline        = [];
         this.hasnegativevalues      = false;
         this.isRGraph               = true;
         this.isrgraph               = true;
@@ -4511,7 +4512,9 @@
     
     
     
-    
+                // These variables hold the coordinates
+                var x1, x2, y1, y2;
+
                 // Draw the line
                 this.path(
                     ' lc round lw % b m % % l % % s %',
@@ -4519,16 +4522,23 @@
                     linewidth,
     
                     // moveTo
-                    Math.max(coords[0][0], this.coords2[args.dataset][0][0] - margin),
-                    coords[0][1],
+                    x1 = Math.max(coords[0][0], this.coords2[args.dataset][0][0] - margin),
+                    y1 = coords[0][1],
                     
                     // lineTo
-                    Math.min(coords[1][0], this.coords2[args.dataset][this.coords2[args.dataset].length - 1][0] + margin),
-                    coords[1][1],
+                    x2 = Math.min(coords[1][0], this.coords2[args.dataset][this.coords2[args.dataset].length - 1][0] + margin),
+                    y2 = coords[1][1],
                     
                     // stroke color
                     color
                 );
+                
+                // Store the trendline coordinates
+                this.coordsTrendline[args.dataset] = [
+                    [x1, y1],
+                    [x2, y2]
+                ];
+                
                 // Reset the line dash array
                 this.context.setLineDash([5,0]);
 

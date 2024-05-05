@@ -983,17 +983,19 @@
                 // Label substitution
                 //
                 for (var i=0; i<properties.xaxisLabels.length; ++i) {
-                    properties.xaxisLabels[i] = RGraph.labelSubstitution({
-                        object:    this,
-                        text:      properties.xaxisLabels[i],
-                        index:     i,
-                        value:     this.data[i],
-                        decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
-                        unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
-                        unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
-                        thousand:  properties.xaxisLabelsFormattedThousand  || ',',
-                        point:     properties.xaxisLabelsFormattedPoint     || '.'
-                    });
+                    if (RGraph.isString(properties.xaxisLabels[i])) {
+                        properties.xaxisLabels[i] = RGraph.labelSubstitution({
+                            object:    this,
+                            text:      properties.xaxisLabels[i],
+                            index:     i,
+                            value:     this.data[i],
+                            decimals:  properties.xaxisLabelsFormattedDecimals  || 0,
+                            unitsPre:  properties.xaxisLabelsFormattedUnitsPre  || '',
+                            unitsPost: properties.xaxisLabelsFormattedUnitsPost || '',
+                            thousand:  properties.xaxisLabelsFormattedThousand  || ',',
+                            point:     properties.xaxisLabelsFormattedPoint     || '.'
+                        });
+                    }
                 }
             }
 

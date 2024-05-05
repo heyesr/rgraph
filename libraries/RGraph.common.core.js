@@ -510,6 +510,25 @@
 
 
 
+    //
+    // A convenient way to get the last element in the array:
+    //
+    // foo = [8,6,6,7,4,2,3,8];
+    // RGraph.arrayLast(foo); // 8
+    //
+    // @param array array The array to get the last element from
+    //
+    RGraph.arrayLast = function (array)
+    {
+        return array[array.length - 1];
+    };
+
+
+
+
+
+
+
 
     //
     // Converts an the truthy values to falsey values and vice-versa
@@ -8014,7 +8033,7 @@
         // Scatter chart can (optionally) too
         //
         if (properties.xaxisScale) {
-        
+
             var scale = obj.scale2;
 
             //
@@ -8026,7 +8045,7 @@
             // Get the scale for a drawing API X axis
             } else if (obj.type === 'drawing.xaxis') {
                 if (properties.xaxisScale) {
-                
+
                     scale = RGraph.getScale({object: this, options: {
                         'scale.max':          properties.xaxisScaleMax,
                         'scale.min':          properties.xaxisScaleMin,
@@ -8103,7 +8122,7 @@
                 // draw the negative side of the labels
                 //
                 if (obj.type === 'hbar' && properties.yaxisPosition === 'center') {
-                
+
                         x = obj.getXCoord(0) - section - (section * i);
                 
                         RGraph.text({
@@ -8214,7 +8233,7 @@
                         y:      y + 5 + properties.xaxisLabelsOffsety,
                         valign: valign,
                         halign: angle != 0 ? 'right' : halign,
-                        text:   String(properties.xaxisLabels[i][0]),
+                        text:   String(RGraph.isNullish(properties.xaxisLabels[i][0]) ? '' : properties.xaxisLabels[i][0]),
                         angle:  angle,
                         marker: false,
                         tag:    'labels.specific',
@@ -8278,7 +8297,7 @@
                         x:      x + properties.xaxisLabelsOffsetx,
                         y:      y + properties.xaxisLabelsOffsety,
                         
-                        text:   String(properties.xaxisLabels[i]),
+                        text:   String(RGraph.isNullish(properties.xaxisLabels[i]) ? '' : properties.xaxisLabels[i]),
                         
                         valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
                         halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
@@ -9101,9 +9120,12 @@
     //
     RGraph.labelSubstitution = function (args)
     {
-          //////////////////////
-         // Must be a string //
         //////////////////////
+        // Must be a string //
+        //////////////////////
+        if (RGraph.isNullish(args.text)) {
+            return args.text;
+        }
         var text = String(args.text);
 
           /////////////////////////////////////////////////////////////////
@@ -10900,23 +10922,6 @@
             JSON.stringify(m, getCircularReplacer()),
             this.rgraph_debug_textarea.value
         );
-    };
-
-
-
-
-
-
-
-    //
-    // A convenient way to get the last element in the array:
-    //
-    // foo = [8,6,6,7,4,2,3,8];
-    // foo.last(); // 8
-    //
-    Array.prototype.last = function ()
-    {
-        return this[this.length - 1];
     };
 
 

@@ -153,6 +153,7 @@
         this.coords                 = [];
         this.coordsText             = [];
         this.coordsBubble           = [];
+        this.coordsTrendline        = [];
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
         this.stopAnimationRequested = false;// Used to control the animations
@@ -2957,6 +2958,9 @@
             
             
             // Convert the X/Y values into coordinates on the canvas
+            //
+            // IS THIS USED?
+            //
             x1 = this.getXCoord(x1);
             y1 = this.getYCoord(y1, properties.outofbounds);
             x2 = this.getXCoord(x2);
@@ -2981,14 +2985,22 @@
                 properties.trendlineClipping === false ? this.canvas.height : y1 - y2 + 25 + 25,
                 
                 // moveTo
-                this.getXCoord(coords[0][0]), this.getYCoord(coords[0][1], true),
+                x1 = this.getXCoord(coords[0][0]),
+                y1 = this.getYCoord(coords[0][1], true),
                 
                 // lineTo
-                this.getXCoord(coords[1][0]), this.getYCoord(coords[1][1], true),
+                x2 = this.getXCoord(coords[1][0]),
+                y2 = this.getYCoord(coords[1][1], true),
                 
                 // stroke color
                 color
             );
+            
+            // Store the coordinates of the trendline on the object
+            this.coordsTrendline[args.dataset] = [
+                [x1, y1],
+                [x2, y2]
+            ];
 
             // Reset the line dash array
             this.context.setLineDash([5,0]);
