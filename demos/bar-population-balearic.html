@@ -24,15 +24,21 @@
             data: [950770,160101,99839,13250],
             options: {
                 marginInner: 35,
+                marginLeft: 100,
+                
+                xaxisTickmarks: false,                
                 xaxisLabels: ['Majorca','Ibiza','Minorca','Formentera'],
+                yaxis: false,
                 yaxisTitle: 'Population',
-                textSize: 10,
                 yaxisTitleBold: true,
+                
+                textSize: 10,
+                colors: ['#2876DD'],
+                
                 tooltips: '%{property:xaxisLabels[%{group}]}<br /><hr style="margin-top: 25px; margin-bottom: 25px"/>%{value_formatted}',
                 tooltipsCss: {
                     backgroundColor: 'white',
                     color: 'black',
-                    fontSize: '10pt',
                     borderRadius: 0,
                     fontWeight: 'bold',
                     padding: '25px',
@@ -44,16 +50,14 @@
                 tooltipsPositionStatic: false,
                 tooltipsEffect: 'none',
                 tooltipsHotspotXonly: true,
-                colors: ['#2876DD'],
+
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                
                 labelsAbove: true,
                 labelsAboveOffsety: 5,
                 labelsAboveSize: 10,
-                labelsAboveBold: true,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                marginLeft: 100,
-                yaxis: false,
-                xaxisTickmarks: false
+                labelsAboveBold: true
             }
         }).draw();
 
@@ -78,7 +82,7 @@
                 var canvasXY = RGraph.getCanvasXY(e.target);
                 
                 // Set the tooltip position to follow the mouse
-                tooltip.style.left = canvasXY[0] + mouseXY[0] - (tooltip.offsetHeight / 2) + 'px';
+                tooltip.style.left = canvasXY[0] + mouseXY[0] - (tooltip.offsetWidth / 2) + 'px';
                 tooltip.style.top  = canvasXY[1] + mouseXY[1] - tooltip.offsetHeight - 5 + 'px';
             }
             
