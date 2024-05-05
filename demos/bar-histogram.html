@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -25,28 +24,33 @@
                 marginLeft: 60,
                 marginbottom: 60,
                 marginInner: -0.5,
-                xaxis: false,
-                backgroundGrid: false,
-                xaxisTitle: 'Tickets logged by hour of day',
-                xaxisTitleOffsety: 15,
-                xaxisTitleSize: 20,
-                yaxisTitleSize: 20,
+                
+                shadow: false,
+                
+                textSize: 14,
+                
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                
+                yaxis: false,
+                yaxisTitleSize: 16,
                 yaxisTitle: 'Frequency',
-                yaxistickmarkslastbottom: false
-            }
-        }).draw();
-        
-        new RGraph.Drawing.XAxis({
-            id: 'cvs',
-            y: 190,
-            options: {
-                marginLeft: 60,
-                xaxisScale: true,
-                xaxisScaleMax: 24,
-                xaxisScaleLabelsCount: 4,
+                yaxistickmarkslastbottom: false,
+                yaxisTitleItalic: true,
+                
+                xaxisTitle: 'Tickets logged by hour of day',
+                xaxisTitleSize: 16,
+                xaxisTitleItalic: true,
+                xaxisColor: 'gray' ,
+                xaxisLabels: [
+                    '00:00',,,,,,'06:00',
+                    ,,,,,'12:00',
+                    ,,,,,'18:00',
+                    ,,,,,'24:00'
+                ],
+                xaxisLabelsPosition: 'edge',
                 xaxisTickmarksCount: 4,
-                xaxisScaleUnitsPost: ':00',
-                xaxistickmarkslastleft: false
+                xaxisLabelsOffsety: 3
             }
         }).draw();
     </script>
