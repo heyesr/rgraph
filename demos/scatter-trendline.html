@@ -3,26 +3,28 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>An adjustable  Scatter chart with a trendline</h1>
-    
+    <h1>A Scatter chart with a trendline</h1>
+
     <p>
-        Drag the points around and see the effect on the trendline.
+        <a href="line-trendline-dual-color.html">
+            There's a Line chart version of this technique that
+            you can see here.
+        </a>
     </p>
 
     <div id="rgraph-demo-html">    
-        <div style="background-color: #cff; display: inline-block">
-            <canvas id="cvs" width="750" height="350" >[No canvas support]</canvas>
+        <div style="background-color: turquoise; display: inline-block; border: 1px solid gray">
+            <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
         </div>
     </div>
     
     <script>
-        data = [
+        DATA = [
             [6347.82,0.69],
             [8956,0.51],    [5620,0.34],    [8092,0.34],    [5069,0.8],
             [5924,0.05],    [7851,0.2],     [2065,0.72],    [3872,0.29],
@@ -81,48 +83,117 @@
             [39210,0.63],   [45565.21,0.63],[42947,0.91]
         ];
 
-        new RGraph.Scatter({
-            id: 'cvs',
-            data: data,
-            options: {
-                textSize: 16,
-                
-                marginLeft: 75,
-                marginRight: 45,
-                marginBottom: 75,
-                
-                adjustable: true,   
+        CONF = {
+            textSize: 16,
+            
+            marginLeft: 75,
+            marginRight: 45,
+            marginBottom: 75,
 
-                xaxisScaleMax: 50000,
-                xaxisScale:true,
-                xaxisTitle: 'Income',
-                xaxisTitleBold: true,
-                xaxisLinewidth: 2,
-                xaxisTickmarksLength: 5,
-                xaxisTickmarksLastLeft: true,
-                
-                yaxisScaleDecimals: 1,
-                yaxisTitle: 'Metro health index',
-                yaxisTitleBold: true,
-                yaxisLinewidth: 2,
-                yaxisTickmarks: true,
-                yaxisTickmarksLength: 5,
-                yaxisTickmarksLastBottom: true,
-                
-                trendline: true,
-                trendlineColors: ['#600'],
-                trendlineDashed: false,
-                trendlineMargin: 0,
-                trendlineClipping: false,
-                trendlineMargin: 10,
-                
-                backgroundGridVlines: false,
-                backgroundColor: 'white',
-                
-                tickmarksStyle: 'circle',
-                tickmarksSize: 7
+            xaxisScaleMax: 50000,
+            xaxisScale:true,
+            xaxisTitle: 'Income',
+            xaxisTitleBold: true,
+            xaxisLinewidth: 2,
+            xaxisTickmarksLength: 5,
+            xaxisTickmarksLastLeft: true,
+            
+            yaxisScaleDecimals: 1,
+            yaxisTitle: 'Metro health index',
+            yaxisTitleBold: true,
+            yaxisLinewidth: 2,
+            yaxisTickmarks: true,
+            yaxisTickmarksLength: 5,
+            yaxisTickmarksLastBottom: true,
+            
+            trendline: true,
+            trendlineColors: ['#600'],
+            trendlineDashed: false,
+            trendlineMargin: 0,
+            trendlineClipping: false,
+            
+            backgroundGridVlines: false,
+            backgroundColor: 'white',
+            
+            tickmarksStyle: 'circle',
+            tickmarksSize: 7
+        };
+
+
+
+
+        //
+        // Draw the red part of the Scatter chart (the bottom
+        // half)
+        //
+        scatter = new RGraph.Scatter({
+            id: 'cvs',
+            data: RGraph.arrayClone(DATA, true),
+            options: RGraph.arrayClone(CONF, true)
+        }).draw();
+        
+        
+        
+        // The coordinates of the first (and only) trendline
+        var coords = scatter.coordsTrendline[0];
+
+
+
+        //
+        // Calculate the coordinates for the top part of the chart
+        // (above the trendline)
+        //
+        coords_top = [
+            [0,coords[0][1]],
+            ...coords,
+            [scatter.canvas.width,coords[1][1]],
+            [scatter.canvas.width, 0],
+            [0,0]
+        ];
+
+
+        //
+        // Calculate the coordinates for the bottom part of the chart
+        // (below the trendline)
+        //
+        coords_bottom = [
+            [0,coords[0][1]],
+            ...coords,
+            [scatter.canvas.width,coords[1][1]],
+            [scatter.canvas.width, scatter.canvas.height],
+            [0,scatter.canvas.height]
+        ];
+
+        //
+        // Now that we have the coordinates clipping can be
+        // installed on the chart that's already been drawn
+        // (the bottom part of the chart).
+        //
+        scatter.set('clip', coords_bottom);
+        scatter.set('colorsDefault', ['red']);
+
+
+
+        //
+        // Create a new chart that's clipped to the top part
+        // coordinates (the black tickmarks).
+        //
+        scatter2 = new RGraph.Scatter({
+            id: 'cvs',
+            data: RGraph.arrayClone(DATA, true),
+            options: {
+                ...RGraph.arrayClone(CONF, true),
+                clip: coords_top, // Clip to the part of the canvas
+                                  // that's above the trendline
+                colorsDefault: 'black'
             }
         }).draw();
+
+        //
+        // Now draw both of the charts using the RGraph.redraw
+        // API function
+        //
+        RGraph.redraw();
     </script>
 
     <script>showSource()</script>
