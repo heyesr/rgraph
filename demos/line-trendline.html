@@ -15,7 +15,7 @@
     </div>
     
     <script>
-        myLine = new RGraph.Line({
+        line = new RGraph.Line({
             id: 'cvs',
             data: [1,3,2,5,4,4,7,8,8,6,7,9],
             options: {
@@ -42,7 +42,8 @@
                 backgroundGridBorder: false,
                 xaxis: false,
                 yaxis: false,
-                //animationTraceCenter: true
+                textSize: 16,
+                animationTraceCenter: true
             }
         }).trace();
     </script>
