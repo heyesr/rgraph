@@ -111,6 +111,7 @@
         this.coords           = [];
         this.coords2          = [];
         this.coordsBubble     = [];
+        this.coordsTrendline  = [];
         this.colorsParsed     = false;
         this.originalColors   = {};
         this.gradientCounter  = 1;
@@ -2415,19 +2416,20 @@
 
 
 
-
+            //
+            // The coordinates for the trendline
+            //
+            var x1 = this.getXCoord(coords[0][0]);
+            var y1 = this.getYCoord(coords[0][1]);
+            var x2 = this.getXCoord(coords[1][0]);
+            var y2 = this.getYCoord(coords[1][1]);
 
             var line = RGraph.SVG.create({
                 svg: this.svg,
                 parent: this.svgAllGroup,
                 type: 'path',
                 attr: {
-                    d: 'M{1} {2} L{3} {4}'.format(
-                        this.getXCoord(coords[0][0]),
-                        this.getYCoord(coords[0][1]),
-                        this.getXCoord(coords[1][0]),
-                        this.getYCoord(coords[1][1])
-                    ),
+                    d: 'M{1} {2} L{3} {4}'.format(x1,y1,x2,y2),
                     stroke: color,
                     fill:'none',
                     'stroke-width':  linewidth,
@@ -2441,6 +2443,12 @@
                     'clip-path': 'url(#trace-effect-clip)'
                 }
             });
+            
+            // Store the coordinates
+            this.coordsTrendline[dataset] = [
+                [x1, y1],
+                [x2, y2]
+            ];
         };
 
 

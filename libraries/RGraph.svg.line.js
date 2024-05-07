@@ -131,6 +131,7 @@
         this.coords          = [];
         this.coords2         = [];
         this.coordsSpline    = [];
+        this.coordsTrendline = [];
         this.hasMultipleDatasets = typeof this.data[0] === 'object' && typeof this.data[1] === 'object' ? true : false;
         this.colorsParsed    = false;
         this.originalColors  = {};
@@ -2584,19 +2585,27 @@
 
 
 
+            //
+            // Store the coordinates of the trendline
+            //
+            this.coordsTrendline[opt.dataset] = [
+                [Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin), coords[0][1]],
+                [Math.min(coords[1][0], this.coords2[opt.dataset][this.coords2[opt.dataset].length - 1][0] + margin), coords[1][1]]
+            ];
 
 
-
+            //
             // Draw the line
+            //
             var line = RGraph.SVG.create({
                 svg: obj.svg,
                 parent: obj.svgAllGroup,
                 type: 'line',
                 attr: {
-                    x1: Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin),
-                    y1: coords[0][1],
-                    x2: Math.min(coords[1][0], this.coords2[opt.dataset][this.coords2[opt.dataset].length - 1][0] + margin),
-                    y2: coords[1][1],
+                    x1: this.coordsTrendline[opt.dataset][0][0],//Math.max(coords[0][0], this.coords2[opt.dataset][0][0] - margin),
+                    y1: this.coordsTrendline[opt.dataset][0][1],//coords[0][1],
+                    x2: this.coordsTrendline[opt.dataset][1][0],//Math.min(coords[1][0], this.coords2[opt.dataset][this.coords2[opt.dataset].length - 1][0] + margin),
+                    y2: this.coordsTrendline[opt.dataset][1][1],//coords[1][1],
 
                     fill: 'rgba(0,0,0,0)',
                     stroke: color,

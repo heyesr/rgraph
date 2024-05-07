@@ -2,65 +2,55 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Line chart with a trendline</h1>
+    <h1>An dual-color SVG Line chart with a trend line</h1>
     
     <p>
-        <a href="scatter-trendline.html">
-            There's a Scatter chart version of this technique that
-            you can see here.
+        <a href="svg-scatter-trendline-dual-color.html">
+            A Scatter chart version of a dual-color trendline.
         </a>
     </p>
-
-    <div id="rgraph-demo-html" style="padding: 10px; background-color: turquoise; display: inline-block; border: 1px solid gray; border-radius: 3px">
-        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
-    </div>
     
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; height: 300px" id="chart-container"></div>
+    </div>
+
     <script>
-        DATA   = [1,3,2,5,4,4,7,8,8,6,7,9];
+        DATA   = [1,3,4,2,5,6,5,6,8,4];
         CONFIG = {
             trendline: true,
-            trendlineMargin: 15,
             trendlineDashed: true,
-            xaxisLabels: RGraph.MONTHS_SHORT,
-            linewidth: 1,
-            spline: true,
-            shadow: false,
+            trendlineColors: ['#666'],
+            trendlineMargin: 15,
             marginInner: 25,
-            tickmarksStyle: 'cross',
-            tickmarksStyle: 'dot',
-            tickmarksSize: 6,
-            backgroundGridVlines: false,
-            backgroundGridBorder: false,
-            backgroundColor: 'white',
-            xaxisLinewidth: 2,
-            yaxisLinewidth: 2,
-            xaxisTickmarksLength: 5,
-            yaxisTickmarksLength: 5,
-            yaxisTickmarksLastBottom: true,
-            xaxisTickmarksLastLeft: true,
+            spline: true,
+            xaxisLabels: ['A','B','C','D','E','F','G','H','I','J','K','L','M'],
             textSize: 16,
-            animationTraceCenter: true,
-            colors: ['black']
+            linewidth: 4,
+            shadow: false,
+            tickmarksStyle: 'circle',
+            xaxis: false,
+            yaxis: false,
+            backgroundGridBorder: false,
+            backgroundGridVlines: false
         };
-        
-        line1 = new RGraph.Line({
-            id: 'cvs',
+
+        line1 = new RGraph.SVG.Line({
+            id: 'chart-container',
             data: [...DATA],
             options: {
-                ...CONFIG
+                ...CONFIG,
+                colors: ['black']
             }
-        }).draw();
-
+        }).trace();
 
         // The coordinates of the first (and only) trendline
         var coords = line1.coordsTrendline[0];
-
 
         //
         // Calculate the coordinates for the top part of the chart
@@ -69,8 +59,8 @@
         coords_top = [
             [0,coords[0][1]],
             ...coords,
-            [line1.canvas.width,coords[1][1]],
-            [line1.canvas.width, 0],
+            [line1.width,coords[1][1]],
+            [line1.width, 0],
             [0,0]
         ];
 
@@ -81,9 +71,9 @@
         coords_bottom = [
             [0,coords[0][1]],
             ...coords,
-            [line1.canvas.width,coords[1][1]],
-            [line1.canvas.width, line1.canvas.height],
-            [0,line1.canvas.height]
+            [line1.width,coords[1][1]],
+            [line1.width, line1.height],
+            [0,line1.height]
         ];
 
 
@@ -101,15 +91,15 @@
 
 
 
-        line2 = new RGraph.Line({
-            id: 'cvs',
+        line2 = new RGraph.SVG.Line({
+            id: 'chart-container',
             data: [...DATA],
             options: {
                 ...CONFIG,
                 colors: ['red'],
                 clip: coords_bottom
             }
-        }).draw();
+        }).trace();
         
         
 
@@ -117,7 +107,8 @@
         // Now draw both of the charts using the RGraph.redraw
         // API function
         //
-        RGraph.redraw();
+        RGraph.SVG.redraw();
+
     </script>
 
     <script>showSource()</script>

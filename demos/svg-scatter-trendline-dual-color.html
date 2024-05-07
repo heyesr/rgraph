@@ -1,0 +1,207 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG dual-color Scatter chart with a trendline</h1>
+
+    <p>
+        <a href="svg-line-trendline-dual-color.html">
+            A Line chart version of a dual-color trendline.
+        </a>
+    </p>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 1000px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        
+        //
+        // Create the data for the chart
+        //
+
+        DATA = [
+            {x:6347.82,y:0.69},
+            {x:8956,y:0.51},    {x:5620,y:0.34},    {x:8092,y:0.34},    {x:5069,y:0.8},
+            {x:5924,y:0.05},    {x:7851,y:0.2},     {x:2065,y:0.72},    {x:3872,y:0.29},
+            {x:6521.73,y:0.50}, {x:28501,y:0.37},   {x:18344,y:0.37},   {x:26561,y:0.39},
+            {x:21391.30,y:0.33},{x:24628,y:0.4},    {x:24670,y:0.46},   {x:15689,y:0.76},
+            {x:8000,y:0.70},    {x:23921,y:0.43},   {x:30434.78,y:0.56},{x:18809,y:0.96},
+            {x:24695.65,y:0.18},{x:16000,y:0.33},   {x:27445,y:0.59},   {x:11926,y:0.21},
+            {x:16819,y:0.78},   {x:21739.13,y:0.69},{x:8956.52,y:0.74}, {x:28059,y:0.61},
+            {x:20458,y:0.19},   {x:23079,y:0.2},    {x:20762,y:0.48},   {x:17547,y:0.54},
+            {x:28706,y:0.72},   {x:22361,y:0.48},   {x:8956.52,y:0.79}, {x:21696,y:0.59},
+            {x:17026,y:0.65},   {x:12766,y:0.67},   {x:22618,y:0.5},    {x:23902,y:0.59},
+            {x:24539,y:0.54},   {x:23700,y:0.6},    {x:22334,y:0.29},   {x:24830,y:0.66},
+            {x:10086.95,y:0.39},{x:12263,y:0.4},    {x:26057,y:0.22},   {x:28744,y:0.94},
+            {x:12151,y:0.16},   {x:22528,y:0.37},   {x:18521.73,y:0.22},{x:32173.91,y:0.36},
+            {x:29355,y:0.87},   {x:17036,y:0.52},   {x:32000,y:0.44},   {x:24312,y:0.58},
+            {x:29227,y:0.71},   {x:24173,y:0.29},   {x:18070,y:0.66},   {x:13321,y:0.34},
+            {x:25660,y:0.47},   {x:23860,y:0.26},   {x:17391.30,y:0.16},{x:25217.39,y:0.74},
+            {x:20115,y:0.53},   {x:18988,y:0.19},   {x:28591,y:0.68},   {x:8956.52,y:0.26},
+            {x:26695.65,y:0.78},{x:13234,y:0.18},   {x:20197,y:0.73},   {x:20187,y:0.77},
+            {x:20888,y:0.29},   {x:21652.17,y:0.22},{x:29348,y:0.77},   {x:14869.56,y:0.63},
+            {x:10909,y:0.55},   {x:18173.91,y:0.30},{x:12372,y:0.5},    {x:24173.91,y:0.8},
+            {x:28173.91,y:0.28},{x:16521,y:0.22},   {x:16905,y:0.87},   {x:24099,y:0.36},
+            {x:15210,y:0.18},   {x:24069,y:0.44},   {x:15062,y:0.49},   {x:22162,y:0.17},
+            {x:30521.73,y:0.37},{x:24838,y:0.42},   {x:19236,y:0.2},    {x:12402,y:0.51},
+            {x:29949,y:0.88},   {x:24314,y:0.3},    {x:29584,y:0.84},   {x:21705,y:0.6},
+            {x:11651,y:0.32},   {x:15174,y:0.85},   {x:26007,y:0.92},   {x:26603,y:0.22},
+            {x:21484,y:0.87},   {x:24855,y:0.37},   {x:15524,y:0.91},   {x:16521.73,y:0.37},
+            {x:28304,y:0.82},   {x:17427,y:0.45},   {x:27818,y:0.81},   {x:17215,y:0.75},
+            {x:11935,y:0.79},   {x:12761,y:0.51},   {x:11185,y:0.31},   {x:12103,y:0.62},
+            {x:17421,y:0.63},   {x:21176,y:0.77},   {x:17941,y:0.4},    {x:18080,y:0.84},
+            {x:32173.91,y:0.51},{x:22556,y:0.85},   {x:22592,y:0.24},   {x:29128,y:0.79},
+            {x:32260.86,y:0.76},{x:26192,y:0.28},   {x:22912,y:0.34},   {x:18429,y:0.54},
+            {x:23469,y:0.36},   {x:19356,y:0.38},   {x:15321,y:0.43},   {x:23020,y:0.73},
+            {x:17212,y:0.23},   {x:28172,y:0.49},   {x:24610,y:0.26},   {x:28472,y:0.59},
+            {x:19744,y:0.66},   {x:15460,y:0.5},    {x:28877,y:0.37},   {x:29870,y:0.39},
+            {x:23475,y:0.47},   {x:25629,y:0.7},    {x:10521.73,y:0.14},{x:27358,y:0.75},
+            {x:28036,y:0.97},   {x:19552,y:0.86},   {x:25319,y:0.6},    {x:29466,y:0.95},
+            {x:18861,y:0.88},   {x:29852,y:0.88},   {x:28877,y:0.89},   {x:27523,y:0.56},
+            {x:13435,y:0.12},   {x:29399,y:0.58},   {x:21698,y:0.9},    {x:14347.82,y:0.26},
+            {x:28909,y:0.36},   {x:20870,y:0.25},   {x:26751,y:0.76},   {x:24434.78,y:0.87},
+            {x:12079,y:0.15},   {x:16765,y:0.1},    {x:11674,y:0.6},    {x:11058,y:0.78},
+            {x:11844,y:0.3},    {x:14777,y:0.36},   {x:20823,y:0.91},   {x:15992,y:0.23},
+            {x:26171,y:0.85},   {x:19652.17,y:0.11},{x:22841,y:0.62},   {x:21527,y:0.52},
+            {x:27084,y:0.32},   {x:28173.91,y:0.87},{x:20249,y:0.95},   {x:12818,y:0.24},
+            {x:13924,y:0.14},   {x:22007,y:0.4},    {x:12560,y:0.71},   {x:17194,y:0.75},
+            {x:14173.91,y:0.70},{x:11808,y:0.34},   {x:29015,y:0.82},   {x:10000,y:0.23},
+            {x:23854,y:0.76},   {x:10260.86,y:0.65},{x:25037,y:0.29},   {x:17254,y:0.25},
+            {x:20473,y:0.85},   {x:23831,y:0.3},    {x:19478.26,y:0.28},{x:15871,y:0.81},
+            {x:21073,y:0.15},   {x:8869.56,y:0.16}, {x:13192,y:0.8},    {x:24882,y:0.56},
+            {x:27202,y:0.68},   {x:24327,y:0.29},   {x:7826.08,y:0.63}, {x:29565.21,y:0.473},
+            {x:17058,y:0.82},   {x:19212,y:0.53},   {x:16224,y:0.6},    {x:11975,y:0.85},
+            {x:18575,y:0.8},    {x:26226,y:0.58},   {x:17591,y:0.1},    {x:23667,y:0.63},
+            {x:18782.60,y:0.14},{x:16372,y:0.77},   {x:30173.91,y:0.26},{x:21435,y:0.84},
+            {x:25027,y:0.31},   {x:36356,y:0.5},    {x:36284,y:0.53},   {x:44203,y:0.76},
+            {x:44869.56,y:0.86},{x:33485,y:0.73},   {x:38798,y:0.75},   {x:34666,y:0.85},
+            {x:39210,y:0.63},   {x:45565.21,y:0.63},{x:42947,y:0.91}
+        ];
+
+        // Set the color on each point to red
+        for (var i=0; i<DATA.length; ++i) {
+            DATA[i].color = 'red';
+        }
+
+        CONFIG = {
+            marginTop: 50,
+            marginBottom: 60,
+            marginRight: 60,
+            marginLeft: 60,
+            textSize: 16,
+            xaxisLabels: ['0','10,000','20,000','30,000','40,000','50,000'],
+            xaxisLabelsPosition: 'edge',
+            xaxisLabelsPositionEdgeTickmarksCount: 6,
+            xaxisScaleMax: 50000,
+            yaxisScaleDecimals: 1,
+            xaxisColor: '#333',
+            backgroundGridColor: '#eee',
+            backgroundGridVlines: false,
+            backgroundGridBorder: false,
+            trendline: true,
+            trendlineColors: ['gray'],
+            trendlineLinewidth: 2,
+            trendlineDashArray: [5,10],
+            tickmarksStyle: 'circle',
+            tickmarksSize: 5
+        };
+
+
+
+        //
+        // Create the Scatter chart object
+        //
+        scatter1 = new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: [...DATA],
+            options: {
+                ...CONFIG
+            }
+        }).draw();
+
+        //
+        // The coordinates of the first (and only) trendline
+        //
+        var coords = scatter1.coordsTrendline[0];
+
+
+
+        //
+        // Calculate the coordinates for the top part of the chart
+        // (above the trendline)
+        //
+        coords_top = [
+            [0,coords[0][1]],
+            ...coords,
+            [scatter1.width,coords[1][1]],
+            [scatter1.width, 0],
+            [0,0]
+        ];
+
+
+        //
+        // Calculate the coordinates for the bottom part of the chart
+        // (below the trendline)
+        //
+        coords_bottom = [
+            [0,coords[0][1]],
+            ...coords,
+            [scatter1.width,coords[1][1]],
+            [scatter1.width, scatter1.height],
+            [0,scatter1.height]
+        ];
+
+        //
+        // Now that we have the coordinates clipping can be
+        // installed on the chart that's already been drawn
+        // (the bottom part of the chart).
+        //
+        scatter1.set('clip', coords_bottom);
+
+
+        //
+        // Modify the data and set all of the colors to black
+        // (because there's no colorsDefault property with
+        // the SVG Scatter chart
+        //
+        var DATA2 = RGraph.SVG.arrayClone(DATA, true);
+
+        for (var i=0; i<DATA2.length; ++i) {
+            DATA2[i].color = 'black';
+        }
+
+
+
+        //
+        // Create a new chart that's clipped to the top part
+        // coordinates (the black tickmarks).
+        //
+        scatter2 = new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: RGraph.SVG.arrayClone(DATA2, true),
+            options: {
+                ...RGraph.SVG.arrayClone(CONFIG, true),
+                clip: coords_top, // Clip to the part of the canvas
+                                  // that's above the trendline
+                lineColors: ['black']
+            }
+        }).draw();
+
+        //
+        // Now draw both of the charts using the RGraph.redraw
+        // API function
+        //
+        RGraph.SVG.redraw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
