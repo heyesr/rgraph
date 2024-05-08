@@ -85,11 +85,6 @@
             {x:39210,y:0.63},   {x:45565.21,y:0.63},{x:42947,y:0.91}
         ];
 
-        // Set the color on each point to red
-        for (var i=0; i<DATA.length; ++i) {
-            DATA[i].color = 'red';
-        }
-
         CONFIG = {
             marginTop: 50,
             marginBottom: 60,
@@ -109,9 +104,9 @@
             trendlineColors: ['gray'],
             trendlineLinewidth: 2,
             trendlineDashArray: [5,10],
-            tickmarksStyle: 'circle',
+            tickmarksStyle: 'dot',
             tickmarksSize: 5
-        };
+        }
 
 
 
@@ -120,7 +115,7 @@
         //
         scatter1 = new RGraph.SVG.Scatter({
             id: 'chart-container',
-            data: [...DATA],
+            data: RGraph.SVG.arrayClone(DATA, true),
             options: {
                 ...CONFIG
             }
@@ -164,18 +159,10 @@
         // (the bottom part of the chart).
         //
         scatter1.set('clip', coords_bottom);
+        scatter1.set('colorsDefault', 'red');
 
 
-        //
-        // Modify the data and set all of the colors to black
-        // (because there's no colorsDefault property with
-        // the SVG Scatter chart
-        //
-        var DATA2 = RGraph.SVG.arrayClone(DATA, true);
 
-        for (var i=0; i<DATA2.length; ++i) {
-            DATA2[i].color = 'black';
-        }
 
 
 
@@ -185,12 +172,13 @@
         //
         scatter2 = new RGraph.SVG.Scatter({
             id: 'chart-container',
-            data: RGraph.SVG.arrayClone(DATA2, true),
+            data: RGraph.SVG.arrayClone(DATA, true),
             options: {
                 ...RGraph.SVG.arrayClone(CONFIG, true),
                 clip: coords_top, // Clip to the part of the canvas
                                   // that's above the trendline
-                lineColors: ['black']
+                lineColors: ['black'],
+                colorsDefault: 'black'
             }
         }).draw();
 
@@ -199,6 +187,7 @@
         // API function
         //
         RGraph.SVG.redraw();
+
     </script>
 
     <script>showSource()</script>

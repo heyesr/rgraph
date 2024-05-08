@@ -161,7 +161,9 @@
 
             tickmarksStyle:       'cross',
             tickmarksSize:        7,
-            colors:               ['black'],
+            
+            colors:               null,
+            colorsDefault:        'black',
             
             line:                 false,
             lineColors:           null,
@@ -933,8 +935,8 @@
             for (var i=0; i<data.length; ++i) {
 
                 var point = data[i];
-            
-                if (typeof point.x === 'number'&& typeof point.y === 'number') {
+
+                if (RGraph.SVG.isNumber(point.x) && RGraph.SVG.isNumber(point.y)) {
 
                     var ret = this.drawSinglePoint({
                         dataset:    data,
@@ -1128,9 +1130,9 @@
             
 
             // Get the above label
-            if (conf.labelsAbove) {
+            if (conf.labelsAbove) { // Plural
                 var above = true;
-            } else if (conf.labelAbove) {
+            } else if (conf.labelAbove) { // Not plural
                 var above = true;
             } else if (conf.above) {
                 var above = true;
@@ -1143,7 +1145,7 @@
 
             // Allow shape to be synonym for type
             if (typeof conf.type === 'undefined' && typeof conf.shape !== 'undefined') {
-                conf.type = conf.shape;
+                var type = conf.shape;
             }
 
 
@@ -1154,12 +1156,14 @@
             // set the type to the default if its not set
             if (typeof conf.type !== 'string') {
                 if (typeof properties.tickmarksStyle === 'string') {
-                    conf.type = properties.tickmarksStyle;
+                    var type = properties.tickmarksStyle;
                 } else if (typeof properties.tickmarksStyle === 'object' && typeof properties.tickmarksStyle[datasetIdx] === 'string') {
-                    conf.type = properties.tickmarksStyle[datasetIdx];
+                    var type = properties.tickmarksStyle[datasetIdx];
                 } else {
-                    conf.type = 'cross';
+                    var type = 'cross';
                 }
+            } else {
+                var type = conf.type;
             }
 
 
@@ -1175,9 +1179,11 @@
 
             // set the size to the default if its not set
             if (typeof conf.size !== 'number' && typeof properties.tickmarksSize === 'number') {
-                conf.size = properties.tickmarksSize;
+                var size = properties.tickmarksSize;
             } else if (typeof conf.size !== 'number' && typeof properties.tickmarksSize === 'object' && typeof properties.tickmarksSize[datasetIdx] === 'number') {
-                conf.size = properties.tickmarksSize[datasetIdx];
+                var size = properties.tickmarksSize[datasetIdx];
+            } else if (RGraph.SVG.isNumber(conf.size)) {
+                var size = conf.size;
             }
 
 
@@ -1186,13 +1192,13 @@
 
 
 
-            // Set the color to the default if its not set and then blacck if thats not set either
-            if (typeof conf.color === 'string') {
-                // nada
-            } else if (typeof properties.colors[datasetIdx] === 'string') {
-                conf.color = properties.colors[datasetIdx];
+            // Set the color to the default if its not set
+            if (conf.color) {
+                var color = conf.color;
+            } else if (RGraph.SVG.isArray(properties.colors) && properties.colors[datasetIdx]) {
+                var color = properties.colors[datasetIdx];
             } else {
-                conf.color = 'black';
+                var color = properties.colorsDefault;
             }
 
 
@@ -1203,9 +1209,9 @@
 
             // Set the opacity of this point
             if (typeof conf.opacity === 'undefined') {
-                conf.opacity = 1;
+                var opacity = 1;
             } else if (typeof conf.opacity === 'number') {
-                // nada
+                var opacity = conf.opacity;
             }
 
 
@@ -1273,10 +1279,10 @@
 
 
             // Handle the various shapes for tickmarks here
-            switch (conf.type) {
-                case 'image:' + conf.type.substr(6):
+            switch (type) {
+                case 'image:' + type.substr(6):
                 
-                    var src = conf.type.substr(6);
+                    var src = type.substr(6);
 
                     var img = new Image();
                     img.src = src;
@@ -1323,15 +1329,15 @@
                         parent: group,
                         attr: {
                             d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
-                                coordX - (conf.size / 2),
-                                coordY + (conf.size / 2),
+                                coordX - (size / 2),
+                                coordY + (size / 2),
                                 coordX,
-                                coordY - (conf.size / 2),
-                                coordX + (conf.size / 2),
-                                coordY + (conf.size / 2)
+                                coordY - (size / 2),
+                                coordX + (size / 2),
+                                coordY + (size / 2)
                             ),
-                            fill: conf.color,
-                            'fill-opacity': conf.opacity,
+                            fill: color,
+                            'fill-opacity': opacity,
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
@@ -1344,17 +1350,17 @@
                         parent: group,
                         attr: {
                             d: 'M {1} {2} L {3} {4} M {5} {6} L {7} {8}'.format(
-                                coordX - (conf.size / 2),
+                                coordX - (size / 2),
                                 coordY,
-                                coordX +  (conf.size / 2),
+                                coordX +  (size / 2),
                                 coordY,
                                 coordX,
-                                coordY - (conf.size / 2),
+                                coordY - (size / 2),
                                 coordX,
-                                coordY + (conf.size / 2)
+                                coordY + (size / 2)
                             ),
-                            stroke: conf.color,
-                            'stroke-opacity': conf.opacity,
+                            stroke: color,
+                            'stroke-opacity': opacity,
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
@@ -1367,12 +1373,12 @@
                         type: 'rect',
                         parent: group,
                         attr: {
-                            x: coordX - (conf.size / 2),
-                            y: coordY - (conf.size / 2),
-                            width: conf.size,
-                            height: conf.size,
-                            fill: conf.color,
-                            'fill-opacity': conf.opacity,
+                            x: coordX - (size / 2),
+                            y: coordY - (size / 2),
+                            width: size,
+                            height: size,
+                            fill: color,
+                            'fill-opacity': opacity,
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
@@ -1389,9 +1395,9 @@
                         attr: {
                             cx: coordX,
                             cy: coordY,
-                            r: conf.size / 2,
-                            fill: conf.color,
-                            'fill-opacity': conf.opacity,
+                            r: size / 2,
+                            fill: color,
+                            'fill-opacity': opacity,
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
@@ -1408,13 +1414,13 @@
                         parent: group,  
                         attr: {
                             d: 'M {1} {2} L {3} {4} M {5} {6} L {7} {8}'.format(
-                                coordX - (conf.size / 2), coordY - (conf.size / 2),
-                                coordX + (conf.size / 2), coordY + (conf.size / 2),
-                                coordX - (conf.size / 2), coordY + (conf.size / 2),
-                                coordX + (conf.size / 2), coordY - (conf.size / 2)
+                                coordX - (size / 2), coordY - (size / 2),
+                                coordX + (size / 2), coordY + (size / 2),
+                                coordX - (size / 2), coordY + (size / 2),
+                                coordX + (size / 2), coordY - (size / 2)
                             ),
-                            stroke: conf.color,
-                            'stroke-opacity': conf.opacity,
+                            stroke: color,
+                            'stroke-opacity': opacity,
                             'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                         }
                     });
@@ -1424,7 +1430,9 @@
             //
             // Draw the above label if it's present
             //
-            if (typeof conf.above === 'string' || (typeof conf.above !== 'string' && conf.above) ) {
+            if (   RGraph.SVG.isString(conf.above)
+                || (!RGraph.SVG.isString(conf.above) && conf.above)
+               ) {
                 this.drawLabelsAbove({
                      point: conf,
                     coordX: coordX,
@@ -1438,21 +1446,21 @@
             // Add some data attributes that save various values
             mark.setAttribute('data-index', index);
             mark.setAttribute('data-dataset', datasetIdx);
-            mark.setAttribute('data-original-opacity', conf.opacity);
-            mark.setAttribute('data-original-color', conf.color);
+            mark.setAttribute('data-original-opacity', opacity);
+            mark.setAttribute('data-original-color', color);
             mark.setAttribute('data-original-coordx', coordX);
             mark.setAttribute('data-original-coordy', coordY);
             mark.setAttribute('data-original-coordz', bubbleRet ? bubbleRet.z : null);
-            mark.setAttribute('data-size', conf.size);
+            mark.setAttribute('data-size', size);
             mark.setAttribute('data-sequential', seq);
-            mark.setAttribute('data-type', conf.type);
+            mark.setAttribute('data-type', type);
 
             return {
-                x: coordX,
-                y: coordY,
-                size: conf.type.substr(0,6) === 'image:' ? img.width : conf.size,
+                x:    coordX,
+                y:    coordY,
+                size: type.substr(0,6) === 'image:' ? img.width : size,
                 mark: mark,
-                type: conf.type
+                type: type
             };
         };
 
@@ -1778,29 +1786,32 @@
         //
         this.drawLabelsAbove = function (opt)
         {
-            var conf   = opt.point,
+            var x      = opt.point.x,
+                y      = opt.point.y,
+                above  = opt.point.above,
                 coordX = opt.coordX,
                 coordY = opt.coordY;
 
-            
+
+
             // Facilitate labelsAboveSpecific
-            if (typeof conf.above === 'string') {
-                var str = conf.above;
+            if (typeof above === 'string') {
+                var str = above;
             } else {
 
-                conf.x = RGraph.SVG.numberFormat({
+                x = RGraph.SVG.numberFormat({
                     object:        this,
-                    num:           conf.x.toFixed(properties.labelsAboveXDecimals ),
+                    num:           x.toFixed(properties.labelsAboveXDecimals ),
                     prepend:       typeof properties.labelsAboveXUnitsPre  === 'string'   ? properties.labelsAboveXUnitsPre  : null,
                     append:        typeof properties.labelsAboveXUnitsPost === 'string'   ? properties.labelsAboveXUnitsPost : null,
                     point:         typeof properties.labelsAboveXPoint     === 'string'   ? properties.labelsAboveXPoint     : null,
                     thousand:      typeof properties.labelsAboveXThousand  === 'string'   ? properties.labelsAboveXThousand  : null,
                     formatter:     typeof properties.labelsAboveXFormatter === 'function' ? properties.labelsAboveXFormatter : null
                 });
-    
-                conf.y = RGraph.SVG.numberFormat({
+
+                y = RGraph.SVG.numberFormat({
                     object:        this,
-                    num:           conf.y.toFixed(properties.labelsAboveYDecimals ),
+                    num:           y.toFixed(properties.labelsAboveYDecimals ),
                     prepend:       typeof properties.labelsAboveYUnitsPre  === 'string'   ? properties.labelsAboveYUnitsPre  : null,
                     append:        typeof properties.labelsAboveYUnitsPost === 'string'   ? properties.labelsAboveYUnitsPost : null,
                     point:         typeof properties.labelsAboveYPoint     === 'string'   ? properties.labelsAboveYPoint     : null,
@@ -1809,9 +1820,9 @@
                 });
 
                 var str = '{1}{2}{3}'.format(
-                    conf.x,
+                    x,
                     properties.labelsAboveSeparator,
-                    conf.y
+                    y
                 );
             }
 
@@ -1826,21 +1837,16 @@
                 object:     this,
                 parent:     this.svgAllGroup,
                 tag:        'labels.above',
-
                 text:       str,
-
                 x:          parseFloat(coordX) + properties.labelsAboveOffsetx,
                 y:          parseFloat(coordY) + properties.labelsAboveOffsety,
-
                 halign:     properties.labelsAboveHalign,
                 valign:     properties.labelsAboveValign,
-                
                 font:       textConf.font,
                 size:       textConf.size,
                 bold:       textConf.bold,
                 italic:     textConf.italic,
                 color:      textConf.color,
-                
                 background: properties.labelsAboveBackground        || null,
                 padding:    properties.labelsAboveBackgroundPadding || 0
             });
@@ -2298,8 +2304,8 @@
 
             // Step 1: Calculate the mean values of the X coords and the Y coords
             for (var i=0,totalX=0,totalY=0; i<this.data[dataset].length; ++i) {
-                totalX += this.data[dataset][i].x;
-                totalY += this.data[dataset][i].y;
+                totalX += Number(this.data[dataset][i].x);
+                totalY += Number(this.data[dataset][i].y);
             }
             
             var averageX = totalX / this.data[dataset].length;
@@ -2326,7 +2332,7 @@
 
             // y = mx + b
             
-            coords =  [
+            var coords =  [
                 [properties.xaxisScaleMin, m * properties.xaxisScaleMin + b],
                 [properties.xaxisScaleMax, m * properties.xaxisScaleMax + b]
             ];
@@ -2369,7 +2375,7 @@
             var y1 = RGraph.SVG.arrayMin(yValues);
             var x2 = RGraph.SVG.arrayMax(xValues);
             var y2 = RGraph.SVG.arrayMax(yValues);
-            
+
             
             // Convert the X/Y values into coordinates on the canvas
             x1 = this.getXCoord(x1);

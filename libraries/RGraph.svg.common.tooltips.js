@@ -216,7 +216,11 @@
                 // Allow the user to specify the key colors
                 //
                 var colors = properties.tooltipsFormattedKeyColors ? properties.tooltipsFormattedKeyColors : properties.colors;
-            
+                
+                if (!colors) {
+                    colors = [properties.colorsDefault];
+                }
+
                 // Build up the HTML table that becomes the key
                 for (var i=0,str=[]; i<specific.values.length; ++i) {
 
