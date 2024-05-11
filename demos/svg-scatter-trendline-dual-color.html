@@ -21,12 +21,10 @@
     </div>
 
     <script>
-        
         //
         // Create the data for the chart
         //
-
-        DATA = [
+        data = [
             {x:6347.82,y:0.69},
             {x:8956,y:0.51},    {x:5620,y:0.34},    {x:8092,y:0.34},    {x:5069,y:0.8},
             {x:5924,y:0.05},    {x:7851,y:0.2},     {x:2065,y:0.72},    {x:3872,y:0.29},
@@ -85,7 +83,7 @@
             {x:39210,y:0.63},   {x:45565.21,y:0.63},{x:42947,y:0.91}
         ];
 
-        CONFIG = {
+        options = {
             marginTop: 50,
             marginBottom: 60,
             marginRight: 60,
@@ -106,88 +104,20 @@
             trendlineDashArray: [5,10],
             tickmarksStyle: 'dot',
             tickmarksSize: 5
-        }
+        };
 
+        RGraph.SVG.Scatter.dualColorTrendline({
+                       id: 'chart-container',
+                     data: data,
+                  options: options,
+               optionsTop: {colors: ['black']},
+            optionsBottom: {colors: ['red']}
+        });
 
-
+        // Just here to enable the RGraph demo page code
+        // highlighting.
         //
-        // Create the Scatter chart object
-        //
-        scatter1 = new RGraph.SVG.Scatter({
-            id: 'chart-container',
-            data: RGraph.SVG.arrayClone(DATA, true),
-            options: {
-                ...CONFIG
-            }
-        }).draw();
-
-        //
-        // The coordinates of the first (and only) trendline
-        //
-        var coords = scatter1.coordsTrendline[0];
-
-
-
-        //
-        // Calculate the coordinates for the top part of the chart
-        // (above the trendline)
-        //
-        coords_top = [
-            [0,coords[0][1]],
-            ...coords,
-            [scatter1.width,coords[1][1]],
-            [scatter1.width, 0],
-            [0,0]
-        ];
-
-
-        //
-        // Calculate the coordinates for the bottom part of the chart
-        // (below the trendline)
-        //
-        coords_bottom = [
-            [0,coords[0][1]],
-            ...coords,
-            [scatter1.width,coords[1][1]],
-            [scatter1.width, scatter1.height],
-            [0,scatter1.height]
-        ];
-
-        //
-        // Now that we have the coordinates clipping can be
-        // installed on the chart that's already been drawn
-        // (the bottom part of the chart).
-        //
-        scatter1.set('clip', coords_bottom);
-        scatter1.set('colorsDefault', 'red');
-
-
-
-
-
-
-        //
-        // Create a new chart that's clipped to the top part
-        // coordinates (the black tickmarks).
-        //
-        scatter2 = new RGraph.SVG.Scatter({
-            id: 'chart-container',
-            data: RGraph.SVG.arrayClone(DATA, true),
-            options: {
-                ...RGraph.SVG.arrayClone(CONFIG, true),
-                clip: coords_top, // Clip to the part of the canvas
-                                  // that's above the trendline
-                lineColors: ['black'],
-                colorsDefault: 'black'
-            }
-        }).draw();
-
-        //
-        // Now draw both of the charts using the RGraph.redraw
-        // API function
-        //
-        RGraph.SVG.redraw();
-
+        // new RGraph.Scatter
     </script>
 
     <script>showSource()</script>

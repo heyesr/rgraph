@@ -21,8 +21,8 @@
     </div>
 
     <script>
-        DATA   = [1,3,4,2,5,6,5,6,8,4];
-        CONFIG = {
+        data   = [1,3,4,2,5,6,5,6,8,4];
+        options = {
             trendline: true,
             trendlineDashed: true,
             trendlineColors: ['#666'],
@@ -40,75 +40,19 @@
             backgroundGridVlines: false
         };
 
-        line1 = new RGraph.SVG.Line({
-            id: 'chart-container',
-            data: [...DATA],
-            options: {
-                ...CONFIG,
-                colors: ['black']
-            }
-        }).trace();
+        RGraph.SVG.Line.dualColorTrendline({
+                       id: 'chart-container',
+                     data: data,
+                  options: options,
+               optionsTop: {colors: ['black']},
+            optionsBottom: {colors: ['red']}
+        });
 
-        // The coordinates of the first (and only) trendline
-        var coords = line1.coordsTrendline[0];
 
+        // Just here to enable the RGraph demo page code
+        // highlighting.
         //
-        // Calculate the coordinates for the top part of the chart
-        // (above the trendline)
-        //
-        coords_top = [
-            [0,coords[0][1]],
-            ...coords,
-            [line1.width,coords[1][1]],
-            [line1.width, 0],
-            [0,0]
-        ];
-
-        //
-        // Calculate the coordinates for the bottom part of the chart
-        // (below the trendline)
-        //
-        coords_bottom = [
-            [0,coords[0][1]],
-            ...coords,
-            [line1.width,coords[1][1]],
-            [line1.width, line1.height],
-            [0,line1.height]
-        ];
-
-
-        //
-        // Now that we have the coordinates clipping can be
-        // installed on the chart that's already been drawn
-        // (the top part of the chart).
-        //
-        line1.set('clip', coords_top);
-
-
-
-
-
-
-
-
-        line2 = new RGraph.SVG.Line({
-            id: 'chart-container',
-            data: [...DATA],
-            options: {
-                ...CONFIG,
-                colors: ['red'],
-                clip: coords_bottom
-            }
-        }).trace();
-        
-        
-
-        //
-        // Now draw both of the charts using the RGraph.redraw
-        // API function
-        //
-        RGraph.SVG.redraw();
-
+        // new RGraph.Line
     </script>
 
     <script>showSource()</script>

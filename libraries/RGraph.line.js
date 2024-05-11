@@ -5479,3 +5479,130 @@
         //
         RGraph.parseObjectStyleConfig(this, conf.options);
     };
+
+
+
+
+
+
+
+
+
+    //
+    // This is a "wrapper" function that creaters a dual-color
+    // trendline Line chart for you. Options to give to
+    // the frunction are (the sole argument is an object):
+    //
+    //   id:            The id of the canvas tag
+    //   data:          The data for the chart
+    //   options:       The chart options that get applied to
+    //                  both Line charts (the one above
+    //                  and also the one below the trendline.)
+    //   optionsTop:    With this option you can specify
+    //                  configuration values that are specific to
+    //                  the top chart (eg color)
+    //   optionsBottom: With this option you can specify
+    //                  configuration values that are specific to
+    //                  the bottom chart (eg color)
+    //
+    RGraph.Line.dualColorTrendline = function (args)
+    {
+        // Check that a trendline is enabled
+        if(!args.options.trendline) {
+            alert('[ALERT] A trendline is not enabled in your charts configuration');
+            return;
+        }
+
+        //
+        // Draw the red part of the Scatter chart (the bottom
+        // half)
+        //
+        var obj1 = new RGraph.Line({
+            id: args.id,
+            data: RGraph.arrayClone(args.data, true),
+            options: RGraph.arrayClone(args.options, true)
+        }).draw();
+        
+        
+        
+        // The coordinates of the first (and only) trendline
+        var coords = obj1.coordsTrendline[0];
+
+
+
+        //
+        // Calculate the coordinates for the top part of the chart
+        // (above the trendline)
+        //
+        var coords_top = [
+            [0,coords[0][1]],
+            ...coords,
+            [obj1.canvas.width,coords[1][1]],
+            [obj1.canvas.width, 0],
+            [0,0]
+        ];
+
+
+        //
+        // Calculate the coordinates for the bottom part of the chart
+        // (below the trendline)
+        //
+        var coords_bottom = [
+            [0,coords[0][1]],
+            ...coords,
+            [obj1.canvas.width,coords[1][1]],
+            [obj1.canvas.width, obj1.canvas.height],
+            [0,obj1.canvas.height]
+        ];
+
+        //
+        // Now that we have the coordinates, clipping can be
+        // installed on the chart that's already been drawn
+        // (the top part of the chart).
+        //
+        obj1.set('clip', coords_top);
+        
+        // Set any options that have been specified that are
+        // specific to the top Scatter chart
+        if (RGraph.isObject(args.optionsTop)) {
+            for (i in args.optionsTop) {
+                if (RGraph.isString(i)) {
+                    obj1.set(i, args.optionsTop[i]);
+                }
+            }
+        }
+
+
+
+        //
+        // Create a new chart that's clipped to the bottom part
+        // coordinates.
+        //
+        var obj2 = new RGraph.Line({
+            id: args.id,
+            data: RGraph.arrayClone(args.data, true),
+            options: {
+                ...RGraph.arrayClone(args.options, true),
+                clip: coords_bottom // Clip to the part of the canvas
+                                    // that's below the trendline
+            }
+        });
+
+        // Set any options that have been specified that are
+        // specific to the bottom Scatter chart
+        if (RGraph.isObject(args.optionsBottom)) {
+            for (i in args.optionsBottom) {
+                if (RGraph.isString(i)) {
+                    obj2.set(i, args.optionsBottom[i]);
+                }
+            }
+        }
+
+        //
+        // Now draw both of the charts using the RGraph.redraw
+        // API function
+        //
+        RGraph.redraw();
+        
+        return [obj1, obj2];
+    };

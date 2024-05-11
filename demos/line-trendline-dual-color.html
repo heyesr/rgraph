@@ -22,8 +22,8 @@
     </div>
     
     <script>
-        DATA   = [1,3,2,5,4,4,7,8,8,6,7,9];
-        CONFIG = {
+        data   = [1,3,2,5,4,4,7,8,8,6,7,9];
+        options = {
             trendline: true,
             trendlineMargin: 15,
             trendlineDashed: true,
@@ -45,79 +45,21 @@
             yaxisTickmarksLastBottom: true,
             xaxisTickmarksLastLeft: true,
             textSize: 16,
-            animationTraceCenter: true,
             colors: ['black']
         };
-        
-        line1 = new RGraph.Line({
-            id: 'cvs',
-            data: [...DATA],
-            options: {
-                ...CONFIG
-            }
-        }).draw();
 
+        RGraph.Line.dualColorTrendline({
+                       id: 'cvs',
+                     data: data,
+                  options: options,
+               optionsTop: {colors: ['black']},
+            optionsBottom: {colors: ['red']}
+        });
 
-        // The coordinates of the first (and only) trendline
-        var coords = line1.coordsTrendline[0];
-
-
+        // Just here to enable the RGraph demo page code
+        // highlighting.
         //
-        // Calculate the coordinates for the top part of the chart
-        // (above the trendline)
-        //
-        coords_top = [
-            [0,coords[0][1]],
-            ...coords,
-            [line1.canvas.width,coords[1][1]],
-            [line1.canvas.width, 0],
-            [0,0]
-        ];
-
-        //
-        // Calculate the coordinates for the bottom part of the chart
-        // (below the trendline)
-        //
-        coords_bottom = [
-            [0,coords[0][1]],
-            ...coords,
-            [line1.canvas.width,coords[1][1]],
-            [line1.canvas.width, line1.canvas.height],
-            [0,line1.canvas.height]
-        ];
-
-
-        //
-        // Now that we have the coordinates clipping can be
-        // installed on the chart that's already been drawn
-        // (the top part of the chart).
-        //
-        line1.set('clip', coords_top);
-
-
-
-
-
-
-
-
-        line2 = new RGraph.Line({
-            id: 'cvs',
-            data: [...DATA],
-            options: {
-                ...CONFIG,
-                colors: ['red'],
-                clip: coords_bottom
-            }
-        }).draw();
-        
-        
-
-        //
-        // Now draw both of the charts using the RGraph.redraw
-        // API function
-        //
-        RGraph.redraw();
+        // new RGraph.Line
     </script>
 
     <script>showSource()</script>
