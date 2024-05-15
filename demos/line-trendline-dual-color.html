@@ -49,11 +49,13 @@
         };
 
         RGraph.Line.dualColorTrendline({
-                       id: 'cvs',
-                     data: data,
-                  options: options,
-               optionsTop: {colors: ['black']},
-            optionsBottom: {colors: ['red']}
+                        id: 'cvs',
+                      data: data,
+                   options: options,
+                optionsTop: {colors: ['black']},
+             optionsBottom: {colors: ['red']},
+           animationEffect: 'trace',
+animationEffectOptions: {frames: 60}
         });
 
         // Just here to enable the RGraph demo page code
