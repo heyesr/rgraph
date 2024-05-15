@@ -5600,9 +5600,19 @@
 
         //
         // Now draw both of the charts using the RGraph.redraw
-        // API function
-        //
-        RGraph.redraw();
+        // API function or the requested animation effect
+        if (    RGraph.isString(args.animationEffect)
+            && obj1[args.animationEffect]
+            && obj1[args.animationEffect]
+           ) {
+            var effect        = args.animationEffect;
+            var effectOptions = args.animationEffectOptions ? args.animationEffectOptions : null;
+
+            obj1[effect](effectOptions);
+            obj2[effect](effectOptions);
+        } else {
+            RGraph.redraw();
+        }
         
         return [obj1, obj2];
     };

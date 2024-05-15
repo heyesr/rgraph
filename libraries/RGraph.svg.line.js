@@ -2616,7 +2616,8 @@
                         this.id,
                         opt.dataset
                     ),
-                    'clip-path': clip ? 'url(#trendline-clip)' : ''
+                    'clip-path': clip ? 'url(#trendline-clip)' : ''//,
+                    //'clip-path': this.isTrace ? 'url(#trace-effect-clip)' : ''
                 }
             });
 
@@ -3144,9 +3145,22 @@
 
         //
         // Now draw both of the charts using the RGraph.redraw
-        // API function
-        //
-        RGraph.SVG.redraw();
+        // API function or the requested animation effect
+        if (    RGraph.SVG.isString(args.animationEffect)
+            && obj1[args.animationEffect]
+            && obj1[args.animationEffect]
+           ) {
+
+            RGraph.SVG.clear(obj1.svg);
+           
+            var effect        = args.animationEffect;
+            var effectOptions = args.animationEffectOptions ? args.animationEffectOptions : null;
+
+            obj1[effect](effectOptions);
+            obj2[effect](effectOptions);
+        } else {
+            RGraph.SVG.redraw();
+        }
         
         return [obj1, obj2];
     };
