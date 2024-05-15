@@ -123,6 +123,7 @@
             labelsPosition:                'center',
             labelsBoxed:                   false,
             labelsOffsetRadius:            0,
+            labelsOffsetAngle:             0,
             labelsAxes:                    'n',
             labelsAxesFont:                null,
             labelsAxesSize:                null,
@@ -1636,7 +1637,7 @@
                         a = a - RGraph.HALFPI + (properties.labelsPosition == 'edge' ? ((RGraph.TWOPI / this.data.length) / 2) : 0);
                     
                     // MJLR bug fix 21/04/2020 - label positions ignored anglesStart property
-                    a = a + properties.anglesStart;
+                    a = a + properties.anglesStart + properties.labelsOffsetAngle;
                 }
 
                 var x = centerx + (Math.cos(a) * radius);
