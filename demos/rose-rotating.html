@@ -1,0 +1,57 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.rose.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A rotating Rose chart</h1>
+
+    <div id="rgraph-demo-html">
+        <style>
+            button {
+                cursor: pointer;
+                font-size: 16pt;
+            }
+        </style>
+        <div style="text-align: center; display: inline-block">
+            <button onclick="factor -= 0.01">Slower</button>
+            <button onclick="factor += 0.01">Faster</button><br />
+            <canvas id="cvs" width="700" height="500">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script>
+        rose = new RGraph.Rose({
+            id: 'cvs',
+            data: [4,6,3,5,2,8,9],
+            options: {
+                margin: 5,
+                labelsAxes: 'n',
+                labels: RGraph.DAYS_LONG,
+                textSize: 16
+            }
+        }).wave();
+        
+        setTimeout(function ()
+        {
+            factor = 0.01;
+            var rotate = function ()
+            {
+                rose.set('anglesOffset', rose.get('anglesOffset') + factor);
+                rose.set('labelsOffsetAngle', rose.get('labelsOffsetAngle') + factor);
+                RGraph.redraw();
+                setTimeout(rotate, 17);
+            }
+            
+            rotate();
+        }, 2000);
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
