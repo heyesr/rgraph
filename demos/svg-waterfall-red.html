@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.waterfall.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A red SVG Waterfall chart</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 750px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Waterfall({
+            id: 'chart-container',
+            data: [4,2,5,-6,-3,5,4],
+            options: {
+                colors: ['#f00','#a00','#fcc'],
+                colorsStroke: 'transparent',
+                xaxisLabels: ['Ally','Barney','Charlie','Dave','Ed','Fay','Gary','Total'],
+                xaxisLabelsLastBold: true,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                backgroundGridLinewidth: 5,
+                backgroundGridColor: '#eee',
+                xaxisLinewidth: 5,
+                yaxisLinewidth: 5,
+                xaxisTickmarksLength: 10,
+                xaxisTitle: 'Sales person',
+                xaxisTitleBold: true,
+                xaxisTitleSize: 16,
+                yaxisTitleBold: true,
+                yaxisTitleSize: 16,
+                yaxisTitleOffsetx: -10,
+                yaxisTitle: 'Number of captures made',
+                yaxisTickmarksLength: 10,
+                marginLeft: 75,
+                marginBottom: 60,
+                marginInner: 5,
+                textSize: 16
+            }                    
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
