@@ -1582,7 +1582,7 @@
                     }
 
 
-                    var str = properties.labelsAboveSpecific ? properties.labelsAboveSpecific[i].toString() : RGraph.SVG.numberFormat({
+                    var str = properties.labelsAboveSpecific ? properties.labelsAboveSpecific[i]?.toString() : RGraph.SVG.numberFormat({
                         object:    this,
                         num:       value,
                         prepend:   typeof properties.labelsAboveUnitsPre  === 'string'   ? properties.labelsAboveUnitsPre  : null,
@@ -1791,7 +1791,7 @@
                             y      = parseFloat(el.getAttribute('y')) + 5 + properties.labelsInbarOffsety;
                         }
     
-                        var str = properties.labelsAboveSpecific ? properties.labelsAboveSpecific[i].toString() : RGraph.SVG.numberFormat({
+                        var str = properties.labelsInbarSpecific ? properties.labelsInbarSpecific[i]?.toString() : RGraph.SVG.numberFormat({
                             object:    this,
                             num:       value,
                             prepend:   typeof properties.labelsInbarUnitsPre  === 'string'   ? properties.labelsInbarUnitsPre  : null,

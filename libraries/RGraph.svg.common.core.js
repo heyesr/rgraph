@@ -892,6 +892,7 @@
                         italic: textConf.italic,
                         color:  textConf.color
                     });
+                    
                 }
                 
                 
@@ -939,7 +940,7 @@
         //
         } else {
             if (typeof properties.xaxisLabels === 'object' && !RGraph.SVG.isNullish(properties.xaxisLabels) ) {
-            
+
                 var angle = properties.xaxisLabelsAngle;
 
                 // Loop through the X labels
@@ -960,26 +961,20 @@
                         }
 
                         RGraph.SVG.text({
-                            
-                            object: obj,
-                            parent: obj.svgAllGroup,
-                            tag:    'labels.xaxis',
-                            
-                            text: properties.xaxisLabels[i],
-                            
-                            x: x + properties.xaxisLabelsOffsetx,
-                            y: y,
-                            
-                            valign: (typeof angle === 'number' && angle) ? 'center' : valign,
-                            halign: (typeof angle === 'number' && angle) ? 'right' : 'center',
-
-                            angle: angle,
-
-                            size:   textConf.size,
-                            italic: textConf.italic,
-                            font:   textConf.font,
-                            bold:   textConf.bold,
-                            color:  textConf.color
+                            object:     obj,
+                            parent:     obj.svgAllGroup,
+                            tag:        'labels.xaxis',
+                            text:       properties.xaxisLabels[i],
+                            x:          x + properties.xaxisLabelsOffsetx,
+                            y:          y,
+                            valign:     (typeof angle === 'number' && angle) ? 'center' : valign,
+                            halign:     (typeof angle === 'number' && angle) ? 'right' : 'center',
+                            angle:      angle,
+                            size:       textConf.size,
+                            italic:     textConf.italic,
+                            font:       textConf.font,
+                            bold:       textConf.bold,
+                            color:      textConf.color
                         });
                     }
 
@@ -1006,23 +1001,17 @@
                             valign = 'top';
                             y = obj.height - properties.marginBottom + (RGraph.SVG.ISFF ? 5 : 10) + (properties.xaxisTickmarksLength - 5) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
                         }
-                    
-                        RGraph.SVG.text({
 
+                        RGraph.SVG.text({
                             object: obj,
                             parent: obj.svgAllGroup,
                             tag:    'labels.xaxis',
-
                             text: properties.xaxisLabels[i],
-
                             x: x + properties.xaxisLabelsOffsetx,
                             y: y,
-
                             valign: (typeof angle === 'number' && angle) ? 'center' : valign,
                             halign: (typeof angle === 'number' && angle) ? 'right' : 'center',
-
                             angle: angle,
-
                             size:   textConf.size,
                             italic: textConf.italic,
                             font:   textConf.font,
@@ -1094,15 +1083,11 @@
                 object: obj,
                 parent: obj.svgAllGroup,
                 tag:    'xaxisTitle',
-                
                 text:   String(properties.xaxisTitle),
-                
                 x:      x + (properties.xaxisTitleOffsetx || 0),
                 y:      y + (properties.xaxisTitleOffsety || 0),
-
                 valign: typeof properties.xaxisTitleValign === 'string' ? properties.xaxisTitleValign : 'top',
                 halign: typeof properties.xaxisTitleHalign === 'string' ? properties.xaxisTitleHalign : 'center',
-                
                 size:   textConf.size,
                 italic: textConf.italic,
                 font:   textConf.font,
@@ -1654,6 +1639,47 @@
         }
     };
 
+
+
+
+
+
+
+
+    //
+    // Parses a string or an array of strings for links and
+    // linkifies it.
+    //
+    // @param string str The text to get the link out of
+    //
+    RGraph.SVG.extractLink = function (str)
+    {
+        if (str.match(/<a /) && str.match(/href="(.+?)"/i) ) {
+        
+            var anchor = RegExp.$1;
+
+            // Get the text
+            var text = str.replace(/<a .+>(.*)<\/a>/i, '$1');
+            
+            // Determine if a target has been specified
+            // and if so use it.
+            if (str.match(/target="(.*?)"/)) {
+                var target = RegExp.$1
+            } else {
+                var target = "_self";
+            }
+
+        } else {
+            var text   = str;
+            var anchor = null;
+        }
+
+        return {
+            text: text,
+            href: anchor,
+            target: target
+        };
+    };
 
 
 
@@ -2904,13 +2930,13 @@ if (properties.backgroundBorder) {
             str               = opt.text,
             x                 = opt.x,
             y                 = opt.y,
-            color             = opt.color ? opt.color : 'black',
+            color             = opt.color ? opt.color : (opt.link ? 'blue' : 'black'),
             background        = opt.background || null,
             backgroundRounded = opt.backgroundRounded || 0,
             padding           = opt.padding || 0,
             link              = opt.link || '',
             linkTarget        = opt.linkTarget || '_blank',
-            events            = (opt.events === true ? true : false),
+            events            = (opt.events === true || opt.link ? true : false),
             angle             = opt.angle;
 
 
@@ -2933,8 +2959,8 @@ if (properties.backgroundBorder) {
         }
         
         //
-        // If the string starts with a carriage return add a unicode non-breaking
-        // space to the start of it.
+        // If the string starts with a carriage return add a
+        // unicode non-breaking space to the start of it.
         //
         if (str && str.substr(0,2) == '\r\n' || str.substr(0,1) === '\n') {
             str = "\u00A0" + str;
@@ -2966,6 +2992,7 @@ if (properties.backgroundBorder) {
         // If a link has been specified then the text node should
         // be a child of an a node
         if (link) {
+            
             var a = RGraph.SVG.create({
                 svg: obj.svg,
                 type: 'a',
@@ -2975,12 +3002,37 @@ if (properties.backgroundBorder) {
                     target: linkTarget
                 }
             });
+
+        } else if (str.match(/<a /)) {
+
+            var link = RGraph.SVG.extractLink(str);
+
+            // Set the text to that which doesn't have
+            // the <a> wrapper
+            str = link.text;
+            
+            
+            if (link.href) {
+
+                var a = RGraph.SVG.create({
+                    svg: obj.svg,
+                    type: 'a',
+                    parent: parent,
+                    attr: {
+                        'xlink:href': link.href,
+                        target: link.target
+                    }
+                });
+                
+                events = true;
+            }
         }
 
         //
         // Text does not include carriage returns
         //
         if (str && str.indexOf && str.indexOf("\n") === -1) {
+
             var text = RGraph.SVG.create({
                 svg: obj.svg,
                 parent: link ? a : opt.parent,
@@ -2988,7 +3040,7 @@ if (properties.backgroundBorder) {
                 attr: {
                     tag: opt.tag ? opt.tag : '',        // This is the same as the below
                     'data-tag': opt.tag ? opt.tag : '', // This is the same as the above
-                    fill: color,
+                    fill: (link && link.href) ? 'blue' : color,
                     x: x,
                     y: y,
                     'font-size':         size,
@@ -2996,7 +3048,8 @@ if (properties.backgroundBorder) {
                     'font-family':       font,
                     'font-style':        italic,
                     'text-anchor':       halign,
-                    'dominant-baseline': valign
+                    'dominant-baseline': valign,
+                    'text-decoration': link && link.href ? 'underline' : 'none'
                 }
             });
     
