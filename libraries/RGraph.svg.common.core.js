@@ -1659,8 +1659,8 @@
             var anchor = RegExp.$1;
 
             // Get the text
-            var text = str.replace(/<a .+>(.*)<\/a>/i, '$1');
-            
+            var text = str.replace(/<a .+>((.|\r|\n)*)<\/a>/i, '$1');
+
             // Determine if a target has been specified
             // and if so use it.
             if (str.match(/target="(.*?)"/)) {
@@ -2919,25 +2919,25 @@ if (properties.backgroundBorder) {
             }
         }
 
-        var obj               = opt.object,
-            parent            = opt.parent || opt.object.svgAllGroup,
-            size              = typeof opt.size === 'number' ? opt.size + 'pt' : (typeof opt.size === 'string' ? opt.size.replace(/pt$/,'') : 12) + 'pt',
-            bold              = opt.bold ? 'bold' : 'normal',
-            font              = opt.font ? opt.font : 'sans-serif',
-            italic            = opt.italic ? 'italic' : 'normal',
-            halign            = opt.halign,
-            valign            = opt.valign,
-            str               = opt.text,
-            x                 = opt.x,
-            y                 = opt.y,
-            color             = opt.color ? opt.color : (opt.link ? 'blue' : 'black'),
-            background        = opt.background || null,
-            backgroundRounded = opt.backgroundRounded || 0,
-            padding           = opt.padding || 0,
-            link              = opt.link || '',
-            linkTarget        = opt.linkTarget || '_blank',
-            events            = (opt.events === true || opt.link ? true : false),
-            angle             = opt.angle;
+        var   obj = opt.object,
+           parent = opt.parent || opt.object.svgAllGroup,
+             size = typeof opt.size === 'number' ? opt.size + 'pt' : (typeof opt.size === 'string' ? opt.size.replace(/pt$/,'') : 12) + 'pt',
+             bold = opt.bold ? 'bold' : 'normal',
+             font = opt.font ? opt.font : 'sans-serif',
+           italic = opt.italic ? 'italic' : 'normal',
+           halign = opt.halign,
+           valign = opt.valign,
+              str = opt.text,
+                x = opt.x,
+                y = opt.y,
+            color = opt.color ? opt.color : (opt.link ? 'blue' : 'black'),
+       background = opt.background || null,
+backgroundRounded = opt.backgroundRounded || 0,
+          padding = opt.padding || 0,
+             link = opt.link || '',
+       linkTarget = opt.linkTarget || '_blank',
+           events = (opt.events === true || opt.link ? true : false),
+           angle  = opt.angle;
 
 
 
@@ -2990,7 +2990,7 @@ if (properties.backgroundBorder) {
 
         //
         // If a link has been specified then the text node should
-        // be a child of an a node
+        // be a child of an <a> node
         if (link) {
             
             var a = RGraph.SVG.create({
@@ -3049,6 +3049,9 @@ if (properties.backgroundBorder) {
                     'font-style':        italic,
                     'text-anchor':       halign,
                     'dominant-baseline': valign,
+                    
+                    // TODO Add a test for the textLinkUnderline
+                    //      property here
                     'text-decoration': link && link.href ? 'underline' : 'none'
                 }
             });
@@ -3065,7 +3068,7 @@ if (properties.backgroundBorder) {
         //
         // Includes carriage returns
         //
-        } else if (str && str.indexOf) {
+        } else if (str && str.indexOf) {// <-- Is this intentional???
             
             // Measure the text
             var dimensions = RGraph.SVG.measureText({
@@ -3105,7 +3108,7 @@ if (properties.backgroundBorder) {
                 type: 'text',
                 attr: {
                     tag: opt.tag ? opt.tag : '',
-                    fill: color,
+                    fill: (link && link.href) ? 'blue' : color,
                     x: x,
                     y: y,
                     'font-size':         size,
@@ -3113,7 +3116,11 @@ if (properties.backgroundBorder) {
                     'font-family':       font,
                     'font-style':        italic,
                     'text-anchor':       halign,
-                    'dominant-baseline': valign
+                    'dominant-baseline': valign,
+                    
+                    // TODO Add a test for the textLinkUnderline
+                    //      property here
+                    'text-decoration': link && link.href ? 'underline' : 'none'
                 }
             });
 
