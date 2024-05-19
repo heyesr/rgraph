@@ -22,7 +22,7 @@
             'rgraph-svg-runonce-functions': []
         }
     };
-    
+
     // ObjectRegistry
     RGraph.SVG.OR = {objects: []};
     
@@ -3002,6 +3002,13 @@ backgroundRounded = opt.backgroundRounded || 0,
                     target: linkTarget
                 }
             });
+            
+            // Configure the appearance of the links
+            if (opt.object.properties.textLinkBold)                       bold    = 'bold';
+            if (opt.object.properties.textLinkItalic)                     italic  = 'italic';
+            if (opt.object.properties.textLinkFont)                       font    = opt.object.properties.textLinkFont;
+            if (RGraph.SVG.isNumber(opt.object.properties.textLinkSize))  size    = opt.object.properties.textLinkSize;
+            if (RGraph.SVG.isString(opt.object.properties.textLinkColor)) {color  = opt.object.properties.textLinkColor} else {color = 'blue'; };
 
         } else if (str.match(/<a /)) {
 
@@ -3025,6 +3032,14 @@ backgroundRounded = opt.backgroundRounded || 0,
                 });
                 
                 events = true;
+                
+                // Configure the appearance of the links
+                if (opt.object.properties.textLinkBold)                       bold   = 'bold';
+                if (opt.object.properties.textLinkItalic)                     italic = 'italic';
+                if (opt.object.properties.textLinkFont)                       font   = opt.object.properties.textLinkFont;
+                if (RGraph.SVG.isNumber(opt.object.properties.textLinkSize))  size   = opt.object.properties.textLinkSize;
+                if (RGraph.SVG.isString(opt.object.properties.textLinkColor)) {color  = opt.object.properties.textLinkColor} else {color = 'blue'; };
+
             }
         }
 
@@ -3040,7 +3055,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                 attr: {
                     tag: opt.tag ? opt.tag : '',        // This is the same as the below
                     'data-tag': opt.tag ? opt.tag : '', // This is the same as the above
-                    fill: (link && link.href) ? 'blue' : color,
+                    fill: color,
                     x: x,
                     y: y,
                     'font-size':         size,
@@ -3049,10 +3064,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                     'font-style':        italic,
                     'text-anchor':       halign,
                     'dominant-baseline': valign,
-                    
-                    // TODO Add a test for the textLinkUnderline
-                    //      property here
-                    'text-decoration': link && link.href ? 'underline' : 'none'
+                    'text-decoration': link && link.href && opt.object.properties.textLinkUnderline ? 'underline' : 'none'
                 }
             });
     
@@ -3108,7 +3120,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                 type: 'text',
                 attr: {
                     tag: opt.tag ? opt.tag : '',
-                    fill: (link && link.href) ? 'blue' : color,
+                    fill: (link && link.href) ? (opt.object.properties.textLinkColor || 'blue') : color,
                     x: x,
                     y: y,
                     'font-size':         size,
@@ -3120,7 +3132,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                     
                     // TODO Add a test for the textLinkUnderline
                     //      property here
-                    'text-decoration': link && link.href ? 'underline' : 'none'
+                    'text-decoration': link && link.href && opt.object.properties.textLinkUnderline? 'underline' : 'none'
                 }
             });
 
