@@ -888,6 +888,14 @@
             // Add custom text thats specified
             //
             RGraph.addCustomText(this);
+            
+            
+            
+            
+            //
+            // Add vertical lines
+            //
+            this.drawVerticalLines();
 
 
 
@@ -4402,6 +4410,214 @@
                 x, y, width, height
             );
         };
+
+
+
+
+
+
+
+    //
+    // This function allows the drawing of custom lines
+    //
+    this.drawVerticalLines = function ()
+    {
+        var lines = this.properties.verticalLines,
+            avg,x,y,label,halign,valign,hmargin = 5,vmargin = 10,
+            position,textFont,textSize,textColor,textBold,textItalic,
+            data,linewidth;
+
+        if (lines) {
+
+            //
+            // Set some defaults for the configuration of
+            // each line
+            //
+            var defaults = {
+                dotted:             false,
+                dashed:             true,
+                color:              '#666', // Same as labelColor property below
+                linewidth:          1,
+                label:              'Average (%{value})',
+                labelPosition:      'right top',
+                labelColor:         '#666', // Same as color property above
+                labelValueDecimals: 2,
+                labelOffsetx:       0,
+                labelOffsety:       0
+            };
+        
+        
+            // Loop through each line to be drawn
+            for (var i=0; i<this.properties.verticalLines.length; ++i) {
+
+                var conf       = lines[i],
+                    textFont   = conf.labelFont  || this.properties.textFont,
+                    textColor  = conf.labelColor || defaults.labelColor,
+                    textSize   = conf.labelSize  || this.properties.textSize - 4,
+                    textBold   = RGraph.isBoolean(conf.labelBold) ? conf.labelBold   : this.properties.textBold,
+                    textItalic = RGraph.isBoolean(conf.labelItalic) ? conf.labelItalic : this.properties.textItalic;
+
+
+
+
+
+
+
+
+                    if (typeof conf.value === 'number') {
+                        x = this.getXCoord(conf.value);
+                    
+                    } else if (conf.value === 'average') {
+                        avg = RGraph.arraySum(this.data_arr) /  this.data_arr.length;
+                        x   = this.getXCoord(avg);
+                    }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Dotted or dashed lines
+                //
+                linedash = '[1,1]';
+
+                if (conf.dotted === true) {
+                    linedash = '[1,3]';
+                }
+                
+                if (conf.dashed === true || (typeof conf.dashed === 'undefined' && RGraph.isUndefined(conf.dotted)) ) {
+                    linedash = '[6,6]';
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Draw the line
+                //
+                this.path(
+                    'lw % ld % b m % % l % % s %',
+                    typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                    linedash,
+                    x, this.properties.marginTop,
+                    x, this.canvas.height - this.properties.marginBottom,
+                    conf.color || defaults.color
+                );
+
+
+
+
+
+                //
+                // Draw the label
+                //
+
+
+
+
+                
+
+                // Default pos for the label
+                conf.labelPosition = conf.labelPosition || defaults.labelPosition;
+
+                labelPosition = conf.labelPosition.trim().split(/ +/)
+
+
+
+                //
+                // Horizontal alignment: left/center/right
+                //
+                // RIGHT
+                if (typeof conf.labelPosition === 'string' && labelPosition[0] === 'right') {
+                    textX  = x + 5;
+                    valign = 'bottom';
+
+                // CENTER
+                } else if (typeof conf.labelPosition === 'string' && (labelPosition[0] === 'center' || labelPosition[0] === 'middle')) {
+                    textX  = x;
+                    valign = 'center';
+
+                    // LEFT
+                } else {
+                    textX = x - 5;
+                    valign = 'top';
+                }
+
+                //
+                // Vertical alignment: top/center/bottom
+                //
+                if (typeof labelPosition[1] === 'string' && labelPosition[1] === 'top') {
+                    textY  = this.properties.marginTop + vmargin;
+                    halign = 'left';
+                } else if (typeof labelPosition[1] === 'string' && (labelPosition[1] === 'center' || labelPosition[1] === 'middle')) {
+                    textY  = ((this.canvas.height - this.properties.marginTop - this.properties.marginBottom) / 2) + this.properties.marginTop;
+                    halign = 'center';
+                } else {
+                    textY  = this.canvas.height  - this.properties.marginBottom - vmargin;
+                    halign = 'right';
+                }
+
+                // Account for linewidth
+                linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
+
+                //
+                // Determine the value to show
+                //
+                if (RGraph.isString(conf.value) && conf.value === 'average') {
+                    num = avg;
+                    num = num.toFixed(conf.labelValueDecimals);
+                    
+                } else {
+                    var num = Number(conf.value).toFixed(conf.labelValueDecimals);
+                }
+
+                num = RGraph.numberFormat({
+                   object: this,
+                   number: num,
+                 unitspre: conf.labelValueUnitsPre,
+                unitspost: conf.labelValueUnitsPost,
+                 thousand: conf.labelValueThousand,
+                    point: conf.labelValuePoint,
+                formatter: conf.labelValueFormatter
+                });
+
+
+
+
+                //
+                // Draw the label
+                //
+                RGraph.text({
+                            object: this,
+                              text: (RGraph.isString(conf.label) ? conf.label : defaults.label).replace('%{value}', num),
+                                 x: textX + (conf.labelOffsetx || 0),
+                                 y: textY + (conf.labelOffsety || 0),
+                            valign: valign,
+                            halign: halign,
+                              size: textSize,
+                              font: textFont,
+                             color: textColor,
+                            italic: textItalic,
+                              bold: textBold,
+                          bounding: true,
+                      boundingFill: 'rgba(255,255,255,0.75)',
+                    boundingStroke: 'transparent',
+                             angle: 90
+                });
+            }
+        }
+    };
 
 
 
