@@ -749,6 +749,15 @@
 
 
 
+            //
+            // Add vertical lines
+            //
+            this.drawVerticalLines();
+
+
+
+
+
 
 
 
@@ -2941,6 +2950,203 @@
                 'url(#' + clipPath.id + ')'
             );
         };
+
+
+
+
+
+
+
+
+    //
+    // This function allows the drawing of custom lines
+    //
+    this.drawVerticalLines = function ()
+    {
+        var lines = this.properties.verticalLines,
+            avg,x,y,label,halign,valign,hmargin = 5,vmargin = 10,
+            position,textFont,textSize,textColor,textBold,textItalic,
+            data,linewidth,data_linear;
+
+        if (lines) {
+        
+            data_linear = RGraph.SVG.arrayLinearize(this.data);
+
+            //
+            // Set some defaults for the configuration of
+            // each line
+            //
+            var defaults = {
+                dotted:             false,
+                dashed:             true,
+                color:              '#666', // Same as labelColor property below
+                linewidth:          1,
+                label:              'Average (%{value})',
+                labelPosition:      'top',
+                labelColor:         '#666', // Same as color property above
+                labelOffsetx:       0,
+                labelOffsety:       0
+            };
+
+        
+            // Loop through each line to be drawn
+            for (var i=0; i<this.properties.verticalLines.length; ++i) {
+
+                var conf       = lines[i],
+                    textFont   = conf.labelFont  || this.properties.textFont,
+                    textColor  = conf.labelColor || defaults.labelColor,
+                    textSize   = conf.labelSize  || this.properties.textSize,
+                    textBold   = RGraph.SVG.isBoolean(conf.labelBold) ? conf.labelBold   : this.properties.textBold,
+                    textItalic = RGraph.SVG.isBoolean(conf.labelItalic) ? conf.labelItalic : this.properties.textItalic;
+
+
+
+
+
+
+
+
+                    if (typeof conf.value === 'number') {
+                        x = this.getXCoord(conf.value);
+                    
+                    } else {
+                        conf.value = 'average';
+                        avg = RGraph.SVG.arraySum(data_linear) /  data_linear.length;
+                        x   = this.getXCoord(avg);
+                    }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Dotted or dashed lines
+                //
+                linedash = '';
+
+                if (conf.dotted === true) {
+                    linedash = '1 3';
+                }
+                
+                if (conf.dashed === true || (RGraph.SVG.isUndefined(conf.dashed) && RGraph.SVG.isUndefined(conf.dotted)) ) {
+                    linedash = '6 6';
+                }
+
+
+
+
+
+
+
+
+
+
+                //
+                // Draw the line
+                //
+                RGraph.SVG.create({
+                    svg:    this.svg,
+                    type:   'line',
+                    parent: this.svgAllGroup,
+                    attr: {
+                        x1:                 x,
+                        y1:                 this.properties.marginTop,
+                        x2:                 x,
+                        y2:                 this.height - this.properties.marginBottom,
+                        'stroke-width':     typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                        'stroke-dasharray': linedash,
+                        stroke:             conf.color || defaults.color
+                    }
+                });
+
+
+
+
+
+                //
+                // Draw the label
+                //
+
+
+
+
+                
+
+                // Default position for the label
+                conf.labelPosition = conf.labelPosition || defaults.labelPosition;
+
+                labelPosition = conf.labelPosition.trim();
+
+
+
+                // Account for linewidth
+                linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
+
+                //
+                // Determine the value to show
+                //
+                if (RGraph.SVG.isString(conf.value) && conf.value === 'average') {
+                    num = avg;
+                    num = num.toFixed(conf.labelValueDecimals);
+                    
+                } else {
+                    var num = Number(conf.value).toFixed(conf.labelValueDecimals);
+                }
+
+                num = RGraph.SVG.numberFormat({
+                   object: this,
+                      num: num,
+                  prepend: conf.labelValueUnitsPre,
+                   append: conf.labelValueUnitsPost,
+                 thousand: conf.labelValueThousand,
+                    point: conf.labelValuePoint,
+                formatter: conf.labelValueFormatter,
+                 decimals: conf.labelValueDecimals
+                });
+
+
+
+                //
+                // Is the label positioned at the top or the bottom
+                //
+                
+                // Default labelPosition is the top
+                if (!conf.labelPosition) {
+                    conf.labelPosition = 'top';
+                }
+                
+                // Determine the position of the label
+                if (conf.labelPosition === 'bottom') {
+                    var y = this.height - this.properties.marginBottom + (conf.labelOffsety || 0) + 7;
+                } else {
+                    var y = (this.properties.marginTop + (conf.labelOffsety || 0) - 7);
+                }
+
+                //
+                // Draw the label
+                //
+                RGraph.SVG.text({
+                    object: this,
+                      text: (RGraph.SVG.isString(conf.label) ? conf.label : defaults.label).replace('%{value}', num),
+                         x: RGraph.SVG.isNumber(conf.labelX) ? conf.labelX : (x + (conf.labelOffsetx || 0)),
+                         y: RGraph.SVG.isNumber(conf.labelY) ? conf.labelY : y,
+                    valign: RGraph.SVG.isString(conf.labelValign) ? conf.labelValign : (conf.labelPosition === 'bottom' ? 'top' : 'bottom'),
+                    halign: RGraph.SVG.isString(conf.labelHalign) ? conf.labelHalign : 'center',
+                      size: textSize,
+                      font: textFont,
+                     color: textColor,
+                    italic: textItalic,
+                      bold: textBold,
+                background: conf.label ? '#fff9' : null
+                });
+            }
+        }
+    };
 
 
 

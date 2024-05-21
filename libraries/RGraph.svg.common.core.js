@@ -3202,6 +3202,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                         ry: backgroundRounded
                     }
                 });
+
                 
                 if (!events) {
                     rect.style.pointerEvents = 'none';
@@ -7875,6 +7876,10 @@ backgroundRounded = opt.backgroundRounded || 0,
     //
     RGraph.SVG.isString    = function (obj){return typeof obj === 'string';};
     RGraph.SVG.isNumber    = function (obj){return typeof obj === 'number';};
+    RGraph.SVG.isTextual   = function(obj){return (typeof obj === 'string' || typeof obj === 'number');};
+    RGraph.SVG.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
+    RGraph.SVG.isBool      =
+    RGraph.SVG.isBoolean   = function(obj){return typeof obj === 'boolean';};
     //RGraph.SVG.isArray Defined above
     RGraph.SVG.isObject    = function (obj){return typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0;};
     //RGraph.SVG.isNull  Defined above

@@ -4439,11 +4439,13 @@
                 color:              '#666', // Same as labelColor property below
                 linewidth:          1,
                 label:              'Average (%{value})',
-                labelPosition:      'right top',
+                labelPosition:      'top',
                 labelColor:         '#666', // Same as color property above
-                labelValueDecimals: 2,
+                labelValueDecimals: 0,
                 labelOffsetx:       0,
-                labelOffsety:       0
+                labelOffsety:       0,
+                labelHalign:        'center',
+                labelValign:        'bottom'
             };
         
         
@@ -4453,9 +4455,9 @@
                 var conf       = lines[i],
                     textFont   = conf.labelFont  || this.properties.textFont,
                     textColor  = conf.labelColor || defaults.labelColor,
-                    textSize   = conf.labelSize  || this.properties.textSize - 4,
-                    textBold   = RGraph.isBoolean(conf.labelBold) ? conf.labelBold   : this.properties.textBold,
-                    textItalic = RGraph.isBoolean(conf.labelItalic) ? conf.labelItalic : this.properties.textItalic;
+                    textSize   = conf.labelSize  || this.properties.textSize,
+                    textBold   = conf.labelBold   ? conf.labelBold   : this.properties.textBold,
+                    textItalic = conf.labelItalic ? conf.labelItalic : this.properties.textItalic;
 
 
 
@@ -4467,7 +4469,7 @@
                     if (typeof conf.value === 'number') {
                         x = this.getXCoord(conf.value);
                     
-                    } else if (conf.value === 'average') {
+                    } else {
                         avg = RGraph.arraySum(this.data_arr) /  this.data_arr.length;
                         x   = this.getXCoord(avg);
                     }
@@ -4517,13 +4519,22 @@
 
 
 
-
+textX = x;
+textY = conf.labelPosition === 'bottom' ? this.canvas.height - this.properties.marginBottom + vmargin : this.properties.marginTop - vmargin;
 
                 //
                 // Draw the label
                 //
 
+//Calc textx and texty here
+halign = (conf.labelHalign || defaults.labelHalign);
+valign = (conf.labelValign || defaults.labelValign);
+if (RGraph.isNumber(conf.labelX)) textX = conf.labelX;
+if (RGraph.isNumber(conf.labelY)) textY = conf.labelY;
 
+if (!conf.labelValign && conf.labelPosition === 'bottom') {
+    valign = 'top';
+}
 
 
                 
@@ -4531,42 +4542,10 @@
                 // Default pos for the label
                 conf.labelPosition = conf.labelPosition || defaults.labelPosition;
 
-                labelPosition = conf.labelPosition.trim().split(/ +/)
+                labelPosition = conf.labelPosition.trim();
 
 
 
-                //
-                // Horizontal alignment: left/center/right
-                //
-                // RIGHT
-                if (typeof conf.labelPosition === 'string' && labelPosition[0] === 'right') {
-                    textX  = x + 5;
-                    valign = 'bottom';
-
-                // CENTER
-                } else if (typeof conf.labelPosition === 'string' && (labelPosition[0] === 'center' || labelPosition[0] === 'middle')) {
-                    textX  = x;
-                    valign = 'center';
-
-                    // LEFT
-                } else {
-                    textX = x - 5;
-                    valign = 'top';
-                }
-
-                //
-                // Vertical alignment: top/center/bottom
-                //
-                if (typeof labelPosition[1] === 'string' && labelPosition[1] === 'top') {
-                    textY  = this.properties.marginTop + vmargin;
-                    halign = 'left';
-                } else if (typeof labelPosition[1] === 'string' && (labelPosition[1] === 'center' || labelPosition[1] === 'middle')) {
-                    textY  = ((this.canvas.height - this.properties.marginTop - this.properties.marginBottom) / 2) + this.properties.marginTop;
-                    halign = 'center';
-                } else {
-                    textY  = this.canvas.height  - this.properties.marginBottom - vmargin;
-                    halign = 'right';
-                }
 
                 // Account for linewidth
                 linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
@@ -4574,12 +4553,11 @@
                 //
                 // Determine the value to show
                 //
-                if (RGraph.isString(conf.value) && conf.value === 'average') {
+                if (RGraph.isNumber(conf.value)) {
+                    var num = Number(conf.value).toFixed(conf.labelValueDecimals);
+                } else {
                     num = avg;
                     num = num.toFixed(conf.labelValueDecimals);
-                    
-                } else {
-                    var num = Number(conf.value).toFixed(conf.labelValueDecimals);
                 }
 
                 num = RGraph.numberFormat({
@@ -4598,11 +4576,12 @@
                 //
                 // Draw the label
                 //
+
                 RGraph.text({
                             object: this,
                               text: (RGraph.isString(conf.label) ? conf.label : defaults.label).replace('%{value}', num),
-                                 x: textX + (conf.labelOffsetx || 0),
-                                 y: textY + (conf.labelOffsety || 0),
+                                 x: RGraph.isNumber(conf.labelX) ? conf.labelX : (textX + (conf.labelOffsetx || 0)),
+                                 y: RGraph.isNumber(conf.labelY) ? conf.labelY : (textY + (conf.labelOffsety || 0)),
                             valign: valign,
                             halign: halign,
                               size: textSize,
@@ -4612,8 +4591,7 @@
                               bold: textBold,
                           bounding: true,
                       boundingFill: 'rgba(255,255,255,0.75)',
-                    boundingStroke: 'transparent',
-                             angle: 90
+                    boundingStroke: 'transparent'
                 });
             }
         }
