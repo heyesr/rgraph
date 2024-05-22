@@ -2996,8 +2996,8 @@
                     textFont   = conf.labelFont  || this.properties.textFont,
                     textColor  = conf.labelColor || defaults.labelColor,
                     textSize   = conf.labelSize  || this.properties.textSize,
-                    textBold   = RGraph.SVG.isBoolean(conf.labelBold) ? conf.labelBold   : this.properties.textBold,
-                    textItalic = RGraph.SVG.isBoolean(conf.labelItalic) ? conf.labelItalic : this.properties.textItalic;
+                    textBold   = conf.labelBold   ? conf.labelBold   : this.properties.textBold,
+                    textItalic = conf.labelItalic ? conf.labelItalic : this.properties.textItalic;
 
 
 
