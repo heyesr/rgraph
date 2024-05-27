@@ -2656,8 +2656,15 @@
 
             RGraph.SVG.clear(obj1.svg);
            
-            var effect        = args.animationEffect;
-            var effectOptions = args.animationEffectOptions ? args.animationEffectOptions : null;
+            var effect         = args.animationEffect;
+            var effectOptions  = args.animationEffectOptions ? args.animationEffectOptions : {};
+                effectOptions.callback = function ()
+                {
+                    RGraph.SVG.runOnce('rgraph-svg-scatter-dual-color-effect-callback', function ()
+                    {
+                        args.animationEffectCallback ? args.animationEffectCallback() : function () {};
+                    });
+                }
 
             obj1[effect](effectOptions);
             obj2[effect](effectOptions);

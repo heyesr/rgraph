@@ -10,7 +10,8 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>    
-    <h1>A Line chart with a dataset tooltip</h1>
+    <h1>A Line chart with a hidden 
+    dataset tooltip</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -25,12 +26,10 @@
                 [8,4,6,5,9,9,8]
             ],
             options: {
-                
                 tooltipsDataset: '&nbsp;',
                 tooltipsCss: {
                     display: 'none'
-                },
-                
+                },                
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
@@ -40,18 +39,11 @@
                 marginInner: 10,
                 linewidth: 2,
                 shadow: false,
-                title: 'A Line chart with dataset tooltips',
-                titleOffsety: 5,
-                titleBold: true,
-                titleSize: 20,
                 tickmarksStyle: 'endcircle',
                 tickmarksSize: 5,
                 textSize: 16
             }
-        }).draw().on('tooltip', function (obj)
-        {
-            alert('This is the ontooltip event');
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

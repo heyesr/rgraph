@@ -4707,11 +4707,18 @@
             && obj1[args.animationEffect]
             && obj1[args.animationEffect]
            ) {
-            var effect        = args.animationEffect;
-            var effectOptions = args.animationEffectOptions ? args.animationEffectOptions : null;
+            var effect         = args.animationEffect;
+            var effectOptions  = args.animationEffectOptions ? args.animationEffectOptions : null;
+            var effectCallback = function ()
+                {
+                    RGraph.runOnce('rgraph-canvas-scatter-dual-color-effect-callback', function ()
+                    {
+                        args.animationEffectCallback ? args.animationEffectCallback() : function () {};
+                    });
+                }
 
             obj1[effect](effectOptions);
-            obj2[effect](effectOptions);
+            obj2[effect](effectOptions, effectCallback);
         } else {
             RGraph.redraw();
         }

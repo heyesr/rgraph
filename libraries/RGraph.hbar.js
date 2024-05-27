@@ -3181,17 +3181,27 @@
                     // if it has been requested
                     //
                     if (
-                           typeof orig_cornersRoundRadius       === 'number'
-                        || typeof orig_cornersRoundTopRadius    === 'number'
-                        || typeof orig_cornersRoundBottomRadius === 'number'
+                        obj.animate &&
+                        (
+                            typeof orig_cornersRoundRadius       === 'number'
+                         || typeof orig_cornersRoundTopRadius    === 'number'
+                         || typeof orig_cornersRoundBottomRadius === 'number'
+                        )
                        ) {
                     
                         obj.animate({
-                            frames: 90,
+                            frames: 15,
                             cornersRoundRadius:       orig_cornersRoundRadius,
                             cornersRoundTopRadius:    orig_cornersRoundTopRadius,
                             cornersRoundBottomRadius: orig_cornersRoundBottomRadius
                         });
+                    } else {
+
+                            obj.properties.cornersRoundRadius       = orig_cornersRoundRadius;
+                            obj.properties.cornersRoundTopRadius    = orig_cornersRoundTopRadius;
+                            obj.properties.cornersRoundBottomRadius = orig_cornersRoundBottomRadius;
+
+                            RGraph.redrawCanvas(obj.canvas);
                     }
                     
                     this.isWave = null;

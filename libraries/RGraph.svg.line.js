@@ -3155,6 +3155,13 @@
            
             var effect        = args.animationEffect;
             var effectOptions = args.animationEffectOptions ? args.animationEffectOptions : null;
+                effectOptions.callback = function ()
+                {
+                    RGraph.SVG.runOnce('rgraph-svg-line-dual-color-effect-callback', function ()
+                    {
+                        args.animationEffectCallback ? args.animationEffectCallback() : function () {};
+                    });
+                }
 
             obj1[effect](effectOptions);
             obj2[effect](effectOptions);
