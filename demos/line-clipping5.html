@@ -1,0 +1,64 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart that highlights based on the mouse position</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="900" height="300">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        line1 = new RGraph.Line({
+            id: 'cvs',
+            data: data = [
+                4,8,6,3,2,4,5,4,5,6,1,9,1,2,3,5,7,4,2,2,6,2,3,4,
+                4,8,6,2,3,5,18,14,19,27,28,24,23,18,7,5,6,4,5,1,2,3,
+                4,6,3,2,5,4,6,8,4,9,5,4,6,3,4,5,2,1,5,4,3,5,1,2,
+                8,4,6,7,4,1,2,5,4,3,6,8,5,4,2,1,6,9,4,8,5,6,3,4,5
+            ],
+            options: {
+                colors: ['#ccc'],
+                linewidth: 1,
+                spline: true,
+                shadow: false,
+                backgroundGridVlinesCount: 10,
+                xaxisTickmarksCount: 11,
+                xaxisLabels: RGraph.MONTHS_SHORT
+            }
+        }).draw();
+        
+        
+        line2 = new RGraph.Line({
+            id: 'cvs',
+            data: data,
+            options: {
+                colors: ['red'],
+                linewidth: 2,
+                spline: true,
+                shadow: false,
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                clip: 'x:0%-0%'
+            }
+        }).draw();
+        
+        line1.canvas.onmousemove = function (e)
+        {
+            var [mouseX, mouseY] = RGraph.getMouseXY(e);
+            line2.set('clip', [0,0,mouseX, 300]);
+            RGraph.redraw();
+        }
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
