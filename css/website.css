@@ -99,6 +99,7 @@ div#main-body-container {
 h1 {
     font-size: 2.75em;
     margin: 35px 0 50px 0;
+    font-weight: bold;
 }
 
 h2 {
@@ -644,6 +645,7 @@ ul#demopage-screenshots li {
 
 div#front-page-heading {
     line-height: 30px;
+    text-align: center;
 }
 
 div#front-page-heading h1 {
@@ -1382,6 +1384,8 @@ div#page-index div.features {
 div#page-index div.features div {
     width: 50%;
     padding: 0 20px 0 20px;
+    border-radius: 10px;
+    box-shadow: #aaa 1px 1px 3px;
 }
 div#page-index div.features div {
     margin-bottom: 15px;
@@ -1401,6 +1405,19 @@ div#page-index div.features.fifth-row div:nth-child(2) {background-color:#cfc;}
 div#page-index div.features p span {
     color: #666;
 }
+
+div#page-index-import-links {
+    display: flex;
+}
+
+div#page-index-import-links div {
+    width: 33.3%;
+    line-height: 30px;
+}
+
+div#page-index-import-links div:nth-child(1) {text-align: right;}
+div#page-index-import-links div:nth-child(2) {text-align: center;}
+div#page-index-import-links div:nth-child(3) {}
 
 div#page-install-index ul {
     line-height: 45px;
@@ -1478,6 +1495,7 @@ div#page-common-right-floated-information-bar {
     padding: 10px;
     padding-top: 0;
     overflow: hidden;
+    box-shadow: #aaa 1px 1px 3px;
 }
 
 div#page-common-right-floated-information-bar div {
