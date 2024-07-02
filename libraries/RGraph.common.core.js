@@ -4350,6 +4350,7 @@
     // @param url string The URL to fetch
     // @param callback function Your callback function (which is passed the number as an argument)
     //
+    RGraph.AJAX.number =
     RGraph.AJAX.getNumber = function ()
     {
         var args = RGraph.getArgs(arguments, 'url,callback');
@@ -4380,6 +4381,7 @@
     // @param url string The URL to fetch
     // @param callback function Your callback function (which is passed the string as an argument)
     //
+    RGraph.AJAX.string =
     RGraph.AJAX.getString = function ()
     {
         var args = RGraph.getArgs(arguments, 'url,callback');
@@ -4410,6 +4412,8 @@
     // @param url string The URL to fetch
     // @param callback function Your callback function (which is passed the JSON object as an argument)
     //
+    RGraph.AJAX.json =
+    RGraph.AJAX.JSON =
     RGraph.AJAX.getJSON = function ()
     {
         var args = RGraph.getArgs(arguments, 'url,callback');
@@ -4443,6 +4447,8 @@
     // @param callback function Your callback function (which is passed the CSV/array as an argument)
     // @param          string   An OPTIONAL separator character
     //
+    RGraph.AJAX.csv =
+    RGraph.AJAX.CSV =
     RGraph.AJAX.getCSV = function ()
     {
         var args      = RGraph.getArgs(arguments, 'url,callback,separator');
@@ -6457,17 +6463,15 @@
     //
     // @param mixed obj The variable to test
     //
-    RGraph.isArray = function ()
+    RGraph.isArray = function (o)
     {
-        var args = RGraph.getArgs(arguments, 'object');
-
-        if (args.object && args.object.constructor) {
-            var pos = args.object.constructor.toString().indexOf('Array');
+        if (o && o.constructor) {
+            var pos = o.constructor.toString().indexOf('Array');
         } else {
             return false;
         }
 
-        return args.object != null &&
+        return o != null &&
                typeof pos === 'number' &&
                pos > 0 &&
                pos < 20;
@@ -10716,6 +10720,132 @@
                 args.context.stroke();
             }
             
+    };
+
+
+
+
+
+
+
+
+    //
+    // Draws an image. The argument should be an
+    // array of objects or a single object which 
+    // which can contain the following indexes:
+    //
+    // object  The chart object           GIVE THIS OR THE CONTEXT
+    // context The context for the canvas GIVE THIS OR THE OBJECT
+    // src     The URL of the image       REQUIRED
+    // x       The X coordinate           REQUIRED
+    // y       The Y coordinate           REQUIRED
+    // width   The width of the image
+    // height  The height of the image
+    // halign  The horizontal alignment
+    // valign  The vertical alignment
+    // alpha   The alpha value of the image
+    //
+    RGraph.drawImage = function (args)
+    {
+        // Account for thes argument being an array of objects
+        // (ie multiple images)
+        if (RGraph.isArray(args)) {
+            for (var i=0; i<args.length; ++i) {
+                RGraph.drawImage(args[i]);
+            }
+            return;
+        }
+
+// Account for the images being an array (not the whole
+// argument). If the img option is an argument you can
+// give the other options as arrays too or they can be
+// regular numbers/strings as is the case when drawing
+// a single image.
+if (RGraph.isArray(args.src)) {
+    for (var i=0; i<args.src.length; ++i) {
+
+        // An empty object with which to build up the config
+        // for this image
+        var conf = {src: args.src[i]};
+
+        // Exract the config for this image
+        for (v of ['object','context','x','y','width','height','halign','valign','alpha','']) {
+            if (RGraph.isArray(args[v])) {
+                conf[v] = args[v][i];
+            } else if (!RGraph.isNullish(args[v])) {
+                conf[v] = args[v];
+            }
+        }
+        
+        RGraph.drawImage(conf);
+    }
+        
+    return;
+}
+
+        // Get the context if we've been given an RGraph object
+        if (args.object && args.object.isrgraph) {
+            args.context = args.object.context;
+        }
+        
+        // No context? Then exit.
+        if (!args.context) {
+            alert('[ERROR] Either the object or the drawing context must be given!');
+        }
+
+
+
+
+
+            
+        var img = new Image();
+        img.src = args.src;
+        img.onload = function ()
+        {
+            // Width and height of the image
+            if (!RGraph.isNumber(args.width))  {args.width  = this.width;}
+            if (!RGraph.isNumber(args.height)) {args.height = this.height;}
+            
+            // Horizontal alignment
+            if (RGraph.isString(args.halign)) {
+                if (args.halign === 'center') {
+                    args.x -= (args.width / 2);
+                } else if (args.halign === 'right') {
+                    args.x -= args.width;
+                }
+            }
+            
+            // Vertical alignment
+            if (RGraph.isString(args.valign)) {
+                if (args.valign === 'center') {
+                    args.y -= (args.height / 2);
+                } else if (args.valign === 'bottom') {
+                    args.y -= args.height;
+                }
+            }
+
+            // Before drawing the image set the alpha if its
+            // been given
+            if (RGraph.isNumeric(args.alpha)) {
+                args.alpha = parseFloat(args.alpha);
+                var oldAlpha = args.context.globalAlpha;
+                args.context.globalAlpha = args.alpha;
+            }
+
+            // Draw the image at the coords
+            args.context.drawImage(
+                this,
+                args.x,
+                args.y,
+                args.width,
+                args.height
+            );
+            
+            // Reset the globalAlpha value
+            if (RGraph.isNumeric(oldalpha)) {
+                args.context.globalAlpha = oldAlpha;
+            }
+        };
     };
 
 

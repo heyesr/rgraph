@@ -2972,7 +2972,8 @@
 
                 for (let i=0,len=obj.data.length; i<len; i+=1) {
                     if (frame > opt.startFrames[i]) {
-                        obj.waveRadiusMultiplier[i] = Math.min(1, opt.counters[i]++ / framespersegment);
+                        obj.waveRadiusMultiplier[i] = Math.min(1, (opt.counters[i] + 1) / framespersegment);
+                        opt.counters[i]++;
                     }
                 }
 
