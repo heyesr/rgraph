@@ -1,0 +1,37 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.rose.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Rose chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 450px; height: 400px" id="chart-container"></div>
+    </div>
+        
+    <script>
+        new RGraph.SVG.Rose({
+            id: 'chart-container',
+            data: [8,6,4,3,8,6,3],
+            options: {
+                colors: [ 'rgba(255,0,0,0.5)', 'rgba(0,255,0,0.5)', 'rgba(0,0,255,0.5)' ],
+                backgroundGridRadialsCount: 0,
+                linewidth: 2,
+                amargin: '5deg',
+                labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                zoom: true,
+                linewidth: .5
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

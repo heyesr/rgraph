@@ -1,0 +1,56 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A SVG Horizontal Bar chart with zoom enabled</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 750px; height: 300px"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [2650, 2300, 1950, 1600, 1350],
+            options: {
+                yaxisLabels: ['2005','2004', '2003', '2002','2001'],
+                yaxisColor: 'white',
+                yaxisTickmarks: null,
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                backgroundGridColor: 'white',
+                colors: [
+                    'Gradient(#9B68C0:#E4C1FD)',
+                    'Gradient(#9B9B9B:#E5E5E5)',
+                    'Gradient(#B38D1A:#F7DD91)',
+                    'Gradient(#4E81B4:#B2D4F6)',
+                    'Gradient(#9B0303:#E57F7F)'
+                ],
+                colorsSequential: true,
+                labelsAbove: true,
+                xaxisScaleUnitsPre: '$',
+                xaxisScaleUnitsPost: 'm',
+                xaxisTitle: 'Revenue',
+                xaxisTitleBold: true,
+                xaxisTitleSize: 16,
+                yaxisTitle: 'Year',
+                yaxisTitleBold: true,
+                yaxisTitleSize: 16,
+                marginBottom: 60,
+                zoom: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.segmented.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Segmented donut chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 350px; height: 350px" id="chart-container"></div>
+    </div>
+
+    <script>
+        seg = new RGraph.SVG.Segmented({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 73,
+            options: {
+                width: 60,
+                textSize: 55,
+                labelsCenterUnitsPost: 'kg',
+                zoom: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Line chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 600px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: [
+                [4,6,12,16,8,4,2,8,18,16,14,16],
+                [2,4,8,4,2,6,6,12,8,10,6,8],
+                [1,3.5,5,3,4,5,6,11,8,9,5,7]
+            ],
+            options: {
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                marginTop: 55,
+                marginRight: 15,
+                marginLeft: 75,
+                marginBottom: 75,
+                colors: ['#666', '#666', '#666'],
+                filled: true,
+                filledAccumulative: true,
+                filledColors: ['#f88', '#88f', '#8a8'],
+                yaxisScaleUnitsPost: '%',
+                linewidth: 0.001,
+                marginInner: 0,
+                title: 'Robert, Daniel and Janices stats',
+                textColor: '#333',
+                textFont: 'Arial',
+                spline: true,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisTitle: 'Month of the year',
+                xaxisTitleBold: true,
+                yaxisTitle: 'Percentage achieved',
+                yaxisTitleBold: true,
+                zoom: true
+            }
+        }).trace();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

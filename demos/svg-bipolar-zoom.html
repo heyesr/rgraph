@@ -1,0 +1,46 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.bipolar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bipolar chart using zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="padding: 15px; display: inline-block">
+            <div style="width: 600px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Bipolar({
+            id: 'chart-container',
+            left: [[4,3,5],[8,6,5]],
+            right: [[9,15,8],[4,3,8]],
+            options: {
+                xaxis: false,
+                yaxisTickmarks: false,
+                yaxisLinewidth: 3,
+                yaxisLabels: ['Jeremiah','Lucifer'],
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                grouping: 'grouped',
+                marginInner: 15,
+                title: 'A grouped Bipolar example chart',
+                titleSubtitle: 'A subtitle to go along with the title',
+                marginTop: 50,
+                zoom: true,
+                textSize: 16
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

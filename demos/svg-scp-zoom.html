@@ -1,0 +1,33 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.semicircularprogress.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Semi-circular Progress chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 450px; height: 250px" id="chart-container"></div>
+    </div>        
+
+    <script>
+        scp = new RGraph.SVG.SemiCircularProgress({
+            id: 'chart-container',
+            min: 0,
+            max: 100,
+            value: 76,
+            options: {
+                zoom: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

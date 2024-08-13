@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.gauge.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Gauge chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 300px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Gauge({
+            id: 'chart-container',
+            innerMin:0,
+            innerMax:100,
+            outerMin:0,
+            outerMax:50,
+            value: 78,
+            options: {
+                labelsIngraphUnitsPost: '%',
+                labelsIngraphSize: '16',
+                labelsIngraphBold: true,
+                marginLeft: 15,
+                marginRight: 15,
+                marginTop: 15,
+                marginBottom: 15,
+                zoom: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

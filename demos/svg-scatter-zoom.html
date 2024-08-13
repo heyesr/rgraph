@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Scatter chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 1000px; height: 300px" id="chart-container"></div>
+    </div>        
+
+    <script>
+        
+        // Create the data for the chart
+        for (var i=0,data=[]; i<=11; ++i) {
+            data.push({
+                x:i,
+                y: RGraph.SVG.random({min: 0, max: 50})
+            });
+        }
+
+        // Create the chart
+        new RGraph.SVG.Scatter({
+            id: 'chart-container',
+            data: data,
+            options: {
+                
+                marginTop: 50,
+                marginBottom: 60,
+                marginRight: 60,
+                marginLeft: 60,
+                
+                xaxisLabels: ['A','B','C','D','E','F','G','H','I','J','K','L'],
+                xaxisLabelsPosition: 'edge',
+                xaxisLabelsPositionEdgeTickmarksCount: 12,
+                xaxisScaleMax: 11,
+                xaxisColor: '#333',
+                xaxisTitleItalic: true,
+                xaxisTitleSize: 18,
+                xaxisTitleBold: true,
+                
+                backgroundGridColor: '#eee',
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+
+                yaxisTitleBold: true,
+                yaxisTitleItalic: true,
+                yaxisTitleSize: 18,
+                
+                line: true,
+                
+                zoom: true
+            }
+        }).trace();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

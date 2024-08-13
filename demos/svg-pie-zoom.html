@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Donut chart with zoom</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 350px; height: 350px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [41,37,16,3,3],
+            options: {
+                exploded: 5,
+                titleSize: 20,
+                titleBold: true,
+                titleItalic: true,
+                shadow: true,
+                zoom: true
+            }
+        }).roundRobin();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

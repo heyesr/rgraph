@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart with zoom</h1>
+    
+    <div id="rgraph-demo-html">
+    
+        <div id="container" style="position: relative">
+            <div style="width: 750px; height: 300px" id="chart-container"></div>
+        </div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [4,6,8,5,4,2,3],
+            options: {
+                zoom: true,
+                marginInner: 20,
+                xaxisLabels: RGraph.SVG.DAYS_LONG
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

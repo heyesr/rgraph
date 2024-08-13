@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.zoom.js" ></script>
+    <script src="../libraries/RGraph.svg.radar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Radar chart with zoom</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 550px; height: 550px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: [41,37,46,30,38,56,23,45,43,42,21],
+            options: {
+                titleSize: 20,
+                titleBold: true,
+                titleItalic: true,
+                shadow: false,
+                linewidth: 3,
+                zoom: true
+            }
+        }).trace();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
