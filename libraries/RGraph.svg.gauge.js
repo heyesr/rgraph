@@ -252,7 +252,9 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
             
             adjustable: false,
             
-            clip:       null
+            clip:       null,
+            
+            zoom:       false
         };
 
         //
@@ -535,6 +537,16 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
             // text: property.
             //
             RGraph.SVG.addCustomText(this);
+
+
+
+
+
+            // Lastly - install the zoom event listeners if
+            // requested
+            if (this.properties.zoom) {
+                RGraph.SVG.addZoom(this);
+            }
 
 
 

@@ -7677,6 +7677,192 @@ backgroundRounded = opt.backgroundRounded || 0,
 
 
 
+    //
+    // A convenient function tat can be used to draw images
+    // on the SVG
+    //
+    // @param opt An object of options that you can give to
+    //            the image. Tese are documented on the docs
+    //            page on the website:
+    //
+    //            https://www.rgraph.net/svg/drawimage.html
+    //
+    RGraph.SVG.drawImage = function (opt)
+    {
+        // Check that the necessary options have been supplied
+        if (   !opt.object
+            || !RGraph.SVG.isNumber(opt.x)
+            || !RGraph.SVG.isNumber(opt.y)
+            || !opt.src
+           ) {
+            alert('[DRAWIMAGE] You must give the object, src, x and y properties in the options to the drawImage function');
+            return;
+        }
+
+        var borderRadius          = opt.borderRadius || 0;
+        var clipPath              = '';
+        var padding               = opt.padding || 0;
+        
+        // Need to get the width and height of the image so
+        // create an offscreen image and set it to the image
+        // so that the dimensions can then be garnered
+        if (!opt.width || !opt.height) {
+            var img = new Image();
+            img.src = opt.src;
+            img.onload = function ()
+            {
+                if (typeof opt.width !== 'number') {
+                    opt.width  = this.width;
+                }
+
+                if (typeof opt.height !== 'number') {
+                    opt.height = this.height;
+                }
+                
+                draw();
+            }
+        } else {
+            draw();
+        }
+
+
+
+
+
+
+
+
+
+        function draw ()
+        {
+            // If the borderRadius is greater than zero then add
+            // some clipping so the image doesn't spill over the
+            // border
+            if (borderRadius > 0) {
+
+                // A counter that is used in the clip ID
+                if (!RGraph.SVG.clipTo.counter) {
+                    RGraph.SVG.clipTo.counter = 1;
+                } else {
+                    RGraph.SVG.clipTo.counter++;
+                }
+
+                var clipID = 'rgraph_clip_' + RGraph.SVG.clipTo.counter;
+
+                // Create the  clipPath element that sits
+                // inside the <def> tag
+                var clip = RGraph.SVG.create({
+                    svg: opt.object.svg,
+                    type: 'clipPath', // This is case sensitive!
+                    parent: opt.object.svg.defs,
+                    attr: {
+                        id: clipID
+                    }
+                });
+                
+                // Create the shape element for the clip area
+                RGraph.SVG.create({
+                    svg: opt.object.svg,
+                    parent: clip,
+                    type: 'rect',
+                    attr: {
+                        x:      opt.x - padding,
+                        y:      opt.y - padding,
+                        width:  opt.width + padding + padding,
+                        height: opt.height + padding + padding,
+                        rx:     borderRadius,
+                        ry:     borderRadius
+                    }
+                });
+                
+                var clipPath = 'url(#' + clipID + ')';
+            }
+
+            //
+            // Create a clip area first so that the image doesn't
+            // spill over the border
+
+            // Add a background color
+            if (opt.backgroundColor) {
+
+                // The width of the border needs to
+                // be accounted for
+                var extraWidth = (opt.borderWidth || 1) / 2
+
+                var background = RGraph.SVG.create({
+                    svg:    opt.object.svg,
+                    parent: opt.object.svgAllGroup,
+                    type:   'rect',
+                    attr: {
+                        x:      opt.x - extraWidth - padding,
+                        y:      opt.y - extraWidth - padding,
+                        width:  opt.width + extraWidth + extraWidth + padding + padding,
+                        height: opt.height + extraWidth + extraWidth + padding + padding,
+                        stroke: 'transparent',
+                        fill: opt.backgroundColor,
+                        'stroke-width': 0,
+                        rx: opt.border ? borderRadius : 0,
+                        ry: opt.border ? borderRadius : 0
+                    },
+                    style: opt.opacity ? {opacity: opt.opacity} : null
+                });
+            }
+
+            //
+            // Add the IMAGE
+            //
+            var img = RGraph.SVG.create({
+                svg:    opt.object.svg,
+                parent: opt.object.svgAllGroup,
+                type:   'image',
+                attr:   {
+                    'xlink:href': opt.src,
+                    x:            opt.x,
+                    y:            opt.y,
+                    width:        opt.width,
+                    height:       opt.height,
+                    'clip-path':  (clipPath && opt.border && opt.borderRadius > 0) ? clipPath : ''
+                },
+                style: opt.opacity ? {opacity: opt.opacity} : null
+            });
+
+
+
+            // Add the border if requested so that it appears over
+            // the image
+            if (opt.border) {
+                // The width of the border needs to
+                // be accounted for
+                var extraWidth = (opt.borderWidth || 1) / 2
+                var border = RGraph.SVG.create({
+                    svg:    opt.object.svg,
+                    parent: opt.object.svgAllGroup,
+                    type:   'rect',
+                    attr: {
+                        x:      opt.x - extraWidth - padding,
+                        y:      opt.y - extraWidth - padding,
+                        width:  opt.width + extraWidth + extraWidth + padding + padding,
+                        height: opt.height + extraWidth + extraWidth + padding + padding,
+                        stroke: opt.borderColor || 'black',
+                        fill: 'transparent',
+                        'stroke-width': opt.borderWidth || 1,
+                        rx: borderRadius,
+                        ry: borderRadius
+                    }
+                });
+            }
+        }
+        
+        return img;
+    };
+
+
+
+
+
+
+
+
 // End module pattern
 })(window, document);
 

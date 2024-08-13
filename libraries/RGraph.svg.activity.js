@@ -220,7 +220,9 @@
             highlightFill:                      'rgba(255,255,255,0.7)',
             highlightLinewidth:                 1,
             
-            clip: null
+            clip:                               null,
+            
+            zoom:                               false
         };
 
         //
@@ -520,6 +522,16 @@
             // text: property.
             //
             RGraph.SVG.addCustomText(this);
+
+
+
+
+
+            // Lastly - install the zoom event listeners if
+            // requested
+            if (this.properties.zoom) {
+                RGraph.SVG.addZoom(this);
+            }
 
 
 

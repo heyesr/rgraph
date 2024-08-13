@@ -17,9 +17,10 @@
     //
     // Initialise the various objects
     //
-    RGraph        = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
-    RGraph.SVG    = RGraph.SVG    || {};
-    RGraph.SVG.FX = RGraph.SVG.FX || {};
+    RGraph             = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
+    RGraph.SVG         = RGraph.SVG    || {};
+    RGraph.SVG.FX      = RGraph.SVG.FX || {};
+    RGraph.SVG.Effects = RGraph.SVG.FX;
 
 // Module pattern
 (function (win, doc, undefined)
@@ -1236,8 +1237,8 @@
     //
     RGraph.SVG.FX.vscissorsclose = function ()
     {
-        // This function gets added to the chart object - so the this
-        // variable is the chart object
+        // This function gets added to the chart object - so the
+        // 'this' variable is the chart object
         var obj      = this,
             opt      = arguments[0] || {},
             frames   = opt.frames || 90,
@@ -1279,6 +1280,85 @@
         }, duration);
         
         return this;
+    };
+
+
+
+
+
+
+
+
+    //
+    // The animate() function. Similar to the jQuery animate()
+    // function - simply pass it a map of the properties and
+    // their target values, and this function will animate
+    // them to get to those values.
+    // 
+    // @param object map A map (an associative array) of the
+    //                   properties and their target values.
+    // @param            An optional function which will be called
+    //                   when the animation is complete.
+    //
+    RGraph.SVG.FX.animate = function (map)
+    {
+        var obj = this;
+        obj.draw();
+
+        var totalFrames    = (map && map['frames']) ? map['frames'] : 30,
+            currentFrame   = [],
+            originalValues = [],
+            diffs          = [],
+            steps          = [],
+            callback       = arguments[1];
+
+        function iterator ()
+        {
+            var id = [obj.id +  '_' + obj.type];
+            
+            //RGraph.SVG.cache = {};
+
+            // Initialise the arrays
+            if (!currentFrame[id]) {
+                currentFrame[id]   = totalFrames;
+                originalValues[id] = {};
+                diffs[id]          = {};
+                steps[id]          = {};
+            }
+
+            for (var i in map) {
+                if (typeof map[i] === 'string' || typeof map[i] === 'number') {
+
+                    // If this the first frame, record the proginal value
+                    if (currentFrame[id] == totalFrames) {
+                        originalValues[id][i] = obj.get(i);
+                        diffs[id][i]          = map[i] - originalValues[id][i];
+                        steps[id][i]          = diffs[id][i] / totalFrames;
+                    }
+
+                    obj.set(i, obj.get(i) + steps[id][i]);
+
+                    RGraph.SVG.clear(obj.svg);
+                    RGraph.SVG.redraw();
+                }
+            }
+
+            // If the current frame number is above zero, run the animation iterator again
+            if (--currentFrame[id] > 0) {
+                window.requestAnimationFrame(iterator);
+            
+            // Optional callback
+            } else {
+
+                if (typeof callback === 'function') {
+                    callback(obj);
+                }
+            }
+        }
+
+        iterator();
+        
+        return obj;
     };
 
 

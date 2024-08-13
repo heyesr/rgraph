@@ -385,7 +385,9 @@
             lineSpline:                     false,
             lineTickmarksDrawNonNull:       false,
             
-            clip:                           null
+            clip:                           null,
+            
+            zoom:                           false
         };
 
 
@@ -753,6 +755,16 @@
             // Add vertical lines
             //
             this.drawVerticalLines();
+
+
+
+
+
+            // Lastly - install the zoom event listeners if
+            // requested
+            if (this.properties.zoom) {
+                RGraph.SVG.addZoom(this);
+            }
 
 
 

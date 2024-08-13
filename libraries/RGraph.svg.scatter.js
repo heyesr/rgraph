@@ -357,7 +357,9 @@
             
             outofbounds: true,
 
-            clip: null
+            clip: null,
+            
+            zoom:             false
         };
 
         //
@@ -799,6 +801,16 @@
 
             // Draw any custom lines that have been defined
             RGraph.SVG.drawHorizontalLines(this);
+
+
+
+
+
+            // Lastly - install the zoom event listeners if
+            // requested
+            if (this.properties.zoom) {
+                RGraph.SVG.addZoom(this);
+            }
 
 
 

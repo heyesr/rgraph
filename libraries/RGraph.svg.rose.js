@@ -291,7 +291,9 @@
             effectGrowMultiplier:       1,// Do not delete this
             effectRoundrobinMultiplier: 1, // Do not delete this
             
-            clip: null
+            clip: null,
+            
+            zoom:             false
         };
 
 
@@ -614,6 +616,16 @@
             // text: property.
             //
             RGraph.SVG.addCustomText(this);
+
+
+
+
+
+            // Lastly - install the zoom event listeners if
+            // requested
+            if (this.properties.zoom) {
+                RGraph.SVG.addZoom(this);
+            }
 
 
 
