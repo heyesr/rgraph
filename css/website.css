@@ -1019,102 +1019,7 @@ ul.dropdown-menu-smallscreen li a {
     line-height: 40px;
 }
 
-#navigation-top-bar-hamburger {
-    display: none;
-    white-space: nowrap;
-    position: absolute;
-    top: 14px;
-    right: 25px;
-    z-index: 5;
-    cursor: pointer;
-}
-
-div#navigation-top-bar {
-    width: 100%;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 25px;
-    box-shadow: 0px 0px 3px 2px #999;
-}
-
-div#navigation-top-bar-image {
-    background-color: black;
-    z-index: 5;
-    overflow: hidden;
-    padding: 0;
-    height: 55px;
-}
-
-div#navigation-top-bar-links a {
-    color: white;
-    text-decoration: none;
-    font-style: normal;
-    font-family: Segoe UI, sans-serif;
-    text-align: center;
-    font-size: .8em;
-    width: 8%;
-    display: inline-block;
-    padding-top: 4px;
-    position: relative;
-    -top: -1px;
-}
-
-div#navigation-top-bar-links a span {
-    display: inline-block;
-    border-bottom: 3px solid #999;
-    line-height: 25px;
-    transform: translateY(7px);
-}
-
-div#navigation-top-bar-links a span::after {
-    display: block;
-    position: relative;
-    top: 3px;
-    content: '';
-    border-bottom: solid 3px #ddd;
-    transform: scaleX(0);
-    transition: transform .25s ease-in-out;
-}
-
-div#navigation-top-bar-links a span:hover::after {
-    transform: scaleX(1);
-}
-
-div#navigation-top-bar-links ul {
-    margin: 0;
-}
-
-div#navigation-top-bar-links ul li {
-    display: inline;
-}
-
-img#navigation-top-bar-logo {
-    float: left;
-    margin-top: 2px;
-}
-
-#navigation-top-bar a {
-    font-weight: bold;
-}
-
-#navigation-top-bar a:hover {
-    color: white !important;
-}
-
-a.navigation-top-bar-social-links img  {
-    position: relative;
-    top: 5px;
-}
-
-a.navigation-top-bar-social-links img.facebook-share {
-    left: 12px;
-}
-
-a.navigation-top-bar-social-links img.github-share {
-    top: 7px;
-    left: -5px;
-}
+/* NAVIGATION STYLES NOW IN THE navbar2.css FILE */
 
 
 #front-page-free-for {
@@ -1391,16 +1296,16 @@ div#page-index div.features div {
     margin-bottom: 15px;
 }
 
-div#page-index div.features.first-row div:nth-child(1) {background-color:#aaf8;}
-div#page-index div.features.first-row div:nth-child(2) {background-color:#fcc;}
-div#page-index div.features.second-row div:nth-child(1){background-color:#ada;}
-div#page-index div.features.second-row div:nth-child(2){background-color:#ffc;}
-div#page-index div.features.third-row div:nth-child(1) {background-color:#dad9;}
-div#page-index div.features.third-row div:nth-child(2) {background-color:#bad5f0;}
-div#page-index div.features.fourth-row div:nth-child(1){background-color:#ddd;}
-div#page-index div.features.fourth-row div:nth-child(2){background-color:#0bf3;}
-div#page-index div.features.fifth-row div:nth-child(1) {background-color:#ff06;}
-div#page-index div.features.fifth-row div:nth-child(2) {background-color:#cfc;}
+div#page-index div.features.first-row div:nth-child(1) {background-image:linear-gradient(45deg, #aaf8, #aaf5);}
+div#page-index div.features.first-row div:nth-child(2) {background-image:linear-gradient(45deg, #fcc, #fcc5);}
+div#page-index div.features.second-row div:nth-child(1){background-image:linear-gradient(45deg, #ada, #ada5);}
+div#page-index div.features.second-row div:nth-child(2){background-image:linear-gradient(45deg, #ffc, #ffc5);}
+div#page-index div.features.third-row div:nth-child(1) {background-image:linear-gradient(45deg, #dad9, #dad3);}
+div#page-index div.features.third-row div:nth-child(2) {background-image:linear-gradient(45deg, #bad5f0, #bad5f050);}
+div#page-index div.features.fourth-row div:nth-child(1){background-image:linear-gradient(45deg, #ddd, #ddd5);}
+div#page-index div.features.fourth-row div:nth-child(2){background-image:linear-gradient(45deg, #0bf3, #0bf1);}
+div#page-index div.features.fifth-row div:nth-child(1) {background-image:linear-gradient(45deg, #ff06, #ff01);}
+div#page-index div.features.fifth-row div:nth-child(2) {background-image:linear-gradient(45deg, #cfc, #cfc5);}
 
 div#page-index div.features p span {
     color: #666;

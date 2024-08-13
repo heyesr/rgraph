@@ -30,18 +30,27 @@
         font-size:1.3em;
     }
 
-    div#navigation-top-bar-links {
-        display:none;
-    }
-    a#navigation-top-bar-link {
+
+    div#page-common-navbar2-links {
         display: none;
     }
-    #navigation-top-bar-hamburger {
-        display:inline;
+
+    div#page-common-navbar2 {
+        height: 155px;
     }
-    div#navigation-icons-images {
-        display:none;
+    
+    div#page-common-navbar2-logo-large svg {
+        transform: translateY(10px);
     }
+
+    div#page-common-navbar2-hamburger-icon {
+        display: inline;
+    }
+
+
+
+
+
 
     #aboutpage img#author-photo{
         display:none;
