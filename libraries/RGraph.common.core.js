@@ -9,7 +9,6 @@
     // | commercial license option available. See the URL above for more details.        |
     // o---------------------------------------------------------------------------------o
 
-
     window.RGraph = window.RGraph || {isrgraph:true,isRGraph: true,rgraph:true};
 
 // Module pattern
