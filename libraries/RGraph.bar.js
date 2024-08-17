@@ -85,7 +85,7 @@
             marginRight:           35,
             marginInner:           5,
             marginInnerGrouped:   1,
-            
+
             labelsIngraph:        null,
             labelsIngraphFont:    null,
             labelsIngraphSize:    null,
