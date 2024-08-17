@@ -397,7 +397,7 @@
         x -= 2 * (parseInt(document.body.style.borderLeftWidth) || 0);
         y -= 2 * (parseInt(document.body.style.borderTopWidth) || 0);
 
-        // We return a javascript array with x and y defined
+        // Return a javascript array with x and y defined
         return [x, y];
     };
 
