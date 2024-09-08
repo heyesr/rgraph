@@ -4609,6 +4609,7 @@
     //
     RGraph.text = function (args)
     {
+
         // Allow for the use of a single argument or two
         // 1. First handle two arguments
         if (arguments[0] && arguments[1] && (typeof arguments[1].text === 'string' || typeof arguments[1].text === 'number' ) ) {
@@ -5128,6 +5129,7 @@
         // The coords are placed on the obj.coordsText variable ONLY if it's an RGraph object. The function
         // still returns the cooords though in all cases.
         //
+
         if (obj && obj.isrgraph) {
             var obj     = obj;
             var canvas  = obj.canvas;
