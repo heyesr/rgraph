@@ -27,13 +27,9 @@
         this.set = function (name, value)
         {
             if (arguments.length === 1 && typeof name === 'object') {
-                for (i in arguments[0]) {
+                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
-                        
-                        name  = ret.name;
-                        value = ret.value;
-
-                        this.set(name, value);
+                        this.set(i, arguments[0][i]);
                     }
                 }
             } else {
@@ -98,6 +94,9 @@
         this.innerMax        = RGraph.SVG.stringsToNumbers(conf.innerMax);
         this.outerMin        = RGraph.SVG.stringsToNumbers(conf.outerMin);
         this.outerMax        = RGraph.SVG.stringsToNumbers(conf.outerMax);
+
+        this.min             = this.innerMin;
+        this.max             = this.innerMax;
         this.value           = RGraph.SVG.stringsToNumbers(conf.value);
         this.angleStart      = 0 - RGraph.SVG.TRIG.HALFPI - (RGraph.SVG.TRIG.HALFPI / 2);
         this.angleEnd        = 0 + RGraph.SVG.TRIG.HALFPI + (RGraph.SVG.TRIG.HALFPI / 2);
@@ -120,19 +119,19 @@
         this.gradientCounter = 1;
         this.nodes           = {};
         this.shadowNodes     = [];
+        this.currentValue    = null;
         this.firstDraw       = true; // After the first draw this will be false
 
-//
-// Allow .min, .max to be given as well as .innerMin
-// and innerMax
-//
-if (RGraph.SVG.isNumber(conf.min) && !conf.innerMin) this.innerMin = conf.min;
-if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
+        //
+        // Allow .min, .max to be given as well as .innerMin
+        // and innerMax
+        //
+        if (RGraph.SVG.isNumber(conf.min) && !conf.innerMin) this.innerMin = conf.min;
+        if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
 
         // Some bounds checking for the value
         if (this.value > this.innerMax) this.value = this.innerMax;
         if (this.value < this.innerMin) this.value = this.innerMin;
-
 
 
 
@@ -372,6 +371,14 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
             // Parse the colors for gradients
             RGraph.SVG.resetColorsToOriginalValues({object:this});
             this.parseColors();
+
+
+
+
+            //
+            // Set the current value
+            //
+            this.currentValue = this.value;
 
 
 
@@ -1251,7 +1258,7 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
 
         // Draws the needle of the meter.
         //
-        // This function is used by the adkusting feature to redraw just
+        // This function is used by the adjusting feature to redraw just
         // the needle instead of redrawing the whole chart
         //
         this.drawNeedle = function ()
@@ -1582,6 +1589,60 @@ if (RGraph.SVG.isNumber(conf.max) && !conf.innerMax) this.innerMax = conf.max;
                 'clip-path',
                 'url(#' + clipPath.id + ')'
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // The Gauge chart grow effect
+        //
+        this.grow = function ()
+        {
+            var opt    = arguments[0] || {},
+                frames = opt.frames || 30,
+                frame  = 0,
+                obj    = this;
+
+            //
+            // Copy the data
+            //
+            var value = RGraph.SVG.arrayClone(this.value, true);
+
+
+            if (RGraph.SVG.isNullish(this.currentValue)) {
+                this.currentValue = this.innerMin;
+            }
+
+            var initial_value = this.currentValue,
+                diff          = this.value - Number(this.currentValue),
+                increment     = diff  / frames;
+
+            var iterate = function ()
+            {
+
+                var multiplier = frame / frames;
+                
+                obj.value = initial_value + (increment * frame);
+
+                RGraph.SVG.redraw(obj.svg);
+
+                if (frame++ < frames) {
+                    RGraph.SVG.FX.update(iterate);
+                } else if (opt.callback) {
+                    obj.value = value;
+                    RGraph.SVG.redraw();
+                    (opt.callback)(obj);
+                }
+            };
+
+            iterate();
+
+            return this;
         };
 
 

@@ -29,14 +29,11 @@
             if (arguments.length === 1 && typeof name === 'object') {
                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
+                        
+                        if (i === 'backgroundColor')        {i = 'backgroundFill';}
+                        if (i === 'backgroundColorOpacity') {i = 'backgroundFillOpacity';}
 
-                        name  = ret.name;
-                        value = ret.value;
-
-                        if (name === 'backgroundColor')        {name = 'backgroundFill';}
-                        if (name === 'backgroundColorOpacity') {name = 'backgroundFillOpacity';}
-
-                        this.set(name, value);
+                        this.set(i, arguments[0][i]);
                     }
                 }
             } else {
@@ -121,6 +118,7 @@
         this.nodes           = {};
         this.coords          = [];
         this.shadowNodes     = [];
+        this.currentValue    = null;
         this.firstDraw       = true; // After the first draw this will be false
 
         // Used for adjusting
@@ -402,7 +400,10 @@
             
             
             
-            
+            //
+            // Set the current value
+            //
+            this.currentValue = this.value;
             
             
             
@@ -1492,7 +1493,7 @@
 
 
         //
-        // The Bar chart grow effect
+        // The SCP chart grow effect
         //
         this.grow = function ()
         {
@@ -1506,7 +1507,26 @@
             //
             var value = RGraph.SVG.arrayClone(this.value, true);
 
-            this.draw();
+            if (RGraph.SVG.isNumber(this.value)) {
+            
+                if (RGraph.SVG.isNullish(this.currentValue)) {
+                    this.currentValue = this.min;
+                }
+                
+                var initial_value = this.currentValue,
+                    diff          = this.value - Number(this.currentValue),
+                    increment     = diff  / frames;
+            } else {
+                var initial_value = [],
+                    diff          = [],
+                    increment     = [];
+                
+                for (var i=0; i<this.value.length; ++i) {
+                    initial_value[i] = RGraph.SVG.isNullish(this.currentValue) ? 0 : this.currentValue[i];
+                    diff[i]          = this.value[i] - Number(RGraph.SVG.isNullish(this.currentValue) ? 0 : this.currentValue[i]);
+                    increment[i]     = diff[i]  / frames;
+                }
+            }
 
             var iterate = function ()
             {
@@ -1514,26 +1534,13 @@
 
                 if (typeof obj.value === 'object') {
                     for (var i=0; i<obj.value.length; ++i) {
-                        obj.value[i] = value[i] * multiplier;
+                        obj.value[i] = initial_value[i] + (increment[i] * frame);
                     }
                 } else {
-                    obj.value = value * multiplier;
+                    obj.value = initial_value + (increment * frame);
                 }
 
-
-
-
-
-                // TODO Experimentally, try this. Simply empty
-                // the all group and redraw just this chart
-
-                //RGraph.SVG.redraw();
-                obj.svgAllGroup.replaceChildren();
-                obj.draw();
-
-
-
-
+                RGraph.SVG.redraw(obj.svg);
 
                 if (frame++ < frames) {
                     RGraph.SVG.FX.update(iterate);
@@ -1548,6 +1555,13 @@
 
             return this;
         };
+
+
+
+
+
+
+
 
 
 
