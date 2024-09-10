@@ -27,13 +27,9 @@
         this.set = function (name, value)
         {
             if (arguments.length === 1 && typeof name === 'object') {
-                for (i in arguments[0]) {
+                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
-                        
-                        name  = ret.name;
-                        value = ret.value;
-
-                        this.set(name, value);
+                        this.set(i, arguments[0][i]);
                     }
                 }
             } else {
