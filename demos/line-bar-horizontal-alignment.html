@@ -1,0 +1,68 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A combined Bar and Line chart with horizontal alignment</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        data1 = [4,8,6,5,9,1,2];
+        data2 = [8,6,4,3,9,8,7];
+
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: data1,
+            options: {
+                marginInner: 20,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                textSize: 20
+            }
+        });
+
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: data2,
+            data: data1,
+            options: {
+                colors: ['black'],
+                spline: true,
+                linewidth: 2,
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 5
+            }
+        });
+        
+
+        //
+        // Draw the combined Line and Bar chart
+        //
+        new RGraph.CombinedChart(bar, line).draw();
+        
+        //
+        // Move the Line chart left so its points are left
+        // aligned with the bars (now that the Combined Chart
+        // class has done its thing.
+        //
+        line.set('marginLeft', 8);   // Decrease this
+        line.set('marginRight', 62); // Increase this
+        RGraph.redraw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
