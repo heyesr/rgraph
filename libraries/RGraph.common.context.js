@@ -106,12 +106,12 @@
             menuitem.className       = 'RGraph_contextmenu_item';
 
             if (menuitems[i]) {
-                menuitem.style.padding = '2px 5px 2px 23px';
+                menuitem.style.padding    = '2px 5px 2px 23px';
                 menuitem.style.fontFamily = 'Arial';
-                menuitem.style.fontSize = '10pt';
-                menuitem.style.textAlign = 'left';
+                menuitem.style.fontSize   = '10pt';
+                menuitem.style.textAlign  = 'left';
                 menuitem.style.fontWeight = 'normal';
-                menuitem.innerHTML = menuitems[i][0];
+                menuitem.innerHTML        = menuitems[i][0];
 
                 if (RGraph.isArray(menuitems[i][1])) {
                     menuitem.style.backgroundImage = 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAQUlEQVQImY3NoQ2AMABE0ZewABMyGQ6mqWODzlAclBSFO8HZl8uf0FFxCHtwYkt4Y6ChYE44cGH9/fyae2p2LAleW9oVTQuVf6gAAAAASUVORK5CYII=)';
@@ -123,7 +123,7 @@
                 if (menuitems[i][1]) {
                     if (menuitem.addEventListener) {
                         menuitem.addEventListener("mouseover", function (e) {RGraph.hideContextSubmenu(); e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
-                        menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = 'inherit'; e.target.style.cursor = 'default';}, false);
+                        menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = ''; e.target.style.cursor = 'default';}, false);
                     } else  {
                         menuitem.attachEvent("onmouseover", function () {RGraph.hideContextSubmenu();event.srcElement.style.backgroundColor = '#eee';event.srcElement.style.cursor = 'pointer';}
                     , false);
