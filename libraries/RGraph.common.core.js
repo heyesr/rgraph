@@ -9742,7 +9742,7 @@
 
             // Clip to radial percentages. This only works with
             // charts that have the centerx and centery properties
-            } else if (args.dimensions.match(/^r:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+            } else if (args.dimensions.match(/^r(?:adius)?:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
 
                 // Accommodate the min/max keywords
                 var from = RegExp.$1,
