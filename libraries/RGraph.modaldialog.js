@@ -32,8 +32,30 @@
         // @param string id    The ID of the DIV to use as the dialogs contents
         // @param int    width The width of the dialog
         //
-        Show: function (id, width)
+        Show: function (id, width = null)
         {
+            //
+            // Accommodate this syntax:
+            //
+            // ModalDialog.show({
+            //                     id: 'myDialog',
+            //                  width: 300,
+            //          enlargeOnHide: true,
+            //           shrinkOnShow: true,
+            //                 topbar: true,
+            //  hideOnBackgroundClick: true,
+            //   removeFromDOMTimeout: 500
+            // });
+            if (typeof id === 'object') {
+                
+                for (i in id) {
+                    ModalDialog.options[i] = id[i];
+                }
+                
+                width = id.width;
+                id    = id.id;
+            }
+
             ModalDialog.id    = id;
             ModalDialog.width = width;
     
