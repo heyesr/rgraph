@@ -7453,7 +7453,7 @@ backgroundRounded = opt.backgroundRounded || 0,
 
 
             // RADIAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^r:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+            } else if (obj.properties.clip.match(/^r(?:adius)?:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
             
                 // Accommodate the min/max keywords
                 var from = RegExp.$1,
