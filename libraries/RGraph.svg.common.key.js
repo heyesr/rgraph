@@ -137,7 +137,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'circle',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             cx: x + (blobSize / 2)  + properties.keyOffsetx,
                             cy: y - (blobSize / 2) + properties.keyOffsety,
@@ -155,7 +155,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'path',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4} L {5} {6} z'.format(
                                 x + properties.keyOffsetx + (blobSize / 2),
@@ -180,7 +180,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'path',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4}'.format(
                                 x + properties.keyOffsetx,
@@ -205,7 +205,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'path',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4}'.format(
                                 x + properties.keyOffsetx,
@@ -223,7 +223,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'circle',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             cx: x + (blobSize / 2)  + properties.keyOffsetx,
                             cy: y - (blobSize / 2) + properties.keyOffsety,
@@ -239,7 +239,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'path',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4}'.format(
                                 x + properties.keyOffsetx,
@@ -257,7 +257,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'rect',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             x: x + (blobSize / 4) + properties.keyOffsetx,
                             y: y + (blobSize / 4) - blobSize + properties.keyOffsety,
@@ -274,7 +274,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'path',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             d: 'M {1} {2} L {3} {4}'.format(
                                 x + properties.keyOffsetx,
@@ -296,7 +296,7 @@
                     RGraph.SVG.create({
                         svg: obj.svg,
                         type: 'rect',
-                        parent: obj.svg.all,
+                        parent: obj.svgAllGroup,
                         attr: {
                             x: x + properties.keyOffsetx,
                             y: y - blobSize + properties.keyOffsety,
@@ -313,7 +313,7 @@
                 RGraph.SVG.text({
                     
                     object:     obj,
-                    parent:     obj.svg.all,
+                    parent:     obj.svgAllGroup,
                     tag:        'key',
                     
                     size:       textConf.size,
