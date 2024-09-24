@@ -2180,6 +2180,15 @@
             // Standard higlight
             } else {
                 RGraph.Highlight.rect(this, shape);
+                
+                // Redraw the Y axis so the highlight doesn't
+                // appear over the Y axis. But not the Y axis
+                // labels or the title. This is new in
+                // September 2024.
+                RGraph.drawYAxis(this, {
+                    labels: false,
+                     title: false
+                });
             }
         };
 
