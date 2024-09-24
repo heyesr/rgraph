@@ -1893,7 +1893,7 @@
             } else {
                 for (var set=0,len=this.coords.length; set<len; ++set) {
                     for (var i=0,len2=this.coords[set].length; i<len2; ++i) {
-    
+
                         var x = this.coords[set][i][0];
                         var y = this.coords[set][i][1];
                         var tooltip = this.data[set][i][3];
@@ -1920,7 +1920,7 @@
                         
                         // Add highlight so that we can observe the hotspot
                         //this.path('lw 1 b a % % % 0 6.29 false s gray', x, y, bubbleWidth)
-                        
+
                         if (typeof y == 'number') {
                             if (   ((isBubble && hypLength <= bubbleWidth) || (mouseX <= (x + offset) && mouseX >= (x - offset) && mouseY <= (y + offset) && mouseY >= (y - offset)))
                                 && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)) {
@@ -2278,7 +2278,7 @@
 
                 // Point highlight
                 } else {
-                    this.properties.highlightPointRadius = this.properties.tickmarkSize;
+                    this.properties.highlightPointRadius = this.properties.tickmarksSize;
                     RGraph.Highlight.point(this, shape);
                 }
             }
