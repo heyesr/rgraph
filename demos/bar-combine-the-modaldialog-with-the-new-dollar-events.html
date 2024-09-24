@@ -17,83 +17,62 @@
         
         <style>
             .ModalDialog_background {
-                opacity: 0.85 !important;
             }
 
             .ModalDialog_topbar {
-                border-radius: 0 !important;
-                border: 1px solid gray !important;
             }
 
             .ModalDialog_dialog {
-                border: 1px solid gray !important;
-                border-radius: 0px !important;
-                box-shadow: 2px 2px 0px gray  !important;
             }
         </style>
     </div>
 
     <script>
-        window.onload = function ()
-        {
-            // First create the chart
-            var bar = new RGraph.Bar({
-                id: 'cvs',
-                data: [4,8,5,3,5,6,8],
-                options: {
-                    title: 'Bar chart with clickable second bar',
-                    xaxis: false,
-                    yaxis: false,
-                    xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-                    backgroundGridVlines: false,
-                    backgroundGridBorder: false,
-                    marginTop: 30,
-                    textSize: 14,
-                    marginTop: 40,
-                    marginInner: 15
-                }
-            });
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [4,8,5,3,5,6,8],
+            options: {
+                title: 'Bar chart with clickable second bar',
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                marginTop: 30,
+                textSize: 14,
+                marginTop: 40,
+                marginInner: 15
+            }
+        });
 
-            // Now add The highlight for the clickable bar. The .ondraw event must be used because if not then the
-            // highlight wouldn't get redrawn.
-            bar.ondraw = function (obj)
-            {
-                var idx = 1,
-                      x = bar.coords[idx][0],
-                      y = bar.coords[idx][1],
-                      w = bar.coords[idx][2],
-                      h = bar.coords[idx][3];
-                
-                bar.path(
-                    'b lw 3 r % % % % s black',
-                    x, y, w, h
-                );
-            }
-    
-            bar.draw();
+        // Now add The highlight for the clickable bar. The .ondraw event must be used because if not then the
+        // highlight wouldn't get redrawn.
+        bar.ondraw = function (obj)
+        {
+            var idx = 1,
+                  x = bar.coords[idx][0],
+                  y = bar.coords[idx][1],
+                  w = bar.coords[idx][2],
+                  h = bar.coords[idx][3];
             
-            // Now add the click and mousemove events
-            bar.$1.onmousemove = function (e, shape)
-            {
-                return true;
-            }
-            
-            bar.$1.onclick = function (e, shape)
-            {
-                ModalDialog.show('string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>');
-                
-                ModalDialog.dialog.onclick = function (e)
-                {
-                    e.stopPropagation();
-                }
-                
-                window.onclick = function (e)
-                {
-                    ModalDialog.hide();
-                }
-                
-                e.stopPropagation();
-            }
+            bar.path(
+                'b lw 3 r % % % % s black',
+                x, y, w, h
+            );
+        }
+
+        bar.draw();
+        
+        // Now add the click and mousemove events
+        bar.$1.onmousemove = function (e, shape)
+        {
+            return true;
+        }
+        
+        bar.$1.onclick = function (e, shape)
+        {
+            ModalDialog.show('string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>');
+        
         }
     </script>
     

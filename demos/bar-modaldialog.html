@@ -14,29 +14,27 @@
     <h1>A Bar chart in a ModalDialog</h1>
 
     <script>
-        window.onload = function ()
-        {
-            ModalDialog.Show('string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>');
-    
-            new RGraph.Bar({
-                id: 'cvs',
-                data: [12,18,10,9,6,20,18],
-                options: {
-                    tooltips: '%{property:xaxisLabels[%{dataset}]}',
-                    xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                    yaxisScaleUnitsPost: 'k',
-                    shadow: false,
-                    colors: ['red'],
-                    colorsStroke: 'rgba(0,0,0,0)',
-                    textSize: 14,
-                    title: 'A Bar chart inside a ModalDialog',
-                    yaxisTickmarksCount: 5,
-                    xaxis: false
-                }
-            }).draw();
-            
-            RGraph.tooltips.style.zIndex = 99999;
-        }
+        ModalDialog.Show('string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>');
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [12,18,10,9,6,20,18],
+            options: {
+                tooltips: '%{property:xaxisLabels[%{dataset}]}',
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                yaxisScaleUnitsPost: 'k',
+                shadow: false,
+                colors: ['red'],
+                colorsStroke: 'rgba(0,0,0,0)',
+                textSize: 14,
+                title: 'A Bar chart inside a ModalDialog',
+                yaxisTickmarksCount: 5,
+                xaxis: false
+            }
+        }).draw();
+        
+        RGraph.tooltips.style.zIndex = 99999;
+
     </script>
     
     <script>showSource()</script>

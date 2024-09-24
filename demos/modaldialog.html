@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.common.core.js" ></script>
+
     <script src="../libraries/RGraph.modaldialog.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -40,12 +40,9 @@
     <script>
         function showDialog ()
         {
-            ModalDialog.show('string:<b>Please login</b><p><table border="0"><tr><td align="right" style="padding-top: 4px">Email</td><td><input type="text" size="20" name="email" style="width: 150px" /></td></tr><tr><td align="right" style="padding-top: 4px">Password</td><td><input type="password" size="20" name="password" style="width: 150px" /></td></tr><tr><td colspan="2" align="right"><input type="reset" value="Cancel" onclick="ModalDialog.Close()"><input type="submit" name="submit" value="Login &raquo;" onclick="alert(\'This is just an example\'); event.stopPropagation()"></td></tr></table></p>', 300);
-            
-            ModalDialog.background.onclick = function (e)
-            {
-                ModalDialog.hide();
-            }
+            ModalDialog.show('string:<b>Please login</b><p><table border="0"><tr><td align="right" style="padding-top: 4px">Email</td><td><input type="text" size="20" name="email" style="width: 150px" /></td></tr><tr><td align="right" style="padding-top: 4px">Password</td><td><input type="password" size="20" name="password" style="width: 150px" /></td></tr><tr><td colspan="2" align="right"><input type="reset" value="Cancel" onclick="ModalDialog.close()"><input type="submit" name="submit" value="Login &raquo;" onclick="alert(\'This is just an example\'); event.stopPropagation()"></td></tr></table></p>', 300);
+            ModalDialog.closeOnBackgroundClick = true;
+            ModalDialog.enlargeOnClose         = true;
         }
         
         // new RGraph.

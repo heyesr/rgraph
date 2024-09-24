@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.drawing.background.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
@@ -35,6 +37,10 @@
             id: 'cvs',
             data: [[9,7],[4,4],[2,4]],
             options: {
+                tooltips: '%{property:key[%{index}]}: %{value}',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
                 textBold: true,
                 keyLabelsBold: true,
                 marginInner: 10,

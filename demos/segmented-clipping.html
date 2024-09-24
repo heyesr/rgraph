@@ -24,7 +24,10 @@
                 clip: 'b m 150 150 a 150 150 2000 0 1.57 false',
                 colors: ['red']
             }
-        }).roundRobin();
+        }).roundRobin().on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'black');
+        });
 
         new RGraph.Segmented({
             id: 'cvs',
@@ -43,7 +46,7 @@
             max: 100,
             value: 73,
             options: {
-                clip: 'b m 150 150 a 150 150 2000 1.57 3.14 false',
+                clip: 'b m 150 150 a 150 150 2000 1.57 3.16 false',
                 colors: ['yellow']
             }
         }).roundRobin();
@@ -54,7 +57,7 @@
             max: 100,
             value: 73,
             options: {
-                clip: 'b m 150 150 a 150 150 2000 4.71 6.29 false',
+                clip: 'b m 150 150 a 150 150 2000 4.71 6.3 false',
                 colors: ['green']
             }
         }).roundRobin();
