@@ -2327,7 +2327,8 @@ this.context.lineTo(
             if (typeof properties.highlightStyle === 'function') {
                 (properties.highlightStyle)(shape);
             
-            // Highlight all of the rects except this one - essentially an inverted highlight
+            // Highlight all of the rects except this one - essentially
+            // an inverted highlight
             } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
                 for (var i=0; i<this.coords.length; ++i) {
                     if (i !== shape.sequentialIndex) {
@@ -2358,6 +2359,15 @@ this.context.lineTo(
                 } else {
                     // Add the new highlight
                     RGraph.Highlight.rect(this, shape);
+                    
+                    // Redraw the X axis so the highlight doesn't
+                    // appear over the X axis. But not the X axis
+                    // labels or the title. This is new in
+                    // September 2024.
+                    RGraph.drawXAxis(this, {
+                        labels: false,
+                         title: false
+                    });
                 }
             }
         };
