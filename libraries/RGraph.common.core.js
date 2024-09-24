@@ -7739,10 +7739,11 @@
     // this will eventually be joined by a common Y axis drawing
     // function.
     //
-    //@param object obj The chart object. All the properties are
-    //                  retrieved from this.
+    // @param object obj The chart object. All the properties are
+    //                   retrieved from this.
+    // @param object opt Options to the function
     //
-    RGraph.drawXAxis = function (obj)
+    RGraph.drawXAxis = function (obj, opt = {})
     {
         var properties      = obj.properties,
             context         = obj.context,
@@ -8010,228 +8011,102 @@
                 } // END loop thru xaxisTickmarksCount
             } // END if (isSketch)
         }
+
+
+
         
-
-
-
-
-
-
-
-
         //
         // Draw the X axis labels if they're specified
         //
 
-        //
-        // Text angle
-        //
-        if (properties.xaxisLabelsAngle != 0) {
-            
-            var valign =  'center';
-            var halign =  'right';
-            var angle  = 0 - properties.xaxisLabelsAngle;
-            
-            if (properties.xaxisPosition === 'top') {
-                var angle  = properties.xaxisLabelsAngle;
+        if (opt.labels !== false) {
+            //
+            // Text angle
+            //
+            if (properties.xaxisLabelsAngle != 0) {
+                
+                var valign =  'center';
+                var halign =  'right';
+                var angle  = 0 - properties.xaxisLabelsAngle;
+                
+                if (properties.xaxisPosition === 'top') {
+                    var angle  = properties.xaxisLabelsAngle;
+                }
+                
+            } else {
+                var valign =  'top';
+                var halign =  'center';
+                var angle  = 0;
             }
-            
-        } else {
-            var valign =  'top';
-            var halign =  'center';
-            var angle  = 0;
-        }
-
-        //
-        // Draw an X axis scale if requested. The HBar uses an X axis scale and the
-        // Scatter chart can (optionally) too
-        //
-        if (properties.xaxisScale) {
-
-            var scale = obj.scale2;
-
+    
             //
-            // Get the scale for a Scatter chart X axis
+            // Draw an X axis scale if requested. The HBar uses an X axis scale and the
+            // Scatter chart can (optionally) too
             //
-            if (obj.type === 'scatter') {
-                scale = obj.xscale2;
-
-            // Get the scale for a drawing API X axis
-            } else if (obj.type === 'drawing.xaxis') {
-                if (properties.xaxisScale) {
-
-                    scale = RGraph.getScale({object: this, options: {
-                        'scale.max':          properties.xaxisScaleMax,
-                        'scale.min':          properties.xaxisScaleMin,
-                        'scale.decimals':     Number(properties.xaxisScaleDecimals),
-                        'scale.point':        properties.xaxisScalePoint,
-                        'scale.thousand':     properties.xaxisScaleThousand,
-                        'scale.round':        properties.xaxisScaleRound,
-                        'scale.units.pre':    properties.xaxisScaleUnitsPre,
-                        'scale.units.post':   properties.xaxisScaleUnitsPost,
-                        'scale.labels.count': properties.xaxisScaleLabelsCount,
-                        'scale.strict':       true
-                     }});
-
-                    for (var i=0; i<=properties.xaxisScaleLabelsCount; ++i) {
-                    
-                        var original = (((properties.xaxisScaleMax - properties.xaxisScaleMin) / properties.xaxisScaleLabelsCount) * i) + properties.xaxisScaleMin;
-                        var hmargin  = properties.marginInner;
-                    
-                        if (typeof properties.xaxisScaleFormatter === 'function') {
-                            var text =  (properties.xaxisScaleFormatter)(this, original)
-                        } else {
-                    
-                            text = RGraph.numberFormat({
-                                object:    obj,
-                                number:    original.toFixed(original === 0 ? 0 : properties.xaxisScaleDecimals),
-                                unitspre:  properties.xaxisScaleUnitsPre,
-                                unitspost: properties.xaxisScaleUnitsPost,
-                                point:     properties.xaxisScalePoint,
-                                thousand:  properties.xaxisScaleThousand
-                            });
+            if (properties.xaxisScale) {
+    
+                var scale = obj.scale2;
+    
+                //
+                // Get the scale for a Scatter chart X axis
+                //
+                if (obj.type === 'scatter') {
+                    scale = obj.xscale2;
+    
+                // Get the scale for a drawing API X axis
+                } else if (obj.type === 'drawing.xaxis') {
+                    if (properties.xaxisScale) {
+    
+                        scale = RGraph.getScale({object: this, options: {
+                            'scale.max':          properties.xaxisScaleMax,
+                            'scale.min':          properties.xaxisScaleMin,
+                            'scale.decimals':     Number(properties.xaxisScaleDecimals),
+                            'scale.point':        properties.xaxisScalePoint,
+                            'scale.thousand':     properties.xaxisScaleThousand,
+                            'scale.round':        properties.xaxisScaleRound,
+                            'scale.units.pre':    properties.xaxisScaleUnitsPre,
+                            'scale.units.post':   properties.xaxisScaleUnitsPost,
+                            'scale.labels.count': properties.xaxisScaleLabelsCount,
+                            'scale.strict':       true
+                         }});
+    
+                        for (var i=0; i<=properties.xaxisScaleLabelsCount; ++i) {
+                        
+                            var original = (((properties.xaxisScaleMax - properties.xaxisScaleMin) / properties.xaxisScaleLabelsCount) * i) + properties.xaxisScaleMin;
+                            var hmargin  = properties.marginInner;
+                        
+                            if (typeof properties.xaxisScaleFormatter === 'function') {
+                                var text =  (properties.xaxisScaleFormatter)(this, original)
+                            } else {
+                        
+                                text = RGraph.numberFormat({
+                                    object:    obj,
+                                    number:    original.toFixed(original === 0 ? 0 : properties.xaxisScaleDecimals),
+                                    unitspre:  properties.xaxisScaleUnitsPre,
+                                    unitspost: properties.xaxisScaleUnitsPost,
+                                    point:     properties.xaxisScalePoint,
+                                    thousand:  properties.xaxisScaleThousand
+                                });
+                            }
                         }
                     }
                 }
-            }
-
-            for (var i=0; i<scale.labels.length; ++i) {
-
-                var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / scale.labels.length;
-                
-                if (properties.yaxisPosition === 'right') {
-                    var x = properties.marginLeft + (section * i);
-                } else if (properties.yaxisPosition === 'center') {
-                    section /= 2;
-                    var x = obj.getXCoord(0) + section + (section * i);
-                } else {
-                    var x = properties.marginLeft + (section * i) + section;
-                }
-                
-                var y = properties.xaxisPosition === 'top' ? obj.marginTop - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
-                
-                if (obj.type === 'drawing.xaxis') {
-                    if (properties.xaxisPosition === 'top') {
-                        y = obj.y - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety;
-                    } else {
-                        y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
-                    }
-                }
-
-                RGraph.text({
-                  object: obj,
-          textConfPrefix: 'xaxisLabels',
-                    x:      x + properties.xaxisLabelsOffsetx,
-                    y:      y,
-                    text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: scale.values[i]}) : (properties.yaxisPosition === 'right' ? String(scale.labels[scale.labels.length - 1 - i]) : String(scale.labels[i])),
-                    valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
-                    halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
-                    marker: false,
-                    angle:  angle,
-                    tag:    'xaxis.labels'
-                });
-
-                //
-                // If the chart is a HBar and the X axis is in the center then
-                // draw the negative side of the labels
-                //
-                if (obj.type === 'hbar' && properties.yaxisPosition === 'center') {
-
-                        x = obj.getXCoord(0) - section - (section * i);
-                
-                        RGraph.text({
-                          object: obj,
-                  textConfPrefix: 'xaxisLabels',
-                            x:      x + properties.xaxisLabelsOffsetx,
-                            y:      properties.xaxisPosition === 'top' ? obj.marginTop - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5,
-                            text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: scale.values[i]}) : '-' + String(scale.labels[i]),
-                            valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
-                            halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
-                            marker: false,
-                            angle:  angle,
-                            tag:    'xaxis.labels'
-                        });
-                }
-            }
-
-
-
-
-            //
-            // Draw the minimum label
-            //
-            var str = ((properties.xaxisScaleUnitsPre || '') + (properties.xaxisScaleMin || 0).toFixed(properties.xaxisScaleDecimals).replace(/\./, properties.xaxisScalePoint) + (properties.xaxisScaleUnitsPost || ''));
-            str     = str.replace(/^(.+)-(\d)/, '-$1$2');
-
-            RGraph.text({
-              object:   obj,
-      textConfPrefix:   'xaxisLabels',
-                x:      properties.yaxisPosition === 'right' ? obj.canvas.width - properties.marginRight + properties.xaxisLabelsOffsetx : (properties.yaxisPosition === 'center' ? obj.getXCoord(0) + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx),
-                y:      y,
-                text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: 0}) : str,
-                valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign)),
-                halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
-                marker: false,
-                angle:  angle,
-                tag:    'xaxis.labels'
-            });
-
-        } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
-
-            if (properties.xaxisLabelsPosition === 'edge') {
-                var section = (obj.canvas.width - properties.marginLeft - properties.marginRight - (properties.marginInner || 0) - (properties.marginInner || 0) ) / (properties.xaxisLabels.length - 1);
-            } else {
-                var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / properties.xaxisLabels.length;
-            }
-
-
-            for (var i=0; i<properties.xaxisLabels.length; ++i) {
-
-
-                if (properties.xaxisLabelsPosition === 'edge') {
-                    var x = properties.marginLeft + (properties.marginInner || 0) + (section * i);
-                } else {
-                    var x = properties.marginLeft + (section * i) + (section / 2) ;
-                }
-
-
-
-
-
-
-
-
-
-
-
-                // Allow for the Scatter chart labels to be at specific points
-                // along the X scale
-                if (typeof properties.xaxisLabels[i] === 'object' && obj.type === 'scatter') {
-
-                    var rightEdge = 0;
-                    var align     = properties.xaxisLabelsSpecificAlign === 'left' ? 'left' : 'center';
-                    var halign    = 'center'
+    
+                for (var i=0; i<scale.labels.length; ++i) {
+    
+                    var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / scale.labels.length;
                     
-
-                    if (properties.xaxisLabels[i+1] && typeof properties.xaxisLabels[i+1][1] === 'number') {
-                        rightEdge = properties.xaxisLabels[i+1][1];
-
+                    if (properties.yaxisPosition === 'right') {
+                        var x = properties.marginLeft + (section * i);
+                    } else if (properties.yaxisPosition === 'center') {
+                        section /= 2;
+                        var x = obj.getXCoord(0) + section + (section * i);
                     } else {
-                        rightEdge = properties.xaxisScaleMax;
+                        var x = properties.marginLeft + (section * i) + section;
                     }
-
-                    var leftEdge = properties.xaxisLabels[i][1];
-                    var x        = ((obj.getXCoord(rightEdge) - obj.getXCoord(leftEdge)) / 2) + obj.getXCoord(leftEdge);
                     
-                    if (align === 'left') {
-                        x      = obj.getXCoord(leftEdge);
-                        halign = 'left';
-                    }
-
-                    if (RGraph.isNullish(x)) {
-                        continue;
-                    }
-
+                    var y = properties.xaxisPosition === 'top' ? obj.marginTop - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
+                    
                     if (obj.type === 'drawing.xaxis') {
                         if (properties.xaxisPosition === 'top') {
                             y = obj.y - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety;
@@ -8239,61 +8114,121 @@
                             y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
                         }
                     }
-
-                    var ret = RGraph.text({
-                   object:      obj,
-           textConfPrefix:      'xaxisLabels',
-                        x:      x + 5 + properties.xaxisLabelsOffsetx,
-                        y:      y + 5 + properties.xaxisLabelsOffsety,
-                        valign: valign,
-                        halign: angle != 0 ? 'right' : halign,
-                        text:   String(RGraph.isNullish(properties.xaxisLabels[i][0]) ? '' : properties.xaxisLabels[i][0]),
-                        angle:  angle,
+    
+                    RGraph.text({
+                      object: obj,
+              textConfPrefix: 'xaxisLabels',
+                        x:      x + properties.xaxisLabelsOffsetx,
+                        y:      y,
+                        text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: scale.values[i]}) : (properties.yaxisPosition === 'right' ? String(scale.labels[scale.labels.length - 1 - i]) : String(scale.labels[i])),
+                        valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
+                        halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
                         marker: false,
-                        tag:    'labels.specific',
-                   cssClass:    RGraph.getLabelsCSSClassName({
-                                    object: obj,
-                                      name: 'xaxisLabelsClass',
-                                     index: i
-                                })
+                        angle:  angle,
+                        tag:    'xaxis.labels'
                     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
                     //
-                    // Draw the gray indicator line
+                    // If the chart is a HBar and the X axis is in the center then
+                    // draw the negative side of the labels
                     //
-                    obj.path('b m % % l % % s #bbb',
-                        Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin )) * (obj.canvas.width - properties.marginLeft - properties.marginRight) )), obj.canvas.height - properties.marginBottom,
-                        Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + 20
-                    );
+                    if (obj.type === 'hbar' && properties.yaxisPosition === 'center') {
+    
+                            x = obj.getXCoord(0) - section - (section * i);
                     
-                    // Draw the final indicator line if we're on the final label
-                    if (i === properties.xaxisLabels.length - 1) {
-                        obj.path('b m % % l % % s #bbb',
-                            obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom,
-                            obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + 20
-                        );
+                            RGraph.text({
+                              object: obj,
+                      textConfPrefix: 'xaxisLabels',
+                                x:      x + properties.xaxisLabelsOffsetx,
+                                y:      properties.xaxisPosition === 'top' ? obj.marginTop - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5,
+                                text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: scale.values[i]}) : '-' + String(scale.labels[i]),
+                                valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
+                                halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
+                                marker: false,
+                                angle:  angle,
+                                tag:    'xaxis.labels'
+                            });
                     }
-
-                // A regular label
+                }
+    
+    
+    
+    
+                //
+                // Draw the minimum label
+                //
+                var str = ((properties.xaxisScaleUnitsPre || '') + (properties.xaxisScaleMin || 0).toFixed(properties.xaxisScaleDecimals).replace(/\./, properties.xaxisScalePoint) + (properties.xaxisScaleUnitsPost || ''));
+                str     = str.replace(/^(.+)-(\d)/, '-$1$2');
+    
+                RGraph.text({
+                  object:   obj,
+          textConfPrefix:   'xaxisLabels',
+                    x:      properties.yaxisPosition === 'right' ? obj.canvas.width - properties.marginRight + properties.xaxisLabelsOffsetx : (properties.yaxisPosition === 'center' ? obj.getXCoord(0) + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx),
+                    y:      y,
+                    text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: 0}) : str,
+                    valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign)),
+                    halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
+                    marker: false,
+                    angle:  angle,
+                    tag:    'xaxis.labels'
+                });
+    
+            } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
+    
+                if (properties.xaxisLabelsPosition === 'edge') {
+                    var section = (obj.canvas.width - properties.marginLeft - properties.marginRight - (properties.marginInner || 0) - (properties.marginInner || 0) ) / (properties.xaxisLabels.length - 1);
                 } else {
-
-                    var y = properties.xaxisPosition === 'top' ? properties.marginTop + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + properties.xaxisLabelsOffsety + 5;
-
-                    if (obj.type === 'drawing.xaxis') {
-                        //y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
+                    var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / properties.xaxisLabels.length;
+                }
+    
+    
+                for (var i=0; i<properties.xaxisLabels.length; ++i) {
+    
+    
+                    if (properties.xaxisLabelsPosition === 'edge') {
+                        var x = properties.marginLeft + (properties.marginInner || 0) + (section * i);
+                    } else {
+                        var x = properties.marginLeft + (section * i) + (section / 2) ;
+                    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                    // Allow for the Scatter chart labels to be at specific points
+                    // along the X scale
+                    if (typeof properties.xaxisLabels[i] === 'object' && obj.type === 'scatter') {
+    
+                        var rightEdge = 0;
+                        var align     = properties.xaxisLabelsSpecificAlign === 'left' ? 'left' : 'center';
+                        var halign    = 'center'
+                        
+    
+                        if (properties.xaxisLabels[i+1] && typeof properties.xaxisLabels[i+1][1] === 'number') {
+                            rightEdge = properties.xaxisLabels[i+1][1];
+    
+                        } else {
+                            rightEdge = properties.xaxisScaleMax;
+                        }
+    
+                        var leftEdge = properties.xaxisLabels[i][1];
+                        var x        = ((obj.getXCoord(rightEdge) - obj.getXCoord(leftEdge)) / 2) + obj.getXCoord(leftEdge);
+                        
+                        if (align === 'left') {
+                            x      = obj.getXCoord(leftEdge);
+                            halign = 'left';
+                        }
+    
+                        if (RGraph.isNullish(x)) {
+                            continue;
+                        }
+    
                         if (obj.type === 'drawing.xaxis') {
                             if (properties.xaxisPosition === 'top') {
                                 y = obj.y - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety;
@@ -8301,31 +8236,94 @@
                                 y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
                             }
                         }
+    
+                        var ret = RGraph.text({
+                       object:      obj,
+               textConfPrefix:      'xaxisLabels',
+                            x:      x + 5 + properties.xaxisLabelsOffsetx,
+                            y:      y + 5 + properties.xaxisLabelsOffsety,
+                            valign: valign,
+                            halign: angle != 0 ? 'right' : halign,
+                            text:   String(RGraph.isNullish(properties.xaxisLabels[i][0]) ? '' : properties.xaxisLabels[i][0]),
+                            angle:  angle,
+                            marker: false,
+                            tag:    'labels.specific',
+                       cssClass:    RGraph.getLabelsCSSClassName({
+                                        object: obj,
+                                          name: 'xaxisLabelsClass',
+                                         index: i
+                                    })
+                        });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                        //
+                        // Draw the gray indicator line
+                        //
+                        obj.path('b m % % l % % s #bbb',
+                            Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin )) * (obj.canvas.width - properties.marginLeft - properties.marginRight) )), obj.canvas.height - properties.marginBottom,
+                            Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + 20
+                        );
+                        
+                        // Draw the final indicator line if we're on the final label
+                        if (i === properties.xaxisLabels.length - 1) {
+                            obj.path('b m % % l % % s #bbb',
+                                obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom,
+                                obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + 20
+                            );
+                        }
+    
+                    // A regular label
+                    } else {
+    
+                        var y = properties.xaxisPosition === 'top' ? properties.marginTop + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + properties.xaxisLabelsOffsety + 5;
+    
+                        if (obj.type === 'drawing.xaxis') {
+                            //y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
+                            if (obj.type === 'drawing.xaxis') {
+                                if (properties.xaxisPosition === 'top') {
+                                    y = obj.y - (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety;
+                                } else {
+                                    y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
+                                }
+                            }
+                        }
+    
+                        var ret = RGraph.text({
+                          object:   obj,
+                  
+                  textConfPrefix:   'xaxisLabels',
+    
+                            x:      x + properties.xaxisLabelsOffsetx,
+                            y:      y + properties.xaxisLabelsOffsety,
+                            
+                            text:   String(RGraph.isNullish(properties.xaxisLabels[i]) ? '' : properties.xaxisLabels[i]),
+                            
+                            valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
+                            halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
+                            
+                            marker: false,
+                            angle:  angle,
+                            tag:    'xaxis.labels',
+                            
+                       cssClass:    RGraph.getLabelsCSSClassName({
+                                        object: obj,
+                                          name: 'xaxisLabelsClass',
+                                         index: i
+                                    })
+                        });
                     }
-
-                    var ret = RGraph.text({
-                      object:   obj,
-              
-              textConfPrefix:   'xaxisLabels',
-
-                        x:      x + properties.xaxisLabelsOffsetx,
-                        y:      y + properties.xaxisLabelsOffsety,
-                        
-                        text:   String(RGraph.isNullish(properties.xaxisLabels[i]) ? '' : properties.xaxisLabels[i]),
-                        
-                        valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign),
-                        halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
-                        
-                        marker: false,
-                        angle:  angle,
-                        tag:    'xaxis.labels',
-                        
-                   cssClass:    RGraph.getLabelsCSSClassName({
-                                    object: obj,
-                                      name: 'xaxisLabelsClass',
-                                     index: i
-                                })
-                    });
                 }
             }
         }
@@ -8352,57 +8350,59 @@
 
 
         //
-        // Draw the title
+        // Draw the title if necessary
         //
-        if (properties.xaxisTitle) {
-
-            var x = properties.marginLeft + ((obj.canvas.width - properties.marginLeft - properties.marginRight) / 2) + properties.xaxisTitleOffsetx;
-            var y = properties.xaxisPosition === 'top' ? properties.marginTop  - 7 + properties.xaxisTitleOffsety - properties.xaxisTickmarksLength : obj.canvas.height - properties.marginBottom + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
-
-            if (obj.type === 'drawing.xaxis') {
-                y = obj.y  + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
-            }
-
-            
-            // Get the size of the X axis labels
-            if (properties.xaxisScale || (properties.xaxisLabels && properties.xaxisLabels.length) ) {
-                var textConf = RGraph.getTextConf({
-                    object: obj,
-                    prefix: 'xaxisLabels'
+        if (opt.title !== false) {
+            if (properties.xaxisTitle) {
+    
+                var x = properties.marginLeft + ((obj.canvas.width - properties.marginLeft - properties.marginRight) / 2) + properties.xaxisTitleOffsetx;
+                var y = properties.xaxisPosition === 'top' ? properties.marginTop  - 7 + properties.xaxisTitleOffsety - properties.xaxisTickmarksLength : obj.canvas.height - properties.marginBottom + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
+    
+                if (obj.type === 'drawing.xaxis') {
+                    y = obj.y  + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
+                }
+    
+                
+                // Get the size of the X axis labels
+                if (properties.xaxisScale || (properties.xaxisLabels && properties.xaxisLabels.length) ) {
+                    var textConf = RGraph.getTextConf({
+                        object: obj,
+                        prefix: 'xaxisLabels'
+                    });
+    
+                    if (properties.xaxisPosition === 'top') {
+                        y -= textConf.size * 1.5;
+                    } else {
+                        y += textConf.size * 1.5;
+                    }
+                }
+    
+                // The xaxisTitlePos property
+                if (typeof properties.xaxisTitlePos === 'number') {
+                    if (properties.xaxisPosition === 'top') {
+                        y = properties.marginTop * properties.xaxisTitlePos;
+                    } else {
+                        y = obj.canvas.height - properties.marginBottom + (properties.marginBottom * properties.xaxisTitlePos);
+                    }
+                }
+    
+                // Specific X and Y coordinates for the title
+                if (typeof properties.xaxisTitleX === 'number') x = properties.xaxisTitleX;
+                if (typeof properties.xaxisTitleY === 'number') y = properties.xaxisTitleY;
+    
+    
+                RGraph.text({
+                  object: obj,
+                  textConfPrefix: 'xaxisTitle',
+                    x:      x,
+                    y:      y,
+                    text:   properties.xaxisTitle.toString(),
+                    valign: properties.xaxisPosition === 'top' ? (properties.xaxisTitleValign || 'bottom') : (properties.xaxisTitleValign || 'top'),
+                    halign: properties.xaxisTitleHalign || 'center',
+                    marker: false,
+                    tag:    'xaxis.title'
                 });
-
-                if (properties.xaxisPosition === 'top') {
-                    y -= textConf.size * 1.5;
-                } else {
-                    y += textConf.size * 1.5;
-                }
             }
-
-            // The xaxisTitlePos property
-            if (typeof properties.xaxisTitlePos === 'number') {
-                if (properties.xaxisPosition === 'top') {
-                    y = properties.marginTop * properties.xaxisTitlePos;
-                } else {
-                    y = obj.canvas.height - properties.marginBottom + (properties.marginBottom * properties.xaxisTitlePos);
-                }
-            }
-
-            // Specific X and Y coordinates for the title
-            if (typeof properties.xaxisTitleX === 'number') x = properties.xaxisTitleX;
-            if (typeof properties.xaxisTitleY === 'number') y = properties.xaxisTitleY;
-
-
-            RGraph.text({
-              object: obj,
-              textConfPrefix: 'xaxisTitle',
-                x:      x,
-                y:      y,
-                text:   properties.xaxisTitle.toString(),
-                valign: properties.xaxisPosition === 'top' ? (properties.xaxisTitleValign || 'bottom') : (properties.xaxisTitleValign || 'top'),
-                halign: properties.xaxisTitleHalign || 'center',
-                marker: false,
-                tag:    'xaxis.title'
-            });
         }
     };
 
@@ -8419,10 +8419,11 @@
     // this will eventually be joined by a common Y axis drawing
     // function.
     //
-    //@param object obj The chart object. All the properties are
-    //                  retrieved from this.
+    // @param object obj The chart object. All the properties are
+    //                   retrieved from this.
+    // @param object opt A few options to the function
     //
-    RGraph.drawYAxis = function (obj)
+    RGraph.drawYAxis = function (obj, opt = {})
     {
         var properties      = obj.properties,
             context         = obj.context,
@@ -8632,144 +8633,129 @@
 
 
 
-
         //
-        // The text angle - this does not apply to the Y axis so these
-        // are just the alignments
+        // Whether to draw the labels
         //
-        var valign =  'center',
-            halign =  'right',
-            angle  = 0;
-        
-        
-        
-
-
-        //
-        // Draw a Y axis scale.
-        //
-        if (properties.yaxisScale && !properties.yaxisLabelsSpecific) {
-            if (obj.type === 'drawing.yaxis') {
-                if (properties.yaxisScale) {
-
-                    obj.scale2 = RGraph.getScale({object: obj, options: {
-                        'scale.max':          properties.yaxisScaleMax,
-                        'scale.min':          properties.yaxisScaleMin,
-                        'scale.decimals':     Number(properties.yaxisScaleDecimals),
-                        'scale.point':        properties.yaxisScalePoint,
-                        'scale.thousand':     properties.yaxisScaleThousand,
-                        'scale.round':        properties.yaxisScaleRound,
-                        'scale.units.pre':    properties.yaxisScaleUnitsPre,
-                        'scale.units.post':   properties.yaxisScaleUnitsPost,
-                        'scale.labels.count': properties.yaxisScaleLabelsCount,
-                        'scale.strict':       true
-                     }});
-
-                    for (var i=0; i<=properties.yaxisScaleLabelsCount; ++i) {
-                    
-                        var original = (((properties.yaxisScaleMax - properties.yaxisScaleMin) / properties.yaxisScaleLabelsCount) * i) + properties.yaxisScaleMin;
-                        var hmargin  = properties.marginInner;
-                    
-                        if (typeof properties.yaxisScaleFormatter === 'function') {
-                            var text =  (properties.yaxisScaleFormatter)(this, original)
-                        } else {
-                    
-                            text = RGraph.numberFormat({
-                                object:    obj,
-                                number:    original.toFixed(original === 0 ? 0 : properties.yaxisScaleDecimals),
-                                unitspre:  properties.yaxisScaleUnitsPre,
-                                unitspost: properties.yaxisScaleUnitsPost,
-                                point:     properties.yaxisScalePoint,
-                                thousand:  properties.yaxisScaleThousand
-                            });
+        if (opt.labels !== false) {
+            //
+            // The text angle - this does not apply to the Y axis so these
+            // are just the alignments
+            //
+            var valign =  'center',
+                halign =  'right',
+                angle  = 0;
+            
+            
+            
+    
+    
+            //
+            // Draw a Y axis scale.
+            //
+            if (properties.yaxisScale && !properties.yaxisLabelsSpecific) {
+                if (obj.type === 'drawing.yaxis') {
+                    if (properties.yaxisScale) {
+    
+                        obj.scale2 = RGraph.getScale({object: obj, options: {
+                            'scale.max':          properties.yaxisScaleMax,
+                            'scale.min':          properties.yaxisScaleMin,
+                            'scale.decimals':     Number(properties.yaxisScaleDecimals),
+                            'scale.point':        properties.yaxisScalePoint,
+                            'scale.thousand':     properties.yaxisScaleThousand,
+                            'scale.round':        properties.yaxisScaleRound,
+                            'scale.units.pre':    properties.yaxisScaleUnitsPre,
+                            'scale.units.post':   properties.yaxisScaleUnitsPost,
+                            'scale.labels.count': properties.yaxisScaleLabelsCount,
+                            'scale.strict':       true
+                         }});
+    
+                        for (var i=0; i<=properties.yaxisScaleLabelsCount; ++i) {
+                        
+                            var original = (((properties.yaxisScaleMax - properties.yaxisScaleMin) / properties.yaxisScaleLabelsCount) * i) + properties.yaxisScaleMin;
+                            var hmargin  = properties.marginInner;
+                        
+                            if (typeof properties.yaxisScaleFormatter === 'function') {
+                                var text =  (properties.yaxisScaleFormatter)(this, original)
+                            } else {
+                        
+                                text = RGraph.numberFormat({
+                                    object:    obj,
+                                    number:    original.toFixed(original === 0 ? 0 : properties.yaxisScaleDecimals),
+                                    unitspre:  properties.yaxisScaleUnitsPre,
+                                    unitspost: properties.yaxisScaleUnitsPost,
+                                    point:     properties.yaxisScalePoint,
+                                    thousand:  properties.yaxisScaleThousand
+                                });
+                            }
                         }
                     }
                 }
-            }
-
-            var scale           = obj.scale2;
-            obj.maxLabelLength = Math.max(
-                obj.maxLabelLength,
-                obj.context.measureText(obj.scale2.labels[4]).width// * 2 // Don't know why this was doubled...?
-            );
-
-
-            //
-            // X axis position in the center
-            //
-            if (properties.xaxisPosition === 'center') {
-            
-                var halfHeight = ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2);
-                
-                // Draw the top halves labels
-                for (var i=0; i<scale.labels.length; ++i) {
-
-                    var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (scale.labels.length * 2);
-                    var y       = properties.marginTop + (section * i);
-
-                    RGraph.text({
-                      object:   obj,
-              textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
-                        y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop - (section * i) + properties.yaxisLabelsOffsety : properties.marginTop + (section * i) + properties.yaxisLabelsOffsety,
-                        text:   String(scale.labels[scale.labels.length - 1 - i]),
-                        valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                        halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                        marker: false,
-                        angle:  angle,
-                        tag:    'yaxis.labels'
-                    });
-                }
-
-                // Draw the bottom half
-                for (var i=0; i<scale.labels.length; ++i) {
-                
-                    if (i === 0 && properties.yaxisScaleInvert) continue;
-
-                    var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (scale.labels.length * 2);
-                    var y       = properties.marginTop + ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2) + (section * i) + section;
     
-                    RGraph.text({
-                      object:   obj,
-              textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
-                        y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop + (section * i) : y + properties.yaxisLabelsOffsety,
-                        text:   '-' + (properties.yaxisScaleInvert ? String(scale.labels[scale.labels.length - i - 1]) : String(scale.labels[i])),
-                        valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                        halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                        marker: false,
-                        angle:  angle,
-                        tag:    'yaxis.labels'
-                    });
-                }
-
-
+                var scale           = obj.scale2;
+                obj.maxLabelLength = Math.max(
+                    obj.maxLabelLength,
+                    obj.context.measureText(obj.scale2.labels[4]).width// * 2 // Don't know why this was doubled...?
+                );
+    
+    
                 //
-                // Draw the zero label
+                // X axis position in the center
                 //
-                RGraph.text({
-                  object:   obj,
-          textConfPrefix:   'yaxisLabels',
-                    x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
-                    y:      properties.yaxisScaleInvert ? properties.marginTop + properties.yaxisLabelsOffsety : properties.marginTop + ((obj.canvas.height - properties.marginBottom - properties.marginTop) / 2) + properties.yaxisLabelsOffsety,
-                    text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
-                    valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                    halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                    marker: false,
-                    angle:  angle,
-                    tag:    'yaxis.labels'
-                });
+                if (properties.xaxisPosition === 'center') {
                 
-
-                //
-                // Draw the zero label for the bottom half if the scale is inverted
-                //
-                if (properties.yaxisScaleInvert) {
+                    var halfHeight = ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2);
+                    
+                    // Draw the top halves labels
+                    for (var i=0; i<scale.labels.length; ++i) {
+    
+                        var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (scale.labels.length * 2);
+                        var y       = properties.marginTop + (section * i);
+    
+                        RGraph.text({
+                          object:   obj,
+                  textConfPrefix:   'yaxisLabels',
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop - (section * i) + properties.yaxisLabelsOffsety : properties.marginTop + (section * i) + properties.yaxisLabelsOffsety,
+                            text:   String(scale.labels[scale.labels.length - 1 - i]),
+                            valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                            halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                            marker: false,
+                            angle:  angle,
+                            tag:    'yaxis.labels'
+                        });
+                    }
+    
+                    // Draw the bottom half
+                    for (var i=0; i<scale.labels.length; ++i) {
+                    
+                        if (i === 0 && properties.yaxisScaleInvert) continue;
+    
+                        var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (scale.labels.length * 2);
+                        var y       = properties.marginTop + ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2) + (section * i) + section;
+        
+                        RGraph.text({
+                          object:   obj,
+                  textConfPrefix:   'yaxisLabels',
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop + (section * i) : y + properties.yaxisLabelsOffsety,
+                            text:   '-' + (properties.yaxisScaleInvert ? String(scale.labels[scale.labels.length - i - 1]) : String(scale.labels[i])),
+                            valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                            halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                            marker: false,
+                            angle:  angle,
+                            tag:    'yaxis.labels'
+                        });
+                    }
+    
+    
+                    //
+                    // Draw the zero label
+                    //
                     RGraph.text({
                       object:   obj,
               textConfPrefix:   'yaxisLabels',
                         x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
-                        y:      obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety,
+                        y:      properties.yaxisScaleInvert ? properties.marginTop + properties.yaxisLabelsOffsety : properties.marginTop + ((obj.canvas.height - properties.marginBottom - properties.marginTop) / 2) + properties.yaxisLabelsOffsety,
                         text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
                         valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
                         halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
@@ -8777,70 +8763,118 @@
                         angle:  angle,
                         tag:    'yaxis.labels'
                     });
-                }
-
-            //
-            // X axis at the top
-            //
-            } else if (properties.xaxisPosition === 'top') {
-                for (var i=0; i<scale.labels.length; ++i) {
-            
-                    var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / scale.labels.length;
                     
-                    // Account for inverting the scale
+    
+                    //
+                    // Draw the zero label for the bottom half if the scale is inverted
+                    //
                     if (properties.yaxisScaleInvert) {
-                        var y = obj.canvas.height - properties.marginBottom - (section * i) - section - section;
-                    } else {
-                        var y = properties.marginTop + (section * i);
+                        RGraph.text({
+                          object:   obj,
+                  textConfPrefix:   'yaxisLabels',
+                            x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                            y:      obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety,
+                            text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
+                            valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                            halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                            marker: false,
+                            angle:  angle,
+                            tag:    'yaxis.labels'
+                        });
                     }
-            
-                    RGraph.text({
-                      object:   obj,
-              textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
-                        y:      y + section + properties.yaxisLabelsOffsety,
-                        text:   '-' + String(scale.labels[i]),
-                        valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                        halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                        marker: false,
-                        angle:  angle,
-                        tag:    'yaxis.labels'
-                    });
-                }
-                    
-                    
-            
+    
                 //
-                // Draw the zero label
+                // X axis at the top
                 //
-
-                RGraph.text({
-                  object:   obj,
-            textConfPrefix:   'yaxisLabels',
-                    x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
-                    y:      properties.yaxisScaleInvert ? obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety : properties.marginTop + properties.yaxisLabelsOffsety,
-                    text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
-                    valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                    halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                    marker: false,
-                    angle:  angle,
-                    tag:    'yaxis.labels'
-                });
-            //
-            // X axis position at the bottom
-            //
-            } else {
-                for (var i=0; i<scale.labels.length; ++i) {
-
-                    var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / scale.labels.length;
-                    var y       = properties.marginTop + (section * (i + (properties.yaxisScaleInvert ? 1 : 0)) );
+                } else if (properties.xaxisPosition === 'top') {
+                    for (var i=0; i<scale.labels.length; ++i) {
+                
+                        var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / scale.labels.length;
+                        
+                        // Account for inverting the scale
+                        if (properties.yaxisScaleInvert) {
+                            var y = obj.canvas.height - properties.marginBottom - (section * i) - section - section;
+                        } else {
+                            var y = properties.marginTop + (section * i);
+                        }
+                
+                        RGraph.text({
+                          object:   obj,
+                  textConfPrefix:   'yaxisLabels',
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            y:      y + section + properties.yaxisLabelsOffsety,
+                            text:   '-' + String(scale.labels[i]),
+                            valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                            halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                            marker: false,
+                            angle:  angle,
+                            tag:    'yaxis.labels'
+                        });
+                    }
+                        
+                        
+                
+                    //
+                    // Draw the zero label
+                    //
     
                     RGraph.text({
                       object:   obj,
+                textConfPrefix:   'yaxisLabels',
+                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                        y:      properties.yaxisScaleInvert ? obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety : properties.marginTop + properties.yaxisLabelsOffsety,
+                        text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
+                        valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                        halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                        marker: false,
+                        angle:  angle,
+                        tag:    'yaxis.labels'
+                    });
+                //
+                // X axis position at the bottom
+                //
+                } else {
+                    for (var i=0; i<scale.labels.length; ++i) {
+    
+                        var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / scale.labels.length;
+                        var y       = properties.marginTop + (section * (i + (properties.yaxisScaleInvert ? 1 : 0)) );
+        
+                        RGraph.text({
+                          object:   obj,
+                  textConfPrefix:   'yaxisLabels',
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            y:      y + properties.yaxisLabelsOffsety,
+                            text:   String(properties.yaxisScaleInvert ? scale.labels[i] : scale.labels[scale.labels.length - 1 - i]),
+                            valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
+                            halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
+                            marker: false,
+                            angle:  angle,
+                            tag:    'yaxis.labels'
+                        });
+                    }
+                        
+                        
+    
+                    var zerolabel = RGraph.numberFormat({
+                        object:    obj,
+                        number:    properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals),
+                        unitspre:  properties.yaxisScaleUnitsPre,
+                        unitspost: properties.yaxisScaleUnitsPost,
+                        point:     properties.yaxisScalePoint,
+                        thousand:  properties.yaxisScaleThousand
+                    });
+    
+                    //
+                    // Draw the zero label
+                    //
+                    RGraph.text({
+                      object:   obj,
               textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
-                        y:      y + properties.yaxisLabelsOffsety,
-                        text:   String(properties.yaxisScaleInvert ? scale.labels[i] : scale.labels[scale.labels.length - 1 - i]),
+                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                        y:      properties.yaxisScaleInvert ? properties.marginTop : obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety,
+                        text:   typeof properties.yaxisScaleFormatter === 'function'
+                                    ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter})
+                                    : zerolabel,
                         valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
                         halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
                         marker: false,
@@ -8848,74 +8882,51 @@
                         tag:    'yaxis.labels'
                     });
                 }
-                    
-                    
-
-                var zerolabel = RGraph.numberFormat({
-                    object:    obj,
-                    number:    properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals),
-                    unitspre:  properties.yaxisScaleUnitsPre,
-                    unitspost: properties.yaxisScaleUnitsPost,
-                    point:     properties.yaxisScalePoint,
-                    thousand:  properties.yaxisScaleThousand
-                });
-
-                //
-                // Draw the zero label
-                //
-                RGraph.text({
-                  object:   obj,
-          textConfPrefix:   'yaxisLabels',
-                    x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
-                    y:      properties.yaxisScaleInvert ? properties.marginTop : obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety,
-                    text:   typeof properties.yaxisScaleFormatter === 'function'
-                                ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter})
-                                : zerolabel,
-                    valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
-                    halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : halign),
-                    marker: false,
-                    angle:  angle,
-                    tag:    'yaxis.labels'
-                });
-            }
-        
-        //
-        // Draw labels instead of a scale
-        //
-        } else if (properties.yaxisLabelsSpecific && properties.yaxisLabelsSpecific.length && (properties.yaxisLabelsPosition === 'section' || properties.yaxisLabelsPosition === 'edge') ) {
-
-            var section        = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (properties.yaxisLabelsSpecific.length - (properties.yaxisLabelsPosition === 'section' ? 0 : 1));
-            obj.maxLabelLength = 0;
-
-            for (var i=0; i<properties.yaxisLabelsSpecific.length; ++i) {
-
-                var y = properties.marginTop  + (section * i) + (properties.yaxisLabelsPosition === 'section' ? section / 2 : 0);
-
-                var ret = RGraph.text({
-                  object:   obj,
-          textConfPrefix:   'yaxisLabels',
-                    x:      obj.type === 'drawing.yaxis'
-                                ? (properties.yaxisPosition === 'right' ? obj.x + 7 + properties.yaxisLabelsOffsetx : obj.x - 5 + properties.yaxisLabelsOffsetx)
-                                : (properties.yaxisPosition === 'right' ? x + properties.yaxisLabelsOffsetx + 5 : properties.marginLeft - 5 + properties.yaxisLabelsOffsetx),
-                    y:      y + properties.yaxisLabelsOffsety,
-                    text:   String(properties.yaxisLabelsSpecific[i] || ''),
-                    valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : 'center',
-                    halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : 'right'),
-                    marker: false,
-                    tag:    'yaxis.labels',
-               cssClass:    RGraph.getLabelsCSSClassName({
-                                object: obj,
-                                  name: 'yaxisLabelsClass',
-                                 index: i
-                              })
-                });
-
-                obj.maxLabelLength = Math.max(
-                    obj.maxLabelLength,
-                    obj.context.measureText(String(properties.yaxisLabelsSpecific[i])).width * 2
-                );
+            
+            //
+            // Draw labels instead of a scale
+            //
+            } else if (properties.yaxisLabelsSpecific && properties.yaxisLabelsSpecific.length && (properties.yaxisLabelsPosition === 'section' || properties.yaxisLabelsPosition === 'edge') ) {
+    
+                var section        = (obj.canvas.height - properties.marginTop - properties.marginBottom) / (properties.yaxisLabelsSpecific.length - (properties.yaxisLabelsPosition === 'section' ? 0 : 1));
+                obj.maxLabelLength = 0;
+    
+                for (var i=0; i<properties.yaxisLabelsSpecific.length; ++i) {
+    
+                    var y = properties.marginTop  + (section * i) + (properties.yaxisLabelsPosition === 'section' ? section / 2 : 0);
+    
+                    var ret = RGraph.text({
+                      object:   obj,
+              textConfPrefix:   'yaxisLabels',
+                        x:      obj.type === 'drawing.yaxis'
+                                    ? (properties.yaxisPosition === 'right' ? obj.x + 7 + properties.yaxisLabelsOffsetx : obj.x - 5 + properties.yaxisLabelsOffsetx)
+                                    : (properties.yaxisPosition === 'right' ? x + properties.yaxisLabelsOffsetx + 5 : properties.marginLeft - 5 + properties.yaxisLabelsOffsetx),
+                        y:      y + properties.yaxisLabelsOffsety,
+                        text:   String(properties.yaxisLabelsSpecific[i] || ''),
+                        valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : 'center',
+                        halign: typeof properties.yaxisLabelsHalign === 'string' ? properties.yaxisLabelsHalign : (properties.yaxisPosition === 'right' ? 'left' : 'right'),
+                        marker: false,
+                        tag:    'yaxis.labels',
+                   cssClass:    RGraph.getLabelsCSSClassName({
+                                    object: obj,
+                                      name: 'yaxisLabelsClass',
+                                     index: i
+                                  })
+                    });
+    
+                    obj.maxLabelLength = Math.max(
+                        obj.maxLabelLength,
+                        obj.context.measureText(String(properties.yaxisLabelsSpecific[i])).width * 2
+                    );
+                }
             }
         }
+
+
+
+
+
+
 
 
 
@@ -8932,113 +8943,115 @@
         //
         // Draw the title
         //
-        if (properties.yaxisTitle) {
-
-            //
-            // Get the text width of the labels so that the position of the title
-            // can be adjusted
-            //
-            if (obj.type === 'gantt') {
-                for (var i=0, maxLabelLength=0; i<properties.yaxisLabels.length;++i) {
-                
-                    var textConf = RGraph.getTextConf({
-                        object: obj,
-                        prefix: 'yaxisLabels'
-                    });
-
-                    maxLabelLength = Math.max(maxLabelLength, RGraph.measureText(
-                        properties.yaxisLabels[i],
-                        textConf.bold,
-                        textConf.font,
-                        textConf.size
-                    )[0]);
-                }
-            } else if (obj.scale2 && obj.scale2.labels) {
-
-                var textConf = RGraph.getTextConf({
-                    object: obj,
-                    prefix: 'yaxisLabels'
-                });
-
-                var maxLabelLength = RGraph.measureText(
-                    obj.scale2.labels[obj.scale2.labels.length - 1],
-                    textConf.bold,
-                    textConf.font,
-                    textConf.size
-                )[0];
-            }
-
-
-            // If the chart is an HBar chart then the maximum length of the labels
-            // needs to be calculated so that the title doesn't overlap them
-            if (
-                    (obj.type === 'hbar' && properties.yaxisLabels && properties.yaxisLabels.length)
-                 || (obj.type === 'drawing.yaxis' && properties.yaxisLabelsSpecific && properties.yaxisLabelsSpecific.length)
-               ) {
-                maxLabelLength = (function (labels)
-                {
-                    var textConf = RGraph.getTextConf({
-                        object: obj,
-                        prefix: 'yaxisLabels'
-                    });
-
-                    for (var i=0,max=0; i<labels.length; ++i) {
-                        var dim = RGraph.measureText(
-                            labels[i],
+        if (opt.title) {
+            if (properties.yaxisTitle) {
+    
+                //
+                // Get the text width of the labels so that the position of the title
+                // can be adjusted
+                //
+                if (obj.type === 'gantt') {
+                    for (var i=0, maxLabelLength=0; i<properties.yaxisLabels.length;++i) {
+                    
+                        var textConf = RGraph.getTextConf({
+                            object: obj,
+                            prefix: 'yaxisLabels'
+                        });
+    
+                        maxLabelLength = Math.max(maxLabelLength, RGraph.measureText(
+                            properties.yaxisLabels[i],
                             textConf.bold,
                             textConf.font,
                             textConf.size
-                        );
-                        max = Math.max(max, dim[0]);
+                        )[0]);
                     }
-
-                    return max;
-                })(obj.type === 'drawing.yaxis' ? properties.yaxisLabelsSpecific : properties.yaxisLabels);
-            }
-
-            var x = properties.yaxisPosition === 'right' ? (obj.canvas.width - properties.marginRight) + 5 + maxLabelLength + 10 : properties.marginLeft - 5 - maxLabelLength - 10;
-            var y = ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2) + properties.marginTop;
-            
-            if (obj.type === 'drawing.yaxis') {
-                var x = properties.yaxisPosition === 'right'
-                            ? obj.x + 5 + maxLabelLength + 10
-                            : obj.x - 5 - maxLabelLength - 10;
-            }
-
-
-            // The yaxisTitlePos property
-            if (typeof properties.yaxisTitlePos === 'number') {
-                if (properties.yaxisPosition === 'right') {
-                    x = obj.canvas.width - (properties.marginRight * properties.yaxisTitlePos);
-                } else {
-                    x = properties.marginLeft * properties.yaxisTitlePos;
+                } else if (obj.scale2 && obj.scale2.labels) {
+    
+                    var textConf = RGraph.getTextConf({
+                        object: obj,
+                        prefix: 'yaxisLabels'
+                    });
+    
+                    var maxLabelLength = RGraph.measureText(
+                        obj.scale2.labels[obj.scale2.labels.length - 1],
+                        textConf.bold,
+                        textConf.font,
+                        textConf.size
+                    )[0];
                 }
+    
+    
+                // If the chart is an HBar chart then the maximum length of the labels
+                // needs to be calculated so that the title doesn't overlap them
+                if (
+                        (obj.type === 'hbar' && properties.yaxisLabels && properties.yaxisLabels.length)
+                     || (obj.type === 'drawing.yaxis' && properties.yaxisLabelsSpecific && properties.yaxisLabelsSpecific.length)
+                   ) {
+                    maxLabelLength = (function (labels)
+                    {
+                        var textConf = RGraph.getTextConf({
+                            object: obj,
+                            prefix: 'yaxisLabels'
+                        });
+    
+                        for (var i=0,max=0; i<labels.length; ++i) {
+                            var dim = RGraph.measureText(
+                                labels[i],
+                                textConf.bold,
+                                textConf.font,
+                                textConf.size
+                            );
+                            max = Math.max(max, dim[0]);
+                        }
+    
+                        return max;
+                    })(obj.type === 'drawing.yaxis' ? properties.yaxisLabelsSpecific : properties.yaxisLabels);
+                }
+    
+                var x = properties.yaxisPosition === 'right' ? (obj.canvas.width - properties.marginRight) + 5 + maxLabelLength + 10 : properties.marginLeft - 5 - maxLabelLength - 10;
+                var y = ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2) + properties.marginTop;
+                
+                if (obj.type === 'drawing.yaxis') {
+                    var x = properties.yaxisPosition === 'right'
+                                ? obj.x + 5 + maxLabelLength + 10
+                                : obj.x - 5 - maxLabelLength - 10;
+                }
+    
+    
+                // The yaxisTitlePos property
+                if (typeof properties.yaxisTitlePos === 'number') {
+                    if (properties.yaxisPosition === 'right') {
+                        x = obj.canvas.width - (properties.marginRight * properties.yaxisTitlePos);
+                    } else {
+                        x = properties.marginLeft * properties.yaxisTitlePos;
+                    }
+                }
+    
+                // Specific X and Y coordinates for the title
+                if (typeof properties.yaxisTitleOffsetx === 'number') x += properties.yaxisTitleOffsetx;
+                if (typeof properties.yaxisTitleOffsety === 'number') y += properties.yaxisTitleOffsety;
+    
+                // Specific X and Y coordinates for the title
+                if (typeof properties.yaxisTitleX === 'number') x = properties.yaxisTitleX;
+                if (typeof properties.yaxisTitleY === 'number') y = properties.yaxisTitleY;
+    
+    
+    
+                RGraph.text({
+                  object:       obj,
+                textConfPrefix: 'yaxisTitle',
+                    x:          x,
+                    y:          y,
+                    text:       properties.yaxisTitle.toString(),
+                    valign:     properties.yaxisTitleValign || 'bottom',
+                    halign:     properties.yaxisTitleHalign || 'center',
+                    marker:     false,
+                    accessible: typeof properties.yaxisTitleAccessible === 'boolean' ? properties.yaxisTitleAccessible : undefined,
+                    angle:      -45,
+                    angle:      properties.yaxisPosition === 'right' ? 90 : -90,
+                    tag:        'yaxis.title'
+                });
             }
-
-            // Specific X and Y coordinates for the title
-            if (typeof properties.yaxisTitleOffsetx === 'number') x += properties.yaxisTitleOffsetx;
-            if (typeof properties.yaxisTitleOffsety === 'number') y += properties.yaxisTitleOffsety;
-
-            // Specific X and Y coordinates for the title
-            if (typeof properties.yaxisTitleX === 'number') x = properties.yaxisTitleX;
-            if (typeof properties.yaxisTitleY === 'number') y = properties.yaxisTitleY;
-
-
-
-            RGraph.text({
-              object:       obj,
-            textConfPrefix: 'yaxisTitle',
-                x:          x,
-                y:          y,
-                text:       properties.yaxisTitle.toString(),
-                valign:     properties.yaxisTitleValign || 'bottom',
-                halign:     properties.yaxisTitleHalign || 'center',
-                marker:     false,
-                accessible: typeof properties.yaxisTitleAccessible === 'boolean' ? properties.yaxisTitleAccessible : undefined,
-                angle:      -45,
-                angle:      properties.yaxisPosition === 'right' ? 90 : -90,
-                tag:        'yaxis.title'
-            });
         }
     };
 
