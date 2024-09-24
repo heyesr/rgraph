@@ -1,0 +1,93 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../css/animations.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>CSS3 animations</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
+
+        <button onclick="swap()" style="font-size: 26pt; cursor:pointer">Click me</button>
+    </div>
+    
+    <script>
+        chart = 1;
+
+        // Draws the blue Line chart
+        function drawLine1 ()
+        {
+            new RGraph.Line({
+                id: 'cvs',
+                data: [4,5,3,8,4,9,6,5,3],
+                options: {
+                    title: 'Click the button to swap charts',
+                    titleSize: 16,
+                    titleBold: true,
+                    colors: ['blue'],
+                    xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                    backgroundGridVlinesCount: 9,
+                    shadow: false
+                }
+            }).draw();
+        }
+
+        // Draws the red Line chart
+        function drawLine2 ()
+        {
+            new RGraph.Line({
+                id: 'cvs',
+                data: [4,8,5,4,8,6,3,5,2],
+                options: {
+                    title: 'Click the button to swap charts',
+                    titleSize: 16,
+                    titleBold: true,
+                    colors: ['red'],
+                    xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim', 'Pete', 'Lou', 'Fred', 'Jobe'],
+                    backgroundGridVlinesCount: 9,
+                    shadow: false
+                }
+            }).draw();
+        }
+
+
+
+
+        // The swap function
+        function swap ()
+        {
+            $('#cvs').addClass('animated flipOutX');
+
+            setTimeout(function ()
+            {
+                RGraph.reset(document.getElementById("cvs"));
+
+                if (chart == 2) {
+                    drawLine1();
+                    chart = 1;
+                } else {
+                    drawLine2();
+                    chart = 2;
+                }
+
+                $('#cvs').removeClass('flipOutX');
+                $('#cvs').addClass('flipInX');
+            }, 750)
+        }
+        
+        // Start with the first bar chart
+        drawLine1();
+        chart = 1;
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
