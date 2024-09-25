@@ -2341,6 +2341,14 @@ this.context.lineTo(
                     }
                 }
                 
+                // Redraw the X axis so the highlight doesn't
+                // appear over the X axis. But not the X axis
+                // labels or the title. This is new in
+                // September 2024.
+                RGraph.drawXAxis(this, {
+                    labels: false,
+                     title: false
+                });
             } else {
                 if (properties.grouping === 'stacked' && shape.index === 0 && properties.xaxisPosition === 'bottom') {
                 

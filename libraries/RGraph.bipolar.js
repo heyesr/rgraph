@@ -3040,9 +3040,12 @@
                         );
                     }
                 }
+                
+                this.drawAxes();
 
             } else {
                 RGraph.Highlight.rect(this, shape);
+                this.drawAxes();
             }
         };
 

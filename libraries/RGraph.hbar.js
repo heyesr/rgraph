@@ -2151,7 +2151,8 @@
             if (typeof properties.highlightStyle === 'function') {
                 (properties.highlightStyle)(shape);
             
-            // Highlight all of the rects except this one - essentially an inverted highlight
+            // Highlight all of the rects except this one -
+            // essentially an inverted highlight
             } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
                 for (var i=0; i<this.coords.length; ++i) {
                     if (i !== shape.sequentialIndex) {
@@ -2162,6 +2163,15 @@
                             properties.highlightFill
                         );
                     }
+
+                    // Redraw the Y axis so the highlight doesn't
+                    // appear over the Y axis. But not the Y axis
+                    // labels or the title. This is new in
+                    // September 2024.
+                    RGraph.drawYAxis(this, {
+                        labels: false,
+                         title: false
+                    });
                 }
             // Circular highlighting (for vertical lines)
             } else if (this.properties.tooltipsHotspotShape === 'point') {
