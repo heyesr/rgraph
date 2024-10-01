@@ -1188,6 +1188,68 @@
             RGraph.tooltip_slide_effect_previous_y_coordinate = tooltipObj.style.top;
         }
 
+
+
+
+
+
+
+
+        //
+        // Enable persistent tooltips if requested
+        //
+        if (args.object.get('tooltipsPersist')) {
+        
+            RGraph.tooltip.persistent = {divs:[]};
+
+            setTimeout(function ()
+            {
+                // Change the pointer ID
+                var pointer = document.getElementById('RGraph_tooltipsPointer_' + args.object.id);
+                    pointer.id += '_' + RGraph.random(18564, 999999);
+
+                // Save a reference to all of the tooltip DIV
+                // objects
+
+                RGraph.tooltip.persistent.divs.push(RGraph.Registry.get('tooltip'));
+
+                // Set the tooltips reference to null
+                RGraph.Registry.set('tooltip', null);
+                
+                // Set the last coords (for the slide effect)
+                // to null
+                //RGraph.tooltip_slide_effect_previous_x_coordinate = null;
+                //RGraph.tooltip_slide_effect_previous_y_coordinate = null;
+                //
+            }, 50);
+
+            //
+            // A function to clear all of the persistent
+            // tooltip DIV tags
+            //
+            RGraph.tooltip.persistent.clear =
+            RGraph.tooltip.persistent.clearAll = function ()
+            {
+                var els = document.getElementsByClassName(args.object.get('tooltipsCSSClass'));
+                
+                // Create a real array - not an HTMLCollection
+                var arr = Array.from(els);
+
+                for (let i=0,len=arr.length; i<len; ++i) {
+                    arr[i].parentNode.removeChild(arr[i]);
+                }
+                
+                RGraph.redraw();
+            }
+        }
+
+
+
+
+
+
+
+
         //
         // Fire the tooltip event
         //
