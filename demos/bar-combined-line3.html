@@ -1,0 +1,179 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A combined Bar and Line chart with clipped bars</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="1000" height="350">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        // Create the data and colors
+        barData  = [];
+        lineData = [];
+        colors   = [];
+
+        for (var i=0; i<50; ++i) {
+            if (i < 30) {
+                barData[i] = RGraph.random(-100, 0);
+                colors[i] = '#318CBD';
+            } else {
+                barData[i] = RGraph.random(0, 100);
+                colors[i] = '#BD3929';
+            }
+            
+            lineData[i] = (((i/60) * 200) - 100) * RGraph.random(0, 10);
+        }
+
+
+
+
+        // Now add the line chart
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: barData,
+            options: {
+                colors: ['#000'],
+                xaxisPosition: 'center',
+                xaxis: false,
+                yaxis: false,
+                linewidth: 2,
+                shadowOffsetx: 0,
+                shadowOffsety: 0,
+                shadowBlur: 5,
+                tickmarksStyle: false,
+                marginLeft: 35,
+                filled: true,
+                filledColors: ['#0002'],
+                backgroundGrid: false,
+                spline: true
+            }
+        });
+        
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: barData,
+            options: {
+                title: 'A combined Bar and Line chart',
+                titleSubtitle: 'The Line is animated using the trace effect',
+                titleBold: true,
+                titleSize: 16,
+                shadowBlur: 1,
+                shadowOffsetx: 1,
+                shadowOffsety: 1,
+                marginInner: 1,
+                marginLeft: 35,
+                marginTop: 50,
+                textFont: 'Helvetica',
+                colors: colors,
+                colorsSequential: true,
+                xaxisPosition: 'center',
+                backgroundGrid: false,
+                yaxis: false,
+                yaxisScaleMax: 100,
+                yaxisScale: false,
+                marginBottom: 50,
+                colorsStroke: 'rgba(0,0,0,0)',
+                xaxisLabelsOffset: 8,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 3,
+                xaxisColor: '#333',
+                xaxisLabels: [
+                    '1987', '\n1988','1989','\n1990','1991',
+                    '\n1992', '1993','\n1994','1995','\n1996',
+                    '1997', '\n1998','1999','\n2000','2001',
+                    '\n2002','2003','\n2004','2005','\n2006',
+                    '2007','\n2008','2009','\n2010','2011',
+                    '\n2012','2013','\n2014','2015','\n2016'
+                ]
+            }
+        });
+        
+        // Create the combined class
+        combo = new RGraph.CombinedChart([bar, line]);
+        combo.draw();
+        
+        //
+        //
+        // This code (which is set to run after the chart has
+        // been first drawn), clips the canvas to the underside of
+        // the line. Thus the bar will end up being clipped.
+        //
+        // Create the coords that are used in the clipping
+        clippingCoords = RGraph.arrayClone(line.coordsSpline[0]);
+
+
+        // Line from the X axis up to the starting coord
+
+        clippingCoords.unshift([
+            line.coords[0][0] - 50,
+            line.coords[0][1]
+        ]);
+
+        clippingCoords.unshift([
+            line.coords[0][0] - 50,
+            line.canvas.height / 2
+        ]);
+        
+        //
+        // Line down to the X axis
+        //
+        clippingCoords.push([
+            line.coords[line.coords.length - 1][0] + 50,
+            line.coords[line.coords.length - 1][1]
+        ]);
+        clippingCoords.push([
+            line.coords[line.coords.length - 1][0] + 50,
+            line.canvas.height / 2
+        ]);
+
+        bar.set('clip', clippingCoords);
+
+        RGraph.redraw();
+
+
+        
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [0],
+            options: {
+                title: 'A combined Bar and Line chart',
+                titleSubtitle: 'The Line is animated using the trace effect',
+                titleBold: true,
+                titleSize: 16,
+                marginInner: 1,
+                marginLeft: 35,
+                marginTop: 50,
+                marginBottom: 50,
+                textFont: 'Helvetica',
+                xaxisPosition: 'center',
+                backgroundGrid: false,
+                yaxis: false,
+                yaxisScaleMax: 100,
+                colorsStroke: 'rgba(0,0,0,0)',
+                xaxis: false,
+                xaxisLabelsOffset: 8,
+                xaxisLabels: [
+                    '1987', '\n1988','1989','\n1990','1991',
+                    '\n1992', '1993','\n1994','1995','\n1996',
+                    '1997', '\n1998','1999','\n2000','2001',
+                    '\n2002','2003','\n2004','2005','\n2006',
+                    '2007','\n2008','2009','\n2010','2011',
+                    '\n2012','2013','\n2014','2015','\n2016'
+                ]
+            }
+        }).draw()   ;
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
