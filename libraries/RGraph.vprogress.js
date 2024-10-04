@@ -123,6 +123,7 @@
             tooltipsCssClass:               'RGraph_tooltip',
             tooltipsCss:                    null,
             tooltipsHighlight:              true,
+            tooltipsPersistent:             false,
             tooltipsEvent:                  'onclick',
             tooltipsFormattedThousand:      ',',
             tooltipsFormattedPoint:         '.',

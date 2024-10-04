@@ -101,6 +101,7 @@
             tooltipsHighlight:          true,
             tooltipsCoordsPage:         false,
             tooltipsValign:             'top',
+            tooltipsPersistent:         false,
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedDecimals:  0,

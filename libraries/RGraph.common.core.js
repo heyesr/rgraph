@@ -10711,6 +10711,8 @@
     // @param array   coords  An array of coordinate pairs
     // @param boolean moveto  Whether to moveTo the first
     //                        point or lineTo
+    // @param boolean stroke  Whether to stroke the line or not
+    // @param boolean fill    Whether to fill the line or not
     //
     RGraph.drawLine = function ()
     {

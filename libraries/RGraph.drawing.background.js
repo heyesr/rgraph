@@ -107,6 +107,7 @@
             tooltipsCss:                null,
             tooltipsEffect:             'slide',
             tooltipsEvent:              'onclick',
+            tooltipsPersistent:         false,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedDecimals:  0,

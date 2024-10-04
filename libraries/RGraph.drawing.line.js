@@ -91,6 +91,7 @@
             tooltipsCss:                {},
             tooltipsEvent:              'onclick',
             tooltipsHighlight:          true,
+            tooltipsPersistent:         false,
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedDecimals:  0,

@@ -204,6 +204,7 @@
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
+            tooltipsPersistent:         false,
             tooltipsNohideonclear:      false,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',

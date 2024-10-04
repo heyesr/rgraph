@@ -209,6 +209,7 @@
             tooltipsCss:                null,
             tooltipsHighlight:          true,
             tooltipsEvent:              'click',
+            tooltipsPersistent:         false,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedDecimals:  0,

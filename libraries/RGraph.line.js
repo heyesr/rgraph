@@ -269,6 +269,7 @@
             tooltipsCss:                null,
             tooltipsEvent:              'onmousemove',
             tooltipsHighlight:          true,
+            tooltipsPersistent:         false,
             tooltipsCoordsPage:         false,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',

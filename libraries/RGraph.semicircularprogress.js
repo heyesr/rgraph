@@ -187,6 +187,7 @@
             tooltipsCss:                     null,
             tooltipsEvent:                   'onclick',
             tooltipsHighlight:               true,
+            tooltipsPersistent:              false,
             tooltipsHotspotXonly:            false,
             tooltipsFormattedThousand:       ',',
             tooltipsFormattedPoint:          '.',

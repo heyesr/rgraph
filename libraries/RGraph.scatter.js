@@ -220,6 +220,7 @@
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
+            tooltipsPersistent:         false,
             tooltipsCoordsPage:         false,
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',

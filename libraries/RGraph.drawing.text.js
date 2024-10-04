@@ -92,6 +92,7 @@
             tooltipsEvent:              'onclick',
             tooltipsHighlight:          true,
             tooltipsCoordsPage:         false,
+            tooltipsPersistent:         false,
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedDecimals:  0,

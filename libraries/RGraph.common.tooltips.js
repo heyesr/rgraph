@@ -1198,7 +1198,7 @@
         //
         // Enable persistent tooltips if requested
         //
-        if (args.object.get('tooltipsPersist')) {
+        if (args.object.get('tooltipsPersist') || args.object.get('tooltipsPersistent')) {
         
             RGraph.tooltip.persistent = {divs:[]};
 

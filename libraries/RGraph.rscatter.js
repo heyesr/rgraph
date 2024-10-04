@@ -209,6 +209,7 @@
             tooltipsCssClass:                       'RGraph_tooltip',
             tooltipsCss:                            null,
             tooltipsHighlight:                      true,
+            tooltipsPersistent:                     false,
             tooltipsHotspot:                        3,
             tooltipsHotspotIgnore:                  null,
             tooltipsCoordsPage:                     false,

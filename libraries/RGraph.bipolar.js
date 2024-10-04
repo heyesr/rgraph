@@ -199,6 +199,7 @@
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,
             tooltipsHighlight:          true,
+            tooltipsPersistent:         false,
             tooltipsEvent:              'click',
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedPoint:     '.',

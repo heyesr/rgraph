@@ -281,6 +281,7 @@
             tooltipsEvent:                     'onclick',
             tooltipsHighlight:                 true,
             tooltipsOverride:                  null,
+            tooltipsPersistent:                 false,
             tooltipsFormattedThousand:         ',',
             tooltipsFormattedPoint:            '.',
             tooltipsFormattedDecimals:         0,

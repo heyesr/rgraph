@@ -103,6 +103,7 @@
             tooltipsHighlight:          true,
             tooltipsEffect:             'slide',
             tooltipsEvent:              'onclick',
+            tooltipsPersistent:         false,
             tooltipsFormattedPoint:     '.',
             tooltipsFormattedThousand:  ',',
             tooltipsFormattedDecimals:  0,
