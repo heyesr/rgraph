@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart Grow effect</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="example-canvas-container">
+            <canvas id="cvs" width="700" height="300">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script>
+        new RGraph.Line({
+            id: 'cvs',
+            data: [
+                [8,7,6,4,9,5,6,7,9],
+                [4,8,6,3,5,2,4,5,8]
+            ],
+            options: {
+                spline: true,
+                marginInner: 25,
+                xaxis: false,
+                yaxis: false,
+                backgroundGridVlines: false,
+                backgroundGridBorder: false,
+                shadow: false,
+                tickmarks: true,
+                tickmarksStyle: 'endcircle',
+                tickmarksSize: 7
+            }
+        }).grow({frames: 90});
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

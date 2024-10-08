@@ -1,0 +1,43 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.radar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Radar chart wave effect</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>    
+        radar = new RGraph.Radar({
+            id: 'cvs',
+            data: [
+                [4,8,6,4,4,2,3,8,4,6,5,8,4,9,5],
+                [9,8,6,4,8,9,8,6,3,5,8,8,9,6,5],
+                [1,3,5,4,6,8,7,1,2,5,4,3,1,2,1],
+            ],
+            options: {
+                tickmarks: null,
+                colors: ['red','black','green','blue','yellow','pink'],
+                colorsStroke: ['transparent'],
+                labelsAxes: 'n',
+                tickmarks: null,
+                backgroundGridPoly: true,
+                accumulative: true
+            }
+        }).wave({frames: 180});
+    </script>
+    
+    <script>showSource()</script>
+
+
+</body>
+</html>
