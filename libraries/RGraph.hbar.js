@@ -2718,99 +2718,6 @@
 
 
         //
-        // Grow
-        // 
-        // The HBar chart Grow effect gradually increases the values of the bars
-        // 
-        // @param object   OPTIONAL Options for the effect. You can pass frames here
-        // @param function OPTIONAL A callback function
-        //
-        //this.grow = function ()
-        //{
-        //    var obj         = this,
-        //        opt         = arguments[0] || {},
-        //        frames      = opt.frames || 30,
-        //        frame       = 0,
-        //        callback    = arguments[1] || function () {},
-        //        labelsAbove = properties.labelsAbove;
-        //    
-        //    this.set('labelsAbove', false);
-
-
-        //    // Save the data
-        //    obj.original_data = RGraph.arrayClone(obj.data);
-
-
-        //    // Stop the scale from changing by setting xaxisScaleMax (if it's not already set)
-
-        //    if ( properties.xaxisScaleMax == 0) {
-
-        //        var xmax = 0;
-    
-        //        for (var i=0; i<obj.data.length; ++i) {
-        //            if (RGraph.isArray(obj.data[i]) && properties.grouping == 'stacked') {
-        //                xmax = Math.max(xmax, RGraph.arraySum(obj.data[i]));
-        //            } else if (RGraph.isArray(obj.data[i]) && properties.grouping == 'grouped') {
-        //                xmax = Math.max(xmax, RGraph.arrayMax(obj.data[i]));
-        //            } else {
-        //                xmax = Math.max(xmax, Math.abs(RGraph.arrayMax(obj.data[i])));
-        //            }
-        //        }
-
-        //        var scale2 = RGraph.getScale({object: obj, options: {'scale.max': xmax,'scale.round': obj.properties.xaxisScaleRound}});
-        //        obj.set('xaxisScaleMax', scale2.max);
-        //    }
-
-        //    function iterator ()
-        //    {
-        //        // Alter the Bar chart data depending on the frame
-        //        for (var j=0,len=obj.original_data.length; j<len; ++j) {
-        //            
-        //            // This stops the animation from being completely linear
-        //            var easingFactor = RGraph.Effects.getEasingMultiplier(frames, frame);
-    
-        //            if (typeof obj.data[j] === 'object' && obj.data[j]) {
-        //                for (var k=0,len2=obj.data[j].length; k<len2; ++k) {
-        //                    obj.data[j][k] = RGraph.isNullish(obj.data[j][k]) ? null : obj.original_data[j][k] * easingFactor;
-        //                }
-        //            } else {
-        //                obj.data[j] = RGraph.isNullish(obj.data[j]) ? null : obj.original_data[j] * easingFactor;
-        //            }
-        //        }
-    
-    
-
-        //       RGraph.redrawCanvas(obj.canvas);
-    
-        //        if (frame < frames) {
-        //            frame += 1;
-        //           RGraph.Effects.updateCanvas(iterator);
-        //        } else {
-
-        //            if (labelsAbove) {
-        //                obj.set('labelsAbove', true);
-        //                RGraph.redraw();
-        //            }
-
-        //            callback(obj);
-        //        }
-        //    }
-            
-        //    iterator();
-            
-        //    return this;
-        //};
-
-
-
-
-
-
-
-
-        //
-        // Grow
-        //
         // The HBar chart Grow effect gradually increases the values of the bars
         //
         // @param object       An object of options - eg: {frames: 30}
@@ -3073,8 +2980,9 @@
 
 
         //
-        // (new) Bar chart Wave effect. This is a rewrite that should be smoother
-        // because it just uses a single loop and not setTimeout
+        // HBar chart Wave effect. This is a rewrite that should be
+        // smoother because it just uses a single loop and not
+        // setTimeout
         // 
         // @param object   OPTIONAL An object map of options. You specify 'frames' here to give the number of frames in the effect
         // @param function OPTIONAL A function that will be called when the effect is complete

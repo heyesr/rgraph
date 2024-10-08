@@ -927,7 +927,7 @@
 
 
         //
-        // Meter Grow
+        // Meter chart Grow effect
         // 
         // This effect gradually increases the represented value
         // 

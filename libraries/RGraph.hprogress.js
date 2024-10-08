@@ -1662,7 +1662,8 @@ if (properties.corners === 'round') {
 
 
         //
-        // HProgress Grow effect (which is also the VPogress Grow effect)
+        // HProgress Grow effect (which is also the the same as the
+        // VPogress Grow effect)
         // 
         // @param object obj The chart object
         //

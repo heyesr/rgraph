@@ -915,7 +915,7 @@
 
 
         //
-        // Meter Grow
+        // Seghmented Meter Grow effect
         // 
         // This effect gradually increases the represented value
         // 

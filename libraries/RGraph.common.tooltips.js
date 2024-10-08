@@ -1200,7 +1200,10 @@
         //
         if (args.object.get('tooltipsPersist') || args.object.get('tooltipsPersistent')) {
         
-            RGraph.tooltip.persistent = {divs:[]};
+            if (!RGraph.tooltip.persistent) {
+                RGraph.tooltip.persistent = {divs:[]};
+            }
+
 
             setTimeout(function ()
             {

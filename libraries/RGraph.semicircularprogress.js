@@ -1785,7 +1785,7 @@
 
 
         //
-        // HProgress Grow effect (which is also the VPogress Grow effect)
+        // Semi-Circular Progress bar Grow effect
         // 
         // @param object obj The chart object
         //

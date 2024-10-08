@@ -68,8 +68,7 @@
 
 
         //
-        // chart.tooltip.override allows you to totally take control
-        // of rendering the tooltip yourself
+        // chart.tooltip.override allows you to totally take control of rendering the tooltip yourself
         //
         if (RGraph.SVG.isFunction(properties.tooltipsOverride)) {
 
@@ -84,7 +83,7 @@
         }
 
 
-
+opt.object.removeHighlight();
 
 
 
@@ -1064,6 +1063,79 @@ if (parseInt(tooltipObj.style.left) < 0) {
         RGraph.SVG.REG.set('tooltip', tooltipObj);
         RGraph.SVG.REG.set('tooltip-lastx', parseFloat(tooltipObj.style.left));
         RGraph.SVG.REG.set('tooltip-lasty', parseFloat(tooltipObj.style.top));
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////
+// PERSISTENT tooltips //
+/////////////////////////
+
+
+    //
+    // Enable persistent tooltips if requested
+    //
+    if (opt.object.get('tooltipsPersistent')) {
+    
+        if (!RGraph.SVG.tooltip.persistent) {
+            RGraph.SVG.tooltip.persistent = {divs:[]};
+        }
+
+        setTimeout(function ()
+        {
+            // Change the pointer ID
+            var pointer = document.getElementById('RGraph_tooltipsPointer_' + opt.object.id);
+            if (pointer) {
+                pointer.id += '_' + RGraph.SVG.random(18564, 999999);
+            }
+
+            // Save a reference to all of the tooltip DIV
+            // objects
+            RGraph.SVG.tooltip.persistent.divs.push(RGraph.SVG.REG.get('tooltip'));
+
+            // Set the tooltips reference to null
+            RGraph.SVG.REG.set('tooltip', null);
+            
+            // Set the last coords (for the slide effect)
+            // to null
+            //RGraph.tooltip_slide_effect_previous_x_coordinate = null;
+            //RGraph.tooltip_slide_effect_previous_y_coordinate = null;
+            //
+        }, 50);
+
+        //
+        // A function to clear all of the persistent
+        // tooltip DIV tags
+        //
+        RGraph.SVG.tooltip.persistent.clear =
+        RGraph.SVG.tooltip.persistent.clearAll = function ()
+        {
+            var els = document.getElementsByClassName(opt.object.get('tooltipsCSSClass'));
+            
+            // Create a real array - not an HTMLCollection
+            var arr = Array.from(els);
+
+            for (let i=0,len=arr.length; i<len; ++i) {
+                arr[i].parentNode.removeChild(arr[i]);
+            }
+            
+            RGraph.SVG.redraw();
+        }
+    }
+/////////////////
+/////////////////
+/////////////////
+
+
 
 
         //

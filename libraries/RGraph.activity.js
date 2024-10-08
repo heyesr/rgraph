@@ -1648,7 +1648,7 @@
 
 
         //
-        // Meter Grow
+        // Activity chart Grow effect
         // 
         // This effect gradually increases the represented value
         // 

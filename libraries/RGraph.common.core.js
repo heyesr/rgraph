@@ -693,8 +693,9 @@
 
             case 'object':
                 if (array.constructor.toString().indexOf('Array') >= 0) {
-                    ret = new Array();  
+                    ret = new Array();
                     for (var i=0; i<array.length; ++i) {
+
                         ret[i] = RGraph.arrayClone(array[i], objects, maxdepth - 1);
                     }
                 } else if (array.constructor.toString().indexOf('Object') > 0 && objects) {

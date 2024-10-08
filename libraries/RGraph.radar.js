@@ -450,7 +450,8 @@
             //
             this.data = RGraph.arrayClone(this.original_data);
 
-            // Loop thru the data array if the accumulative option is enable checking to see if all the
+            // Loop thru the data array if the accumulative option
+            // is enable checking to see if all the
             // datasets have the same number of elements.
             if (properties.accumulative) {
                 for (var i=0; i<this.data.length; ++i) {
@@ -2107,15 +2108,153 @@
 
 
         //
-        // Radar chart grow
+        // Radar chart Wave effect.
+        //
+        // @param object   OPTIONAL An object map of options. You
+        //                          specify 'frames' here to give
+        //                          the number of frames in the
+        //                          effect.
+        // @param function OPTIONAL A function that will be called
+        //                          when the effect is complete.
+        //
+        this.wave = function ()
+        {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            // Reset the data to the original
+            var original = RGraph.arrayClone(this.unmodified_data);
+
+            // Mung the data to produce the stacking effect
+            // if accumulative has been requested.
+            if (properties.accumulative) {
+                for (let i=1; i<original.length; ++i) {
+                    for (let j=0; j<original[i].length; ++j) {
+                        original[i][j] = original[i][j] + original[i - 1][j];
+                    }
+                }
+            }
+
+
+
+            this.draw();
+
+            var obj = this,
+                opt = arguments[0] || {};
+
+            opt.frames      =  opt.frames || 60;
+            opt.startFrames = [];
+            opt.counters    = [];
+
+            var framesperpoint = opt.frames / 3,
+                frame          = -1,
+                callback       = arguments[1] || function () {};
+
+            for (var dataset=0; dataset<original.length; ++dataset) {
+                for (var i=0; i<original[dataset].length; ++i) {
+
+                    opt.startFrames[i] = ((opt.frames / 2) / (original[0].length - 1)) * i;
+                    opt.counters[i] = 0;
+                    
+                    this.original_data[dataset][i] = 0;
+                }
+            }
+
+
+            //
+            // This stops the chart from jumping
+            //
+            this.set('scaleMax', this.scale2.max);
+            RGraph.clear(this.canvas);
+
+
+            function iterator ()
+            {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+
+                ++frame;
+
+                // Loop thru each dataset
+                for (var dataset=0; dataset<original.length; ++dataset) {                   
+                    for (var i=0,len=original[dataset].length; i<len; i+=1) {
+                        if (frame > opt.startFrames[i]) {
+                            obj.original_data[dataset][i] = original[dataset][i] * ( Math.min((opt.counters[i]++), framesperpoint) / framesperpoint);
+                        }
+                    }
+                }
+                RGraph.clear(obj.canvas);
+                RGraph.redrawCanvas(obj.canvas);
+
+                if (frame >= opt.frames) {
+                    callback(obj);
+                } else {
+                    RGraph.Effects.updateCanvas(iterator);
+                }
+            }
+
+            iterator();
+
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Radar chart grow effect
         // 
-        // This effect gradually increases the magnitude of the points on the radar chart
+        // This effect gradually increases the magnitude of the
+        // points on the radar chart
         // 
         // @param object     Options for the effect
         // @param function   An optional callback that is run when the effect is finished
         //
         this.grow = function ()
         {
+            // Reset the data to the original
+            var data = RGraph.arrayClone(this.unmodified_data);
+
+            // Mung the data so that we can get a suitable maxvalue;
+            // if accumulative has been requested.
+            if (properties.accumulative) {
+                for (let i=1; i<data.length; ++i) {
+                    for (let j=0; j<data[i].length; ++j) {
+                        data[i][j] = data[i][j] + data[i - 1][j];
+                    }
+                }
+                
+                // Calulate the max value from the last dataset
+                var accumulativeMax = RGraph.arrayMax(data[data.length - 1]);
+
+                // Get a scale based on the maximum value
+                var scale = RGraph.getScale({
+                    object: this,
+                    options: {
+                        'scale.max': accumulativeMax
+                    }
+                });
+
+                // Now set the maximum value
+                this.set('scaleMax', scale.max);
+            
+            } else {
+                data = RGraph.arrayClone(this.unmodified_data);
+            }
+
+
+
+
             // Cancel any stop request if one is pending
             this.cancelStopAnimation();
 
@@ -2123,8 +2262,7 @@
                 callback = arguments[1] ? arguments[1] : function () {},
                 opt      = arguments[0] ? arguments[0] : {},
                 frames   = opt.frames ? opt.frames : 30,
-                frame    = 0,
-                data     = RGraph.arrayClone(this.unmodified_data);
+                frame    = 0;
 
             function iterator ()
             {
@@ -2137,7 +2275,6 @@
                 }
 
                 for (var i=0,len=data.length; i<len; ++i) {
-    
                     for (var j=0,len2=data[i].length; j<len2; ++j) {
                         obj.original_data[i][j] = (frame / frames)  * data[i][j];
                     }
@@ -2167,7 +2304,7 @@
 
 
         //
-        // Trace (Radar chart)
+        // Radar chart Trace effect
         // 
         // This is a Trace effect for the Radar chart
         // 

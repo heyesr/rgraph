@@ -1104,9 +1104,8 @@
         //
         // Grow
         // 
-        // The Fuel chart Grow effect gradually increases the values of the Fuel chart
-        // 
-        // @param object obj The graph object
+        // The Fuel chart Grow effect gradually increases the values
+        // of the Fuel chart
         //
         this.grow = function ()
         {

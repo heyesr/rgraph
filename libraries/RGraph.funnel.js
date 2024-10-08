@@ -1363,7 +1363,7 @@
 
 
         //
-        // Pie chart grow
+        // Funnel chart grow
         // 
         // Gradually increases the vertical size of the
         // Funnel chart

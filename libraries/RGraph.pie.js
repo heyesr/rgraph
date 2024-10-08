@@ -2777,9 +2777,10 @@
 
 
         //
-        // Pie chart explode
+        // Pie chart explode effect
         // 
-        // Explodes the Pie chart - gradually incrementing the size of the explode property
+        // Explodes the Pie chart - gradually incrementing the
+        // size of the explode property
         // 
         // @param object     Options for the effect
         // @param function   An optional callback function to call when the animation completes
@@ -2843,7 +2844,7 @@
 
 
         //
-        // Pie chart grow
+        // Pie chart grow effect
         // 
         // Gradually increases the pie chart radius
         // 
@@ -2916,7 +2917,6 @@
         //
         this.wave = function ()
         {
-
             // Cancel any stop request if one is pending
             this.cancelStopAnimation();
 
@@ -3005,7 +3005,7 @@
 
 
         //
-        // RoundRobin
+        // Pie chart RoundRobin effect
         // 
         // This effect does two things:
         //  1. Gradually increases the size of each segment
@@ -3079,7 +3079,7 @@
 
 
         //
-        // roundRobinSequential
+        // Pie chart roundRobinSequential effect
         //
         // This function does similar to the above roundRobin
         // function but increases the segment sizes sequentially
@@ -3169,7 +3169,7 @@
 
 
         //
-        // Pie chart implode
+        // Pie chart implode effect
         // 
         // Implodes the Pie chart - gradually decreasing the size of the exploded property. It starts at the largest of
         // the canvas width./height

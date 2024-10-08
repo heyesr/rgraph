@@ -3014,7 +3014,7 @@
 
 
         //
-        // Trace2
+        // The Scatter chart Trace effect
         // 
         // This is a new version of the Trace effect which no longer requires jQuery and is more compatible
         // with other effects (eg Expand). This new effect is considerably simpler and less code.

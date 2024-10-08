@@ -2364,7 +2364,7 @@
 
 
         //
-        // Rose chart implode
+        // Rose chart implode effect
         // 
         // Implodes the Rose chart - gradually decreasing the size of the explode property. It starts at the largest of
         // the canvas width./height
@@ -2504,7 +2504,7 @@
 
 
         //
-        // (new) Rose chart Wave effect. This is a rewrite that
+        // Rose chart Wave effect. This is a rewrite that
         // should be smoother because it just uses a single loop
         // and not setTimeout
         //

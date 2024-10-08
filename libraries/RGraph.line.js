@@ -43,6 +43,7 @@
         this.original_colors        = [];
         this.firstDraw              = true; // After the first draw this will be false
         this.stopAnimationRequested = false;// Used to control the animations
+        this.growEffectMultiplier   = 1;    // Used by the Grow effect
 
 
 
@@ -1410,7 +1411,9 @@
             for (i=0,len=lineData.length; i<len; i+=1) {
 
                 var data_point = lineData[i];
-    
+// For the Grow effect!!
+data_point *= this.growEffectMultiplier;
+
                 //
                 // Get the yPos for the given data point
                 //
@@ -3559,14 +3562,82 @@
 
 
         //
-        // Unfold
+        // Line chart grow effect
         // 
-        // This effect gradually increases the X/Y coordinatesfrom 0
+        // This effect gradually increases the magnitude of the
+        // points on the Line chart
         // 
-        // @param object obj The chart object
+        // @param object     Options for the effect
+        // @param function   An optional callback that is run when
+        //                   the effect is finished
+        //
+        this.grow = function ()
+        {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
+            var obj      = this,
+                callback = arguments[1] ? arguments[1] : function () {},
+                opt      = arguments[0] ? arguments[0] : {},
+                frames   = opt.frames ? opt.frames : 30,
+                frame    = 0,
+                data     = RGraph.arrayClone(this.unmodified_data);
+
+                this.draw();
+                var max = this.scale2.max;
+                this.set('yaxisScaleMax', max);
+                RGraph.clear(this.canvas);
+
+            function iterator ()
+            {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
+                for (var i=0,len=data.length; i<len; ++i) {
+                    for (var j=0,len2=data[i].length; j<len2; ++j) {
+                        obj.original_data[i][j] = (frame / frames)  * data[i][j];
+                    }
+                }
+
+                RGraph.clear(obj.canvas);
+                RGraph.redrawCanvas(obj.canvas);
+    
+                if (frame < frames) {
+                    frame++;
+                    RGraph.Effects.updateCanvas(iterator);
+                } else {
+                    callback(obj);
+                }
+            }
+            
+            iterator();
+            
+            return this;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Unfold animation effect
+        // 
+        // This effect gradually increases the X/Y coordinates
+        // from 0
         //
         this.unfold = function ()
         {
+            // Cancel any stop request if one is pending
+            this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] ? arguments[0] : {},
                 frames   = opt.frames ? opt.frames : 30,
@@ -3578,6 +3649,14 @@
 
             function iterator ()
             {
+                if (obj.stopAnimationRequested) {
+    
+                    // Reset the flag
+                    obj.stopAnimationRequested = false;
+    
+                    return;
+                }
+
                 properties.animationFactor = ((1 - initial) * (frame / frames)) + initial;
     
                 RGraph.clear(obj.canvas);
@@ -3903,6 +3982,9 @@
         this.unfoldfromcentertrace =
         this.unfoldFromCenterTrace = function ()
         {
+            // Cancel any stop request if one is pending
+            //this.cancelStopAnimation();
+
             var obj      = this,
                 opt      = arguments[0] || {},
                 frames   = opt.frames || 30,
@@ -3925,7 +4007,8 @@
 
 
             //
-            // When the Trace function finishes it calls this function
+            // When the Trace function finishes it calls this
+            // function
             //
             var unfoldCallback = function ()
             {
@@ -4015,7 +4098,7 @@
                 }
             }
 
-            function unfoldFromCenter ()
+            function iterator ()
             {
                 if (obj.stopAnimationRequested) {
     
@@ -4035,7 +4118,7 @@
                 RGraph.redrawCanvas(obj.canvas);
     
                 if (--frames > 0) {
-                    RGraph.Effects.updateCanvas(unfoldFromCenter);
+                    RGraph.Effects.updateCanvas(iterator);
                 } else {
                     obj.original_data = RGraph.arrayClone(original_data);
                     RGraph.clear(obj.canvas);
@@ -4045,7 +4128,7 @@
                 }
             }
             
-            unfoldFromCenter();
+            iterator();
             
             return this;
         };
