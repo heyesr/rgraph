@@ -1505,6 +1505,12 @@
             //        RGraph.SVG.REG.set('highlight', null);
             //    }, false);
             //}
+            
+            RGraph.SVG.drawYAxis(this, {
+                labels: false,
+                yaxis:  true,
+                title:  false
+            });
 
 
             // Store the highlight rect in the rebistry so

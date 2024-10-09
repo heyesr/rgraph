@@ -413,12 +413,12 @@
     //
     //@param The chart object
     //
-    RGraph.SVG.drawXAxis = function (obj)
+    RGraph.SVG.drawXAxis = function (obj, opt = {})
     {
         var properties = obj.properties;
 
         // Draw the axis
-        if (properties.xaxis) {
+        if (properties.xaxis && opt.xaxis !== false) {
 
             var y = obj.type === 'hbar' ? obj.height - properties.marginBottom : obj.getYCoord(obj.scale.min < 0 && obj.scale.max < 0 ? obj.scale.max : (obj.scale.min > 0 && obj.scale.max > 0 ? obj.scale.min : 0));
 
@@ -733,11 +733,6 @@
                     });
                 }
             }
-
-
-
-
-
         }
 
 
@@ -750,282 +745,285 @@
 
 
 
-
-        
-        // Get the text configuration
-        var textConf = RGraph.SVG.getTextConf({
-            object: obj,
-            prefix: 'xaxisLabels'
-        });
-
         //
-        // Draw an X axis scale
+        // Draw the labels
         //
-        if (properties.xaxisScale) {
+        if (opt.labels !== false) {
 
-            if (obj.type === 'scatter') {
-                obj.xscale = RGraph.SVG.getScale({
-                    object:    obj,
-                    numlabels: properties.xaxisLabelsCount,
-                    unitsPre:  properties.xaxisScaleUnitsPre,
-                    unitsPost: properties.xaxisScaleUnitsPost,
-                    max:       properties.xaxisScaleMax,
-                    min:       properties.xaxisScaleMin,
-                    point:     properties.xaxisScalePoint,
-                    round:     properties.xaxisScaleRound,
-                    thousand:  properties.xaxisScaleThousand,
-                    decimals:  properties.xaxisScaleDecimals,
-                    strict:    typeof properties.xaxisScaleMax === 'number',
-                    formatter: properties.xaxisScaleFormatter
-                });
-                
-                
-                
-                
-                
-                
-                
-                var segment = obj.graphWidth / properties.xaxisLabelsCount
-                
-                for (var i=0; i<obj.xscale.labels.length; ++i) {
-                
-                    var x = properties.marginLeft + (segment * i) + segment + properties.xaxisLabelsOffsetx;
-                    var y = (obj.height - properties.marginBottom) + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
-                
-                    RGraph.SVG.text({
-                        
-                        object: obj,
-                        parent: obj.svgAllGroup,
-                        tag:    'labels.xaxis',
-                        
-                        text:   obj.xscale.labels[i],
-                        
-                        x:      x,
-                        y:      y,
-                        
-                        halign: 'center',
-                        valign: 'top',
-
-                        font:   textConf.font,
-                        size:   textConf.size,
-                        bold:   textConf.bold,
-                        italic: textConf.italic,
-                        color:  textConf.color
-                    });
-                }
-                
-                
-                
-                
-
-                // Add the minimum label if labels are enabled
-                if (properties.xaxisLabelsCount > 0) {
-                    var y   = obj.height - properties.marginBottom + properties.xaxisLabelsOffsety + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10),
-                        str = RGraph.SVG.numberFormat({
-                            object:     obj,
-                            num:        properties.xaxisScaleMin.toFixed(properties.xaxisScaleDecimals),
-                            prepend:    properties.xaxisScaleUnitsPre,
-                            append:     properties.xaxisScaleUnitsPost,
-                            point:      properties.xaxisScalePoint,
-                            thousand:   properties.xaxisScaleThousand,
-                            formatter:  properties.xaxisScaleFormatter
-                        });
-
-                    var text = RGraph.SVG.text({
-                        
-                        object: obj,
-                        parent: obj.svgAllGroup,
-                        tag:    'labels.xaxis',
-                        
-                        text: typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, properties.xaxisScaleMin) : str,
-                        
-                        x: properties.marginLeft + properties.xaxisLabelsOffsetx,
-                        y: y,
-                        
-                        halign: 'center',
-                        valign: 'top',
-
-                        font:   textConf.font,
-                        size:   textConf.size,
-                        bold:   textConf.bold,
-                        italic: textConf.italic,
-                        color:  textConf.color
-                    });
-                }
-            
-            
-            // =========================================================================
-            } else {
-
-                var segment = obj.graphWidth / properties.xaxisLabelsCount,
-                    scale   = obj.scale;
-
-                for (var i=0; i<scale.labels.length; ++i) {
-
-                    var x = properties.marginLeft + (segment * i) + segment + properties.xaxisLabelsOffsetx;
-                    var y = (obj.height - properties.marginBottom) + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
-
-                    // If the Y axis is positioned on the RHS then the
-                    // labels should be reversed (HBar)
-                    if (   (obj.type === 'hbar' || (obj.type === 'scatter' && properties.xaxis))
-                        && properties.yaxisPosition === 'right'
-                       ) {
-                        x = obj.width - properties.marginRight - (segment * i) - segment + properties.xaxisLabelsOffsetx;
-                    }
-
-                    RGraph.SVG.text({
-                        
-                        object: obj,
-                        parent: obj.svgAllGroup,
-                        
-                        text:   obj.scale.labels[i],
-                        x:      x,
-                        y:      y,
-                        halign: 'center',
-                        valign: 'top',
-                        
-                        tag:    'labels.xaxis',
-                        
-                        font:   textConf.font,
-                        size:   textConf.size,
-                        bold:   textConf.bold,
-                        italic: textConf.italic,
-                        color:  textConf.color
-                    });
-                    
-                }
-                
-                
-                
-                
+            // Get the text configuration
+            var textConf = RGraph.SVG.getTextConf({
+                object: obj,
+                prefix: 'xaxisLabels'
+            });
     
-                // Add the minimum label if labels are enabled
-                if (properties.xaxisLabelsCount > 0) {
-                    var y   = obj.height - properties.marginBottom + properties.xaxisLabelsOffsety + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10),
-                        str = RGraph.SVG.numberFormat({
-                            object:     obj,
-                            num:        properties.xaxisScaleMin.toFixed(properties.xaxisScaleDecimals),
-                            prepend:    properties.xaxisScaleUnitsPre,
-                            append:     properties.xaxisScaleUnitsPost,
-                            point:      properties.xaxisScalePoint,
-                            thousand:   properties.xaxisScaleThousand,
-                            formatter:  properties.xaxisScaleFormatter
-                        });
-
-                    var text = RGraph.SVG.text({
-                        
-                        object: obj,
-                        parent: obj.svgAllGroup,
-                        tag:    'labels.xaxis',
-                        
-                        text: typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, properties.xaxisScaleMin) : str,
-
-                        x: properties.yaxisPosition === 'right' ? obj.width - properties.marginRight + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx,
-                        y: y,
-                        
-                        halign: 'center',
-                        valign: 'top',
-                        
-                        font:   textConf.font,
-                        size:   textConf.size,
-                        bold:   textConf.bold,
-                        italic: textConf.talic,
-                        color:  textConf.color
+            //
+            // Draw an X axis scale
+            //
+            if (properties.xaxisScale) {
+    
+                if (obj.type === 'scatter') {
+                    obj.xscale = RGraph.SVG.getScale({
+                        object:    obj,
+                        numlabels: properties.xaxisLabelsCount,
+                        unitsPre:  properties.xaxisScaleUnitsPre,
+                        unitsPost: properties.xaxisScaleUnitsPost,
+                        max:       properties.xaxisScaleMax,
+                        min:       properties.xaxisScaleMin,
+                        point:     properties.xaxisScalePoint,
+                        round:     properties.xaxisScaleRound,
+                        thousand:  properties.xaxisScaleThousand,
+                        decimals:  properties.xaxisScaleDecimals,
+                        strict:    typeof properties.xaxisScaleMax === 'number',
+                        formatter: properties.xaxisScaleFormatter
                     });
-                }
-            }
-
-        //
-        // Draw the X axis labels
-        //
-        } else {
-            if (typeof properties.xaxisLabels === 'object' && !RGraph.SVG.isNullish(properties.xaxisLabels) ) {
-
-                var angle = properties.xaxisLabelsAngle;
-
-                // Loop through the X labels
-                if (properties.xaxisLabelsPosition === 'section') {
-                
-                    var segment = (obj.width - properties.marginLeft - properties.marginRight - (properties.marginInnerLeft || 0) - (properties.marginInnerRight || 0) ) / properties.xaxisLabels.length;
-                
-                    for (var i=0; i<properties.xaxisLabels.length; ++i) {
                     
-                        var x = properties.marginLeft + (properties.marginInnerLeft || 0) + (segment / 2) + (i * segment);
-
-                        if (obj.scale.max <=0 && obj.scale.min < obj.scale.max) {
-                            var y = properties.marginTop - (RGraph.SVG.ISFF ? 5 : 10)  - (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
-                            var valign = 'bottom';
-                        } else {
-                            var y = obj.height - properties.marginBottom + (RGraph.SVG.ISFF ? 5 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
-                            var valign = 'top';
-                        }
-
+                    
+                    
+                    
+                    
+                    
+                    
+                    var segment = obj.graphWidth / properties.xaxisLabelsCount
+                    
+                    for (var i=0; i<obj.xscale.labels.length; ++i) {
+                    
+                        var x = properties.marginLeft + (segment * i) + segment + properties.xaxisLabelsOffsetx;
+                        var y = (obj.height - properties.marginBottom) + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
+                    
                         RGraph.SVG.text({
-                            object:     obj,
-                            parent:     obj.svgAllGroup,
-                            tag:        'labels.xaxis',
-                            text:       properties.xaxisLabels[i],
-                            x:          x + properties.xaxisLabelsOffsetx,
-                            y:          y,
-                            valign:     (typeof angle === 'number' && angle) ? 'center' : valign,
-                            halign:     (typeof angle === 'number' && angle) ? 'right' : 'center',
-                            angle:      angle,
-                            size:       textConf.size,
-                            italic:     textConf.italic,
-                            font:       textConf.font,
-                            bold:       textConf.bold,
-                            color:      textConf.color
-                        });
-                    }
-
-                } else if (properties.xaxisLabelsPosition === 'edge') {
-    
-                    if (obj.type === 'line') {
-                        var hmargin = properties.marginInner;
-                    } else {
-                        var hmargin = 0;
-                    }
-    
-    
-    
-                    var segment = (obj.graphWidth - hmargin - hmargin) / (properties.xaxisLabels.length - 1);
-
-                    for (var i=0; i<properties.xaxisLabels.length; ++i) {
-                    
-                        var x = properties.marginLeft + (i * segment) + hmargin;
-
-                        if (obj.scale.max <= 0 && obj.scale.min < 0) {
-                            valign = 'bottom';
-                            y = properties.marginTop - (RGraph.SVG.ISFF ? 5 : 10) - (properties.xaxisTickmarksLength - 5)  - (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety
-                        } else {
-                            valign = 'top';
-                            y = obj.height - properties.marginBottom + (RGraph.SVG.ISFF ? 5 : 10) + (properties.xaxisTickmarksLength - 5) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
-                        }
-
-                        RGraph.SVG.text({
+                            
                             object: obj,
                             parent: obj.svgAllGroup,
                             tag:    'labels.xaxis',
-                            text: properties.xaxisLabels[i],
-                            x: x + properties.xaxisLabelsOffsetx,
-                            y: y,
-                            valign: (typeof angle === 'number' && angle) ? 'center' : valign,
-                            halign: (typeof angle === 'number' && angle) ? 'right' : 'center',
-                            angle: angle,
-                            size:   textConf.size,
-                            italic: textConf.italic,
+                            
+                            text:   obj.xscale.labels[i],
+                            
+                            x:      x,
+                            y:      y,
+                            
+                            halign: 'center',
+                            valign: 'top',
+    
                             font:   textConf.font,
+                            size:   textConf.size,
                             bold:   textConf.bold,
+                            italic: textConf.italic,
+                            color:  textConf.color
+                        });
+                    }
+                    
+                    
+                    
+                    
+    
+                    // Add the minimum label if labels are enabled
+                    if (properties.xaxisLabelsCount > 0) {
+                        var y   = obj.height - properties.marginBottom + properties.xaxisLabelsOffsety + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10),
+                            str = RGraph.SVG.numberFormat({
+                                object:     obj,
+                                num:        properties.xaxisScaleMin.toFixed(properties.xaxisScaleDecimals),
+                                prepend:    properties.xaxisScaleUnitsPre,
+                                append:     properties.xaxisScaleUnitsPost,
+                                point:      properties.xaxisScalePoint,
+                                thousand:   properties.xaxisScaleThousand,
+                                formatter:  properties.xaxisScaleFormatter
+                            });
+    
+                        var text = RGraph.SVG.text({
+                            
+                            object: obj,
+                            parent: obj.svgAllGroup,
+                            tag:    'labels.xaxis',
+                            
+                            text: typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, properties.xaxisScaleMin) : str,
+                            
+                            x: properties.marginLeft + properties.xaxisLabelsOffsetx,
+                            y: y,
+                            
+                            halign: 'center',
+                            valign: 'top',
+    
+                            font:   textConf.font,
+                            size:   textConf.size,
+                            bold:   textConf.bold,
+                            italic: textConf.italic,
+                            color:  textConf.color
+                        });
+                    }
+                
+                
+                // =========================================================================
+                } else {
+    
+                    var segment = obj.graphWidth / properties.xaxisLabelsCount,
+                        scale   = obj.scale;
+    
+                    for (var i=0; i<scale.labels.length; ++i) {
+    
+                        var x = properties.marginLeft + (segment * i) + segment + properties.xaxisLabelsOffsetx;
+                        var y = (obj.height - properties.marginBottom) + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
+    
+                        // If the Y axis is positioned on the RHS then the
+                        // labels should be reversed (HBar)
+                        if (   (obj.type === 'hbar' || (obj.type === 'scatter' && properties.xaxis))
+                            && properties.yaxisPosition === 'right'
+                           ) {
+                            x = obj.width - properties.marginRight - (segment * i) - segment + properties.xaxisLabelsOffsetx;
+                        }
+    
+                        RGraph.SVG.text({
+                            
+                            object: obj,
+                            parent: obj.svgAllGroup,
+                            
+                            text:   obj.scale.labels[i],
+                            x:      x,
+                            y:      y,
+                            halign: 'center',
+                            valign: 'top',
+                            
+                            tag:    'labels.xaxis',
+                            
+                            font:   textConf.font,
+                            size:   textConf.size,
+                            bold:   textConf.bold,
+                            italic: textConf.italic,
+                            color:  textConf.color
+                        });
+                        
+                    }
+                    
+                    
+                    
+                    
+        
+                    // Add the minimum label if labels are enabled
+                    if (properties.xaxisLabelsCount > 0) {
+                        var y   = obj.height - properties.marginBottom + properties.xaxisLabelsOffsety + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10),
+                            str = RGraph.SVG.numberFormat({
+                                object:     obj,
+                                num:        properties.xaxisScaleMin.toFixed(properties.xaxisScaleDecimals),
+                                prepend:    properties.xaxisScaleUnitsPre,
+                                append:     properties.xaxisScaleUnitsPost,
+                                point:      properties.xaxisScalePoint,
+                                thousand:   properties.xaxisScaleThousand,
+                                formatter:  properties.xaxisScaleFormatter
+                            });
+    
+                        var text = RGraph.SVG.text({
+                            
+                            object: obj,
+                            parent: obj.svgAllGroup,
+                            tag:    'labels.xaxis',
+                            
+                            text: typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, properties.xaxisScaleMin) : str,
+    
+                            x: properties.yaxisPosition === 'right' ? obj.width - properties.marginRight + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx,
+                            y: y,
+                            
+                            halign: 'center',
+                            valign: 'top',
+                            
+                            font:   textConf.font,
+                            size:   textConf.size,
+                            bold:   textConf.bold,
+                            italic: textConf.talic,
                             color:  textConf.color
                         });
                     }
                 }
+    
+            //
+            // Draw the X axis labels
+            //
+            } else {
+                if (typeof properties.xaxisLabels === 'object' && !RGraph.SVG.isNullish(properties.xaxisLabels) ) {
+    
+                    var angle = properties.xaxisLabelsAngle;
+    
+                    // Loop through the X labels
+                    if (properties.xaxisLabelsPosition === 'section') {
+                    
+                        var segment = (obj.width - properties.marginLeft - properties.marginRight - (properties.marginInnerLeft || 0) - (properties.marginInnerRight || 0) ) / properties.xaxisLabels.length;
+                    
+                        for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                        
+                            var x = properties.marginLeft + (properties.marginInnerLeft || 0) + (segment / 2) + (i * segment);
+    
+                            if (obj.scale.max <=0 && obj.scale.min < obj.scale.max) {
+                                var y = properties.marginTop - (RGraph.SVG.ISFF ? 5 : 10)  - (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
+                                var valign = 'bottom';
+                            } else {
+                                var y = obj.height - properties.marginBottom + (RGraph.SVG.ISFF ? 5 : 10) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
+                                var valign = 'top';
+                            }
+    
+                            RGraph.SVG.text({
+                                object:     obj,
+                                parent:     obj.svgAllGroup,
+                                tag:        'labels.xaxis',
+                                text:       properties.xaxisLabels[i],
+                                x:          x + properties.xaxisLabelsOffsetx,
+                                y:          y,
+                                valign:     (typeof angle === 'number' && angle) ? 'center' : valign,
+                                halign:     (typeof angle === 'number' && angle) ? 'right' : 'center',
+                                angle:      angle,
+                                size:       textConf.size,
+                                italic:     textConf.italic,
+                                font:       textConf.font,
+                                bold:       textConf.bold,
+                                color:      textConf.color
+                            });
+                        }
+    
+                    } else if (properties.xaxisLabelsPosition === 'edge') {
+        
+                        if (obj.type === 'line') {
+                            var hmargin = properties.marginInner;
+                        } else {
+                            var hmargin = 0;
+                        }
+        
+        
+        
+                        var segment = (obj.graphWidth - hmargin - hmargin) / (properties.xaxisLabels.length - 1);
+    
+                        for (var i=0; i<properties.xaxisLabels.length; ++i) {
+                        
+                            var x = properties.marginLeft + (i * segment) + hmargin;
+    
+                            if (obj.scale.max <= 0 && obj.scale.min < 0) {
+                                valign = 'bottom';
+                                y = properties.marginTop - (RGraph.SVG.ISFF ? 5 : 10) - (properties.xaxisTickmarksLength - 5)  - (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety
+                            } else {
+                                valign = 'top';
+                                y = obj.height - properties.marginBottom + (RGraph.SVG.ISFF ? 5 : 10) + (properties.xaxisTickmarksLength - 5) + (properties.xaxisLinewidth || 1) + properties.xaxisLabelsOffsety;
+                            }
+    
+                            RGraph.SVG.text({
+                                object: obj,
+                                parent: obj.svgAllGroup,
+                                tag:    'labels.xaxis',
+                                text: properties.xaxisLabels[i],
+                                x: x + properties.xaxisLabelsOffsetx,
+                                y: y,
+                                valign: (typeof angle === 'number' && angle) ? 'center' : valign,
+                                halign: (typeof angle === 'number' && angle) ? 'right' : 'center',
+                                angle: angle,
+                                size:   textConf.size,
+                                italic: textConf.italic,
+                                font:   textConf.font,
+                                bold:   textConf.bold,
+                                color:  textConf.color
+                            });
+                        }
+                    }
+                }
             }
+    
+            // Save this so that it can be used for the title
+            var labelsY = y + properties.xaxisLabelsOffsety;
         }
-
-    // Save this so that it can be used for the title
-    var labelsY = y + properties.xaxisLabelsOffsety;
-
 
 
 
@@ -1054,7 +1052,7 @@
         //
         // DRAW THE TITLE
         //
-        if (properties.xaxisTitle) {
+        if (properties.xaxisTitle && opt.title !== false) {
 
             // Get the size of the X axis labels
             var textConf_labels = RGraph.SVG.getTextConf({
@@ -1109,11 +1107,11 @@
     //
     //@param The chart object
     //
-    RGraph.SVG.drawYAxis = function (obj)
+    RGraph.SVG.drawYAxis = function (obj, opt = {})
     {
         var properties = obj.properties;
 
-        if (properties.yaxis) {
+        if (properties.yaxis && opt.yaxis !== false) {
 
             // The X coordinate that the Y axis is positioned at
             if (obj.type === 'hbar') {
@@ -1372,150 +1370,152 @@
         }
 
 
+        if (opt.labels !== false) {
 
-        // Get the text configuration
-        var textConf = RGraph.SVG.getTextConf({
-            object: obj,
-            prefix: 'yaxisLabels'
-        });
-
-
-        //
-        // Draw the Y axis labels
-        //
-        if (properties.yaxisScale) {
-
-            var segment = (obj.height - properties.marginTop - properties.marginBottom) / properties.yaxisLabelsCount;
-
-            for (var i=0; i<obj.scale.labels.length; ++i) {
-
-                var y = obj.height - properties.marginBottom - (segment * i) - segment;
-
-                RGraph.SVG.text({
-                    
-                    object: obj,
-                    parent: obj.svgAllGroup,
-                    tag:    'labels.yaxis',
-                    
-                    text:   obj.scale.labels[i],
-
-                    x:      properties.yaxisPosition === 'right'
-                                ? (obj.width - properties.marginRight + 7 + (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx)
-                                : (properties.marginLeft - 7 - (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx),
-                    y:      y + properties.yaxisLabelsOffsety,
-
-                    halign: properties.yaxisLabelsHalign || (properties.yaxisPosition === 'right' ? 'left' : 'right'),
-                    valign: properties.yaxisLabelsValign || 'center',
-                    
-                    font:   textConf.font,
-                    size:   textConf.size,
-                    bold:   textConf.bold,
-                    italic: textConf.italic,
-                    color:  textConf.color
-                });
-            }
-
-
-
-
-            //
-            // Add the minimum label
-            //
-            var y   = obj.height - properties.marginBottom,
-                // Changed this to use obj.scale.min instead of properties.yaxisScaleMin
-                // on 11/11/18 because mirrored scales had zero as the bottom
-                // value when it should have been a mirror of the top value
-                str = (properties.yaxisScaleUnitsPre + obj.scale.min.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + properties.yaxisScaleUnitsPost);
-                
-            // Fix a bugettte that's showing the - sign after the unitsPre - should
-            // be showing them before
-            str = str.replace(properties.yaxisScaleUnitsPre + '-', '-' + properties.yaxisScaleUnitsPre);
-
-            var text = RGraph.SVG.text({
-                
+            // Get the text configuration
+            var textConf = RGraph.SVG.getTextConf({
                 object: obj,
-                parent: obj.svgAllGroup,
-                tag:    'labels.yaxis',
-                
-                text: typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)(this, properties.yaxisScaleMin) : str,
-                
-                x: properties.yaxisPosition === 'right'
-                       ? (obj.width - properties.marginRight + 7 + (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx)
-                       : (properties.marginLeft - 7 - (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx),
-                y: y + properties.yaxisLabelsOffsety,
-
-                halign: (properties.yaxisPosition === 'right' ? 'left' : 'right'),
-                valign: 'center',
-                
-                font:   textConf.font,
-                size:   textConf.size,
-                bold:   textConf.bold,
-                italic: textConf.italic,
-                color:  textConf.color
+                prefix: 'yaxisLabels'
             });
-        
-        
-        //
-        // Draw Y axis labels (eg when specific labels are defined or
-        // the chart is an HBar
-        //
-        } else if (properties.yaxisLabels && properties.yaxisLabels.length) {
-
-            for (var i=0; i<properties.yaxisLabels.length; ++i) {
-
-                var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / properties.yaxisLabels.length,
-                    y       = properties.marginTop + (properties.marginInnerTop || 0) + (segment * i) + (segment / 2) + properties.yaxisLabelsOffsety,
-                    x       = properties.marginLeft - 7 - (properties.yaxisLinewidth || 1) + properties.yaxisLabelsOffsetx,
-                    halign  = 'right';
-                
-                if (properties.yaxisPosition === 'right') {
-                    halign = 'left';
-                    x      = obj.width - properties.marginRight + 7 + (properties.yaxisLinewidth || 1) + properties.yaxisLabelsOffsetx;
+    
+    
+            //
+            // Draw the Y axis labels
+            //
+            if (properties.yaxisScale) {
+    
+                var segment = (obj.height - properties.marginTop - properties.marginBottom) / properties.yaxisLabelsCount;
+    
+                for (var i=0; i<obj.scale.labels.length; ++i) {
+    
+                    var y = obj.height - properties.marginBottom - (segment * i) - segment;
+    
+                    RGraph.SVG.text({
+                        
+                        object: obj,
+                        parent: obj.svgAllGroup,
+                        tag:    'labels.yaxis',
+                        
+                        text:   obj.scale.labels[i],
+    
+                        x:      properties.yaxisPosition === 'right'
+                                    ? (obj.width - properties.marginRight + 7 + (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx)
+                                    : (properties.marginLeft - 7 - (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx),
+                        y:      y + properties.yaxisLabelsOffsety,
+    
+                        halign: properties.yaxisLabelsHalign || (properties.yaxisPosition === 'right' ? 'left' : 'right'),
+                        valign: properties.yaxisLabelsValign || 'center',
+                        
+                        font:   textConf.font,
+                        size:   textConf.size,
+                        bold:   textConf.bold,
+                        italic: textConf.italic,
+                        color:  textConf.color
+                    });
                 }
-
-                // HBar labels
-                if (
-                       obj.type === 'hbar'
-                    && (
-                          (obj.scale.min < obj.scale.max && obj.scale.max <= 0)
-                        || properties.yaxisPosition === 'right'
-                       )
-                    ) {
-
-                    halign = 'left';
-                    x      = obj.width - properties.marginRight + 7 + properties.yaxisLabelsOffsetx;
-                
-                // HBar labels (again?)
-                } else if (obj.type === 'hbar' && !properties.yaxisLabelsSpecific) {
-                    var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / (properties.yaxisLabels.length);
-                    y = properties.marginTop + (properties.marginInnerTop || 0) + (segment * i) + (segment / 2) + properties.yaxisLabelsOffsety;
-
-                // Specific scale
-                } else {
-                    var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / (properties.yaxisLabels.length - 1);
-                    y = obj.height - properties.marginBottom - (segment * i) + properties.yaxisLabelsOffsety;
-                }
-
+    
+    
+    
+    
+                //
+                // Add the minimum label
+                //
+                var y   = obj.height - properties.marginBottom,
+                    // Changed this to use obj.scale.min instead of properties.yaxisScaleMin
+                    // on 11/11/18 because mirrored scales had zero as the bottom
+                    // value when it should have been a mirror of the top value
+                    str = (properties.yaxisScaleUnitsPre + obj.scale.min.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + properties.yaxisScaleUnitsPost);
+                    
+                // Fix a bugettte that's showing the - sign after the unitsPre - should
+                // be showing them before
+                str = str.replace(properties.yaxisScaleUnitsPre + '-', '-' + properties.yaxisScaleUnitsPre);
+    
                 var text = RGraph.SVG.text({
-
+                    
                     object: obj,
                     parent: obj.svgAllGroup,
                     tag:    'labels.yaxis',
                     
-                    text:   properties.yaxisLabels[i] ? properties.yaxisLabels[i] : '',
-
-                    x:      x,
-                    y:      y,
-
-                    halign: halign,
+                    text: typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)(this, properties.yaxisScaleMin) : str,
+                    
+                    x: properties.yaxisPosition === 'right'
+                           ? (obj.width - properties.marginRight + 7 + (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx)
+                           : (properties.marginLeft - 7 - (properties.yaxis ? (properties.yaxisTickmarksLength - 3) : 0) + properties.yaxisLabelsOffsetx),
+                    y: y + properties.yaxisLabelsOffsety,
+    
+                    halign: (properties.yaxisPosition === 'right' ? 'left' : 'right'),
                     valign: 'center',
-
+                    
                     font:   textConf.font,
                     size:   textConf.size,
                     bold:   textConf.bold,
                     italic: textConf.italic,
                     color:  textConf.color
                 });
+            
+            
+            //
+            // Draw Y axis labels (eg when specific labels are defined or
+            // the chart is an HBar
+            //
+            } else if (properties.yaxisLabels && properties.yaxisLabels.length) {
+    
+                for (var i=0; i<properties.yaxisLabels.length; ++i) {
+    
+                    var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / properties.yaxisLabels.length,
+                        y       = properties.marginTop + (properties.marginInnerTop || 0) + (segment * i) + (segment / 2) + properties.yaxisLabelsOffsety,
+                        x       = properties.marginLeft - 7 - (properties.yaxisLinewidth || 1) + properties.yaxisLabelsOffsetx,
+                        halign  = 'right';
+                    
+                    if (properties.yaxisPosition === 'right') {
+                        halign = 'left';
+                        x      = obj.width - properties.marginRight + 7 + (properties.yaxisLinewidth || 1) + properties.yaxisLabelsOffsetx;
+                    }
+    
+                    // HBar labels
+                    if (
+                           obj.type === 'hbar'
+                        && (
+                              (obj.scale.min < obj.scale.max && obj.scale.max <= 0)
+                            || properties.yaxisPosition === 'right'
+                           )
+                        ) {
+    
+                        halign = 'left';
+                        x      = obj.width - properties.marginRight + 7 + properties.yaxisLabelsOffsetx;
+                    
+                    // HBar labels (again?)
+                    } else if (obj.type === 'hbar' && !properties.yaxisLabelsSpecific) {
+                        var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / (properties.yaxisLabels.length);
+                        y = properties.marginTop + (properties.marginInnerTop || 0) + (segment * i) + (segment / 2) + properties.yaxisLabelsOffsety;
+    
+                    // Specific scale
+                    } else {
+                        var segment = (obj.graphHeight - (properties.marginInnerTop || 0) - (properties.marginInnerBottom || 0) ) / (properties.yaxisLabels.length - 1);
+                        y = obj.height - properties.marginBottom - (segment * i) + properties.yaxisLabelsOffsety;
+                    }
+    
+                    var text = RGraph.SVG.text({
+    
+                        object: obj,
+                        parent: obj.svgAllGroup,
+                        tag:    'labels.yaxis',
+                        
+                        text:   properties.yaxisLabels[i] ? properties.yaxisLabels[i] : '',
+    
+                        x:      x,
+                        y:      y,
+    
+                        halign: halign,
+                        valign: 'center',
+    
+                        font:   textConf.font,
+                        size:   textConf.size,
+                        bold:   textConf.bold,
+                        italic: textConf.italic,
+                        color:  textConf.color
+                    });
+                }
             }
         }
 
@@ -1545,7 +1545,8 @@
         //
         // Draw the title
         //
-        if (properties.yaxisTitle) {
+        if (properties.yaxisTitle && opt.title !== false) {
+            
             //
             // Get the text width of the labels so that the position of the title
             // can be adjusted

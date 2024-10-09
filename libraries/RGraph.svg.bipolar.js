@@ -861,10 +861,10 @@
         //
         // Draws the axes
         //
-        this.drawAxes = function ()
+        this.drawAxes = function (opt = {})
         {
             // Draw the LEFT X axes
-            if (properties.xaxis) {
+            if (properties.xaxis && opt.xaxis !== false) {
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
@@ -879,7 +879,8 @@
                         'stroke-width': properties.xaxisLinewidth,
                         stroke: properties.xaxisColor,
                         fill: 'rgba(0,0,0,0)',
-                        'shape-rendering': 'crispEdges'
+                        'shape-rendering': 'crispEdges',
+                        'stroke-linecap': 'square'
                     }
                 });
 
@@ -901,14 +902,15 @@
                         'stroke-width': properties.xaxisLinewidth,
                         stroke: properties.xaxisColor,
                         fill: 'rgba(0,0,0,0)',
-                        'shape-rendering': 'crispEdges'
+                        'shape-rendering': 'crispEdges',
+                        'stroke-linecap': 'square'
                     }
                 });
 
                 //
                 // Draw tickmarks if necessary
                 //
-                if (properties.xaxisTickmarks) {
+                if (properties.xaxisTickmarks && opt.tickmarks !== false) {
                 
                     var startY = this.height - properties.marginBottom,
                         endY   = this.height - properties.marginBottom + properties.xaxisTickmarksLength;
@@ -1030,7 +1032,7 @@
 
 
             // Draw the LEFT vertical axes
-            if (properties.yaxis) {
+            if (properties.yaxis && opt.yaxis !== false) {
                 RGraph.SVG.create({
                     svg: this.svg,
                     type: 'path',
@@ -2430,6 +2432,13 @@
                 }
             });
 
+            // Redraw the Y axis so the highlight doesn't go
+            // over the axis
+            this.drawAxes({
+                xaxis:     false,
+                tickmarks: false,
+                yaxis:     true
+            });
 
             // Store the highlight rect in the rebistry so
             // it can be cleared later

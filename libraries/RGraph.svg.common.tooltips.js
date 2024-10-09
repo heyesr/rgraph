@@ -68,7 +68,8 @@
 
 
         //
-        // chart.tooltip.override allows you to totally take control of rendering the tooltip yourself
+        // The tooltipsOverride option allows you to totally take control of
+        // rendering the tooltip yourself.
         //
         if (RGraph.SVG.isFunction(properties.tooltipsOverride)) {
 

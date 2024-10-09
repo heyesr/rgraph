@@ -1849,6 +1849,14 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
                 //    RGraph.SVG.REG.set('highlight', null);
                 //}, false);
             }
+            
+            // Redraw the X axis so that the highlight appears
+            // beneath it
+            RGraph.SVG.drawXAxis(this, {
+                axis: true,
+                title: false,
+                labels: false
+            });
 
 
             // Store the highlight rect in the rebistry so
