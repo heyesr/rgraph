@@ -26,6 +26,10 @@
         //
         this.set = function (name, value)
         {
+            if (name === 'xaxisLabelsPositionEdgeTickmarksCount') {
+                name = 'xaxisTickmarksCount';
+            }
+
             if (arguments.length === 1 && typeof name === 'object') {
                 for (i in arguments[0]) {
                     if (typeof i === 'string') {
@@ -171,34 +175,35 @@
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
 
-            xaxis:                true,
-            xaxisLinewidth:       1,
-            xaxisTickmarks:       true,
-            xaxisTickmarksLength: 5,
-            xaxisLabelsCount:     5,
-            xaxisLabelsPositionEdgeTickmarksCount: 5,
-            xaxisColor:           'black',
-            xaxisLabelsOffsetx:   0,
-            xaxisLabelsOffsety:   0,
+            xaxis:                  true,
+            xaxisLinewidth:         1,
+            xaxisTickmarks:         true,
+            xaxisTickmarksLength:   3,
+            xaxisTickmarksCount:    5,
+            xaxisLabelsCount:       5,
+            xaxisColor:             'black',
+            xaxisLabelsOffsetx:     0,
+            xaxisLabelsOffsety:     0,
             xaxisLabelsFont:        null,
             xaxisLabelsSize:        null,
             xaxisLabelsBold:        null,
             xaxisLabelsItalic:      null,
             xaxisLabelsColor:       null,
-            xaxisScaleUnitsPre:        '',
-            xaxisScaleUnitsPost:       '',
-            xaxisScaleStrict:          false,
-            xaxisScaleDecimals:        0,
-            xaxisScalePoint:           '.',
-            xaxisScaleThousand:        ',',
-            xaxisScaleRound:           false,
-            xaxisScaleMax:             null,
-            xaxisScaleMin:             0,
-            xaxisScaleFormatter:       null,
+            xaxisScaleUnitsPre:     '',
+            xaxisScaleUnitsPost:    '',
+            xaxisScaleStrict:       false,
+            xaxisScaleDecimals:     0,
+            xaxisScalePoint:        '.',
+            xaxisScaleThousand:     ',',
+            xaxisScaleRound:        false,
+            xaxisScaleMax:          null,
+            xaxisScaleMin:          0,
+            xaxisScaleFormatter:    null,
 
             yaxis:                true,
             yaxisTickmarks:       true,
-            yaxisTickmarksLength: 5,
+            yaxisTickmarksLength: 3,
+            yaxisTickmarksCount:  null,
             yaxisColor:           'black',
             yaxisScale:           false,
             yaxisLabels:          null,
@@ -916,9 +921,9 @@
                         endY   = this.height - properties.marginBottom + properties.xaxisTickmarksLength;
 
                     // Draw the LEFT sides tickmarks
-                    for (var i=0; i<properties.xaxisLabelsPositionEdgeTickmarksCount; ++i) {
+                    for (var i=0; i<properties.xaxisTickmarksCount; ++i) {
     
-                        var x = properties.marginLeft + (i * (this.graphWidth / properties.xaxisLabelsPositionEdgeTickmarksCount));
+                        var x = properties.marginLeft + (i * (this.graphWidth / properties.xaxisTickmarksCount));
 
                         RGraph.SVG.create({
                             svg: this.svg,
@@ -970,9 +975,9 @@
 
 
                     // Draw the RIGHT sides tickmarks
-                    for (var i=0; i<properties.xaxisLabelsPositionEdgeTickmarksCount; ++i) {
+                    for (var i=0; i<properties.xaxisTickmarksCount; ++i) {
     
-                        var x = properties.marginLeft + properties.marginCenter + this.graphWidth + ((i+1) * (this.graphWidth / properties.xaxisLabelsPositionEdgeTickmarksCount));
+                        var x = properties.marginLeft + properties.marginCenter + this.graphWidth + ((i+1) * (this.graphWidth / properties.xaxisTickmarksCount));
 
                         RGraph.SVG.create({
                             svg: this.svg,
@@ -1085,11 +1090,11 @@
                 
                     var startX   = properties.marginLeft + this.graphWidth,
                         endX     = properties.marginLeft + this.graphWidth + properties.yaxisTickmarksLength,
-                        numticks = this.left.length;
-    
+                        numticks = RGraph.SVG.isNumber(properties.yaxisTickmarksCount) ? properties.yaxisTickmarksCount : this.left.length;
+
                     // Draw the left sides tickmarks
                     for (var i=0; i<numticks; ++i) {
-    
+
                         var y = properties.marginTop + (i * (this.graphHeight / numticks));
     
                         RGraph.SVG.create({
@@ -1146,7 +1151,7 @@
 
                     var startX   = properties.marginLeft + this.graphWidth + properties.marginCenter,
                         endX     = properties.marginLeft + this.graphWidth + properties.marginCenter - properties.yaxisTickmarksLength,
-                        numticks = this.right.length;
+                        numticks = RGraph.SVG.isNumber(properties.yaxisTickmarksCount) ? properties.yaxisTickmarksCount : this.right.length;
 
 
 
@@ -1256,7 +1261,7 @@
             //
             // Add the minimum label for the LEFT side
             //
-            var y   = this.height - properties.marginBottom + 10,
+            var y   = this.height - properties.marginBottom + 3 + properties.xaxisTickmarksLength,
                 str = (typeof properties.xaxisScaleFormatter === 'function') ?
                     properties.xaxisScaleFormatter(this, properties.xaxisScaleMin)
                     :
@@ -1305,7 +1310,7 @@
                     text:   this.scale.labels[i],
                     
                     x:      properties.marginLeft + this.graphWidth - (segment * (i+1)) + properties.xaxisLabelsOffsetx,
-                    y:      this.height - properties.marginBottom + 10 + properties.xaxisLabelsOffsety,
+                    y:      this.height - properties.marginBottom + 3 + properties.xaxisTickmarksLength + properties.xaxisLabelsOffsety,
                     halign: 'center',
                     valign: 'top',
                     
@@ -1344,7 +1349,7 @@
                             properties.xaxisScaleUnitsPre + properties.xaxisScaleMin.toFixed(properties.xaxisScaleDecimals).replace(/\./, properties.xaxisScalePoint) + properties.xaxisScaleUnitsPost,
                 
                 x:      properties.marginLeft + this.graphWidth + properties.marginCenter + properties.xaxisLabelsOffsetx,
-                y:      this.height - properties.marginBottom + 10 + properties.xaxisLabelsOffsety,
+                y:      this.height - properties.marginBottom + 3 + properties.xaxisTickmarksLength + properties.xaxisLabelsOffsety,
                 
                 halign: 'center',
                 valign: 'top',
@@ -1370,7 +1375,7 @@
                     text:   this.scale.labels[i],
                     
                     x:      properties.marginLeft + this.graphWidth + properties.marginCenter + (segment * (i + 1)) + properties.xaxisLabelsOffsetx,
-                    y:      this.height - properties.marginBottom + 10 + properties.xaxisLabelsOffsety,
+                    y:      this.height - properties.marginBottom + 3 + properties.xaxisTickmarksLength + properties.xaxisLabelsOffsety,
                     
                     halign: 'center',
                     valign: 'top',

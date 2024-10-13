@@ -75,8 +75,9 @@
             backgroundGridHlinesCount:  null,
 
             xaxis:                      true,
+            xaxisTickmarks:             true,
+            xaxisTickmarksLength:       3,
             xaxisTickmarksCount:        5,
-            xaxisTickmarksInterval:     null,
             xaxisScaleUnitsPre:         '',
             xaxisScaleUnitsPost:        '',
             xaxisScaleMax:              null,
@@ -96,7 +97,9 @@
             xaxisLabelsOffsety:         0,
 
             yaxis:                      true,
+            yaxisTickmarks:             true,
             yaxisTickmarksCount:        null,
+            yaxisTickmarksLength:       3,
             yaxisLabels:                [],
             yaxisLabelsFont:            null,
             yaxisLabelsSize:            null,
@@ -272,9 +275,6 @@
             axes:                       true,
             axesColor:                  'black',
             axesLinewidth:              1,
-
-            resizable:                  false,
-            resizableHandleBackground:  null,
 
             linewidth:                  1,
             
@@ -569,7 +569,7 @@
             this.drawBackgroundGrid();
             this.draw3DAxes();
             this.drawAxes();
-            this.drawTicks();                
+            this.drawTickmarks();                
             this.drawLeftBars();
             this.drawRightBars();
 
@@ -1019,6 +1019,7 @@
         {
             // Set the linewidth
             this.context.lineWidth = properties.axesLinewidth + 0.001;
+            this.context.lineCap   = 'square';
 
     
             // Draw the left set of axes
@@ -1085,7 +1086,8 @@
         //
         // Draws the tick marks on the axes
         //
-        this.drawTicks = function ()
+        this.drawTicks =
+        this.drawTickmarks = function ()
         {
             // Set the linewidth
             this.context.lineWidth = properties.axesLinewidth + 0.001;
@@ -1102,14 +1104,22 @@
             }
     
             // Draw the left Y tick marks
-            if (properties.yaxis && properties.yaxisTickmarksCount > 0) {
+            if (properties.yaxis && properties.yaxisTickmarks) {
+
+                var numTickmarks    = this.left.length;
+                var tickmarksLength = properties.yaxisTickmarksLength;
                 
+                // A custom number of tickmarks
+                if (RGraph.isNumber(properties.yaxisTickmarksCount)) {
+                    numTickmarks = properties.yaxisTickmarksCount;
+                }
+
                 if (properties.leftVisible) {
                     this.context.beginPath();
-                        for (var i=0; i<properties.yaxisTickmarksCount; ++i) {
-                            var y = properties.marginTop + (((this.canvas.height - this.marginTop - this.marginBottom) / properties.yaxisTickmarksCount) * i);
+                        for (var i=0; i<numTickmarks; ++i) {
+                            var y = properties.marginTop + (((this.canvas.height - this.marginTop - this.marginBottom) / numTickmarks) * i);
                             this.context.moveTo(this.marginLeft + this.axisWidth , y);
-                            this.context.lineTo(this.marginLeft + this.axisWidth + 3, y);
+                            this.context.lineTo(this.marginLeft + this.axisWidth + tickmarksLength, y);
                         }
                     this.context.stroke();
                 }
@@ -1118,10 +1128,10 @@
                 if (properties.rightVisible) {
                     //Draw the right axis Y tick marks
                     this.context.beginPath();
-                        for (var i=0; i<properties.yaxisTickmarksCount; ++i) {
-                            var y = properties.marginTop + (((this.canvas.height - this.marginTop - this.marginBottom) / properties.yaxisTickmarksCount) * i);
+                        for (var i=0; i<numTickmarks; ++i) {
+                            var y = properties.marginTop + (((this.canvas.height - this.marginTop - this.marginBottom) / numTickmarks) * i);
                             this.context.moveTo(this.marginLeft + this.axisWidth + properties.marginCenter, y);
-                            this.context.lineTo(this.marginLeft + this.axisWidth + properties.marginCenter - 3, y);
+                            this.context.lineTo(this.marginLeft + this.axisWidth + properties.marginCenter - tickmarksLength, y);
                         }
                     this.context.stroke();
                 }
@@ -1129,14 +1139,14 @@
 
 
 
-                // Draw an exra tick if the Y axis isn't being shown
+                // Draw an exra tick if the X axis isn't being shown
                 // on each of the sides
                 if (!properties.xaxis) {
                     if (properties.leftVisible) {
                         this.path(
                             'b m % % l % % s %',
                             this.marginLeft + this.axisWidth,this.canvas.height - this.marginBottom,
-                            this.marginLeft + this.axisWidth + 4,(this.canvas.height - this.marginBottom),
+                            this.marginLeft + this.axisWidth + properties.yaxisTickmarksLength, this.canvas.height - this.marginBottom,
                             this.context.strokeStyle
                         );
                     }
@@ -1145,33 +1155,29 @@
                         this.path(
                             'b m % % l % % s %',
                             this.marginLeft + this.axisWidth + properties.marginCenter, this.canvas.height - this.marginBottom,
-                            this.marginLeft + this.axisWidth + properties.marginCenter - 4, this.canvas.height - this.marginBottom,
+                            this.marginLeft + this.axisWidth + properties.marginCenter - properties.yaxisTickmarksLength, this.canvas.height - this.marginBottom,
                             this.context.strokeStyle
                         );
                     }
                 }
             }
             
-            
+
             
             //
             // X tickmarks
             //
-            if (properties.xaxis && properties.xaxisTickmarksCount > 0) {
-                var xInterval = this.axisWidth / properties.xaxisTickmarksCount;
-        
-                // Is xaxisTickmarksInterval specified ? If so, use that.
-                if (typeof properties.xaxisTickmarksInterval == 'number') {
-                    xInterval = properties.xaxisTickmarksInterval;
-                }
-        
+            if (properties.xaxis && properties.xaxisTickmarks) {
+            
+                var numTickmarks = properties.xaxisTickmarksCount;
+                var xInterval    = this.axisWidth / numTickmarks;
                 
                 // Draw the left sides X tick marks
                 if (properties.leftVisible) {
-                    for (i=this.marginLeft; i<(this.marginLeft + this.axisWidth); i+=xInterval) {
+                    for (i=0; i<properties.xaxisTickmarksCount; i++) {
                         this.context.beginPath();
-                        this.context.moveTo(i, this.canvas.height - this.marginBottom);
-                        this.context.lineTo(i, (this.canvas.height - this.marginBottom) + 4);
+                        this.context.moveTo(i * xInterval + properties.marginLeft, this.canvas.height - this.marginBottom);
+                        this.context.lineTo(i * xInterval + properties.marginLeft, this.canvas.height - this.marginBottom + properties.xaxisTickmarksLength);
                         this.context.closePath();
                         
                         this.context.stroke();
@@ -1179,13 +1185,11 @@
                 }
         
                 if (properties.rightVisible) {
-                    // Draw the right sides X tick marks
-                    var stoppingPoint = this.canvas.width - this.marginRight + 1;
             
-                    for (i=(this.marginLeft + this.axisWidth + properties.marginCenter + xInterval); i<=stoppingPoint; i+=xInterval) {
+                    for (i=(this.marginLeft + this.axisWidth + properties.marginCenter + xInterval); i<=(this.canvas.width - this.marginRight + 1); i+=xInterval) {
                         this.context.beginPath();
                             this.context.moveTo(i, this.canvas.height - this.marginBottom);
-                            this.context.lineTo(i, (this.canvas.height - this.marginBottom) + 4);
+                            this.context.lineTo(i, (this.canvas.height - this.marginBottom) + properties.xaxisTickmarksLength);
                         this.context.closePath();
                         this.context.stroke();
                     }
@@ -1200,7 +1204,7 @@
                         this.path(
                             'b m % % l % % s %',
                             this.marginLeft + this.axisWidth,this.canvas.height - this.marginBottom,
-                            this.marginLeft + this.axisWidth,(this.canvas.height - this.marginBottom) + 4,
+                            this.marginLeft + this.axisWidth,(this.canvas.height - this.marginBottom) + properties.xaxisTickmarksLength,
                             this.context.strokeStyle
                         );
                     }
@@ -1209,7 +1213,7 @@
                         this.path(
                             'b m % % l % % s %',
                             this.marginLeft + this.axisWidth + properties.marginCenter,this.canvas.height - this.marginBottom,
-                            this.marginLeft + this.axisWidth + properties.marginCenter,(this.canvas.height - this.marginBottom) + 4,
+                            this.marginLeft + this.axisWidth + properties.marginCenter,(this.canvas.height - this.marginBottom) + properties.xaxisTickmarksLength,
                             this.context.strokeStyle
                         );
                     }
@@ -2432,7 +2436,7 @@
 
 
         //
-        // Draws the titles
+        // Draws the labels
         //
         this.drawLabels = function ()
         {
@@ -2523,7 +2527,7 @@
                                 color:  textConf.color,
         
                                 x:      this.marginLeft + ((grapharea / (!RGraph.isNullish(this.properties.xaxisScaleSpecific) ? len - 1 : len)) * i) - properties.xaxisLabelsOffsetx,
-                                y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
+                                y:      this.canvas.height - this.marginBottom + 4 + properties.xaxisLabelsOffsety + properties.xaxisTickmarksLength,
                                 
                                 text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string') ? this.properties.xaxisScaleSpecific[i] : (typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, this.scale2.values[len - i - 1]) : this.scale2.labels[len - i - 1]),
                                 
@@ -2553,7 +2557,7 @@
                                 color:  textConf.color,
         
                                 x:      this.marginLeft + grapharea + properties.marginCenter + ((grapharea / (!RGraph.isNullish(this.properties.xaxisScaleSpecific) ? len - 1 : len) ) * (i + (RGraph.isArray(this.properties.xaxisScaleSpecific) ? 0 : 1) )) + properties.xaxisLabelsOffsetx,
-                                y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
+                                y:      this.canvas.height - this.marginBottom + 4 + properties.xaxisLabelsOffsety + properties.xaxisTickmarksLength,
 
                                 text:   (this.properties.xaxisScaleSpecific && typeof this.properties.xaxisScaleSpecific[i] === 'string')
                                             ? reversed_labels[i]
@@ -2586,7 +2590,7 @@
                             color:  textConf.color,
     
                             x:      this.marginLeft + this.axisWidth - properties.xaxisLabelsOffsetx,
-                            y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
+                            y:      this.canvas.height - this.marginBottom + 4 + properties.xaxisLabelsOffsety + properties.xaxisTickmarksLength,
 
                             text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, 0) : RGraph.numberFormat({
                                 object:    this,
@@ -2614,7 +2618,7 @@
                             color:  textConf.color,
     
                             x:      this.marginLeft + this.axisWidth + this.marginCenter + properties.xaxisLabelsOffsetx,
-                            y:      this.canvas.height - this.marginBottom + 7 + properties.xaxisLabelsOffsety,
+                            y:      this.canvas.height - this.marginBottom + 4 + properties.xaxisLabelsOffsety + properties.xaxisTickmarksLength,
 
                             text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)(this, 0) : RGraph.numberFormat({
                                 object: this,
