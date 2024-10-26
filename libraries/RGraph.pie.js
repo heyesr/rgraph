@@ -1595,7 +1595,7 @@
             var mouseY      = mouseCoords[1];
             var r           = this.radius;
             var angles      = this.angles;
-    
+
             for (var i=0,len=angles.length; i<len; ++i) {
 
                 if (RGraph.tooltipsHotspotIgnore(this, i)) {
@@ -1619,7 +1619,7 @@
                         angles[i][2],angles[i][3]
                     );
                 }
-                
+
                 this.path('c');
                     
                 if (
@@ -1636,8 +1636,8 @@
                     if (RGraph.parseTooltipText && properties.tooltips) {
                         var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
                     }
-    
-                    return {
+
+                    var ret =  {
                        object: this,
                             x: angles[i][2],
                             y: angles[i][3],
@@ -1650,6 +1650,8 @@
                         label: properties.labels && typeof properties.labels[i] === 'string' ? properties.labels[i] : null,
                       tooltip: typeof tooltip === 'string' ? tooltip : null
                     };
+
+                    return ret;
                 }
             }
             
