@@ -450,10 +450,18 @@
             // NB: Colors are parsed further down so that the center X/Y can be used
     
 
+            //
+            // If there's only one datapiece then add another,
+            // really small, value so that tooltips work correctly.
+            //
+            if (this.data.length === 1) {
+                this.data.push(this.data / 10000);
+            }
+
 
 
             //
-            // Make the margins easy ro access
+            // Make the margins easy to access
             //
             this.marginLeft   = properties.marginLeft;
             this.marginRight  = properties.marginRight;
