@@ -87,6 +87,21 @@
             if (typeof ModalDialog.onmodaldialog == 'function') {
                 ModalDialog.onmodaldialog();
             }
+            
+             
+            //
+            // Disable Scrollbars
+            //            
+            // First - Determine the scrollbar width
+            //
+            var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            
+            if (!ModalDialog.originalCSSValues) {ModalDialog.originalCSSValues = {};};
+            ModalDialog.originalCSSValues.paddingRight = document.body.style.paddingRight;
+            ModalDialog.originalCSSValues.overflow     = document.body.style.overflow;
+
+            document.body.style.overflow     = 'hidden';
+            document.body.style.paddingRight = scrollbarWidth + 'px';
 
             ModalDialog.FireCustomEvent('onmodaldialog');
         },
@@ -295,6 +310,13 @@
                 ModalDialog.background.style.opacity = 0;
             }
             
+            // Enable the documents scrollbars
+            if (ModalDialog.originalCSSValues) {
+                document.body.style.overflow     = ModalDialog.originalCSSValues.overflow;
+                document.body.style.paddingRight = ModalDialog.originalCSSValues.paddingRight;
+            }
+
+            
             // Remove the dialog node from the DOM after its
             // had time to fadeout
             setTimeout(function ()
@@ -378,6 +400,8 @@
 
 
     // Aliases
+    ModalDialog.Open                   = ModalDialog.Show;
+    ModalDialog.open                   = ModalDialog.Show;
     ModalDialog.show                   = ModalDialog.Show;
     ModalDialog.draw                   = ModalDialog.Show;
     ModalDialog.Hide                   = ModalDialog.Close;
