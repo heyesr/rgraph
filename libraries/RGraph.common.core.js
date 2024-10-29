@@ -8047,13 +8047,13 @@
             if (properties.xaxisScale) {
     
                 var scale = obj.scale2;
-    
+
                 //
                 // Get the scale for a Scatter chart X axis
                 //
                 if (obj.type === 'scatter') {
                     scale = obj.xscale2;
-    
+
                 // Get the scale for a drawing API X axis
                 } else if (obj.type === 'drawing.xaxis') {
                     if (properties.xaxisScale) {
@@ -8094,7 +8094,7 @@
                 }
     
                 for (var i=0; i<scale.labels.length; ++i) {
-    
+
                     var section = (obj.canvas.width - properties.marginLeft - properties.marginRight) / scale.labels.length;
                     
                     if (properties.yaxisPosition === 'right') {
@@ -8166,7 +8166,7 @@
           textConfPrefix:   'xaxisLabels',
                     x:      properties.yaxisPosition === 'right' ? obj.canvas.width - properties.marginRight + properties.xaxisLabelsOffsetx : (properties.yaxisPosition === 'center' ? obj.getXCoord(0) + properties.xaxisLabelsOffsetx : properties.marginLeft + properties.xaxisLabelsOffsetx),
                     y:      y,
-                    text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: 0}) : str,
+                    text:   typeof properties.xaxisScaleFormatter === 'function' ? (properties.xaxisScaleFormatter)({object: obj, number: obj.properties.xaxisScaleMin || 0}) : str,
                     valign: typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (typeof properties.xaxisLabelsValign === 'string' ? properties.xaxisLabelsValign : (properties.xaxisPosition === 'top' ? 'bottom' : valign)),
                     halign: typeof properties.xaxisLabelsHalign === 'string' ? properties.xaxisLabelsHalign : halign,
                     marker: false,
