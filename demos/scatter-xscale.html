@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Scatter chart with a formatted X scale</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="700" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        data  = [
+            ['2024-12-01 01:00:00',125], ['2024-12-01 02:00:00',151], ['2024-12-01 03:00:00',132],
+            ['2024-12-01 03:00:00',166], ['2024-12-01 04:00:00',111], ['2024-12-01 05:00:00',122],
+            ['2024-12-01 06:00:00',156], ['2024-12-01 07:00:00',110], ['2024-12-01 08:00:00',155],
+            ['2024-12-01 09:00:00',124], ['2024-12-01 09:00:00',152], ['2024-12-01 10:00:00',153],
+            ['2024-12-01 11:00:00',125], ['2024-12-01 12:00:00',111], ['2024-12-01 13:00:00',144],
+            ['2024-12-01 14:00:00',133]
+        ];
+        
+        function f2 (num)
+        {
+          return ("0" + num).slice(-2);
+        }
+        function dateFormat(str)
+        {
+            var date = new Date (str);
+
+            return (f2(date.getDate())
+                  + "T" + f2(date.getHours())
+                  + ":" + f2(date.getMinutes()));
+        }
+
+        function dateFormatter(opt)
+        {
+            var obj = opt.object,
+            num = opt.number;
+            return dateFormat(num);
+        }
+
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: data,
+            options: {
+                xaxisScale: true,
+                xaxisScaleMin: '2024-11-29 00:00:00',
+                xaxisScaleMax: '2024-12-01 23:59:59',
+                xaxisScaleFormatter: dateFormatter,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                tickmarksStyle: 'circle',
+                tickmarksSize: 10
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
