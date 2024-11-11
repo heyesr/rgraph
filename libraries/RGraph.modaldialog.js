@@ -23,7 +23,8 @@
   removeFromDOMTimeout: 500,
            styleDialog: {},
        styleBackground: {},
-           styleTopbar: {}
+           styleTopbar: {},
+            pageScroll: false
         },
 
 
@@ -50,7 +51,8 @@
             //   removeFromDOMTimeout: 500,
             // styleBackground: {},
             //     styleDialog: {},
-            //     styleTopbar: {}
+            //     styleTopbar: {},
+            //      pageScroll: false
             // });
             if (typeof id === 'object') {
                 
@@ -90,18 +92,20 @@
             
              
             //
-            // Disable Scrollbars
+            // Disable Scrollbars if required
             //            
             // First - Determine the scrollbar width
             //
-            var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-            
-            if (!ModalDialog.originalCSSValues) {ModalDialog.originalCSSValues = {};};
-            ModalDialog.originalCSSValues.paddingRight = document.body.style.paddingRight;
-            ModalDialog.originalCSSValues.overflow     = document.body.style.overflow;
-
-            document.body.style.overflow     = 'hidden';
-            document.body.style.paddingRight = scrollbarWidth + 'px';
+            if (!ModalDialog.options.pageScroll) {
+                var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+                
+                if (!ModalDialog.originalCSSValues) {ModalDialog.originalCSSValues = {};};
+                ModalDialog.originalCSSValues.paddingRight = document.body.style.paddingRight;
+                ModalDialog.originalCSSValues.overflow     = document.body.style.overflow;
+    
+                document.body.style.overflow     = 'hidden';
+                document.body.style.paddingRight = scrollbarWidth + 'px';
+            }
 
             ModalDialog.FireCustomEvent('onmodaldialog');
         },

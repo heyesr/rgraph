@@ -121,22 +121,21 @@
 
                 // Add the mouseover event
                 if (menuitems[i][1]) {
-                    if (menuitem.addEventListener) {
+                    //if (menuitem.addEventListener) {
                         menuitem.addEventListener("mouseover", function (e) {RGraph.hideContextSubmenu(); e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
                         menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = ''; e.target.style.cursor = 'default';}, false);
-                    } else  {
-                        menuitem.attachEvent("onmouseover", function () {RGraph.hideContextSubmenu();event.srcElement.style.backgroundColor = '#eee';event.srcElement.style.cursor = 'pointer';}
-                    , false);
-                        menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
-                    }
+                    //} else  {
+                    //    menuitem.attachEvent("onmouseover", function () {RGraph.hideContextSubmenu();event.srcElement.style.backgroundColor = '#eee';event.srcElement.style.cursor = 'pointer';}, false);
+                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
+                    //}
                 } else {
-                    if (menuitem.addEventListener) {
+                    //if (menuitem.addEventListener) {
                         menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
                         menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
-                    } else  {
-                        menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
-                        menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
-                    }
+                    //} else  {
+                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
+                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
+                    //}
                 }
 
             } else {
@@ -152,6 +151,14 @@
             if (menuitems[i] && menuitems[i][1] && typeof menuitems[i][1] == 'function') {
                 
                 menuitem.addEventListener('click', menuitems[i][1], false);
+                (function (index)
+                {
+                    menuitem.addEventListener('contextmenu', function (e)
+                    {
+                        RGraph.hideContext();
+                        (menuitems[index][1])(e);
+                    }, false);
+                })(i);
             
             // Submenu
             } else if (menuitems[i] && menuitems[i][1] && RGraph.isArray(menuitems[i][1])) {
@@ -372,20 +379,30 @@
         var context = obj.context;
         var menu    = parentMenuItem.parentNode;
 
+        //
+        // Set the style of the submenu div
+        //
         var subMenu = document.createElement('DIV');
-        subMenu.style.position = 'absolute';
-        subMenu.style.width = '100px';
-        subMenu.style.top = menu.offsetTop + parentMenuItem.offsetTop + 'px';
-        subMenu.style.left            = (menu.offsetLeft + menu.offsetWidth - (RGraph.ISOLD ? 9 : 0)) + 'px';
-        subMenu.style.backgroundColor = 'white';
-        subMenu.style.border          = '1px solid black';
-        subMenu.className             = 'RGraph_contextmenu';
-        subMenu.__contextmenu__       = menu;
-        subMenu.style.lineHeight      = 'initial';
-        subMenu.style.boxShadow       = '3px 3px 3px rgba(96,96,96,0.5)';
-        subMenu.style.MozBoxShadow    = '3px 3px 3px rgba(96,96,96,0.5)';
-        subMenu.style.WebkitBoxShadow = '3px 3px 3px rgba(96,96,96,0.5)';
-        subMenu.style.filter          = 'progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135)';
+            subMenu.style.position = 'absolute';
+            
+            // 11/11/24
+            //
+            // Why is this here?!
+            //
+            //subMenu.style.width = '100px';
+            //
+
+            subMenu.style.top = menu.offsetTop + parentMenuItem.offsetTop + 'px';
+            subMenu.style.left            = (menu.offsetLeft + menu.offsetWidth - (RGraph.ISOLD ? 9 : 0)) + 'px';
+            subMenu.style.backgroundColor = 'white';
+            subMenu.style.border          = '1px solid black';
+            subMenu.className             = 'RGraph_contextmenu';
+            subMenu.__contextmenu__       = menu;
+            subMenu.style.lineHeight      = 'initial';
+            subMenu.style.boxShadow       = '3px 3px 3px rgba(96,96,96,0.5)';
+            subMenu.style.MozBoxShadow    = '3px 3px 3px rgba(96,96,96,0.5)';
+            subMenu.style.WebkitBoxShadow = '3px 3px 3px rgba(96,96,96,0.5)';
+            subMenu.style.filter          = 'progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135)';
         document.body.appendChild(subMenu);
         
         for (var i=0; i<menuitems.length; ++i) {
@@ -405,21 +422,21 @@
                 menuitem.innerHTML = menuitems[i][0];
         
                 if (menuitems[i][1]) {
-                    if (menuitem.addEventListener) {
+                    //if (menuitem.addEventListener) {
                         menuitem.addEventListener("mouseover", function (e) {e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
                         menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = 'inherit'; e.target.style.cursor = 'default';}, false);
-                    } else  {
-                        menuitem.attachEvent("onmouseover", function () {event.srcElement.style.backgroundColor = 'rgba(0,0,0,0.2)'; event.srcElement.style.cursor = 'pointer'}, false);
-                        menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
-                    }
+                    ///} else  {
+                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.backgroundColor = 'rgba(0,0,0,0.2)'; event.srcElement.style.cursor = 'pointer'}, false);
+                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
+                    //}
                 } else {
-                    if (menuitem.addEventListener) {
+                    //if (menuitem.addEventListener) {
                         menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
                         menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
-                    } else  {
-                        menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
-                        menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
-                    }
+                    //} else  {
+                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
+                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
+                    //}
                 }
             } else {
                 menuitem.style.borderBottom = '1px solid #ddd';
@@ -429,11 +446,14 @@
             subMenu.appendChild(menuitem);
         
             if (menuitems[i] && menuitems[i][1]) {
-                if (document.all) {
-                    menuitem.attachEvent('onclick', menuitems[i][1]);
-                } else {
-                    menuitem.addEventListener('click', menuitems[i][1], false);
-                }
+                (function (index)
+                {
+                    menuitem.addEventListener('click', function (e)
+                    {
+                        RGraph.hideContext();
+                        (menuitems[index][1])(e);
+                    }, false);
+                })(i);
             }
         }
 
