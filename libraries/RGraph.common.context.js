@@ -165,9 +165,14 @@
                 (function ()
                 {
                     var tmp = menuitems[i][1]; // This is here because of "references vs primitives" and how they're passed around in Javascript
-                    
-                    // TODO This may need attention
-                    menuitem.addEventListener('mouseover', function (e) {RGraph.contextMenu_submenu(obj, tmp, e.target);}, false);
+                    menuitem.addEventListener('mouseover', function (e)
+                    {
+                        RGraph.contextMenu_submenu(obj, tmp, e.target);
+                    }, false);
+                    menuitem.addEventListener('click', function (e)
+                    {
+                        e.stopPropagation();
+                    }, false);
                 })();
             }
         }
@@ -448,11 +453,14 @@
             if (menuitems[i] && menuitems[i][1]) {
                 (function (index)
                 {
-                    menuitem.addEventListener('click', function (e)
+                    var func = function (e)
                     {
                         RGraph.hideContext();
                         (menuitems[index][1])(e);
-                    }, false);
+                        e.preventDefault();
+                    };
+                    menuitem.addEventListener('click', func, false);
+                    menuitem.addEventListener('contextmenu', func, false);
                 })(i);
             }
         }
