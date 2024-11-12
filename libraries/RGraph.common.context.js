@@ -43,12 +43,6 @@
         if (RGraph.Registry.get('contextmenu')) {
             RGraph.hideContext();
         }
-        
-        // Hide any zoomed canvas
-        //
-        // Commented out on 13th October 2019
-        //
-        //RGraph.hideZoomedCanvas();
 
         //
         // Hide the palette if necessary
@@ -60,36 +54,34 @@
         //
         obj.set('mousedown', false);
 
-        var x      = e.pageX;
-        var y      = e.pageY;
-        var div    = document.createElement('div');
-        var bg     = document.createElement('div');
-
-        div.className             = 'RGraph_contextmenu';
-        div.__canvas__            = canvas; // Store a reference to the canvas on the contextmenu object
-        div.style.position        = 'absolute';
-        div.style.left            = 0;
-        div.style.top             = 0;
-        div.style.border          = '1px solid #666';
-        div.style.backgroundColor = 'white';
-        div.style.boxShadow       = '1px 1px 3px #ddd';
-        div.style.MozBoxShadow    = '1px 1px 3px #ddd';
-        div.style.WebkitBoxShadow = '1px 1px 3px #ddd';
-        div.style.opacity         = 0;
-        div.style.lineHeight      = 'initial';
-
-        bg.className             = 'RGraph_contextmenu_background';
-        bg.style.position        = 'absolute';
-        bg.style.backgroundColor = '#ccc';
-        bg.style.borderRight     = '1px solid #aaa';
-        bg.style.top             = 0;
-        bg.style.left            = 0;
-        bg.style.width           = '18px';
-        bg.style.height          = '100%';
-        bg.style.opacity         = 0;
-
-
+        var x = e.pageX;
+        var y = e.pageY;
+        
+        var div = document.createElement('div');
+            div.className             = 'RGraph_contextmenu';
+            div.__canvas__            = canvas; // Store a reference to the canvas on the contextmenu object
+            div.style.position        = 'absolute';
+            div.style.left            = 0;
+            div.style.top             = 0;
+            div.style.border          = '1px solid #666';
+            div.style.backgroundColor = 'white';
+            div.style.boxShadow       = '1px 1px 3px #ddd';
+            div.style.MozBoxShadow    = '1px 1px 3px #ddd';
+            div.style.WebkitBoxShadow = '1px 1px 3px #ddd';
+            div.style.opacity         = 0;
+            div.style.lineHeight      = 'initial';
         div = document.body.appendChild(div);
+
+        var bg = document.createElement('div');
+            bg.className             = 'RGraph_contextmenu_background';
+            bg.style.position        = 'absolute';
+            bg.style.backgroundColor = '#ccc';
+            bg.style.borderRight     = '1px solid #aaa';
+            bg.style.top             = 0;
+            bg.style.left            = 0;
+            bg.style.width           = '18px';
+            bg.style.height          = '100%';
+            bg.style.opacity         = 0;
         bg  = div.appendChild(bg);
 
 
@@ -119,23 +111,15 @@
                     menuitem.style.backgroundPosition = '97% center';
                 }
 
+                //
                 // Add the mouseover event
+                //
                 if (menuitems[i][1]) {
-                    //if (menuitem.addEventListener) {
-                        menuitem.addEventListener("mouseover", function (e) {RGraph.hideContextSubmenu(); e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
-                        menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = ''; e.target.style.cursor = 'default';}, false);
-                    //} else  {
-                    //    menuitem.attachEvent("onmouseover", function () {RGraph.hideContextSubmenu();event.srcElement.style.backgroundColor = '#eee';event.srcElement.style.cursor = 'pointer';}, false);
-                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
-                    //}
+                    menuitem.addEventListener("mouseover", function (e) {RGraph.hideContextSubmenu(); e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
+                    menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = ''; e.target.style.cursor = 'default';}, false);
                 } else {
-                    //if (menuitem.addEventListener) {
-                        menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
-                        menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
-                    //} else  {
-                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
-                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
-                    //}
+                    menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
+                    menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
                 }
 
             } else {
@@ -196,18 +180,25 @@
         //
         // Do a little fade in effect
         //
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu')) obj.style.opacity = 0.2", 50);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu')) obj.style.opacity = 0.4", 100);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu')) obj.style.opacity = 0.6", 150);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu')) obj.style.opacity = 0.8", 200);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu')) obj.style.opacity = 1", 250);
+        for (let i=1; i<=5; ++i) {
+            setTimeout(function ()
+            {
+                //
+                // The fade effect on the main context menu
+                //
+                if (obj = RGraph.Registry.get('contextmenu')) {
+                    obj.style.opacity = 0.2 * i;
+                }
+                
+                //
+                // The fade effect on the left gray bar
+                //
+                if (obj = RGraph.Registry.get('contextmenu.bg')) {
+                    obj.style.opacity = 0.2 * i;
+                }
+            }, i * 25);
+        }
 
-        // The fade in effect on the left gray bar
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu.bg')) obj.style.opacity = 0.2", 50);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu.bg')) obj.style.opacity = 0.4", 100);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu.bg')) obj.style.opacity = 0.6", 150);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu.bg')) obj.style.opacity = 0.8", 200);
-        setTimeout("if (obj = RGraph.Registry.get('contextmenu.bg')) obj.style.opacity = 1", 250);
 
         // Store the context menu in the registry
         RGraph.Registry.set('contextmenu', div);
@@ -218,7 +209,10 @@
         //
         // Install the event handlers that hide the context menu
         //
-        canvas.addEventListener('click', function () {RGraph.hideContext();}, false);
+        canvas.addEventListener('click', function ()
+        {
+            RGraph.hideContext();
+        }, false);
 
         window.addEventListener('click', function ()
         {
@@ -326,11 +320,11 @@
 
         if (obj.get('contextmenu') && obj.get('contextmenu').length) {
 
-            var isOpera      = navigator.userAgent.indexOf('Opera') >= 0;
-            var isSafari     = navigator.userAgent.indexOf('Safari') >= 0;
-            var isChrome     = navigator.userAgent.indexOf('Chrome') >= 0;
+            var isOpera      = RGraph.ISOPERA;
+            var isSafari     = RGraph.ISSAFARI;
+            var isChrome     = RGraph.ISCHROME;
             var isMacFirefox = navigator.userAgent.indexOf('Firefox') > 0 && navigator.userAgent.indexOf('Mac') > 0;
-            var isIE9        = navigator.userAgent.indexOf('MSIE 9') >= 0;
+            var isIE9        = RGraph.ISIE9;
 
             if (((!isOpera && !isSafari) || isChrome) && !isMacFirefox) {
 
@@ -343,7 +337,9 @@
                     return false;
                 }
 
+            //
             // Accomodate Opera and Safari - use double click event
+            //
             } else {
 
                 obj.canvas.addEventListener('dblclick', function (e)
@@ -427,21 +423,11 @@
                 menuitem.innerHTML = menuitems[i][0];
         
                 if (menuitems[i][1]) {
-                    //if (menuitem.addEventListener) {
-                        menuitem.addEventListener("mouseover", function (e) {e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
-                        menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = 'inherit'; e.target.style.cursor = 'default';}, false);
-                    ///} else  {
-                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.backgroundColor = 'rgba(0,0,0,0.2)'; event.srcElement.style.cursor = 'pointer'}, false);
-                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.backgroundColor = 'inherit'; event.srcElement.style.cursor = 'default';}, false);
-                    //}
+                    menuitem.addEventListener("mouseover", function (e) {e.target.style.backgroundColor = 'rgba(0,0,0,0.2)'; e.target.style.cursor = 'pointer';}, false);
+                    menuitem.addEventListener("mouseout", function (e) {e.target.style.backgroundColor = 'inherit'; e.target.style.cursor = 'default';}, false);
                 } else {
-                    //if (menuitem.addEventListener) {
-                        menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
-                        menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
-                    //} else  {
-                    //    menuitem.attachEvent("onmouseover", function () {event.srcElement.style.cursor = 'default'}, false);
-                    //    menuitem.attachEvent("onmouseout", function () {event.srcElement.style.cursor = 'default';}, false);
-                    //}
+                    menuitem.addEventListener("mouseover", function (e) {e.target.style.cursor = 'default';}, false);
+                    menuitem.addEventListener("mouseout", function (e) {e.target.style.cursor = 'default';}, false);
                 }
             } else {
                 menuitem.style.borderBottom = '1px solid #ddd';
@@ -467,15 +453,14 @@
 
 
         var bg                   = document.createElement('DIV');
-        bg.className             = 'RGraph_contextmenu_background';
-        bg.style.position        = 'absolute';
-        bg.style.backgroundColor = '#ccc';
-        bg.style.borderRight     = '1px solid #aaa';
-        bg.style.top             = 0;
-        bg.style.left            = 0;
-        bg.style.width           = '18px';
-        bg.style.height          = '100%';
-
+            bg.className             = 'RGraph_contextmenu_background';
+            bg.style.position        = 'absolute';
+            bg.style.backgroundColor = '#ccc';
+            bg.style.borderRight     = '1px solid #aaa';
+            bg.style.top             = 0;
+            bg.style.left            = 0;
+            bg.style.width           = '18px';
+            bg.style.height          = '100%';
         bg  = subMenu.appendChild(bg);
 
         RGraph.Registry.set('contextmenu.submenu', subMenu);
@@ -489,10 +474,11 @@
 
 
     //
-    // A function designed to be used in conjunction with thed context menu
-    // to allow people to get image versions of canvases.
+    // A function designed to be used in conjunction with the
+    // context menu to allow people to get image versions of
+    // canvas tags.
     // 
-    // @param      canvas Optionally you can pass in the canvas, which will be used
+    // @param canvas Optionally you can pass in the canvas, which will be used
     //
     RGraph.showPNG = function ()
     {
@@ -533,27 +519,24 @@
         // Create the div that the graph sits in
         //
         var div = document.createElement('DIV');
-            div.style.backgroundColor = 'white';
-            div.style.opacity = 0;
-            div.style.border = '1px solid black';
-            div.style.position = 'fixed';
-            div.style.top = '20%';
-            div.style.width = canvas.width + 'px';
-            div.style.height = canvas.height + 35 + 'px';
-            div.style.left = (document.body.clientWidth / 2) - (canvas.width / 2) + 'px';
-            div.style.padding = '5px';
-
-            div.style.borderRadius = '10px';
-            div.style.MozBorderRadius = '10px';
-            div.style.WebkitBorderRadius = '10px';
-
-            div.style.boxShadow    = '0 0 15px rgba(96,96,96,0.5)';
-            div.style.MozBoxShadow = '0 0 15px rgba(96,96,96,0.5)';
-            div.style.WebkitBoxShadow = 'rgba(96,96,96,0.5) 0 0 15px';
-
-            div.__canvas__ = canvas;
-            div.__object__ = obj;
-            div.id = '__rgraph_image_div__';
+            div.style.backgroundColor   = 'white';
+            div.style.opacity           = 0;
+            div.style.border            = '1px solid black';
+            div.style.position          = 'fixed';
+            div.style.top               = '20%';
+            div.style.width             = canvas.width + 'px';
+            div.style.height            = canvas.height + 35 + 'px';
+            div.style.left              = (document.body.clientWidth / 2) - (canvas.width / 2) + 'px';
+            div.style.padding           = '5px';
+            div.style.borderRadius      = '10px';
+            div.style.MozBorderRadius   = '10px';
+            div.style.WebkitBorderRadius= '10px';
+            div.style.boxShadow         = '0 0 15px rgba(96,96,96,0.5)';
+            div.style.MozBoxShadow      = '0 0 15px rgba(96,96,96,0.5)';
+            div.style.WebkitBoxShadow   = 'rgba(96,96,96,0.5) 0 0 15px';
+            div.__canvas__              = canvas;
+            div.__object__              = obj;
+            div.id                      = '__rgraph_image_div__';
         document.body.appendChild(div);
 
         
@@ -582,19 +565,23 @@
         // Create the image rendition of the graph
         //
         var img = document.createElement('IMG');
-        RGraph.Registry.set('png', img);
-        img.__canvas__ = canvas;
-        img.__object__ = obj;
-        img.id = '__rgraph_image_img__';
-        img.className = 'RGraph_png';
-
-        img.src = canvas.toDataURL();
-
+            RGraph.Registry.set('png', img);
+            img.__canvas__  = canvas;
+            img.__object__  = obj;
+            img.id          = '__rgraph_image_img__';
+            img.className   = 'RGraph_png';
+            img.src         = canvas.toDataURL();
         div.appendChild(img);
         
-        setTimeout(function () {document.getElementById("__rgraph_dataurl__").select();}, 50);
+        setTimeout(function ()
+        {
+            document.getElementById("__rgraph_dataurl__").select();
+        }, 50);
         
-        window.addEventListener('resize', function (e){var img = RGraph.Registry.get('png');img.style.left = (document.body.clientWidth / 2) - (img.width / 2) + 'px';}, false);
+        window.addEventListener('resize', function (e)
+        {
+            var img = RGraph.Registry.get('png');img.style.left = (document.body.clientWidth / 2) - (img.width / 2) + 'px';
+        }, false);
         
         bg.onclick = function (e)
         {
@@ -613,33 +600,32 @@
 
             if (bg) {
                 bg.style.opacity = 0;
-
-                bg.id = '';
+                bg.id            = '';
                 bg.style.display = 'none';
-                bg = null;
+                bg               = null;
             }
         }
         
-        window.addEventListener('resize', function (e) {bg.onclick(e);}, false)
+        window.addEventListener('resize', function (e)
+        {
+            bg.onclick(e);
+        }, false)
         
         //
         // This sets the image BG and the DIV as global variables, circumventing repeated calls to document.getElementById()
         //
         RGraph.showpng_image_bg  = bg;
         RGraph.showpng_image_div = div;
-
-        setTimeout('RGraph.showpng_image_div.style.opacity = 0.2', 50);
-        setTimeout('RGraph.showpng_image_div.style.opacity = 0.4', 100);
-        setTimeout('RGraph.showpng_image_div.style.opacity = 0.6', 150);
-        setTimeout('RGraph.showpng_image_div.style.opacity = 0.8', 200);
-        setTimeout('RGraph.showpng_image_div.style.opacity = 1', 250);
-
-        setTimeout('RGraph.showpng_image_bg.style.opacity = 0.1', 50);
-        setTimeout('RGraph.showpng_image_bg.style.opacity = 0.2', 100);
-        setTimeout('RGraph.showpng_image_bg.style.opacity = 0.3', 150);
-        setTimeout('RGraph.showpng_image_bg.style.opacity = 0.4', 200);
-        setTimeout('RGraph.showpng_image_bg.style.opacity = 0.5', 250);
-
+        //
+        // Do a little fade in effect
+        //
+        for (let i=1; i<=5; ++i) {
+            setTimeout(function ()
+            {
+                RGraph.showpng_image_bg.style.opacity  = 0.1 * i;
+                RGraph.showpng_image_div.style.opacity = 0.2 * i;
+            }, i * 25);
+        }
 
         
         img.onclick = function (e)
@@ -652,13 +638,6 @@
             event.stopPropagation();
         }
     };
-
-
-
-
-
-
-
 
 // End module pattern
 })(window, document);
