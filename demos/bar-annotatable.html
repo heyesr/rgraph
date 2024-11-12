@@ -29,13 +29,20 @@
                 annotatable: true,
                 annotatableLinewidth: 2,
                 colorsStroke: 'rgba(0,0,0,0)',
-                contextmenu: [['Clear', function () {RGraph.Clear(bar.canvas); RGraph.clearAnnotations(bar.canvas); RGraph.redraw();}]],
+                contextmenu: [
+                    ['Show palette...', RGraph.showPalette],
+                    ['Show png...', RGraph.showPNG],
+                    ['Clear', function () {RGraph.Clear(bar.canvas); RGraph.clearAnnotations(bar.canvas); RGraph.redraw();}]
+                ],
                 textSize: 14,
                 xaxis: false,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 marginLeft: 45
             }
+        }).on('beforedraw', function (obj)
+        {
+            RGraph.clear(obj.canvas, 'white');
         }).draw();
     </script>
 
