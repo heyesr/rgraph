@@ -760,7 +760,7 @@
             // Draw an X axis scale
             //
             if (properties.xaxisScale) {
-    
+
                 if (obj.type === 'scatter') {
                     obj.xscale = RGraph.SVG.getScale({
                         object:    obj,
@@ -854,7 +854,7 @@
                 
                 // =========================================================================
                 } else {
-    
+
                     var segment = obj.graphWidth / properties.xaxisLabelsCount,
                         scale   = obj.scale;
     
@@ -870,7 +870,7 @@
                            ) {
                             x = obj.width - properties.marginRight - (segment * i) - segment + properties.xaxisLabelsOffsetx;
                         }
-    
+
                         RGraph.SVG.text({
                             
                             object: obj,
@@ -899,6 +899,7 @@
         
                     // Add the minimum label if labels are enabled
                     if (properties.xaxisLabelsCount > 0) {
+
                         var y   = obj.height - properties.marginBottom + properties.xaxisLabelsOffsety + (properties.xaxis ? properties.xaxisTickmarksLength + 6 : 10),
                             str = RGraph.SVG.numberFormat({
                                 object:     obj,
@@ -909,7 +910,7 @@
                                 thousand:   properties.xaxisScaleThousand,
                                 formatter:  properties.xaxisScaleFormatter
                             });
-    
+
                         var text = RGraph.SVG.text({
                             
                             object: obj,
@@ -927,7 +928,7 @@
                             font:   textConf.font,
                             size:   textConf.size,
                             bold:   textConf.bold,
-                            italic: textConf.talic,
+                            italic: textConf.italic,
                             color:  textConf.color
                         });
                     }
