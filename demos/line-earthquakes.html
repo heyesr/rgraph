@@ -11,7 +11,7 @@
     <h1>A line chart showing earthquake data</h1>
     
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="400" height="350">[No canvas support]</canvas>
+        <canvas id="cvs" width="400" height="350" style="background-color: #cfc">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -19,6 +19,7 @@
             id: 'cvs',
             data: [2,5,7,3],
             options: {
+                backgroundColor: 'white',
                 backgroundGridVlinesCount:22,
                 backgroundGridHlinesCount: 14,
                 backgroundGridColor: '#666',
