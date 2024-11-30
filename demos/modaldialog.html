@@ -31,10 +31,38 @@
             #ModalDialog_dialog input[value=Cancel] {
                 opacity: 0.5;
             }
+            
+            select {
+                font-size: 20pt;
+            }
         </style>
         
         <button onclick="showDialog()">Show dialog</button>
     </div>
+    
+    Start zoom factor:
+    <select onchange="ModalDialog.set('zoomFactorStart', Number(this.value))">
+        <option value="0">0</option>
+        <option value="0.5">0.5</option>
+        <option value="1">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2.5">2.5</option>
+    </select>
+    
+    <br />
+    
+    End zoom factor:
+    <select onchange="ModalDialog.set('zoomFactorEnd', Number(this.value))">
+        <option value="0" selected>0</option>
+        <option value="0.5">0.5</option>
+        <option value="1" >1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="2.5">2.5</option>
+    </select>
+    
+    <p />
 
     
     <script>
