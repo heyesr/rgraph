@@ -748,7 +748,7 @@ div#front-page-download-buttons ul li {
 div#front-page-download-buttons span#download-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -762,7 +762,7 @@ div#front-page-download-buttons span#download-button {
 div#front-page-download-buttons span#front-page-setup-introduction-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -778,7 +778,7 @@ div#front-page-download-buttons span#front-page-setup-introduction-button {
 div#front-page-download-buttons span#front-page-setup-donate-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -792,7 +792,7 @@ div#front-page-download-buttons span#front-page-setup-donate-button {
 div#front-page-download-buttons span#front-page-setup-download-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -806,7 +806,7 @@ div#front-page-download-buttons span#front-page-setup-download-button {
 div#front-page-download-buttons span#front-page-github-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -820,7 +820,7 @@ div#front-page-download-buttons span#front-page-github-button {
 div#front-page-download-buttons span#front-page-interactive-button {
     display: inline-block;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: white;
     z-index: 1;
     position: relative;
@@ -883,9 +883,11 @@ span#front-page-setup-introduction-button {
     margin: 25px;
     text-align: center;
     padding: 15px;
-    border-radius: 20px;
+    border-radius: 5px;
     color: #666;
+    transition: transform 0.5s;
 }
+
 
 span#download-button {
     background-color: #afa;
