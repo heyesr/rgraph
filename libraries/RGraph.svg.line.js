@@ -2630,7 +2630,7 @@
                 }
             });
 
-            // Get a reference to the background gride <path> node
+            // Get a reference to the background grid <path> node
             var els  = this.svg.getElementsByClassName('rgraph_background_grid'),
                 grid = els[0];
 
