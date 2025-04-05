@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A example of using the datagrid API functions</h1>
+
+    <style>
+        button {
+            cursor: pointer;
+            font-size: 20pt;
+            width: 300px;
+            margin: 5px;
+        }
+    </style>
+
+    <p>
+        As well as this you can ispect the page andd see the hidden
+        input value changing as you select and deselect rows.
+    </p>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; margin-left: auto; margin-right: auto; text-align: center;">
+            
+            <div id="myGrid"></div>
+            
+            <!-- These buttons demonstrate the row section API functions -->
+            <button onclick="grid.selectAll();">Select all</button>
+            <button onclick="grid.deselectAll();">Deselect all</button>
+            <button onclick="grid.deselectAll();grid.select(3);">Select 4th row</button>
+            <button onclick="$p(grid.getSelected()); $c(grid.getSelected());">Show selected rows</button>
+            <button onclick="grid.toggleSelected(3);">Toggle 4th row</button>
+            <button onclick="alert(grid.isSelected(3) ? 'Yes' : 'No');">Is the 4th row selected?</button>
+            <button onclick="grid.deselect(3);">Deselect 4th row</button>
+        </div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            var d;
+
+            // A global variable
+            grid = new RGraph.Datagrid({
+                id: 'myGrid',
+                data: d = [
+                    [324, 'Richard','Monday',11],
+                    [468, 'Jacob',  'Friday', 22],
+                    [846, 'Freddy','Thursday',33],
+                    [42, 'Lizzy','Sunday',44],
+                    [486,'Jane','Tuesday',55],
+                    [155,'Freddo','Thursday',66],
+                    [643,'Hoolio','Sunday',77],
+                    [489,'Neil','Friday',88],
+                    [166,'John','Monday',99]
+                ],
+                options: {
+                    rowsSelectable: true,
+                    rowsSelectableIds: RGraph.arrayColumn(d, 3),
+                    rowsSelectablePersistent: true,
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsFooters: ['','','','',''],
+                    columnsWidths: [50],
+                    style: [
+                        'tr th {color: white !important; background-color: black !important;}',
+                        'tr td:nth-child(1) div {text-align: center;}'
+                    ]
+                }
+            }).draw();
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic example of a datagrid</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            new RGraph.Datagrid({
+                id: 'myGrid',
+                data: [
+                    [324, 'Richard','Monday',98],
+                    [468, 'Jacob',  'Friday', 78],
+                    [846, 'Freddy','Thursday',13],
+                    [442, 'Lizzy','Sunday',46]
+                ],
+                options: {
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsFooters: ['','','','',''],
+                    columnsWidths: [50],
+                    //sortableColumns: [1,2,3],
+                    style: [
+                        'tr th div {color: white; background-color: black;}',
+                        'tr th span.rgraph-cell-sort-pointer {color: white}',
+                        'tr td:nth-child(1) div {text-align: center;}',
+                        'tfoot tr td {background-color: black;}'
+                    ]
+                }
+            }).draw();
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

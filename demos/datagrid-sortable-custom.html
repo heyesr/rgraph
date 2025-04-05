@@ -1,0 +1,83 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An example of the datagrid custom sorting</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; margin-left: auto; margin-right: auto">
+            <div id="myGrid"></div>
+            <p>
+                An example of custom sorting - sorting by the last letter
+                of the <b>Name</b> column.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            var data = [
+                [324, 'Richard','Monday',98],
+                [468, 'Jacob',  'Friday', 78],
+                [846, 'Freddy','Thursday',13],
+                [442, 'Lizzy','Sunday',46]
+            ];
+
+            // A global variable
+            grid = new RGraph.Datagrid({
+                id: 'myGrid',
+                data: data,
+                options: {
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsWidths: [50],
+                    rowsSelectable: true,
+                    rowsSelectableCount: 2,
+                    rowsSelectableIds: RGraph.arrayColumn( data, 0),
+                    rowsSelectablePersistent: true,
+                    sortablePersistent: true,
+                    style: [
+                        'tr td:nth-child(1) div {text-align: center;}'
+                    ],
+                    sortable: true,
+                    sortableColumns: [1],
+// 
+                    //
+                    // @param object obj       The chart object
+                    // @param number column    A number representing the column index
+                    //                         (starts at zero).
+                    // @param number direction The direction to be sorted in. 1
+                    //                         means ascending and -1 means
+                    //                         descending.
+                    // @param mixed  a         The first value to compare.
+                    // @param mixed  b         The second value to compare.
+                    //
+                    sortableCompare: [,function (obj, column, direction, a, b)
+                    {
+                        a = a.substr(-1).charCodeAt(0);
+                        b = b.substr(-1).charCodeAt(0);
+                    
+                        return direction > 0 ? a - b : b - a;
+                    }]
+                }
+            }).draw();
+            
+            RGraph.Queue.resolve('after-chart-created');
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

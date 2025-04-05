@@ -1,0 +1,67 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A example of an editable datagrid</h1>
+
+    <div id="rgraph-demo-html">
+        <!--
+            Note: Extra information when the edit has completed is
+            logged to the console. Press CTRL+SHIFT+J in Chrome to
+            see the console.
+        -->
+        <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            var grid = new RGraph.Datagrid({
+                id: 'myGrid',
+                data: [
+                    [324, 'Richard','Monday',98],
+                    [468, 'Jacob',  'Friday', 78],
+                    [846, 'Freddy','Thursday',13],
+                    [442, 'Lizzy','Sunday',46]
+                ],
+                options: {
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsWidths: [50],
+                    columnsUnitsPost: [,,,'Kg'],
+                    sortableColumns: [1,2,3],
+                    editable: true,
+                    editableColumns: [3],
+                    style: [
+                        'tr td:nth-child(1) div {text-align: center;}'
+                    ]
+                }
+            }).draw().on('editcomplete', function (obj)
+            {
+                alert('View the console to see what meta information is logged by this demo. Press CTRL+SHIFT+J in Google Chrome.');
+
+                var meta = RGraph.Registry.get('cell-edit-meta');
+                
+                console.log('Meta data:');
+                console.log(meta);
+                console.log('Original index: ' + grid.getOriginalIndex(meta.row));
+                console.log('Full row data (after the edit has completed):');
+                console.log(grid.row(meta.row));
+            });
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

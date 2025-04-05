@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An example of a datagrid with a filter/search box</h1>
+
+    <div id="rgraph-demo-html">
+        <div style="width: 700px; margin-left: auto; margin-right: auto">
+            <div id="myGrid"></div>
+        </div>
+    </div>
+    <input type="submit" onclick="$a(document.getElementById('rgraph-datagrid-rows-selected-myGrid').value)"/>
+
+
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            var data = [
+                [324, 'Richard','Monday',98],
+                [468, 'Jacob',  'Friday', 78],
+                [255, 'Kevin',  'Friday', 49],
+                [463, 'Jim',  'Friday', 780],
+                [846, 'Freddy','Thursday',13],
+                [848, 'Fred','Thursday',16],
+                [442, 'Lizzy','Sunday',46],
+                [655, 'Gary','Sunday',48]
+            ];
+
+            grid = new RGraph.Datagrid({
+                id: 'myGrid',
+                data: data,
+                options: {
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsWidths: [50],
+                    filter: true,
+                    style: [
+                        'div#myGrid table.rgraph-datagrid {display: block;}',
+                        'tbody {max-height: 150px;overflow-x:hidden;overflow-y:auto;display: block;width: 100%;'
+                    ],
+                    rowsSelectable: true,
+                    rowsSelectableIds:[324,468,255,463,846,848,442,655],
+                    rowsSelectablePersistent: true
+                }
+            }).draw();
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>

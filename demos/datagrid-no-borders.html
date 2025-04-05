@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An example of a datagrid with no borders</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            new RGraph.Datagrid({
+                id: 'myGrid',
+                data: [
+                    [324, 'Richard','Monday',98],
+                    [468, 'Jacob',  'Friday', 78],
+                    [846, 'Freddy','Thursday',13],
+                    [442, 'Lizzy','Sunday',46]
+                ],
+                options: {
+                    columnsHeaders: ['ID','Name','Day','Score'],
+                    columnsWidths: [50],
+                    style: [
+                        'td {border: none !important;}'
+                    ]
+                }
+            }).draw();
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>
