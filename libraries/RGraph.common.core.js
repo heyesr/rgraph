@@ -36,6 +36,7 @@
     RGraph.cache          = [];
     RGraph.GET            = {};
     RGraph.GET.__parts__  = null;
+    RGraph.Queue          = {__store__: []};
 
     RGraph.ObjectRegistry                    = {};
     RGraph.ObjectRegistry.objects            = {};
@@ -503,6 +504,30 @@
 
         return grad;
     };
+
+
+
+
+
+
+
+
+    //
+    // Returns a column of data from a 2D array.
+    //
+    // @param array  arr The 2D array
+    // @param number col The column of data to extract. Starts at zero.
+    // @retun array      The new array of data.
+    //
+    RGraph.arrayColumn = function (arr, col)
+    {
+        if (col > arr.length || Math.abs(col) > Math.abs(arr.length + 1)) {
+            return null;
+        }
+
+        return arr.map(v => v[col < 0 ? col + v.length : col]);
+    };
+
 
 
 
@@ -3440,7 +3465,8 @@
     {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c)
         {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            var r = Math.random()*16|0,
+                v = c == 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         });
     };
@@ -6602,6 +6628,11 @@
 
         // Check for null
         if (RGraph.isNull(obj)) {
+            return true;
+        }
+        
+        // Check for NaN
+        if (Number.isNaN(obj)) {
             return true;
         }
     
@@ -10574,15 +10605,22 @@
     // @param func function The function to call
     // @return              The return value of the function
     //
-    RGraph.runOnce = function (id, func)
+    RGraph.runOnce = function ()
     {
-        if (RGraph.Registry.get('rgraph-runonce-functions')[id]) {
+        var args = RGraph.getArgs(arguments, 'id,func,alternative');
+
+        if (RGraph.Registry.get('rgraph-runonce-functions')[args.id]) {
+            
+            if (RGraph.isFunction(args.alternative)) {
+                (args.alternative)();
+            }
+            
             return;
         }
 
-        RGraph.Registry.get('rgraph-runonce-functions')[id] = func;
+        RGraph.Registry.get('rgraph-runonce-functions')[args.id] = args.func;
         
-        return func();
+        return args.func();
     };
 
 
@@ -10763,6 +10801,65 @@
 
 
 
+
+    //
+    // A queuing function. Give this a name of a queue name and a
+    // function to run and it will run that function when the queue
+    // is resolved.
+    //
+    // @param string   queue The queue to add the function to.
+    // @param function       The function that will be queued and
+    //                       run when the queue is resolved.
+    //
+    RGraph.Queue.add = function (name, func)
+    {
+        if (!RGraph.isArray(RGraph.Queue.__store__)) {
+            RGraph.Queue.__store__ = {};
+        }
+        
+        if (!RGraph.Queue.__store__[name]) {
+            RGraph.Queue.__store__[name] = [];
+        }
+
+        // Add the function to the queue
+        RGraph.Queue.__store__[name].push(func);
+    };
+
+
+
+
+
+
+
+
+    //
+    // Run all the functions in a queue (if there are any) that have
+    // been added.
+    //
+    // @param objec  obj  The chart object
+    // @param string name The name of the queue to resolve.
+    //
+    RGraph.Queue.resolve = function (name)
+    {
+        // Loop through the queue running the functions
+        if (RGraph.isArray(RGraph.Queue.__store__[name])) {
+            for (var i=0; i<RGraph.Queue.__store__[name].length; ++i) {
+                if (RGraph.isFunction(RGraph.Queue.__store__[name][i])) {
+                    (RGraph.Queue.__store__[name][i])();
+                }
+            }
+        }
+        
+        // Truncate the queue
+        RGraph.Queue.__store__[name] = [];
+    };
+
+
+
+
+
+
+
     // Some utility functions that help identify the type of an object
     //
     // Note that isUndefined() should be used like this or you'll get an
@@ -10776,6 +10873,8 @@
     RGraph.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
     RGraph.isBool      =
     RGraph.isBoolean   = function(obj){return typeof obj === 'boolean';};
+    RGraph.isRegex     = 
+    RGraph.isRegexp    = function (obj){return obj.constructor.toString().toLowerCase().indexOf('regex') > 0;};
     //RGraph.isArray Defined above
     RGraph.isObject    = function(obj){return (obj && typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0) ? true : false;};
     //RGraph.isNull  Defined above

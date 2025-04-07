@@ -4168,7 +4168,7 @@ this.context.lineTo(
 
         //
         // This is the 'end' of the constructor so if the first argument
-        // contains configuration dsta - handle that.
+        // contains configuration data - handle that.
         //
         RGraph.parseObjectStyleConfig(this, conf.options);
     };

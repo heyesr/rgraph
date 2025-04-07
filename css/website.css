@@ -85,7 +85,7 @@ div#main-body-container {
     margin-right: auto;
     position: relative;
     padding-right: 250px;
-    min-height: 1000px;
+    min-height: 1300px;
 }
 
 :is(h1,h2,h3,h4) {
@@ -532,11 +532,16 @@ div.api-properties-container {
 
 div.api-properties-container div.api-properties {
     border: 1px solid #aaa;
-    border-top: black 30px solid;
 }
 
 div.api-properties-container div.api-properties > div.api-property {
     padding: 5px;
+}
+
+div.api-properties-container div.api-properties > div.api-property span.variable-type {
+    color: #666;
+    font-style: italic;
+    font-size: smaller;
 }
 
 div.api-properties-container div.api-properties div.api-property span.label {

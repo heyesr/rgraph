@@ -291,7 +291,7 @@
             origin:                         0 - (Math.PI / 2),
 
             clearto:                        'rgba(0,0,0,0)',
-            events:                         true,
+            eventsEnabled:                  true,
             
             clip:                           null
         }
@@ -762,7 +762,7 @@
             //
             // This installs the event listeners
             //
-            if (properties.events == true) {
+            if (properties.eventsEnabled) {
                 RGraph.installEventListeners(this);
             }
             
@@ -3038,7 +3038,7 @@
                 radius   =  obj.getRadius(),
                 labels   =  obj.get('labels')
             
-            obj.set('events', false);
+            obj.set('eventsEnabled', false);
             obj.set('labels', []);
 
             var iterator = function ()
@@ -3067,7 +3067,7 @@
                 } else {
 
                     obj.set({
-                        events: true,
+                        eventsEnabled: true,
                         labels: labels
                     });
 
@@ -3113,7 +3113,7 @@
                 radius   =  this.getRadius(),
                 labels   =  this.get('labels')
             
-            this.set('events', false);
+            this.set('eventsEnabled', false);
             this.set('labels', []);
 
                 
@@ -3157,7 +3157,7 @@
                 } else {
 
                     obj.set({
-                        events: true,
+                        eventsEnabled: true,
                         labels: labels
                     });
 

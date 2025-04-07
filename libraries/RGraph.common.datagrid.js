@@ -1048,8 +1048,7 @@
             'div#' + this.id + ' table.rgraph-datagrid thead tr th {box-sizing: border-box;}',
             'div#' + this.id + ' table.rgraph-datagrid thead tr th {padding: 0;background-color: #eee6;color: black;font-weight: bold;}',
             'div#' + this.id + ' table.rgraph-datagrid thead tr th div.rgraph-datagrid-cell-content {text-align: center;box-sizing: border-box; padding: 10px;}',
-            'div#' + this.id + ' table.rgraph-datagrid tbody tr td {border: 1px solid #ddd;',
-            'div#' + this.id + ' table.rgraph-datagrid tbody tr td div.rgraph-datagrid-cell-content {box-sizing: border-box;padding: 5px;}',
+            'div#' + this.id + ' table.rgraph-datagrid tbody tr td div.rgraph-datagrid-cell-content {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;border: 1px solid #ddd;}',
             'div#' + this.id + ' table.rgraph-datagrid tbody tr:nth-child(even) {background-color: #eee6;}',
             'div#' + this.id + ' table.rgraph-datagrid tbody tr.rgraph-datagrid-row-selected {background-color: #00a; color: white;}',
             'div#' + this.id + ' table.rgraph-datagrid tfoot tr th div.rgraph-datagrid-cell-content {padding: 0; box-sizing: border-box;}',
@@ -1421,8 +1420,7 @@
                         if (obj.properties.style[i].trim()) {
                             
                             var str = obj.properties.style[i].trim();
-                            var re  = new RegExp('^(div)?(#' + obj.id + ')? *(table)?(\.rgraph-datagrid)?');
-                            str     = str.replace(re,`div#${obj.id} table.rgraph-datagrid `);
+                                str = str.replace(/^(div)?(#' + obj.id + ')? *(table)?(\.rgraph-datagrid)?/,`div#${obj.id} table.rgraph-datagrid `);
 
                             obj.defaultCss.push(str);
                         }
@@ -2160,23 +2158,24 @@
                                 td.style.position = 'relative';
 
                                 // Clear the cells div tags content
-                                td.firstChild.replaceChildren();
+                                td.replaceChildren();
+
 
                                 var input = document.createElement('input');
                                 input.style.cssText = `position: absolute;
                                                        left: 0;
                                                        top: 0;
-                                                       border: none;
+                                                       -border: 1px solid red;
                                                        padding: 0;
                                                        margin: 0;
-                                                       width: ${td.offsetWidth}px;
-                                                       height: ${td.offsetHeight}px;`;
+                                                       width: calc(100% - 1px);
+                                                       height: calc(100% - 1px);`;
                                 input.value = td.getAttribute('data-value');
 
                                 input.setAttribute('data-row-index', td.getAttribute('data-row-index'));
                                 input.setAttribute('data-column-index', td.getAttribute('data-column-index'));
 
-                                td.firstChild.appendChild(input);
+                                td.appendChild(input);
 
                                 input.focus();
                                 input.select();
@@ -2931,7 +2930,9 @@ for (var i=0; i<ths.length; ++i) {
         //
         this.updateSelectedRowsInput = function ()
         {
-            this.rowsSelectableSelectedInput.value = JSON.stringify(this.getSelected());
+            if (this.properties.rowsSelectable && this.rowsSelectableSelectedInput) {
+                this.rowsSelectableSelectedInput.value = JSON.stringify(this.getSelected());
+            }
         };
 
 

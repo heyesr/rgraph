@@ -13,9 +13,11 @@
     <div id="rgraph-demo-html">
         <div style="width: 700px; margin-left: auto; margin-right: auto">
             <div id="myGrid"></div>
+            <p />
+            <input type="submit" style="font-size: 20pt; cursor: pointer" onclick="alert(document.getElementById('rgraph-datagrid-rows-selected-myGrid').value)"/>
         </div>
     </div>
-    <input type="submit" onclick="$a(document.getElementById('rgraph-datagrid-rows-selected-myGrid').value)"/>
+    
 
 
     
@@ -46,10 +48,13 @@
                     columnsWidths: [50],
                     filter: true,
                     style: [
-                        'div#myGrid table.rgraph-datagrid {display: block;}',
-                        'tbody {max-height: 150px;overflow-x:hidden;overflow-y:auto;display: block;width: 100%;'
+                        'table {margin-left: auto;margin-right: auto;}',
+                        'tr th div {background-color: black; color: white;}',
+                        'tr th span {color: white;}',
+                        'table.rgraph-datagrid {display: block;}',
+                        'table.rgraph-datagrid tbody {max-height: 150px;overflow-x:hidden;overflow-y:auto;display: block;width: 100%;}'
                     ],
-                    rowsSelectable: true,
+                    rowsSelectable: false,
                     rowsSelectableIds:[324,468,255,463,846,848,442,655],
                     rowsSelectablePersistent: true
                 }

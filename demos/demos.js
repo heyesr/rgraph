@@ -77,10 +77,17 @@
         html = html.replace(/<svg.*<\/svg>/g,'')
                    .replace(/position:? ?relative;?/g,'')
                    .replace(/;? *display *: *inline-block;/g,'')
-                   .replace(/; *" /g,'" ')
+                   .replace(/; *" /g,'" ');
 
         var re = new RegExp('^        ','gm');
-        document.write('<pre class="code">' + html.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(re,'').trim() + '</pre>');
+        html = '<pre class="code">' + html.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(re,'').trim() + '</pre>';
+
+        // Turn HTML comments green
+        //html = html.replace(//isg, '<span>&lt;!--')
+        //html = html.replace(/--&gt;/isg, '--&gt;</span>')
+        html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>')
+
+        document.write(html);
     }
     
     
