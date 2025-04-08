@@ -1587,6 +1587,8 @@
                         span.onclick = function (e)
                         {
                             obj.clearFilter();
+                            obj.resetSortData();
+                            obj.applyStoredEdits();
                             obj.redraw();
                         };
                     }
@@ -1611,11 +1613,8 @@
                         // Reset the data back to the original
                         obj.setData(RGraph.arrayClone(obj.original_data));
 
-                        // Deselect all rows if the deselect
-                        // function is defined
-                        if (RGraph.isFunction(obj.deselectAll)) {
-                            obj.deselectAll();
-                        }
+                        // Deselect all rows
+                        obj.deselectAll();
                     };
                 
                 
@@ -1700,6 +1699,17 @@
                         if (e.keyCode >= 37 && e.keyCode <= 40) {
                             return;
                         }
+                        
+                        // Cancel the search when the Esc key is pressed
+                        if (e.keyCode === 27) {
+                            obj.clearFilter();
+                            obj.resetSortData();
+                            obj.applyStoredEdits();
+                            obj.redraw();
+                            return;
+                        }
+                        
+                        
 
 
                         obj.resetData();
@@ -2224,7 +2234,7 @@
                                     // Keep a record of the edits so that when sorting is reset and
                                     // the original data is used again - the edits can be re-applied
                                     // to the data.
-                                    obj.edits.push({row: row, column: column, value: obj.data[row][column].value});
+                                    obj.edits.push({row: obj.data[row][column].original_row_index, column: column, value: obj.data[row][column].value});
 
                                     //
                                     // Resort the data array
