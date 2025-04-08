@@ -1002,6 +1002,12 @@
                                                    // draw this will
                                                    // be false
 
+        // This property is used to record edits that the user
+        // makes so that the object is reset (for example when
+        // sorting goes back to the default ordering) those edits
+        // can be reapplied and aren't lost.
+        this.edits = [];
+
 
 
 
@@ -2214,6 +2220,12 @@
                                     obj.data[row][column].value = RGraph.isNumeric(input.value)
                                                                  ? parseFloat(input.value)
                                                                  : input.value;
+
+                                    // Keep a record of the edits so that when sorting is reset and
+                                    // the original data is used again - the edits can be re-applied
+                                    // to the data.
+                                    obj.edits.push({row: row, column: column, value: obj.data[row][column].value});
+
                                     //
                                     // Resort the data array
                                     //
@@ -3318,12 +3330,48 @@ for (var i=0; i<ths.length; ++i) {
         // This facilitates the data for the datagrid to be reverted
         // to the original order, negating sorting.
         //
-        this.resetData = function ()
+        // @param object opt The various options that control the
+        //                   function Currently there's just one: edits
+        //                   Which defaults to true and allows you to
+        //                   stipulate whether edits are applied after
+        //                   the data has been reset.
+        //
+        this.resetData = function (opt = {edits: true})
         {
             var original = RGraph.arrayClone(this.original_data, true);
             this.setData(original);
             
+            // Reapply edits so that any edited data isn't lost.
+            if (opt.edits) {
+                this.applyStoredEdits();
+            }
+
             RGraph.fireCustomEvent(obj, 'resetdata');
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function is used to apply the stored edits to the
+        // data. It's used  by the resetData() function and comes
+        // after  the column-sorting is reset to the default. If
+        // not used then the edits would be lost.
+        //
+        this.applyStoredEdits = function ()
+        {
+            for (var i=0; i<this.edits.length; ++i) {
+
+                var row = this.edits[i].row;
+                var col = this.edits[i].column;
+                var val = this.edits[i].value;
+
+                this.data[row][col].value = val;
+            }
         };
 
 
