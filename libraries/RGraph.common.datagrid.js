@@ -1,3 +1,4 @@
+    //
     // o---------------------------------------------------------------------------------o
     // | This file is part of the RGraph package - you can learn more at:                |
     // |                                                                                 |
@@ -66,6 +67,29 @@
             this.draw();
             
             RGraph.fireCustomEvent(this, 'redraw');
+        };
+
+
+
+
+
+
+
+
+        //
+        // Adds styles to the document.
+        //
+        // @param string selector A standa\rd CSS selector.
+        // @param string style The styles to add
+        //
+        this.addStylesBySelector = function (selector, styles)
+        {
+            var els = document.querySelectorAll(selector);
+
+            for (var i=0; i<els.length; ++i) {
+                var current = els[i].getAttribute('style') || '';
+                els[i].setAttribute('style', current + ';' + styles);
+            }
         };
 
 
@@ -1056,7 +1080,6 @@
             'div#' + this.id + ' table.rgraph-datagrid thead tr th div.rgraph-datagrid-cell-content {text-align: center;box-sizing: border-box; padding: 10px;}',
             'div#' + this.id + ' table.rgraph-datagrid tbody tr td div.rgraph-datagrid-cell-content {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;border: 1px solid #ddd;}',
             'div#' + this.id + ' table.rgraph-datagrid tbody tr:nth-child(even) {background-color: #eee6;}',
-            'div#' + this.id + ' table.rgraph-datagrid tbody tr.rgraph-datagrid-row-selected {background-color: #00a; color: white;}',
             'div#' + this.id + ' table.rgraph-datagrid tfoot tr th div.rgraph-datagrid-cell-content {padding: 0; box-sizing: border-box;}',
         ];
 
@@ -1407,8 +1430,8 @@
             //
             // Add the default styles for the datagrid here
             //
-            RGraph.runOnce('rgraph-datagrid-' + this.id + 'add-default-styles-to-document', function ()
-            {
+            //RGraph.runOnce('rgraph-datagrid-' + this.id + 'add-default-styles-to-document', function ()
+            //{
                 //
                 // Add the rules that have been given in the
                 // properties. If the rules don't start with
@@ -1436,15 +1459,27 @@
 
 
 
-                if (!document.styleSheets.length) {
-                    document.head.insertAdjacentHTML("beforeend", '<style></style>');
-                }
-    
-                var sheet = document.styleSheets[0]
-                for (var i=0; i<obj.defaultCss.length; ++i) {
-                    sheet.insertRule(obj.defaultCss[i], sheet.cssRules.length);
-                }
-            });
+                //if (!document.styleSheets.length) {
+                //    document.head.insertAdjacentHTML("beforeend", '<style crossorigin="anonymous"></style>');
+                //}
+
+                //var sheet = document.styleSheets[0];
+                //for (var i=0; i<obj.defaultCss.length; ++i) {
+                //    sheet.insertRule(
+                //        obj.defaultCss[i],
+                //        sheet.cssRules.length
+                //    );
+                //}
+                RGraph.Queue.add('end-draw', function ()
+                {
+                    for (var i=0; i<obj.defaultCss.length; ++i) {
+                        obj.addStylesBySelector(
+                            obj.defaultCss[i].replace(/{.*$/, '').trim(),
+                            obj.defaultCss[i].replace(/^.*{/, '').replace(/ *} *$/,'').trim()
+                        );
+                    }
+                });
+            //});
 
 
 
@@ -2791,6 +2826,11 @@ for (var i=0; i<ths.length; ++i) {
                     obj.redraw();
                 }
             });
+            
+            //
+            // Reslove the end-draw queue
+            //
+            RGraph.Queue.resolve('end-draw');
 
 
 
@@ -3015,8 +3055,19 @@ for (var i=0; i<ths.length; ++i) {
             }
         
             var tr = obj.container.querySelector(`table tbody tr:nth-child(${index+1})`);
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
+            tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
             tr.className = tr.className.trim() + ' rgraph-datagrid-row-selected';
             tr.className = tr.className.trim();
+// TODO Find a better way to do this
+tr.style.backgroundColor = '#00a';
+tr.style.color           = 'white';
             tr.setAttribute('aria-selected', "true");
         
         
@@ -3176,8 +3227,21 @@ for (var i=0; i<ths.length; ++i) {
         
             var tr = obj.container.querySelector(`table tbody tr:nth-child(${index+1})`);
             if (tr) {
+                // The g flag doesn't appear to functiong as
+                // expected here
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
+                tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
                 tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
                 tr.setAttribute('aria-selected', "false");
+
+// TODO find a better way to do this
+tr.style.backgroundColor = '';
+tr.style.color           = '';
+
             }
             
         
@@ -3619,6 +3683,8 @@ for (var i=0; i<ths.length; ++i) {
                 return property;
             }
         };
+
+        
 
 
 

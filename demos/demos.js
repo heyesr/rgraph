@@ -48,7 +48,7 @@
                        (els[i].src.indexOf('RGraph.') > 0 && els[i].src.indexOf('.js') > 0 )
                     || els[i].src.indexOf('ajax.googleapis.com') > 0
                    ) {
-                    var src = els[i].src.replace(/https:\/\/(dev|staging|www)\.rgraph\.net\/libraries\//, '');
+                    var src = els[i].src.replace(/.*\/libraries\/RGraph\./, 'RGraph.');
                     document.write('&lt;script src="' + src  + '"&gt;&lt;/script&gt;\n');
                 }
             }
