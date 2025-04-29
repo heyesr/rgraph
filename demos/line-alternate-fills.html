@@ -177,128 +177,132 @@ tooltipsOffsety: -5,
                         ['Person: ',  'Jim'],
                         ['Date: ',  '30th June 1978'],
                         ['Price: ', '$110.1594']
-                    ],
-                ]
-            }
-        }).on('draw', function (obj)
-        {
-            // Use different sets of coordinates depending on
-            // whether a spline has been requested or not
-            var coordinates = obj.properties.spline ? obj.coordsSpline : obj.coords2;
-
-
-            // First, fill the bits which appear ABOVE the cyan
-            // (the first) line
-                
-            // Clip the canvas to the the top part of the
-            // canvas
-            //
-            var p1 = [obj.canvas.width - obj.properties.marginRight, obj.properties.marginTop];
-            var p2 = [obj.properties.marginLeft, obj.properties.marginTop];
-            
-            RGraph.clipTo.start(obj, [p1,p2].concat(coordinates[0]));
-
-                // Begin drawing the lines
-                obj.path('b');
-                
-                // Create a path from the first line
-                RGraph.pathLine({
-                    context: obj.context,
-                    coords:  coordinates[0]
-                });
-                
-                // Add the second line to the path in reverse
-                // order
-                RGraph.pathLine({
-                    context: obj.context,
-                    coords:  coordinates[1],
-                    moveto:  false,
-                    reverse: true
-                });
-                
-                // Set the globalAlpha and then fill the shape
-                // that has just been drawn
-                obj.path('ga 0.5 f purple');
-        
-            // Reset the canvas
-            RGraph.clipTo.end();
+                    ]
+                ],
+                events: {
+                    draw: function (obj)
+                    {
+                        // Use different sets of coordinates depending on
+                        // whether a spline has been requested or not
+                        var coordinates = obj.properties.spline ? obj.coordsSpline : obj.coords2;
             
             
+                        // First, fill the bits which appear ABOVE the cyan
+                        // (the first) line
+                            
+                        // Clip the canvas to the the top part of the
+                        // canvas
+                        //
+                        var p1 = [obj.canvas.width - obj.properties.marginRight, obj.properties.marginTop];
+                        var p2 = [obj.properties.marginLeft, obj.properties.marginTop];
+                        
+                        RGraph.clipTo.start(obj, [p1,p2].concat(coordinates[0]));
             
-
-            // Second, fill the bits which appear BELOW the cyan
-            // (the first) line.
-
-            // Clip to the bottom bit of the canvas - below the
-            // first line.
-            var p3 = [obj.canvas.width - obj.properties.marginRight, obj.canvas.height - obj.properties.marginBottom];
-            var p4 = [obj.properties.marginLeft, obj.canvas.height - obj.properties.marginBottom];
-            
-            RGraph.clipTo.start(obj, [p3,p4].concat(coordinates[0]));
-
-
-                // Draw both of the lines
-                obj.path('b');
-                    RGraph.pathLine({
-                        context: obj.context,
-                        coords:  coordinates[0]
-                    });
-                    RGraph.pathLine({
-                        context: obj.context,
-                        coords:  coordinates[1],
-                        moveto:  false,
-                        reverse: true
-                    });
-                
-                // Set the globalAlpha and fill the shape in a green
-                // color
-                obj.path('ga 0.5 f green');
-            
-            // Reset the canvas
-            RGraph.clipTo.end();
-
-
-
-
-
-
-            //
-            // Now, because the fills that were done above appear
-            // a little bit over the lines, draw the lines again
-            // along with the tickmarks.
-            //
-
-            
-            // Add a custom tickmark - just a regular circle
-            // with the middle colored black
-            for (var i=0; i<2; ++i) {
-                
-                var coords = coordinates[i];
-            
-                // Redraw the lines
-                RGraph.drawLine({
-                    context:   obj.context,
-                    coords:    coords,
-                    linewidth: typeof obj.properties.linewidth === 'object' ? obj.properties.linewidth[i] : obj.properties.linewidth,
-                    stroke:    obj.properties.colors[i]
-                });
-                
-                
-                // Draw the tickmarks for the line if necessary
-                if (obj.properties.tickmarksSize > 0) {
-                    for (var j=0; j<coords.length; j+=(obj.properties.spline ? 10 : 1)) {
+                            // Begin drawing the lines
+                            obj.path('b');
+                            
+                            // Create a path from the first line
+                            RGraph.pathLine({
+                                context: obj.context,
+                                coords:  coordinates[0]
+                            });
+                            
+                            // Add the second line to the path in reverse
+                            // order
+                            RGraph.pathLine({
+                                context: obj.context,
+                                coords:  coordinates[1],
+                                moveto:  false,
+                                reverse: true
+                            });
+                            
+                            // Set the globalAlpha and then fill the shape
+                            // that has just been drawn
+                            obj.path('ga 0.5 f purple');
                     
-                        var x = coords[j][0];
-                        var y = coords[j][1];
-                    
-                        // Draw a donut in the line color. The center of
-                        // the donut is colored black.
-                        obj.path(
-                            "b a % % % % % false f % b a % % % % % false f black",
-                            x, y, obj.properties.tickmarksSize, 0, 6.29,
-                            obj.properties.colors[i],
-                            x, y, obj.properties.tickmarksSize - 3, 0, 6.29
-                        );
+                        // Reset the canvas
+                        RGraph.clipTo.end();
+                        
+                        
+                        
+            
+                        // Second, fill the bits which appear BELOW the cyan
+                        // (the first) line.
+            
+                        // Clip to the bottom bit of the canvas - below the
+                        // first line.
+                        var p3 = [obj.canvas.width - obj.properties.marginRight, obj.canvas.height - obj.properties.marginBottom];
+                        var p4 = [obj.properties.marginLeft, obj.canvas.height - obj.properties.marginBottom];
+                        
+                        RGraph.clipTo.start(obj, [p3,p4].concat(coordinates[0]));
+            
+            
+                            // Draw both of the lines
+                            obj.path('b');
+                                RGraph.pathLine({
+                                    context: obj.context,
+                                    coords:  coordinates[0]
+                                });
+                                RGraph.pathLine({
+                                    context: obj.context,
+                                    coords:  coordinates[1],
+                                    moveto:  false,
+                                    reverse: true
+                                });
+                            
+                            // Set the globalAlpha and fill the shape in a green
+                            // color
+                            obj.path('ga 0.5 f green');
+                        
+                        // Reset the canvas
+                        RGraph.clipTo.end();
+            
+            
+            
+            
+            
+            
+                        //
+                        // Now, because the fills that were done above appear
+                        // a little bit over the lines, draw the lines again
+                        // along with the tickmarks.
+                        //
+            
+                        
+                        // Add a custom tickmark - just a regular circle
+                        // with the middle colored black
+                        for (var i=0; i<2; ++i) {
+                            
+                            var coords = coordinates[i];
+                        
+                            // Redraw the lines
+                            RGraph.drawLine({
+                                context:   obj.context,
+                                coords:    coords,
+                                linewidth: typeof obj.properties.linewidth === 'object' ? obj.properties.linewidth[i] : obj.properties.linewidth,
+                                stroke:    obj.properties.colors[i]
+                            });
+                            
+                            
+                            // Draw the tickmarks for the line if necessary
+                            if (obj.properties.tickmarksSize > 0) {
+                                for (var j=0; j<coords.length; j+=(obj.properties.spline ? 10 : 1)) {
+                                
+                                    var x = coords[j][0];
+                                    var y = coords[j][1];
+                                
+                                    // Draw a donut in the line color. The center of
+                                    // the donut is colored black.
+                                    obj.path(
+                                        "b a % % % % % false f % b a % % % % % false f black",
+                                        x, y, obj.properties.tickmarksSize, 0, 6.29,
+                                        obj.properties.colors[i],
+                                        x, y, obj.properties.tickmarksSize - 3, 0, 6.29
+                                    );
+                                }
+                            }
+                        }
+                        
                     }
                 }
             }

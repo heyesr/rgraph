@@ -41,12 +41,15 @@
                 shadow: true,
                 xaxisTickmarksCount: 3,
                 crosshairs: true,
-                crosshairsSnap: true
+                crosshairsSnap: true,
+                events: {
+                    crosshairs: function (obj)
+                    {
+                        document.getElementById("dataset").value =  obj.canvas.__crosshairs_snap_dataset__;
+                        document.getElementById("point").value   =  obj.canvas.__crosshairs_snap_point__;
+                    }
+                }
             }
-        }).on('crosshairs', function (obj)
-        {
-            document.getElementById("dataset").value =  obj.canvas.__crosshairs_snap_dataset__;
-            document.getElementById("point").value =  obj.canvas.__crosshairs_snap_point__;
         }).draw();
     </script>
 

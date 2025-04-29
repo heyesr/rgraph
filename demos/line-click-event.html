@@ -24,12 +24,15 @@
             data: [20,30,50,40,30,50,40,30,60,50,10,20],
             options: {
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                tooltips: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                tooltips: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                events: {
+                    click: function (e, shape)
+                    {
+                        alert('The Line chart click event');
+                    }
+                }
             }
-        }).draw().on('click', function (e, shape)
-        {
-            alert('The Line chart click event');
-        });
+        }).draw();
         
         pie = new RGraph.Pie({
             id: 'cvs2',
@@ -37,12 +40,15 @@
             options: {
                 exploded: 5,
                 tooltips: ['John', 'Mary'],
-                colorsStroke: 'rgba(0,0,0,0)'
+                colorsStroke: 'rgba(0,0,0,0)',
+                events: {
+                    click: function (e, obj)
+                    {
+                        alert('The Pie chart click event');
+                    }
+                }
             }
-        }).draw().on('click', function (e, shape)
-        {
-            alert('The Pie chart click event');
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

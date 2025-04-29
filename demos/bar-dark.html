@@ -32,9 +32,12 @@
                 yaxisLabelsCount: 6,
                 xaxisLabels: ['JAN','FEB','MAR','APR','MAY','JUN','JUL'],
                 marginInner: 10,
-                marginInnerGrouped: 0
+                marginInnerGrouped: 0,
+                events: {
+                    beforedraw: obj => RGraph.clear(obj.canvas, '#101044')
+                }
             }
-        }).on('beforedraw', obj => RGraph.clear(obj.canvas, '#101044') ).draw();
+        }).draw();
     </script>
 
     <script>showSource()</script>

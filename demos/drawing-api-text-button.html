@@ -90,14 +90,14 @@
                     boundingShadowOffsety: 1,
                     halign: 'right',
                     valign: 'top',
-                    colors: ['blue']
+                    colors: ['blue'],
+                    
+                    // Using arrow functions for brevity
+                    events: {
+                        click:     e => drawBar1(),
+                        mousemove: e => true
+                    }
                 }
-            }).on('click', function (e, shape)
-            {
-                drawBar1();
-            }).on('mousemove', function ()
-            {
-                return true;
             }).draw()
 
 
@@ -120,25 +120,15 @@
                     boundingShadowOffsety: 1,
                     halign: 'right',
                     valign: 'top',
-                    colors: ['blue']
+                    colors: ['blue'],
+                    
+                    // Using arrow functions for brevity
+                    events: {
+                        click:     e => drawBar2(),
+                        mousemove: e => true
+                    }
                 }
-            }).on('click', function (e, shape)
-            {
-                drawBar2();
-            }).on('mousemove', function ()
-            {
-                return true;
-            }).draw().
-
-
-
-
-            
-            text1.onmousemove =
-            text2.onmousemove = function (e, shape)
-            {
-                e.target.style.cursor = 'pointer';
-            }
+            }).draw();
         }
     </script>
 

@@ -47,39 +47,41 @@
                 radius: 90,
                 colors: ['red', '#0000'],
                 donut: true,
-                donutWidth: 20
-            }
-        }).on('draw', function (obj)
-        {
-            // Add the text label that indicates the 'value' of the
-            // first Pie segment
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   obj.data[0] + '%',
-                x:      obj.centerx,
-                y:      obj.centery,
-                halign: 'center',
-                valign: 'center',
-                size:   40,
-                bold:   true,
-                color:  '#999'
-            });
-
-            // Add the smaller text label that sits under the main percentage label.
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   'Charles',
-                x:      obj.centerx,
-                y:      obj.centery + 20,
-                halign: 'center',
-                valign: 'top',
-                size:   16,
-                bold:   true,
-                color:  '#999'
-            });
-        
+                donutWidth: 20,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Add the text label that indicates the 'value' of the
+                        // first Pie segment
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   obj.data[0] + '%',
+                            x:      obj.centerx,
+                            y:      obj.centery,
+                            halign: 'center',
+                            valign: 'center',
+                            size:   40,
+                            bold:   true,
+                            color:  '#999'
+                        });
+            
+                        // Add the smaller text label that sits under the main percentage label.
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   'Charles',
+                            x:      obj.centerx,
+                            y:      obj.centery + 20,
+                            halign: 'center',
+                            valign: 'top',
+                            size:   16,
+                            bold:   true,
+                            color:  '#999'
+                        });
+                    }
+                }
+            }        
         // Use the roundRobin() effect for the red Pie segment.
         }).roundRobin({frames: 45});
 
@@ -117,39 +119,42 @@
                 radius: 90,
                 colors: ['red', 'transparent'],
                 donut: true,
-                donutWidth: 20
+                donutWidth: 20,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Add the text label that indicates the 'value' of the
+                        // second Pie segment
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   obj.data[0] + '%',
+                            x:      obj.centerx,
+                            y:      obj.centery,
+                            halign: 'center',
+                            valign: 'center',
+                            size:   40,
+                            bold: true,
+                            color:  '#999'
+                        });
+            
+                        // Add the smaller text label that sits under the main
+                        // percentage label.
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svgAllElements,
+                            text:   'Ricky',
+                            x:      obj.centerx,
+                            y:      obj.centery + 20,
+                            halign: 'center',
+                            valign: 'top',
+                            size:   16,
+                            bold: true,
+                            color:  '#999'
+                        });
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // Add the text label that indicates the 'value' of the
-            // second Pie segment
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   obj.data[0] + '%',
-                x:      obj.centerx,
-                y:      obj.centery,
-                halign: 'center',
-                valign: 'center',
-                size:   40,
-                bold: true,
-                color:  '#999'
-            });
-
-            // Add the smaller text label that sits under the main
-            // percentage label.
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svgAllElements,
-                text:   'Ricky',
-                x:      obj.centerx,
-                y:      obj.centery + 20,
-                halign: 'center',
-                valign: 'top',
-                size:   16,
-                bold: true,
-                color:  '#999'
-            });
         }).roundRobin({frames: 45});
 
 
@@ -188,40 +193,43 @@
                 radius: 90,
                 colors: ['red', 'transparent'],
                 donut: true,
-                donutWidth: 20
+                donutWidth: 20,
+                events: {
+                    draw: function (obj)
+                    {
+                        //
+                        // Add the text label that indicates the 'value' of the
+                        // third Pie segment
+                        //
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   obj.data[0] + '%',
+                            x:      obj.centerx,
+                            y:      obj.centery,
+                            halign: 'center',
+                            valign: 'center',
+                            size:   40,
+                            bold: true,
+                            color:  '#999'
+                        });
+            
+                        // Add the smaller text label that sits under the main percentage label.
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   'Freddy',
+                            x:      obj.centerx,
+                            y:      obj.centery + 20,
+                            halign: 'center',
+                            valign: 'top',
+                            size:   16,
+                            bold: true,
+                            color:  '#999'
+                        });
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            //
-            // Add the text label that indicates the 'value' of the
-            // third Pie segment
-            //
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   obj.data[0] + '%',
-                x:      obj.centerx,
-                y:      obj.centery,
-                halign: 'center',
-                valign: 'center',
-                size:   40,
-                bold: true,
-                color:  '#999'
-            });
-
-            // Add the smaller text label that sits under the main percentage label.
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   'Freddy',
-                x:      obj.centerx,
-                y:      obj.centery + 20,
-                halign: 'center',
-                valign: 'top',
-                size:   16,
-                bold: true,
-                color:  '#999'
-            });
         }).roundRobin({frames: 45});
 
 

@@ -40,45 +40,47 @@
                 backgroundGridVlinesCount: 5,
                 xaxisLabels: ['Week 1','Week 2','Week 3','Week 4','Week 5'],
                 
-                textAccessible: true
-            }
-        }).on('draw', function (obj)
-        {
-            // Get the text nodes using the tag to find them
-
-            var nodes = RGraph.text.find({
-                id: 'cvs',
-               tag: 'yaxis.labels'
-            });
-
-            // Loop through the text nodes and add the click event listener
-            for (var i=0; i<nodes.length; ++i) {
-            
-                nodes[i].style.pointerEvents = 'auto';
-                
-                (function (index)
-                {
-                    nodes[index].addEventListener('click', function (e)
+                textAccessible: true,
+                events: {
+                    draw: function (obj)
                     {
-                        RGraph.clear(obj.canvas);
-                        RGraph.text.domNodeCache = [];
-                        RGraph.redraw();
-
-                        RGraph.tooltip({
-                            object: obj,
-                              text: typeof obj.properties.yaxisLabelsTooltips === 'string'
-                                        ? obj.properties.yaxisLabelsTooltips
-                                        : obj.properties.yaxisLabelsTooltips[index],
-                             index: index,
-                             event: e
+                        // Get the text nodes using the tag to find them
+                        var nodes = RGraph.text.find({
+                            id: 'cvs',
+                           tag: 'yaxis.labels'
                         });
-                    }, false);
-    
-                    nodes[index].addEventListener('mousemove', function (e)
-                    {
-                        e.target.style.cursor = 'pointer';
-                    }, false);
-                })(i);
+            
+                        // Loop through the text nodes and add the click event listener
+                        for (var i=0; i<nodes.length; ++i) {
+                        
+                            nodes[i].style.pointerEvents = 'auto';
+                            
+                            (function (index)
+                            {
+                                nodes[index].addEventListener('click', function (e)
+                                {
+                                    RGraph.clear(obj.canvas);
+                                    RGraph.text.domNodeCache = [];
+                                    RGraph.redraw();
+            
+                                    RGraph.tooltip({
+                                        object: obj,
+                                          text: typeof obj.properties.yaxisLabelsTooltips === 'string'
+                                                    ? obj.properties.yaxisLabelsTooltips
+                                                    : obj.properties.yaxisLabelsTooltips[index],
+                                         index: index,
+                                         event: e
+                                    });
+                                }, false);
+                
+                                nodes[index].addEventListener('mousemove', function (e)
+                                {
+                                    e.target.style.cursor = 'pointer';
+                                }, false);
+                            })(i);
+                        }
+                    }
+                }
             }
         }).draw();
     </script>

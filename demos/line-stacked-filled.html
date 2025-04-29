@@ -48,11 +48,14 @@
                 shadowBlur: 5,
                 tickmarksStyle: null,
                 backgroundGridVlinesCount: 11,
-                xaxisTickmarksCount: 11
+                xaxisTickmarksCount: 11,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
         }).trace({frames: 60});
     </script>
 

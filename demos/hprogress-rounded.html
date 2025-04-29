@@ -42,18 +42,21 @@
                 tooltipsCss: {
                     fontSize: '28pt'
                 },
-                tooltipsOffsety: -30
+                tooltipsOffsety: -30,
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.path(
+                            'b lw 10 rr % % % % % s black',
+                            obj.properties.marginLeft - 5,
+                            obj.properties.marginTop - 5,
+                            obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight + 10,
+                            obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom + 10,
+                            obj.properties.cornersRoundRadius
+                        );
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            obj.path(
-                'b lw 10 rr % % % % % s black',
-                obj.properties.marginLeft - 5,
-                obj.properties.marginTop - 5,
-                obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight + 10,
-                obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom + 10,
-                obj.properties.cornersRoundRadius
-            );
         }).grow();
 
 

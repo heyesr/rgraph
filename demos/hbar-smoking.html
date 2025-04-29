@@ -39,17 +39,20 @@
                 marginLeftAuto: false,
                 marginLeft: 175,
                 marginBottom: 70,
-                textSize: 14
+                textSize: 14,
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.path('lw 1 ss gray');
+                        obj.context.strokeRect(
+                            obj.properties.marginLeft,
+                            obj.properties.marginTop,
+                            obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight,
+                            obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom
+                        );
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            obj.path('lw 1 ss gray');
-            obj.context.strokeRect(
-                obj.properties.marginLeft,
-                obj.properties.marginTop,
-                obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight,
-                obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom
-            );
         }).draw();
     </script>
 

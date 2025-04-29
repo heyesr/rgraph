@@ -36,26 +36,32 @@
                     exploded: 10,
                     radius: 80,
                     textSize: 14,
-                    labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget']
+                    labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'],
+                    events: {
+                        click: function (e, shape)
+                        {
+                            var index = shape.index;
+                            var obj = shape.object;
+                            
+                            // Reset all the segments to 10
+                            obj.set('exploded', 10);
+                            
+                            obj.explodeSegment(index, 15);
+                            
+                            e.stopPropagation();
+                        },
+                        mousemove: function (e, shape)
+                        {
+                            return true;
+                        }
+                    }
                 }
-            }).on('click', function (e, shape)
-            {
-                var index = shape.index;
-                var obj = shape.object;
-                
-                // Reset all the segments to 10
-                obj.set('exploded', 10);
-                
-                obj.explodeSegment(index, 15);
-                
-                e.stopPropagation();
-            }).on('mousemove', function (e, shape)
-            {
-                return true;
+            }).roundRobin({frames:60});
             
-            }).roundRobin({frames:60})
-            
-            window.addEventListener('mousedown', function (e) {pie.set('exploded', 10);}, false);
+            window.addEventListener('mousedown', function (e)
+            {
+                pie.set('exploded', 10);
+            }, false);
         })
     </script>
     

@@ -56,25 +56,28 @@
                     [19, 2, 'rgba(240,240,240,0.75)'], 
                     [26, 2, 'rgba(240,240,240,0.75)']
                 ],
-                adjustable: true
+                adjustable: true,
+                events: {
+                    adjust: function (obj)
+                    {
+                        var event    = RGraph.Registry.get('adjusting.gantt'); // Don't chain this line
+                        var dataset  = event.dataset,
+                            index = event.index;
+            
+                        if (RGraph.isArray(event.object.data[dataset])) {
+                            document.getElementById('eventStart').value    = obj.data[dataset][index].start + 1;
+                            document.getElementById('eventduration').value = obj.data[dataset][index].duration;
+                            document.getElementById('name').value          = obj.data[dataset][0].label;
+            
+                        } else {
+                            document.getElementById('eventStart').value    = obj.data[dataset].start + 1;
+                            document.getElementById('eventduration').value = obj.data[dataset].duration;
+                            document.getElementById('name').value          = obj.data[dataset].label;
+                        }
+                    }
+                }
             }
-        }).draw().on('adjust', function (obj)
-        {
-            var event    = RGraph.Registry.get('adjusting.gantt'); // Don't chain this line
-            var dataset  = event.dataset,
-                index = event.index;
-
-            if (RGraph.isArray(event.object.data[dataset])) {
-                document.getElementById('eventStart').value    = obj.data[dataset][index].start + 1;
-                document.getElementById('eventduration').value = obj.data[dataset][index].duration;
-                document.getElementById('name').value          = obj.data[dataset][0].label;
-
-            } else {
-                document.getElementById('eventStart').value    = obj.data[dataset].start + 1;
-                document.getElementById('eventduration').value = obj.data[dataset].duration;
-                document.getElementById('name').value          = obj.data[dataset].label;
-            }
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

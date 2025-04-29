@@ -48,40 +48,42 @@
                 shadow: false,
                 textSize: 14,
                 xaxis: false,
-                yaxis: false
-            }
-        }).on('firstdraw', function (obj)
-        {
-            //
-            // Draw an area under the chart and clip to it
-            //
-            var clip_coords = RGraph.arrayClone(obj.coordsSpline[0]);
-                clip_coords.unshift([0,obj.canvas.height]);
-                clip_coords.push([obj.canvas.width,obj.canvas.height]);
-
-            //
-            // Now draw the bar chart
-            //
-            new RGraph.Bar({
-                id: 'cvs',
-                data: [8,7,9,10,8,7,6,5,4],
-                options: {
-                    xaxisLabels: ['Rob','Lucy','Lynsey','Paul','Olga','Jerry','Kev','Luis','Hoolio'],
-                    backgroundGrid: false,
-                    textSize: 16,
-                    xaxis: false,
-                    yaxis: false,
-                    yaxisScale: false,
-                    colors: ['gradient(#eef:#01B4FF)'],
-                    shadow: false,
-                    colorsStroke: 'rgba(0,0,0,0)',
-                    textSize: 14,
-                    clip: clip_coords
+                yaxis: false,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        //
+                        // Draw an area under the chart and clip to it
+                        //
+                        var clip_coords = RGraph.arrayClone(obj.coordsSpline[0]);
+                            clip_coords.unshift([0,obj.canvas.height]);
+                            clip_coords.push([obj.canvas.width,obj.canvas.height]);
+            
+                        //
+                        // Now draw the bar chart
+                        //
+                        new RGraph.Bar({
+                            id: 'cvs',
+                            data: [8,7,9,10,8,7,6,5,4],
+                            options: {
+                                xaxisLabels: ['Rob','Lucy','Lynsey','Paul','Olga','Jerry','Kev','Luis','Hoolio'],
+                                backgroundGrid: false,
+                                textSize: 16,
+                                xaxis: false,
+                                yaxis: false,
+                                yaxisScale: false,
+                                colors: ['gradient(#eef:#01B4FF)'],
+                                shadow: false,
+                                colorsStroke: 'rgba(0,0,0,0)',
+                                textSize: 14,
+                                clip: clip_coords
+                            }
+                        }).wave();
+            
+                        RGraph.OR.bringToFront(obj);
+                    }
                 }
-            }).wave();
-
-            RGraph.OR.bringToFront(obj);
-
+            }
         }).trace({frames: 45});
     </script>
     

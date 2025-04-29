@@ -21,23 +21,27 @@
             data: [12,13,16,15,16],
             options: {
                 labels: ['Charly','Lou','Pete','Jim','Fred'],
-                shadow: false
+                shadow: false,
+                events: {
+                    
+                    // This is the function for the mousemove event.
+                    // It changes the pointer to the hand. When the
+                    // mouse is moved away from the segment the
+                    // pointer is changed back to what it was
+                    // automatically for you.
+                    mousemove: function (e, shape)
+                    {
+                        return true;
+                    },
+                    
+                    // This is the function for the click event.
+                    click: function (e, shape)
+                    {
+                        alert('A segment was clicked (with index: ' + shape.index + ')');
+                    }
+                }
             }
-        }).draw()   
-
-        // This is the function for the mousemove event. It changes the pointer to the hand.
-        // When the mouse is moved away from the segment the pointer is changed back to what it was
-        // automatically for you.
-        .on('mousemove', function (e, shape)
-        {
-            return true;
-        })
-
-        // This is the function for the click event.
-        .on('click', function (e, shape)
-        {
-            alert('A segment was clicked (with index: ' + shape.index + ')');
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

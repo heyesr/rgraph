@@ -14,34 +14,7 @@
 <div id="chart-container" style="width:600px; height: 250px"></div>
     </div>
     
-    <script id="rgraph-demo-source-code">
-        // This function draws the tails to the axes. It gets the linewidth directly from the
-        // line chart object whilst the tailsize is hardcoded to 20.
-        function drawTails (obj)
-        {
-            var prop      = obj.properties,
-                linewidth = prop.linewidth;
-
-            // A single path command that draws both of the overhangs on both axes
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'path',
-                parent: obj.svg.svgAllGroup,
-                attr: {
-                    d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
-                        prop.marginLeft - 20 + 5,
-                        obj.height - prop.marginBottom,
-                        prop.marginLeft,
-                        obj.height - prop.marginBottom,
-                        prop.marginLeft,
-                        obj.height - prop.marginBottom + 20 - 5
-                    ),
-                    stroke: 'black',
-                    'stroke-width': linewidth,
-                    fill: 'rgba(0,0,0,0)'
-                }
-            });
-        }
+    <script id="rgraph-demo-source-code">        
 
         // Create the Line chart. Nothing special is done here though note
         // that the background grid is disabled and the number of Y-axis
@@ -71,15 +44,44 @@
                 responsive: [
                     {maxWidth: null,width: 650,height: 250,options: {yaxisLabelsOffsetx: -25,marginLeft: 105,marginBottom: 55,marginInner: 35,tickmarksSize: 12,linewidth: 7,textSize: 18,xaxisLinewidth: 7,yaxisLinewidth: 7}},
                     {maxWidth: 900,width: 500,height: 175,options: {yaxisLabelsOffsetx: -10,marginLeft: 65,marginBottom: 30,marginInner: 20,tickmarksSize: 8,linewidth: 5,textSize: 12,xaxisLinewidth: 5,yaxisLinewidth: 5}}
-                ]
+                ],
+
+                // The draw event adds the overhang to each of 
+                // the axes. It gets the linewidth directly from
+                // the line chart object whilst the tailsize is
+                // hardcoded to 20.
+                events: {
+                    draw: function (obj)
+                    {
+                        var prop      = obj.properties,
+                            linewidth = prop.linewidth;
+            
+                        // A single path command that draws both of the overhangs on both axes
+                        RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'path',
+                            parent: obj.svg.svgAllGroup,
+                            attr: {
+                                d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
+                                    prop.marginLeft - 20 + 5,
+                                    obj.height - prop.marginBottom,
+                                    prop.marginLeft,
+                                    obj.height - prop.marginBottom,
+                                    prop.marginLeft,
+                                    obj.height - prop.marginBottom + 20 - 5
+                                ),
+                                stroke: 'black',
+                                'stroke-width': linewidth,
+                                fill: 'rgba(0,0,0,0)'
+                            }
+                        });
+                    }
+                }
             }
-        
-        // The draw event adds the overhang to each of the axes
-        }).on('draw', drawTails)
-        
+
         // Use the trace() effect to draw the chart setting the number of
-        // frames used by the animation to 60
-        .trace({frames: 60});
+        // frames used by the animation to 60.
+        }).trace({frames: 60});
     </script>
 
     <script>showSource()</script>

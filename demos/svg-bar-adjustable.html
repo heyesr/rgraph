@@ -57,23 +57,23 @@
                 yaxisTitleSize: 18,
                 yaxisTitleBold: true,
                 labelsAbove: true,
-                adjustable: true
+                adjustable: true,
+                events: {
+                    adjustbegin: function (obj)
+                    {
+                        document.getElementById('out-start').value = `Started adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
+                    },
+                    adjust: function (obj)
+                    {
+                        document.getElementById('out-during').value = `During adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
+                    },
+                    adjustend: function (obj)
+                    {
+                        document.getElementById('out-end').value = `Finished adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
+                    }
+                }
             }
-        }).wave().on('adjustbegin', function (obj)
-        {
-            document.getElementById('out-start').value = 
-                `Started adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
-        
-        }).on('adjust', function (obj)
-        {
-            document.getElementById('out-during').value = 
-                `During adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
-        
-        }).on('adjustend', function (obj)
-        {
-            document.getElementById('out-end').value = 
-                `Finished adjusting (value: ${obj.adjusting_mousedown_last.element.getAttribute('data-value')})`;
-        });
+        }).wave();
         
         
 

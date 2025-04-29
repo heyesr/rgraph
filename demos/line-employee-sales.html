@@ -21,15 +21,12 @@
     <script id="rgraph-demo-source-code">
         new RGraph.Line({
             id: 'cvs',
-            
-
             data: [
                 [190,165,47,121,30,72],
                 [12,180,10,80,25,75],
                 [42,80,93,25,21,120],
                 [2,42,27,47,43,50]
             ],
-
             options: {
                 shadow: false,
                 tickmarksStyle: null,
@@ -55,19 +52,23 @@
                 keyLabelsSize: 14,
                 keyLabelsColor: 'rgb(248,248,248)',
                 keyPositionY: 425,
+                
+                // Add some responsive capability to accommodate
+                // smaller screens
                 responsive:[
                     {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
                     {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
-                ]
+                ],
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        // Clear the canvas to a specific color
+                        RGraph.clear(obj.canvas, '#555557');
+                    }
+                }
             }
-        
-        }).on('beforedraw', function (obj)
-        {
-            // Clear the canvas to a specific color
-            RGraph.clear(obj.canvas, '#555557');
 
-        // Use the trace effect to show the chart and add some responsive capability to accommodate
-        // smaller screens.
+        // Use the trace effect to show the chart
         }).trace();
     </script>
 

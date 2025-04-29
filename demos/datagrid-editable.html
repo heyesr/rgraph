@@ -46,20 +46,23 @@
                     editableColumns: [3],
                     style: [
                         'tr td:nth-child(1) div {text-align: center;}'
-                    ]
+                    ],
+                    events: {
+                        editcomplete: function (obj)
+                        {
+                            alert('View the console to see what meta information is logged by this demo. Press CTRL+SHIFT+J in Google Chrome.');
+            
+                            var meta = RGraph.Registry.get('cell-edit-meta');
+                            
+                            console.log('Meta data:');
+                            console.log(meta);
+                            console.log('Original index: ' + grid.getOriginalIndex(meta.row));
+                            console.log('Full row data (after the edit has completed):');
+                            console.log(grid.row(meta.row));
+                        }
+                    }
                 }
-            }).draw().on('editcomplete', function (obj)
-            {
-                alert('View the console to see what meta information is logged by this demo. Press CTRL+SHIFT+J in Google Chrome.');
-
-                var meta = RGraph.Registry.get('cell-edit-meta');
-                
-                console.log('Meta data:');
-                console.log(meta);
-                console.log('Original index: ' + grid.getOriginalIndex(meta.row));
-                console.log('Full row data (after the edit has completed):');
-                console.log(grid.row(meta.row));
-            });
+            }).draw();
         });
     </script>
     

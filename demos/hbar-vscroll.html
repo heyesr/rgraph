@@ -38,17 +38,20 @@
                 xaxisScale: false,
                 yaxisLabels: ['Rob','Jason','Louise','Pob','Kevin','Jerry','Inga','Hoolio','Fliss','Matt','Gary','Doug','Mark','Lucy','Lynn','Olga','Kris','Harry','Dave'],
                 marginBottom: 5,
-                marginInner: 20
+                marginInner: 20,
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.coords.forEach(function (v, k, arr)
+                        {
+                            obj.path(
+                                'b a % % % 0 7 false f red',
+                                v[0] + v[2], v[1] + (v[3] / 2), 11
+                            );
+                        });
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            obj.coords.forEach(function (v, k, arr)
-            {
-                obj.path(
-                    'b a % % % 0 7 false f red',
-                    v[0] + v[2], v[1] + (v[3] / 2), 11
-                );
-            });
         }).draw();
 
         var xaxis = new RGraph.Drawing.XAxis({

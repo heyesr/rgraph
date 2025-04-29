@@ -14,19 +14,8 @@
         <div style="width: 700px; height: 250px; background-color: black" id="chart-container"></div>
     </div>
 
-    <script>
-        data = [
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, // 30
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 // 30
-        ];
+    <script>        
+        data = RGraph.SVG.arrayFill([], 300, 0);
 
         // Create the chart but DON'T draw it. That is done in the
         // draw() function. The line variable is a global.
@@ -44,59 +33,62 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 textColor: 'white',
-                xaxisLabels: ['5 minutes','4 minutes','3 minutes','2 minutes','1 minute','0 minutes']
+                xaxisLabels: ['5 minutes','4 minutes','3 minutes','2 minutes','1 minute','0 minutes'],
+                events: {
+                    draw: function (obj)
+                    {
+                        // Only do this once
+                        if (typeof covers === 'boolean') return;
+                        
+                        // Calculate the X coord and the width of the red cover
+                        var width = (700 - 50 - 50) / 5;
+                        var x     = 700 - 50 - width;
+            
+                        RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'rect',
+                            attr: {
+                                x: x,
+                                y: 35,
+                                width: width,
+                                height: 180,
+                                fill: 'rgba(255,0,0,0.3)'
+                            }
+                        });
+                        
+                        // Calculate the X coord
+                        x = 700 - 50 - width - width - width;
+            
+                        RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'rect',
+                            attr: {
+                                x: x,
+                                y: 35,
+                                width: width * 2,
+                                height: 180,
+                                fill: 'rgba(255,255,0,0.3)'
+                            }
+                        });
+                        
+                        // Don't need to calculate anything
+            
+                        RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'rect',
+                            attr: {
+                                x: obj.properties.marginLeft,
+                                y: 35,
+                                width: width * 2,
+                                height: 180,
+                                fill: 'rgba(0,255,0,0.3)'
+                            }
+                        });
+                        
+                        covers = true;
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // Only do this once
-            if (typeof covers === 'boolean') return;
-            
-            // Calculate the X coord and the width of the red cover
-            var width = (700 - 50 - 50) / 5;
-            var x     = 700 - 50 - width;
-
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'rect',
-                attr: {
-                    x: x,
-                    y: 35,
-                    width: width,
-                    height: 180,
-                    fill: 'rgba(255,0,0,0.3)'
-                }
-            });
-            
-            // Calculate the X coord
-            x = 700 - 50 - width - width - width;
-
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'rect',
-                attr: {
-                    x: x,
-                    y: 35,
-                    width: width * 2,
-                    height: 180,
-                    fill: 'rgba(255,255,0,0.3)'
-                }
-            });
-            
-            // Don't need to calculate anything
-
-            RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'rect',
-                attr: {
-                    x: obj.properties.marginLeft,
-                    y: 35,
-                    width: width * 2,
-                    height: 180,
-                    fill: 'rgba(0,255,0,0.3)'
-                }
-            });
-            
-            covers = true;
         });
         
         // Draw the chart

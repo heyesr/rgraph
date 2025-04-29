@@ -22,26 +22,23 @@
             options: {
                 textSize: 14,
                 yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
-                adjustable: true
+                adjustable: true,
+                events: {
+                    //
+                    // This adjust event listener makes it so that when you
+                    // adjust the chart the bar being adjusted snaps to the
+                    // nearest whole value.
+                    //
+                    adjust: function (obj)
+                    {
+                        var shape = RGraph.Registry.get('adjusting.shape');
+                         obj.data[shape.dataset] = Math.round(obj.data[shape.dataset]);
+
+                        RGraph.redraw();
+                    }
+                }
             }
         }).draw();
-
-        // This adjust event listener makes it so that when you adjust the
-        // chart the bar being adjusted snaps to the nearest whole value.
-        //
-        //.on('adjust', function (e)
-        //{
-        //    var shape   = RGraph.Registry.get('adjusting.shape'),
-        //        obj     = shape.object,
-        //        idx     = shape.index,
-        //        indexes = RGraph.sequentialIndexToGrouped(idx, obj.data);
-        //        group   = indexes[0],
-        //        index   = indexes[1];
-
-        //    obj.data[group][index] = Math.round(obj.data[group][index]);
-        //    
-        //    RGraph.redraw();
-        //});
     </script>
     
     <script>showSource()</script>

@@ -51,17 +51,21 @@
                 needleColor: 'rgba(0,0,0,0)',
                 centerpinStroke: 'white',
                 centerpinFill: 'black',
-                scaleUnitsPost: 'pc'
+                scaleUnitsPost: 'pc',
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    },
+                    draw: function (obj)
+                    {
+                        //obj.path(
+                        //    'b a % % % 0 6.2830 false f white',
+                        //    obj.centerx, obj.centery, obj.radius - 50
+                        //);
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
-        }).on('draw', function (obj)
-        {
-            //obj.path(
-            //    'b a % % % 0 6.2830 false f white',
-            //    obj.centerx, obj.centery, obj.radius - 50
-            //);
         }).draw();
 
 
@@ -95,13 +99,13 @@
             }
         }).draw();
         
-        meter2.canvas.onclick = function (e)
+        meter2.canvas.addEventListener('click', function (e)
         {
             var value = meter2.getValue(e);
             
             meter2.value = value;
             meter2.grow();
-        }
+        }, false);
 
 
 
@@ -137,17 +141,21 @@
                 centerpinStroke: 'black',
                 centerpinFill: '#ddd',
                 adjustable: true,
-                labelsRadiusOffset: 10
+                labelsRadiusOffset: 10,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'black');
+                    },
+                    draw: function (obj)
+                    {
+                        obj.path(
+                            'b a % % % 0 6.2830 false f black',
+                            obj.centerx, obj.centery, obj.radius - 50
+                        );
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'black');
-        }).on('draw', function (obj)
-        {
-            obj.path(
-                'b a % % % 0 6.2830 false f black',
-                obj.centerx, obj.centery, obj.radius - 50
-            );
         }).draw();
 
         meter4 = new RGraph.Meter({

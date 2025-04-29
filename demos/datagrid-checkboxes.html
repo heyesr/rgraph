@@ -39,8 +39,10 @@
                 ],
                 options: {
                     columnsHeaders: ['','Name','Day','Score'],
-                    columnsWidths: [40],
+                    columnsWidths: [80],
                     columnsHTML: 0,
+                    rowsClickCheckbox: true,
+                    rowsClickCheckboxIndex: 0,
                     style: [
                         'tr td:nth-child(1) div {border: none !important;}',
                         'tr td:nth-child(1) div {background-color: white;}',
@@ -52,36 +54,6 @@
                         'tfoot tr td {background-color: black;}'
                     ]
                 }
-            }).on('draw', function ()
-            {
-                //
-                // Uncomment this block of code so that you can
-                // click on the entire row in order to check/uncheck
-                // the checkbox.
-                //
-                //(function ()
-                //{
-                //  var els  = document.querySelectorAll('div#myGrid table tr');
-        
-                //  for (var i=0; i<els.length; ++i) {
-                //      els[i].onmousemove = function (e)
-                //      {
-                //        e.target.style.cursor = 'pointer';
-                //      }
-
-                //      els[i].onclick = function (e)
-                //      {
-                //          var chk = e.currentTarget.querySelector('input[type=checkbox]');
-        
-                //          chk.checked = !chk.checked;
-                //
-                //          chk.onclick = function (e)
-                //          {
-                //              e.stopPropagation();
-                //          };
-                //      };
-                //  }
-                //})();
             }).draw();
 
 

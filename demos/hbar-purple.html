@@ -39,15 +39,15 @@
                 textFont: 'Verdana',
                 xaxis: false,
                 xaxisScale: false,
-                yaxis: false
+                yaxis: false,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'black');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'black');
         }).draw();
-
-
-
 
         xaxis = new RGraph.Drawing.XAxis({
             id: 'cvs',

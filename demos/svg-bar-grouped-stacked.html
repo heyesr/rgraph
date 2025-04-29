@@ -55,46 +55,47 @@
                 titleSubtitleY: '+5',
                 labelsAbove: true,
                 labelsAboveSize: 8,
-                labelsAboveSpecific: ['8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm']
-            }
-        }).on('draw', function (obj)
-        {
-            for (var i=0; i<obj.coords.length; ++i) {
-                (function (index)
-                {
-                    var coords = obj.coords[index];
-
-                    setTimeout(function ()
+                labelsAboveSpecific: ['8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm', '8am','1pm','10pm'],
+                events: {
+                    draw: function (obj)
                     {
-                        new RGraph.SVG.Bar({
-                            id: 'chart-container',
-                            data: [[33.333,33.333,33.333]],
-                            options: {
-                                backgroundGrid: false,
-                                colors: ['rgba(255,0,0,0.75)','rgba(0,255,0,0.75)','rgba(0,0,255,0.75)'],
-                                tooltips: tooltips[index],
-                                yaxisScaleMax: 100,
-                                marginInner: 0,
-                                marginInnerGrouped: 0,
-                                grouping: 'stacked',
-                                yaxis: false,
-                                xaxis: false,
-                                yaxisScale: false,
-                                marginLeft: coords.x,
-                                marginRight: obj.width - coords.x - coords.width,
-                                marginTop: coords.y,
-                                marginBottom: obj.height - coords.y - coords.height
-                            }
-                        }).grow();
-                    }, 50 * index);
-                })(i);
+                        for (var i=0; i<obj.coords.length; ++i) {
+                            (function (index)
+                            {
+                                var coords = obj.coords[index];
+            
+                                setTimeout(function ()
+                                {
+                                    new RGraph.SVG.Bar({
+                                        id: 'chart-container',
+                                        data: [[33.333,33.333,33.333]],
+                                        options: {
+                                            backgroundGrid: false,
+                                            colors: ['rgba(255,0,0,0.75)','rgba(0,255,0,0.75)','rgba(0,0,255,0.75)'],
+                                            tooltips: tooltips[index],
+                                            yaxisScaleMax: 100,
+                                            marginInner: 0,
+                                            marginInnerGrouped: 0,
+                                            grouping: 'stacked',
+                                            yaxis: false,
+                                            xaxis: false,
+                                            yaxisScale: false,
+                                            marginLeft: coords.x,
+                                            marginRight: obj.width - coords.x - coords.width,
+                                            marginTop: coords.y,
+                                            marginBottom: obj.height - coords.y - coords.height
+                                        }
+                                    }).grow();
+                                }, 50 * index);
+                            })(i);
+                        }
+                    }
+                }
             }
         }).draw();
         
         // Some tooltips appearance customisation
-        RGraph.SVG.tooltips.style.backgroundColor = 'black';
-        RGraph.SVG.tooltips.style.color           = 'white';
-        RGraph.SVG.tooltips.style.fontWeight      = 'bold';
+        RGraph.SVG.tooltips.style.fontWeight = 'bold';
     </script>
 
     <script>showSource()</script>

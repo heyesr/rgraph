@@ -120,24 +120,27 @@
                     textColor: 'gray',
                     yaxis: false,
                     yaxisScaleMax: 50,
-                    marginLeft: 50
+                    marginLeft: 50,
+
+
+                    // This beforedraw event draws the year in gray at
+                    // the back of the chart.
+                    events: {
+                        beforedraw: function (obj)
+                        {
+                            RGraph.text({
+                                object: obj,
+                                text: year,
+                                x: obj.canvas.width / 2,
+                                y: obj.canvas.height / 2 + 20,
+                                halign: 'center',
+                                valign: 'center',
+                                size: 250,
+                                color: '#aaa'
+                            });
+                        }
+                    }
                 }
-            
-            //
-            // This beforedraw event draws the year in gray at
-            // the back of the chart.
-            }).on('beforedraw', function (obj)
-            {
-                RGraph.text({
-                    object: obj,
-                    text: year,
-                    x: obj.canvas.width / 2,
-                    y: obj.canvas.height / 2 + 20,
-                    halign: 'center',
-                    valign: 'center',
-                    size: 250,
-                    color: '#aaa'
-                });
             }).draw();
         }
         

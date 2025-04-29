@@ -33,22 +33,26 @@
                 tooltips: ['Current water tank level: %{value}%'],
                 tooltipsCss: {
                     fontSize: '30pt'
+                },
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        for (let i=10; i<=100; i+=10) {
+                            obj.path(
+                                'b ld [5,6] lw 1 ci % % % s #666 ld [1,0]',
+                                obj.centerx,
+                                obj.centery,
+                                obj.radius - i
+                            );
+                        }
+                    },
+                    draw: function (obj)
+                    {
+                        obj.properties.labelsCenter = Math.round(obj.data[0] * obj.get('effectRoundrobinMultiplier')) + '%';
+                    }
                 }
             }
-        }).roundRobin().on('beforedraw', function (obj)
-        {
-            for (let i=10; i<=100; i+=10) {
-                obj.path(
-                    'b ld [5,6] lw 1 ci % % % s #666 ld [1,0]',
-                    obj.centerx,
-                    obj.centery,
-                    obj.radius - i
-                );
-            }
-        }).on('draw', function (obj)
-        {
-            obj.properties.labelsCenter = Math.round(obj.data[0] * obj.get('effectRoundrobinMultiplier')) + '%';
-        })
+        }).roundRobin();
     </script>
     
     <script>showSource()</script>

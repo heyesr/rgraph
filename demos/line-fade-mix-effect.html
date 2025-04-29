@@ -6,7 +6,6 @@
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -14,7 +13,7 @@
     <h1>A Line chart with a fade/mix effect</h1>
     
     <div id="rgraph-demo-html">
-        <div style="display: inline-block; width: 600px; height: 250px; position: relative; text-align: center">
+        <div style="width: 600px; height: 250px; position:  relative; text-align: center">
             <canvas id="cvs1" width="600" height="250" style="position: absolute; top: 15px; left: 0">[No canvas support]</canvas>
             <canvas id="cvs2" width="600" height="250" style="position: absolute; top: 15px; left: 0; opacity: 0">[No canvas support]</canvas><br />
             <button id="butShowLine" disabled style="z-index: 1; position: relative">Line chart</button>
@@ -53,28 +52,28 @@
 
 
 
-        $('#butShowBar').on('click', function (e)
+        document.querySelector('#butShowBar').onclick = function (e)
         {
             line.fadeOut()
             bar.fadeIn(null, function ()
             {
-                $('#butShowBar')[0].disabled  = true;
-                $('#butShowLine')[0].disabled = false;
+                document.querySelector('#butShowBar').disabled  = true;
+                document.querySelector('#butShowLine').disabled = false;
             });
-        });
+        };
 
 
 
 
-        $('#butShowLine').on('click', function (e)
+        document.querySelector('#butShowLine').onclick = function (e)
         {
             bar.fadeOut();
             line.fadeIn(null, function ()
             {
-                $('#butShowBar')[0].disabled  = false;
-                $('#butShowLine')[0].disabled = true;
+                document.querySelector('#butShowBar').disabled  = false;
+                document.querySelector('#butShowLine').disabled = true;
             });
-        });
+        };
     </script>
     
     <script>showSource()</script>

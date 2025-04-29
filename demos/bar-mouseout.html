@@ -32,19 +32,23 @@
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
                 xaxis: false,
-                yaxis: false
+                yaxis: false,
+                events: {
+                    mouseover: function (e, shape)
+                    {
+                        // Highlight the bar
+                        shape.object.path(
+                            'b r % % % % s rgba(255,255,255,0.75) f rgba(255,255,255,0.75)',
+                            shape.x, shape.y, shape.width, shape.height
+                        ); 
+                    },
+                    mouseout: function (obj)
+                    {
+                        RGraph.redraw();
+                    }
+                }
             }
-        }).draw().on('mouseover', function (e, shape)
-        {
-            // Highlight the bar
-            shape.object.path(
-                'b r % % % % s rgba(255,255,255,0.75) f rgba(255,255,255,0.75)',
-                shape.x, shape.y, shape.width, shape.height
-            );
-        }).on('mouseout', function (obj)
-        {
-            RGraph.redraw();
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

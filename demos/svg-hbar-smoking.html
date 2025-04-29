@@ -41,16 +41,19 @@
                 marginLeftAuto: false,
                 marginLeft: 195,
                 marginBottom: 70,
-                textSize: 14
+                textSize: 14,
+                events: {
+                    draw: function (obj)
+                    {
+                        RGraph.SVG.create(obj.svg, '<rect x="{1}" y="{2}" width="{3}" height="{4}" fill="transparent" stroke="gray" stroke-width="1"></rect>'.format(
+                            obj.properties.marginLeft,
+                            obj.properties.marginTop,
+                            obj.width - obj.properties.marginLeft - obj.properties.marginRight,
+                            obj.height - obj.properties.marginTop - obj.properties.marginBottom
+                        ));
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            RGraph.SVG.create(obj.svg, '<rect x="{1}" y="{2}" width="{3}" height="{4}" fill="transparent" stroke="gray" stroke-width="1"></rect>'.format(
-                obj.properties.marginLeft,
-                obj.properties.marginTop,
-                obj.width - obj.properties.marginLeft - obj.properties.marginRight,
-                obj.height - obj.properties.marginTop - obj.properties.marginBottom
-            ));
         }).draw();
     </script>
 

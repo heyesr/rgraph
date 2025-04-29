@@ -50,12 +50,14 @@
                 responsive: [
                     {maxWidth: null, width:600,height:250,options:{textSize: 12,marginLeft: 40,marginBottom: 40,marginTop: 40,marginRight: 40},parentCss:{textAlign:'none'},callback:function (){tickmarkRadius = 6; RGraph.redraw();}},
                     {maxWidth: 900, width:400,height:150,options:{textSize: 10,marginTop:15,marginRight:15,marginBottom:25,marginLeft:30},parentCss:{textAlign:'center'},callback:function (){tickmarkRadius = 5; RGraph.redraw();}}
-                ]
+                ],
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'black');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'black');
-
         }).trace({frames: 15});
     </script>
     

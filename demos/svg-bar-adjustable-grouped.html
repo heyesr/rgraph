@@ -43,32 +43,36 @@
                 yaxisTitleSize: 18,
                 yaxisTitleBold: true,
                 labelsAbove: true,
-                adjustable: true
+                adjustable: true,
+                events: {
+                    //
+                    // This event fires when adjusting begins
+                    //
+                    adjustbegin: function (obj)
+                    {
+                        $c('The adjustbegin event');
+                    },
+
+                    //
+                    // This event fires during adjusting - similar to the
+                    // mousemove event
+                    //
+                    adjust: function (obj)
+                    {
+                        $c('The adjust event');
+                    },
+                    
+                    //
+                    // This event fires when adjusting ends - similar to the
+                    // mouseup event
+                    //
+                    adjustend: function (obj)
+                    {
+                        $c('The adjustend event');
+                    }
+                }
             }
-
-        //
-        // This event fires when adjusting begins
-        //
-        }).wave().on('adjustbegin', function (obj)
-        {
-            $c(obj.data);
-
-        //
-        // This event fires during adjusting - similar to the
-        // mousemove event
-        //
-        }).on('adjust', function (obj)
-        {
-            $c(obj.data);
-        
-        //
-        // This event fires when adjusting ends - similar to the
-        // mouseup event
-        //
-        }).on('adjustend', function (obj)
-        {
-            $c(obj.data);
-        });
+        }).wave();
     </script>
 
     <script>showSource()</script>

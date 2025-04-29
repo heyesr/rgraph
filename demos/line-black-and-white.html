@@ -38,20 +38,21 @@
                 marginInner: 35,
                 backgroundGrid: false,
                 textSize: 24,
-                textFont: 'Verdana'
+                textFont: 'Verdana',
+                events: {
+                    draw: function (obj)
+                    {
+                        // This function draws the ends of the axes
+                        obj.path(
+                            'b lw 7 m % % l % % m % % l % % s black',
+                            obj.marginLeft, obj.canvas.height - obj.marginBottom,
+                            obj.marginLeft - 15, obj.canvas.height - obj.marginBottom,
+                            obj.marginLeft, obj.canvas.height - obj.marginBottom,
+                            obj.marginLeft, obj.canvas.height - obj.marginBottom + 15
+                        );
+                    }
+                }
             }
-        
-        // Draw the "tails" to the axes
-        }).on('draw', function (obj)
-        {
-            // This function draws the ends of the axes
-            obj.path(
-                'b lw 7 m % % l % % m % % l % % s black',
-                obj.marginLeft, obj.canvas.height - obj.marginBottom,
-                obj.marginLeft - 15, obj.canvas.height - obj.marginBottom,
-                obj.marginLeft, obj.canvas.height - obj.marginBottom,
-                obj.marginLeft, obj.canvas.height - obj.marginBottom + 15
-            );
         }).trace({frames: 60});
     </script>
 

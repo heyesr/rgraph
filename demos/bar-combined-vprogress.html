@@ -104,10 +104,15 @@
                         color: 'black'
                     },
                     colorsStrokeInner: 'rgba(0,0,0,0)',
-                    colorsStrokeOuter: 'rgba(0,0,0,0)'
+                    colorsStrokeOuter: 'rgba(0,0,0,0)',
+                    events: {
+                        draw: function (obj)
+                        {
+                            drawBottomAxis();
+                        }
+                    }
                 }
-            }).on('draw',  drawBottomAxis)
-              .draw();
+            }).draw();
 
             // Override the function that positions the tooltip and place it to the right of
             // the mouse pointer.

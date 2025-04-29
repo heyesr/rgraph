@@ -113,54 +113,58 @@
                 xaxisLabels: [
                     '00','01','02','03','04','05','06','07','08','09','10','11',
                     '12','13','14','15','16','17','18','19','20','21','22','23'
-                ]
-            }
-        }).on('draw', function (obj)
-        {
-            // Make all of the rects look rounded
-            for (var i=0; i<obj.coords.length; ++i) {
-                var x = obj.coords[i][0],
-                    y = obj.coords[i][1],
-                    w = obj.coords[i][2],
-                    h = obj.coords[i][3];
-                
-                obj.path(
-                    'b lw 2 rr % % % % 5 s black',
-                    x+1, y+1, w-2, h-2
-                );
-            }
-        }).draw().on('mousemove', function (e)
-        {
-            var obj   = e.target.__object__;
-            var shape = obj.getShape(e);
-
-            // Set the cursor to the pointer
-            if (shape) {
-                return true;
-            }
-
-        }).on('click', function(e)
-        {
-            var obj     = e.target.__object__;
-            var shape   = obj.getShape(e);
-            var dataset = shape.dataset;
-            var index   = shape.index;
-            var on      = obj.data[dataset][shape.index].complete > 0;
-
-
-            // Turn the hour "off"
-            if (on) {
-                obj.data[dataset][index].complete = 0;
+                ],
+                events: {
+                    draw: function (obj)
+                    {
+                        // Make all of the rects look rounded
+                        for (var i=0; i<obj.coords.length; ++i) {
+                            var x = obj.coords[i][0],
+                                y = obj.coords[i][1],
+                                w = obj.coords[i][2],
+                                h = obj.coords[i][3];
+                            
+                            obj.path(
+                                'b lw 2 rr % % % % 5 s black',
+                                x+1, y+1, w-2, h-2
+                            );
+                        }
+                    },
+                    mousemove: function (e, shape)
+                    {
+                        var obj   = e.target.__object__;
+                        var shape = obj.getShape(e);
             
-            // Turn the hour "on"
-            } else {
-                obj.data[dataset][index].complete = 100;
-            }
+                        // Set the cursor to the pointer
+                        if (shape) {
+                            return true;
+                        }
+                    },
+                    click: function (e, shape)
+                    {
+                        var obj     = e.target.__object__;
+                        var shape   = obj.getShape(e);
+                        var dataset = shape.dataset;
+                        var index   = shape.index;
+                        var on      = obj.data[dataset][shape.index].complete > 0;
             
-            RGraph.redraw();
-
-            save(obj.data);
-        });
+            
+                        // Turn the hour "off"
+                        if (on) {
+                            obj.data[dataset][index].complete = 0;
+                        
+                        // Turn the hour "on"
+                        } else {
+                            obj.data[dataset][index].complete = 100;
+                        }
+                        
+                        RGraph.redraw();
+            
+                        save(obj.data);
+                    }
+                }
+            }
+        }).draw();
     </script>
     
     <script>showSource()</script>

@@ -49,40 +49,41 @@
                 colorsStroke: 'rgba(0,0,0,0)',
                 exploded: [,25],
                 labelsSticksColors: RGraph.arrayPad([], labels.length, 'gray'),
-                labelsSticksLinewidth: 1
+                labelsSticksLinewidth: 1,
+                events: {
+                    tooltip: function (obj)
+                    {
+                        var co      = obj.context,
+                            tooltip = RGraph.Registry.get('tooltip'),
+                            index   = tooltip.__index__,
+                            color   = colors[index],
+                            e       = window.event,
+                            shape   = obj.getShape(e);
+                
+                        obj.path(
+                            'b a % % % % % false a % % % % % true f %',
+                            shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd,
+                            shape.x, shape.y, obj.radius + 7, shape.angleEnd, shape.angleStart,
+                            color
+                        );
+                
+                        obj.path(
+                            'lc butt lw 3 b a % % % % % false s white',
+                            shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd
+                        );
+                        
+                        tooltip.style.borderColor = color;
+                    }
+                }
             }
-        }).draw().on('tooltip', function (obj)
-        {
-            var co      = obj.context,
-                tooltip = RGraph.Registry.get('tooltip'),
-                index   = tooltip.__index__,
-                color   = colors[index],
-                e       = window.event,
-                shape   = obj.getShape(e);
-    
-            obj.path(
-                'b a % % % % % false a % % % % % true f %',
-                shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd,
-                shape.x, shape.y, obj.radius + 7, shape.angleEnd, shape.angleStart,
-                color
-            );
-    
-            obj.path(
-                'lc butt lw 3 b a % % % % % false s white',
-                shape.x, shape.y, obj.radius, shape.angleStart, shape.angleEnd
-            );
-            
-            tooltip.style.borderColor = color;
-        });
-    
-    
-            
-            // Set some CSS on the tooltip
-            RGraph.tooltips.style.border     = '3px black solid';
-            RGraph.tooltips.style.padding    = '3px';
-            RGraph.tooltips.style.color      = 'black';
-            RGraph.tooltips.style.fontWeight = 'bold';
-            RGraph.tooltips.style.fontSize = '16pt';
+        }).draw();
+
+        // Set some CSS on the tooltip
+        RGraph.tooltips.style.border     = '3px black solid';
+        RGraph.tooltips.style.padding    = '3px';
+        RGraph.tooltips.style.color      = 'black';
+        RGraph.tooltips.style.fontWeight = 'bold';
+        RGraph.tooltips.style.fontSize = '16pt';
     </script>
 
     <script>showSource()</script>

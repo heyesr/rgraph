@@ -47,30 +47,33 @@
                 keyPositionY: 18,
                 keyPositionMarginBoxed: true,
                 xaxisColor: '#ccc',
-                yaxis: false
-            }
-        }).on('draw', function (obj)
-        {
-            for (var i=0; i<obj.coords.length; ++i) {
-                
-                //Thse are the coordinates of the bar
-                var x      = obj.coords[i][0],
-                    y      = obj.coords[i][1],
-                    width  = obj.coords[i][2],
-                    height = obj.coords[i][3];
-
-                obj.context.fillStyle = 'white';
-                
-                var ret = RGraph.text({
-                    object: obj,
-                    font:   'Verdana',
-                    size:   10,
-                    x:      x + (width/ 2),
-                    y:      y + (height / 2),
-                    text:   obj.data_arr[i].toString(),
-                    valign: 'center',
-                    halign: 'center'
-                });
+                yaxis: false,
+                events: {
+                    draw: function (obj)
+                    {
+                        for (var i=0; i<obj.coords.length; ++i) {
+                            
+                            //Thse are the coordinates of the bar
+                            var x      = obj.coords[i][0],
+                                y      = obj.coords[i][1],
+                                width  = obj.coords[i][2],
+                                height = obj.coords[i][3];
+            
+                            obj.context.fillStyle = 'white';
+                            
+                            var ret = RGraph.text({
+                                object: obj,
+                                font:   'Verdana',
+                                size:   10,
+                                x:      x + (width/ 2),
+                                y:      y + (height / 2),
+                                text:   obj.data_arr[i].toString(),
+                                valign: 'center',
+                                halign: 'center'
+                            });
+                        }
+                    }
+                }
             }
         }).draw();
     </script>

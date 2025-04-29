@@ -28,11 +28,14 @@
                 backgroundColor: null,
                 
                 colors: ['red','blue','yellow'],
-                width: 25
+                width: 25,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas,'black');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas,'black');
         }).draw();
         
         new RGraph.Activity({
@@ -98,11 +101,14 @@
                 // Clip to a segment
                 clip: 'segment:150,150,300,0,3.15',
                 
-                width: 25
+                width: 25,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'black');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'black');
         }).draw();
 
         new RGraph.Activity({

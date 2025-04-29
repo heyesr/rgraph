@@ -22,12 +22,15 @@
             value: 73,
             options: {
                 clip: 'b m 150 150 a 150 150 2000 0 1.57 false',
-                colors: ['red']
+                colors: ['red'],
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'black');
+                    }
+                }
             }
-        }).roundRobin().on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'black');
-        });
+        }).roundRobin();
 
         new RGraph.Segmented({
             id: 'cvs',

@@ -38,11 +38,14 @@
                 xaxis: false,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
-                marginLeft: 45
+                marginLeft: 45,
+                    events: {
+                        beforedraw: function (obj)
+                        {
+                            RGraph.clear(obj.canvas, 'white');
+                        }
+                    }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
         }).draw();
     </script>
 

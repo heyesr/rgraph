@@ -25,18 +25,23 @@
                 responsive: [
                     {maxWidth: null, width: 350,height: 350, options: {width: 35}},
                     {maxWidth: 700, width: 250,height: 250, options: {width: 25}}
-                ]
+                ],
+                events: {
+                    adjustbegin: function (obj)
+                    {
+                        console.log('Adjusting has started');
+                    },
+                    adjust: function (obj)
+                    {
+                        console.log('Adjusting is in progress');
+                    },
+                    adjustend: function (obj)
+                    {
+                        console.log('Adjusting has finished');
+                    },
+                }
             }
-        }).draw().on('adjustbegin', function (obj)
-        {
-            console.log('Adjusting has started');
-        }).on('adjust', function (obj)
-        {
-            console.log('Adjusting is in progress');
-        }).on('adjustend', function (obj)
-        {
-            console.log('Adjusting has finished');
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

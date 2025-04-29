@@ -26,15 +26,17 @@
                 linewidth: 5,
                 labels: labels,
                 labelsSticksColors: '#aaa',
-                labelsSticksLinewidth: 1
+                labelsSticksLinewidth: 1,
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.path(
+                            'lw 5 b a % % % 0 6.2830 false s white',
+                            obj.centerx, obj.centery, obj.radius - 12
+                        );
+                    }
+                }
             }
-        }).on('draw', function(obj)
-        {
-            obj.path(
-                'lw 5 b a % % % 0 6.2830 false s white',
-                obj.centerx, obj.centery, obj.radius - 12
-            );
-
         }).draw();
     </script>
 

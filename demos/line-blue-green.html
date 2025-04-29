@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js"></script>
+    <script src="../libraries/RGraph.common.dynamic.js"></script>
     <script src="../libraries/RGraph.drawing.yaxis.js"></script>
     <script src="../libraries/RGraph.gauge.js"></script>
     <script src="../libraries/RGraph.line.js"></script>
@@ -83,16 +84,20 @@
                 backgroundColor: 'rgba(0,0,0,0)',
                 borderOuter: 'rgba(0,0,0,0)',
                 borderInner: 'rgba(0,0,0,0)',
-                borderOutline: 'rgba(0,0,0,0)'
+                borderOutline: 'rgba(0,0,0,0)',
+                adjustable: true,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        // On the first frame obj.centerx is not
+                        // defined, but it is on subsequent frames
+                        obj.path(
+                            'b a % % 60 0 6.28 false f rgba(232,232,232,.5)',
+                            obj.centerx, obj.centery
+                        );
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            // On the first frame obj.centerx is not defined, but
-            // it is on subsequent frames
-            obj.path(
-                'b a % % 60 0 6.28 false f rgba(232,232,232,.5)',
-                obj.centerx, obj.centery
-            );
         }).draw();
 
         gauge = new RGraph.Gauge({
@@ -123,16 +128,20 @@
                 labelsValue: true,
                 labelsValueColor: '#aaa',
                 labelsValueBounding: false,
-                labelsValueUnitsPost: 'km/h'
+                labelsValueUnitsPost: 'km/h',
+                adjustable: true,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        // On the first frame obj.centerx is not defined, but
+                        // it is on subsequent frames
+                        obj.path(
+                            'b a % % 60,0,6.28, false f rgba(232,232,232,.5)',
+                            obj.centerx, obj.centery
+                        );
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            // On the first frame obj.centerx is not defined, but
-            // it is on subsequent frames
-            obj.path(
-                'b a % % 60,0,6.28, false f rgba(232,232,232,.5)',
-                obj.centerx, obj.centery
-            );
         }).draw();
 
 

@@ -47,34 +47,42 @@
                     fontSize: '14pt'
                 },
                 highlightFill: 'Gradient(rgba(255,255,255,0):white)',
-                highlightStroke: 'Gradient(rgba(255,255,255,0):white)'
+                highlightStroke: 'Gradient(rgba(255,255,255,0):white)',
+                responsive: [
+                    {maxWidth: null,width:600,height: 350,parentCss:{textAlign:'left'}},
+                    {maxWidth: 800,width:400,height: 300,parentCss:{textAlign:'center'}}
+                ],
+                
+                //
+                // Use the draw event to add the labels on the
+                // left-hand-side
+                //
+                events: {
+                    draw: function (obj)
+                    {
+                        var coords = obj.coords;
+            
+                        // Loop through the coordinates of the bars
+                        for (var i=0; i<coords.length; ++i) {
+                        
+                            // For each of the coordinates add a text label
+                            // on the left-hand-side of the bar
+                            RGraph.text({
+                                object: obj,
+                                text:   labels[i],
+                                x:      coords[i][0] + 10,
+                                y:      coords[i][1] + (coords[i][3] / 2),
+                                valign: 'center',
+                                bold:   true,
+                                color:  'white',
+                                size: obj.get('textSize')
+                            });
+                        }
+                    }
+                }
             }
         
-        // Use the draw event to add the labels on the left-hand-side
-        }).on('draw', function (obj)
-        {
-            var coords = obj.coords;
-
-            // Loop through the coordinates of the bars
-            for (var i=0; i<coords.length; ++i) {
-            
-                // For each of the coordinates add a text label
-                // on the left-hand-side of the bar
-                RGraph.text({
-                    object: obj,
-                    text:   labels[i],
-                    x:      coords[i][0] + 10,
-                    y:      coords[i][1] + (coords[i][3] / 2),
-                    valign: 'center',
-                    bold:   true,
-                    color:  'white',
-                    size: obj.get('textSize'),
-                    responsive: [
-                        {maxWidth: null,width:600,height: 350,parentCss:{'float':'right', textAlign:'none'}},
-                        {maxWidth: 800,width:400,height: 300,parentCss:{'float':'none', textAlign:'center'}}
-                    ]
-                });
-            }
+        
         }).grow();
     </script>
     

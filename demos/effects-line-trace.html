@@ -19,10 +19,14 @@
             id: 'cvs',
             data: [10,1,10,7,4,9,5,6,3,5],
             options: {
+                spline: true,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white')
         }).trace();
     </script>
 

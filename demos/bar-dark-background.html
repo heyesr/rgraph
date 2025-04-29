@@ -84,29 +84,31 @@
                 responsive: [
                     {maxWidth: null, width: 500, height: 250, options: {textSize: 16, marginLeft: 35, marginBottom: 35}},
                     {maxWidth: 900,  width: 300, height: 150, options: {textSize: 10,  marginLeft: 25, marginBottom: 20}}
-                ]
+                ],
+                events: {
+                    tooltip: function (obj)
+                    {
+                        // Get a reference to ths canvas
+                        var canvas = obj.canvas;
+            
+                        // Use the RGraph API to get the canvas coordinates
+                        var canvasXY = RGraph.getCanvasXY(obj.canvas);
+                        
+                        // Get the tooltip DIV tag object from the RGraph Registry
+                        var tooltip  = RGraph.Registry.get('tooltip');
+                        
+                        // Set the x/y coordinates of the tooltip DIV tag
+                        tooltip.style.top  = canvasXY[1] - (tooltip.offsetHeight / 2) - 5 + 'px';
+                        tooltip.style.left = canvasXY[0] + canvas.width - tooltip.offsetWidth - 5 + 'px';
+                    }
+                }
             }
         
         // The wave() effect is used to show the chart
-        }).wave()
+        }).wave();
         
         // This tooltip event code runs when a tooltip is shown and positions the tooltip at the top of,
         // and on the left of, the canvas.
-        .on('tooltip', function (obj)
-        {
-            // Get a reference to ths canvas
-            var canvas = obj.canvas;
-
-            // Use the RGraph API to get the canvas coordinates
-            var canvasXY = RGraph.getCanvasXY(obj.canvas);
-            
-            // Get the tooltip DIV tag object from the RGraph Registry
-            var tooltip  = RGraph.Registry.get('tooltip');
-            
-            // Set the x/y coordinates of the tooltip DIV tag
-            tooltip.style.top  = canvasXY[1] - (tooltip.offsetHeight / 2) - 5 + 'px';
-            tooltip.style.left = canvasXY[0] + canvas.width - tooltip.offsetWidth - 5 + 'px';
-        });
     </script>
 
     <script>showSource()</script>

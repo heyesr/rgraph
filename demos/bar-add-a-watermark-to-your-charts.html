@@ -28,12 +28,15 @@
                 options: {
                     width: 88,
                     height: 25,
-                    tooltips: ['This chart was made with:<br /><b>"RGraph: Beautiful JavaScript charts for websites"</b>']
+                    tooltips: ['This chart was made with:<br /><b>"RGraph: Beautiful JavaScript charts for websites"</b>'],
+                    events: {
+                        beforedraw: function (obj)
+                        {
+                            RGraph.clear(obj.canvas, 'white');
+                        }
+                    }
                 }
-            }).on('beforedraw', function (obj)
-            {
-                RGraph.clear(obj.canvas, 'white');
-            }).draw()
+            }).draw();
     
     
             var bar = new RGraph.Bar({

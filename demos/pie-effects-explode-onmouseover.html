@@ -29,18 +29,21 @@
                 shadowBlur: 10,
                 shadowColor: '#ccc',
                 marginLeft: 100,
-                marginRight: 100
+                marginRight: 100,
+                events: {
+                    mouseover: function (e, shape)
+                    {
+                        var idx = shape.index;
+                
+                        pie.set('exploded', 5);
+                        pie.explodeSegment(idx, 25);
+                
+                        e.target.style.cursor = 'pointer';
+                        
+                        e.stopPropagation();
+                    }
+                }
             }
-        }).on('mouseover', function (e, shape)
-        {
-            var idx = shape.index;
-    
-            pie.set('exploded', 5);
-            pie.explodeSegment(idx, 25);
-    
-            e.target.style.cursor = 'pointer';
-            
-            e.stopPropagation();
         }).draw();
     
         // Add the window click listener that resets the Pie chart

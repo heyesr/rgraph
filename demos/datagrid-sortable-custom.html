@@ -14,8 +14,8 @@
         <div style="width: 700px; margin-left: auto; margin-right: auto">
             <div id="myGrid"></div>
             <p>
-                An example of custom sorting - sorting by the last letter
-                of the <b>Name</b> column.
+                An example of custom sorting - sorting by the
+                <b>day column</b> - NOT alphabetically.
             </p>
         </div>
     </div>
@@ -28,11 +28,12 @@
         //
         document.addEventListener('DOMContentLoaded', function ()
         {
+
             var data = [
-                [324, 'Richard','Monday',98],
-                [468, 'Jacob',  'Friday', 78],
-                [846, 'Freddy','Thursday',13],
-                [442, 'Lizzy','Sunday',46]
+                [324, 'Richard','Monday',  98],
+                [468, 'Jacob',  'Friday',  78],
+                [846, 'Freddy', 'Thursday',13],
+                [442, 'Lizzy',  'Sunday',  46]
             ];
 
             // A global variable
@@ -51,7 +52,7 @@
                         'tr td:nth-child(1) div {text-align: center;}'
                     ],
                     sortable: true,
-                    sortableColumns: [1],
+                    sortableColumns: [2],
 // 
                     //
                     // @param object obj       The chart object
@@ -63,17 +64,25 @@
                     // @param mixed  a         The first value to compare.
                     // @param mixed  b         The second value to compare.
                     //
-                    sortableCompare: [,function (obj, column, direction, a, b)
+                    sortableCompare: [,,function (obj, column, direction, a, b)
                     {
-                        a = a.substr(-1).charCodeAt(0);
-                        b = b.substr(-1).charCodeAt(0);
-                    
-                        return direction > 0 ? a - b : b - a;
+                        //
+                        // Sort by day-of-week
+                        //
+                        var days = {
+                               'Monday': 0,
+                              'Tuesday': 1,
+                            'Wednesday': 2,
+                             'Thursday': 3,
+                               'Friday': 4,
+                             'Saturday': 5,
+                               'Sunday': 6
+                        };
+                        return direction > 0 ? days[a] - days[b] : days[b] - days[a];
+                        
                     }]
                 }
             }).draw();
-            
-            RGraph.Queue.resolve('after-chart-created');
         });
     </script>
     

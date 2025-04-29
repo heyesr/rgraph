@@ -25,20 +25,23 @@
                 labelsCenterSize: 75,
                 labelsCenterUnitsPost: '%',
                 width: 15,
-                adjustable: true
+                adjustable: true,
+                events: {
+                    adjustbegin: function (obj)
+                    {
+                        console.log('Adjusting has started...');
+                    },
+                    adjust: function (obj)
+                    {
+                        console.log('Adjusting in progress...');
+                    },
+                    adjustend: function (obj)
+                    {
+                        console.log('Adjusting has ended: ' + obj.value);
+                    }
+                }
             }
-        }).draw().on('adjustbegin', function (obj)
-        {
-            console.log('Adjusting has started...');
-
-        }).on('adjust', function (obj)
-        {
-            console.log('Adjusting in progress...');
-
-        }).on('adjustend', function (obj)
-        {
-            console.log('Adjusting has ended: ' + obj.value);
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

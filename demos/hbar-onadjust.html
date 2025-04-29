@@ -30,22 +30,25 @@
                 labelsAboveDecimals: 1,
                 textSize: 14,
                 xaxis: false,
-                marginRight: 95
+                marginRight: 95,
+                events: {
+                    adjust: function (obj)
+                    {
+                        var shape = RGraph.Registry.get('adjusting.shape');
+            
+                        // Get the value of the bar that's just been adjusted
+                        var index = shape.dataset,
+                            value = hbar.data[index],
+                            other = 100 - value;
+                        
+                        // Now adjust the other value
+                        hbar.data[index ? 0 : 1] = other;
+                        
+                        RGraph.redraw();
+                    }
+                }
             }
-        }).draw().on('adjust', function (obj)
-        {
-            var shape = RGraph.Registry.get('adjusting.shape');
-
-            // Get the value of the bar that's just been adjusted
-            var index = shape.dataset,
-                value = hbar.data[index],
-                other = 100 - value;
-            
-            // Now adjust the other value
-            hbar.data[index ? 0 : 1] = other;
-            
-            RGraph.redraw();
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

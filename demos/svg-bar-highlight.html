@@ -28,30 +28,33 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 marginInner: 10,
-                shadow: true
-            }
-        }).on('draw', function (obj)
-        {
-            for (var i=0; i<obj.coords.length; ++i) {
-
-                var x = obj.coords[i].x,
-                    y = obj.coords[i].y,
-                    w = obj.coords[i].width / 2,
-                    h = obj.coords[i].height;
-
-
-                RGraph.SVG.create({
-                    object: obj,
-                    type: 'rect',
-                    parent: obj.svg.all,
-                    attr: {
-                        x: x,
-                        y: y,
-                        width: w,
-                        height: h,
-                        fill: 'rgba(255,255,255,.215)'
+                shadow: true,
+                events: {
+                    draw: function (obj)
+                    {
+                        for (var i=0; i<obj.coords.length; ++i) {
+            
+                            var x = obj.coords[i].x,
+                                y = obj.coords[i].y,
+                                w = obj.coords[i].width / 2,
+                                h = obj.coords[i].height;
+            
+            
+                            RGraph.SVG.create({
+                                object: obj,
+                                type: 'rect',
+                                parent: obj.svg.all,
+                                attr: {
+                                    x: x,
+                                    y: y,
+                                    width: w,
+                                    height: h,
+                                    fill: 'rgba(255,255,255,.215)'
+                                }
+                            });
+                        }
                     }
-                });
+                }
             }
         }).draw();
     </script>

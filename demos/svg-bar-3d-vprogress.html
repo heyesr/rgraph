@@ -50,13 +50,7 @@
                 },
                 yaxisScaleMax: 100
             }
-        }).draw().on('tooltip', function (obj)
-        {
-            var tooltip = RGraph.SVG.REG.get('tooltip'),
-                idx     = RGraph.SVG.sequentialIndexToGrouped(tooltip.__index__, obj.data);
-
-            tooltip.style.borderColor = '#0f0';
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

@@ -67,27 +67,30 @@
                      font: 'Verdana'
                     }
                 ],
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        obj.properties.text[0].x = obj.centerx;
+                        obj.properties.text[1].x = obj.centerx;
+        
+                        RGraph.redraw();
+                    },
+                    draw: function (obj)
+                    {
+                        // Add a roundedRect around the % improvment text
+                        var index = 3;
+            
+                        obj.path(
+                            'b rr % % % % % s #ccc',
+                            obj.coordsText[index].x - 2,
+                            obj.coordsText[index].y - 3,
+                            obj.coordsText[index].width + 7,
+                            obj.coordsText[index].height + 4,
+                            50
+                        );
+                    }
+                }
             }
-        }).on('firstdraw', function (obj)
-        {
-            obj.properties.text[0].x = obj.centerx;
-            obj.properties.text[1].x = obj.centerx;
-        
-            RGraph.redraw();
-        
-        }).on('draw', function (obj)
-        {
-            // Add a roundedRect around the % improvment text
-            var index = 3;
-
-            obj.path(
-                'b rr % % % % % s #ccc',
-                obj.coordsText[index].x - 2,
-                obj.coordsText[index].y - 3,
-                obj.coordsText[index].width + 7,
-                obj.coordsText[index].height + 4,
-                50
-            );
         }).grow();
     </script>
 

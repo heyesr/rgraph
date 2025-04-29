@@ -72,13 +72,15 @@
                 responsive: [
                     {maxWidth: null, width: 600, height: 300,options:{textSize: 14, marginInner: 5,marginLeft: 100}},
                     {maxWidth: 900, width: 400, height: 200,options:{textSize: 10, marginInner: 2,marginLeft: 75}}
-                ]
+                ],
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    }
+                }
             }
-        }).grow().on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
-
-        });
+        }).grow();
     </script>
     
     <script>showSource()</script>

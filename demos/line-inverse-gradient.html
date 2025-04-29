@@ -54,36 +54,39 @@
                 yaxis: false,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 linewidth: 1,
-                shadow: true
-            }
-        }).on('draw', function (obj)
-        {
-            var coords = obj.coords2[0],
-                co     = obj.context;
-            
-            co.beginPath();
-                co.moveTo( coords[0][0], coords[0][1] );
-                for (var i=1; i<coords.length; ++i) {
-                    co.lineTo( coords[i][0], coords[i][1] );
+                shadow: true,
+                events: {
+                    draw: function (obj)
+                    {
+                        var coords = obj.coords2[0],
+                            co     = obj.context;
+                        
+                        co.beginPath();
+                            co.moveTo( coords[0][0], coords[0][1] );
+                            for (var i=1; i<coords.length; ++i) {
+                                co.lineTo( coords[i][0], coords[i][1] );
+                            }
+                            co.lineTo( obj.canvas.width - obj.marginRight, obj.marginTop );
+                            co.lineTo( obj.marginLeft, obj.marginTop );
+                        co.closePath;
+                        
+                        // Create a gradient for the fill
+                        grad = co.createLinearGradient(0,0,0,250);
+                        grad.addColorStop(0,'white');
+                        grad.addColorStop(0.1,'white');
+                        grad.addColorStop(1,'#4689DC');
+                        
+                        // Set a shadow:
+                        co.shadowOffsetX = 1;
+                        co.shadowOffsetY = 1;
+                        co.shadowColor   = '#666';
+                        co.shadowBlur    = 3;
+                        
+                        co.fillStyle = grad;
+                        co.fill();
+                    }
                 }
-                co.lineTo( obj.canvas.width - obj.marginRight, obj.marginTop );
-                co.lineTo( obj.marginLeft, obj.marginTop );
-            co.closePath;
-            
-            // Create a gradient for the fill
-            grad = co.createLinearGradient(0,0,0,250);
-            grad.addColorStop(0,'white');
-            grad.addColorStop(0.1,'white');
-            grad.addColorStop(1,'#4689DC');
-            
-            // Set a shadow:
-            co.shadowOffsetX = 1;
-            co.shadowOffsetY = 1;
-            co.shadowColor   = '#666';
-            co.shadowBlur    = 3;
-            
-            co.fillStyle = grad;
-            co.fill();
+            }
         }).draw();
     </script>
 

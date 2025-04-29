@@ -33,11 +33,14 @@
                 labelsIngraphRadius: 100,
                 labelsIngraphColor: 'white',
                 labelsIngraphBold: true,
-                labelsIngraphBounding: false
+                labelsIngraphBounding: false,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, '#5AB98D');
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, '#5AB98D')
         }).draw();
 
         new RGraph.Pie({
@@ -46,7 +49,10 @@
             options: {
                 ...conf,
                 variant: 'pie',
-                colors: ['transparent','blue']
+                colors: ['transparent','blue'],
+                events: {} // This is here so that we don't get
+                           // the beforedraw event from the conf
+                           // variable.
             }
         }).draw();
     </script>

@@ -51,54 +51,55 @@
                 shadow: true,
                 shadowOffsetx: 0,
                 shadowOffsety: 0,
-                shadowBlur: 0
-            }
-        }).on('draw', function (obj)
-        {
-            // Draw the vertical line
-            var x = obj.coords2[1][7][0];
-            var y = obj.coords2[1][7][1];
-
-            // Draw thevertical line above/below the 8th point
-            obj.path(
-                'b m % 25 l % % s %',
-                x,
-                x, y - 10,
-                color
-            );
-
-            obj.path(
-                'b m % % l % 230 s %',
-                x, y + 10,
-                x,
-                color
-            );
+                shadowBlur: 0,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Draw the vertical line
+                        var x = obj.coords2[1][7][0];
+                        var y = obj.coords2[1][7][1];
             
-            obj.context.fillStyle = color;
+                        // Draw thevertical line above/below the 8th point
+                        obj.path(
+                            'b m % 25 l % % s %',
+                            x,
+                            x, y - 10,
+                            color
+                        );
             
-            // Draw the text above the line
-            RGraph.text(obj,
-            {
-                x: x,
-                y: 25,
-                text: 'TODAY',
-                size: 8,
-                halign: 'center',
-                bold: true
-            });
-            
-            // Draw the text above the line
-            RGraph.text(obj, {
-                color: 'black',
-                x: 65,
-                y: 30,
-                text: 'REVENUE',
-                size: 14,
-                halign: 'center',
-                bold: true
-            });
-
-            
+                        obj.path(
+                            'b m % % l % 230 s %',
+                            x, y + 10,
+                            x,
+                            color
+                        );
+                        
+                        obj.context.fillStyle = color;
+                        
+                        // Draw the text above the line
+                        RGraph.text(obj,
+                        {
+                            x: x,
+                            y: 25,
+                            text: 'TODAY',
+                            size: 8,
+                            halign: 'center',
+                            bold: true
+                        });
+                        
+                        // Draw the text above the line
+                        RGraph.text(obj, {
+                            color: 'black',
+                            x: 65,
+                            y: 30,
+                            text: 'REVENUE',
+                            size: 14,
+                            halign: 'center',
+                            bold: true
+                        });
+                    }
+                }
+            }            
         }).trace({frames: 50}, function (obj)
         {
             obj.animate({

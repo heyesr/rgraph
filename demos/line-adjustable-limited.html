@@ -34,18 +34,21 @@
                 titleSize: 16,
                 spline: true,
                 tickmarksStyle: 'circle',
-                tickmarksSize: 5
+                tickmarksSize: 5,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Highlight the point that's adjustable
+                        var point = obj.coords[2];
+                        
+                        obj.path(
+                            'b a % % 20 0 6.29 false f rgba(255,0,0,0.25)',
+                            point[0],
+                            point[1]
+                        );
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // Highlight the point that's adjustable
-            var point = obj.coords[2];
-            
-            obj.path(
-                'b a % % 20 0 6.29 false f rgba(255,0,0,0.25)',
-                point[0],
-                point[1]
-            );
         }).draw();
     </script>
 

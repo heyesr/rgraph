@@ -25,29 +25,31 @@
                 yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
                 xaxis: false,
                 backgroundGridHlines: false,
-                backgroundGridBorder: false
-            }
-        }).on('draw', function (obj)
-        {
-            var coords = obj.coords;
-
-            coords.forEach(function (v, k, arr)
-            {
-
-                if (k % 2 === 0) {
-                
-                    var color1 = 'red';
-                    var color2 = '#000';
-
-                    obj.path(
-                        'lw 5 b m % % l % % s black     b a % % 10 0 6.29 false f %    b a % % 10 0 6.29 false f %',
-                        v[0], v[1] + (v[3] / 2),
-                        v[0] + v[2], v[1] + (v[3] / 2),
-                        v[0], v[1] + (v[3] / 2),color1,
-                        v[0] + v[2], v[1] + (v[3] / 2), color1
-                    );
+                backgroundGridBorder: false,
+                events: {
+                    draw: function (obj)
+                    {
+                        var coords = obj.coords;
+            
+                        coords.forEach(function (v, k, arr)
+                        {
+                            if (k % 2 === 0) {
+                            
+                                var color1 = 'red';
+                                var color2 = '#000';
+            
+                                obj.path(
+                                    'lw 5 b m % % l % % s black     b a % % 10 0 6.29 false f %    b a % % 10 0 6.29 false f %',
+                                    v[0], v[1] + (v[3] / 2),
+                                    v[0] + v[2], v[1] + (v[3] / 2),
+                                    v[0], v[1] + (v[3] / 2),color1,
+                                    v[0] + v[2], v[1] + (v[3] / 2), color1
+                                );
+                            }
+                        });
+                    }
                 }
-            });
+            }
         }).draw();
     </script>
     

@@ -29,22 +29,26 @@
                 shadowColor: '#aaa',
                 exploded: 10,
                 radius: 80,
-                labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget']
+                labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'],
+                events: {
+                    click: function (e, shape)
+                    {
+                        var index = shape.index;
+                        var obj = shape.object;
+                        
+                        // Reset all of the segments to 10
+                        obj.set('exploded', 10);
+                        
+                        obj.explodeSegment(index, 15);
+                        
+                        e.stopPropagation();
+                    },
+                    mousemove: function (e, shape)
+                    {
+                        return true;
+                    }
+                }
             }
-        }).on('click', function (e, shape)
-        {
-            var index = shape.index;
-            var obj = shape.object;
-            
-            // Reset all of the segments to 10
-            obj.set('exploded', 10);
-            
-            obj.explodeSegment(index, 15);
-            
-            e.stopPropagation();
-        }).on('mousemove', function (e, shape)
-        {
-            return true;
         })
 
         

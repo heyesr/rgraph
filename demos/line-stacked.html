@@ -147,26 +147,29 @@
                     keyPositionOffsety: 25,
                     keyLabelsSize: 12,
                     keyLabelsFont: 'Verdana',
-                    keyLabelsBold: true
+                    keyLabelsBold: true,
+
+                    //
+                    // The first draw event calculates the width of
+                    // the key and then right-aligns it.
+                    //
+                    events: {
+                        firstdraw: function (obj)
+                        {
+                            // The key coordinates
+                            var arr = obj.coords.key;
+                            
+                            // Calculate the total width of the key
+                            var width = arr.reduce(function (sum, current)
+                            {
+                                return sum + current[2] + 25;
+                            },0);
+                            
+                            // Now set the new X coord
+                            obj.properties.keyPositionX = obj.canvas.width - 35 - width;
+                        }
+                    }
                 }
-            
-            //
-            // The first draw event calculates the width of the key
-            // and then right aligns it.
-            //
-            }).on('firstdraw', function (obj)
-            {
-                // The key coordinates
-                var arr = obj.coords.key;
-                
-                // Calculate the total width of the key
-                var width = arr.reduce(function (sum, current)
-                {
-                    return sum + current[2] + 25;
-                },0);
-                
-                // Now set the new X coord
-                obj.properties.keyPositionX = obj.canvas.width - 35 - width;
             }).trace();
             
         });

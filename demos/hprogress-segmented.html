@@ -37,26 +37,30 @@
                 labelsOffsetx: -30,
                 labelsOffsety: -65,
                 textColor: 'white',
-                textSize: 30
-            }
-        }).on('beforedraw', function (obj)
-        {
-            obj.context.fillStyle = 'black';
-            obj.context.fillRect(0,0,obj.canvas.width,obj.canvas.height);
-        }).on('draw', function (obj)
-        {
-            var [x,y,w,h] = obj.coords[0],
-                lw        = 5,
-                step      = 1;
-            
-            for (var i=0; i<=10; i+=step) {
-                
-                var x2 = obj.getXCoord(i);
-                
-                obj.path(
-                    'lw % ss white sr % % % %',
-                    lw, x, y, x2 - x, h
-                );
+                textSize: 30,
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        obj.context.fillStyle = 'black';
+                        obj.context.fillRect(0,0,obj.canvas.width,obj.canvas.height);
+                    },
+                    draw: function (obj)
+                    {
+                        var [x,y,w,h] = obj.coords[0],
+                            lw        = 5,
+                            step      = 1;
+                        
+                        for (var i=0; i<=10; i+=step) {
+                            
+                            var x2 = obj.getXCoord(i);
+                            
+                            obj.path(
+                                'lw % ss white sr % % % %',
+                                lw, x, y, x2 - x, h
+                            );
+                        }
+                    }
+                }
             }
         }).draw();
         

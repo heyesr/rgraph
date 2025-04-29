@@ -50,26 +50,29 @@
                 textSize: 9,
                 colors: ['#274796','#F5942F'],
                 titleColor: 'gray',
-                marginInner: 5
+                marginInner: 5,
+                events: {
+                    draw: function (obj)
+                    {
+                        var properties = obj.properties;
+            
+                        RGraph.SVG.text({
+                            object: obj,
+                            parent: obj.svg.all,
+                            text:   'Percentage points %',
+                            x:      840,
+                            y:      obj.height - 5,
+                            halign: 'right',
+                            valign: 'bottom',
+                            font:   properties.xaxisScaleFont   || properties.textFont,
+                            size:   properties.xaxisScaleSize   || properties.textSize,
+                            bold:   properties.xaxisScaleBold   || properties.textBold,
+                            italic: properties.xaxisScaleItalic || properties.textItalic,
+                            color:  properties.xaxisScaleColor  || properties.textColor
+                        });
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            var properties = obj.properties;
-
-            RGraph.SVG.text({
-                object: obj,
-                parent: obj.svg.all,
-                text:   'Percentage points %',
-                x:      840,
-                y:      obj.height - 5,
-                halign: 'right',
-                valign: 'bottom',
-                font:   properties.xaxisScaleFont   || properties.textFont,
-                size:   properties.xaxisScaleSize   || properties.textSize,
-                bold:   properties.xaxisScaleBold   || properties.textBold,
-                italic: properties.xaxisScaleItalic || properties.textItalic,
-                color:  properties.xaxisScaleColor  || properties.textColor
-            });
         }).grow();
     </script>
 

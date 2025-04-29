@@ -28,20 +28,23 @@
                 radius: 100,
                 linewidth: 1,
                 shadowBlur: 10,
-                shadowColor: '#ccc'
+                shadowColor: '#ccc',
+                events: {
+                    mousemove: function (e, shape)
+                    {
+                        var idx = shape.index;
+                
+                        if (typeof(pie.get('exploded')) == 'number' || pie.get('exploded')[idx] <= 5) {
+                            pie.set('exploded', 5)
+                            pie.explodeSegment(idx, 25);
+                        }
+                        
+                        e.target.style.cursor = 'pointer';
+                        
+                        e.stopPropagation();
+                    }
+                }
             }
-        }).on('mousemove', function (e, shape)
-        {
-            var idx = shape.index;
-    
-            if (typeof(pie.get('exploded')) == 'number' || pie.get('exploded')[idx] <= 5) {
-                pie.set('exploded', 5)
-                pie.explodeSegment(idx, 25);
-            }
-            
-            e.target.style.cursor = 'pointer';
-            
-            e.stopPropagation();
         }).draw();
     
     

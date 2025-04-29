@@ -60,42 +60,44 @@
                 yaxis: false,
                 adjustable: true,
                 labelsAbove: true,
-                labelsAboveUnitsPost: '%'
-            }
-        }).draw()
-        
-        //
-        // This event fires when adjusting begins
-        //
-        .on('adjustbegin', obj => {            
-            console.log(obj.coords[obj.adjusting_mousedown.index].element.getAttribute('data-value'))
-        })
-
-        //
-        // This event fires during adjusting - similar to the
-        // mousemove event
-        //
-        .on('adjust', obj => {
-
-            // Log the value to the text element
-            var value = obj.coords[0].element.getAttribute('data-value');
-            document.getElementById('readout').value = parseFloat(value).toFixed(1);
-
-            console.log(value)
-        })
-
-        //
-        // This event fires when adjusting ends - similar to the
-        // mouseup event
-        //
-        .on('adjustend', obj => {
+                labelsAboveUnitsPost: '%',
+                events: {
+                    //
+                    // This event fires when adjusting begins
+                    //
+                    adjustbegin: function (obj)
+                    {
+                        console.log(obj.coords[obj.adjusting_mousedown.index].element.getAttribute('data-value'))
+                    },
+                    
+                    //
+                    // This event fires during adjusting - similar to the
+                    // mousemove event
+                    //
+                    adjust: function (obj)
+                    {
+                        // Log the value to the text element
+                        var value = obj.coords[0].element.getAttribute('data-value');
+                        document.getElementById('readout').value = parseFloat(value).toFixed(1);
             
-            // Log the value to the text element
-            var value = obj.coords[0].element.getAttribute('data-value');
-            document.getElementById('readout').value = parseFloat(value).toFixed(1);
-
-            console.log(obj.adjusting_mousedown_last.element.getAttribute('data-value'))
-        });
+                        console.log(value);
+                    },
+                    
+                    //
+                    // This event fires when adjusting ends - similar to the
+                    // mouseup event
+                    //
+                    adjustend: function (obj)
+                    {
+                        // Log the value to the text element
+                        var value = obj.coords[0].element.getAttribute('data-value');
+                        document.getElementById('readout').value = parseFloat(value).toFixed(1);
+            
+                        console.log(obj.adjusting_mousedown_last.element.getAttribute('data-value'))
+                    }
+                }
+            }
+        }).draw();
     </script>
 
     <script>showSource()</script>

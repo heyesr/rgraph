@@ -35,41 +35,44 @@
                 backgroundGridBorder: false,
                 textSize: 18,
                 filled: true,
-                filledColors: ['black']
-            }
-        }).on('firstdraw', function (obj)
-        {
-            // Create the gradient that is used as the stroke color
-            var grad = obj.context.createLinearGradient(0,25,0,325);
-
-            grad.addColorStop(0, '#FF642C');
-            grad.addColorStop(0.25, '#FF642C');
-            grad.addColorStop(0.25, 'orange');
-            grad.addColorStop(0.5, 'orange');
-            grad.addColorStop(0.5, '#5ADDAA');
-            grad.addColorStop(0.75, '#5ADDAA');
-            grad.addColorStop(0.75, '#2BB3FF');
-            grad.addColorStop(1.0, '#2BB3FF');        
-        
-            // Create the gradient that is used as the fill color
-            var gradFill = obj.context.createLinearGradient(0,25,0,325);
-
-            gradFill.addColorStop(0, '#F8D3D7');
-            gradFill.addColorStop(0.25, '#F8D3D7');
-            gradFill.addColorStop(0.25, '#FFE1D8');
-            gradFill.addColorStop(0.5, '#FFE1D8');
-            gradFill.addColorStop(0.5, '#E0F9EE');
-            gradFill.addColorStop(0.75, '#E0F9EE');
-            gradFill.addColorStop(0.75, '#DAF0FF');
-            gradFill.addColorStop(1.0, '#DAF0FF');
-        
-            // Apply the gradient to the charts fill
-            obj.set({
-                colors: [grad],
-                filledColors: [gradFill]
-            });
+                filledColors: ['black'],
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        // Create the gradient that is used as the stroke color
+                        var grad = obj.context.createLinearGradient(0,25,0,325);
             
-            RGraph.redraw();
+                        grad.addColorStop(0, '#FF642C');
+                        grad.addColorStop(0.25, '#FF642C');
+                        grad.addColorStop(0.25, 'orange');
+                        grad.addColorStop(0.5, 'orange');
+                        grad.addColorStop(0.5, '#5ADDAA');
+                        grad.addColorStop(0.75, '#5ADDAA');
+                        grad.addColorStop(0.75, '#2BB3FF');
+                        grad.addColorStop(1.0, '#2BB3FF');        
+                    
+                        // Create the gradient that is used as the fill color
+                        var gradFill = obj.context.createLinearGradient(0,25,0,325);
+            
+                        gradFill.addColorStop(0, '#F8D3D7');
+                        gradFill.addColorStop(0.25, '#F8D3D7');
+                        gradFill.addColorStop(0.25, '#FFE1D8');
+                        gradFill.addColorStop(0.5, '#FFE1D8');
+                        gradFill.addColorStop(0.5, '#E0F9EE');
+                        gradFill.addColorStop(0.75, '#E0F9EE');
+                        gradFill.addColorStop(0.75, '#DAF0FF');
+                        gradFill.addColorStop(1.0, '#DAF0FF');
+                    
+                        // Apply the gradient to the charts fill
+                        obj.set({
+                            colors: [grad],
+                            filledColors: [gradFill]
+                        });
+                        
+                        RGraph.redraw();
+                    }
+                }
+            }
         }).draw();
     </script>
 

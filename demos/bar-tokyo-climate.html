@@ -54,20 +54,23 @@
                 textSize: 14,
                 title: 'Tokyo climate',
                 titleOffsety: 5,
-                titleColor: 'white'
+                titleColor: 'white',
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        obj.context.fillStyle = RGraph.linearGradient({
+                            object: obj,
+                            x1: 0,
+                            y1: 25,
+                            x2: 0,
+                            y2: 225,
+                            colors: ['#6C6960', '#1C1A14']
+                        })
+                        obj.context.fillRect(-1,-1,1000,1000);
+                    }
+                }
             }
-        }).on('beforedraw', function (obj)
-        {
-            obj.context.fillStyle = RGraph.linearGradient({
-                object: obj,
-                x1: 0,
-                y1: 25,
-                x2: 0,
-                y2: 225,
-                colors: ['#6C6960', '#1C1A14']
-            })
-            obj.context.fillRect(-1,-1,1000,1000);
-        }).wave({frames: 60});
+        })).wave({frames: 60});
 
 
 

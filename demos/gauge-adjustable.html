@@ -49,15 +49,19 @@
                 titleTopBold: true,
                 titleTopSize: 14,
                 labelsCentered: true,
-                labelsOffsetRadius: 7
+                labelsOffsetRadius: 7,
+                events: {
+                    draw: function (obj)
+                    {
+                        // This circle becomes the border of the
+                        // centerpin.
+                        obj.path(
+                            'b a % % 10 0 6.29 false f %',
+                            obj.centerx, obj.centery, '#aaa'
+                        );
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // This circle becomes the border of the centerpin
-            obj.path(
-                'b a % % 10 0 6.29 false f %',
-                obj.centerx, obj.centery, '#aaa'
-            );
         }).draw();
         
         //

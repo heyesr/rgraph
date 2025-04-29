@@ -37,16 +37,22 @@
             x: 100,
             options: {
                 yaxisScaleMax: 100,
+                marginBottom: 30,
                 yaxisTickmarksCount: 3,
-                yaxisLabelsSpecific: ['Lots','A fair amount','Not so many','A few']
+                yaxisLabelsSpecific: ['Lots','A fair amount','Not so many','A few'],
+                events: {
+                    click: function (e, shape)
+                    {
+                        alert('The Y-axis has been clicked!');
+                    },
+                    mousemove: function (e, shape)
+                    {
+                        // Make the cursor a pointer when hovering
+                        // over the axis.
+                        return true;
+                    }
+                }
             }
-        }).on('click', function (e, obj)
-        {
-            alert('The Y-axis has been clicked!');
-        }).on('mousemove', function (e, obj)
-        {
-            // Make the cursor a pointer
-            return true;
         }).draw();
     </script>
 

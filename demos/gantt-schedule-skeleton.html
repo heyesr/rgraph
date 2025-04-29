@@ -147,44 +147,44 @@
                 backgroundGridVlinesCount: 12,
                 borders: false,
                 textSize: 18,
-                adjustable: true
-            }
-        }).on('firstdraw', function (obj)
-        {
-            var marginLeft = getLongestLabel(obj) + 25;
+                adjustable: true,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        var marginLeft = getLongestLabel(obj) + 25;
+                        
+                        obj.set('marginLeft', marginLeft);
+                        RGraph.cache = [];
+                        setTimeout(function () {RGraph.redraw();}, 25);
+                    },
+                    adjustend: function (obj)
+                    {
+                        var el = RGraph.Registry.get('adjusting.gantt');
+                    },
+                    adjust: function (obj)
+                    {
+                        save(myGantt.data);
             
-            obj.set('marginLeft', marginLeft);
-            RGraph.cache = [];
-            setTimeout(function () {RGraph.redraw();}, 25)
+                        var el = RGraph.Registry.get('adjusting.gantt');
             
-        }).draw().on('adjustend', function (obj)
-        {
-            var el = RGraph.Registry.get('adjusting.gantt');
-
-        }).on('adjust', function ()
-        {
-            save(myGantt.data);
-
-            var el = RGraph.Registry.get('adjusting.gantt');
-
-            document.getElementById('name').value      = el.object.data[el.dataset].label;
-            document.getElementById('startdate').value = day2date(el.object.data[el.dataset].start);
-            document.getElementById('duration').value  = el.object.data[el.dataset].duration;
-            document.getElementById('complete').value  = el.object.data[el.dataset].complete;
-
-        
-        }).on('draw', function (obj)
-        {
-            if (typeof state.selected === 'number') {
-                
-                var index  = state.selected,
-                    coords = obj.coords[index];
-
-                myGantt.path('b r % % % % s red', coords[0], coords[1], coords[2], coords[3]);
+                        document.getElementById('name').value      = el.object.data[el.dataset].label;
+                        document.getElementById('startdate').value = day2date(el.object.data[el.dataset].start);
+                        document.getElementById('duration').value  = el.object.data[el.dataset].duration;
+                        document.getElementById('complete').value  = el.object.data[el.dataset].complete;
+                    },
+                    draw: function (obj)
+                    {
+                        if (typeof state.selected === 'number') {
+                            
+                            var index  = state.selected,
+                                coords = obj.coords[index];
+            
+                            myGantt.path('b r % % % % s red', coords[0], coords[1], coords[2], coords[3]);
+                        }
+                    },
+                }
             }
-
-
-        }).exec(function (obj)
+        }).draw().exec(function (obj)
         {
             obj.canvas.onmousedown = function (e)
             {

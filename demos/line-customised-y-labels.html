@@ -39,14 +39,6 @@
                 textColor: '#999',
                 textSize: 14
             }
-        }).on('draw', function (obj)
-        {
-            var ca = obj.canvas;
-            var co = obj.context;
-
-            // Because we're not drawing an axis, draw an extra grid line
-            co.strokeStyle = obj.get('backgroundGridColor');
-            co.strokeRect(obj.get('marginLeft'), ca.height - obj.get('marginBottom'), ca.width - obj.get('marginRight') - obj.get('marginLeft'), 0)
         });
         
         var yaxis = new RGraph.Drawing.YAxis({

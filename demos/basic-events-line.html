@@ -20,33 +20,38 @@
             id: 'cvs',
             data: [12,13,16,15,16,19,19,12,23,16,13,24],
             options: {
-                xaxisLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            }
-        }).draw()
+                xaxisLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                events: {
+                    //
+                    // This is the function for the mousemove event.
+                    // It changes the pointer to the hand. When the
+                    // mouse is moved away from the point the
+                    // pointer is changed back to what it was
+                    // automatically for you.
+                    // 
+                    // @param object e     The event object.
+                    // @param array  shape The details of the point
+                    //                     that was hovered over.
+                    //
+                    mousemove: function (e, shape)
+                    {
+                        return true;
+                    },
 
-        //
-        // This is the function for the mousemove event. It changes the pointer to the hand.
-        // When the mouse is moved away from the point the pointer is changed back to what it was
-        // automatically for you.
-        // 
-        // @param object e     The event object
-        // @param array  point The details of the point that was hovered over
-        //
-        .on('mousemove', function (e, shape)
-        {
-            return true;
-        })
-        
-        //
-        // This is the function for the click event.
-        //
-        // @param object e     The event object
-        // @param array  point The details of the point that was clicked
-        //
-        .on('click', function (e, shape)
-        {
-            alert('A point was clicked');
-        });
+                    //
+                    // This is the function for the click event.
+                    //
+                    // @param object e     The event object.
+                    // @param array  shape The details of the point
+                    //                     that was clicked.
+                    //
+                    click: function (e, shape)
+                    {
+                        alert('A point was clicked');
+                    }
+                }
+            }
+        }).draw();
     </script>
 
     <script>showSource()</script>

@@ -37,31 +37,35 @@
                 tickmarksLargeCount: 0,
                 adjustable: true,
                 needleRadius: 130,
-                needleHeadWidth: 0.15
+                needleHeadWidth: 0.15,
+                events: {
+                    
+                    // Clear the canvas
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    },
+
+                    // A customised centerpin
+                    draw: function (obj)
+                    {
+                        obj.path(
+                            'b a % % 15 0 6.29 false f white',
+                            obj.centerx, obj.centery
+                        );
+                        
+                        obj.path(
+                            'b a % % 12 0 6.29 false f black',
+                            obj.centerx, obj.centery
+                        );
+                        
+                        obj.path(
+                            'b a % % 8 0 6.29 false f white',
+                            obj.centerx, obj.centery
+                        );
+                    }
+                }
             }
-        
-        // Clear the canvas
-        }).on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
-        
-        // A customised centerpin
-        }).on('draw', function (obj)
-        {
-            obj.path(
-                'b a % % 15 0 6.29 false f white',
-                obj.centerx, obj.centery
-            );
-            
-            obj.path(
-                'b a % % 12 0 6.29 false f black',
-                obj.centerx, obj.centery
-            );
-            
-            obj.path(
-                'b a % % 8 0 6.29 false f white',
-                obj.centerx, obj.centery
-            );
         }).draw();
     </script>
 

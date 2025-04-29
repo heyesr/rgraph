@@ -67,43 +67,46 @@
                     'Gradient(white:white:#C0504E:#C0504E)', '#0000',
                     'Gradient(white:white:#4F81BC:#4F81BC)', '#0000'
                 ],
-                grouping: 'stacked'
-            }
-        }).on('draw', function (obj)
-        {
-            for (let i=0,j=0; i<obj.coords.length; i+=2,j++) {
-                
-                // Draw the text on the right of the bar
-                RGraph.text({
-                    object: obj,
-                    text:   RGraph.numberFormat({
-                        object:    this,
-                        number:    data[j].max,
-                        unitspost:' hz'
-                    }),
-                    x:      obj.coords[i][0] + obj.coords[i][2] + 5,
-                    y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
-                    valign: 'center',
-                    halign: 'left',
-                    color:  'white',
-                    size: 10
-                });
-                
-                // Draw the text on the left of the bar
-                RGraph.text({
-                    object: obj,
-                    text:   RGraph.numberFormat({
-                        object:    this,
-                        number:    data[j].min,
-                        unitspost:' hz' 
-                    }),
-                    x:      obj.coords[i][0] - 5,
-                    y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
-                    valign: 'center',
-                    halign: 'right',
-                    color:  'white',
-                    size: 10
-                });
+                grouping: 'stacked',
+                events: {
+                    draw: function (obj)
+                    {
+                        for (let i=0,j=0; i<obj.coords.length; i+=2,j++) {
+                            
+                            // Draw the text on the right of the bar
+                            RGraph.text({
+                                object: obj,
+                                text:   RGraph.numberFormat({
+                                    object:    this,
+                                    number:    data[j].max,
+                                    unitspost:' hz'
+                                }),
+                                x:      obj.coords[i][0] + obj.coords[i][2] + 5,
+                                y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
+                                valign: 'center',
+                                halign: 'left',
+                                color:  'white',
+                                size: 10
+                            });
+                            
+                            // Draw the text on the left of the bar
+                            RGraph.text({
+                                object: obj,
+                                text:   RGraph.numberFormat({
+                                    object:    this,
+                                    number:    data[j].min,
+                                    unitspost:' hz' 
+                                }),
+                                x:      obj.coords[i][0] - 5,
+                                y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
+                                valign: 'center',
+                                halign: 'right',
+                                color:  'white',
+                                size: 10
+                            });
+                        }
+                    }
+                }
             }
         }).draw();
     </script>

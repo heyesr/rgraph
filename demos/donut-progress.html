@@ -51,13 +51,16 @@
                 variant: 'donut',
                 colors: ['green','rgba(0,0,0,0)'],
                 colorsStroke: 'rgba(0,0,0,0)',
-                shadow: false
-            }
-        }).on('draw', function (obj)
-        {
-            // Update the text object with the value shown on the Donut chart
-            if (window.text) {
-                text.text = parseInt(target * obj.get('effectRoundrobinMultiplier')) + '%';
+                shadow: false,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Update the text object with the value shown on the Donut chart
+                        if (window.text) {
+                            text.text = parseInt(target * obj.get('effectRoundrobinMultiplier')) + '%';
+                        }
+                    }
+                }
             }
         }).roundRobin();
 

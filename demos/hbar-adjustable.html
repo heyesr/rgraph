@@ -24,17 +24,20 @@
                 yaxisLabels: ['Fred','Rich','Jim','Luis','Jane','Paul','Olga','Kev','Indigo','Florence'],
                 adjustable: true,
                 marginLeft: 100,
-                xaxis: false
+                xaxis: false,
+                events: {
+                    adjust: function (obj)
+                    {
+                        obj.data.forEach(function (v, k, arr)
+                        {
+                            arr[k] = Math.round(v * 10) / 10;
+                        });
+            
+                        document.getElementById('out').value = obj.data.join(' , ')
+                    }
+                }
             }
-        }).draw().on('adjust', function (obj)
-        {
-            obj.data.forEach(function (v, k, arr)
-            {
-                arr[k] = Math.round(v * 10) / 10;
-            });
-
-            document.getElementById('out').value = obj.data.join(' , ')
-        });
+        }).draw();
     </script>
     
     <script>showSource()</script>

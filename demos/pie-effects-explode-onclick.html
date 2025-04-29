@@ -26,18 +26,27 @@
                 exploded: 5,
                 radius: 100,
                 linewidth: 1,
-                shadow: false
+                shadow: false,
+                events: {
+                    click: function (e, shape)
+                    {
+                        //if (!pie.get('exploded') || !pie.get('exploded')[shape.index]) {
+                        if (!window.animating) {
+                            window.animating = true;
+                            pie.explodeSegment(shape.index, 25, function ()
+                            {
+                                window.animating = false;
+                            });
+                        }
+                        
+                        e.stopPropagation();
+                    },
+                    mousemove: function (e, shape)
+                    {
+                        return true;
+                    }
+                }
             }
-        }).on('click', function (e, shape)
-        {
-            if (!pie.get('exploded') || !pie.get('exploded')[shape.index]) {
-                pie.explodeSegment(shape.index, 25);
-            }
-            
-            e.stopPropagation();
-        }).on('mousemove', function (e, shape)
-        {
-            return true;
         }).draw()
     
     

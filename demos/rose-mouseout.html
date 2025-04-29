@@ -25,16 +25,19 @@
                 labelsAxes: 'n',
                 margin: 5,
                 colors: ['Gradient(white:rgba(255,0,0,0.9))'],
-                highlightStroke: 'black'
+                highlightStroke: 'black',
+                events: {
+                    mouseover: function (e, shape)
+                    {
+                        shape.object.highlight(shape);
+                    },
+                    mouseout: function (obj)
+                    {
+                        RGraph.redraw();
+                    }
+                }
             }
-        }).draw().on('mouseover', function (e, shape)
-        {
-            shape.object.highlight(shape);
-
-        }).on('mouseout', function (obj)
-        {
-            RGraph.redraw();
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

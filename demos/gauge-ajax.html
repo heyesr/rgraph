@@ -37,17 +37,20 @@
                 needleColors: ['red'],
                 needleType: 'line',
                 centerpinRadius: 0.1,
-                titleTop: 'Speed'
+                titleTop: 'Speed',
+                events: {
+                    draw: function (obj)
+                    {
+                        // This circle becomes the border of the
+                        // centerpin.
+                        obj.path(
+                            'b a % % 10 0 6.29 false f black',
+                            obj.centerx, obj.centery
+                        );
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // This circle becomes the border of the centerpin
-            obj.path(
-                'b a % % 10 0 6.29 false f black',
-                obj.centerx, obj.centery
-            );
-        })
-        .draw();
+        }).draw();
         
         var delay = 1500;
 

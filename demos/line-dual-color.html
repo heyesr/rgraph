@@ -20,7 +20,6 @@
         color1    = 'red';
         color2    = 'green';
 
-        // Draw the green chart
         line = new RGraph.Line({
             id: 'cvs', 
             data: data,
@@ -36,32 +35,18 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
-                yaxis: false
+                yaxis: false,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        var boundary = obj.getYCoord(threshold);
+                        obj.set('clip', [0,0,obj.canvas.width, boundary]);
+                        RGraph.redraw();
+                    }
+                }
             }
-        }).on('firstdraw', function (obj)
-        {
-            var boundary = obj.getYCoord(threshold);
-        
-            obj.on('beforedraw', function (obj)
-            {
-                RGraph.clipTo.start(obj, [0,0,obj.canvas.width, boundary]);
-        
-            }).on('draw', function (obj)
-            {
-                RGraph.clipTo.end(obj);
-            });
-            
-            RGraph.redraw();
         }).draw();
 
-
-
-
-
-
-
-
-        // Draw the red chart
         line = new RGraph.Line({
             id: 'cvs', 
             data: data,
@@ -77,22 +62,17 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
-                yaxis: false
+                yaxis: false,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        var boundary = obj.getYCoord(threshold);
+                        obj.set('clip', [0,boundary,obj.canvas.width, 999]);
+                        RGraph.redraw();
+                    }
+                }
             }
-        }).on('firstdraw', function (obj)
-        {
-            var boundary = obj.getYCoord(threshold);
         
-            obj.on('beforedraw', function (obj)
-            {
-                RGraph.clipTo.start(obj, [0,boundary,obj.canvas.width, 999]);
-        
-            }).on('draw', function (obj)
-            {
-                RGraph.clipTo.end(obj);
-            });
-            
-            RGraph.redraw();
         }).draw();
     </script>
 

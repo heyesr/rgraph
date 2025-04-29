@@ -59,28 +59,31 @@
                 textSize: 22,
                 textColor: 'rgba(0,0,0,0)',
                 textFont: 'Verdana',
-                colorsStroke: 'rgba(0,0,0,0)'
+                colorsStroke: 'rgba(0,0,0,0)',
+                events: {
+                    draw: function (obj)
+                    {
+                        // Add the labels that are positioned in the top margin. The
+                        // labelsAbove option places the text just above each bar and
+                        // we want all the labels in the top margin. Therefore a little
+                        // custom text is required.
+                        for (var i=0; i<4; i++) {
+                            RGraph.text({
+                                object: obj,
+                                text:   labels[i] + '%',
+                                x:      obj.coords[i][0] + (obj.coords[i][2] / 2),
+                                y:      30,
+                                color:  'white',
+                                size:   18,
+                                halign: 'center',
+                                font:   'Verdana'
+                            });
+                        }
+                    }
+                }
             }
         // Use the grow() effect and add a draw event listener
-        }).grow().on('draw', function ()
-        {
-            // Add the labels that are positioned in the top margin. The
-            // labelsAbove option places the text just above each bar and
-            // we want all the labels in the top margin. Therefore a little
-            // custom text is required.
-            for (var i=0; i<4; i++) {
-                RGraph.text({
-                    object: bar,
-                    text:   labels[i] + '%',
-                    x:      bar.coords[i][0] + (bar.coords[i][2] / 2),
-                    y:      30,
-                    color:  'white',
-                    size:   18,
-                    halign: 'center',
-                    font:   'Verdana'
-                });
-            }
-        });
+        }).grow();
     </script>
     
     <script>showSource()</script>

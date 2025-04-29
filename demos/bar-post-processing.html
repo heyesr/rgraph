@@ -35,36 +35,39 @@
                 responsive: [
                     {maxWidth: null, width: 600, height: 300, options: {textSize: 14, marginInner: 5, shadow: true,  xaxis: false, yaxis: false}},
                     {maxWidth: 900,  width: 400, height: 200, options: {textSize: 10, marginInner: 2, shadow: false, xaxis: false, yaxis: false}}
-                ]
+                ],
+                events: {
+                    draw: function (obj)
+                    {
+                        var len = obj.coords.length;
+            
+                        for (var i=0; i<len; ++i) {
+            
+                            // Get the coordinates for each bar - full height but only half
+                            // width.
+                            var x = obj.coords[i][0],
+                                y = obj.coords[i][1],
+                                w = obj.coords[i][2] / 2,
+                                h = obj.coords[i][3];
+            
+                            // Create the gradient using an RGraph API function
+                            obj.context.fillStyle = RGraph.linearGradient({
+                                object: obj,
+                                x1: 0, y1: 0, x2: 0, y2: 250,
+                                colors: ['rgba(255,255,255,.75)','rgba(255,255,255,0)']
+                            });
+                            
+                            // Draw the highlight rectangle
+                            obj.context.fillRect(x,y,w,h)
+                        }
+                    }
+                }
             }
         
         // Now use the draw event and the coordinates that were created when
         // the chart was drawn to add highlighting to the left side of each
         // bar. The highlighting is graduated from semi-opaque white at the top
         // to fully transparent white at the bottom.
-        }).on('draw', function (obj)
-        {
-            var len = obj.coords.length;
-
-            for (var i=0; i<len; ++i) {
-
-                // Get the coordinates for each bar - full height but only half
-                // width.
-                var x = obj.coords[i][0],
-                    y = obj.coords[i][1],
-                    w = obj.coords[i][2] / 2,
-                    h = obj.coords[i][3];
-
-                // Create the gradient using an RGraph API function
-                obj.context.fillStyle = RGraph.linearGradient({
-                    object: obj,
-                    x1: 0, y1: 0, x2: 0, y2: 250,
-                    colors: ['rgba(255,255,255,.75)','rgba(255,255,255,0)']
-                });
-                
-                // Draw the highlight rectangle
-                obj.context.fillRect(x,y,w,h)
-            }
         }).draw();
     </script>
     

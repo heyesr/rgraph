@@ -44,42 +44,45 @@
                 textSize: 10,
                 //xaxisLabelsAngle: 45,
                 marginBottom:45,
-                marginTop:25
+                marginTop:25,
+                events: {
+                    draw: function (obj)
+                    {
+                        // Remove previous rect tags from the SVG tag
+                        if (typeof r1 === 'object') r1.parentNode.removeChild(r1);
+                        if (typeof r2 === 'object') r2.parentNode.removeChild(r2);
+            
+                        var x1 = obj.coords[5][0];
+                        var x2 = obj.coords[8][0];
+            
+                        // These cover the left and right sides of the chart in a dark,
+                        // semi-transparent rect
+                        r1 = RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'rect',
+                            attr: {
+                                x: 35,
+                                y: 35,
+                                width: x1 - 35,
+                                height: 130,
+                                fill: 'rgba(0,0,0,0.35)'
+                            }
+                        });
+            
+                        r2 = RGraph.SVG.create({
+                            svg: obj.svg,
+                            type: 'rect',
+                            attr: {
+                                x: x2,
+                                y: 35,
+                                width: 200,
+                                height: 130,
+                                fill: 'rgba(0,0,0,0.3)'
+                            }
+                        });
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // Remove previous rect tags from the SVG tag
-            if (typeof r1 === 'object') r1.parentNode.removeChild(r1);
-            if (typeof r2 === 'object') r2.parentNode.removeChild(r2);
-
-            var x1 = obj.coords[5][0];
-            var x2 = obj.coords[8][0];
-
-            // These cover the left and right sides of the chart in a dark,
-            // semi-transparent rect
-            r1 = RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'rect',
-                attr: {
-                    x: 35,
-                    y: 35,
-                    width: x1 - 35,
-                    height: 130,
-                    fill: 'rgba(0,0,0,0.35)'
-                }
-            });
-
-            r2 = RGraph.SVG.create({
-                svg: obj.svg,
-                type: 'rect',
-                attr: {
-                    x: x2,
-                    y: 35,
-                    width: 200,
-                    height: 130,
-                    fill: 'rgba(0,0,0,0.3)'
-                }
-            });
         }).draw();
     </script>
 

@@ -96,14 +96,17 @@
                         padding: '10px'
                     },
                     tooltipsPointer: false,
-                }
-            }).on('tooltip', function (obj)
-            {
-                var tooltip = RGraph.SVG.REG.get('tooltip');
-                var index   = tooltip.__index__;
-
-                if (data[index] > 0) {
-                    tooltip.style.borderColor = 'blue';
+                    events: {
+                        tooltip: function (obj)
+                        {
+                            var tooltip = RGraph.SVG.REG.get('tooltip');
+                            var index   = tooltip.__index__;
+            
+                            if (data[index] > 0) {
+                                tooltip.style.borderColor = 'blue';
+                            }
+                        }
+                    }
                 }
             }).grow({frames: 60});
         });

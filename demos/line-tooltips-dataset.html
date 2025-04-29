@@ -51,53 +51,57 @@
                 tickmarksSize: 5,
                 //key: ['Bob','David','Gary'],
                 //keyBackground: 'white',
-                textSize: 16
+                textSize: 16,
+
+                //events: {
+                //    tooltip: function (obj)
+                //    {
+                //        var e        = window.event
+                //        var tooltip  = RGraph.Registry.get('tooltip');
+                //        var [mx, my] = RGraph.getMouseXY(e);
+                //        var [cx, cy] = RGraph.getCanvasXY(obj.canvas);
+                //        
+                //        // Use this to set the position of the
+                //        // tooltip
+                //        setTimeout(function()
+                //        {
+                //            tooltip.style.left = cx + mx - (tooltip.offsetWidth / 2)+ 'px';
+                //            tooltip.style.top  = cy + my - tooltip.offsetHeight - 20 + 'px';
+                //        },25);
+                //    },
+                //
+                //
+                //
+                //
+                //    //
+                //    // You can get the dataset index and the coordinates
+                //    // of the key entry by using these properties. This
+                //    // also fetches the appropriate color from the RGraph
+                //    // object properties (using the index).
+                //    //
+                //    // If you're not bothered about highlighting the key
+                //    // then you can omit this entire ontooltip event
+                //    //
+                //    tooltip: function (obj)
+                //    {
+                //        var index  = obj.tooltipsDatasetIndex;
+                //        var coords = obj.coords.key[index];
+                //        var color  = obj.get('colors')[index];
+                //        
+                //        //
+                //        // Highlight the key
+                //        //
+                //        obj.path(
+                //            'ga 0.25 b r % % % % f % ga 1',
+                //            coords[0], coords[1],
+                //            coords[2], coords[3],
+                //            color
+                //        );
+                //    }
+                //}
             }
         }).draw();
         
-        // This ontooltip event listener moves the tooltip to be
-        // positioned by the cursor (at the time of the click)
-        //
-        //.on('tooltip', function (obj)
-        //{
-        //    var e        = window.event
-        //    var tooltip  = RGraph.Registry.get('tooltip');
-        //    var [mx, my] = RGraph.getMouseXY(e);
-        //    var [cx, cy] = RGraph.getCanvasXY(obj.canvas);
-        //    
-        //    // Use this to set the position of the tooltip
-        //    setTimeout(function()
-        //    {
-        //        tooltip.style.left = cx + mx - (tooltip.offsetWidth / 2)+ 'px';
-        //        tooltip.style.top  = cy + my - tooltip.offsetHeight - 20 + 'px';
-        //    },25);
-        //});
-        
-        //.on('tooltip', function (obj)
-        //{
-        //    //
-        //    // You can get the dataset index and the coordinates
-        //    // of the key entry by using these properties. This
-        //    // also fetches the appropriate color from the RGraph
-        //    // object properties (using the index).
-        //    //
-        //    // If you're not bothered about highlighting the key
-        //    // then you can omit this entire ontooltip event
-        //    //
-        //    var index  = obj.tooltipsDatasetIndex;
-        //    var coords = obj.coords.key[index];
-        //    var color  = obj.get('colors')[index];
-        //    
-        //    //
-        //    // Highlight the key
-        //    //
-        //    obj.path(
-        //        'ga 0.25 b r % % % % f % ga 1',
-        //        coords[0], coords[1],
-        //        coords[2], coords[3],
-        //        color
-        //    );
-        //});
     </script>
     
     <script>showSource()</script>

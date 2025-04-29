@@ -46,48 +46,52 @@
                 tooltipsCss: {
                     fontSize: '16pt'
                 },
-                highlightFill: 'transparent'
+                highlightFill: 'transparent',
+                events: {
+                    draw: function (obj)
+                    {
+                        // Loop through all of the coordinates
+                        // adding the end circles to each bar
+                        for (let i=0; i<obj.coords.length; ++i) {
+            
+                            // Draw the LHS end donut
+                            obj.path(
+                                'b a % % 10 0 6.29 false f %',
+                                obj.coords[i][0],
+                                obj.coords[i][1] + (obj.coords[i][3] / 2),
+                                colors.main
+                            );
+                            obj.path(
+                                'b a % % 6 0 6.29 false f white',
+                                obj.coords[i][0],
+                                obj.coords[i][1] + (obj.coords[i][3] / 2)
+                            );
+            
+            
+            
+            
+            
+                            // Draw the RHS end circle
+                            obj.path(
+                                'b a % % 10 0 6.29 false f %',
+                                obj.coords[i][0] + obj.coords[i][2],
+                                obj.coords[i][1] + (obj.coords[i][3] / 2),
+                                obj.coords[i][4].complete === 100 ? colors.main : colors.background
+                            );
+                            obj.path(
+                                'b a % % 6 0 6.29 false f white',
+                                obj.coords[i][0] + obj.coords[i][2],
+                                obj.coords[i][1] + (obj.coords[i][3] / 2)
+                            );
+                        }
+                    },
+                    beforedraw: function (obj)
+                    {
+                        // Dynamically determine the size of the lines
+                        obj.properties.marginInner = (((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) - height) / 2;
+                    }
+                }
             }
-        }).on('draw', function (obj)
-        {
-            // Loop through all of the coordinates
-            // adding the end circles to each bar
-            for (let i=0; i<obj.coords.length; ++i) {
-
-                // Draw the LHS end donut
-                obj.path(
-                    'b a % % 10 0 6.29 false f %',
-                    obj.coords[i][0],
-                    obj.coords[i][1] + (obj.coords[i][3] / 2),
-                    colors.main
-                );
-                obj.path(
-                    'b a % % 6 0 6.29 false f white',
-                    obj.coords[i][0],
-                    obj.coords[i][1] + (obj.coords[i][3] / 2)
-                );
-
-
-
-
-
-                // Draw the RHS end circle
-                obj.path(
-                    'b a % % 10 0 6.29 false f %',
-                    obj.coords[i][0] + obj.coords[i][2],
-                    obj.coords[i][1] + (obj.coords[i][3] / 2),
-                    obj.coords[i][4].complete === 100 ? colors.main : colors.background
-                );
-                obj.path(
-                    'b a % % 6 0 6.29 false f white',
-                    obj.coords[i][0] + obj.coords[i][2],
-                    obj.coords[i][1] + (obj.coords[i][3] / 2)
-                );
-            }
-        }).on('beforedraw', function (obj)
-        {
-            // Dynamically determine the size of the lines
-            obj.properties.marginInner = (((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) - height) / 2;
         }).draw();
     </script>
     

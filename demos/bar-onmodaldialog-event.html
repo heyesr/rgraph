@@ -35,24 +35,26 @@
                 shadowOffsety: 2,
                 shadowBlur: 2,
                 backgroundGridVlinesCount: 7,
-                textSize:16
+                textSize:16,
+                events: {
+                    click: function (e, shape)
+                    {
+                        ModalDialog.onmodaldialog = function ()
+                        {
+                            console.log('This alert was triggered by the modaldialog DOM1 style event listener');
+                        };
+            
+                        ModalDialog.Show('string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>');
+                        ModalDialog.enlargeOnClose = true;
+                        ModalDialog.closeOnBackgroundClick = true;
+                    },
+                    mousemove : function (e, shape)
+                    {
+                        return true;
+                    }
+                }
             }
-        }).draw().on('click', function (e, shape)
-        {
-            ModalDialog.onmodaldialog = function ()
-            {
-                console.log('This alert was triggered by the modaldialog DOM1 style event listener');
-            };
-
-            ModalDialog.Show('string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>');
-            ModalDialog.enlargeOnClose = true;
-            ModalDialog.closeOnBackgroundClick = true;
-
-
-        }).on('mousemove', function (e, shape)
-        {
-            return true;
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

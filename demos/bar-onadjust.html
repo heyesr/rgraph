@@ -39,34 +39,37 @@
                 responsive: [
                     {maxWidth: null,width:600,height:300,options: {labelsAboveSize: 14,textSize: 14}},
                     {maxWidth: 900,width:400,height:200,options: {labelsAboveSize: 10,textSize: 10}}
-                ]
+                ],
+                events: {
+                    adjust: function (obj)
+                    {
+                        // Get the shape object of the bar that's being adjusted from the
+                        // RGraph registry. You too can use the RGraph registry if you
+                        // have some settings to store.
+                        var shape = RGraph.Registry.get('adjusting.shape');
+            
+                        // Get the new value of the bar that's just been adjusted and then
+                        // calculate what the value is that the other bars should be set to.
+                        var dataset = shape.dataset;
+                        var value   = bar.data[dataset];
+                        var other   = (combinedMax - value) / (bar.data.length - 1);
+                        
+                        // Now adjust all of the values of the bars that aren't being
+                        // adjusted.
+                        for (var i=0; i<bar.data.length; ++i) {
+                            if (i != dataset) {
+                                bar.data[i] = other;
+                            }
+                        }
+                        
+                        RGraph.redraw();
+                    }
+                }
             }
         
         // Here's the adjust event that changes the bars based on the one thats being
         // adjusted and what it has been adjusted to.
-        }).draw().on('adjust', function (obj)
-        {
-            // Get the shape object of the bar that's being adjusted from the
-            // RGraph registry. You too can use the RGraph registry if you
-            // have some settings to store.
-            var shape = RGraph.Registry.get('adjusting.shape');
-
-            // Get the new value of the bar that's just been adjusted and then
-            // calculate what the value is that the other bars should be set to.
-            var dataset = shape.dataset;
-            var value   = bar.data[dataset];
-            var other   = (combinedMax - value) / (bar.data.length - 1);
-            
-            // Now adjust all of the values of the bars that aren't being
-            // adjusted.
-            for (var i=0; i<bar.data.length; ++i) {
-                if (i != dataset) {
-                    bar.data[i] = other;
-                }
-            }
-            
-            RGraph.redraw();
-        });
+        }).draw();
     </script>
 
     <script>showSource()</script>

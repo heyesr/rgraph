@@ -39,15 +39,17 @@
                 textSize: 16,
                 tooltips: '<span style="font-size: 26pt">%{property:xaxisLabels[%{index}]}</span><br /><i style="font-size: 16pt">Results: %{value}</i>',
                 highlightStroke: 'transparent',
-                highlightPointRadius: 3
+                highlightPointRadius: 3,
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.path(
+                            'ss black lw 1 lj miter sr % % % %',
+                            65, 15, 500.01, 230
+                        );
+                    }
+                }
             }
-        }).on('draw',function (obj)
-        {
-            // Updated style for the path function
-            obj.path(
-                'ss black lw 1 lj miter sr % % % %',
-                65, 15, 500.01, 230
-            );
         }).draw();
     </script>
     

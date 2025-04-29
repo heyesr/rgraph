@@ -19,12 +19,14 @@
             id: 'cvs',
             data: [4,8,6,4,3,5,2],
             options: {
+                events: {
+                    beforedraw: function (obj)
+                    {
+                        RGraph.clear(obj.canvas, 'white');
+                    }
+                }
             }
-        }).explode()
-          .on('beforedraw', function (obj)
-        {
-            RGraph.clear(obj.canvas, 'white');
-        });
+        }).explode();
     </script>
 
     <script>showSource()</script>
