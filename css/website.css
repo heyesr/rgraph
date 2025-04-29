@@ -161,10 +161,11 @@ samp {
 :is(pre.code, code, samp) span {
     color: #0b0;
 }
-
+/* No more red bits
+* 
 :is(pre.code, code, samp) span span {
     color: #c00;
-}
+}*/
 
 
 /*
