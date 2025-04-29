@@ -228,7 +228,9 @@
             corners:                             'square', // Can also be round
             cornersRoundRadius:                   10,
 
-            clearto:                            'rgba(0,0,0,0)'
+            clearto:                            'rgba(0,0,0,0)',
+            
+            events:                             {}
         }
 
         //

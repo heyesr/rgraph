@@ -205,9 +205,14 @@
     RGraph.SVG.create = function (opt)
     {
         var ns  = "http://www.w3.org/2000/svg";
-
-        
         var tag = doc.createElementNS(ns, opt.type);
+
+        // If an object has been given instead of the SVG tag
+        // then handle that
+        if (!opt.svg && RGraph.SVG.isObject(opt.object) && opt.object.isrgraph && opt.object.svg) {
+            opt.svg = opt.object.svg;
+        }
+
 
         // Add the attributes
         for (var o in opt.attr) {
@@ -4656,6 +4661,20 @@ backgroundRounded = opt.backgroundRounded || 0,
                 for(var j=0,len=RGraph.SVG.events[obj.uid].length; j<len; ++j) {
                     if (RGraph.SVG.events[obj.uid][j] && RGraph.SVG.events[obj.uid][j].event === name) {
                         RGraph.SVG.events[obj.uid][j].func(obj);
+                    }
+                }
+            }
+            
+            var eventName = name.replace(/^on/,'');
+
+            // Allow for the events property (new in
+            // Summer 2025.
+            if (obj.properties.events && obj.properties.events[eventName] && (RGraph.SVG.isFunction(obj.properties.events[eventName]) || RGraph.SVG.isArray(obj.properties.events[eventName]))) {
+                if (RGraph.SVG.isFunction (obj.properties.events[eventName])) {
+                    (obj.properties.events[eventName])(obj);
+                } else if (RGraph.SVG.isArray(obj.properties.events[eventName])) {
+                    for (var i=0; i<obj.properties.events[eventName].length; ++i) {
+                        (obj.properties.events[eventName][i])(obj);
                     }
                 }
             }

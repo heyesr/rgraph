@@ -180,7 +180,9 @@
             highlightStroke:                    'rgba(0,0,0,0)',
             highlightFill:                      'rgba(255,255,255,0.5)',
 
-            clearto:                            'rgba(0,0,0,0)'
+            clearto:                            'rgba(0,0,0,0)',
+            
+            events:                             {}
         }
         
         //

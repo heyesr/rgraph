@@ -168,9 +168,11 @@
 
             adjustable:            false,
             
-            clip: null,
+            clip:                  null,
             
-            zoom: false
+            zoom:                  false,
+            
+            events:                {}
         };
 
 

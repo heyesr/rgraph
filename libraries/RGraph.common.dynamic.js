@@ -323,6 +323,24 @@
 
 
 
+                        //
+                        // If the events property is defined with a
+                        // mousemove event listener - install it with
+                        // the on() function.
+                        //
+                        if (
+                               RGraph.isObject(obj.properties.events)
+                            && RGraph.isFunction(obj.properties.events.mousemove)
+                           ) {
+                            obj.on('mousemove', obj.properties.events.mousemove);
+                            obj.properties.events.mousemove = null;
+                        
+                        } else if (RGraph.isObject(obj.properties.events) && RGraph.isArray(obj.properties.events.mousemove)) {
+                            for (var i=0; i<obj.properties.events.mousemove.length; ++i) {
+                                obj.on('mousemove', obj.properties.events.mousemove[i]);
+                            }
+                            obj.properties.events.mousemove = null;
+                        }
 
 
 
@@ -405,8 +423,9 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
                         var shape = obj.getShape(e);
 
-                        // If the object has changed (based on the UID) then
-                        // fire the prior objects mouseout event
+                        // If the object has changed (based on the
+                        // UID) then fire the prior objects mouseout
+                        // event.
                         if (RGraph.last_mouseover_uid && RGraph.last_mouseover_uid !== obj.uid) {
 
                             RGraph.fireCustomEvent(RGraph.last_mouseover_object, 'onmouseout');
@@ -495,7 +514,29 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                         }
 
                         //
-                        // This bit saves the current pointer style if there isn't one already saved
+                        // If the events property is defined with a
+                        // mousemove event listener - install it with
+                        // the on() function.
+                        //
+                        if (
+                               RGraph.isObject(obj.properties.events)
+                            && RGraph.isFunction(obj.properties.events.mouseover)
+                           ) {
+                            obj.on('mouseover', obj.properties.events.mouseover);
+                            obj.properties.events.mouseover = null;
+                        
+                        } else if (RGraph.isObject(obj.properties.events) && RGraph.isArray(obj.properties.events.mouseover)) {
+                            for (var i=0; i<obj.properties.events.mouseover.length; ++i) {
+                                obj.on('mouseover', obj.properties.events.mouseover[i]);
+                            }
+                            obj.properties.events.mouseover = null;
+                        }
+
+
+
+                        //
+                        // This bit saves the current pointer style
+                        // if there isn't one already saved.
                         //
                         if (shape && (typeof func == 'function' || typeof func2 == 'function' || typeof obj.get('link') === 'string')) {
 
@@ -506,8 +547,8 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                             if (typeof func  == 'function')  RGraph.custom_events_mousemove_pointer = func(e, shape);
                             if (typeof func2 == 'function') RGraph.custom_events_mousemove_pointer  = RGraph.custom_events_mousemove_pointer || func2(e, shape);
 
-                            // Go through the RGraph.events array looking for more
-                            // event listeners
+                            // Go through the RGraph.events array
+                            // looking for more event listeners
                             if (   typeof RGraph.events === 'object'
                                 && typeof RGraph.events[obj.uid] === 'object') {
                                 
@@ -523,6 +564,10 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                                 }
                             }
                             //return;
+                            
+                            
+                            
+                            
     
                         } else if (typeof obj.get('eventsMousemoveRevertto') == 'string') {
                         
@@ -976,6 +1021,27 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
 
 
 
+
+
+
+
+
+
+                    //
+                    // If the events property is defined with a
+                    // click event listener - install it with
+                    // the on() function.
+                    //
+                    if (RGraph.isObject(obj.properties.events) && RGraph.isFunction(obj.properties.events.click)) {
+                        obj.on('click', obj.properties.events.click);
+                        obj.properties.events.click = null;
+                    
+                    } else if (RGraph.isObject(obj.properties.events) && RGraph.isArray(obj.properties.events.click)) {
+                        for (var i=0; i<obj.properties.events.click.length; ++i) {
+                            obj.on('click', obj.properties.events.click[i]);
+                        }
+                        obj.properties.events.click = null;
+                    }
 
 
 

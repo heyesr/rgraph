@@ -383,9 +383,11 @@
             nullBridgeColors:           null, // Can be null, a string or an object
             nullBridgeDashArray:        null,
             
-            clip: null,
+            clip:                       null,
             
-            zoom: false
+            zoom:                       false,
+            
+            events:                     {}
         };
 
         //

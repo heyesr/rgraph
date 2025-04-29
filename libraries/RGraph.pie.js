@@ -293,7 +293,9 @@
             clearto:                        'rgba(0,0,0,0)',
             eventsEnabled:                  true,
             
-            clip:                           null
+            clip:                           null,
+            
+            events:                     {}
         }
 
         //

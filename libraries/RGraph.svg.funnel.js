@@ -262,9 +262,11 @@
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
 
-            clip: null,
+            clip:             null,
             
-            zoom: false
+            zoom:             false,
+            
+            events:           {}
         };
 
         //

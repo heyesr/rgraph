@@ -336,7 +336,9 @@
             
             clip:             null,
             
-            zoom:             false
+            zoom:             false,
+            
+            events:           {}
         };
 
         //

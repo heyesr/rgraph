@@ -84,12 +84,20 @@
         //
         this.addStylesBySelector = function (selector, styles)
         {
-            var els = document.querySelectorAll(selector);
+            // TODO Alternative - create a style element
+            // and add the style to it.
+            //
+            // Using:
+            //
+            //document.head.insertAdjacentHTML('beforeend', '[STYLE]')
 
-            for (var i=0; i<els.length; ++i) {
-                var current = els[i].getAttribute('style') || '';
-                els[i].setAttribute('style', current + ';' + styles);
-            }
+            //var els = document.querySelectorAll(selector);
+
+            //for (var i=0; i<els.length; ++i) {
+            //    var current = els[i].getAttribute('style') || '';
+            //    els[i].setAttribute('style', current + ';' + styles);
+            //}
+            RGraph.addCss(`${selector} {${styles}}`);
         };
 
 
@@ -1060,10 +1068,10 @@
 
 
         //
-        // This is used to maintain the filter across page
+        // This is used to maintain the search across page
         // refreshes or redraws.
         //
-        this.filterPersistentSessionStorageKey = 'rgraph-datagrid-' + location.pathname + '-' + this.id + '-filter-query';
+        this.searchPersistentSessionStorageKey = 'rgraph-datagrid-' + location.pathname + '-' + this.id + '-search-query';
 
 
         //
@@ -1169,6 +1177,11 @@
             rowsSelectableIds:          null,
             rowsSelectablePersistent:   false,
             rowsSelectableCount:        0,
+            rowsSelectableStyle:        'background-color: #00a; color: white',
+            rowsClickCheckbox:          false,
+            rowsClickCheckboxIndex:     0,
+            rowsClickRadio:             false,
+            rowsClickRadioIndex:        0,
             
             sortable:                   true,
             sortablePersistent:         false,
@@ -1180,9 +1193,12 @@
             editable:                   false,
             editableColumns:            null,
             
-            filter:                     false,
+            search:                     false,
+            searchPlaceholder:          'Search...',
             
-            style:                      null
+            style:                      null,
+            
+            events:                     {}
         }
 
 
@@ -1270,6 +1286,24 @@
             name = this.properties_lowercase_map[name.toLowerCase()] || name;
 
             return this.properties[name];
+        };
+
+
+
+
+
+
+
+
+        //
+        // Clears the current sort criteria.
+        // Doesn't do anything else - no
+        // redrawing.   
+        //
+        this.clearSort = function ()
+        {
+            this.sortColumn = null;
+            this.sortDir    = null;
         };
 
 
@@ -1430,8 +1464,8 @@
             //
             // Add the default styles for the datagrid here
             //
-            //RGraph.runOnce('rgraph-datagrid-' + this.id + 'add-default-styles-to-document', function ()
-            //{
+            RGraph.runOnce('rgraph-datagrid-' + this.id + 'add-default-styles-to-document', function ()
+            {
                 //
                 // Add the rules that have been given in the
                 // properties. If the rules don't start with
@@ -1442,34 +1476,22 @@
                 if (RGraph.isString(obj.properties.style)) {
                     obj.properties.style = [obj.properties.style];
                 }
-                
+
                 if (RGraph.isArray(obj.properties.style)) {
                     for (var i=0; i<obj.properties.style.length; ++i) {
                 
                         if (obj.properties.style[i].trim()) {
-                            
-                            var str = obj.properties.style[i].trim();
-                                str = str.replace(/^(div)?(#' + obj.id + ')? *(table)?(\.rgraph-datagrid)?/,`div#${obj.id} table.rgraph-datagrid `);
+
+                            var str   = obj.properties.style[i].trim();
+                                regex = new RegExp('^ *(div)?(#' + obj.id + ')? *(table)?(\.rgraph-datagrid )?');
+                                str   = str.replace(regex,`div#${obj.id} table.rgraph-datagrid `);
+
 
                             obj.defaultCss.push(str);
                         }
                     }
                 }
 
-
-
-
-                //if (!document.styleSheets.length) {
-                //    document.head.insertAdjacentHTML("beforeend", '<style crossorigin="anonymous"></style>');
-                //}
-
-                //var sheet = document.styleSheets[0];
-                //for (var i=0; i<obj.defaultCss.length; ++i) {
-                //    sheet.insertRule(
-                //        obj.defaultCss[i],
-                //        sheet.cssRules.length
-                //    );
-                //}
                 RGraph.Queue.add('end-draw', function ()
                 {
                     for (var i=0; i<obj.defaultCss.length; ++i) {
@@ -1479,7 +1501,7 @@
                         );
                     }
                 });
-            //});
+            });
 
 
 
@@ -1581,37 +1603,40 @@
 
                 ///////////////////////////////////
                 //                               //
-                // Add a filter box if requested //
+                // Add a search box if requested //
                 //                               //
                 ///////////////////////////////////
-                if (this.properties.filter) {
+                if (this.properties.search) {
+
                     var tr = document.createElement('tr');
-                    tr.className = 'rgraph-datagrid-filter-row';
+                    tr.className = 'rgraph-datagrid-search-row';
                     
                     var td       = document.createElement('td');
-                    td.className = 'rgraph-datagrid-filter-cell';
+                    td.className = 'rgraph-datagrid-search-cell';
                     td.colSpan   = 5;
                 
                     tr.appendChild(td);
                 
                     // Add the search input to the td
-                    var input                  = document.createElement('input');
-                        input.type             = 'text';
-                        input.className        = 'rgraph-datagrid-filter-input';
-                        input.placeholder      = 'Filter...';
-                        input.style.margin     = '5px';
-                        input.style.padding    = '3px';
-                        input.style.fontSize   = '150%';
-                        input.style.width      = '200px';
-                    td.appendChild(input);
+                    var searchInput                  = document.createElement('input');
+                        searchInput.type             = 'text';
+                        searchInput.id               = 'rgraph-datagrid-search-input';
+                        searchInput.className        = 'rgraph-datagrid-search-input';
+                        searchInput.placeholder      = obj.properties.searchPlaceholder;
+                        searchInput.style.margin     = '5px';
+                        searchInput.style.padding    = '3px';
+                        searchInput.style.fontSize   = '150%';
+                        searchInput.style.width      = '200px';
+                    td.appendChild(searchInput);
+
                     
                     // Add an aria-placeholder attribute
-                    input.setAttribute('aria-placeholder','Filter...');
-                    
-                    input.value = window.sessionStorage[this.filterPersistentSessionStorageKey] || '';
+                    searchInput.setAttribute('aria-placeholder',this.properties.searchPlaceholder);
+
+                    searchInput.value = window.sessionStorage[this.searchPersistentSessionStorageKey] || '';
                 
                     // Only add this if there's a search string
-                    if (input.value) {
+                    if (searchInput.value) {
                         var span = document.createElement('span');
                         span.insertAdjacentHTML('afterbegin', '&#11198;');
                         span.style.position = 'relative';
@@ -1621,7 +1646,7 @@
                         td.appendChild(span);
                         span.onclick = function (e)
                         {
-                            obj.clearFilter();
+                            obj.clearSearch();
                             obj.resetSortData();
                             obj.applyStoredEdits();
                             obj.redraw();
@@ -1630,20 +1655,20 @@
                     
                     // Add the tr to the thead
                     thead.appendChild(tr);
-                
+
                 
                 
                 
                     //
                     // Clear any search and return to the full dataset
                     //
-                    this.clearFilter = function ()
+                    this.clearSearch = function ()
                     {
-                        // Clear the filter
-                        obj.filter = '';
+                        // Clear the search
+                        obj.search = '';
                 
-                        // Clear the filter from sessionStorage
-                        window.sessionStorage[obj.filterPersistentSessionStorageKey] = '';
+                        // Clear the search from sessionStorage
+                        window.sessionStorage[obj.searchPersistentSessionStorageKey] = '';
                         
                         // Reset the data back to the original
                         obj.setData(RGraph.arrayClone(obj.original_data));
@@ -1651,6 +1676,15 @@
                         // Deselect all rows
                         obj.deselectAll();
                     };
+
+
+
+
+
+
+
+
+
                 
                 
                 
@@ -1661,33 +1695,69 @@
                     //
                     // @param string str The search query
                     //
-                    this.filterData = function (str)
+                    this.searchData = function (str)
                     {
-                        // Set the search string on the object
-                        obj.filter = str.trim();
+                        // Set the search string on the
+                        // object.
+                        obj.search = str.trim();
                         
-                        // Put the search   query into session storage so a
-                        // redraw doesn't nuke the search.
-                        window.sessionStorage[obj.filterPersistentSessionStorageKey] = str;
-                
-                        //
-                        // Get the data
-                        //
-                        //var data    = obj.getData();
+                        // Put the search query into session
+                        // storage so a redraw doesn't nuke
+                        // the search.
+                        window.sessionStorage[obj.searchPersistentSessionStorageKey] = str;
+                                        
                         var results = [];
                         var ids     = [];
 
                         //
-                        // Now go through the data looking for the
-                        // string If a row doesn't contain it -
-                        // ignore the row.
+                        // Now go through the data looking
+                        // for the string If a row doesn't
+                        // contain it - ignore the row.
                         //
                         for (var i=0; i<this.data.length; ++i) {
+                            
+                            var searchWords = obj.search.trim().split(/\s+/);
+
                             for (var j=0; j<this.data[i].length; ++j) {
-                                if (this.data[i][j].value.toString().toLowerCase().indexOf(obj.filter.toLowerCase()) !== -1) {
-                                    results.push(this.data[i]);
-                                    break;
+                                for (var k=0; k<searchWords.length; ++k) {
+
+
+                                    // Case-sensitive regex
+                                    if (   searchWords
+                                        && searchWords[k]
+                                        && searchWords[k].substring(0,1) === '/'
+                                        && searchWords[k].substring(searchWords[k].length - 1) === '/') {
+
+                                        // Cast to a regexp
+                                        var re = new RegExp(searchWords[k].substring(1).substring(0,searchWords[k].length - 2));
+
+                                        if (this.data[i][j].value.toString().match(re)) {
+                                            delete searchWords[k];
+                                        }
+
+
+                                    // Case insensitive regex
+                                    } else if (   searchWords
+                                        && searchWords[k]
+                                        && searchWords[k].substring(0,1) === '/'
+                                        && searchWords[k].substring(searchWords[k].length - 2) === '/i') {
+
+                                        // Cast to a regexp
+                                        var re = new RegExp(searchWords[k].substring(1).substring(0,searchWords[k].length - 3), 'i');
+
+                                        if (this.data[i][j].value.toString().match(re)) {
+                                            delete searchWords[k];
+                                        }
+                                    
+                                    // Regular string
+                                    } else if (this.data[i][j].value.toString().toLowerCase().indexOf(String(searchWords[k]).toLowerCase()) !== -1) {
+                                        delete searchWords[k];
+                                    }
                                 }
+                            }
+
+                            if (Object.keys(searchWords).length === 0) {
+                                results.push(this.data[i]);
                             }
                         }
 
@@ -1712,32 +1782,27 @@
 
 
                     //
-                    // This call is to enable the data to be filtered
+                    // This call is to enable the data to be searched
                     // when the page loads.
                     //
-                    var str = window.sessionStorage[this.filterPersistentSessionStorageKey];
+                    var str = window.sessionStorage[this.searchPersistentSessionStorageKey];
                 
                     if (str) {
-                        this.filterData(str);
+                        this.searchData(str);
                     }
                 
                 
                 
                 
                     //
-                    // When the user types into the search box,
-                    // this happens.
+                    // When the user types into the search
+                    // box this happens.
                     //
-                    input.addEventListener('keyup', function (e)
+                    searchInput.addEventListener('keydown', function (e)
                     {
-                        // Do nothing for cursor keys
-                        if (e.keyCode >= 37 && e.keyCode <= 40) {
-                            return;
-                        }
-                        
                         // Cancel the search when the Esc key is pressed
                         if (e.keyCode === 27) {
-                            obj.clearFilter();
+                            obj.clearSearch();
                             obj.resetSortData();
                             obj.applyStoredEdits();
                             obj.redraw();
@@ -1746,15 +1811,30 @@
                         
                         
 
+                        if (e.keyCode === 13) {
 
-                        obj.resetData();
-                        obj.filterData(e.target.value);
-                        
-                        obj.redraw();
-                        
-                        // Re-focus the text input
-                        var el = obj.container.querySelector('.rgraph-datagrid-filter-input');
-                        el.focus();
+                            // First thing is to clear sorting so
+                            // the data is presented in its
+                            // initial state
+                            obj.clearSort();
+
+                            obj.resetData();
+                            obj.searchData(e.target.value);
+                            obj.redraw();
+                            
+                            // Re-focus the text input
+                            var el = obj.container.querySelector('.rgraph-datagrid-search-input');
+                            el.focus();
+
+                            //
+                            // Stop the event from going any
+                            // further
+                            //
+                            e.stopPropagation();
+                            e.preventDefault();
+                            return false;
+                        }
+
                 
                     }, false);
                 }
@@ -2033,16 +2113,6 @@
                 {
                     e.currentTarget.className = e.currentTarget.className.replace(/rgraph-datagrid-row-hover/, '');
                 }, false);
-                
-                
-
-                //
-                // Facilitate selectable rows
-                //
-                if (this.properties.rowsSelectable) {
-                    this.installSelectableRows(tr);
-                    table.setAttribute('aria-multiselectable', 'true');
-                }
 
                 //
                 // Facilitate the the cell onclick event listener
@@ -2061,6 +2131,43 @@
                         });
 
                         RGraph.fireCustomEvent(obj, 'rowclick');
+                        
+                        //
+                        // If there's a CHECKBOX in the row - check it
+                        // (this makes life easier for users).
+                        //
+                        if (obj.properties.rowsClickCheckbox) {
+                            
+                            var checkbox = tr.querySelectorAll('input[type=checkbox]')[obj.properties.rowsClickCheckboxIndex];
+                            
+                            if (checkbox) {
+                                if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'checkbox') {
+                                    e.stopPropagation();
+                                } else {
+                                    checkbox.checked = !checkbox.checked;
+                                }
+                            }
+                        }
+
+
+                        
+                        //
+                        // If there's a RADIO BUTTON in the row -
+                        // check it (this makes life easier for
+                        // users).
+                        //
+                        if (obj.properties.rowsClickRadio) {
+
+                            var radio = tr.querySelectorAll('input[type=radio]')[obj.properties.rowsClickRadioIndex];
+
+                            if (radio) {
+                                if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'radio') {
+                                    e.stopPropagation();
+                                } else {
+                                    radio.checked = true;
+                                }
+                            }
+                        }
 
                     }, false);
                 })(row, tr);
@@ -2212,8 +2319,8 @@
                                 td.replaceChildren();
 
 
-                                var input = document.createElement('input');
-                                input.style.cssText = `position: absolute;
+                                var editInput = document.createElement('input');
+                                editInput.style.cssText = `position: absolute;
                                                        left: 0;
                                                        top: 0;
                                                        -border: 1px solid red;
@@ -2221,16 +2328,16 @@
                                                        margin: 0;
                                                        width: calc(100% - 1px);
                                                        height: calc(100% - 1px);`;
-                                input.value = td.getAttribute('data-value');
+                                editInput.value = td.getAttribute('data-value');
 
-                                input.setAttribute('data-row-index', td.getAttribute('data-row-index'));
-                                input.setAttribute('data-column-index', td.getAttribute('data-column-index'));
+                                editInput.setAttribute('data-row-index', td.getAttribute('data-row-index'));
+                                editInput.setAttribute('data-column-index', td.getAttribute('data-column-index'));
 
-                                td.appendChild(input);
+                                td.appendChild(editInput);
 
-                                input.focus();
-                                input.select();
-                                input.addEventListener('click', function (e)
+                                editInput.focus();
+                                editInput.select();
+                                editInput.addEventListener('click', function (e)
                                 {
                                     e.stopPropagation();
                                 }, false);
@@ -2242,8 +2349,8 @@
                                 //
                                 var saveEditFunction = function (e)
                                 {
-                                    var row    = parseInt(input.getAttribute('data-row-index'));
-                                    var column = parseInt(input.getAttribute('data-column-index'));
+                                    var row    = parseInt(editInput.getAttribute('data-row-index'));
+                                    var column = parseInt(editInput.getAttribute('data-column-index'));
 
                                     //
                                     // Re-set this so that update
@@ -2252,7 +2359,7 @@
                                     //
                                     RGraph.Registry.set('cell-edit-meta', {
                                         object: obj,
-                                        value:  RGraph.isNumeric(input.value) ? parseFloat(input.value) : input.value,
+                                        value:  RGraph.isNumeric(editInput.value) ? parseFloat(editInput.value) : editInput.value,
                                         cell:   td,
                                         row:    row,
                                         column: column 
@@ -2262,9 +2369,9 @@
 
                                     // Save the value to the data
                                     // array
-                                    obj.data[row][column].value = RGraph.isNumeric(input.value)
-                                                                 ? parseFloat(input.value)
-                                                                 : input.value;
+                                    obj.data[row][column].value = RGraph.isNumeric(editInput.value)
+                                                                 ? parseFloat(editInput.value)
+                                                                 : editInput.value;
 
                                     // Keep a record of the edits so that when sorting is reset and
                                     // the original data is used again - the edits can be re-applied
@@ -2283,8 +2390,8 @@
                                 
                                     td.setAttribute('data-value', obj.data[row][column].value);
 
-                                    if (input && input.parentNode) {
-                                        input.parentNode.removeChild(input);
+                                    if (editInput && editInput.parentNode) {
+                                        editInput.parentNode.removeChild(editInput);
                                     }
                                     
                                     var index = td.getAttribute('data-column-index');
@@ -2326,7 +2433,7 @@
                                     td.replaceChildren();
 
                                     var div = document.createElement('div');
-                                    div.textContent        = obj.formatValue(obj.data[row][column].value, index);
+                                    div.textContent   = obj.formatValue(obj.data[row][column].value, index);
                                     div.style.cssText = `white-space:nowrap;
                                                          overflow:hidden;
                                                          text-overflow:ellipsis;
@@ -2349,7 +2456,7 @@
 
                                 // Now attach the above save function
                                 // to various events
-                                input.onkeydown = function (e)
+                                editInput.onkeydown = function (e)
                                 {
                                     if (e.keyCode === 13) {
                                         saveEditFunction(e);
@@ -2369,6 +2476,16 @@
                 tbody.appendChild(tr);
             }
 
+                
+                
+
+            //
+            // Facilitate selectable rows
+            //
+            if (this.properties.rowsSelectable) {
+                this.installSelectableRows(this.table);
+                table.setAttribute('aria-multiselectable', 'true');
+            }
 
 
 
@@ -2857,92 +2974,108 @@ for (var i=0; i<ths.length; ++i) {
         //
         // @param object tr The table row node (the tr tag).
         //
-        this.installSelectableRows = function (tr)
+        this.installSelectableRows = function (table)
         {
-            var index = parseInt(tr.getAttribute('data-row-index'));
+            var els      = document.querySelectorAll('div#' + this.id + ' table tbody tr');
+            var selected = obj.getSelectedRowsFromLocalStorage();
 
-            //
-            // Add the hidden input that will take the IDs of the
-            // selected rows.
-            //
-            var el = document.getElementById('rgraph-datagrid-rows-selected-' + this.id);
-
-            if (!el) {
-                var input   = document.createElement('input');
-                input.type  = 'hidden';
-                input.value = '';
-                input.name  = 'rgraph-datagrid-rows-selected-' + this.id;
-                input.id    = 'rgraph-datagrid-rows-selected-' + this.id;
-                obj.container.appendChild(input);
+            for (var i=0; i<els.length; ++i) {
                 
-                obj.rowsSelectableSelectedInput = input;
-            } else {
-                obj.rowsSelectableSelectedInput = el;
-            }
+                var tr    = els[i];
+                var index = parseInt(tr.getAttribute('data-row-index'));
+
+                //
+                // Add the hidden input that will take the IDs of the
+                // selected rows.
+                //
+                var el = document.getElementById('rgraph-datagrid-rows-selected-' + this.id);
+    
+                if (!el) {
+                    var input   = document.createElement('input');
+                    input.type  = 'hidden';
+                    input.value = '';
+                    input.name  = 'rgraph-datagrid-rows-selected-' + this.id;
+                    input.id    = 'rgraph-datagrid-rows-selected-' + this.id;
+                    obj.container.appendChild(input);
+                    
+                    obj.rowsSelectableSelectedInput = input;
+                } else {
+                    obj.rowsSelectableSelectedInput = el;
+                }
             
 
 
 
-            //
-            // Loop through the data checking each selected flag. The need
-            // for a setTimeout() function is due to this bit of code running
-            // BEFORE all of the data has been added to the table.
-            //
-            // Is this necessary now? It appears not...
-            //
-            //for (var i=0; i<this.data.length; ++i) {
-            //    if (this.data[i][0].row_selected) {
-            //        (function (index) {
-            //            setTimeout(function ()
-            //            {
-            //                obj.select(index);
-            //            }, 16.666);
-            //        })(i);
-            //    }
-            //}
+                //
+                // Loop through the data checking each selected flag. The need
+                // for a setTimeout() function is due to this bit of code running
+                // BEFORE all of the data has been added to the table.
+                //
+                // Is this necessary now? It appears not...
+                //
+                //for (var i=0; i<this.data.length; ++i) {
+                //    if (this.data[i][0].row_selected) {
+                //        (function (index) {
+                //            setTimeout(function ()
+                //            {
+                //                obj.select(index);
+                //            }, 16.666);
+                //        })(i);
+                //    }
+                //}
+    
+    
+    
+                tr.addEventListener('mousedown', function (e)
+                {
+                    // Only do this for left clicks
+                    if (e.button !== 0) {
+                        return;
+                    }
+    
+                    var tr    = e.currentTarget;
+                    var index = parseInt(tr.getAttribute('data-row-index'));
+    
+    
+                    obj.toggleSelected(index);
+    
+                }, false);
+            }
 
 
 
-            tr.addEventListener('mousedown', function (e)
-            {
-                // Only do this for left clicks
-                if (e.button !== 0) {
-                    return;
-                }
-
-                var tr    = e.currentTarget;
-                var index = parseInt(tr.getAttribute('data-row-index'));
 
 
-                obj.toggleSelected(index);
-
-            }, false);
-
-
-
-            //
-            // If there are any rows that need
-            // selecting because of whats in localStorage
-            // - do that.
-            //
-            var selected = this.getSelectedRowsFromLocalStorage();
-
-            for (var i=0; i<selected.length; ++i) {
-
-                for (var j=0; j<this.data.length; ++j) {
-
-                    if (this.data[j][0].user_id == selected[i]) { // DOUBLE EQUALS!!
-                        (function (index)
+            // Now select any rows that have been stored in
+            // localStorage
+            if (selected && selected.length) {
+                for (var i=0; i<selected.length; ++i) {
+                    if (selected[i]) {
+                        
+                        var index = obj.getIndexFromUserId(selected[i]);
+                        
+                        (function (idx)
                         {
                             setTimeout(function ()
                             {
-                                obj.select(index);
-                            });
-                        })(j);
+                                obj.select(idx);
+                            }, 5);
+                        })(index);
                     }
                 }
             }
+
+
+
         }; // End of if(selectable rows)
+        this.getIndexFromUserId = function (user_id)
+        {
+            for (var i=0; i<this.data.length; ++i) {
+                if (this.data[i][0].user_id == user_id) { // DOUBLE EQUALS
+                    return i;
+                }
+            }
+        };
 
 
 
@@ -3065,9 +3198,14 @@ for (var i=0; i<ths.length; ++i) {
             tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g,'');
             tr.className = tr.className.trim() + ' rgraph-datagrid-row-selected';
             tr.className = tr.className.trim();
-// TODO Find a better way to do this
-tr.style.backgroundColor = '#00a';
-tr.style.color           = 'white';
+
+            //
+            // Store the original cssText in a data-attribute and
+            // then when the row is deselected restore it in the
+            // deselect function.
+            tr.setAttribute('data-rgraph-datagrid-selectable-original-style', tr.style.cssText);
+            tr.style.cssText = obj.properties.rowsSelectableStyle;
+
             tr.setAttribute('aria-selected', "true");
         
         
@@ -3157,10 +3295,9 @@ tr.style.color           = 'white';
             //
             if (this.properties.rowsSelectablePersistent) {
 
-                // TODO When a row is selected it needs to be added
+                // When a row is selected it needs to be added
                 // to localStorage and when deselected it can be
-                // removed. May need to do this in a setTimeout()
-                // function.
+                // removed.
                 var selected = this.getSelected();
                 var str      = '';
 
@@ -3238,10 +3375,16 @@ tr.style.color           = 'white';
                 tr.className = tr.className.replace(/ *rgraph-datagrid-row-selected */g, '').trim();
                 tr.setAttribute('aria-selected', "false");
 
-// TODO find a better way to do this
-tr.style.backgroundColor = '';
-tr.style.color           = '';
+// Lose any style on the row
+tr.setAttribute('style', '');
 
+// Restore the "pre-selected style" so it looks as it was
+// before selection.
+var css = tr.getAttribute('data-rgraph-datagrid-selectable-original-style');
+
+if (css) {
+    tr.setAttribute('style', css);
+}
             }
             
         
@@ -3685,7 +3828,6 @@ tr.style.color           = '';
         };
 
         
-
 
 
 

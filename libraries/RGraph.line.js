@@ -55,7 +55,7 @@
 
 
 
-        // Various config type stuff
+        // Configuration default values
         this.properties =
         {
             backgroundBarsCount:        null,
@@ -448,7 +448,9 @@
             labelsAngledLevelBold:  null,
             labelsAngledILeveltalic:null,
 
-            lines:                  null // Used to show an average line indicator (for example)
+            lines:                  null, // Used to show an average line indicator (for example)
+            
+            events:                 {}
         }
 
         //

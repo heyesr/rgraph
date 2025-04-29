@@ -190,10 +190,12 @@
             anglesStart:             			RGraph.PI,
             anglesEnd:               			RGraph.TWOPI,
 
-            centerpinStroke:         			'black',
-            centerpinFill:           			'white',
+            centerpinStroke:                    'black',
+            centerpinFill:                      'white',
 
-            clearto:   							'rgba(0,0,0,0)'
+            clearto:                            'rgba(0,0,0,0)',
+            
+            events:                             {}
         }
 
         //

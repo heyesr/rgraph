@@ -239,7 +239,9 @@
             segmentHighlightFill:          'rgba(0,255,0,0.5)',
             segmentHighlightStroke:        'rgba(0,0,0,0)',
 
-            clearto:                       'rgba(0,0,0,0)'
+            clearto:                       'rgba(0,0,0,0)',
+            
+            events:                     {}
         }
 
 

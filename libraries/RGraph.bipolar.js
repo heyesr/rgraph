@@ -285,7 +285,9 @@
             grouping:                   'grouped',
             clearto:                    'rgba(0,0,0,0)',
             leftVisible:                true,
-            rightVisible:               true
+            rightVisible:               true,
+            
+            events:                     {}
         }
 
         //

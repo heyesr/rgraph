@@ -540,7 +540,9 @@
             animationTrace:             false,
             animationTraceClip:         1,
             
-            horizontalLines:            null
+            horizontalLines:            null,
+            
+            events:                     {}
         }
 
         //

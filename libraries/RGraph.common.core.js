@@ -3232,11 +3232,15 @@
         if (args.name.substr(0,2) !== 'on') {
             args.name = 'on' + args.name;
         }
+        
+        // The event name without preceding "on", eg
+        // draw or firstdraw or beforedraw etc.
+        var eventName = args.name.replace(/^on/,'');
 
         if (args.object && args.object.isrgraph) {
 
-            // This allows the eventsMouseout property to work
-            // (for some reason...)
+            // This allows the eventsMouseout property to
+            // work (for some reason...)
             //
             // 25/10/19 - Taken out
             //
@@ -3258,6 +3262,18 @@
                 for(var j=0; j<RGraph.events[uid].length; ++j) {
                     if (RGraph.events[uid][j] && RGraph.events[uid][j][1] === args.name) {
                         RGraph.events[uid][j][2](args.object);
+                    }
+                }
+            }
+            
+            // Allow for the events property (new in
+            // Summer 2025.
+            if (args.object.properties.events && args.object.properties.events[eventName] && (RGraph.isFunction(args.object.properties.events[eventName]) || RGraph.isArray(args.object.properties.events[eventName]))) {
+                if (RGraph.isFunction (args.object.properties.events[eventName])) {
+                    (args.object.properties.events[eventName])(args.object);
+                } else if (RGraph.isArray(args.object.properties.events[eventName])) {
+                    for (var i=0; i<args.object.properties.events[eventName].length; ++i) {
+                        (args.object.properties.events[eventName][i])(args.object);
                     }
                 }
             }
@@ -10596,6 +10612,48 @@
 
 
     //
+    // Adds a style to the document. You give the whole
+    // selector/style string and it will add it.
+    //
+    // If a style element hasn't already been created
+    // it will create one and then reuse it on subsequent
+    // calls to this function.
+    //
+    // @param string style The styles to assign to the
+    //                     new class. An example:
+    //
+    //                     table tr td {color: red;}
+    //
+    RGraph.addCss = function ()
+    {
+        var args   = RGraph.getArgs(arguments, 'style');
+        var append = false;
+
+        if (!RGraph.addCss.styleElement) {
+            RGraph.addCss.styleElement = document.createElement('style');
+            
+            // Should the element be appended to the
+            // document?
+            append = true;
+        }
+        
+        var el = RGraph.addCss.styleElement;
+            el.insertAdjacentHTML('beforeend', args.style);
+
+        // Append the style element to the document? Only
+        // do this on newly created style elements.
+        if (append) {
+            document.head.appendChild(el);
+        }
+    };
+
+
+
+
+
+
+
+    //
     // This function allows you to run a function once (immediately)
     // Future calls using the same identifier are not run.
     //
@@ -10794,6 +10852,69 @@
             }
             
     };
+
+
+
+
+
+
+
+
+    //
+    // A generic fade out routine for DOM elements.
+    //
+    // @param string selector   The DOM selector which
+    //                          retrieves the element that
+    //                          you want fading out.
+    // @param number target     The target opacity. This is
+    //                          a number betwewen 0 and 1.
+    // @param number frames     The number of frames to fade
+    //                          out over.
+    // @param number delay      The delay in milliseconds
+    //                          that the fade out takes.
+    // @param function callback A callback function that
+    //                          gets called when fading
+    //                          has completed.
+    //
+    RGraph.fade = function()
+    {
+        // Get arguments
+        var args = RGraph.getArgs(arguments, 'selector,target,frames,delay,callback');
+
+        // Defaults
+        var el        = document.querySelector(args.selector);
+        var style     = window.getComputedStyle(el);
+        var current   = RGraph.isNumeric(style.opacity) ? parseFloat(style.opacity) : 1;
+        var target    = args.target || 0;   // Target opacity
+        var frames    = args.frames || 10;  // Number of frames
+        var delay     = args.delay  || 500; // Delay per frame (ms)
+
+        // Constrain the target opacity to between 1 and 0
+        if (target > 1) target = 1;
+        if (target < 0) target = 0;
+
+        // The diff between the target opacity and
+        // the current opacity
+        var diff = target - current;
+
+        for (var i=0; i<=frames; ++i) {
+            (function (index)
+            {
+                setTimeout(function()
+                {
+                    el.style.opacity = current + ((diff / frames) * index);
+
+                }, (delay / frames) * index);
+            })(i);
+        }
+
+        if (RGraph.isFunction(args.callback)) {
+            setTimeout(args.callback, delay);
+        }
+    };
+    
+    RGraph.fade.OUT = 0;
+    RGraph.fade.IN  = 1;
 
 
 

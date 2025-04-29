@@ -197,7 +197,9 @@
 
             adjustable:                false,
 
-            clearto:                   'rgba(0,0,0,0)'
+            clearto:                   'rgba(0,0,0,0)',
+            
+            events:                     {}
         }
 
 
