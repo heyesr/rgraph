@@ -1,0 +1,67 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.key.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Horizontal Bar chart example with a grey background</h1>
+
+   <div id="rgraph-demo-html">
+       <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+   </div>
+
+    <script>
+        marginTop = 55;
+
+        hbar = new RGraph.HBar({
+            id: 'cvs',
+            data: [[80,64],[1,2],[11,12],[3,12],[5,7]],
+            options: {
+                marginLeft: 165,
+                marginRight: 20,
+                marginTop: 35,
+                yaxisLabels: ['Improved','Worsened', 'No change - \r\npeoples perceptions\r\nare generally positive','No change - \r\n peoples perceptions\r\nare generally negative',"Don't know"],
+                colors: ['#F68B23','#164366'],
+                yaxis: false,
+                xaxisScaleMax: 100,
+                xaxisPosition: 'top',
+                xaxisLabels: false,
+                backgroundGrid: false,
+                key: ['Non-disabled','Disabled'],
+                keyPosition: 'margin',
+                keyPositionY: 10,
+                tooltips: '%{property:yaxisLabels[%{dataset}]}',
+                marginLeft: 175,
+                marginTop: marginTop,
+                highlightStroke: 'rgba(255,255,255,0.7)',
+                events: {
+                    draw: function (obj)
+                    {
+                        //
+                        // Draw a gray rectangle at the back of the
+                        // chart.
+                        //
+                        obj.path(
+                            'gco destination-over b r % % % % f #ddd gco source-over',
+                            obj.marginLeft,
+                            obj.marginTop,
+                            obj.canvas.width - obj.marginLeft - obj.marginRight,
+                            obj.canvas.height - obj.marginTop - obj.marginBottom
+                        );
+                    }
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
