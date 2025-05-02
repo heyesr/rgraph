@@ -858,11 +858,11 @@
     // @param  mixed     The value to use to pad the array (optional)
     //
     RGraph.arrayFill =
-    RGraph.arrayPad  = function ()
+    RGraph.arrayPad = function ()
     {
         var args = RGraph.getArgs(arguments, 'array,length,value');
 
-        if (args.array.length < args.length) {            
+        if (args.array.length < args.length) {
             for (var i=args.array.length; i<args.length; i+=1) {
                 args.array[i] = args.value;
             }
@@ -2633,6 +2633,7 @@
     //
     // @param object obj The graph object
     //
+    RGraph.drawIngraphLabels =
     RGraph.drawInGraphLabels = function ()
     {
         var args             = RGraph.getArgs(arguments, 'object');
@@ -4629,7 +4630,8 @@
 
 
     //
-    // New text function. Accepts two arguments:
+    // New text function. Accepts one argument:
+    //
     //  o opt - An object/hash/map of properties. This can consist of:
     //          object           The RGraph chart object (THIS OR BELOW OPTION IS REQUIRED)
     //          context          The canvases context. This can be given in
@@ -10885,9 +10887,9 @@
         var el        = document.querySelector(args.selector);
         var style     = window.getComputedStyle(el);
         var current   = RGraph.isNumeric(style.opacity) ? parseFloat(style.opacity) : 1;
-        var target    = args.target || 0;   // Target opacity
+        var target    = RGraph.isNumber(args.target) ? args.target : 1;   // Target opacity
         var frames    = args.frames || 10;  // Number of frames
-        var delay     = args.delay  || 500; // Delay per frame (ms)
+        var delay     = RGraph.isNumber(args.delay) ? args.delay : 500; // Delay per frame (ms)
 
         // Constrain the target opacity to between 1 and 0
         if (target > 1) target = 1;
