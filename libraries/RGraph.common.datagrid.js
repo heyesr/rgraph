@@ -1690,8 +1690,9 @@
                 
                 
                     //
-                    // The filerData() function is called when the user types
-                    // into the search box and also when the page loads.
+                    // The searchData() function is called when
+                    // the user types into the search box and
+                    // also when the page loads.
                     //
                     // @param string str The search query
                     //
@@ -2076,7 +2077,7 @@
 
             //////////////////////////////////////////////////
             //                                              //
-            // ADD THE DATA                                 //
+            // LOOR THROUGH THE ROWS ADDING THE DATA        //
             //                                              //
             // Loop through the data adding it to the table //
             //////////////////////////////////////////////////
@@ -2115,7 +2116,7 @@
                 }, false);
 
                 //
-                // Facilitate the the cell onclick event listener
+                // Facilitate the the row onclick event listener
                 //
                 (function (index, tr)
                 {

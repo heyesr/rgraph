@@ -5652,6 +5652,15 @@
         var args          = RGraph.getArgs(arguments, 'index,data');
         var group         = 0;
         var grouped_index = 0;
+        
+        //
+        // Allow for the arguments to be in any order
+        //
+        if (RGraph.isNumber(args.data) && RGraph.isArray(args.index)) {
+            var tmp    = args.data;
+            args.data  = args.index;
+            args.index = tmp;
+        }
 
         while (--args.index >= 0) {
 
@@ -5696,9 +5705,18 @@
     RGraph.groupedIndexToSequential = function ()
     {
         var args = RGraph.getArgs(arguments, 'object,dataset,index');
+        
+        // Handle just the data being given instead of the whole
+        // object
+        if (RGraph.isObject(args.object) && args.object.isrgraph) {
+            var data = args.object.data;
+        } else {
+            var data = args.object;
+        }
+
 
         for (var i=0,seq=0; i<=args.dataset; ++i) {
-            for (var j=0; j<args.object.data[args.dataset].length; ++j) {
+            for (var j=0; j<data[args.dataset].length; ++j) {
                 
                 if (i === args.dataset && j === args.index) {
                     return seq;
