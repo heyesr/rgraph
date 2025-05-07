@@ -1619,6 +1619,14 @@
                     tr.appendChild(td);
                 
                     // Add the search input to the td
+                    var div = document.createElement('div');
+                        div.id             = 'rgraph-datagrid-search-input-container';
+                        div.style.position = 'relative';
+                        div.style.display  = 'inline-block';
+                        //div.style.border   = '1px solid red';
+                        div.style.padding  = 0;
+                    td.appendChild(div);
+                    
                     var searchInput                  = document.createElement('input');
                         searchInput.type             = 'text';
                         searchInput.id               = 'rgraph-datagrid-search-input';
@@ -1628,7 +1636,7 @@
                         searchInput.style.padding    = '3px';
                         searchInput.style.fontSize   = '150%';
                         searchInput.style.width      = '200px';
-                    td.appendChild(searchInput);
+                    div.appendChild(searchInput);
 
                     
                     // Add an aria-placeholder attribute
@@ -1640,11 +1648,12 @@
                     if (searchInput.value) {
                         var span = document.createElement('span');
                         span.insertAdjacentHTML('afterbegin', '&#11198;');
-                        span.style.position = 'relative';
-                        span.style.left     = '-25px';
-                        span.style.top      = '-3px';
+                        span.style.position = 'absolute';
+                        span.style.right    = '15px';
+                        span.style.top      = '50%';
+                        span.style.transform = 'translateY(calc(-50% - 2px))';
                         span.style.cursor   = 'pointer';
-                        td.appendChild(span);
+                        div.appendChild(span);
                         span.onclick = function (e)
                         {
                             obj.clearSearch();
