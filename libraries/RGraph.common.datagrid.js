@@ -1195,6 +1195,7 @@
             
             search:                     false,
             searchPlaceholder:          'Search...',
+            searchExclude:              null,
             
             style:                      null,
             
@@ -1720,6 +1721,13 @@
                             var searchWords = obj.search.trim().split(/\s+/);
 
                             for (var j=0; j<this.data[i].length; ++j) {
+                            
+                                // Is searching permitted to search
+                                // in this column?
+                                if (RGraph.isArray(obj.properties.searchExclude) && obj.properties.searchExclude.includes(j)) {
+                                    continue;
+                                }
+                            
                                 for (var k=0; k<searchWords.length; ++k) {
 
 
