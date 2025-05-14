@@ -1,0 +1,70 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.common.moment.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An example of a datagrid using the columnsFormatter property</h1>
+
+    <p style="text-align: center">A datagrid using the <code>columnsFormatter</code> property on the date column:</p>
+
+    <div id="rgraph-demo-html">
+        <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    </div>
+
+    <p  style="text-align: center">And without using formatting:</p>
+
+    <div id="rgraph-demo-html">
+        <div id="myGrid2" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    </div>
+    
+    <script>
+        //
+        // Using the DOMContentLoaded event is not necessary but
+        // is used in the RGraph demo pages due to a quirk of the
+        // source generating code.
+        //
+        document.addEventListener('DOMContentLoaded', function ()
+        {
+            data = [
+                ['2006-04-01 23:59:59', 'Alf',     21],
+                ['2006-09-02 23:59:59', 'Bert',    10],
+                ['2006-08-03 23:59:59', 'Charlie', 13],
+                ['2006-06-04 23:59:59', 'Dave',    14],
+                ['2006-03-05 23:59:59', 'Elgar',   15],
+                ['2006-05-06 23:59:59', 'Frank',   12]
+            ];
+            
+            new RGraph.Datagrid({
+                id: 'myGrid',
+                data: data,
+                options: {
+                    paging: false,
+                    columnsHeaders: ['Date','Competitor','Score'],
+                    columnsFormatter: [function (opt)
+                    {
+                        return moment(opt.value).format("MMMM Do YYYY");;
+                    }]
+                }
+            }).draw();
+            
+            new RGraph.Datagrid({
+                id: 'myGrid2',
+                data: data,
+                options: {
+                    paging: false,
+                    columnsHeaders: ['Date','Competitor','Score']
+                }
+            }).draw();
+        });
+    </script>
+    
+    <script>showSource()</script>
+    
+</body>
+</html>
