@@ -1082,15 +1082,24 @@
 
 
         this.defaultCss = [
-            'div#' + this.id + ' table.rgraph-datagrid { border-collapse: collapse;font-family: sans-serif;line-height: initial;}',
-            'div#' + this.id + ' table.rgraph-datagrid thead tr th {box-sizing: border-box;}',
-            'div#' + this.id + ' table.rgraph-datagrid thead tr th {padding: 0;background-color: #eee6;color: black;font-weight: bold;}',
-            'div#' + this.id + ' table.rgraph-datagrid thead tr th div.rgraph-datagrid-cell-content {text-align: center;box-sizing: border-box; padding: 10px;}',
-            'div#' + this.id + ' table.rgraph-datagrid tbody tr td div.rgraph-datagrid-cell-content {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;border: 1px solid #ddd;}',
-            'div#' + this.id + ' table.rgraph-datagrid tbody tr:nth-child(even) {background-color: #eee6;}',
-            'div#' + this.id + ' table.rgraph-datagrid tfoot tr th div.rgraph-datagrid-cell-content {padding: 0; box-sizing: border-box;}',
+            'div#' + this.id + ' {line-height: initial;}',
+            'div#' + this.id + ' table { border-collapse: collapse;font-family: sans-serif;}',
+            'div#' + this.id + ' table thead tr th {box-sizing: border-box;}',
+            'div#' + this.id + ' table thead tr th {padding: 0;background-color: #eee6;color: black;font-weight: bold;}',
+            
+            'div#' + this.id + ' table thead tr th div:not(.rgraph-datagrid-resize-handle-container):not(.rgraph-datagrid-resizable-handle) {text-align: center;box-sizing: border-box; padding: 10px;}',
+            
+            'div#' + this.id + ' table tbody tr td div {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;border: 1px solid #ddd;}',
+            'div#' + this.id + ' table tbody tr:nth-child(even) {background-color: #eee6;}',
+            'div#' + this.id + ' table tfoot tr th div {padding: 0; box-sizing: border-box;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-links {font-family: sans-serif;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-links span#rgraph-datagrid-showing-numbers {padding-left: 5px;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-links span:not(#rgraph-datagrid-showing-numbers) {padding: 7px; display: inline-block; text-align: center; min-width: 20px; color: blue; cursor: pointer;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-links span#rgraph-datagrid-paging-current {font-weight: bold; background-color: #0001; border: 1px solid #0002;padding: 7px; border-radius: 999px; display: inline-block; text-align: center; min-width: 20px; color: black; cursor: default;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-page-selector {font-family: sans-serif; text-align: center;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-page-selector div {cursor: pointer;}',
+            'div#' + this.id + ' div#rgraph-datagrid-paging-page-selector div:hover{background-color: #ddd;}'
         ];
-
 
         
     
@@ -1168,6 +1177,7 @@
             columnsCssClass:            null,
             columnsDecimals:            0,
             columnsFormatter:           null,
+            columnsFormatted:           false,
             columnsResizable:           false,
             columnsResizablePersistent: false,
             columnsResizableHandles:    null,
@@ -1199,7 +1209,16 @@
             
             style:                      null,
             
-            events:                     {}
+            events:                     {},
+            
+            paging:                     true,
+            pagingPerpage:              25,
+            pagingCurrent:              1,
+            pagingMaxpagelinks:         7,
+            pagingLabel:                'Page: ',
+            pagingUrlUpdate:            false,
+            pagingUrlQueryStringParameter: 'rgraph-datagrid-' + obj.id + '-page-number',
+            pagingUrlAnchor:               ''
         }
 
 
@@ -1469,10 +1488,7 @@
             {
                 //
                 // Add the rules that have been given in the
-                // properties. If the rules don't start with
-                // div#myGrid or just #myGrid, where #myGrid
-                // is the ID of the datagrid then it is
-                // prepended.
+                // properties. 
                 //
                 if (RGraph.isString(obj.properties.style)) {
                     obj.properties.style = [obj.properties.style];
@@ -1483,10 +1499,17 @@
                 
                         if (obj.properties.style[i].trim()) {
 
-                            var str   = obj.properties.style[i].trim();
-                                regex = new RegExp('^ *(div)?(#' + obj.id + ')? *(table)?(\.rgraph-datagrid )?');
-                                str   = str.replace(regex,`div#${obj.id} table.rgraph-datagrid `);
+                            var str = obj.properties.style[i].trim();
+                            
+                            re = new RegExp('^(div)?#' + obj.id);
+                            
+                            // Add the div#[id] to the CSS selector
+                            str = str.replace(
+                                re,
+                                ''
+                            );
 
+                            str = 'div#' + obj.id + ' ' + str;
 
                             obj.defaultCss.push(str);
                         }
@@ -1503,6 +1526,34 @@
                     }
                 });
             });
+
+
+            //
+            // Add a place holder DIV tag, above the table for the
+            // search. This place-holder DIV is always added - even
+            // if the search is not enabled.
+            //
+            var div = document.createElement('div');
+            div.id  = 'rgraph-datagrid-search-container';
+            //div.style.border = '1px solid red';
+            obj.container.appendChild(div);
+            obj.searchPlaceHolderDiv = div;
+            
+            //
+            // Unrelated to the above really - if the searchExclude
+            // property is a number - convert it to an array.
+            //
+            // DON'T NEED TO DO THIS NOW THAT THE inRange() IS IN
+            // USE.
+            //
+            //if (RGraph.isNumber(this.properties.searchExclude)) {
+            //    this.properties.searchExclude = [this.properties.searchExclude];
+            //}
+
+
+
+
+
 
 
 
@@ -1582,7 +1633,7 @@
             // First ADD THE HEADERS if they've been given //
             //                                             //
             /////////////////////////////////////////////////
-            if (RGraph.isArray(this.properties.columnsHeaders)) {
+            if (RGraph.isArray(this.properties.columnsHeaders) || this.properties.paging) {
             
                 var thead = document.createElement('thead');
                 table.appendChild(thead);
@@ -1608,24 +1659,15 @@
                 //                               //
                 ///////////////////////////////////
                 if (this.properties.search) {
-
-                    var tr = document.createElement('tr');
-                    tr.className = 'rgraph-datagrid-search-row';
-                    
-                    var td       = document.createElement('td');
-                    td.className = 'rgraph-datagrid-search-cell';
-                    td.colSpan   = 5;
-                
-                    tr.appendChild(td);
                 
                     // Add the search input to the td
                     var div = document.createElement('div');
                         div.id             = 'rgraph-datagrid-search-input-container';
                         div.style.position = 'relative';
                         div.style.display  = 'inline-block';
-                        //div.style.border   = '1px solid red';
+                        //div.style.border   = '1px solid green';
                         div.style.padding  = 0;
-                    td.appendChild(div);
+                    obj.searchPlaceHolderDiv.appendChild(div);
                     
                     var searchInput                  = document.createElement('input');
                         searchInput.type             = 'text';
@@ -1648,11 +1690,11 @@
                     if (searchInput.value) {
                         var span = document.createElement('span');
                         span.insertAdjacentHTML('afterbegin', '&#11198;');
-                        span.style.position = 'absolute';
-                        span.style.right    = '15px';
-                        span.style.top      = '50%';
+                        span.style.position  = 'absolute';
+                        span.style.right     = '15px';
+                        span.style.top       = '50%';
                         span.style.transform = 'translateY(calc(-50% - 2px))';
-                        span.style.cursor   = 'pointer';
+                        span.style.cursor    = 'pointer';
                         div.appendChild(span);
                         span.onclick = function (e)
                         {
@@ -1662,9 +1704,6 @@
                             obj.redraw();
                         };
                     }
-                    
-                    // Add the tr to the thead
-                    thead.appendChild(tr);
 
                 
                 
@@ -1685,6 +1724,13 @@
 
                         // Deselect all rows
                         obj.deselectAll();
+                        
+                        // Reset paging start and perPage
+                        this.properties.pagingCurrent = 1;
+
+                        
+                        // Clear the paging links
+                        document.getElementById('rgraph-datagrid-paging-links').replaceChildren();
                     };
 
 
@@ -1708,10 +1754,11 @@
                     //
                     this.searchData = function (str)
                     {
+
                         // Set the search string on the
                         // object.
                         obj.search = str.trim();
-                        
+
                         // Put the search query into session
                         // storage so a redraw doesn't nuke
                         // the search.
@@ -1727,13 +1774,40 @@
                         //
                         for (var i=0; i<this.data.length; ++i) {
                             
+                            //
+                            // Split the search into words at the
+                            // start of a loop through the words
+                            // in this row.
+                            //
                             var searchWords = obj.search.trim().split(/\s+/);
+
+                            
+                            //
+                            // Go through the search words and
+                            // change words with basic wildcards
+                            // into regexes.
+                            //
+                            for (var sw=0; sw<searchWords.length; ++sw) {
+                                
+                                searchWords[sw] = searchWords[sw].trim();
+                                
+                                if (   searchWords[sw][0]
+                                    && searchWords[sw][0] !== '/'
+                                    && searchWords[sw][0].slice(-1) !== '/'
+                                    && searchWords[sw][0].slice(-2) !== '/i'
+                                    && (searchWords[sw].indexOf('*') > -1 || searchWords[sw].indexOf('?') > -1)
+                                   ) {
+                                    searchWords[sw] = '/' + searchWords[sw].replace('*','.*').replace(/\?/g,'.') + '/i'
+                                }
+                            }
+
+
 
                             for (var j=0; j<this.data[i].length; ++j) {
                             
                                 // Is searching permitted to search
                                 // in this column?
-                                if (RGraph.isArray(obj.properties.searchExclude) && obj.properties.searchExclude.includes(j)) {
+                                if (this.inRange(this.properties.searchExclude,j)) {
                                     continue;
                                 }
                             
@@ -1768,12 +1842,19 @@
                                         }
                                     
                                     // Regular string
-                                    } else if (this.data[i][j].value.toString().toLowerCase().indexOf(String(searchWords[k]).toLowerCase()) !== -1) {
-                                        delete searchWords[k];
+                                    } else {
+
+                                        if (this.data[i][j].value.toString().toLowerCase().indexOf(String(searchWords[k]).toLowerCase()) !== -1) {
+                                            delete searchWords[k];
+                                        }
                                     }
                                 }
                             }
 
+                            // If all of the search words have been
+                            // deleted from the searchWords array
+                            // then that means that a row has
+                            // matched.
                             if (Object.keys(searchWords).length === 0) {
                                 results.push(this.data[i]);
                             }
@@ -1836,7 +1917,14 @@
                             // initial state
                             obj.clearSort();
 
+
+
+
                             obj.resetData();
+                            
+                            // Reset paging start and perPage
+                            obj.properties.pagingCurrent = 1;
+
                             obj.searchData(e.target.value);
                             obj.redraw();
                             
@@ -1864,6 +1952,242 @@
 
 
 
+                //////////////////////////////////
+                // DO THIS IF PAGING IS ENABLED //
+                //////////////////////////////////
+                if (this.properties.paging) {
+    
+                    //
+                    // Firstly - define the function that sets the page
+                    this.setPage = function (page)
+                    {
+                        // Ability to set the URL to
+                        // change the page - using the query string
+                        // parameter.
+                        if (this.properties.pagingUrlUpdate) {
+                            
+                            var url = new URL(location.href);
+                            url.searchParams.delete(obj.properties.pagingUrlQueryStringParameter);
+                            url.searchParams.delete('r');
+                            url.searchParams.append(obj.properties.pagingUrlQueryStringParameter, page);
+                            url.searchParams.append('r', RGraph.random(1,9999999999));
+                            url.hash = obj.properties.pagingUrlAnchor;
+
+    location.href = url.toString();
+                        } else {
+                            this.properties.pagingCurrent = page;
+                            this.redraw();
+                        }
+                    }
+        
+                    //
+                    // Determine if there's a page number requested
+                    // on the query string.
+                    //
+                    // var params     = new URLSearchParams(window.location.search);
+                    // var pagingPage = parseInt(params.get('page'));
+                    //     pagingPage = (!pagingPage || pagingPage <= 0) ? 1 : pagingPage; // No negatives
+        
+        
+                    //
+                    // Allow the start page to be specified on the
+                    // query string
+                    //
+                    RGraph.runOnce('get-page-number-from-query-string-parameter-' + obj.id, function ()
+                    {
+                        var urlParams = new URLSearchParams(window.location.search);
+                        var page      = urlParams.get(obj.properties.pagingUrlQueryStringParameter);
+                    
+                        obj.properties.pagingCurrent = page;
+                    });
+
+                    //
+                    // Calculate the start index
+                    //
+                    var pagingMaxpages            = Math.ceil(this.data.length / this.properties.pagingPerpage);
+                    this.properties.pagingCurrent = Math.min(this.properties.pagingCurrent, pagingMaxpages);
+                    
+                    if (this.properties.pagingCurrent < 1) {
+                        this.properties.pagingCurrent = 1;
+                    }
+                    
+                    this.properties.pagingCurrent = Math.round(this.properties.pagingCurrent);
+    
+    
+                    var start  = (this.properties.pagingCurrent - 1) * this.properties.pagingPerpage;
+                    var endRow = Math.min(start + this.properties.pagingPerpage, this.data.length);
+    
+                    if (start < 0) {
+                        start  = 0;
+                        endRow = 0;
+                    }
+    
+    
+                    
+    
+                    // 
+                    // Add the page links to the document beneath the
+                    // table.
+                    //
+                    RGraph.Queue.add('end-draw', function ()
+                    {
+                        var div = document.createElement('div');
+                            div.style.textAlign = 'right';
+                            div.id = 'rgraph-datagrid-paging-links';
+    
+                        // Use this to change the position of the
+                        // paging links to the top/bottom of the
+                        // datagrid.
+                        if (obj.properties.pagingPosition === 'bottom') {
+                            obj.container.appendChild(div);
+                        } else {
+                            obj.searchPlaceHolderDiv.after(div);
+                        }
+                            
+                        div.insertAdjacentHTML('afterbegin',obj.properties.pagingLabel);
+                        
+                        // Build the links to each page
+                        if (obj.properties.pagingCurrent < (obj.properties.pagingMaxpagelinks / 2) ) {
+                            
+                            var pagingLinksFirst = obj.properties.pagingCurrent - Math.floor(obj.properties.pagingMaxpagelinks / 2);
+    
+                            if (pagingLinksFirst < 1) {
+                                pagingLinksFirst   = 1;
+                                var pagingLinksLast = pagingLinksFirst + obj.properties.pagingMaxpagelinks - 1;
+                                    pagingLinksLast = Math.min(pagingLinksLast, pagingMaxpages);
+                            }
+                        
+                            if (pagingLinksLast - pagingLinksFirst >= obj.properties.pagingMaxpagelinks) {
+                                pagingLinksLast -= 1;
+                            }
+    
+                        } else if (obj.properties.pagingCurrent > (pagingMaxpages - (obj.properties.pagingMaxpagelinks / 2) ) ) {
+    
+                            var pagingLinksFirst = pagingMaxpages - obj.properties.pagingMaxpagelinks;
+                            var pagingLinksLast  = pagingMaxpages;
+    
+                            if (pagingLinksFirst < 1) {
+                                pagingLinksFirst   = 1;
+                                //var pagingLinksLast = pagingLinksFirst + obj.properties.pagingMaxpagelinks - 1;
+                                //    pagingLinksLast = Math.min(pagingLinksLast, pagingMaxpages);
+                            }
+    
+                            if (pagingLinksLast - pagingLinksFirst >= obj.properties.pagingMaxpagelinks) {
+                                pagingLinksFirst += 1;
+                            }
+    
+                        } else {
+    
+                            var pagingLinksFirst = (obj.properties.pagingCurrent - Math.floor(obj.properties.pagingMaxpagelinks / 2)) || 1;
+                            var pagingLinksLast  = obj.properties.pagingCurrent + Math.floor(obj.properties.pagingMaxpagelinks / 2);
+                                pagingLinksLast  = Math.min(pagingLinksLast, pagingMaxpages);
+    
+                        
+                            if (pagingLinksLast > pagingMaxpages) {
+                                pagingLinksLast = pagingMaxpages;
+                                var pagingLinksFirst = pagingLinksLast - obj.properties.pagingMaxpagelinks + 1;
+                            }
+    
+                            if (pagingLinksLast - pagingLinksFirst >= obj.properties.pagingMaxpagelinks) {
+                                pagingLinksLast -= 1;
+                            }
+                        }
+    
+                        for (var i=pagingLinksFirst; i<=pagingLinksLast; i++) {
+    
+                            // Create a link that allows the user to go
+                            // to another page. In the onclick event of
+                            // the link do the page swapping.
+                            //
+    
+                            var span = document.createElement('span');
+                            span.style.padding = '3px';
+                            if (obj.properties.pagingCurrent !== i ) {
+                                (function (index)
+                                {
+                                    span.onclick = function (e)
+                                    {
+                                        obj.setPage(index);
+                                    };
+                                })(i);
+                            } else {
+                                span.id = 'rgraph-datagrid-paging-current';
+                                // CSS for this link is defined as part of the defaultCss
+                            }
+                            span.insertAdjacentHTML('beforeend', i);
+                             
+                             // Add the link to the end of the table
+                            div.insertAdjacentElement('beforeend', span);
+                        }
+                        
+                        // Show the "showing..." text
+                        var startIndex = ( obj.properties.pagingCurrent - 1) * obj.properties.pagingPerpage + 1;
+                            startIndex = startIndex > 0 ? startIndex : 0;
+                        var endIndex   = Math.min(startIndex + obj.properties.pagingPerpage - 1, obj.data.length);
+
+                        div.insertAdjacentHTML('afterbegin', `<span id="rgraph-datagrid-showing-numbers" style="float: left">Showing ${obj.data.length > 0 ? startIndex : 0} - ${endIndex} of ${RGraph.numberFormat({object: this, number:obj.data.length})} ` + '</span>');
+    
+                        if (pagingMaxpages > obj.properties.pagingMaxpagelinks) {
+                            var span = document.createElement('span');
+                            span.onclick = function (e)
+                            {
+                                var xy = RGraph.getCanvasXY(span);
+    
+                                // Show a little div tag with all of the
+                                // page numbers in it.
+                                var div = document.createElement('div');
+                                div.id                      = 'rgraph-datagrid-paging-page-selector';
+                                div.style.position          = 'absolute';
+                                div.style.width             = '50px';
+                                div.style.height            = '200px';
+                                div.style.backgroundColor   = 'white';
+                                div.style.overflowY         = 'auto';
+                                div.style.fontSize          = '20pt';
+                                div.style.overflowX         = 'hidden';
+                                div.style.boxShadow         = '0 0 3px 5px #ddd';
+                                obj.container.appendChild(div);
+                                
+                                // Add the page numbers to the DIV
+                                for (var pn=1; pn<=pagingMaxpages; ++pn) {
+                                    var pnDiv = document.createElement('div');
+                                    pnDiv.style.width = '100%';
+                                    pnDiv.insertAdjacentHTML('afterbegin', pn);
+                                    div.appendChild(pnDiv);
+                                    
+                                    (function (index)
+                                    {
+                                        pnDiv.onclick = function (e)
+                                        {
+                                            obj.setPage(index);
+                                        };
+                                    })(pn);
+                                }
+                                
+                                // Now position the div
+                                div.style.top  = ((xy[1] - div.offsetHeight) > 0 ? (xy[1] - div.offsetHeight) : 10) + 'px';
+                                div.style.left = xy[0] + 'px';
+    
+                                div.onmousedown = function (e)
+                                {
+                                    e.stopPropagation();
+                                }
+                                
+                                window.addEventListener('mousedown', function (e)
+                                {
+                                    if (div && div.parentNode) {
+                                        div.parentNode.removeChild(div);
+                                    }
+                                }, false);
+                            };
+    
+                            span.insertAdjacentHTML('beforeend','...');                        
+                            div.insertAdjacentElement('beforeend', span);
+                        }
+                    });
+                } else {
+                    var start  = 0;
+                    var endRow = this.data.length;
+                }
 
 
 
@@ -1877,195 +2201,197 @@
                 
 
                 // Add all of the header cells
-                for (var i=0; i<this.properties.columnsHeaders.length; ++i) {
-
-                    var th = document.createElement('th');
-                    th.setAttribute('role','columnheader');
-                    th.style.cssText = 'position: relative; min-height: 100%';
-                    tr.appendChild(th);
-
-                    th.setAttribute('data-column-index', i);
-                    th.setAttribute('data-initial-width', this.columnWidths[i]);
-                    th.setAttribute('scope', 'col');
-                    
-                    if (RGraph.isArray(this.properties.columnsDescriptions) && this.properties.columnsDescriptions[i]) {
-                        th.setAttribute('aria-description', this.properties.columnsDescriptions[i]);
-                    }
-                    
-                    // Default to no sorting
-                    th.setAttribute('aria-sort','none');
-                    
-                    var div = document.createElement('div');
-                    div.className = 'rgraph-datagrid-cell-content';
-
-                    //
-                    // Add the user-specified column CSS classname
-                    //
-                    if (RGraph.isString(this.properties.columnsCssClass) && this.properties.columnsCssClass.length) {
-                        th.className += ' ' + this.properties.columnsCssClass;
-                    } else if (RGraph.isArray(this.properties.columnsCssClass) && RGraph.isString(this.properties.columnsCssClass[i]) ) {
-                        th.className += ' ' + this.properties.columnsCssClass[i];
-                    }
-
-                    // Don't use innerHTML here
-                    div.textContent = this.properties.columnsHeaders[i] ? this.properties.columnsHeaders[i] : String.fromCharCode(0x00A0);
-                    //div.textContent = this.formatValue(this.properties.columnsHeaders[i], i);
-                    
-                    // Set the tooltip
-                    th.title = this.properties.columnsHeaders[i];
-
-                    //th.title = this.formatValue(this.properties.columnsHeaders[i], i);
-                    div.style.cssText = `white-space: nowrap;
-                                         overflow: hidden;
-                                         text-overflow: ellipsis;
-                                         pointer-events: none;
-                                         width: ${this.columnWidths[i]}px`;
-
-                    
-                    th.appendChild(div);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    /////////////////////////////////////
-                    // Facilitate sorting if requested //
-                    /////////////////////////////////////
-                    if (this.properties.sortable && (RGraph.isNull(this.properties.sortableColumns) || this.properties.sortableColumns.includes(i)) ) {
-
-                        th.addEventListener('mousemove', function (e)
-                        {
-                            if (!obj.overResizeVbarContainer) {
-                                e.target.style.cursor = 'pointer';
-                            }
-                        }, false);
+                if (this.properties.columnsHeaders && this.properties.columnsHeaders.length) {
+                    for (var i=0; i<this.properties.columnsHeaders.length; ++i) {
+    
+                        var th = document.createElement('th');
+                        th.setAttribute('role','columnheader');
+                        th.style.cssText = 'position: relative; min-height: 100%';
+                        tr.appendChild(th);
+    
+                        th.setAttribute('data-column-index', i);
+                        th.setAttribute('data-initial-width', this.columnWidths[i]);
+                        th.setAttribute('scope', 'col');
                         
-                        th.addEventListener('mouseup', function (e)
-                        {
-
-                            //
-                            // Don't do this if resizing
-                            //
-                            if (obj.state.resizing) {
-                                return;
-                            }
-
-                            var currentSortColumn = obj.sortColumn;
-                            var currentSortDir    = obj.sortDir; // Default to not sorted
-                            var newSortColumn     = parseInt(e.target.getAttribute('data-column-index'));
-                            
-                            // Sort directions:
-                            //
-                            //  -1 - Descending order
-                            //   0 - Original order - not sorted
-                            //   1 - Ascending order
-                            //
-                            if (currentSortColumn === newSortColumn) {
-                                if (currentSortDir === 0) {
-                                    newSortDir = 1; // Ascending
-                                
-                                } else if (currentSortDir === 1) {
-                                    newSortDir = -1; // Descending
-                                
-                                } else {
-                                    newSortDir = 0; // No sort
-                                }
-                            } else {
-                                newSortDir = 1; // Ascending
-                            }
-                            
-
-                            if (newSortDir) {
-
-                                obj.data = obj.sortData(
-                                    obj.data,
-                                    newSortColumn,
-                                    newSortDir
-                                );
-
-                            } else {
-                                // This fires the resetdata event
-                                obj.resetData();
-                            }
-
-                            // Store the new sort configuration on
-                            // the object
-                            obj.sortColumn = newSortColumn;
-                            obj.sortDir    = newSortDir;
-
-                            obj.redraw();
-
-                            // 
-                            // Store the sort information in
-                            // localStorage if persistence is enabled
-                            // (it is by default)
-                            //
-                            obj.saveSortDataToLocalStorage(obj);
-                            
-                            e.stopPropagation();
-                        }, false);
-                    }
-
-
-
-
-
-
-
-
-
-
-
-
-                    //
-                    // Add the sort indicator if necessary
-                    //
-
-                    if (i === this.sortColumn && this.sortDir !== 0) {
-                        
-                        var span = document.createElement('span');
-                        span.style.cssText =
-                            `position: absolute;
-                             right: 6px;
-                             top: 50%;
-                             font-size: 10pt;
-                             display: inline-block;
-                             pointer-events: none;
-                             cursor: pointer;
-                        `;
-                        
-                        span.insertAdjacentHTML('afterbegin', '&#9650;');
-                        span.className = 'rgraph-cell-sort-pointer';
-                        span.setAttribute('aria-hidden','true');
-
-
-                        if (this.sortDir === 1) {
-                            span.style.transform = 'rotate(0deg) translateY(-50%)';
-                            th.setAttribute('aria-sort','ascending');
-                        } else if (this.sortDir === -1) {
-                            span.style.transform = 'rotate(180deg) translateY(50%)';
-                            th.setAttribute('aria-sort','descending');
-                        } else {
-                            span.style.transform = 'translateY(-50%)';
+                        if (RGraph.isArray(this.properties.columnsDescriptions) && this.properties.columnsDescriptions[i]) {
+                            th.setAttribute('aria-description', this.properties.columnsDescriptions[i]);
                         }
-
-                        th.appendChild(span);
+                        
+                        // Default to no sorting
+                        th.setAttribute('aria-sort','none');
+                        
+                        var div = document.createElement('div');
+                        div.className = 'rgraph-datagrid-cell-content';
+    
+                        //
+                        // Add the user-specified column CSS classname
+                        //
+                        if (RGraph.isString(this.properties.columnsCssClass) && this.properties.columnsCssClass.length) {
+                            th.className += ' ' + this.properties.columnsCssClass;
+                        } else if (RGraph.isArray(this.properties.columnsCssClass) && RGraph.isString(this.properties.columnsCssClass[i]) ) {
+                            th.className += ' ' + this.properties.columnsCssClass[i];
+                        }
+    
+                        // Don't use innerHTML here
+                        div.textContent = this.properties.columnsHeaders[i] ? this.properties.columnsHeaders[i] : String.fromCharCode(0x00A0);
+                        //div.textContent = this.formatValue(obj, this.properties.columnsHeaders[i], null, i);
+                        
+                        // Set the tooltip
+                        th.title = this.properties.columnsHeaders[i];
+    
+                        //th.title = this.formatValue(this, this.properties.columnsHeaders[i], null, i);
+                        div.style.cssText = `white-space: nowrap;
+                                             overflow: hidden;
+                                             text-overflow: ellipsis;
+                                             pointer-events: none;
+                                             width: ${this.columnWidths[i]}px`;
+    
+                        
+                        th.appendChild(div);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                        /////////////////////////////////////
+                        // Facilitate sorting if requested //
+                        /////////////////////////////////////
+                        if (this.properties.sortable && (RGraph.isNull(this.properties.sortableColumns) || this.inRange(this.properties.sortableColumns, i) ) ) {
+    
+                            th.addEventListener('mousemove', function (e)
+                            {
+                                if (!obj.overResizeVbarContainer) {
+                                    e.target.style.cursor = 'pointer';
+                                }
+                            }, false);
+                            
+                            th.addEventListener('mouseup', function (e)
+                            {
+    
+                                //
+                                // Don't do this if resizing
+                                //
+                                if (obj.state.resizing) {
+                                    return;
+                                }
+    
+                                var currentSortColumn = obj.sortColumn;
+                                var currentSortDir    = obj.sortDir; // Default to not sorted
+                                var newSortColumn     = parseInt(e.target.getAttribute('data-column-index'));
+                                
+                                // Sort directions:
+                                //
+                                //  -1 - Descending order
+                                //   0 - Original order - not sorted
+                                //   1 - Ascending order
+                                //
+                                if (currentSortColumn === newSortColumn) {
+                                    if (currentSortDir === 0) {
+                                        newSortDir = 1; // Ascending
+                                    
+                                    } else if (currentSortDir === 1) {
+                                        newSortDir = -1; // Descending
+                                    
+                                    } else {
+                                        newSortDir = 0; // No sort
+                                    }
+                                } else {
+                                    newSortDir = 1; // Ascending
+                                }
+                                
+    
+                                if (newSortDir) {
+    
+                                    obj.data = obj.sortData(
+                                        obj.data,
+                                        newSortColumn,
+                                        newSortDir
+                                    );
+    
+                                } else {
+                                    // This fires the resetdata event
+                                    obj.resetData();
+                                }
+    
+                                // Store the new sort configuration on
+                                // the object
+                                obj.sortColumn = newSortColumn;
+                                obj.sortDir    = newSortDir;
+    
+                                obj.redraw();
+    
+                                // 
+                                // Store the sort information in
+                                // localStorage if persistence is enabled
+                                // (it is by default)
+                                //
+                                obj.saveSortDataToLocalStorage(obj);
+                                
+                                e.stopPropagation();
+                            }, false);
+                        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                        //
+                        // Add the sort indicator if necessary
+                        //
+    
+                        if (i === this.sortColumn && this.sortDir !== 0) {
+                            
+                            var span = document.createElement('span');
+                            span.style.cssText =
+                                `position: absolute;
+                                 right: 6px;
+                                 top: 50%;
+                                 font-size: 10pt;
+                                 display: inline-block;
+                                 pointer-events: none;
+                                 cursor: pointer;
+                            `;
+                            
+                            span.insertAdjacentHTML('afterbegin', '&#9650;');
+                            span.className = 'rgraph-cell-sort-pointer';
+                            span.setAttribute('aria-hidden','true');
+    
+    
+                            if (this.sortDir === 1) {
+                                span.style.transform = 'rotate(0deg) translateY(-50%)';
+                                th.setAttribute('aria-sort','ascending');
+                            } else if (this.sortDir === -1) {
+                                span.style.transform = 'rotate(180deg) translateY(50%)';
+                                th.setAttribute('aria-sort','descending');
+                            } else {
+                                span.style.transform = 'translateY(-50%)';
+                            }
+    
+                            th.appendChild(span);
+                        }
                     }
                 }
 
@@ -2103,15 +2429,41 @@
             // Append the tbody to the table
             table.appendChild(tbody);
 
-            for (var row=0; row<this.data.length; ++row) {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            for (var row=start; row<endRow; ++row) {
+
+                //
+                // Accommodate paging
+                //
                 var tr = document.createElement('tr');
-                
+
                 // Add the row index attribute
                 tr.setAttribute('data-row-index', row);
                 tr.setAttribute('data-row-id', this.data[row][0].row_id);
                 tr.setAttribute('role', 'row');
                 tr.setAttribute('aria-rowindex', row + 1);
+                
+                //
+                // Add the user-specified row ID if its defined
+                //
+                if (RGraph.isArray(this.properties.rowsSelectableIds) && !RGraph.isNullish(this.properties.rowsSelectableIds[row])) {
+                    tr.setAttribute('data-user-row-id', this.properties.rowsSelectableIds[row]);
+                }
                 
                 // Add the aria-selectable attribute if
                 // rowsSelectable is enabled.
@@ -2156,13 +2508,20 @@
                         //
                         if (obj.properties.rowsClickCheckbox) {
                             
-                            var checkbox = tr.querySelectorAll('input[type=checkbox]')[obj.properties.rowsClickCheckboxIndex];
-                            
-                            if (checkbox) {
-                                if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'checkbox') {
-                                    e.stopPropagation();
-                                } else {
-                                    checkbox.checked = !checkbox.checked;
+                            if (RGraph.isNumber(obj.properties.rowsClickCheckboxIndex)) {
+                                var idx = [obj.properties.rowsClickCheckboxIndex];
+                            } else if (RGraph.isArray(obj.properties.rowsClickCheckboxIndex)) {
+                                var idx = obj.properties.rowsClickCheckboxIndex;
+                            }
+                            var chks = tr.querySelectorAll('input[type=checkbox]');
+
+                            for (var i=0; i<idx.length; ++i) {
+                                if (chks[idx[i]]) {
+                                    if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'checkbox') {
+                                        e.stopPropagation();
+                                    } else {
+                                        chks[idx[i]].checked = !chks[idx[i]].checked;
+                                    }
                                 }
                             }
                         }
@@ -2176,13 +2535,22 @@
                         //
                         if (obj.properties.rowsClickRadio) {
 
-                            var radio = tr.querySelectorAll('input[type=radio]')[obj.properties.rowsClickRadioIndex];
+                            if (RGraph.isNumber(obj.properties.rowsClickRadioIndex)) {
+                                var idx = [obj.properties.rowsClickRadioIndex];
+                            } else if (RGraph.isArray(obj.properties.rowsClickRadioIndex)) {
+                                var idx = obj.properties.rowsClickRadioIndex;
+                            }
 
-                            if (radio) {
-                                if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'radio') {
-                                    e.stopPropagation();
-                                } else {
-                                    radio.checked = true;
+                            var radios = tr.querySelectorAll('input[type=radio]');
+
+                            for (var i=0; i<idx.length; ++i) {
+
+                                if (radios[idx[i]]) {
+                                    if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'radio') {
+                                        e.stopPropagation();
+                                    } else {
+                                        radios[idx[i]].checked = !radios[idx[i]].checked;
+                                    }
                                 }
                             }
                         }
@@ -2214,17 +2582,14 @@
                         td.className += ' ' + this.properties.columnsCssClass[column];
                     }
 
-                    if (   this.properties.columnsHTML === true
-                        || this.properties.columnsHTML === column
-                        || (RGraph.isArray(this.properties.columnsHTML) && this.properties.columnsHTML.includes(column)) ) {
-
-                        div.insertAdjacentHTML('afterbegin', '&zwnj;' + this.formatValue(this.data[row][column].value, column)); // Don't use innerHTML here
+                    if (   this.inRange(this.properties.columnsHTML, column) ) {
+                        div.insertAdjacentHTML('afterbegin', '&zwnj;' + this.formatValue(this, this.data[row][column].value, row, column)); // Don't use innerHTML here
                     } else {
                         div.insertAdjacentHTML('afterbegin', '&zwnj;') // Don't use innerHTML here
-                        div.textContent = this.data[row][column].value ? (this.formatValue(this.data[row][column].value, column) || String.fromCharCode(0x00A0)) : String.fromCharCode(0x00A0);
+                        div.textContent = this.data[row][column].value ? (this.formatValue(this, this.data[row][column].value, row, column) || String.fromCharCode(0x00A0)) : String.fromCharCode(0x00A0);
                         
                         // Set the tooltip
-                        td.title = this.formatValue(this.data[row][column].value, column);
+                        td.title = this.formatValue(this, this.data[row][column].value, row, column);
                     }
 
 
@@ -2377,7 +2742,7 @@
                                     //
                                     RGraph.Registry.set('cell-edit-meta', {
                                         object: obj,
-                                        value:  RGraph.isNumeric(editInput.value) ? parseFloat(editInput.value) : editInput.value,
+                                        value:  (RGraph.isNumeric(editInput.value) && obj.isFormatted(column)) ? parseFloat(editInput.value) : editInput.value,
                                         cell:   td,
                                         row:    row,
                                         column: column 
@@ -2387,14 +2752,14 @@
 
                                     // Save the value to the data
                                     // array
-                                    obj.data[row][column].value = RGraph.isNumeric(editInput.value)
+                                    obj.data[row][column].value =(RGraph.isNumeric(editInput.value) && obj.isFormatted(column))
                                                                  ? parseFloat(editInput.value)
                                                                  : editInput.value;
 
                                     // Keep a record of the edits so that when sorting is reset and
                                     // the original data is used again - the edits can be re-applied
                                     // to the data.
-                                    obj.edits.push({row: obj.data[row][column].original_row_index, column: column, value: obj.data[row][column].value});
+                                    obj.edits.push({row: obj.data[row][column].original_row_index, column: column, value : obj.data[row][column].value});
 
                                     //
                                     // Resort the data array
@@ -2419,7 +2784,7 @@
                                     // redraw() right after...?
                                     //
                                     //var div = document.createElement('div');
-                                    //    div.textContent = obj.formatValue(obj.data[row][column].value, index);
+                                    //    div.textContent = obj.formatValue(obj, obj.data[row][column].value, row, column);
                                     //    div.style.whiteSpace   = 'nowrap';
                                     //    div.style.overflow     = 'hidden';
                                     //    div.style.textOverflow = 'ellipsis';
@@ -2451,7 +2816,7 @@
                                     td.replaceChildren();
 
                                     var div = document.createElement('div');
-                                    div.textContent   = obj.formatValue(obj.data[row][column].value, index);
+                                    div.textContent   = obj.formatValue(obj, obj.data[row][column].value, row, column);
                                     div.style.cssText = `white-space:nowrap;
                                                          overflow:hidden;
                                                          text-overflow:ellipsis;
@@ -2487,8 +2852,6 @@
                             }, false);
                         })(row, column, td);
                     }
-
-
                 }
                 
                 tbody.appendChild(tr);
@@ -2630,13 +2993,14 @@ for (var i=0; i<ths.length; ++i) {
 
 
             //
-            // Facilitate the resizing of columns. First, add the resize vertical gray
-            // lines on the edge of each column header.
+            // Facilitate the resizing of columns. First, add the
+            // resize vertical gray  lines on the edge of each
+            // column header.
             //
             if (this.properties.columnsResizable) {
 
-                // This is the variable which is updated when the resize bars are
-                // clicked.
+                // This is the variable which is updated when the
+                // resize bars are clicked.
                 //
                 var state = {object: this, mousedown: false};
 
@@ -2651,11 +3015,14 @@ for (var i=0; i<ths.length; ++i) {
                         //
                         // Allow resize handles to be not shown
                         //
-                        if (   RGraph.isArray(obj.properties.columnsResizableHandles)
-                            && !RGraph.isUndefined(obj.properties.columnsResizableHandles[i])
-                            && !obj.properties.columnsResizableHandles[i]
-                            ) {
-                            continue;
+                        //if (   RGraph.isArray(obj.properties.columnsResizableHandles)
+                        //    && !RGraph.isUndefined(obj.properties.columnsResizableHandles[i])
+                        //    && !obj.properties.columnsResizableHandles[i]
+                        //    ) {
+                        //    continue;
+                        //}
+                        if (!RGraph.isNull(obj.properties.columnsResizableHandles) && !obj.inRange(obj.properties.columnsResizableHandles, i)) {
+                            continue
                         }
                         
                         //
@@ -2680,6 +3047,8 @@ for (var i=0; i<ths.length; ++i) {
                         // Left vertical bar
                         //
                         var vbar1 = document.createElement('div');
+                        vbar1.id = 'rgraph-datagrid-resizable-handle1';
+                        vbar1.className = 'rgraph-datagrid-resizable-handle';
                         vbar1.style.cssText = 'position: absolute;top: 50%;transform: translateY(-50%); left: 0; width: 2px; height: 20px; background-color: #aaa';
                         vbar_container.appendChild(vbar1);
             
@@ -2687,6 +3056,8 @@ for (var i=0; i<ths.length; ++i) {
                         // Right vertical bar
                         //
                         var vbar2 = document.createElement('div');
+                        vbar2.id = 'rgraph-datagrid-resizable-handle2';
+                        vbar2.className = 'rgraph-datagrid-resizable-handle';
                         vbar2.style.cssText = 'position: absolute; top: 50%; transform: translateY(-50%); right: 0; width: 2px; height: 20px; background-color: #aaa;';
                         vbar_container.appendChild(vbar2);
             
@@ -3462,6 +3833,26 @@ if (css) {
 
 
 
+        // Returns true or false as to whether a column is formatted
+        // or not (ie the column is made up of numbers). By default,
+        // all columns are NOT formatted.
+        //
+        // @param  number  column The index of the column to check
+        // @return boolean        Whether the column is formatted
+        //                        or not.
+        //
+        this.isFormatted = function (column)
+        {
+            return this.inRange(obj.properties.columnsFormatted, column);
+        };
+
+
+
+
+
+
+
+
         //
         // Formats the value for display
         //
@@ -3470,24 +3861,48 @@ if (css) {
         // @return string      The formatted value - ready for display to
         //                     the user
         //
-        this.formatValue = function (value, index)
+        this.formatValue = function (obj, value, row, column)
         {
+            //
+            // No formatting at all
+            //
+            if (!this.isFormatted(column)) {
+                return String(value);
+            }
+
             //
             // Value is number so format it using the formatting
             // properties.
             //
             if (RGraph.isNumeric(value)) {
+
                 value = parseFloat(value);
+
                 value = RGraph.numberFormat({
                     object:    this,
-                    number:    value.toFixed(this.propertyArrayOrString(this.properties.columnsDecimals, index)),
-                    unitspre:  this.propertyArrayOrString(this.properties.columnsUnitsPre, index),
-                    unitspost: this.propertyArrayOrString(this.properties.columnsUnitsPost, index),
-                    thousand:  this.propertyArrayOrString(this.properties.columnsThousand, index),
-                    point:     this.propertyArrayOrString(this.properties.columnsPoint, index),
-                    formatter: this.propertyArrayOrString(this.properties.columnsFormatter, index),
-                    decimals:  this.propertyArrayOrString(this.properties.columnsDecimals, index)
+                    number:    value.toFixed(this.propertyArrayOrString(this.properties.columnsDecimals, column)),
+                    unitspre:  this.propertyArrayOrString(this.properties.columnsUnitsPre, column),
+                    unitspost: this.propertyArrayOrString(this.properties.columnsUnitsPost, column),
+                    thousand:  this.propertyArrayOrString(this.properties.columnsThousand, column),
+                    point:     this.propertyArrayOrString(this.properties.columnsPoint, column),
+                    formatter: this.propertyArrayOrString(this.properties.columnsFormatter, column),
+                    decimals:  this.propertyArrayOrString(this.properties.columnsDecimals, column)
                 });
+            
+            } else if (RGraph.isFunction(this.properties.columnsFormatter) || (RGraph.isArray(this.properties.columnsFormatter) && RGraph.isFunction(this.properties.columnsFormatter[column])) ) {
+                
+                // Run the formatter function here if defined.
+                // Check that sorting still works. Hopefully
+                // sorting is done before this function is called.
+                // Call the formatter function
+                var result = this.propertyArrayOrString(this.properties.columnsFormatter, column)({
+                   object: this,
+                    value: value,
+                      row: row,
+                   column: column
+                });
+
+                return result;
             }
 
             return value;
@@ -3777,7 +4192,7 @@ if (css) {
 
 
         //
-        // Determines whether a xolumn is editable or not
+        // Determines whether a column is editable or not
         //
         // @param integer column The column ID
         // @param string  str    The pattern given in the
@@ -3785,8 +4200,103 @@ if (css) {
         //
         this.isEditableColumn = function ()
         {
-            var args    = RGraph.getArgs(arguments, 'column,pattern');
-            var parts   = String(args.pattern).split(/\s*,\s*/);
+            var args = RGraph.getArgs(arguments, 'column,pattern');
+
+            // A much shorter version of this function
+            return this.inRange(args.pattern, args.column);
+            
+            //var parts   = String(args.pattern).split(/\s*,\s*/);
+            //var columns = [];
+
+            //for (var i=0; i<parts.length; ++i) {
+
+            //    // Match 2-4
+            //    if (parts[i].match(/^\s*(\d+)\s*-\s*(\d+)\s*$/)) {
+            //        var from = Number(RegExp.$1);
+            //        var to   = Number(RegExp.$2);
+
+            //    // Match 2-
+            //    } else if (parts[i].match(/^\s*(\d+)\s*-\s*$/)) {
+            //        var from = Number(RegExp.$1);
+            //        var to   = this.numcolumns - 1;
+
+            //    // Match -4
+            //    } else if (parts[i].match(/^\s*-\s*(\d+)\s*$/)) {
+            //        var from = 0;
+            //        var to   = Number(RegExp.$1);
+
+            //    // Match 4  (a simple number)
+            //    } else if (parts[i].match(/^\s*(\d+)\s*$/)) {
+            //        var from = Number(RegExp.$1);
+            //        var to   = Number(RegExp.$1);
+            //    }
+                
+
+            //    for (var j=from; j<=to; ++j) {
+            //        columns.push(j);
+            //    }
+            //}
+
+            //return columns.includes(Number(args.column));
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the property - checking first if it's an object. If so
+        // then the relevant index is returned. If not then the property
+        // is returned as-is.
+        //
+        // @param string mixed The property to check
+        // @param mixed index  The index to check 
+        //
+        this.propertyArrayOrString = function (property, index)
+        {
+            if (RGraph.isArray(property)) {
+                return property[index];
+            } else {
+                return property;
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function allows to specify a range of column
+        // indexes for various properties including:
+        //
+        // editableColumns
+        // columnsHTML
+        // sortableColumns
+        // searchExclude
+        //
+        // @param mixed range The column(s) to return. This can be
+        //                    of the following formats:
+        //                     0-5: A range of column indexes
+        //                      1-: A range of column indexes with
+        //                          no upper limit
+        //                      -5: A range of column indexes with
+        //                          no lower limit
+        //                       3: A simple number denoting a single
+        //                          column
+        //             1,2,3,4,5,6: A set of column indexes
+        //
+        // @return boolean Whether the column is in the range or not
+        //
+        this.inRange = function ()
+        {
+            var args    = RGraph.getArgs(arguments, 'range,column');
+            var parts   = String(args.range).split(/\s*,\s*/);
             var columns = [];
 
             for (var i=0; i<parts.length; ++i) {
@@ -3821,31 +4331,6 @@ if (css) {
             return columns.includes(Number(args.column));
         };
 
-
-
-
-
-
-
-
-        //
-        // Returns the property - checking first if it's an object. If so
-        // then the relevant index is returned. If not then the property
-        // is returned as-is.
-        //
-        // @param string property The property to check
-        // @param mixed index    The index to check 
-        //
-        this.propertyArrayOrString = function (property, index)
-        {
-            if (RGraph.isArray(property)) {
-                return property[index];
-            } else {
-                return property;
-            }
-        };
-
-        
 
 
 

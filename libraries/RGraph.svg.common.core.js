@@ -26,6 +26,9 @@
     // ObjectRegistry
     RGraph.SVG.OR = {objects: []};
     
+    // PHP funtions
+    RGraph.SVG.PHP = {};
+    
     // Used to categorise trigonometery functions
     RGraph.SVG.TRIG        = {};
     RGraph.SVG.TRIG.HALFPI = Math.PI * .4999;
@@ -7884,6 +7887,438 @@ backgroundRounded = opt.backgroundRounded || 0,
 
 
 
+    //
+    // Returns the current number of seconds since the UNIX epoch
+    //
+    // @param string modifier You can optionally supply a string
+    //                        that will be used to modify the
+    //                        timestamp, for example:
+    //
+    //                        var timestamp = RGraph.PHP.time('now + 1 day 6 hours')
+    //                        var timestamp = RGraph.PHP.time('now - 90 minutes')
+    //
+    //                        See the API docs on the website for
+    //                        more modifiers that you can use.
+    // @return number Seconds
+    //
+    RGraph.SVG.PHP.time = function (modifier = null)
+    {
+        // Get the time ine seconds - not milloseconds
+        var timestamp = Math.floor(Date.now() / 1000);
+
+        if (RGraph.SVG.isString(modifier)) {
+            
+            modifier = modifier.toLowerCase();
+
+            modifier = modifier.replace('now', timestamp);
+            modifier = modifier.replace(/([.0-9]+) *y(ear)?s?/g, '($1 * 31536000)');
+            modifier = modifier.replace(/([.0-9]+) *d(ay)?s?/g, '($1 * 86400)');
+            modifier = modifier.replace(/([.0-9]+) *w(eek)?s?/g, '($1 * 86400 * 7)');
+            modifier = modifier.replace(/([.0-9]+) *h(our)?s?/g, '($1 * 3600)');
+            modifier = modifier.replace(/([.0-9]+) *m(in)?(?:ute)?(?:s)?/g, '($1 * 60)');
+            modifier = modifier.replace(/([.0-9]+) *s(ec)?(?:ond)?(?:s)?/g, '($1 * 1)');
+
+            return parseInt(eval(modifier));
+        
+        } else {
+            return Math.floor(Date.now() / 1000);
+        }
+    };
+
+
+
+
+
+
+
+
+    //
+    // This is an implementation of the PHP date() function
+    // which came from the phpJS project (phpjs.org - though
+    // the website seems to be offline at the moment). You
+    // can use it like this:
+    //                      RGraph.SVG.PHP.date('jS F Y'); // 16th May 2025
+    //
+    // See the API docs for more information on how to use this
+    // function:
+    //            https://www.rgraph.net/api
+    //
+    // @param string format The date format that you want to be
+    //                      returned.
+    //
+    RGraph.SVG.PHP.date = function (format, timestamp)
+    {
+        //
+        // If the modifier is present then use that and pass it
+        // to the RGraph.PHP.time() function to get the relevant
+        // unix timestamp.
+        //
+        if (RGraph.SVG.isString(timestamp) && RGraph.SVG.isNumeric(timestamp)) {
+            timestamp = RGraph.SVG.PHP.time(parseInt(timestamp));
+        } else if (RGraph.SVG.isString(timestamp)) {
+            timestamp = RGraph.SVG.PHP.time(timestamp);
+        }
+
+        var that = this;
+        var jsdate, f;
+
+        // Keep this here (works, but for code commented-out
+        // below for file size reasons)
+        // var tal= [];
+        var txt_words = [
+            'Sun', 'Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur',
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        // trailing backslash -> (dropped)
+        // a backslash followed by any character (including
+        // backslash) -> the character empty string -> empty
+        // string
+        var formatChr   = /\\?(.?)/gi;
+        var formatChrCb = function(t, s)
+        {
+            return f[t] ? f[t]() : s;
+        };
+        
+        var _pad = function(n, c)
+        {
+            n = String(n);
+            
+            while (n.length < c) {
+                n = '0' + n;
+            }
+        
+            return n;
+        };
+
+        f = {
+            // Day of month w/leading 0; 01..31
+            d: function()
+            {
+                return _pad(f.j(), 2);
+            },
+        
+            // Shorthand day name; Mon - Sun
+            D: function()
+            {
+                return f.l().slice(0, 3);
+            },
+        
+            // Day of month; 1 - 31
+            j: function()
+            {
+                return jsdate.getDate();
+            },
+
+            // Full day name; Monday...Sunday
+            l: function()
+            {
+                return txt_words[f.w()] + 'day';
+            },
+        
+            // ISO-8601 day of week; 1[Mon]..7[Sun]
+            N: function()
+            {
+                return f.w() || 7;
+            },
+            
+            // Ordinal suffix for day of month; st, nd, rd, th
+            S: function()
+            {
+                var j = f.j();
+                var i = j % 10;
+        
+                if (i <= 3 && parseInt((j % 100) / 10, 10) == 1) {
+                    i = 0;
+                }
+                
+                return ['st', 'nd', 'rd'][i - 1] || 'th';
+            },
+        
+            // Day of week; 0[Sun]..6[Sat]
+            w: function()
+            {
+                return jsdate.getDay();
+            },
+            
+            // Day of year; 0..365
+            z: function()
+            {
+                var a = new Date(f.Y(), f.n() - 1, f.j());
+                var b = new Date(f.Y(), 0, 1);
+        
+                return Math.round((a - b) / 864e5);
+            },
+        
+            // ISO-8601 week number
+            W: function()
+            {
+                var a = new Date(f.Y(), f.n() - 1, f.j() - f.N() + 3);
+                var b = new Date(a.getFullYear(), 0, 4);
+        
+                return _pad(1 + Math.round((a - b) / 864e5 / 7), 2);
+            },
+        
+            // Full month name; January...December
+            F: function()
+            {
+                return txt_words[6 + f.n()];
+            },
+
+            // Month w/leading 0; 01...12
+            m: function() 
+            {
+                return _pad(f.n(), 2);
+            },
+        
+            // Shorthand month name; Jan...Dec
+            M: function()
+            {
+                return f.F().slice(0, 3);
+            },
+            
+            // Month; 1...12
+            n: function()
+            {
+                return jsdate.getMonth() + 1;
+            },
+
+            // Days in month; 28...31
+            t: function()
+            {
+                return (new Date(f.Y(), f.n(), 0)).getDate();
+            },
+        
+            // Is leap year?; 0 or 1
+            L: function()
+            {
+                var j = f.Y();
+                
+                return j % 4 === 0 & j % 100 !== 0 | j % 400 === 0;
+            },
+
+            // ISO-8601 year
+            o: function()
+            {
+                var n = f.n();
+                var W = f.W();
+                var Y = f.Y();
+
+                return Y + (n === 12 && W < 9 ? 1 : n === 1 && W > 9 ? -1 : 0);
+            },
+            
+            // Full year; e.g. 1980...2010
+            Y: function()
+            {
+                return jsdate.getFullYear();
+            },
+            
+            // Last two digits of year; 00...99
+            y: function()
+            {
+                return f.Y().toString().slice(-2);
+            },
+        
+            // am or pm
+            a: function()
+            {
+                return jsdate.getHours() > 11 ? 'pm' : 'am';
+            },
+
+            // AM or PM
+            A: function()
+            {
+                return f.a().toUpperCase();
+            },
+            
+            // Swatch Internet time; 000..999
+            B: function()
+            {
+                var H = jsdate.getUTCHours() * 36e2; // Hours
+                var i = jsdate.getUTCMinutes() * 60; // Minutes
+                var s = jsdate.getUTCSeconds();      // Seconds
+                
+                return _pad(Math.floor((H + i + s + 36e2) / 86.4) % 1e3, 3);
+            },
+            
+            // 12-Hours; 1..12
+            g: function()
+            {
+                return f.G() % 12 || 12;
+            },
+            
+            // 24-Hours; 0..23
+            G: function()
+            {
+                return jsdate.getHours();
+            },
+            
+            // 12-Hours w/leading 0; 01..12
+            h: function()
+            {
+                return _pad(f.g(), 2);
+            },
+        
+            // 24-Hours w/leading 0; 00..23
+            H: function()
+            {
+                return _pad(f.G(), 2);
+            },
+            
+            // Minutes w/leading 0; 00..59
+            i: function()
+            {
+                return _pad(jsdate.getMinutes(), 2);
+            },
+
+            // Seconds w/leading 0; 00..59
+            s: function()
+            {
+                return _pad(jsdate.getSeconds(), 2);
+            },
+
+            // Microseconds; 000000-999000
+            u: function()
+            {
+                return _pad(jsdate.getMilliseconds() * 1000, 6);
+            },
+        
+            // Timezone identifier; e.g. Atlantic/Azores, ...
+            e: function()
+            {
+                // The following works, but requires inclusion of
+                // the very large timezone_abbreviations_list()
+                // function.
+                //            
+                // return that.date_default_timezone_get();
+                //
+                console.log('Not supported (see source code of date() for timezone on how to add support)');
+                
+                return '';
+            },
+        
+            // DST observed?; 0 or 1
+            I: function()
+            {
+                // Compares Jan 1 minus Jan 1 UTC to Jul 1 minus Jul 1 UTC.
+                // If they are not equal, then DST is observed.
+                var a = new Date(f.Y(), 0);
+                
+                // Jan 1
+                var c = Date.UTC(f.Y(), 0);
+                
+                // Jan 1 UTC
+                var b = new Date(f.Y(), 6);
+                
+                // Jul 1
+                var d = Date.UTC(f.Y(), 6); // Jul 1 UTC
+                
+                return ((a - c) !== (b - d)) ? 1 : 0;
+            },
+        
+            // Difference to GMT in hour format; e.g. +0200
+            O: function()
+            {
+                var tzo = jsdate.getTimezoneOffset();
+                var a = Math.abs(tzo);
+            
+                return (tzo > 0 ? '-' : '+') + _pad(Math.floor(a / 60) * 100 + a % 60, 4);
+            },
+        
+            // Difference to GMT w/colon; e.g. +02:00
+            P: function()
+            {
+                var O = f.O();
+                
+                return (O.substr(0, 3) + ':' + O.substr(3, 2));
+            },
+        
+            // Timezone abbreviation; e.g. EST, MDT, ...
+            T: function()
+            {
+                // The following works, but requires inclusion of the
+                // very large timezone_abbreviations_list() function.
+                //
+                //var abbr, i, os, _default;
+                //
+                //if (!tal.length) {
+                //    tal = that.timezone_abbreviations_list();
+                //}
+                //if (that.php_js && that.php_js.default_timezone) {
+                //    _default = that.php_js.default_timezone;
+                //
+                //    for (abbr in tal) {
+                //        for (i = 0; i < tal[abbr].length; i++) {
+                //            if (tal[abbr][i].timezone_id === _default) {
+                //                return abbr.toUpperCase();
+                //            }
+                //        }
+                //    }
+                //}
+                //
+                //for (abbr in tal) {
+                //    for (i = 0; i < tal[abbr].length; i++) {
+                //        os = -jsdate.getTimezoneOffset() * 60;
+                //
+                //        if (tal[abbr][i].offset === os) {
+                //            return abbr.toUpperCase();
+                //        }
+                //    }
+                //}
+            
+                return 'UTC';
+            },
+        
+            // Timezone offset in seconds (-43200...50400)
+            Z: function()
+            {
+                return -jsdate.getTimezoneOffset() * 60;
+            },
+        
+            // ISO-8601 date.
+            c: function()
+            {
+                return 'Y-m-d\\TH:i:sP'.replace(formatChr, formatChrCb);
+            },
+
+            // RFC 2822
+            r: function()
+            {
+                return 'D, d M Y H:i:s O'.replace(formatChr, formatChrCb);
+            },
+
+            // Seconds since UNIX epoch
+            U: function()
+            {
+                return jsdate / 1000 | 0;
+            }
+        };
+
+        var date = function(format, timestamp)
+        {
+            that = this;
+
+            jsdate = (timestamp === undefined
+                        ? new Date()
+                        : (timestamp instanceof Date)
+                              ? new Date(timestamp)
+                              : new Date(timestamp * 1000) // UNIX timestamp (auto-convert to int)
+            );
+        
+            return format.replace(formatChr, formatChrCb);
+        };
+        
+        return date(format, timestamp);
+    };
+
+
+
+
+
+
+
+
 // End module pattern
 })(window, document);
 
@@ -8084,7 +8519,7 @@ backgroundRounded = opt.backgroundRounded || 0,
     RGraph.SVG.isString    = function (obj){return typeof obj === 'string';};
     RGraph.SVG.isNumber    = function (obj){return typeof obj === 'number';};
     RGraph.SVG.isTextual   = function(obj){return (typeof obj === 'string' || typeof obj === 'number');};
-    RGraph.SVG.isNumeric   = function(value){value=String(value);return Boolean(value.match(/^[-.0-9]+$/))||Boolean(value.match(/^[-.0-9]+e[-0-9]+$/))||(value==='Infinity')||(value==='-Infinity')||Boolean(value.match(/^[-.0-9]+x[0-9a-f]+$/i));};
+    RGraph.SVG.isNumeric   = function(value){if(RGraph.isArray(value)){return false;}value=String(value);return Boolean(value.match(/^-?[0-9]+(?:.[0-9]+)?$/))|| Boolean(value.match(/^-?[0-9]+(?:.[0-9+])?e-?[0-9]+$/))|| (value==='Infinity')|| (value==='-Infinity')|| !RGraph.isNullish(value.match(/^[0-9]+(?:.[0-9]+)?x[0-9a-f]+$/i));};
     RGraph.SVG.isBool      =
     RGraph.SVG.isBoolean   = function(obj){return typeof obj === 'boolean';};
     //RGraph.SVG.isArray Defined above
