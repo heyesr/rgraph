@@ -4,20 +4,19 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.datagrid.js" ></script>
-    <script src="../libraries/RGraph.common.moment.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
     <h1>An example of a datagrid using the columnsFormatter property</h1>
 
-    <p style="text-align: center">A datagrid using the <code>columnsFormatter</code> property on the date column:</p>
+    <p style="text-align: center">A datagrid <b>with</b> the <code>columnsFormatter</code> property on the date column:</p>
 
     <div id="rgraph-demo-html">
         <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
     </div>
 
-    <p  style="text-align: center">And without using formatting:</p>
+    <p  style="text-align: center">And <b>without</b> using formatting:</p>
 
     <div id="rgraph-demo-html">
         <div id="myGrid2" style="width: 700px; margin-left: auto; margin-right: auto"></div>
@@ -31,6 +30,7 @@
         //
         document.addEventListener('DOMContentLoaded', function ()
         {
+
             data = [
                 ['2006-04-01 23:59:59', 'Alf',     21],
                 ['2006-09-02 23:59:59', 'Bert',    10],
@@ -46,9 +46,10 @@
                 options: {
                     paging: false,
                     columnsHeaders: ['Date','Competitor','Score'],
+                    columnsFormatted: 0,
                     columnsFormatter: [function (opt)
                     {
-                        return moment(opt.value).format("MMMM Do YYYY");;
+                        return RGraph.PHP.date('H:i jS F Y', 'now +1d')
                     }]
                 }
             }).draw();

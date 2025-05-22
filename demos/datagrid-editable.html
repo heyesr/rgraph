@@ -10,18 +10,30 @@
 
 </head>
 <body>
-    <h1>A example of an editable datagrid</h1>
+    <h1>A example of an editable datagrid (with persistent storage)</h1>
 
-    <div id="rgraph-demo-html">
-        <!--
-            Note: Extra information when the edit has completed is
-            logged to the console. Press CTRL+SHIFT+J in Chrome to
-            see the console.
-        -->
-        <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+    <p>
+        This is an example of an editable datagrid where you can
+        double-click a cell, chage the contents and then press
+        <code>Enter</code> and it will be saved to the browsers
+        <code>localStorage</code> area. So you can refresh the
+        page and your edits will still be there. Most commonly, you
+        would send this information back to the server so that it
+        can be saved more permanently. You can do that by employing
+        the RGraph <code>ajax</code> functions, for example the
+        <code>RGraph.AJAX.post</code> function.
+    </p>
+
+    <div id="rgraph-demo-html" style="width: 700px; margin-left: auto; margin-right: auto">
+        <div id="myGrid" style="width: 100%"></div>
+        <p />
+        <button onclick="window.localStorage[key] = null;window.location = window.location;" style="font-size: 20pt">Reset data and reload</button> 
     </div>
     
+    
+    
     <script>
+
         //
         // Using the DOMContentLoaded event is not necessary but
         // is used in the RGraph demo pages due to a quirk of the
@@ -29,42 +41,88 @@
         //
         document.addEventListener('DOMContentLoaded', function ()
         {
-            var grid = new RGraph.Datagrid({
-                id: 'myGrid',
-                data: [
+        
+            function getOriginalData ()
+            {
+                return [
                     [324, 'Richard','Monday',98],
                     [468, 'Jacob',  'Friday', 78],
-                    [846, 'Freddy','Thursday',13],
-                    [442, 'Lizzy','Sunday',46]
-                ],
+                    [846, 'William','Tuesday',13],
+                    [345, 'Pete','Wednesday',13],
+                    [653, 'Hoolio','Monday',13],
+                    [169, 'Vera','Saturday',13],
+                    [842, 'Keith','Thursday',13],
+                    [111, 'Sydney','Friday',13],
+                    [546, 'Sally','Monday',13],
+                    [345, 'Charles','Monday',13],
+                    [278, 'Peter','Sunday',13],
+                    [345, 'Bill','Wednesday',13],
+                    [555, 'Olga','Tuesday',13],
+                    [784, 'Lucy','Thursday',13],
+                    [466, 'India','Friday',13],
+                    [312, 'Jemima','Sunday',13],
+                    [344, 'Gary','Tuesday',13],
+                    [684, 'Polly','Monday',13],
+                    [844, 'Jeff','Saturday',13],
+                    [977, 'Richard','Monday',13],
+                    [544, 'Lizzy','Sunday',46]
+                ];
+            }
+        
+            function loadData ()
+            {
+                var data;
+
+                if (!window.localStorage[key] || !window.localStorage[key] || !JSON.parse(window.localStorage[key])) {
+                    data = getOriginalData();
+                } else {
+                    data = JSON.parse(window.localStorage[key]);
+                }
+                
+                return data;
+            }
+            
+            function saveData (data)
+            {
+                window.localStorage[key] = JSON.stringify(data);
+            }
+
+            key  = 'rgraph-datagrid-editable-demo-data';            
+            data = loadData();
+
+            var grid = new RGraph.Datagrid({
+                id: 'myGrid',
+                data: data,
                 options: {
+                    pagingUrlUpdate: true,
+                    pagingUrlQueryStringParameter: 'page',
+                    pagingPerpage: 10,
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
                     columnsUnitsPost: [,,,'Kg'],
                     sortableColumns: [1,2,3],
+                    sortablePersistent: true,
                     editable: true,
-                    editableColumns: [3],
                     style: [
+                        'table thead tr th {background-color: black; color: white;}',
                         'tr td:nth-child(1) div {text-align: center;}'
                     ],
                     events: {
                         editcomplete: function (obj)
                         {
-                            alert('View the console to see what meta information is logged by this demo. Press CTRL+SHIFT+J in Google Chrome.');
-            
-                            var meta = RGraph.Registry.get('cell-edit-meta');
-                            
-                            console.log('Meta data:');
-                            console.log(meta);
-                            console.log('Original index: ' + grid.getOriginalIndex(meta.row));
-                            console.log('Full row data (after the edit has completed):');
-                            console.log(grid.row(meta.row));
+                            var meta  = RGraph.Registry.get('cell-edit-meta');
+                            var index = obj.getOriginalIndex(meta.row);
+
+                            data[index][meta.column] = meta.value;
+
+                            saveData(data);
                         }
                     }
                 }
             }).draw();
         });
     </script>
+    
     
     <script>showSource()</script>
     

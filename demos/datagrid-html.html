@@ -27,8 +27,28 @@
             var data = [
                 [324, 'Richard','Monday',98],
                 [468, 'Jacob',  'Friday', 78],
-                [846, 'Freddy','Thursday',13],
-                [442, 'Lizzy','Sunday',46]
+                [846, 'Freddy', 'Thursday',13],
+                [255, 'Jim', 'Saturday',13],
+                [136, 'Bob', 'Sunday',13],
+                [643, 'Rob', 'Tuesday',13],
+                [846, 'Tom', 'Monday',13],
+                [111, 'Pob', 'Sunday',13],
+                [128, 'Col', 'Sunday',13],
+                [256, 'Joe', 'Saturday',13],
+                [321, 'Dez', 'Thursday',13],
+                [438, 'Fay', 'Tuesday',13],
+                [956, 'Sal', 'Wednesday',13],
+                [454, 'Tre', 'Tuesday',13],
+                [133, 'Gov', 'Thursday',13],
+                [744, 'Lee', 'Friday',13],
+                [747, 'Dee', 'Monday',13],
+                [456, 'Ann', 'Thursday',13],
+                [311, 'Moe', 'Sunday',13],
+                [688, 'Cal', 'Saturday',13],
+                [688, 'Caz', 'Sunday',13],
+                [433, 'Wez', 'Monday',13],
+                [454, 'Les', 'Friday',13],
+                [442, 'Lizzy',  'Sunday',46]
             ];
 
             grid = new RGraph.Datagrid({
@@ -39,7 +59,9 @@
                     columnsUnitsPre:['<i style="color: red">'],
                     columnsUnitsPost:['</i>'],
                     columnsWidths: [50],
-                    columnsHTML:[0] // An array of column indexes
+                    columnsHTML: [0],     // A range of column indexes
+                    columnsFormatted: [0], // A range of column indexes
+                    pagingPerpage: 10
                 }
             }).draw();
         });
