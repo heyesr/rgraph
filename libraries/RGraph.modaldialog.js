@@ -38,7 +38,34 @@
         //
         Show: function (id, width = null)
         {
+            // First things first - accommodate some BC and move
+            // all the options in the config so that this:
             //
+            //  ModalDialog.show({
+            //      id: 'string: Help!',
+            //      options: {
+            //          styleDialog: {
+            //              backgroundColor: 'pink',
+            //              border: '5px solid red'
+            //          }
+            //      }
+            // });
+            //
+            // becomes this:
+            //
+            //  ModalDialog.show({
+            //      id: 'string: Help!'
+            //      styleDialog: {
+            //          backgroundColor: 'pink',
+            //          border: '5px solid red'
+            //     }
+            // });
+            if (ModalDialog.isObject(id) && ModalDialog.isObject(id.options) ) {
+                for (var i in id.options) {
+                    id[i] = id.options[i];
+                }
+            }
+
             // Accommodate this syntax:
             //
             // ModalDialog.show({
@@ -403,6 +430,27 @@
 
 
 
+
+
+
+
+    //
+    // Is something an object?
+    //
+    // @param mixed obj The variable to test
+    //
+    ModalDialog.isObject = function(obj)
+    {
+        return (obj && typeof obj === 'object' && obj.constructor.toString().toLowerCase().indexOf('object') > 0) ? true : false;
+    };
+
+
+
+
+
+
+
+
     // Aliases
     ModalDialog.Open                   = ModalDialog.Show;
     ModalDialog.open                   = ModalDialog.Show;
@@ -412,7 +460,7 @@
     ModalDialog.hide                   = ModalDialog.Close;
     ModalDialog.close                  = ModalDialog.Close;
     ModalDialog.addCustomEventListener = ModalDialog.AddCustomEventListener;
-    
+
     // Lowercase all of the function names
     for (i in ModalDialog) {
         if (typeof ModalDialog[i] === 'function') {

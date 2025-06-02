@@ -71,7 +71,11 @@
         
         bar.$1.onclick = function (e, shape)
         {
-            ModalDialog.show('string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>');
+            ModalDialog.show({
+                id: 'string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>',
+                options: {
+                }
+            });
         
         }
     </script>

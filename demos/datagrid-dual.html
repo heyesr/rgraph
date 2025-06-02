@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -11,11 +11,15 @@
     <h1>An example of multiple datagrids on a page</h1>
 
     <div id="rgraph-demo-html">
-        <p style="text-align: center">A datagrid with selectable rows...</p>
-        <div id="myGrid1" style="width: 700px; margin-left: auto; margin-right: auto"></div>
-        <p style="text-align: center">And the second datagrid...</p>
+        
+        <p style="text-align: center">The first datagrid...</p>
         <div id="myGrid2" style="width: 700px; margin-left: auto; margin-right: auto"></div>
-        <p style="text-align: center">And the third (editable) datagrid...</p>
+        
+        <p style="text-align: center">
+            And the second (editable) datagrid. When changing the
+            <b>Amount</b> column the amount will only be accepted
+            if it's 100 or less.
+        </p>
         <div id="myGrid3" style="width: 700px; margin-left: auto; margin-right: auto"></div>
     </div>
     
@@ -28,45 +32,38 @@
         document.addEventListener('DOMContentLoaded', function ()
         {
             new RGraph.Datagrid({
-                id: 'myGrid1',
-                data: [
-                    [324, 'Richard','Monday',98],
-                    [468, 'Jacob',  'Friday', 78],
-                    [846, 'Freddy','Thursday',13],
-                    [442, 'Lizzy','Sunday',46]
-                ],
-                options: {
-                    columnsHeaders: ['ID','Name','Day','Score'],
-                    columnsWidths: [50],
-                    sortablePersistent: true,
-                    rowsSelectable: true,
-                    rowsSelectablePersistent: true,
-                    rowsSelectableIds: [1,2,3,4],
-                    style: [
-                        'thead tr th div.rgraph-datagrid-cell-content {color: white; background-color: black;}',
-                        'tbody tr td div.rgraph-datagrid-cell-content {border: none;}',
-                        'tbody tr th div.rgraph-datagrid-cell-content span.rgraph-cell-sort-pointer {color: white}',
-                        'tbody tr td:nth-child(1) div.rgraph-datagrid-cell-content {text-align: center;}'
-                    ]
-                }
-            }).draw();
-
-            new RGraph.Datagrid({
                 id: 'myGrid2',
                 data: [
                     [324, 'Horatio','Tuesday',   84],
                     [468, 'Liam',   'Wednesday', 32],
                     [846, 'Bill',   'Monday',    62],
-                    [442, 'Gemma',  'Saturday',  15]
+                    [435, 'Richy',   'Tuesday',    42],
+                    [438, 'Milly',   'Thursday',    36],
+                    [534, 'Yolander',   'Saturday',    25],
+                    [222, 'Geoff',   'Sunday',    66],
+                    [356, 'Xander',   'Teuesday',    33],
+                    [844, 'Dirk',   'Sunday',    85],
+                    [765, 'Jake',   'Saturday',    46],
+                    [875, 'Lou',   'Monday',    42],
+                    [348, 'India',   'Tuesday',    13],
+                    [499, 'Vera',   'Monday',    26],
+                    [522, 'Gary',   'Friday',    63],
+                    [135, 'Olga',   'Thursday',    81],
+                    [685, 'Perry',   'Tuesday',    33],
+                    [842, 'Carly',   'Tuesday', 84],
+                    [269, 'Neville',   'Saturday', 84],
+                    [867, 'Bill',   'Monday', 21],
+                    [442, 'Gemma',  'Saturday', 15]
                 ],
                 options: {
+                    pagingPerPage: 5,
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
                     sortablePersistent: true
                 }
             }).draw();
 
-            new RGraph.Datagrid({
+            grid = new RGraph.Datagrid({
                 id: 'myGrid3',
                 data: [
                     [324, 'Jemima',  'Tuesday',   84],
@@ -75,7 +72,18 @@
                     [442, 'Gary',    'Saturday',  15]
                 ],
                 options: {
-                    editable: true
+                    editable: true,
+                    sortable: true,
+                    columnsHeaders: ['ID','Name','Day','Amount'],
+                    events: {
+                        beforeeditsave: function (obj, meta)
+                        {
+                            if (meta.column == 3 && parseInt(meta.value) > 100) {
+                                alert('Amounts must be 100 or less!');
+                                meta.cancelEdit = true;
+                            }
+                        }
+                    }
                 }
             }).draw();
         });

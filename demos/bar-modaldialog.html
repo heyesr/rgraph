@@ -12,9 +12,17 @@
 </head>
 <body>
     <h1>A Bar chart in a ModalDialog</h1>
+    
+    <div id="rgraph-demo-html">
+        Nothing to see here!
+    </div>
 
     <script>
-        ModalDialog.Show('string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>');
+        ModalDialog.Show({
+            id: 'string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>',
+            options: {
+            }
+        });
 
         new RGraph.Bar({
             id: 'cvs',

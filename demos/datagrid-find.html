@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -13,7 +13,8 @@
     <div id="rgraph-demo-html">
         <div style="width: 700px; margin-left: auto; margin-right: auto">
             <div id="myGrid"></div>
-            <button style="font-size: 150%; cursor: pointer" onclick="results = grid.find(/liz/i); console.log(results); console.log(grid.row(results.row)); console.log(grid.getOriginalIndex(results.row));">Find Lizzy...</button>
+            <button style="font-size: 150%; cursor: pointer" onclick="results = grid.find(/liz/i); console.log(results);">Find Lizzy</button>
+            <button style="font-size: 150%; cursor: pointer" onclick="results = grid.find(42, {all: true}); console.log(results);">Find all occurrences of 42</button>
             <p>
                 (results are logged to the console. Press CTRL+SHIFT+J in Chrome)
             </p>
@@ -33,14 +34,15 @@
                 id: 'myGrid',
                 data: [
                     [324, 'Richard','Monday',98],
-                    [468, 'Jacob',  'Friday', 78],
+                    [468, 'Jacob',  'Friday', 42],
                     [846, 'Freddy','Thursday',13],
-                    [442, 'Lizzy','Sunday',46]
+                    [442, 'Lizzy','Sunday',42]
                 ],
                 options: {
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
                     sortableColumns: [1,2,3],
+                    rowsIDs: [1111,2222,3333,4444],
                     style: [
                         'tr td:nth-child(1) div {text-align: center;}'
                     ]

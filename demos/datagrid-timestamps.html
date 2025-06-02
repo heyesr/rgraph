@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -32,12 +32,12 @@
         {
 
             data = [
-                ['2006-04-01 23:59:59', 'Alf',     21],
-                ['2006-09-02 23:59:59', 'Bert',    10],
-                ['2006-08-03 23:59:59', 'Charlie', 13],
-                ['2006-06-04 23:59:59', 'Dave',    14],
-                ['2006-03-05 23:59:59', 'Elgar',   15],
-                ['2006-05-06 23:59:59', 'Frank',   12]
+                ['2002-04-01 09:59:59', 'Alf',     21],
+                ['2004-09-02 19:59:59', 'Bert',    10],
+                ['2009-08-03 14:59:59', 'Charlie', 13],
+                ['2013-06-04 08:59:59', 'Dave',    14],
+                ['2011-03-05 20:59:59', 'Elgar',   15],
+                ['2002-05-06 22:59:59', 'Frank',   12]
             ];
             
             new RGraph.Datagrid({
@@ -45,11 +45,12 @@
                 data: data,
                 options: {
                     paging: false,
+                    search: true,
                     columnsHeaders: ['Date','Competitor','Score'],
-                    columnsFormatted: 0,
+                    columnsFormatted: [0], // First column
                     columnsFormatter: [function (opt)
                     {
-                        return RGraph.PHP.date('H:i jS F Y', 'now +1d')
+                        return RGraph.PHP.date('H:i jS F Y', RGraph.parseDate(opt.value, 's'))
                     }]
                 }
             }).draw();
@@ -58,6 +59,7 @@
                 id: 'myGrid2',
                 data: data,
                 options: {
+                    search: true,
                     paging: false,
                     columnsHeaders: ['Date','Competitor','Score']
                 }

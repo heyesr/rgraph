@@ -3,13 +3,17 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
     <h1>A basic example of a datagrid</h1>
 
+    <p>
+        The first column is hidden in this datagrid.
+    </p>
+    
     <div id="rgraph-demo-html">
         <div id="myGrid" style="width: 700px; margin-left: auto; margin-right: auto"></div>
     </div>
@@ -28,16 +32,38 @@
                     [324, 'Richard','Monday',98],
                     [468, 'Jacob',  'Friday', 78],
                     [846, 'Freddy','Thursday',13],
-                    [442, 'Lizzy','Sunday',46]
+                    [123, 'Lizzy','Friday',46],
+                    [456, 'Jo','Monday',46],
+                    [789, 'Reggy','Friday',46],
+                    [435, 'Louis','Sunday',46],
+                    [355, 'Neil','Monday',46],
+                    [666, 'Bill','Friday',46],
+                    [421, 'Paul','Sunday',46],
+                    [356, 'Vera','Thursday',46],
+                    [543, 'Carl','Monday',46],
+                    [899, 'Dave','Friday',46],
+                    [941, 'Gary','Sunday',46],
+                    [152, 'Olga','Sunday',46],
+                    [358, 'Xander','Thursday',46],
+                    [846, 'Fay','Sunday',46],
+                    [152, 'Ivy','Sunday',46],
+                    [266, 'Edgar','Sunday',46],
+                    [345, 'Alf','Friday',46],
+                    [488, 'Sue','Sunday',46],
+                    [956, 'Will','Monday',46],
+                    [455, 'Zoe','Friday',46]
                 ],
                 options: {
                     columnsHeaders: ['ID','Name','Day','Score'],
-                    columnsWidths: [50],
+                    columnsWidths: [10],
+                    pagingPerpage: 10,
                     //sortableColumns: [1,2,3],
                     style: [
+                        'div#rgraph-datagrid-paging-links {width: calc(100% - 10px);margin-left: auto; margin-right: auto;}',
+                        'table {margin-left: auto;margin-right: auto;}',
                         'tr th div {color: white; background-color: black;;}',
                         'tr th span.rgraph-cell-sort-pointer {color: white}',
-                        'tr td:nth-child(1) div {text-align: center;}'
+                        'tr :where(th,td):nth-child(1) {display: none;}'
                     ]
                 }
             }).draw();

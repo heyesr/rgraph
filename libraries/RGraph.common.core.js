@@ -3228,7 +3228,7 @@
     //
     RGraph.fireCustomEvent = function ()
     {
-        var args = RGraph.getArgs(arguments, 'object,name');
+        var args = RGraph.getArgs(arguments, 'object,name,meta');
 
         // Prepend the name with "on" if necessary
         if (args.name.substr(0,2) !== 'on') {
@@ -3236,7 +3236,7 @@
         }
         
         // The event name without preceding "on", eg
-        // draw or firstdraw or beforedraw etc.
+        // draw, firstdraw or beforedraw etc.
         var eventName = args.name.replace(/^on/,'');
 
         if (args.object && args.object.isrgraph) {
@@ -3251,7 +3251,7 @@
             //}
             // DOM1 style of adding custom events
             if (args.object[args.name]) {
-                (args.object[args.name])(args.object);
+                (args.object[args.name])(args.object, args.meta);
             }
 
             var uid = args.object.uid;
@@ -3263,7 +3263,7 @@
 
                 for(var j=0; j<RGraph.events[uid].length; ++j) {
                     if (RGraph.events[uid][j] && RGraph.events[uid][j][1] === args.name) {
-                        RGraph.events[uid][j][2](args.object);
+                        RGraph.events[uid][j][2](args.object, args.meta);
                     }
                 }
             }
@@ -3272,10 +3272,10 @@
             // Summer 2025.
             if (args.object.properties.events && args.object.properties.events[eventName] && (RGraph.isFunction(args.object.properties.events[eventName]) || RGraph.isArray(args.object.properties.events[eventName]))) {
                 if (RGraph.isFunction (args.object.properties.events[eventName])) {
-                    (args.object.properties.events[eventName])(args.object);
+                    (args.object.properties.events[eventName])(args.object, args.meta);
                 } else if (RGraph.isArray(args.object.properties.events[eventName])) {
                     for (var i=0; i<args.object.properties.events[eventName].length; ++i) {
-                        (args.object.properties.events[eventName][i])(args.object);
+                        (args.object.properties.events[eventName][i])(args.object, args.meta);
                     }
                 }
             }
@@ -5842,12 +5842,14 @@
     //                      o str
     // OR
     //
-    // @param  string str The string to parse
-    // @return number     A number, as returned by Date.parse()
+    // @param  string str  The string to parse
+    // @param  string unis Either ms (milliseconds - the default)
+    //                     or s for seconds.
+    // @return number      A number, as returned by Date.parse()
     //
     RGraph.parseDate = function ()
     {
-        var args = RGraph.getArgs(arguments, 'str');
+        var args = RGraph.getArgs(arguments, 'str,units');
         
         // Force to a string
         args.str = String(args.str);
@@ -5945,8 +5947,10 @@
             String(defaults.minutes).length   === 1 ? '0' + (defaults.minutes)   : defaults.minutes,
             String(defaults.seconds).length   === 1 ? '0' + (defaults.seconds)   : defaults.seconds
         );
-
-        return Date.parse(args.str);
+        
+        var ms = Date.parse(args.str);
+        
+        return args.units === 's' ? ms / 1000 : ms;
 
         //
         // Support functions
@@ -10997,6 +11001,31 @@
         
         // Truncate the queue
         RGraph.Queue.__store__[name] = [];
+    };
+
+
+
+
+
+
+
+
+    //
+    // Converts HTML entities back to their real character
+    // values.
+    //
+    // @param string text The string of text containing entities
+    // @return string The "unentified" text
+    //
+    RGraph.entitiesToText = function ()
+    {
+        var args       = RGraph.getArgs(arguments, 'text');
+        var parser     = new DOMParser;
+        var dom        = parser.parseFromString(
+            '<!doctype html><body>' + args.text,
+            'text/html'
+        );
+        return dom.body.textContent;
     };
 
 

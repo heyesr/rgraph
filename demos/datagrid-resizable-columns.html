@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -41,7 +41,7 @@
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
                     columnsResizable: true,
-                    columnsResizableHandles: [false],
+                    columnsResizableHandles: '1-',
                     columnsResizablePersistent: true
                 }
             }).draw();

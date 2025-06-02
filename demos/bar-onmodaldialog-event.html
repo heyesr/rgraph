@@ -14,12 +14,6 @@
     
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-        
-        <style>
-            .modaldialog_background {
-                background-color: rgba(0,0,0,0.5) ! important;
-            }
-        </style>
     </div>
     
     <script>
@@ -44,9 +38,15 @@
                             console.log('This alert was triggered by the modaldialog DOM1 style event listener');
                         };
             
-                        ModalDialog.Show('string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>');
-                        ModalDialog.enlargeOnClose = true;
-                        ModalDialog.closeOnBackgroundClick = true;
+                        ModalDialog.Show({
+                            id: 'string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>',
+                            options: {
+                                zoomFactorEnd: 2,
+                                styleBackground: {
+                                    backgroundColor: '#0008'
+                                }
+                            }
+                        });
                     },
                     mousemove : function (e, shape)
                     {

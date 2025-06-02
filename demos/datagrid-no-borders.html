@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
@@ -33,8 +33,10 @@
                 options: {
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
+                    paging: false,
                     style: [
-                        'td div {border: 0 transparent solid !important;}',
+                        'table thead tr th div {border: none;background-color: black; color:white;}',
+                        'table tbody tr td div {border: none;}',
                     ]
                 }
             }).draw();

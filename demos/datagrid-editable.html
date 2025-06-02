@@ -3,7 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.datagrid.js" ></script>
+    <script src="../libraries/RGraph.datagrid.js" ></script>
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
     
@@ -14,7 +15,8 @@
 
     <p>
         This is an example of an editable datagrid where you can
-        double-click a cell, chage the contents and then press
+        double-click a cell in the score column, change the
+        contents and then press
         <code>Enter</code> and it will be saved to the browsers
         <code>localStorage</code> area. So you can refresh the
         page and your edits will still be there. Most commonly, you
@@ -23,11 +25,19 @@
         the RGraph <code>ajax</code> functions, for example the
         <code>RGraph.AJAX.post</code> function.
     </p>
+    
+    <p>
+        The score column has validation on it so you must enter a
+        value below 1000 or the edit will be rejected and not saved.
+        This is done using the <code>beforeeditsave</code> event.
+    </p>
 
     <div id="rgraph-demo-html" style="width: 700px; margin-left: auto; margin-right: auto">
         <div id="myGrid" style="width: 100%"></div>
-        <p />
-        <button onclick="window.localStorage[key] = null;window.location = window.location;" style="font-size: 20pt">Reset data and reload</button> 
+        
+        <p>
+            <button onclick="window.resetGrid()" style="font-size: 20pt">Reset data and reload</button> 
+        </p>
     </div>
     
     
@@ -41,7 +51,37 @@
         //
         document.addEventListener('DOMContentLoaded', function ()
         {
-        
+            //
+            // This function is called from the reset button and
+            // resets the data for the datagrid, the sorting (which
+            // is done by removing the querystring parameter from
+            // the URL) and the current sort (if there is any).
+            //
+            window.resetGrid = function ()
+            {
+                // Remove any stored data so that it returns to the
+                // default.
+                window.localStorage[key] = null;
+                
+                // Remove the page number querystring parameter
+                var url = new window.URL(location.href);
+                    url.searchParams.delete('page');
+                
+                
+                // Reset the sort column and direction.
+                grid.resetSortData();
+                
+                // Redirect back to ourselves
+                window.location.href = url.toString();
+            };
+
+
+
+
+            //
+            // This function returns the orginal data
+            // that's shown in the datagrid.
+            //
             function getOriginalData ()
             {
                 return [
@@ -68,7 +108,13 @@
                     [544, 'Lizzy','Sunday',46]
                 ];
             }
-        
+
+
+
+            //
+            // Load the data from the localStorage area in the
+            // browser.
+            //
             function loadData ()
             {
                 var data;
@@ -81,16 +127,43 @@
                 
                 return data;
             }
-            
+
+
+
+
+            //
+            // Save the data back to the localStorage area.
+            //
             function saveData (data)
             {
                 window.localStorage[key] = JSON.stringify(data);
             }
 
-            key  = 'rgraph-datagrid-editable-demo-data';            
+
+
+
+            //
+            // This is the key used in the localStorage variable.
+            //
+            key  = 'rgraph-datagrid-editable-demo-data';
+
+
+
+
+            //
+            // Load the data. This either gets it from localStorage
+            // or if it's not there the original data is used.
+            //
             data = loadData();
 
-            var grid = new RGraph.Datagrid({
+
+
+
+            //
+            // Configure and shown the datagrid. This is
+            // a GLOBAL variable!!
+            //
+            grid = new RGraph.Datagrid({
                 id: 'myGrid',
                 data: data,
                 options: {
@@ -99,22 +172,67 @@
                     pagingPerpage: 10,
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
+                    columnsFormatted: 3,
                     columnsUnitsPost: [,,,'Kg'],
                     sortableColumns: [1,2,3],
                     sortablePersistent: true,
                     editable: true,
+                    editableColumns: 3,
+                    search: true,
                     style: [
                         'table thead tr th {background-color: black; color: white;}',
                         'tr td:nth-child(1) div {text-align: center;}'
                     ],
                     events: {
-                        editcomplete: function (obj)
+                        // This event is fired after the edit has 
+                        // finished (eg when the user presses enter)
+                        // before the new value is updated in the
+                        // data. You can use this event to validate
+                        // the edit and reject it if you want to. To
+                        //reject the edit you simply set the
+                        // cancelEdit property on the meta data.
+                        // This is shown below at the end of this
+                        // function.
+                        beforeeditsave: function (obj, meta)
                         {
-                            var meta  = RGraph.Registry.get('cell-edit-meta');
+                            if (meta.column === 3 && meta.value > 100 || !RGraph.isNumeric(meta.value) ) {
+
+                                //alert('Old value: ' + meta.original_value);
+                                //alert('New value: ' + meta.value);
+                                ModalDialog.topbar = false;
+                                ModalDialog.show({
+                                    id: 'string:<h1 style="margin-top: 10px">An error occurred!</h1><p><b>The value that you entered was either too high or not a number at all.<br /> Values that you enter must be a number that is at most 100kg!</b></p>',
+                                    options: {
+                                        styleDialog: {
+                                            padding: '25px',
+                                            backgroundColor: '#fff',
+                                            border: '5px solid red'
+                                        },
+                                        styleTopbar: {
+                                            display: 'none'
+                                        }
+                                    }
+                                });
+
+                                meta.cancelEdit = true;
+                            }
+                        },
+                        
+                        // This event is fired when the edit has
+                        // been saved (locally). You can therefore
+                        // use this event to transfer the new value
+                        // back to your server so that it can be
+                        // either saved to disk or your database
+                        // can be updated.
+                        //
+                        editcomplete: function (obj, meta)
+                        {
                             var index = obj.getOriginalIndex(meta.row);
 
                             data[index][meta.column] = meta.value;
 
+                            // Save the data. In this example the
+                            // data is just save to localStorage.
                             saveData(data);
                         }
                     }
