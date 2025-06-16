@@ -565,8 +565,8 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
             // MUST be the first thing done after clipping is installed!
             //

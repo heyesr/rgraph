@@ -126,12 +126,11 @@ a:visited {
     color: #3EA6EB;
 }
 
+/* Code highlighting is no more */
 code,
 span.inline-code-highlight {
-    padding: 3px;
-    background-color: #eee;
-    font-family: Monospace;
-    white-space: nowrap;
+    background-color: ;
+    font-family: sans-serif;
 }
 
 pre,

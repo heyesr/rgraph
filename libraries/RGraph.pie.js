@@ -2427,9 +2427,12 @@
 
 
         //
-        // This returns the angle for a value based around the maximum number
+        // This returns the angle for a value based around the
+        // maximum number.
         // 
         // @param number value The value to get the angle for
+        //
+        // *** IS THIS METHOD USED OR EVEN RELEVANT? ***
         //
         this.getAngle = function (value)
         {
@@ -2439,7 +2442,7 @@
             
             var angle = (value / this.total) * RGraph.TWOPI;
     
-            // Handle the origin (it can br -HALFPI or 0)
+            // Handle the origin (it can be -HALFPI or 0)
             angle += properties.origin;
     
             return angle;
