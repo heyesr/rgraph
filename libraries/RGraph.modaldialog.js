@@ -24,7 +24,13 @@
            styleDialog: {},
        styleBackground: {},
            styleTopbar: {},
-            pageScroll: false
+            pageScroll: false,
+         rotationStart: '45deg',
+           rotationEnd: '45deg',
+        translateFromX: '0px',
+        translateFromY: '0px',
+          translateToX: '0px',
+          translateToY: '0px',
         },
 
 
@@ -230,7 +236,8 @@
                 ModalDialog.dialog.style.paddingTop      = ModalDialog.options.topbar ? '25px' : '5px'
                 ModalDialog.dialog.style.opacity         = 0;
                 ModalDialog.dialog.style.transition      = '0.25s opacity ease-out, 0.25s transform ease-out';
-                ModalDialog.dialog.style.transform       = 'scale(' + ModalDialog.options.zoomFactorStart + ')';
+                ModalDialog.dialog.style.transform       = 'scale(' + ModalDialog.options.zoomFactorStart + ') rotate(' + ModalDialog.options.rotationStart + ') translate(' + ModalDialog.options.translateFromX + ',' + ModalDialog.options.translateFromY + ')';
+
 
                 //if (document.all) {
                 //    ModalDialog.dialog.style.zIndex = 32767;
@@ -334,7 +341,7 @@
             if (ModalDialog.dialog) {
                 ModalDialog.dialog.style.opacity = 0;
                 
-                ModalDialog.dialog.style.transform = 'scale(' + ModalDialog.options.zoomFactorEnd + ')'
+                ModalDialog.dialog.style.transform = 'scale(' + ModalDialog.options.zoomFactorEnd + ') rotate(' + ModalDialog.options.rotationEnd + ') translate(' + ModalDialog.options.translateToX + ',' + ModalDialog.options.translateToY + ')'
             }
     
             if (ModalDialog.background) {
