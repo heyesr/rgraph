@@ -1285,12 +1285,6 @@
             //
             RGraph.fireCustomEvent(this, 'ondraw');
 
-// IN PROGRESS
-//
-// Now massage the coords to account for scaling if it's
-// implemented.
-
-
 
 
 
