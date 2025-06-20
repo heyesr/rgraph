@@ -555,10 +555,14 @@
         //
         this.draw = function ()
         {
+
+            // MUST be the second thing that's done!!
+            
             //
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
 
 
 

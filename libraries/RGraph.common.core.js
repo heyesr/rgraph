@@ -1502,7 +1502,26 @@
         if (   typeof window.event.offsetX === 'number'
             && typeof window.event.offsetY === 'number'
            ) {
-           return [window.event.offsetX, window.event.offsetY];
+           
+           var ret = [
+                window.event.offsetX,
+                window.event.offsetY
+            ];
+            
+            //
+            // Is the canvas scaled in order for it to look much
+            // nicer. If so, the scaling needs to be accounted
+            // for here.
+            //
+            var obj = window.event.target.__object__;
+            var scaled = obj.properties.scaled;
+
+            if (scaled){
+                ret[0] *= obj.properties.scaledFactor;
+                ret[1] *= obj.properties.scaledFactor;
+            }
+
+            return ret;
         }
 
         var args = RGraph.getArgs(arguments, 'event');

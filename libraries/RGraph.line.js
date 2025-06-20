@@ -450,7 +450,10 @@
 
             lines:                  null, // Used to show an average line indicator (for example)
             
-            events:                 {}
+            events:                 {},
+            
+            scaled:                 false,
+            scaledFactor:           2
         }
 
         //
@@ -621,7 +624,7 @@
         //
         this.draw = function ()
         {
-            // MUST be the first thing done!
+            // MUST be the first thing that's done!!
             if (typeof properties.backgroundImage == 'string') {
                 RGraph.drawBackgroundImage(this);
             }
@@ -1282,6 +1285,11 @@
             //
             RGraph.fireCustomEvent(this, 'ondraw');
 
+// IN PROGRESS
+//
+// Now massage the coords to account for scaling if it's
+// implemented.
+
 
 
 
@@ -1454,6 +1462,7 @@ data_point *= this.growEffectMultiplier;
                 //
                 // Add the coords to an array
                 //
+
                 this.coords.push([xPos, yPos]);
                 lineCoords.push([xPos, yPos]);
             }
@@ -2394,7 +2403,7 @@ data_point *= this.growEffectMultiplier;
                 mouseXY = RGraph.getMouseXY(e),
                 mouseX  = mouseXY[0],
                 mouseY  = mouseXY[1];
-            
+
             // This facilitates you being able to pass in the bar object as a parameter instead of
             // the function getting it from the object
             if (arguments[1]) {
@@ -4188,7 +4197,7 @@ data_point *= this.growEffectMultiplier;
                 return true;
             }
 
-            if (RGraph.isArray(properties.adjustableOnly) && properties.adjustableOnly[shape.sequentialIndex]) {
+            if (RGraph.isArray(this.properties.adjustableOnly) && properties.adjustableOnly[shape.sequentialIndex]) {
                 return true;
             }
 
@@ -4416,7 +4425,17 @@ data_point *= this.growEffectMultiplier;
                 tooltip  = args.tooltip,
                 index    = args.index,
                 canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
+                coords   = RGraph.arrayClone(this.coords[args.index], true);
+
+                //
+                // SCALING
+                //
+                // Account for the (6.23) scaling
+                //
+                if (this.properties.scaled) {
+                    coords[0] /= 2;
+                    coords[1] /= 2;
+                }
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (

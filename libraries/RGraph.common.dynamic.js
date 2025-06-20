@@ -1163,11 +1163,12 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
         var mouseY  = mouseXY[1];
         var canvas  = e.target;
 
+
         //
         // Tooltips cause the mouse pointer to change
         //
         var objects = RGraph.OR.getObjectsByCanvasID(canvas.id);
-        
+
         for (var i=0,len=objects.length; i<len; i+=1) {
             if ((objects[i].getShape && objects[i].getShape(e)) || (objects[i].overChartArea && objects[i].overChartArea(e))) {
                 var obj = objects[i];
