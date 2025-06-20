@@ -1,0 +1,118 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A scaled line chart</h1>
+    
+    <p>
+        This is an early preview of a new feature of the Line
+        chart. This feature is by no means complete - there's a lot
+        that needs to be done to roll it out to the rest of the
+        canvas charts. But I think that you'll agree - the increase
+        in the quality of the text is well worth it!
+    </p>
+    
+    <div id="rgraph-demo-html">
+        <div>
+            <canvas id="cvs1" width="750" height="300">[No canvas support]</canvas><br />
+            <canvas id="cvs2" width="750" height="300">[No canvas support]</canvas>
+        </div>
+    </div>
+    
+    <script>
+        line_scaled = new RGraph.Line({
+            id: 'cvs1',
+            data: DATA = [8,7,6,4,9,5,6],
+            options: CONF = {
+                scaled: true,
+                title: 'A scaled Line chart',
+                marginTop: 40,
+                marginBottom: 55,
+                marginLeft: 40,
+                marginRight: 55,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                linewidth: 25,
+                shadow: true,
+                shadowOffsetx: 5,
+                shadowOffsety: 5,
+                yaxisLabelsOffsetx: -10,
+                xaxisLabelsOffsety: 8,
+                xaxisTickmarksLength: 10,
+                yaxis: false,
+                xaxisLinewidth: 2,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                highlightPointRadius: 5,
+                shadowOffsetx: 1,
+                shadowOffsety: 1,
+                spline: true,
+                tooltips: 'Yippee! (index: %{index})',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                textSize: 14
+            }
+        });
+
+
+        line_original = new RGraph.Line({
+            id: 'cvs2',
+            data: DATA,
+            options: {
+                ...CONF,
+                scaled: false,
+                linewidth: 13,
+                tooltips: 'A regular Line chart',
+                title: 'A regular line chart'
+            }
+        }).trace({frames: 45});
+    
+    
+        // Draw the chart but scaled up
+        function scaledDraw(obj)
+        {
+            var factor = 2;
+    
+            obj.canvas.style.width  = obj.canvas.width + 'px';
+            obj.canvas.style.height = obj.canvas.height + 'px';
+    
+            obj.canvas.width  *= factor;
+            obj.canvas.height *= factor;
+    
+            // Increase the size of various properties
+            for (v of ['marginInner',          'marginLeft',
+                       'marginRight',          'marginTop',
+                       'marginBottom',         'backgroundGridLinewidth',
+                       'textSize',             'titleSize',
+                       'xaxisLinewidth',       'yaxisLinewidth',
+                       'xaxisTickmarksLength', 'yaxisTickmarksLength',
+                       'xaxisLabelsOffsety',   'yaxisLabelsOffsetx',
+                       'tooltipsHotspotSize',  'tickmarksSize',
+                       'tickmarksStyleDotLinewidth', 'labelsAboveSize',
+                       'shadowOffsetx',        'shadowOffsety',
+                       'highlightPointRadius']) {
+                
+                if (RGraph.isNumeric(obj.properties[v])) {
+                    obj.properties[v] *= factor;
+                }
+            }
+    
+    
+            obj.trace({frames: 45});
+        };
+        
+        scaledDraw(line_scaled);
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
