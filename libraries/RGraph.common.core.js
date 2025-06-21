@@ -1514,9 +1514,7 @@
             // for here.
             //
             var obj = window.event.target.__object__;
-            var scaled = obj.properties.scaled;
-
-            if (scaled){
+            if (obj && obj.properties.scaled) {
                 ret[0] *= obj.properties.scaledFactor;
                 ret[1] *= obj.properties.scaledFactor;
             }

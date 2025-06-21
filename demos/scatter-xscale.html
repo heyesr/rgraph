@@ -23,25 +23,14 @@
             ['2024-12-01 11:00:00',125], ['2024-12-01 12:00:00',111], ['2024-12-01 13:00:00',144],
             ['2024-12-01 14:00:00',133]
         ];
-        
-        function f2 (num)
-        {
-          return ("0" + num).slice(-2);
-        }
-        function dateFormat(str)
-        {
-            var date = new Date (str);
 
-            return (f2(date.getDate())
-                  + "T" + f2(date.getHours())
-                  + ":" + f2(date.getMinutes()));
-        }
 
         function dateFormatter(opt)
         {
-            var obj = opt.object,
-            num = opt.number;
-            return dateFormat(num);
+            var obj  = opt.object;
+            var ms   = opt.number;
+
+            return RGraph.PHP.date('d\\TH:i', ms / 1000);
         }
 
         new RGraph.Scatter({

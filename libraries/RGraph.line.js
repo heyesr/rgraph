@@ -4078,15 +4078,15 @@ data_point *= this.growEffectMultiplier;
             obj.canvas.style.visibility = 'visible';
 
             var center_value  = obj.get('xaxisPosition') === 'center' ?  properties.yaxisScaleMin : ((obj.max - obj.min) / 2) + obj.min,
-                original_data = RGraph.arrayClone(obj.original_data),
+                original_data = RGraph.arrayClone(obj.unmodified_data),
                 steps         = null;
-            
+
             obj.set('yaxisScaleMax', max);
 
             if (!steps) {
             
                 steps = [];
-            
+
                 for (var dataset=0,len=original_data.length; dataset<len; ++dataset) {
     
                     steps[dataset] = []
@@ -4102,7 +4102,7 @@ data_point *= this.growEffectMultiplier;
                     }
                 }
             }
-
+$c(steps)
             function iterator ()
             {
                 if (obj.stopAnimationRequested) {
