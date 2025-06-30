@@ -22,8 +22,8 @@
         var line = new RGraph.Line({
             id: 'cvs',
             data: [
-                [7000,26000,11000,16000,28000,13000,23000,28500,null,null,null,null],
-                [null,null,null,null,null,null,null,28500,11000,14000,9000,10000],
+                [7000,26000,11000,16000,28000,13000,23000,25500,null,null,null,null],
+                [null,null,null,null,null,null,null,25500,11000,14000,9000,10000],
             ],
 
             options: {
@@ -59,17 +59,19 @@
                         var x = obj.coords2[1][7][0];
                         var y = obj.coords2[1][7][1];
             
-                        // Draw thevertical line above/below the 8th point
+                        // Draw the vertical line above/below the
+                        // 8th point.
                         obj.path(
-                            'b m % 25 l % % s %',
+                            'b  lw 3 m % 100 l % % s %',
                             x,
-                            x, y - 10,
+                            x, y - 20,
                             color
                         );
             
                         obj.path(
-                            'b m % % l % 230 s %',
-                            x, y + 10,
+                            'b m % % l % 430 s %',
+                            x,
+                            y + 20,
                             x,
                             color
                         );
@@ -80,9 +82,9 @@
                         RGraph.text(obj,
                         {
                             x: x,
-                            y: 25,
+                            y: 100,
                             text: 'TODAY',
-                            size: 8,
+                            size: 30,
                             halign: 'center',
                             bold: true
                         });
@@ -90,10 +92,10 @@
                         // Draw the text above the line
                         RGraph.text(obj, {
                             color: 'black',
-                            x: 65,
-                            y: 30,
+                            x: 130,
+                            y: 60,
                             text: 'REVENUE',
-                            size: 14,
+                            size: 28,
                             halign: 'center',
                             bold: true
                         });
@@ -104,7 +106,7 @@
         {
             obj.animate({
                 frames: 7,
-                tickmarksSize: 10,
+                tickmarksSize: 20,
                 tickmarksStyleDotLinewidth: 3,
                 shadowOffsetx: 1,
                 shadowOffsety: 1,
@@ -113,7 +115,7 @@
             {
                 obj.animate({
                     frames: 7,
-                    tickmarksSize: 7
+                    tickmarksSize: 14
                 });
             });
         });

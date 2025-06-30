@@ -39,6 +39,8 @@
                 textSize: 14,
                 title: '2009 employee sales by department',
                 titleColor: 'white',
+                titleY: 20,
+                titleSize: 18,
                 xaxisLabels: ['Food','Auto','Misc','Furniture','Bath','Kitchen'],
                 marginLeft: 50,
                 marginRight: 50,
@@ -51,13 +53,12 @@
                 keyPosition: 'margin',
                 keyLabelsSize: 14,
                 keyLabelsColor: 'rgb(248,248,248)',
-                keyPositionY: 425,
                 
                 // Add some responsive capability to accommodate
                 // smaller screens
                 responsive:[
-                    {maxWidth:null,width:575,height:450,options:{linewidth: 7,marginTop: 75,titleSize: 17,keyPositionY: 425},css:{'float':'none'}},
-                    {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 55,titleSize: 17,keyPositionY: 275},css:{'float':'none'}}
+                    {maxWidth:null,width:575,height:450,options:{linewidth: 7.5,marginTop: 75,titleSize: 18,textSize: 14,keyPositionY: 850},css:{'float':'none'}},
+                    {maxWidth:900,width:400,height:300,options:{linewidth: 4,marginTop: 75,titleSize: 14,textSize: 10,keyPositionY: 550},css:{'float':'none'}}
                 ],
                 events: {
                     beforedraw: function (obj)

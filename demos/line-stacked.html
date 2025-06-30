@@ -133,7 +133,6 @@
                     textSize: 18,
                     yaxis: false,
                     linewidth: 7,
-                    textAccessible: true,
                     title: 'Richard, Ricky, Rachels and Ruths sales previous week',
                     titleX: 35,
                     titleOffsety: 15,
@@ -144,7 +143,7 @@
                     keyColors: colors,
                     keyBackground: '#fff9',
                     keyPosition: 'margin',
-                    keyPositionOffsety: 25,
+                    keyPositionOffsety: 50,
                     keyLabelsSize: 12,
                     keyLabelsFont: 'Verdana',
                     keyLabelsBold: true,
@@ -162,11 +161,11 @@
                             // Calculate the total width of the key
                             var width = arr.reduce(function (sum, current)
                             {
-                                return sum + current[2] + 25;
+                                return sum + current[2] + 50;
                             },0);
                             
                             // Now set the new X coord
-                            obj.properties.keyPositionX = obj.canvas.width - 35 - width;
+                            obj.properties.keyPositionX = obj.canvas.width - 100 - width;
                         }
                     }
                 }

@@ -53,7 +53,7 @@
         line1.canvas.onmousemove = function (e)
         {
             var [mouseX, mouseY] = RGraph.getMouseXY(e);
-            line2.set('clip', [0,0,mouseX, 300]);
+            line2.set('clip', [0,0,mouseX, 300 * 2]);
             RGraph.redraw();
         }
     </script>

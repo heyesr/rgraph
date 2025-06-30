@@ -61,9 +61,9 @@
             min: 0,
             max: 100,
             options: {
-                centerx: 825,
-                centery: 63,
-                radius: 75,
+                centerx: 1650,
+                centery: 127,
+                radius: 150,
                 anglesStart: 3.14 - 0.785,
                 anglesEnd: 6.28 + 0.785,
                 colorsGreenEnd: 100,
@@ -72,6 +72,7 @@
                 colorsRedColor: 'transparent',
                 colorsGreenColor: grad,
                 textColor: 'gray',
+                textSize: 24,
                 labelsCount: 0,
                 labelsValue: true,
                 labelsValueBounding: false,
@@ -92,7 +93,7 @@
                         // On the first frame obj.centerx is not
                         // defined, but it is on subsequent frames
                         obj.path(
-                            'b a % % 60 0 6.28 false f rgba(232,232,232,.5)',
+                            'b a % % 120 0 6.28 false f rgba(232,232,232,.5)',
                             obj.centerx, obj.centery
                         );
                     }
@@ -106,9 +107,9 @@
             min: 0,
             max: 100,
             options: {
-                centerx: 825,
-                centery: 187,
-                radius: 75,
+                centerx: 1650,
+                centery: 374,
+                radius: 150,
                 anglesStart: 3.14 - 0.785,
                 anglesEnd: 6.28 + 0.785,
                 colorsGreenEnd: 100,
@@ -119,6 +120,7 @@
                 textColor: 'transparent',
                 tickmarksLargeColor: 'transparent',
                 tickmarksSmallColor: 'transparent',
+                textSize: 24,
                 shadow: false,
                 needleColors: ['blue'],
                 backgroundColor: 'rgba(0,0,0,0)',
@@ -136,7 +138,7 @@
                         // On the first frame obj.centerx is not defined, but
                         // it is on subsequent frames
                         obj.path(
-                            'b a % % 60,0,6.28, false f rgba(232,232,232,.5)',
+                            'b a % % 120,0,6.28, false f rgba(232,232,232,.5)',
                             obj.centerx, obj.centery
                         );
                     }
@@ -151,11 +153,13 @@
             id: 'cvs',
             x: line.canvas.width - line.marginRight,
             options: {
+                marginTop: 70,
+                marginBottom: 70,
                 yaxis: false,
                 yaxisPosition: 'right',
-                yaxisScaleMax: 8,
+                yaxisScaleMax: 10,
                 yaxiScaleDecimals: 1,
-                textSize: 8,
+                textSize: 16,
                 textColor: '#90AA00',
                 colors: ['transparent']
             }

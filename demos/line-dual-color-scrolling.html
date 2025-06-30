@@ -61,7 +61,7 @@
 
 
 
-                var grad = obj.context.createLinearGradient(0,0,0,250);
+                var grad = obj.context.createLinearGradient(0,0,0,250 * 2);
                 grad.addColorStop(0, '#efefef');
                 grad.addColorStop(0.9, 'rgba(0,0,0,0)');
 
@@ -94,7 +94,7 @@
             //
             // Clip the canvas tag and draw the upper half
             //
-            RGraph.clipTo.start(graph, [0,0,600, boundary]);                
+            RGraph.clipTo.start(graph, [0,0,1200, boundary * 2]);                
             
             // Set the color
             graph.set('filledColors', 'rgba(255,0,0,0.5)');
@@ -110,7 +110,7 @@
             //
             // Clip the canvas tag and draw the lower half
             //
-            RGraph.clipTo.start(graph, [0,boundary,600,250 - boundary]);
+            RGraph.clipTo.start(graph, [0,boundary * 2,1200,500 - boundary]);
                 
             // Set the color
             graph.set('filledColors', 'rgba(0,255,0,0.5)');

@@ -50,7 +50,7 @@
                 xaxisTickmarksCount: 20,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
-                textColor: '#aaa'
+                textSize: 16
             }
         }).draw();
 
@@ -65,14 +65,14 @@
             var seconds = d.getSeconds();
 
 
-            // Reset the canvas
-            RGraph.reset(document.getElementById('cvs'));
+            // Clear the canvas
+            RGraph.clear(document.getElementById('cvs'));
 
 
         
-            /**
-            * Add the label
-            */
+            //
+            // Add the label
+            //
             if (parseInt(seconds) < 0.1) {
                 labels.unshift(format(d.getHours()  ) + ':' + format(d.getMinutes()));
                 labels.pop();

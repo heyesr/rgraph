@@ -38,7 +38,7 @@
             }
         }).draw()
         
-        document.getElementById('myKey').style.top = line.get('marginTop') + 'px';
+        document.getElementById('myKey').style.top = (line.get('marginTop')  / 2) + 'px';
         
         RGraph.HTML.Key('myKey', {
             colors: line.get('colors'),

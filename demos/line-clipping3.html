@@ -45,7 +45,7 @@
         document.getElementById('cvs').onmousemove = function (e)
         {
             var [mouseX, mouseY] = RGraph.getMouseXY(e);
-            line.set('clip',`circle:${mouseX},${mouseY},100`);
+            line.set('clip',`circle:${mouseX},${mouseY},200`);
             RGraph.redraw(line.canvas);
         };
     </script>

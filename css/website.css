@@ -1382,7 +1382,8 @@ div#page-canvas-line div#example-canvas-container button {
     cursor: pointer;
 }
 
-div#page-download div#download-button {
+div#page-download div#download-button,
+div#page-download div#download-button-development {
     background-color: #0c0;
     background-image: linear-gradient(to top, #0a0, #0c0);
     color: white;
@@ -1391,6 +1392,10 @@ div#page-download div#download-button {
     border-radius: 50px;
     box-shadow: 3px 3px 3px #ccc;
     font-size: 20pt;
+}
+
+div#page-download div#download-button-development {
+    background-image: linear-gradient(to top, #aa0, #cc0);
 }
 
 

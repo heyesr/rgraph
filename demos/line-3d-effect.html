@@ -77,10 +77,7 @@
 
 
 
-        // Set the initial transformation on the canvas in order
-        // to provide the 3D look
-        context = document.getElementById('cvs').getContext('2d');
-        context.setTransform(1,0.1,0,1,0,0);
+
 
         //
         // Draw the "chart" that provides the
@@ -116,7 +113,15 @@
                 title: title,
                 titleSize: 16,
                 titleBold: true,
-                titleOffsety: 5
+                titleOffsety: 5,
+                events: {
+                    scale: function (obj)
+                    {
+                        // Set the transformation on the canvas
+                        // in order to provide the 3D look.
+                        obj.context.setTransform(1,0.1,0,1,0,0);
+                    }
+                }
             }
         }).draw();
 
@@ -125,13 +130,6 @@
 
 
 
-
-
-        //
-        // Draw the first chart after adjusting
-        // the transformation
-        //
-        context.transform(1,0,0,1,transformX,transformY);
 
         new RGraph.Line({
             id: 'cvs',
@@ -161,7 +159,13 @@
                 yaxisPosition: 'right',
                 yaxisScale: false,
                 
-                linewidth: 5
+                linewidth: 5,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        obj.context.transform(1,0,0,1,transformX,transformY);
+                    }
+                }
             }
         }).draw();
 
@@ -176,7 +180,7 @@
         // Draw the second line chart after adjusting
         // the transformation
         //
-        context.transform(1,0,0,1,transformX,transformY);
+        //context.transform(1,0,0,1,transformX,transformY);   
 
         new RGraph.Line({
             id: 'cvs',
@@ -203,7 +207,13 @@
                 yaxis: false,
                 yaxisScale: false,
                 
-                linewidth: 5
+                linewidth: 5,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        obj.context.transform(1,0,0,1,transformX,transformY);
+                    }
+                }
             }
         }).draw();
 
@@ -213,11 +223,6 @@
 
 
 
-        //
-        // Draw the third line chart after adjusting
-        // the transformation
-        //
-        context.transform(1,0,0,1,transformX,transformY);
 
         new RGraph.Line({
             id: 'cvs',
@@ -249,9 +254,16 @@
                 
                 linewidth: 5,
                 
-                xaxisLabels: xaxisLabels
+                xaxisLabels: xaxisLabels,
+                events: {
+                    firstdraw: function (obj)
+                    {
+                        obj.context.transform(1,0,0,1,transformX,transformY);
+                    }
+                }
             }
         }).draw();
+
     </script>
     
     <script>showSource()</script>

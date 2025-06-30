@@ -69,7 +69,15 @@
     {
         document.write('<span style="margin: 5px">Put this where you want the chart to show up:</span>');
         var html = document.getElementById('rgraph-demo-html').innerHTML;
-    
+
+        //
+        //  Get rid of the data attributes that rgraph adds for scaling
+        //
+        // Get rid of any RGraph data attributes that
+        // have beedn added to the tag
+        html = html.replace(/data-rgraph-[-a-z0-9]+="[-a-z0-9]+"\s*/g, '');
+
+
         // For the SVG charts get rid of the <svg> tag from inside
         // the <div> tag
         // If SVG is found, get rid off CSS position and CSS display
