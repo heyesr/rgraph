@@ -441,7 +441,7 @@
             var mouseXY = RGraph.getMouseXY(e),
                 mouseX  = mouseXY[0],
                 mouseY  = mouseXY[1];
-    
+
             for (var i=0,len=this.coords.length; i<len; i++) {
             
                 var coords = this.coords[i];

@@ -61,7 +61,7 @@
             backgroundBarsCount:        null,
             backgroundBarsColor1:       'rgba(0,0,0,0)',
             backgroundBarsColor2:       'rgba(0,0,0,0)',
-            backgroundGrid:             1,
+            backgroundGrid:             true,
             backgroundGridLinewidth:    1,
             backgroundGridHsize:        25,
             backgroundGridVsize:        25,
@@ -113,11 +113,10 @@
             xaxisLabelsColor:     null,
             xaxisLabelsOffsetx:   0,
             xaxisLabelsOffsety:   0,
-            xaxisLabelsHalign:   null,
-            xaxisLabelsValign:   null,
+            xaxisLabelsHalign:    null,
+            xaxisLabelsValign:    null,
             xaxisLabelsPosition:  'edge',
             xaxisLabelsSpecificAlign:'left',
-            xaxisPosition:        'bottom',
             xaxisPosition:        'bottom',
             xaxisLabelsAngle:     0,
             xaxisTitle:           '',
@@ -299,11 +298,11 @@
             highlightDataset:                false,
             highlightDatasetStroke:          'rgba(0,0,0,0.25)',
             highlightDatasetFill:            'rgba(255,255,255,0.75)',
+            highlightDatasetLinewidth:       10,
             highlightDatasetStrokeAlpha:     1,
             highlightDatasetFillAlpha:       1,
             highlightDatasetFillUseColors:   false,
             highlightDatasetStrokeUseColors: false,
-            highlightDatasetLinewidth:       null,
             highlightDatasetDotted:          false,
             highlightDatasetDashed:          false,
             highlightDatasetDashArray:       null,
@@ -452,9 +451,109 @@
             
             events:                 {},
             
-            scaled:                 false,
-            scaledFactor:           2
-        }
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundGridDashArray',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            'xaxisLinewidth',
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY',
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            'labelsAboveSize',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+            'linewidth',
+            'tickmarksLinewidth',
+            'tickmarksSize',
+            'tickmarksStyleDotLinewidth',
+            'tickmarksStyleImageOffsetx',
+            'tickmarksStyleImageOffsety',
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+            'textSize',
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            'tooltipsHotspotSize',
+            'tooltipsPointerOffsetx',
+            'tooltipsPointerOffsety',
+            'highlightPointRadius',
+            'highlightDatasetLinewidth',
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'crosshairsLinewidth',
+            'annotatableLinewidth',
+            'backdropSize',
+            'errorbarsCappedWidth',
+            'errorbarsLinewidth',
+            'trendlineLinewidth',
+            'trendlineMargin',
+            'trendlineDashArray',
+            'nullBridgeLinewidth',
+            'nullBridgeDashArray',
+            'labelsAngledSize',
+            'labelsAngledUpSize',
+            'labelsAngledDownSize',
+            'labelsAngledLevelSize'
+        ];
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -624,7 +723,20 @@
         //
         this.draw = function ()
         {
-            // MUST be the first thing that's done!!
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce('scale-up-the-canvas-once-in-the-constuctor-' + this.uid,  () =>
+            {
+                // Note that were in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+            // MUST be the SECOND thing that's done!!
             if (typeof properties.backgroundImage == 'string') {
                 RGraph.drawBackgroundImage(this);
             }
@@ -2052,16 +2164,31 @@ data_point *= this.growEffectMultiplier;
 
                 img.onload = function ()
                 {
-                    if (properties.tickmarksStyleImageHalign === 'center') xPos -= (this.width / 2);
-                    if (properties.tickmarksStyleImageHalign === 'right')  xPos -= this.width;
+
+                    // The size should be accounted for if the
+                    // canvas is scaled
+                    if (obj.properties.scale) {
+                        
+                        var scaleFactor = RGraph.getScaleFactor(obj);
+                        
+                        var width  = this.width  * scaleFactor;
+                        var height = this.height * scaleFactor;
+                    } else {
+                        var width  = this.width;
+                        var height = this.height;
+                    }
+
+                    if (properties.tickmarksStyleImageHalign === 'center') xPos -= (width / 2);
+                    if (properties.tickmarksStyleImageHalign === 'right')  xPos -= width;
                     
-                    if (properties.tickmarksStyleImageValign === 'center') yPos -= (this.height / 2);
-                    if (properties.tickmarksStyleImageValign === 'bottom') yPos -= this.height;
+                    if (properties.tickmarksStyleImageValign === 'center') yPos -= (height / 2);
+                    if (properties.tickmarksStyleImageValign === 'bottom') yPos -= height;
                     
                     xPos += properties.tickmarksStyleImageOffsetx;
                     yPos += properties.tickmarksStyleImageOffsety;
+                    
 
-                    obj.context.drawImage(this, xPos, yPos);
+                    obj.context.drawImage(this, xPos, yPos, width, height);
                 };
 
 
@@ -2180,15 +2307,16 @@ data_point *= this.growEffectMultiplier;
 
             
             this.context.strokeStyle = (typeof color == 'object' && color && color.toString().indexOf('CanvasGradient') == -1 ? color[0] : color);
-            this.context.lineWidth = linewidth;
+            this.context.lineWidth   = linewidth;
+            var scaleFactor          = RGraph.getScaleFactor(this);
 
 
             // Added this on 1/1/17 to facilitate dotted and dashed lines
             if (properties.dotted || properties.dashed ) {
                 if (properties.dashed) {
-                    this.context.setLineDash([2,6])
+                    this.context.setLineDash([2 * scaleFactor, 6 * scaleFactor])
                 } else if (properties.dotted) {
-                    this.context.setLineDash([1,5])
+                    this.context.setLineDash([1 * scaleFactor, 5 * scaleFactor])
                 }
             }
 
@@ -2726,6 +2854,9 @@ data_point *= this.growEffectMultiplier;
         //
         this.highlight = function (shape)
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
+            
             if (properties.tooltipsHighlight) {
                 
                 if (typeof properties.highlightStyle === 'function') {
@@ -2769,28 +2900,32 @@ data_point *= this.growEffectMultiplier;
 
                     // Clear a space in white first for the tickmark
                     obj.path(
-                        'b a % % 13 0 6.2830 false f rgba(255,255,255,0.75)',
+                        'b a % % % 0 6.2830 false f rgba(255,255,255,0.75)',
                         shape.x,
-                        shape.y
+                        shape.y,
+                        13 * scaleFactor
                     );
                     
                     obj.path(
-                        'ga 0.15 b a % % 13 0 6.2830 false f % ga 1',
+                        'ga 0.15 b a % % % 0 6.2830 false f % ga 1',
                         shape.x,
                         shape.y,
+                        13 * scaleFactor,
                         color
                     );
             
                     obj.path(
-                        'b a % % 7 0 6.2830 false f white',
+                        'b a % % % 0 6.2830 false f white',
                         shape.x,
-                        shape.y
+                        shape.y,
+                        7 * scaleFactor,
                     );
                     
                     obj.path(
-                        'b a % % 5 0 6.2830 false f %',
+                        'b a % % % 0 6.2830 false f %',
                         shape.x,
                         shape.y,
+                        5 * scaleFactor,
                         color
                     );
                 
@@ -3251,7 +3386,7 @@ data_point *= this.growEffectMultiplier;
                 var pre_linewidth = this.context.lineWidth;
                 var pre_linecap   = this.context.lineCap;
                 
-                this.context.lineWidth   = properties.linewidth + 10;
+                this.context.lineWidth   = properties.linewidth + (10 * RGraph.getScaleFactor(this) );
                 this.context.lineCap     = 'round';
                 this.context.strokeStyle = properties.keyInteractiveHighlightChartStroke;
 
@@ -4341,10 +4476,12 @@ $c(steps)
                             [cx, cy]      = RGraph.getCanvasXY(obj.canvas),
                             tooltip       = RGraph.Registry.get('tooltip'),
                             width         = tooltip.offsetWidth,
-                            height        = tooltip.offsetHeight;
+                            height        = tooltip.offsetHeight,
+                            scaleFactor   = RGraph.getScaleFactor(obj);
+
                         
-                        tooltip.style.left = (cx + x - (width / 2)) + 'px';
-                        tooltip.style.top  = (cy + y - height - 20) + 'px';
+                        tooltip.style.left = cx + (x/2) - (width / 2) + 'px';
+                        tooltip.style.top  = cy + (y/2) - height - 20 + 'px'; // Don't put parentheses around the "height - 20"
 
 
 
@@ -4364,7 +4501,7 @@ $c(steps)
                             
                         obj.highlightDataset({
                             dataset:   dataset,
-                            linewidth: obj.getLineWidth(dataset) + 10,
+                            linewidth: obj.getLineWidth(dataset) + (scaleFactor * 20),
                             stroke:    obj.properties.filled ? 'transparent'  : obj.properties.colors[dataset]
                         });
                         
@@ -4421,15 +4558,15 @@ $c(steps)
                 canvasXY = RGraph.getCanvasXY(obj.canvas)
                 coords   = RGraph.arrayClone(this.coords[args.index], true);
 
-                //
-                // SCALING
-                //
-                // Account for the (6.23) scaling
-                //
-                if (this.properties.scaled) {
-                    coords[0] /= 2;
-                    coords[1] /= 2;
-                }
+            //
+            // SCALING
+            //
+            // Account for the (6.5) scaling
+            //
+            if (this.properties.scale) {
+                coords[0] /= 2;
+                coords[1] /= 2;
+            }
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
@@ -4463,12 +4600,13 @@ $c(steps)
         //
         this.drawTrendline = function ()
         {
-            var args       = RGraph.getArgs(arguments, 'dataset');
-            var obj        = this;
-            var color      = properties.trendlineColor;
-            var linewidth  = properties.trendlineLinewidth;
-            var margin     = properties.trendlineMargin;
-            
+            var args         = RGraph.getArgs(arguments, 'dataset');
+            var obj          = this;
+            var color        = properties.trendlineColor;
+            var linewidth    = properties.trendlineLinewidth;
+            var margin       = properties.trendlineMargin;
+            var scaleFactor  = RGraph.getScaleFactor(this);
+
             // If clipping is enabled then draw a clip box the same as the graph area
             // (just the chart area, not including the margins)
             if (properties.trendlineClip) {
@@ -4572,7 +4710,7 @@ $c(steps)
     
     
     
-    
+
                 //
                 // Draw the line
                 //
@@ -4580,27 +4718,39 @@ $c(steps)
                 // Set dotted, dash or a custom dash array
                 if (   properties.trendlineDashed === true
                     || (RGraph.isArray(properties.trendlineDashed) && properties.trendlineDashed[args.dataset]) ) {
-                    this.context.setLineDash([4,4]);
+                    this.context.setLineDash([4 * scaleFactor, 4 * scaleFactor]);
+                }
+
+                if (RGraph.isNull(this.properties.trendlineDashArray)) {
+                    if (   (properties.trendlineDotted === true
+                        || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[args.dataset])) ) {
+                        
+                        this.context.setLineDash([1 * scaleFactor, 4 * scaleFactor]);
+                    }
                 }
                 
-                if (   properties.trendlineDotted === true
-                    || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[args.dataset])) {
-                    this.context.setLineDash([1,4]);
-                }
-                
-                // Set a lineDash array. It can be an array of two numbers, or it can be a
-                // multi-dimensional array, each of two numbers. One for each line on the
+                // Set a lineDash array. It can be an array of two
+                // numbers, or it can be a multi-dimensional array,
+                // each of two numbers. One for each line on the
                 // chart.
                 if (RGraph.isArray(properties.trendlineDashArray)) {
                     if (   properties.trendlineDashArray.length === 2
-                        && typeof properties.trendlineDashArray[0] === 'number'
-                        && typeof properties.trendlineDashArray[1] === 'number'
+                        && RGraph.isNumber(properties.trendlineDashArray[0])
+                        && RGraph.isNumber(properties.trendlineDashArray[1])
                        ) {
-                        this.context.setLineDash(properties.trendlineDashArray);
+
+                        this.context.setLineDash([
+                            properties.trendlineDashArray[0] * scaleFactor,
+                            properties.trendlineDashArray[1] * scaleFactor
+                        ]);
                     
                     } else if (   RGraph.isArray(properties.trendlineDashArray)
                                && RGraph.isArray(properties.trendlineDashArray[args.dataset])) {
-                        this.context.setLineDash(properties.trendlineDashArray[args.dataset]);
+
+                        this.context.setLineDash([
+                            properties.trendlineDashArray[args.dataset][0] * scaleFactor,
+                            properties.trendlineDashArray[args.dataset][1] * scaleFactor
+                        ]);
                     }
                 }
     
@@ -4754,17 +4904,19 @@ $c(steps)
                     // Get the up text configuration
                     var prefixes       = ['text', 'labelsAngled', 'labelsAngled' + dir];
                     var textProperties = ['Font','Color','Size','Bold','Italic'];
-                
+
                     for (var prefix in prefixes) {
                         for (var prop in textProperties) {
                             
                             var name = prefixes[prefix] + textProperties[prop];
-                
+
                             if (name) {
+
                                 if (   RGraph.isString(properties[name])
                                     || RGraph.isNumber(properties[name])
                                     || RGraph.isBoolean(properties[name])
                                    ) {
+
                                     textConf[textProperties[prop].toLowerCase()] = properties[name];
                                 }
                             }
@@ -4794,6 +4946,7 @@ $c(steps)
                     if (coords[i + 1][1] < coords[i][1]) {
                         var direction = 0; // Up
                         var textConf = getTextConfiguration('Up');
+
                     } else if (coords[i + 1][1] > coords[i][1]) {
                         var direction = 1; // Down
                         var textConf = getTextConfiguration('Down');
@@ -4813,7 +4966,7 @@ $c(steps)
                     // Use the API function to add the text to the chart
                     RGraph.text({
                         object:     this,
-                        accessible: properties.adjustable ? false : (RGraph.isBoolean(properties.labelsAngledAccessible) ? properties.labelsAngledAccessible : true),
+                        accessible: properties.adjustable ? false : (RGraph.isBoolean(properties.labelsAngledAccessible) ? properties.labelsAngledAccessible : false),
                         font:       textConf.font,
                         color:      textConf.color,
                         size:       textConf.size,
@@ -5288,8 +5441,9 @@ $c(steps)
         //
         this.highlightDataset = function ()
         {
-            var args   = RGraph.getArgs(arguments, 'opt');
-            var coords = this.properties.spline ? this.coordsSpline : this.coords2;
+            var args         = RGraph.getArgs(arguments, 'opt');
+            var coords       = this.properties.spline ? this.coordsSpline : this.coords2;
+            var scaleFactor  = RGraph.getScaleFactor(this);
 
             // Default to the first dataset
             args.opt.dataset = parseInt(args.opt.dataset) || 0;
@@ -5342,16 +5496,19 @@ $c(steps)
             if (this.properties.highlightDatasetFillUseColors && RGraph.isArray(this.properties.filledColors) && this.properties.filledColors[args.opt.dataset]) {
                 this.context.fillStyle = this.properties.filledColors[args.opt.dataset];
             }
-            
+
             // Fotted or dashed settings
             if (args.opt.dotted || args.opt.dashed) {
                 if (args.opt.dashed) {
-                    this.context.setLineDash([2,6])
+                    this.context.setLineDash([2 * scaleFactor, 6 * scaleFactor])
                 } else if (args.opt.dotted) {
-                    this.context.setLineDash([1,5])
+                    this.context.setLineDash([1 * scaleFactor, 5 * scaleFactor])
                 }
             } else if (args.opt.linedash) {
-                this.context.setLineDash(args.opt.linedash);
+                this.context.setLineDash([
+                    args.opt.linedash[0] * scaleFactor,
+                    args.opt.linedash[1] * scaleFactor
+                ]);
             }
 
             if (args.opt.linewidth === 0) {
@@ -5544,6 +5701,57 @@ $c(steps)
                 'b r % % % %',
                 x, y, width, height
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var factor = this.properties.scaleFactor;
+
+            if (name === 'trendlineDashArray') {
+                if (RGraph.isNumber(value[0]) && RGraph.isNumber(value[1])) {
+                    value[0] *= factor;
+                    value[1] *= factor;
+                } else if (RGraph.isArray(value)) {
+                    for (var i=0; i<value.length; ++i) {
+                        if (RGraph.isNumber(value[i][0]) && RGraph.isNumber(value[i][1])) {
+                            value[i][0] *= factor;
+                            value[i][1] *= factor;
+                        }
+                    }
+                }
+            
+            } else if (name === 'nullBridgeDashArray') {
+                value[0] *= factor;
+                value[1] *= factor;
+            
+            } else if (name === 'backgroundGridDashArray') {
+                value[0] *= factor;
+                value[1] *= factor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * factor);
+            
+            // Normally linewidth is just a number but it can
+            // also be an array.
+            } else if (name === 'linewidth') {
+                for (var i=0; i<value.length; ++i) {
+                    value[i] *= factor;
+                }
+            }
+
+            return value;
         };
 
 

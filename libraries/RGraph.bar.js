@@ -363,9 +363,101 @@
 
             clearto: 'rgba(0,0,0,0)',
             
-            events:  {}
-        }
-        
+            events:  {},
+            
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+            'marginInner',
+            'marginInnerGrouped',
+            'labelsIngraphSize',
+            'labelsIngraphOffsetx',
+            'labelsIngraphOffsety',
+            'labelsAboveSize',
+            'labelsAboveOffset',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            'xaxisLinewidth',
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY',
+            'textSize',
+            //'text',
+            'titleX',
+            'titleY',
+            'titleSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            'variantThreedOffsetx',
+            'variantThreedOffsety',
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            'tooltipsPointerOffsetx',
+            'tooltipsPointerOffsety',
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionX',
+            'keyPositionY',
+            'keyInteractiveHighlightChartLinewidth',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+            'crosshairsLinewidth',
+            'linewidth',
+            'annotatableLinewidth',
+            'errorbarsCappedWidth',
+            'errorbarsLinewidth',
+            'cornersRoundRadius',
+            'cornersRoundLeftRadius',
+            'cornersRoundRightRadius'
+        ];
+    
+    
+    
         //
         // Add the reverse look-up table  for property names
         // so that property names can be specified in any case.
@@ -555,6 +647,19 @@
         //
         this.draw = function ()
         {
+
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-constuctor-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that were in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+            
+            
+            
 
             // MUST be the second thing that's done!!
             
@@ -3744,19 +3849,33 @@ this.context.lineTo(
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj        = args.object,
-                e          = args.event,
-                tooltip    = args.tooltip,
-                index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas)
-                coords     = this.coords[args.index];
+            var obj          = args.object,
+                e            = args.event,
+                tooltip      = args.tooltip,
+                tooltipWidth = tooltip.offsetWidth,
+                index        = args.index,
+                canvasXY     = RGraph.getCanvasXY(obj.canvas)
+                coords       = RGraph.arrayClone(this.coords[args.index]),
+                barWidth     = coords[2],
+                barHeight    = coords[3];
+
+            // SCALING
+            //
+            // Account for the (6.5) scaling
+            //
+            if (this.properties.scale) {
+                coords[0]    /= 2;
+                coords[1]    /= 2;
+                barWidth     /= 2;
+                barHeight    /= 2;
+            }
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                    // The X coordinate of the canvas
                 + coords[0]                      // The X coordinate of the bar on the chart
-                - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
-                + (coords[2] / 2)                // Add half of the bar width
+                - (tooltipWidth / 2)             // Subtract half of the tooltip width
+                + (barWidth / 2)                 // Add half of the bar width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
@@ -3786,7 +3905,7 @@ this.context.lineTo(
             if (this.data_arr[index] < 0) {
                 args.tooltip.style.top = 
                        parseFloat(args.tooltip.style.top)
-                    + (coords[3] / 2)
+                    + (barHeight / 2)
                     + 'px';
             }
 

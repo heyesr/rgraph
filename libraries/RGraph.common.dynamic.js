@@ -39,6 +39,7 @@
                     && tooltip
                     && tooltip.__object__.get('tooltipsEffect') !== 'slide'
                    ) {
+
                     RGraph.clear(RGraph.Registry.get('tooltip').__canvas__);
                     RGraph.redraw();
                     RGraph.hideTooltip();
@@ -61,7 +62,7 @@
     RGraph.installWindowMouseupListener = function (obj)
     {
         if (!RGraph.window_mouseup_event_listener) {
-            RGraph.window_mouseup_event_listener = function (e)
+            RGraph.window_mouseup_event_listener = function (e, obj = {})
             {
                 //
                 // For firefox add the window.event object
@@ -71,8 +72,30 @@
                 //
                 // Stop any annotating that may be going on
                 //
-                if (RGraph.annotating_window_onmouseup) {
+                if (RGraph.annotating_window_onmouseup
+                    && obj
+                    && obj.isrgraph
+                    && obj.properties
+                    && obj.properties.annotatable
+                   ) {
                     RGraph.annotating_window_onmouseup(e);
+                    
+                    // 27th June 2025
+                    //
+                    // This return was commented out as it was
+                    // found that having the annotating library
+                    // included at the same time as tooltips
+                    // enabled stopped the mouseup event from
+                    // completing the necessary tooltip things.
+                    // Tooltips were not being hidden, after being
+                    // shown, when the canvas or the window was
+                    // clicked.
+                    //
+                    // 28th June 2025
+                    //
+                    // Added back in as it was stopping annotating
+                    // from working correctly.
+                    //
                     return;
                 }
     
@@ -117,7 +140,12 @@
                     RGraph.redraw();
                 }
             };
-            win.addEventListener('mouseup', RGraph.window_mouseup_event_listener, false);
+
+            win.addEventListener('mouseup', function (e)
+            {
+                
+                RGraph.window_mouseup_event_listener(e, obj);
+            }, false);
         }
     };
 
@@ -850,7 +878,6 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                     
 
 
-
                     //
                     // Handle adjusting for all object types
                     //
@@ -991,7 +1018,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                     // This bit facilitates the dataset highlighting //
                     ///////////////////////////////////////////////////
                     if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEvent === 'click') {
-                        
+
                         var [x, y]         = RGraph.getMouseXY(e);
                         var shape          = obj.over(x, y);
                         var excludedNumber = RGraph.isNumber(obj.properties.highlightDatasetExclude) && shape && obj.properties.highlightDatasetExclude === shape.dataset;

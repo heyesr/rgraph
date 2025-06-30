@@ -392,7 +392,8 @@
 
     window.addEventListener('load', function (e)
     {
-        // This delay is necessary to allow the window.onload event listener to run
+        // This delay is necessary to allow the window.onload
+        // event listener to run.
         setTimeout(function ()
         {
             var tags = doc.getElementsByTagName('canvas');

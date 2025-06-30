@@ -116,7 +116,10 @@
             
             clip:                    null,
             
-            events:                     {}
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
         }
 
         //
@@ -694,6 +697,15 @@
 
             var x = ((maxx - minx) / 2) + minx,
                 y = ((maxy - miny) / 2) + miny;
+            //
+            // SCALING
+            //
+            // Account for the (6.5) scaling
+            //
+            if (this.properties.scale) {
+                x /= 2;
+                y /= 2;
+            }
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (

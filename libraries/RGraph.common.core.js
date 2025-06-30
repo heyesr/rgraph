@@ -1323,10 +1323,10 @@
 
 
         // Determine the Y coordinate
-        y = obj.properties.marginTop - textConf.size - 5;
+        y = obj.properties.marginTop - textConf.size - (5 * RGraph.getScaleFactor(obj) );
 
         if (obj.properties.xaxisPosition === 'top') {
-            y = obj.canvas.height  - obj.properties.marginBottom + textConf.size + 5;
+            y = obj.canvas.height  - obj.properties.marginBottom + textConf.size + (5 * RGraph.getScaleFactor(this) );
         }
 
 
@@ -1358,7 +1358,8 @@
 
 
         //
-        // Now, the titleX and titleY settings override (if set) the above
+        // Now, the titleX and titleY settings override
+        // (if set) the above.
         if (RGraph.isNumber(obj.properties.titleX)) x = obj.properties.titleX;
         if (RGraph.isNumber(obj.properties.titleY)) y = obj.properties.titleY;
 
@@ -1514,9 +1515,9 @@
             // for here.
             //
             var obj = window.event.target.__object__;
-            if (obj && obj.properties.scaled) {
-                ret[0] *= obj.properties.scaledFactor;
-                ret[1] *= obj.properties.scaledFactor;
+            if (obj && obj.properties && obj.properties.scale) {
+                ret[0] *= obj.properties.scaleFactor;
+                ret[1] *= obj.properties.scaleFactor;
             }
 
             return ret;
@@ -1892,7 +1893,8 @@
             marginRight  = args.object.marginRight,
             marginTop    = args.object.marginTop,
             marginBottom = args.object.marginBottom,
-            variant      = properties.variant
+            variant      = properties.variant,
+            scaleFactor  = RGraph.getScaleFactor(args.object);
 
             RGraph.fireCustomEvent(args.object, 'beforebackground');
 
@@ -2364,17 +2366,20 @@
                 
                 // Dashed background border
                 if (properties.backgroundBorderDashed && typeof args.object.context.setLineDash == 'function') {
-                    args.object.context.setLineDash([3,5]);
+                    args.object.context.setLineDash([3 * scaleFactor, 5 * scaleFactor]);
                 }
                 
                 // Dotted background grid
                 if (properties.backgroundBorderDotted && typeof args.object.context.setLineDash == 'function') {
-                    args.object.context.setLineDash([1,3]);
+                    args.object.context.setLineDash([1 * scaleFactor, 3 * scaleFactor]);
                 }
                 
                 // Custom linedash
                 if (RGraph.isArray(properties.backgroundBorderDashArray)) {
-                    args.object.context.setLineDash(properties.backgroundBorderDashArray);
+                    args.object.context.setLineDash([
+                        properties.backgroundBorderDashArray[0] * scaleFactor,
+                        properties.backgroundBorderDashArray[1] * scaleFactor,
+                    ]);
                 }
 
                 args.object.path(
@@ -3378,8 +3383,9 @@
     //
     RGraph.drawBackgroundImage = function (args)
     {
-        var args       = RGraph.getArgs(arguments, 'object');
-        var properties = args.object.properties;
+        var args         = RGraph.getArgs(arguments, 'object');
+        var properties   = args.object.properties;
+        var scaleFactor = RGraph.getScaleFactor(args.object)
 
         if (typeof properties.backgroundImage === 'string') {
             if (typeof args.object.canvas.__rgraph_background_image__ === 'undefined') {
@@ -3411,8 +3417,8 @@
     
             // Handle backgroundImage.align
             if (typeof align === 'string') {
-                if (align.indexOf('right') != -1) {
-                    var x = args.object.canvas.width - (properties.backgroundImageW || img.width) - marginRight;
+                if (align.indexOf('right') !== -1) {
+                    var x = args.object.canvas.width - ((properties.backgroundImageW || img.width) * scaleFactor) - marginRight;
                 } else {
                     var x = marginLeft;
                 }
@@ -3423,15 +3429,15 @@
                     var y = marginTop;
                 }
             } else {
-                var x = marginLeft || 25;
-                var y = marginTop || 25;
+                var x = marginLeft || 35;
+                var y = marginTop || 35;
             }
 
             // X/Y coords take precedence over the align
             var x = typeof properties.backgroundImageX === 'number' ? properties.backgroundImageX : x;
             var y = typeof properties.backgroundImageY === 'number' ? properties.backgroundImageY : y;
-            var w = stretch ? args.object.canvas.width - marginLeft - marginRight : img.width;
-            var h = stretch ? args.object.canvas.height - marginTop - marginBottom : img.height;
+            var w = stretch ? args.object.canvas.width - marginLeft - marginRight  : img.width  * scaleFactor;
+            var h = stretch ? args.object.canvas.height - marginTop - marginBottom : img.height * scaleFactor;
             
             //
             // You can now specify the width and height of the image
@@ -5639,6 +5645,15 @@
                     conf.color = 'black';
                 }
                 
+                //
+                // Scale the text if necessary
+                //
+                if (obj.properties.scale) {
+                    conf.size *= obj.properties.scaleFactor;
+                    conf.x    *= obj.properties.scaleFactor;
+                    conf.y    *= obj.properties.scaleFactor;
+                }
+                
                 RGraph.text(conf);
             }
         }
@@ -6752,6 +6767,32 @@
             args.canvas = document.getElementById(args.canvas);
         }
 
+        // Lose the scaling attributes
+        if (args.canvas.getAttribute('data-rgraph-scale')) {
+        
+            var original_width  = parseInt(args.canvas.getAttribute('data-rgraph-scale-original-width'));
+            var original_height = parseInt(args.canvas.getAttribute('data-rgraph-scale-original-height'));
+
+            args.canvas.removeAttribute('data-rgraph-scale');
+            args.canvas.removeAttribute('data-rgraph-scale-factor');
+            args.canvas.removeAttribute('data-rgraph-scale-original-width');
+            args.canvas.removeAttribute('data-rgraph-scale-original-height');
+            
+            args.canvas.width  = original_width;
+            args.canvas.height = original_height;
+            
+            args.canvas.style.width  = '';
+            args.canvas.style.height = '';
+            
+            RGraph.cache = [];
+            
+            // TODO
+            //
+            // Need to get all objects that are in the object
+            // registry as pertaining to this canvas and go thru
+            // the properties_scale and halve each.
+        }
+        
         args.canvas.width = args.canvas.width;
         
         // Clear the ObjectRegistry
@@ -7354,7 +7395,7 @@
     RGraph.responsive = function (conf)
     {
         var obj = this;
-        
+
         //
         // Sort the configuration so that it descends in order of biggest screen
         // to smallest
@@ -7391,13 +7432,13 @@
             // Set the minimum and maximum
             conf[i].minWidth = RGraph.isNullish(conf[i].minWidth) ?      0 : conf[i].minWidth;
             conf[i].maxWidth = RGraph.isNullish(conf[i].maxWidth) ? 100000 : conf[i].maxWidth;
-            
+
             // Create the media query string
             var str = 'screen and (min-width: %1px) and (max-width: %2px)'.format(
                 conf[i].minWidth,
                 conf[i].maxWidth
             );
-        
+
             var mediaQuery = window.matchMedia(str);
             (function (index)
             {
@@ -7408,26 +7449,33 @@
                     }
                 });
             })(i);
-            
+
             // An Initial test
             if (   document.documentElement.clientWidth >= conf[i].minWidth
                 && document.documentElement.clientWidth < conf[i].maxWidth) {
                 matchFunction(conf[i]);
             }
         }
-        
+
         //
         // If a rule matches - this is the function that runs
         //
         function matchFunction (rule)
         {
+
             // If a width is defined for this rule set it
             if (typeof rule.width === 'number') {
                 if (obj.get('textAccessible')) {
                     obj.canvas.parentNode.style.width  = rule.width + 'px';
                 }
-                
+
                 obj.canvas.width = rule.width;
+
+                // Account for scaling
+                if (obj.properties.scale) {
+                    obj.canvas.style.width = obj.canvas.width + 'px';
+                    obj.canvas.width = obj.properties.scaleFactor * obj.canvas.width;
+                }
                 obj.canvas.__rgraph_aa_translated__ = false;
             }
 
@@ -7440,6 +7488,13 @@
                 }
 
                 obj.canvas.height = rule.height;
+
+                // Account for scaling
+                if (obj.properties.scale) {
+                    obj.canvas.style.height = obj.canvas.height + 'px';
+                    obj.canvas.height       = obj.properties.scaleFactor * obj.canvas.height;
+                }
+
                 obj.canvas.__rgraph_aa_translated__ = false;
             }
 
@@ -7449,6 +7504,17 @@
             if (typeof rule.options === 'object') {
                 for (var j in rule.options) {
                     if (typeof j === 'string') {
+                    
+                        // Account for scaling by doubling property
+                        // values.
+                        RGraph.runOnce('scale-property-vallues-in-the-responsive-function-' + j + '-' + rule.width + '-' + obj.uid, function ()
+                        {
+
+                            if (obj.properties_scale.indexOf(j) > -1 && RGraph.isNumber(rule.options[j])) {
+                                rule.options[j] *= obj.properties.scaleFactor;
+                            }
+                        });
+
                         obj.set(j, rule.options[j]);
                         
                         // Set the original colors to the new colors
@@ -7534,7 +7600,7 @@
                 (rule.callback)(obj);
             }
         }
-        
+
         // Returning the object facilitates chaining
         return obj;
     };
@@ -7557,7 +7623,7 @@
         if (RGraph.isArray(obj.properties.responsive)) {
             RGraph.runOnce('install-responsive-configuration-' + obj.uid, function ()
             {
-                    obj.responsive(obj.properties.responsive);
+                obj.responsive(obj.properties.responsive);
             });
         }
     };
@@ -7841,7 +7907,8 @@
         var properties      = obj.properties,
             context         = obj.context,
             tickmarksLength = (typeof properties.xaxisTickmarksLength === 'number' ? properties.xaxisTickmarksLength : 3),
-            isSketch        = (obj.type === 'bar' && properties.variant === 'sketch');
+            isSketch        = (obj.type === 'bar' && properties.variant === 'sketch'),
+            scaleFactor     = RGraph.getScaleFactor(obj);
 
 
 
@@ -8122,6 +8189,7 @@
         //
 
         if (opt.labels !== false) {
+
             //
             // Text angle
             //
@@ -8216,7 +8284,7 @@
                             y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
                         }
                     }
-    
+
                     RGraph.text({
                       object: obj,
               textConfPrefix: 'xaxisLabels',
@@ -8276,7 +8344,7 @@
                 });
     
             } else if (properties.xaxisLabels && properties.xaxisLabels.length && (properties.xaxisLabelsPosition === 'section' || properties.xaxisLabelsPosition === 'edge') ) {
-    
+
                 if (properties.xaxisLabelsPosition === 'edge') {
                     var section = (obj.canvas.width - properties.marginLeft - properties.marginRight - (properties.marginInner || 0) - (properties.marginInner || 0) ) / (properties.xaxisLabels.length - 1);
                 } else {
@@ -8285,8 +8353,7 @@
     
     
                 for (var i=0; i<properties.xaxisLabels.length; ++i) {
-    
-    
+
                     if (properties.xaxisLabelsPosition === 'edge') {
                         var x = properties.marginLeft + (properties.marginInner || 0) + (section * i);
                     } else {
@@ -8303,8 +8370,8 @@
     
     
     
-                    // Allow for the Scatter chart labels to be at specific points
-                    // along the X scale
+                    // Allow for the Scatter chart labels to be at
+                    // specific points along the X scale
                     if (typeof properties.xaxisLabels[i] === 'object' && obj.type === 'scatter') {
     
                         var rightEdge = 0;
@@ -8338,7 +8405,7 @@
                                 y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
                             }
                         }
-    
+
                         var ret = RGraph.text({
                        object:      obj,
                textConfPrefix:      'xaxisLabels',
@@ -8389,7 +8456,7 @@
                     // A regular label
                     } else {
     
-                        var y = properties.xaxisPosition === 'top' ? properties.marginTop + properties.xaxisLabelsOffsety - 5 : (obj.canvas.height - properties.marginBottom) + properties.xaxisLabelsOffsety + 5;
+                        var y = properties.xaxisPosition === 'top' ? properties.marginTop + properties.xaxisLabelsOffsety - (5 * scaleFactor) : (obj.canvas.height - properties.marginBottom) + properties.xaxisLabelsOffsety + (5 * scaleFactor);
     
                         if (obj.type === 'drawing.xaxis') {
                             //y = obj.y + (properties.xaxisTickmarksLength || 0) + properties.xaxisLabelsOffsety + 5;
@@ -8458,7 +8525,7 @@
             if (properties.xaxisTitle) {
     
                 var x = properties.marginLeft + ((obj.canvas.width - properties.marginLeft - properties.marginRight) / 2) + properties.xaxisTitleOffsetx;
-                var y = properties.xaxisPosition === 'top' ? properties.marginTop  - 7 + properties.xaxisTitleOffsety - properties.xaxisTickmarksLength : obj.canvas.height - properties.marginBottom + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
+                var y = properties.xaxisPosition === 'top' ? properties.marginTop  - (7 * scaleFactor) + properties.xaxisTitleOffsety - properties.xaxisTickmarksLength : obj.canvas.height - properties.marginBottom + (7 * scaleFactor) + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
     
                 if (obj.type === 'drawing.xaxis') {
                     y = obj.y  + 7 + properties.xaxisTitleOffsety + properties.xaxisTickmarksLength;
@@ -8516,10 +8583,8 @@
 
 
     //
-    // A common X axis drawing function that can be used by  the
-    // Bar, HBar, Line, Scatter functions. A long time coming - but
-    // this will eventually be joined by a common Y axis drawing
-    // function.
+    // A common Y axis drawing function that can be used by  the
+    // Bar, HBar, Line, Scatter functions.
     //
     // @param object obj The chart object. All the properties are
     //                   retrieved from this.
@@ -8530,8 +8595,8 @@
         var properties      = obj.properties,
             context         = obj.context,
             isSketch        = obj.type === 'bar' && properties.variant === 'sketch';
-            tickmarksLength = typeof properties.yaxisTickmarksLength === 'number' ? properties.yaxisTickmarksLength : 3;
-
+            tickmarksLength = typeof properties.yaxisTickmarksLength === 'number' ? properties.yaxisTickmarksLength : 3,
+            scaleFactor     = RGraph.getScaleFactor(obj);
 
 
 
@@ -8793,7 +8858,7 @@
                     }
                 }
     
-                var scale           = obj.scale2;
+                var scale = obj.scale2;
                 obj.maxLabelLength = Math.max(
                     obj.maxLabelLength,
                     obj.context.measureText(obj.scale2.labels[4]).width// * 2 // Don't know why this was doubled...?
@@ -8804,7 +8869,7 @@
                 // X axis position in the center
                 //
                 if (properties.xaxisPosition === 'center') {
-                
+
                     var halfHeight = ((obj.canvas.height - properties.marginTop - properties.marginBottom) / 2);
                     
                     // Draw the top halves labels
@@ -8816,7 +8881,7 @@
                         RGraph.text({
                           object:   obj,
                   textConfPrefix:   'yaxisLabels',
-                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            x:      properties.yaxisPosition === 'right' ? x  + (5 * scaleFactor) + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx  : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - (5 * scaleFactor),
                             y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop - (section * i) + properties.yaxisLabelsOffsety : properties.marginTop + (section * i) + properties.yaxisLabelsOffsety,
                             text:   String(scale.labels[scale.labels.length - 1 - i]),
                             valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8838,7 +8903,7 @@
                         RGraph.text({
                           object:   obj,
                   textConfPrefix:   'yaxisLabels',
-                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            x:      properties.yaxisPosition === 'right' ? x + (5 * scaleFactor) + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - (5 * scaleFactor) - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
                             y:      properties.yaxisScaleInvert ? halfHeight + properties.marginTop + (section * i) : y + properties.yaxisLabelsOffsety,
                             text:   '-' + (properties.yaxisScaleInvert ? String(scale.labels[scale.labels.length - i - 1]) : String(scale.labels[i])),
                             valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8856,7 +8921,7 @@
                     RGraph.text({
                       object:   obj,
               textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                        x:      properties.yaxisPosition === 'right' ? x + (5 * scaleFactor) + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - (5 * scaleFactor) - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
                         y:      properties.yaxisScaleInvert ? properties.marginTop + properties.yaxisLabelsOffsety : properties.marginTop + ((obj.canvas.height - properties.marginBottom - properties.marginTop) / 2) + properties.yaxisLabelsOffsety,
                         text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
                         valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8903,7 +8968,7 @@
                         RGraph.text({
                           object:   obj,
                   textConfPrefix:   'yaxisLabels',
-                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + (5 * scaleFactor) : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - (5 * scaleFactor),
                             y:      y + section + properties.yaxisLabelsOffsety,
                             text:   '-' + String(scale.labels[i]),
                             valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8923,7 +8988,7 @@
                     RGraph.text({
                       object:   obj,
                 textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - (5 * scaleFactor) - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
                         y:      properties.yaxisScaleInvert ? obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety : properties.marginTop + properties.yaxisLabelsOffsety,
                         text:   typeof properties.yaxisScaleFormatter === 'function' ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter}) : (properties.yaxisScaleUnitsPre || '') + properties.yaxisScaleMin.toFixed(properties.yaxisScaleDecimals).replace(/\./, properties.yaxisScalePoint) + (properties.yaxisScaleUnitsPost || ''),
                         valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8936,6 +9001,7 @@
                 // X axis position at the bottom
                 //
                 } else {
+
                     for (var i=0; i<scale.labels.length; ++i) {
     
                         var section = (obj.canvas.height - properties.marginTop - properties.marginBottom) / scale.labels.length;
@@ -8944,7 +9010,7 @@
                         RGraph.text({
                           object:   obj,
                   textConfPrefix:   'yaxisLabels',
-                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + 5 : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - 5,
+                            x:      properties.yaxisPosition === 'right' ? x + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx + (5 * scaleFactor) : x - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx - (5 * scaleFactor),
                             y:      y + properties.yaxisLabelsOffsety,
                             text:   String(properties.yaxisScaleInvert ? scale.labels[i] : scale.labels[scale.labels.length - 1 - i]),
                             valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : valign,
@@ -8972,7 +9038,7 @@
                     RGraph.text({
                       object:   obj,
               textConfPrefix:   'yaxisLabels',
-                        x:      properties.yaxisPosition === 'right' ? x + 5 + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - 5 - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
+                        x:      properties.yaxisPosition === 'right' ? x + (5 * scaleFactor) + (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx : x - (5 * scaleFactor) - (properties.yaxisTickmarksLength || 0) + properties.yaxisLabelsOffsetx,
                         y:      properties.yaxisScaleInvert ? properties.marginTop : obj.canvas.height - properties.marginBottom + properties.yaxisLabelsOffsety,
                         text:   typeof properties.yaxisScaleFormatter === 'function'
                                     ? (properties.yaxisScaleFormatter)({object: this,number: 0,unitspre: properties.yaxisScaleUnitsPre,unitspost: properties.yaxisScaleUnitsPost,point: properties.yaxisScalePoint,thousand: properties.yaxisScaleThousand,formatter: properties.yaxisScaleFormatter})
@@ -9045,9 +9111,9 @@
         //
         // Draw the title
         //
-        if (opt.title) {
+        if (opt.title !== false) {
             if (properties.yaxisTitle) {
-    
+
                 //
                 // Get the text width of the labels so that the position of the title
                 // can be adjusted
@@ -10395,6 +10461,8 @@
             avg,x,y,label,halign,valign,hmargin = 10,vmargin = 5,
             position,textFont,textSize,textColor,textBold,textItalic,
             data,linewidth;
+        
+        var scaleFactor = RGraph.getScaleFactor(obj);
 
         if (lines) {
 
@@ -10422,7 +10490,7 @@
                 var conf       = lines[i],
                     textFont   = conf.labelFont  || obj.properties.textFont,
                     textColor  = conf.labelColor || defaults.labelColor,
-                    textSize   = conf.labelSize  || obj.properties.textSize - 4,
+                    textSize   = (conf.labelSize * scaleFactor)  || obj.properties.textSize - 4,
                     textBold   = typeof conf.labelBold   === 'boolean' ? conf.labelBold   : obj.properties.textBold,
                     textItalic = typeof conf.labelItalic === 'boolean' ? conf.labelItalic : obj.properties.textItalic;
 
@@ -10525,11 +10593,11 @@
                 linedash = '[1,1]';
 
                 if (conf.dotted === true) {
-                    linedash = '[1,3]';
+                    linedash = '['+ (1 * scaleFactor) + ','+ (scaleFactor * 3) + ']';
                 }
                 
                 if (conf.dashed === true || (typeof conf.dashed === 'undefined' && typeof conf.dotted === 'undefined') ) {
-                    linedash = '[6,6]';
+                    linedash = '['+ (6 * scaleFactor) + ','+ (scaleFactor * 6) + ']';
                 }
 
 
@@ -10546,7 +10614,7 @@
                 //
                 obj.path(
                     'lw % ld % b m % % l % % s %',
-                    typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                    (typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth) * scaleFactor,
                     linedash,
                     obj.properties.marginLeft,y,
                     obj.canvas.width - obj.properties.marginRight,y,
@@ -10607,7 +10675,7 @@
                         valign = 'bottom';
                     }
                 }
-                
+
                 // Account for linewidth
                 linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
 
@@ -10624,7 +10692,6 @@
 
 
 
-
                 //
                 // Draw the label
                 //
@@ -10632,8 +10699,8 @@
                 RGraph.text({
                     object:     obj,
                     text:       (typeof conf.label === 'string' ? conf.label : defaults.label).replace('%{value}', num),
-                    x:          textX + parseFloat(conf.labelOffsetx || defaults.labelOffsetx),
-                    y:          textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * conf.labelOffsety) : conf.labelOffsety) || defaults.labelOffsety),
+                    x:          textX + parseFloat(conf.labelOffsetx * scaleFactor || defaults.labelOffsetx * scaleFactor),
+                    y:          textY - (linewidth / 2) + parseFloat((conf.labelPosition.indexOf('top') !== -1 ? (-1 * (conf.labelOffsety * scaleFactor) || (defaults.labelOffsety * scaleFactor) ) : conf.labelOffsety * scaleFactor) || defaults.labelOffsety * scaleFactor),
                     valign:     valign,
                     halign:     halign,
                     size:       textSize,
@@ -10724,6 +10791,32 @@
         RGraph.Registry.get('rgraph-runonce-functions')[args.id] = args.func;
         
         return args.func();
+    };
+
+
+
+
+
+
+
+
+    //
+    // Clears all of the runOnce data - allowing functions to
+    // run again.
+    //
+    // @param id string An optional ID that can be given to limit
+    //                  the clearing to. Otherwise all of the]
+    //                  runOnce functons are cleared.
+    //
+    RGraph.runOnce.clear = function ()
+    {
+        var args = RGraph.getArgs(arguments, 'id');
+
+        if (args.id) {
+            RGraph.Registry.get('rgraph-runonce-functions')[args.id] = null;
+        } else {
+            RGraph.Registry.set('rgraph-runonce-functions', []);
+        }
     };
 
 
@@ -11074,7 +11167,7 @@
         // unix timestamp.
         //
         if (RGraph.isString(timestamp) && RGraph.isNumeric(timestamp)) {
-            timestamp = RGraph.PHP.time(parseInt(timestamp));
+            timestamp = parseInt(timestamp);
         } else if (RGraph.isString(timestamp)) {
             timestamp = RGraph.PHP.time(timestamp);
         }
@@ -11476,6 +11569,81 @@
         } else {
             return Math.floor(Date.now() / 1000);
         }
+    };
+
+
+
+
+
+
+
+
+    //
+    // Draw the chart scaled up
+    //
+    // @param  object obj The chart object
+    // @return null
+    //
+    RGraph.scale = function (obj)
+    {
+        var factor = obj.properties.scaleFactor;
+
+        if (!obj.properties.scale || factor === 1) {
+            return;
+        }
+        
+        var isScaled = Boolean(obj.canvas.getAttribute('data-rgraph-scale') === 'true')
+
+        // Only do this once
+        if (!isScaled) {
+            
+            obj.canvas.setAttribute('data-rgraph-scale', 'true');
+            obj.canvas.setAttribute('data-rgraph-scale-factor', factor);
+            obj.canvas.setAttribute('data-rgraph-scale-original-width', obj.canvas.width);
+            obj.canvas.setAttribute('data-rgraph-scale-original-height', obj.canvas.height);
+    
+    
+            obj.canvas.style.width  = obj.canvas.width  + 'px';
+            obj.canvas.style.height = obj.canvas.height + 'px';
+        
+            obj.canvas.width  *= factor;
+            obj.canvas.height *= factor;
+        }
+    
+
+        // Increase the size of various properties
+        for (v of obj.properties_scale) {
+            if (RGraph.isNumber(obj.properties[v])) {
+                obj.properties[v] = obj.properties[v] * factor;
+            } else if (!RGraph.isNullish(obj.properties[v]) && RGraph.isFunction(obj.scalePropertiesWorker)) {
+                obj.properties[v] = obj.scalePropertiesWorker(v, obj.properties[v]);
+            }
+        }
+        
+        //
+        // Fire the scale event
+        //
+        RGraph.fireCustomEvent(obj, 'scale');
+    };
+
+
+
+
+
+
+
+
+    //
+    // Returns the relevant scale factor. Which is (usually)
+    // two if it's enabled and one if it's not.
+    //
+    // @param  object obj The chart object
+    // @return bool       The scale factor - depending if scaling
+    //                    is enabled or not.
+    //
+    RGraph.getScaleFactor = function (obj)
+    {
+        return obj.properties.scale ? obj.properties.scaleFactor : 1;
     };
 
 

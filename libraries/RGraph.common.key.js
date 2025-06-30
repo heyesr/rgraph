@@ -28,12 +28,14 @@
 
         var prop       = args.object.properties,
             properties = args.object.properties,
+            obj        = args.object,
 
             // Key positioned in the margin
             keypos          = properties.keyPosition,
             textsize        = properties.textSize,
             key_non_null    = [],
-            colors_non_null = [];
+            colors_non_null = []
+            scaleFactor     = RGraph.getScaleFactor(obj);
 
         args.object.context.lineWidth = 1;
         args.object.context.beginPath();
@@ -144,11 +146,11 @@
                 marginRight  = args.object.marginRight,
                 marginTop    = args.object.marginTop,
                 marginBottom = args.object.marginBottom,
-                hpos         = properties.yaxisPosition == 'right' ? marginLeft + 10 : args.object.canvas.width - marginRight - 10,
-                vpos         = marginTop + 10,
+                hpos         = properties.yaxisPosition == 'right' ? marginLeft + (10 * scaleFactor) : args.object.canvas.width - marginRight - (10 * scaleFactor),
+                vpos         = marginTop + (10 * scaleFactor),
                 title        = properties.title,
-                hmargin      = 8, // This is the size of the gaps between the blob of color and the text
-                vmargin      = 4, // This is the vertical margin of the key
+                hmargin      = 8 * scaleFactor, // This is the size of the gaps between the blob of color and the text
+                vmargin      = 4 * scaleFactor, // This is the vertical margin of the key
                 fillstyle    = properties.keyBackground,
                 strokestyle  = '#333',
                 height       = 0,
@@ -199,14 +201,15 @@
                     args.object.context.measureText(key[i]).width);
             }
     
-            width += 5;
-            width += blob_size;
-            width += 5;
-            width += 5;
-            width += 5;
+            width += (5 * scaleFactor);
+            width += (blob_size);
+            width += (5 * scaleFactor);
+            width += (5 * scaleFactor);
+            width += (5 * scaleFactor);
     
             //
-            // Now we know the width, we can move the key left more accurately
+            // Now we know the width, we can move the key left
+            // more accurately
             //
             if (   properties.yaxisPosition == 'left'
                 || (args.object.type === 'pie'       && !properties.yaxisPosition)
@@ -230,9 +233,9 @@
             //
             if (typeof properties.keyHalign == 'string') {
                 if (properties.keyHalign === 'left') {
-                    hpos = marginLeft + 10;
+                    hpos = marginLeft + (10 * scaleFactor);
                 } else if (properties.keyHalign == 'right') {
-                    hpos = args.object.canvas.width - marginRight  - width;
+                    hpos = args.object.canvas.width - marginRight - width;
                 }
             }
     
@@ -266,30 +269,39 @@
             if (typeof properties.keyPositionGraphBoxed == 'undefined' || (typeof properties.keyPositionGraphBoxed == 'boolean' && properties.keyPositionGraphBoxed) ) {
                 if (arguments[3] != false) {
         
-                    args.object.context.lineWidth = typeof properties.keyLinewidth == 'number' ? properties.keyLinewidth : 1;
+                    args.object.context.lineWidth = typeof properties.keyLinewidth == 'number' ? properties.keyLinewidth : 1 * scaleFactor;
     
                     // The older square rectangled key
                     if (properties.keyRounded == true) {
 
                         args.object.context.beginPath();
-                            args.object.context.strokeStyle = strokestyle;
 
-                            RGraph.roundedRect({
-                                context: args.object.context,
-                                      x: Math.round(hpos),
-                                      y: Math.round(vpos),
-                                  width: width - 5,
-                                 height: 5 + ( (text_size + 5) * RGraph.getKeyLength(key)),
-                                 radius: 4
-                            });
+                        RGraph.roundedRect({
+                            context: args.object.context,
+                                  x: Math.round(hpos),
+                                  y: Math.round(vpos),
+                              width: width - (5 * scaleFactor),
+                             height: (5 * scaleFactor) + ( (text_size + (5 * scaleFactor) ) * RGraph.getKeyLength(key)),
+                             radius: (4 * scaleFactor)
+                        });
+
+                        args.object.context.strokeStyle = strokestyle;
                         args.object.context.stroke();
                         args.object.context.fill();
     
                         RGraph.noShadow(args.object);
                 
+                    //
+                    // keyRounded = false
+                    //
                     } else {
-                        args.object.context.strokeRect(Math.round(hpos), Math.round(vpos), width - 5, 5 + ( (text_size + 5) * RGraph.getKeyLength(key)));
-                        args.object.context.fillRect(Math.round(hpos), Math.round(vpos), width - 5, 5 + ( (text_size + 5) * RGraph.getKeyLength(key)));
+                        var x = Math.round(hpos),
+                            y = Math.round(vpos),
+                            w = width - (5 * scaleFactor),
+                            h = (5 * scaleFactor) + ( (text_size + (5 * scaleFactor)) * RGraph.getKeyLength(key));
+
+                        args.object.context.strokeRect(x,y,w,h);
+                        args.object.context.fillRect(x,y,w,h);
                     }
                 }
             }
@@ -343,22 +355,30 @@
                     if (blob_shape == 'circle') {
                         args.object.context.beginPath();
                             args.object.context.fillStyle = colors[i];
-                            args.object.context.arc(hpos + 5 + (blob_size / 2), vpos + (5 * j) + (text_size * j) - text_size + (blob_size / 2), blob_size / 2, 0, 6.26, 0);
+                            args.object.context.arc(
+                                hpos + (5 * scaleFactor) + (blob_size / 2),
+                                vpos + (5 * j * scaleFactor) + (text_size * j) - text_size + (blob_size / 2),
+                                blob_size / 2
+                                ,
+                                0,
+                                6.26,
+                                0
+                            );
                         args.object.context.fill();
                     
                     } else if (blob_shape == 'line') {
                         args.object.context.beginPath();
                             args.object.context.strokeStyle = colors[i];
-                            args.object.context.moveTo(hpos + 5, vpos + (5 * j) + (text_size * j) - text_size + (blob_size / 2));
-                            args.object.context.lineTo(hpos + blob_size + 5, vpos + (5 * j) + (text_size * j) - text_size + (blob_size / 2));
+                            args.object.context.moveTo(hpos + (5 * scaleFactor), vpos + (5 * j * scaleFactor) + (text_size * j) - text_size + (blob_size / 2));
+                            args.object.context.lineTo(hpos + blob_size + (5 * scaleFactor), vpos + (5 * j * scaleFactor) + (text_size * j) - text_size + (blob_size / 2));
                         args.object.context.stroke();
                     
                     } else if (blob_shape == 'triangle') {
                         args.object.context.beginPath();
                             args.object.context.strokeStyle = colors[i];
-                            args.object.context.moveTo(hpos + 5, vpos + (5 * j) + (text_size * j) - text_size + blob_size);
-                            args.object.context.lineTo(hpos + (blob_size / 2) + 5, vpos + (5 * j) + (text_size * j) - text_size );
-                            args.object.context.lineTo(hpos + blob_size + 5, vpos + (5 * j) + (text_size * j) - text_size + blob_size);
+                            args.object.context.moveTo(hpos + (5 * scaleFactor), vpos + (5 * j * scaleFactor) + (text_size * j) - text_size + blob_size);
+                            args.object.context.lineTo(hpos + (blob_size / 2) + (5 * scaleFactor), vpos + (5 * j * scaleFactor) + (text_size * j) - text_size );
+                            args.object.context.lineTo(hpos + blob_size + (5 * scaleFactor), vpos + (5 * j * scaleFactor) + (text_size * j) - text_size + blob_size);
                         args.object.context.closePath();
                         args.object.context.fillStyle =  colors[i];
                         args.object.context.fill();
@@ -376,8 +396,8 @@
                     } else {
                         args.object.context.fillStyle =  colors[i];
                         args.object.context.fillRect(
-                            hpos + 5,
-                            vpos + (5 * j) + (text_size * j) - text_size,
+                            hpos + (5 * scaleFactor),
+                            vpos + (5 * j * scaleFactor) + (text_size * j) - text_size,
                             text_size,
                             text_size + 1
                         );
@@ -402,8 +422,8 @@
                         italic:     textConf.italic,
                         color:      typeof textConf.color == 'object' ? textConf.color[i] : textConf.color,
 
-                        x:          hpos + blob_size + 5 + 5 + (properties.keyLabelsOffsetx || 0),
-                        y:          vpos + (5 * j) + (text_size * j) + 3 + (properties.keyLabelsOffsety || 0),
+                        x:          hpos + blob_size + (5 * scaleFactor) + (5 * scaleFactor) + (properties.keyLabelsOffsetx || 0),
+                        y:          vpos + (5 * j * scaleFactor) + (text_size * j) + (3 * scaleFactor) + (properties.keyLabelsOffsety || 0),
                         text:       key[i],
                         accessible: textAccessible
                     });
@@ -463,7 +483,8 @@
         //
         var drawKey_margin = function ()
         {
-            var text_size    = typeof properties.keyLabelsSize == 'number' ? properties.keyLabelsSize : properties.textSize,
+            var scaleFactor  = RGraph.getScaleFactor(obj),
+                text_size    = typeof properties.keyLabelsSize == 'number' ? properties.keyLabelsSize : properties.textSize,
                 text_bold    = properties.keyLabelsBold,
                 text_italic  = properties.keyLabelsItalic,
                 text_font    = properties.keyLabelsFont || properties.keyFont || properties.textFont,
@@ -473,11 +494,11 @@
                 marginTop    = args.object.marginTop,
                 marginBottom = args.object.marginBottom,
                 hpos         = ((args.object.canvas.width - marginLeft - marginRight) / 2) + args.object.marginLeft,
-                vpos         = marginTop - text_size - 5,
+                vpos         = marginTop - text_size - 6,
                 title        = properties.title,
                 blob_size    = text_size, // The blob of color
-                hmargin      = 8, // This is the size of the gaps between the blob of color and the text
-                vmargin      = 4, // This is the vertical margin of the key
+                hmargin      = 8 * scaleFactor, // This is the size of the gaps between the blob of color and the text
+                vmargin      = 4 * scaleFactor, // This is the vertical margin of the key
                 fillstyle    = properties.keyBackground,
                 strokestyle  = '#999',
                 length       = 0;
@@ -580,19 +601,28 @@
 
 
                 args.object.context.beginPath();
+
+                    args.object.context.lineWidth = scaleFactor || 1;
                     args.object.context.fillStyle = fillstyle;
                     args.object.context.strokeStyle = strokestyle;
 
                     if (properties.keyRounded) {
+
                         RGraph.roundedRect({
                             context: args.object.context,
                                   x: hpos,
-                                  y: vpos - vmargin,
+                                  y: vpos - vmargin - (scaleFactor * 4),
                               width: length,
-                             height: text_size + vmargin + vmargin
+                             height: text_size + vmargin + vmargin,
+                             radius:  2 * scaleFactor
                         });
                     } else {
-                        args.object.context.rect(hpos, vpos - vmargin, length, text_size + vmargin + vmargin);
+                        args.object.context.rect(
+                            hpos,
+                            vpos - vmargin  - (scaleFactor * 4),
+                            length,
+                            text_size + vmargin + vmargin
+                        );
                     }
 
                 args.object.context.stroke();
@@ -637,11 +667,12 @@
                     var blob_shape = properties.keyColorShape;
                 
                 } else {
-                    var blob_shape = 'square';
+                    var blob_shape = 'rect';
                 }
 
                 // Allow for the keyPositionMarginHSpace property
                 pos  += (properties.keyPositionMarginHSpace ? properties.keyPositionMarginHSpace : 0);
+
 
                 //
                 // Draw the blob of color - line
@@ -649,9 +680,10 @@
                 if (blob_shape =='line') {
                     
                     args.object.context.beginPath();
+                        args.object.context.lineWidth = scaleFactor;
                         args.object.context.strokeStyle = colors[i];
-                        args.object.context.moveTo(pos, vpos + (blob_size / 2));
-                        args.object.context.lineTo(pos + blob_size, vpos + (blob_size / 2));
+                        args.object.context.moveTo(pos, vpos + (blob_size / 2) - 3);
+                        args.object.context.lineTo(pos + blob_size, vpos + (blob_size / 2) - 3);
                     args.object.context.stroke();
                     
                 // Circle
@@ -660,7 +692,7 @@
                     args.object.context.beginPath();
                         args.object.context.fillStyle = colors[i];
                         args.object.context.moveTo(pos, vpos + (blob_size / 2));
-                        args.object.context.arc(pos + (blob_size / 2), vpos + (blob_size / 2), (blob_size / 2), 0, 6.28, 0);
+                        args.object.context.arc(pos + (blob_size / 2), vpos + (blob_size / 2) - (scaleFactor === 2 ? 8 : 3), (blob_size / 2), 0, 6.28, 0);
                     args.object.context.fill();
                 
                 } else if (blob_shape == 'triangle') {
@@ -668,9 +700,9 @@
                     args.object.context.fillStyle = colors[i];
                     args.object.context.beginPath();
                         args.object.context.strokeStyle = colors[i];
-                        args.object.context.moveTo(pos, vpos + blob_size);
-                        args.object.context.lineTo(pos + (blob_size / 2), vpos);
-                        args.object.context.lineTo(pos + blob_size, vpos + blob_size);
+                        args.object.context.moveTo(pos, vpos + blob_size - (scaleFactor ? 8 : 4) );
+                        args.object.context.lineTo(pos + (blob_size / 2), vpos - (scaleFactor ? 8 : 4) );
+                        args.object.context.lineTo(pos + blob_size, vpos + blob_size - (scaleFactor ? 8 : 4) );
                     args.object.context.closePath();
                     args.object.context.fill();
 
@@ -689,7 +721,7 @@
 
                     args.object.context.beginPath();
                         args.object.context.fillStyle = colors[i];
-                        args.object.context.rect(pos, vpos, blob_size, blob_size);
+                        args.object.context.rect(pos, vpos - (obj.properties.scale ? 8 : 4), blob_size, blob_size);
                     args.object.context.fill();
                 }
     
@@ -784,12 +816,13 @@
             for (var i=0,len=args.object.coords.key.length,maxlen=0; i<len; i+=1) {
                 maxlen = Math.max(maxlen, args.object.coords.key[i][2]);
             }
-    
+
 
             //args.object.coords.key.forEach(function (value, index, arr)
             //{
+
             for (var i=0,len=args.object.coords.key.length; i<len; i+=1) {
-            
+
                 // Because the loop would have finished when the i variable is needed - put
                 // the onclick function inside a new context so that the value of the i
                 // variable is what we expect when the key has been clicked
@@ -807,29 +840,42 @@
                         width:  (properties.keyPosition === 'gutter' || properties.keyPosition === 'margin') ? value[2] : maxlen,
                         height: value[3],
                         options: {
-                            colorsFill: 'rgba(0,0,0,0)'
+                            colorsFill: 'rgba(0,0,0,0)',
+                            events: {
+                                click: function (e, shape)
+                                {
+                                    rect.context.fillStyle = properties.keyInteractiveHighlightLabel;
+                                    rect.context.fillRect(shape.x, shape.y, shape.width, shape.height);
+            
+                                    if (typeof args.object.interactiveKeyHighlight == 'function') {
+            
+                                        args.object.set('keyInteractiveIndex', idx);
+            
+                                        RGraph.fireCustomEvent(args.object, 'onbeforeinteractivekey');
+                                        args.object.interactiveKeyHighlight(index);
+                                        RGraph.fireCustomEvent(args.object, 'onafterinteractivekey');
+                                    }
+                                },
+                                mousemove: function (e, shape)
+                                {
+                                    return true;
+                                }
+                            }
                         }
                     }).draw();
                     
-                    rect.onclick = function (e, shape)
-                    {
-                        rect.context.fillStyle = properties.keyInteractiveHighlightLabel;
-                        rect.context.fillRect(shape.x, shape.y, shape.width, shape.height);
-    
-                        if (typeof args.object.interactiveKeyHighlight == 'function') {
-
-                            args.object.set('keyInteractiveIndex', idx);
-
-                            RGraph.fireCustomEvent(args.object, 'onbeforeinteractivekey');
-                            args.object.interactiveKeyHighlight(index);
-                            RGraph.fireCustomEvent(args.object, 'onafterinteractivekey');
-                        }
-                    }
-                    
-                    rect.onmousemove = function (e, shape)
-                    {
-                        return true;
-                    }
+                    //
+                    // 27th June 2025
+                    //
+                    // Change the __object__ reference back to the
+                    // Line chart object.
+                    //
+                    // After implementing the canvas antialiasing
+                    // fix this is, evidentally, necessary. But
+                    // why...?! Very strange. One for Mulder and
+                    // Scully...
+                    //
+                    args.object.canvas.__object__ = args.object;
                 })(i);
             }
         }
