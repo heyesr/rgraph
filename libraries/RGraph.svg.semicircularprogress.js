@@ -275,7 +275,7 @@
             titleFont:      null,
             titleSize:      null,
             titleColor:     null,
-            titleBold:      null,
+            titleBold:      true,
             titleItalic:    null,
 
             titleSubtitle:       null,

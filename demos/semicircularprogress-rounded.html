@@ -48,19 +48,19 @@
                 text: [
                     {
                      x:      0,
-                     y:      260,
+                     y:      500,
                      text:   'Overall Data score',
                      bold:   true,
-                     size:   20,
+                     size:   40,
                      halign: 'center',
                      valign: 'top'
                     },
                     {
                      x:      0,
-                     y:      230,
+                     y:      450,
                      text:   '+12% improvement',
                      italic: true,
-                     size:   12,
+                     size:   24,
                      halign: 'center',
                      valign: 'top',
                      color: '#aaa',
@@ -78,14 +78,15 @@
                     draw: function (obj)
                     {
                         // Add a roundedRect around the % improvment text
-                        var index = 3;
+                        var index   = 3;
+                        var padding = 10;
             
                         obj.path(
-                            'b rr % % % % % s #ccc',
-                            obj.coordsText[index].x - 2,
-                            obj.coordsText[index].y - 3,
-                            obj.coordsText[index].width + 7,
-                            obj.coordsText[index].height + 4,
+                            'b rr % % % % % s #aaa',
+                            obj.coordsText[index].x - padding,
+                            obj.coordsText[index].y - padding,
+                            obj.coordsText[index].width + (padding * 2),
+                            obj.coordsText[index].height + (padding * 2),
                             50
                         );
                     }

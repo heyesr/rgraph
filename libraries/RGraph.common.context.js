@@ -505,13 +505,13 @@
         //
         var bg = document.createElement('DIV');
             bg.id = '__rgraph_image_bg__';
-            bg.style.position = 'fixed';
-            bg.style.top = '-10px';
-            bg.style.left = '-10px';
-            bg.style.width = '5000px';
-            bg.style.height = '5000px';
+            bg.style.position        = 'fixed';
+            bg.style.top             = '-10px';
+            bg.style.left            = '-10px';
+            bg.style.width           = '5000px';
+            bg.style.height          = '5000px';
             bg.style.backgroundColor = 'rgb(204,204,204)';
-            bg.style.opacity = 0;
+            bg.style.opacity         = 0;
         document.body.appendChild(bg);
         
         
@@ -524,16 +524,12 @@
             div.style.border            = '1px solid black';
             div.style.position          = 'fixed';
             div.style.top               = '20%';
-            div.style.width             = canvas.width + 'px';
-            div.style.height            = canvas.height + 35 + 'px';
-            div.style.left              = (document.body.clientWidth / 2) - (canvas.width / 2) + 'px';
+            div.style.width             = canvas.offsetWidth + 'px';
+            div.style.height            = canvas.offsetHeight + 35 + 'px';
+            div.style.left              = (document.body.clientWidth / 2) - (canvas.offsetWidth / 2) + 'px';
             div.style.padding           = '5px';
             div.style.borderRadius      = '10px';
-            div.style.MozBorderRadius   = '10px';
-            div.style.WebkitBorderRadius= '10px';
             div.style.boxShadow         = '0 0 15px rgba(96,96,96,0.5)';
-            div.style.MozBoxShadow      = '0 0 15px rgba(96,96,96,0.5)';
-            div.style.WebkitBoxShadow   = 'rgba(96,96,96,0.5) 0 0 15px';
             div.__canvas__              = canvas;
             div.__object__              = obj;
             div.id                      = '__rgraph_image_div__';
@@ -541,26 +537,46 @@
 
         
         //
-        // Add the HTML text inputs
+        // Add the HTML text inputs 
         //
         div.innerHTML += '<div id="rgraph_showpng_div_container"><textarea onclick="this.select()" readonly="readonly" id="__rgraph_dataurl__">' + canvas.toDataURL() + '</textarea></div>';
 
             var nestedTextarea = document.getElementById('__rgraph_dataurl__');
                 nestedTextarea.style.overflow = 'hidden';
                 nestedTextarea.style.height   = '20px';
-                nestedTextarea.style.width    = (canvas.width - obj.marginLeft - obj.marginRight) + 'px';
+                nestedTextarea.style.width    = (canvas.offsetWidth - obj.marginLeft - obj.marginRight) + 'px';
                 nestedTextarea.style.position = 'relative';
                 nestedTextarea.style.left     = obj.marginLeft + 'px';
 
             var nestedDiv = document.getElementById('rgraph_showpng_div_container');
-                nestedDiv.style.position   = 'absolute';
+                nestedDiv.style.position     = 'absolute';
                 //nestedDiv.style.marginLeft = '10px';
-                nestedDiv.style.top        = canvas.height + 'px';
-                nestedDiv.style.width      = canvas.width + 'px';
-                nestedDiv.style.height     = '25px';
+                nestedDiv.style.top          = canvas.offsetHeight + 'px';
+                nestedDiv.style.width        = canvas.offsetWidth + 'px';
+                nestedDiv.style.height       = '25px';
 
         
-        
+
+//
+// Commented out because, despite scaling the image down, the
+// images that are produced are of a lower quality.
+//
+// Since scaling was introduced when an image is requested the
+// canvas has to be copied on to a smaller canvas and then a
+// picture of that is returned (ie with the correct dimensions).
+//
+/*
+var tmpCanvas = document.createElement('canvas');
+    tmpCanvas.width = canvas.offsetWidth;
+    tmpCanvas.height = canvas.offsetHeight;
+document.body.appendChild(tmpCanvas);
+
+tmpCanvas.getContext('2d').drawImage(
+    canvas,
+    0,0,canvas.width, canvas.height,
+    0,0,tmpCanvas.width, tmpCanvas.height
+);
+*/
         //
         // Create the image rendition of the graph
         //
@@ -571,12 +587,14 @@
             img.id          = '__rgraph_image_img__';
             img.className   = 'RGraph_png';
             img.src         = canvas.toDataURL();
+            img.width       = canvas.offsetWidth;
+            img.height      = canvas.offsetHeight;
         div.appendChild(img);
         
         setTimeout(function ()
         {
             document.getElementById("__rgraph_dataurl__").select();
-        }, 50);
+        }, 25);
         
         window.addEventListener('resize', function (e)
         {

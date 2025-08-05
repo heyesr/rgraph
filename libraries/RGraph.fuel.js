@@ -60,13 +60,15 @@
 
             colors:                      ['red'],
             
+            bulbRadius:                  20,
+            
             needleColor:                 'red',
             needleRadiusOffset:          45,
             
-            marginLeft:                  5,
-            marginRight:                 5,
-            marginTop:                   5,
-            marginBottom:                5,
+            marginLeft:                  10,
+            marginRight:                 10,
+            marginTop:                   10,
+            marginBottom:                20,
             
             textSize:                    12,
             textColor:                   'black', // Does not support gradients
@@ -85,18 +87,8 @@
             
             adjustable:                  false,
             
-            resizable:                   false,
-            resizableHandleBackground:   null,
-            
             icon:                        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAfCAYAAAD0ma06AAAEGElEQVRIS7VXSyhtYRT+jnfe5FEMjAwUBiQGHikzRWIkkgy8YyDK+xnJK5JCeZSUGKBMiAyYkMxMJAMpSfJ+2/d8695/33NunSPnHqt2Z5+91/9/' + '/' + '/et9a/1b8Pn56dmMBhg/IWDgwNoNzc38PHxkXtN0+Tiexp9eH18fIDj1Bj63N/fw8vLS/wsmcHoqKmXT09PuL29RVFREU5OTvTJ6UIAgioQ+vLe09MTb29v8PX1RWBgICYnJ+XXIqDRWXN0dJT3nIDsWlpadP+lpSWZlD4KmL/8/' + '/7+Ls/S09N1/7y8PISHh+sK/QssDJWcHEyGCnB1dRUDAwPIzMzUx5GpAnZ1dcXy8jK2trbM5j06OsLc3JzISx8q4OzsLOOsAq6treHg4AAeHh4WJbq7u0Nzc7P+PiYmBnt7ezg9PcXExAQCAgLg5OSEx8dHuLu7Wwfc3t7G/v6+yEcjO8rIROGKaWdnZ+jr6zMDjI6OxvT0tDzr6uqS2KtksspwZ2cHjY2NuqSUhnHmilUCraysmElaWloKJpQCjI2NRX5+Pl5eXr6WlCv08/MTEMVOZDH+Zzw4CdlfX1/rDHt7ezE1NQXGkcYEKi4ulkVKYlpLGouBs/JiaGgIZL25uSlecXFxohAz/ccAz8/P4e/vj7q6Ojw8PMje5DNRy94MQ0JCUFtbK2wqKipE+sHBQbi4uPwMQ86ak5ODxMREVFdXIywsDCUlJRJDXnZlmJqaip6eHuTm5kqikGlycjIyMjL+ZrY9JSUgMzQiIgINDQ2ypaqqqkCZWXHsnjQEHB8fR0pKigAxabq7uyWOlJNxtLukTJDs7GxUVlZKDNl5oqKi8Pr6+jOAIyMjiI+Pl5JGQG4F1Qy+LN7f3fiUdGZmBsHBwRgbG8Pw8LD01ba2NmlX0rTtnTQLCwvSjEdHR3FxcSExLCwsRGRkpBR9vePzeMDyw3bT1NT0XXLiT4a7u7s4Pj4GGzd7K8GCgoKEsRR8I4Cm6hwHXV5eiv62GAE5npMTmFuBTCkzmzT7qs5Q9TlW/o6ODlvwhCHPM5SVPZIxYzNeXFxEa2srvL29YTC2GI3aMm3Zeq6urv4LMC0tDRsbG1K8k5KS9DgS0IwhKVFjSsJA22r9/f0oKCgQdvPz83JEmZ2dlcpD9maSshow0KZnlO8Csx9yK3BLKCMJPpf2xGMigdi9WXooaWdn53dxdP+amhrZh4eHh1hfX5cTW319vZyBnp+ffzNkBWBmhYaGysB/j322oCckJCArK0uGMlsJ5ubmBoPxRiMzFlomjr2MGdne3i5ANILRJEtJt6ysTG8h9gDl4am8vFwSUWron1O9LulXIOqk9pWftfdSS40yyj5Uh101wPRryuR7R1ZMX/U1pfy5IF40xcgUnGAc9wsGYxsFhy87kwAAAABJRU5ErkJggg==',
             iconRedraw:                  true,
-            
-            backgroundImageStretch:      false,
-            backgroundImageX:            null,
-            backgroundImageY:            null,
-            backgroundImageW:            null,
-            backgroundImageH:            null,
-            backgroundImagealign:        null,
             
             labelsFull:                  'F',
             labelsFullOffsetx:           0,
@@ -122,8 +114,54 @@
             
             clearto:                     'rgba(0,0,0,0)',
             
-            events:                      {}
-        }
+            events:                      {},
+            
+            scale:                       true,
+            scaleFactor:                 2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'centerx',
+            'centery',
+            'radius',
+
+            'needleRadiusOffset',
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            
+            'textSize',
+
+            'annotatableLinewidth',
+
+            'labelsFullOffsetx',
+            'labelsFullOffsety',
+            'labelsFullOffsetRadius',
+            'labelsEmptyOffsetx',
+            'labelsEmptyOffsety:',
+            'labelsEmptyOffsetRadius',
+            'labelsSize'
+        ];
+
+
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -244,6 +282,29 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -251,12 +312,15 @@
     
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -310,9 +374,12 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
+            //
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius) * scaleFactor;
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx) * scaleFactor;
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery) * scaleFactor;
     
     
             //
@@ -513,6 +580,8 @@
         //
         this.drawLabels = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
             if (!properties.scaleVisible) {
                 
                 var radius = (this.radius - 20);
@@ -520,8 +589,8 @@
                 this.context.fillStyle = properties.textColor;
                 
                 // Draw the left label
-                var y = this.centery - Math.sin(this.angles.start - RGraph.PI) * (this.radius - 17 + properties.labelsEmptyOffsetRadius);
-                var x = this.centerx - Math.cos(this.angles.start - RGraph.PI) * (this.radius - 17 + properties.labelsEmptyOffsetRadius);
+                var y = this.centery - Math.sin(this.angles.start - RGraph.PI) * (this.radius - (17 * scaleFactor) + properties.labelsEmptyOffsetRadius);
+                var x = this.centerx - Math.cos(this.angles.start - RGraph.PI) * (this.radius - (17 * scaleFactor) + properties.labelsEmptyOffsetRadius);
 
                 // Get the text configuration
                 var textConf = RGraph.getTextConf({
@@ -568,8 +637,8 @@
 
 
                 // Draw the right label
-                var y = this.centery - Math.sin(this.angles.start - RGraph.PI) * (this.radius - 17 + properties.labelsFullOffsetRadius);
-                var x = this.centerx + Math.cos(this.angles.start - RGraph.PI) * (this.radius - 17 + properties.labelsFullOffsetRadius);
+                var y = this.centery - Math.sin(this.angles.start - RGraph.PI) * (this.radius - (17 * scaleFactor) + properties.labelsFullOffsetRadius);
+                var x = this.centerx + Math.cos(this.angles.start - RGraph.PI) * (this.radius - (17 * scaleFactor) + properties.labelsFullOffsetRadius);
                 var ret = RGraph.text({
                 
                   object:     this,
@@ -623,9 +692,11 @@
         //
         this.drawNeedle = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             // Draw the needle
             this.context.beginPath();
-                this.context.lineWidth = 5;
+                this.context.lineWidth = 5 * scaleFactor;
                 this.context.lineCap = 'round';
                 this.context.strokeStyle = properties.needleColor;
     
@@ -658,7 +729,14 @@
             this.context.beginPath();
                 this.context.fillStyle = grad;
                 this.context.moveTo(this.centerx, this.centery);
-                this.context.arc(this.centerx, this.centery, 20, 0, RGraph.TWOPI, 0);
+                this.context.arc(
+                    this.centerx,
+                    this.centery,
+                    this.properties.bulbRadius * scaleFactor,
+                    0,
+                    RGraph.TWOPI,
+                    0
+                );
             this.context.fill();
         };
 
@@ -675,13 +753,15 @@
         this.drawScale = function ()
         {
             var a, x, y;
-    
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             //First draw the fill background
             this.context.beginPath();
                 this.context.strokeStyle = 'black';
-                this.context.fillStyle = 'white';
+                this.context.fillStyle   = 'white';
+                this.context.lineWidth   = scaleFactor * 1;
                 this.context.arc(this.centerx, this.centery, this.radius, this.angles.start, this.angles.end, false);
-                this.context.arc(this.centerx, this.centery, this.radius - 10, this.angles.end, this.angles.start, true);
+                this.context.arc(this.centerx, this.centery, this.radius - (10 * scaleFactor), this.angles.end, this.angles.start, true);
             this.context.closePath();
             this.context.stroke();
             this.context.fill();
@@ -693,7 +773,7 @@
             this.context.beginPath();
                 this.context.fillStyle = properties.colors[0];
                 this.context.arc(this.centerx, this.centery, this.radius, start, end, false);
-                this.context.arc(this.centerx, this.centery, this.radius - 10, end, start, true);
+                this.context.arc(this.centerx, this.centery, this.radius - (10 * scaleFactor), end, start, true);
             this.context.closePath();
             //this.context.stroke();
             this.context.fill();
@@ -701,8 +781,8 @@
             // This draws the tickmarks
             for (a = this.angles.start; a<=this.angles.end + 0.01; a+=((this.angles.end - this.angles.start) / 5)) {
                 this.context.beginPath();
-                    this.context.arc(this.centerx, this.centery, this.radius - 10, a, a + 0.0001, false);
-                    this.context.arc(this.centerx, this.centery, this.radius - 15, a + 0.0001, a, true);
+                    this.context.arc(this.centerx, this.centery, this.radius - (10 * scaleFactor), a, a + 0.0001, false);
+                    this.context.arc(this.centerx, this.centery, this.radius - (10 * scaleFactor) - (5 * scaleFactor), a + 0.0001, a, true);
                 this.context.stroke();
             }
             
@@ -714,21 +794,22 @@
                 this.context.fillStyle = properties.textColor;
 
                 // The labels
-                var numLabels  = properties.scaleLabelsCount;
-                var decimals   = properties.scaleDecimals;
-                var units_post = properties.scaleUnitsPost;
-                var units_pre  = properties.scaleUnitsPre;
-                var font       = properties.textFont;
-                var size       = properties.textSize;
-                var color      = properties.textColor;
-                var bold       = properties.textBold;
-                var italic     = properties.textItalic;
+                var numLabels   = properties.scaleLabelsCount;
+                var decimals    = properties.scaleDecimals;
+                var units_post  = properties.scaleUnitsPost;
+                var units_pre   = properties.scaleUnitsPre;
+                var font        = properties.textFont;
+                var size        = properties.textSize;
+                var color       = properties.textColor;
+                var bold        = properties.textBold;
+                var italic      = properties.textItalic;
+                var scaleFactor = RGraph.getScaleFactor(this);
 
                 for (var i=0; i<=numLabels; ++i) {
                     
                     a = ((this.angles.end - this.angles.start) * (i/numLabels)) + this.angles.start;
-                    y = this.centery - Math.sin(a - RGraph.PI) * (this.radius - 17);
-                    x = this.centerx - Math.cos(a - RGraph.PI) * (this.radius - 17);
+                    y = this.centery - Math.sin(a - RGraph.PI) * (this.radius - (17 * scaleFactor) );
+                    x = this.centerx - Math.cos(a - RGraph.PI) * (this.radius - (17 * scaleFactor) );
                     
 
                     // Get the text configuration
@@ -867,10 +948,20 @@
             
                 img.onload = function (e)
                 {
-                    img.__loaded__ = true;
-                    var obj = img.__object__;
-                
-                    obj.context.drawImage(img,obj.centerx - (img.width / 2), obj.centery - obj.radius + 35);
+                    img.__loaded__   = true;
+                    var obj          = img.__object__;
+                    var scaleFactor  = RGraph.getScaleFactor(obj);
+                    var width        = scaleFactor * img.width;
+                    var height       = scaleFactor * img.height;
+
+
+                    obj.context.drawImage(
+                        img,
+                        (obj.centerx - (width / 2)),
+                        obj.centery - obj.radius + 35,
+                        width,
+                        height
+                    );
     
                     obj.drawNeedle();
     
@@ -882,7 +973,17 @@
                 }
             } else {
                 var img = this.__icon__;
-                this.context.drawImage(img,this.centerx - (img.width / 2), this.centery - this.radius + 35);
+                var scaleFactor  = RGraph.getScaleFactor(this);
+                var width        = scaleFactor * img.width;
+                var height       = scaleFactor * img.height;
+
+                this.context.drawImage(
+                    img,
+                    this.centerx - ((img.width / 2) * scaleFactor),
+                    this.centery - this.radius + (35 * scaleFactor),
+                    width,
+                    height
+                );
             }
     
             this.drawNeedle();
@@ -1235,6 +1336,35 @@
                 Math.max(this.canvas.width, this.canvas.height),
                 a1, a2
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

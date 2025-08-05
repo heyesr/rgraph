@@ -118,8 +118,41 @@
             
             clip:      null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            
+            'marginLeft',
+            'marginRight',
+            'marginBottom',
+            'marginTop',
+            'marginInner',
+            
+            'textSize',
+
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+
+            'tooltipsPointerOffsetx',
+            'tooltipsPointerOffsety'
+        ];
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -253,6 +286,20 @@
         //
         this.draw = function ()
         {
+
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -275,12 +322,15 @@
             
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -668,7 +718,7 @@
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                                   // The X coordinate of the canvas
-                + this.coords[0][0] + (this.coords[0][2] / 2)   // The X coordinate of the rect
+                + ((this.coords[0][0] + (this.coords[0][2] / 2)) / 2)   // The X coordinate of the rect
                 - (tooltip.offsetWidth / 2)                     // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx                // Add any user defined offset
             ) + 'px';
@@ -677,7 +727,7 @@
                   canvasXY[1]                                   // The Y coordinate of the canvas
                 - tooltip.offsetHeight                          // The height of the tooltip
                 + obj.properties.tooltipsOffsety                // Add any user defined offset
-                + this.coords[0][1]                             // The X coordinate of the rect
+                + (this.coords[0][1] / 2)                             // The X coordinate of the rect
                 - 10                                            // An arbitrary amount
             ) + 'px';
         };

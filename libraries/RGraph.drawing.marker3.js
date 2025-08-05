@@ -53,6 +53,7 @@
         this.centerx = x;
         this.centery = y;
         this.radius  = radius;
+        
 
 
         //
@@ -125,8 +126,43 @@
             
             clip:                        null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+
+
+
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight'
+        ];
+
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -253,6 +289,32 @@
         //
         this.draw = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that were in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+                
+                // If scaling is enabled then double the radius
+                this.radius *= scaleFactor;
+            });
+
+
+
+
+
+
+
+
+
+
+
+
             //
             // Fire the beforedraw event
             //
@@ -278,12 +340,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -296,7 +361,7 @@
             this.path(
                 'b a % % % % % % a % % % % % % f %',
                 this.centerx, this.centery, this.actualRadius, 0, 2 * Math.PI,false,
-                this.centerx, this.centery, Math.max(this.actualRadius - 8, 0), 2 * Math.PI,0, true,
+                this.centerx, this.centery, Math.max(this.actualRadius - (scaleFactor * 8), 0), 2 * Math.PI,0, true,
                 properties.colorsFill
             );
             
@@ -318,7 +383,7 @@
                 setInterval(function ()
                 {
                     RGraph.redrawCanvas(obj.canvas);
-                }, properties.delay);
+                }, properties.delay / scaleFactor);
                 
                 this.TIMER = true;
             }

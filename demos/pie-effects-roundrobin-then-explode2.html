@@ -34,7 +34,7 @@
                 colorsStroke: 'white',
                 linewidth: 2,
                 shadow: false,
-                textColor: '#333'
+                textColor: '#000'
             }
         })
         
@@ -45,7 +45,7 @@
             window.__pie__ = pie1;
 
             for (var i=0; i<obj.data.length; ++i) {
-                setTimeout('window.__pie__.explodeSegment('+i+',5)', i * 50);
+                setTimeout('window.__pie__.explodeSegment('+i+',10)', i * 50);
             }
         }
 

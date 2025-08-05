@@ -45,6 +45,7 @@
                 keyPosition: 'margin',
                 keyPositionX: canvas.width - 300,
                 keyPositionY: 18,
+                keyLabelsOffsety: - 2,
                 keyPositionMarginBoxed: true,
                 xaxisColor: '#ccc',
                 yaxis: false,
@@ -64,7 +65,7 @@
                             var ret = RGraph.text({
                                 object: obj,
                                 font:   'Verdana',
-                                size:   10,
+                                size:   20,
                                 x:      x + (width/ 2),
                                 y:      y + (height / 2),
                                 text:   obj.data_arr[i].toString(),

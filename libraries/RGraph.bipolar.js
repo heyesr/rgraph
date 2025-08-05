@@ -160,7 +160,7 @@
             title:                      '',
             titleFont:                  null,
             titleSize:                  null,
-            titleBold:                  null,
+            titleBold:                  true,
             titleItalic:                null,
             titleColor:                 null,
             titleX:                     null,
@@ -287,8 +287,99 @@
             leftVisible:                true,
             rightVisible:               true,
             
-            events:                     {}
-        }
+            events:                     {},
+
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+
+            'backgroundGridLinewidth',
+
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+
+            'yaxisTickmarksLength',
+            'yaxisLabelsSize',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            
+            'labelsAboveSize',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+
+            'textSize',
+
+            'titleLeftSize',
+            'titleLeftOffsetx',
+            'titleLeftOffsety',
+            
+            'titleRightSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleRightOffsetx',
+            'titleRightOffsety',
+
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+
+            'marginCenter',
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+            'marginInnerGrouped',
+
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'annotatableLinewidth',
+
+            'axesLinewidth',
+
+            'linewidth',
+            
+            'variantThreedOffsetx',
+            'variantThreedOffsety',
+        ];
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -330,7 +421,8 @@
         
         
         //
-        // "Decorate" the object with the generic effects if the effects library has been included
+        // "Decorate" the object with the generic effects if the
+        // effects library has been included.
         //
         if (RGraph.Effects && typeof RGraph.Effects.decorate === 'function') {
             RGraph.Effects.decorate(this);
@@ -429,6 +521,23 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -440,7 +549,10 @@
             // Translate half a pixel for antialiasing purposes - but only if it hasn't been
             // done already
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -2661,7 +2773,8 @@
         this.drawLabelsAbove = function ()
         {
             var coordsLeft  = this.coordsLeft,
-                coordsRight = this.coordsRight;
+                coordsRight = this.coordsRight,
+                scaleFactor = RGraph.getScaleFactor(this);
 
                 // Get the text configuration
                 var textConf = RGraph.getTextConf({
@@ -2686,7 +2799,7 @@
                         italic: textConf.italic,
                         color:  textConf.color,
 
-                        x:      coords[0] - 5 - properties.labelsAboveOffsetx,
+                        x:      coords[0] - (5 * scaleFactor) - properties.labelsAboveOffsetx,
                         y:      coords[1] + (coords[3] / 2) + properties.labelsAboveOffsety,
 
                         text:   typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.left[i]) : RGraph.numberFormat({
@@ -2732,7 +2845,7 @@
                             italic: textConf.italic,
                             color:  textConf.color,
 
-                            x:      coords[0] - 5 - properties.labelsAboveOffsetx,
+                            x:      coords[0] - (5 * scaleFactor) - properties.labelsAboveOffsetx,
                             y:      coords[1] + (coords[3] / 2) + properties.labelsAboveOffsety,
                             text:   typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.left[i][j]) : RGraph.numberFormat({
                                 object:    this,
@@ -2773,7 +2886,7 @@
                         italic: textConf.italic,
                         color:  textConf.color,
 
-                        x:          coords[0] + coords[2] + 5 + (properties.variant === '3d' ? 10 : 0) + properties.labelsAboveOffsetx,
+                        x:          coords[0] + coords[2] + (5 * scaleFactor) + (properties.variant === '3d' ? 10 : 0) + properties.labelsAboveOffsetx,
                         y:          coords[1] + (coords[3] / 2) + (properties.variant === '3d' ? -5 : 0) + properties.labelsAboveOffsety,
 
                         text:       typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.right[i]) : RGraph.numberFormat({
@@ -2815,7 +2928,7 @@
                             italic: textConf.italic,
                             color:  textConf.color,
 
-                            x:      coords[0] + coords[2] + 5 + (properties.variant === '3d' ? 10 : 0) + properties.labelsAboveOffsetx,
+                            x:      coords[0] + coords[2] + (5 * scaleFactor) + (properties.variant === '3d' ? 10 : 0) + properties.labelsAboveOffsetx,
                             y:      coords[1] + (coords[3] / 2) + (properties.variant === '3d' ? -5 : 0) + properties.labelsAboveOffsety,
 
                             text:   typeof properties.labelsAboveFormatter === 'function' ? properties.labelsAboveFormatter(this, this.right[i][j]) : RGraph.numberFormat({
@@ -3463,9 +3576,10 @@
         //
         this.getMarginCenter = function ()
         {
-            var bold = typeof properties.yaxisLabelsBold === 'boolean' ? properties.yaxisLabelsBold : properties.textBold,
-                font = typeof properties.yaxisLabelsFont === 'string'  ? properties.yaxisLabelsFont : properties.textFont,
-                size = typeof properties.yaxisLabelsSize === 'number'  ? properties.yaxisLabelsSize : properties.textSize;
+            var bold        = typeof properties.yaxisLabelsBold === 'boolean' ? properties.yaxisLabelsBold : properties.textBold,
+                font        = typeof properties.yaxisLabelsFont === 'string'  ? properties.yaxisLabelsFont : properties.textFont,
+                size        = typeof properties.yaxisLabelsSize === 'number'  ? properties.yaxisLabelsSize : properties.textSize,
+                scaleFactor = RGraph.getScaleFactor(this);
 
             // Loop through the labels measuring them
             for (var i=0,len=0; i<properties.yaxisLabels.length; ++i) {
@@ -3478,7 +3592,7 @@
                 )[0]);
             }
 
-            return len + 25;
+            return len + (25 * scaleFactor);
         };
 
 
@@ -3887,25 +4001,26 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj        = args.object,
-                e          = args.event,
-                tooltip    = args.tooltip,
-                index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas)
-                coords     = this.coords[args.index];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas)
+                coords      = this.coords[args.index],
+                scaleFactor = RGraph.getScaleFactor(this);
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                 canvasXY[0]                      // The X coordinate of the canvas
-                + coords[0]                      // The X coordinate of the point on the chart
-                + (coords[2] / 2)                // Add half of the width of the bar
+                + (coords[0] / scaleFactor)      // The X coordinate of the point on the chart
+                + (coords[2] / 2 / scaleFactor)// Add half of the width of the bar
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + coords[1]                      // The Y coordinate of the bar on the chart
+                + (coords[1] / scaleFactor)                      // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 10                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
@@ -3916,13 +4031,12 @@
             // If the chart is a 3D version the tooltip Y position needs this
             // adjustment
             if (properties.variant === '3d') {
-                
-                var left       = coords[0];
-                var top        = coords[1];
+
+                var left       = coords[0] / 2;
                 var angle      = properties.variantThreedAngle;
                 var adjustment = Math.tan(angle) * left;
 
-                args.tooltip.style.top = parseInt(args.tooltip.style.top) + 10  + adjustment + 'px';
+                args.tooltip.style.top = parseInt(args.tooltip.style.top)  + adjustment + 'px';
             }
         };
 
@@ -4165,6 +4279,35 @@ for (var i=0; i<2; ++i) {
 
     }
 }
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
+        };
 
 
 

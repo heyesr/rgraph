@@ -31,11 +31,11 @@
                     }
                 }
             }
-        }).trace();
+        }).trace({frames: 60});
         
         function reverse ()
         {
-            line.trace({reverse: true}, function ()
+            line.trace({reverse: true,frames: 60}, function ()
             {
                 setTimeout(function ()
                 {   

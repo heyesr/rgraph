@@ -45,6 +45,7 @@
                 crosshairsCoords: true,
                 crosshairsCoordsLabelsX: 'Date',
                 crosshairsCoordsLabelsY: 'Weight',
+                crosshairsCoordsFixed: true,
                 crosshairsCoordsFormatterY: function (args)
                 {
                     return args.value + 'Kg';
@@ -52,34 +53,10 @@
                 crosshairsCoordsFormatterX: function (args)
                 {
                     var obj    = args.object,
-                        coord  = args.value,
-                        months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                        coord  = args.value, // milliseconds
+                        date   = RGraph.PHP.date('jS F Y', coord / 1000 /* seconds */ );
                     
-                    var d = new Date(coord),
-                        date  = (function (date)
-                        {
-                            if (date === 1) {
-                                date = '1st';
-                            } else if (date === 2) {
-                                date = '2nd';
-                            } else if (date === 3) {
-                                date = '3rd';
-                            } else {
-                                
-                                date = date + 'th';
-                            }
-                            
-                            return date;
-
-                        })(d.getDate()),
-                        month = months[d.getMonth()],
-                        year  = d.getFullYear();
-                    
-                    return '{1} {2} {3}'.format(
-                        date,
-                        month,
-                        year
-                    );
+                    return date;
                 },
                 xaxisLabels: ['Q1','Q2','Q3','Q4']
             }

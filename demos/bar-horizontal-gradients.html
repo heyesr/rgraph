@@ -32,10 +32,10 @@
         {
             var coords = obj.coords;
             var colors = [];
-            
+$c(coords)
             coords.forEach(v =>
             {
-                var grad = 'Gradient({colors:["#f00","#d00"],x1:{1},y1:0,x2:{2},y2:0})'.format(
+                var grad = 'Gradient({colors:["#f00","#a00"],x1:{1},y1:0,x2:{2},y2:0})'.format(
                     v[0],v[0] + v[2]
                 );
                 

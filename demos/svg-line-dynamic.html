@@ -17,7 +17,7 @@
     <script>
         line = new RGraph.SVG.Line({
             id: 'chart-container',
-            data: RGraph.SVG.arrayPad([],300, 0),
+            data: RGraph.SVG.arrayPad([],1200, 0),
             options: {
                 marginInner: 0,
                 title: 'A scrolling SVG Line chart',
@@ -36,9 +36,9 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 backgroundGridHlinesCount: 3,
-                filled: true,
                 colors: ['#c00'],
                 linewidth: 1,
+                  filled: true,
                 filledColors: ['rgba(255,0,0,0.25)']
             }
         }).draw();
@@ -56,12 +56,14 @@
             line.originalData[0].push(last);
             line.originalData[0].shift();
 
-            RGraph.SVG.redraw();
+            //RGraph.SVG.redraw();
+            RGraph.SVG.clear(line.svg);
+            line.draw();
 
             setTimeout(function ()
             {
                 update()
-            }, 50);
+            }, 16.666);
         }
 
         update();

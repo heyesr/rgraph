@@ -465,9 +465,10 @@
     //
     RGraph.parseJSONGradient = function (args)
     {
-        var obj      = args.object,
-            def      = args.def, // The gradient definition
-            context  = args.object.context;
+        var obj         = args.object,
+            def         = args.def, // The gradient definition
+            context     = args.object.context,
+            scaleFactor = RGraph.getScaleFactor(obj);
 
         // Evaluate the JSON
         def = eval("(" + def + ")");
@@ -478,16 +479,19 @@
 
         // Create a radial gradient
         if (typeof def.r1 === 'number' && typeof def.r2 === 'number') {
+        
+            //
+            
             // Create the gradient
             var grad = context.createRadialGradient(
-                def.x1, def.y1, def.r1,
-                def.x2, def.y2, def.r2
+                def.x1 * scaleFactor, def.y1 * scaleFactor, def.r1,
+                def.x2 * scaleFactor, def.y2 * scaleFactor, def.r2
             );
         // Create a linear gradient
         } else {
             var grad = context.createLinearGradient(
-                def.x1, def.y1,
-                def.x2, def.y2
+                def.x1 * scaleFactor, def.y1 * scaleFactor,
+                def.x2 * scaleFactor, def.y2 * scaleFactor
             );
         }
 
@@ -1314,7 +1318,7 @@
             textConf.size += 4;
         }
         if (!RGraph.isBoolean(obj.properties.titleBold)) {
-            textConf.bold = true;
+            textConf.bold = Boolean(obj.properties.titleBold);
         }
 
 
@@ -1326,7 +1330,7 @@
         y = obj.properties.marginTop - textConf.size - (5 * RGraph.getScaleFactor(obj) );
 
         if (obj.properties.xaxisPosition === 'top') {
-            y = obj.canvas.height  - obj.properties.marginBottom + textConf.size + (5 * RGraph.getScaleFactor(this) );
+            y = obj.canvas.height  - obj.properties.marginBottom + textConf.size + (5 * RGraph.getScaleFactor(obj) );
         }
 
 
@@ -2261,12 +2265,12 @@
 
                     // Dashed background grid
                     if (properties.backgroundGridDashed && typeof cacheContext.setLineDash == 'function') {
-                        cacheContext.setLineDash([3,5]);
+                        cacheContext.setLineDash([3 * scaleFactor, 5 * scaleFactor]);
                     }
                     
                     // Dotted background grid
                     if (properties.backgroundGridDotted && typeof cacheContext.setLineDash == 'function') {
-                        cacheContext.setLineDash([1,3]);
+                        cacheContext.setLineDash([1 * scaleFactor, 3 * scaleFactor]);
                     }
                     
                     // Custom linedash
@@ -2662,7 +2666,8 @@
         var args             = RGraph.getArgs(arguments, 'object');
         var properties       = args.object.properties,
             labels           = properties.labelsIngraph,
-            labels_processed = [];
+            labels_processed = [],
+            scaleFactor      = RGraph.getScaleFactor(args.object);
 
         // Defaults
         var fgcolor   = 'black',
@@ -2721,7 +2726,7 @@
                     if (coords && coords.length > 0) {
                         var x      = ((args.object.type == 'bar' ? coords[0] + (coords[2] / 2) : coords[0])) + (properties.labelsIngraphOffsetx || 0);
                         var y      = (args.object.type == 'bar' ? coords[1] + (coords[3] / 2) : coords[1]) + (properties.labelsIngraphOffsety || 0);
-                        var length = typeof labels_processed[i][4] === 'number' ? labels_processed[i][4] : 25;
+                        var length = typeof labels_processed[i][4] === 'number' ? labels_processed[i][4] : (25 * scaleFactor);
     
                         args.object.context.beginPath();
                         args.object.context.fillStyle   = 'black';
@@ -2738,27 +2743,27 @@
                             }
     
                             if (properties.variant == 'dot') {
-                                args.object.context.moveTo(Math.round(x), args.object.coords[i][1] - 5);
-                                args.object.context.lineTo(Math.round(x), args.object.coords[i][1] - 5 - length);
+                                args.object.context.moveTo(Math.round(x), args.object.coords[i][1] - (5 * scaleFactor) );
+                                args.object.context.lineTo(Math.round(x), args.object.coords[i][1] - (5 * scaleFactor)  - (length * scaleFactor));
                                 
                                 var text_x = Math.round(x);
-                                var text_y = args.object.coords[i][1] - 5 - length;
+                                var text_y = args.object.coords[i][1] - (5 * scaleFactor) - (length * scaleFactor);
                             
                             } else if (properties.variant == 'arrow') {
-                                args.object.context.moveTo(Math.round(x), args.object.coords[i][1] - 5);
-                                args.object.context.lineTo(Math.round(x), args.object.coords[i][1] - 5 - length);
+                                args.object.context.moveTo(Math.round(x), args.object.coords[i][1] - (5 * scaleFactor) );
+                                args.object.context.lineTo(Math.round(x), args.object.coords[i][1] - (5 * scaleFactor) - (length * scaleFactor));
                                 
                                 var text_x = Math.round(x);
-                                var text_y = args.object.coords[i][1] - 5 - length;
+                                var text_y = args.object.coords[i][1] - (5 * scaleFactor) - (length * scaleFactor) ;
                             
                             } else {
     
-                                args.object.context.arc(Math.round(x), y, 2.5, 0, 6.28, 0);
+                                args.object.context.arc(Math.round(x), y, (2.5 * scaleFactor), 0, 6.29, 0);
                                 args.object.context.moveTo(Math.round(x), y);
-                                args.object.context.lineTo(Math.round(x), y - length);
+                                args.object.context.lineTo(Math.round(x), y - (length * scaleFactor) );
 
                                 var text_x = Math.round(x);
-                                var text_y = y - length;
+                                var text_y = y - (length * scaleFactor);
                             }
 
                             args.object.context.stroke();
@@ -2778,15 +2783,15 @@
                                 var valign = 'top';
                                 
                                 var text_x = x;
-                                var text_y = y + 5 + length;
+                                var text_y = y + (5 * scaleFactor) + (length * scaleFactor);
                             
                             } else {
 
                                 var text_x = x;
-                                var text_y = y - 5 - length;
+                                var text_y = y - (5 * scaleFactor) - (length * scaleFactor);
 
                                 if (text_y < 5 && (typeof labels_processed[i] === 'string' || typeof labels_processed[i][3] === 'undefined')) {
-                                    text_y = y + 5 + length;
+                                    text_y = y + (5 * scaleFactor) + (length * scaleFactor) ;
                                     var valign = 'top';
                                 }
 
@@ -2840,16 +2845,16 @@
                     // Draws a down arrow
                     function drawUpArrow (x, y)
                     {
-                        args.object.context.moveTo(Math.round(x), y + 5);
-                        args.object.context.lineTo(Math.round(x), y + 5 + length);
+                        args.object.context.moveTo(Math.round(x), y + (5 * scaleFactor) );
+                        args.object.context.lineTo(Math.round(x), y + (5 * scaleFactor) + (length * scaleFactor));
                         
                         args.object.context.stroke();
                         args.object.context.beginPath();                                
                         
                         // This draws the arrow
-                        args.object.context.moveTo(Math.round(x), y + 5);
-                        args.object.context.lineTo(Math.round(x) - 3, y + 10);
-                        args.object.context.lineTo(Math.round(x) + 3, y + 10);
+                        args.object.context.moveTo(Math.round(x), y + (5 * scaleFactor));
+                        args.object.context.lineTo(Math.round(x) - (3 * scaleFactor), y + (10 * scaleFactor));
+                        args.object.context.lineTo(Math.round(x) + (3 * scaleFactor), y + (10 * scaleFactor) );
                         args.object.context.closePath();
                     }
 
@@ -2859,16 +2864,16 @@
                     // Draw an up arrow
                     function drawDownArrow (x, y)
                     {
-                        args.object.context.moveTo(Math.round(x), y - 5);
-                        args.object.context.lineTo(Math.round(x), y - 5 - length);
+                        args.object.context.moveTo(Math.round(x), y - (5 * scaleFactor));
+                        args.object.context.lineTo(Math.round(x), y - (5 * scaleFactor) - (length * scaleFactor) );
                         
                         args.object.context.stroke();
                         args.object.context.beginPath();
                         
                         // This draws the arrow
-                        args.object.context.moveTo(Math.round(x), y - 5);
-                        args.object.context.lineTo(Math.round(x) - 3, y - 10);
-                        args.object.context.lineTo(Math.round(x) + 3, y - 10);
+                        args.object.context.moveTo(Math.round(x), y - (5 * scaleFactor));
+                        args.object.context.lineTo(Math.round(x) - (3 * scaleFactor), y - (10 * scaleFactor));
+                        args.object.context.lineTo(Math.round(x) + (3 * scaleFactor), y - (10 * scaleFactor));
                         args.object.context.closePath();
                     }
                     
@@ -4618,8 +4623,8 @@
         if (!RGraph.measuretext_cache['text-div']) {
             var div = document.createElement('DIV');
                 div.style.position = 'absolute';
-                div.style.top = '-100px';
-                div.style.left = '-100px';
+                div.style.top = '-1000px';
+                div.style.left = '-1000px';
                 div.style.lineHeight = (args.size || 12) * 1.5 + 'px';
             document.body.appendChild(div);
 
@@ -4747,8 +4752,8 @@
                     wrapper.style.right      = obj.canvas.style.right;
                     wrapper.style.top        = obj.canvas.style.top;
                     wrapper.style.bottom     = obj.canvas.style.bottom;
-                    wrapper.style.width      = obj.canvas.width + 'px';
-                    wrapper.style.height     = obj.canvas.height + 'px';
+                    wrapper.style.width      = obj.canvas.offsetWidth + 'px';
+                    wrapper.style.height     = obj.canvas.offsetHeight + 'px';
                     wrapper.style.lineHeight = 'initial';
 
                     obj.canvas.style.position      = 'absolute';
@@ -5635,8 +5640,25 @@
     {
         if (RGraph.isArray(obj.properties.text) && obj.properties.text.length) {
             for (var i=0; i<obj.properties.text.length; ++i) {
+
+                //
+                //** Don't do this  - let the user do it 
+                //
+                //
+                // Scale the text if necessary
+                //
+                //RGraph.runOnce('scale-up-the-custom-text-in-the-RGraph.addCustomText-function-' + i, function ()
+                //{
+                //    if (obj.properties.scale) {
+                //        conf.size *= obj.properties.scaleFactor;
+                //        conf.x    *= obj.properties.scaleFactor;
+                //        conf.y    *= obj.properties.scaleFactor;
+                //    }
+                //);
+
+
                 var conf = obj.properties.text[i];
-                
+
                 // Add the object to the config
                 conf.object = obj;
                 
@@ -5645,14 +5667,6 @@
                     conf.color = 'black';
                 }
                 
-                //
-                // Scale the text if necessary
-                //
-                if (obj.properties.scale) {
-                    conf.size *= obj.properties.scaleFactor;
-                    conf.x    *= obj.properties.scaleFactor;
-                    conf.y    *= obj.properties.scaleFactor;
-                }
                 
                 RGraph.text(conf);
             }
@@ -7504,28 +7518,27 @@
             if (typeof rule.options === 'object') {
                 for (var j in rule.options) {
                     if (typeof j === 'string') {
-                    
+
                         // Account for scaling by doubling property
                         // values.
-                        RGraph.runOnce('scale-property-vallues-in-the-responsive-function-' + j + '-' + rule.width + '-' + obj.uid, function ()
-                        {
+                        var scaleFactor = RGraph.getScaleFactor(obj);
 
-                            if (obj.properties_scale.indexOf(j) > -1 && RGraph.isNumber(rule.options[j])) {
-                                rule.options[j] *= obj.properties.scaleFactor;
-                            }
-                        });
+                        obj.set(
+                            j,
+                            RGraph.isNumeric(rule.options[j])
+                                ? (rule.options[j] * scaleFactor)
+                                : RGraph.arrayClone(rule.options[j])
+                        );
 
-                        obj.set(j, rule.options[j]);
-                        
+
                         // Set the original colors to the new colors
                         // if necessary
-                        if (j === 'colors' && obj.original_colors) {
-                            obj.original_colors = RGraph.arrayClone(rule.options[j]);
+                        if (obj.original_colors && !RGraph.isNullish(obj.original_colors[j])) {
+                            obj.original_colors[j] = RGraph.arrayClone(rule.options[j]);
                         }
                     }
                 }
             }
-
 
 
 
@@ -9068,7 +9081,7 @@
               textConfPrefix:   'yaxisLabels',
                         x:      obj.type === 'drawing.yaxis'
                                     ? (properties.yaxisPosition === 'right' ? obj.x + 7 + properties.yaxisLabelsOffsetx : obj.x - 5 + properties.yaxisLabelsOffsetx)
-                                    : (properties.yaxisPosition === 'right' ? x + properties.yaxisLabelsOffsetx + 5 : properties.marginLeft - 5 + properties.yaxisLabelsOffsetx),
+                                    : (properties.yaxisPosition === 'right' ? x + properties.yaxisLabelsOffsetx + (5 * scaleFactor) : properties.marginLeft - (5 * scaleFactor) + properties.yaxisLabelsOffsetx),
                         y:      y + properties.yaxisLabelsOffsety,
                         text:   String(properties.yaxisLabelsSpecific[i] || ''),
                         valign: typeof properties.yaxisLabelsValign === 'string' ? properties.yaxisLabelsValign : 'center',
@@ -11586,19 +11599,21 @@
     //
     RGraph.scale = function (obj)
     {
-        var factor = obj.properties.scaleFactor;
+        var scaleFactor = obj.properties.scaleFactor;
+        var isScaled    = Boolean(obj.canvas.getAttribute('data-rgraph-scale') === 'true')
 
-        if (!obj.properties.scale || factor === 1) {
+        // Don't do anything if the scale property is not truthy
+        // - but  if the canvas is already scaled (by another
+        // object say...) then do this.
+        if (obj.properties.scale === false || (!isScaled && scaleFactor === 1)) {
             return;
         }
-        
-        var isScaled = Boolean(obj.canvas.getAttribute('data-rgraph-scale') === 'true')
 
         // Only do this once
         if (!isScaled) {
             
             obj.canvas.setAttribute('data-rgraph-scale', 'true');
-            obj.canvas.setAttribute('data-rgraph-scale-factor', factor);
+            obj.canvas.setAttribute('data-rgraph-scale-factor', scaleFactor);
             obj.canvas.setAttribute('data-rgraph-scale-original-width', obj.canvas.width);
             obj.canvas.setAttribute('data-rgraph-scale-original-height', obj.canvas.height);
     
@@ -11606,24 +11621,51 @@
             obj.canvas.style.width  = obj.canvas.width  + 'px';
             obj.canvas.style.height = obj.canvas.height + 'px';
         
-            obj.canvas.width  *= factor;
-            obj.canvas.height *= factor;
+            obj.canvas.width  *= scaleFactor;
+            obj.canvas.height *= scaleFactor;
         }
     
 
         // Increase the size of various properties
-        for (v of obj.properties_scale) {
-            if (RGraph.isNumber(obj.properties[v])) {
-                obj.properties[v] = obj.properties[v] * factor;
-            } else if (!RGraph.isNullish(obj.properties[v]) && RGraph.isFunction(obj.scalePropertiesWorker)) {
-                obj.properties[v] = obj.scalePropertiesWorker(v, obj.properties[v]);
-            }
-        }
+        //
+        RGraph.scale.doublePropertyValues(obj);
         
         //
         // Fire the scale event
         //
         RGraph.fireCustomEvent(obj, 'scale');
+    };
+
+
+
+
+
+
+
+
+    //
+    // Doubles he size of property values in order to accommodate
+    // scaling. This is also used by the animate() function.
+    //
+    // @param object obj The chart object
+    //
+    RGraph.scale.doublePropertyValues = function (obj, properties = null)
+    {
+        var scaleFactor = RGraph.getScaleFactor(obj);
+
+        if (RGraph.isNullish(properties)) {
+            properties = obj.properties;
+        }
+
+        if (RGraph.isArray(obj.properties_scale)) {
+            for (v of obj.properties_scale) {
+                if (RGraph.isNumber(properties[v])) {
+                    properties[v] = properties[v] * scaleFactor;
+                } else if (!RGraph.isNullish(properties[v]) && RGraph.isFunction(obj.scalePropertiesWorker)) {
+                    properties[v] = obj.scalePropertiesWorker(v, properties[v]);
+                }
+            }
+        }
     };
 
 
@@ -11643,7 +11685,9 @@
     //
     RGraph.getScaleFactor = function (obj)
     {
-        return obj.properties.scale ? obj.properties.scaleFactor : 1;
+        return obj.properties.scale
+                   ? obj.properties.scaleFactor
+                   : 1;
     };
 
 

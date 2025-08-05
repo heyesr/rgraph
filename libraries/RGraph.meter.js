@@ -112,7 +112,7 @@
             
             title:                  			'',
             titleColor:             			null,
-            titleBold:              			null,
+            titleBold:              			true,
             titleFont:              			null,
             titleItalic:            			null,
             titleSize:              			null,
@@ -153,10 +153,6 @@
             shadowOffsetx:         				3,
             shadowOffsety:         				3,
 
-            resizable:                   		false,
-            resizableHandleAdjust:     			[0,0],
-            resizableHandleBackground: 			null,
-
             tickmarksSmallCount:    			100,
             tickmarksSmallColor:    			'#bbb',
             tickmarksLargeCount:    			10,
@@ -181,6 +177,7 @@
             needleHeadLength:       			30,
             needleHeadWidth:        			0.088,
             needleColor:             			'black',
+            needleLinewidth:                    null,
             needleImageUrl:         			null,
             needleImageOffsetx:     			0,
             needleImageOffsety:     			0,
@@ -195,8 +192,64 @@
 
             clearto:                            'rgba(0,0,0,0)',
             
-            events:                             {}
-        }
+            events:                             {},
+            
+            scale:                              true,
+            scaleFactor:                        2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundImageOffsetx',
+            'backgroundImageOffsety',
+
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+
+            'linewidth',
+            'linewidthSegments',
+
+            'textSize',
+
+            'labelsSize',
+            'labelsValueSize',
+            'labelsValueOffsetx',
+            'labelsValueOffsety',
+
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            
+            'annotatableLinewidth',
+            
+            'shadowBlur',
+            'shadowOffsetx',
+            'shadowOffsety',
+
+            'radius',
+            'centerx',
+            'centery',
+
+            'segmentsRadiusStart',
+
+            'needleRadius',
+            'needleHeadLength',
+            'needleImageOffsetx',
+            'needleImageOffsety'
+        ];
 
         //
         // Add the reverse look-up table  for property names
@@ -313,6 +366,20 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -320,12 +387,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -531,6 +601,8 @@
         //
         this.drawBackground = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
             //
             // First draw the background image if it's defined
             //
@@ -547,9 +619,21 @@
                 img.onload = function ()
                 {
                     if (properties.backgroundImageStretch) {
-                        obj.context.drawImage(this, x,y,obj.canvas.width, obj.canvas.height);
+                        obj.context.drawImage(
+                            this,
+                            x,
+                            y,
+                            obj.canvas.width * scaleFactor,
+                            obj.canvas.height * scaleFactor
+                        );
                     } else {
-                        obj.context.drawImage(this, x,y);
+                        obj.context.drawImage(
+                            this,
+                            x,
+                            y,
+                            this.width * scaleFactor,
+                            this.height * scaleFactor
+                        );
                     }
                     RGraph.redraw();
                 }
@@ -560,9 +644,21 @@
                 var y   = 0 + properties.backgroundImageOffsety;
 
                 if (properties.backgroundImageStretch) {
-                    this.context.drawImage(this.__background_image__, x,y,this.canvas.width, this.canvas.height);
+                    this.context.drawImage(
+                        this.__background_image__,
+                        x,
+                        y,
+                        this.canvas.width,
+                        this.canvas.height
+                    );
                 } else {
-                    this.context.drawImage(this.__background_image__, x,y);
+                    this.context.drawImage(
+                        this.__background_image__,
+                        x,
+                        y,
+                        this.__background_image__.width * scaleFactor,
+                        this.__background_image__.height * scaleFactor
+                    );
                 }
             }
 
@@ -850,6 +946,8 @@
         //
         this.drawNeedle = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             //
             // The angle that the needle is at
             //
@@ -873,12 +971,14 @@
                         obj.context.drawImage(
                             this,
                             obj.centerx + properties.needleImageOffsetx,
-                            obj.centery + properties.needleImageOffsety
+                            obj.centery + properties.needleImageOffsety,
+                            this.width  * scaleFactor,
+                            this.height * scaleFactor
                         );
                     obj.context.restore();
 
                     RGraph.redraw();
-                }
+                };
 
             } else if (this.__needle_image__) {
 
@@ -887,7 +987,9 @@
                     this.context.drawImage(
                         this.__needle_image__,
                         this.centerx + properties.needleImageOffsetx,
-                        this.centery + properties.needleImageOffsety
+                        this.centery + properties.needleImageOffsety,
+                        this.__needle_image__.width  * scaleFactor,
+                        this.__needle_image__.height * scaleFactor
                     );
                 this.context.restore();
             }
@@ -925,7 +1027,8 @@
                 this.context.fill();
                 this.context.beginPath();
            
-                // This moves the "pen" to the outer edge of the needle
+                // This moves the "pen" to the outer edge of the
+                // needle.
                 this.context.arc(
                     this.centerx,
                     this.centery,
@@ -945,7 +1048,8 @@
                     false
                 );
 
-                // Draw a line back down to the other side of the circle
+                // Draw a line back down to the other side of the
+                // circle.
                 this.context.arc(
                     this.centerx,
                     this.centery,
@@ -961,19 +1065,29 @@
                 
             } else {
 
-        
+
                 // First draw the circle at the bottom
                 this.context.fillStyle = 'black';
-                this.context.lineWidth = this.radius >= 200 ? 7 : 3;
+                this.context.lineWidth = (this.radius >= 200 ? 7 : 3);
                 this.context.lineCap = 'round';
         
                 // Now, draw the arm of the needle
                 this.context.beginPath();
                     this.context.strokeStyle = properties.needleColor;
-                    if (typeof properties.needleLinewidth == 'number') this.context.lineWidth = properties.needleLinewidth;
+                    
+                    if (typeof properties.needleLinewidth == 'number') {
+                        this.context.lineWidth = properties.needleLinewidth;
+                    }
     
         
-                    this.context.arc(this.centerx, this.centery, needleRadius, a, a + 0.001, false);
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        needleRadius - 15,
+                        a,
+                        a + 0.001,
+                        false
+                    );
                     this.context.lineTo(this.centerx, this.centery);
                 this.context.stroke();
     
@@ -1007,15 +1121,31 @@
         
                 this.context.beginPath();
                 this.context.fillStyle = properties.centerpinStroke;
-                this.context.arc(this.centerx, this.centery, r, 0 + 0.001, RGraph.TWOPI, 0);
+                this.context.arc(
+                    this.centerx,
+                    this.centery,
+                    r,
+                    0 + 0.001,
+                    RGraph.TWOPI,
+                    0
+                );
                 this.context.fill();
     
     
     
+                //
                 // Draw the centre bit of the circle (the fill)
+                //
                 this.context.fillStyle = properties.centerpinFill;
                 this.context.beginPath();
-                this.context.arc(this.centerx, this.centery, r - 2, 0 + 0.001, RGraph.TWOPI, 0);
+                this.context.arc(
+                    this.centerx,
+                    this.centery,
+                    r - (3 * scaleFactor),
+                    0 + 0.001,
+                    RGraph.TWOPI,
+                    false
+                );
                 this.context.fill();
             }
         };
@@ -1653,6 +1783,35 @@
                 Math.max(this.canvas.width, this.canvas.height),
                 a1, a2
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

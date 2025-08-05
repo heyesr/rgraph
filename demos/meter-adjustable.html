@@ -36,8 +36,9 @@
                 tickmarksSmallCount: 0,
                 tickmarksLargeCount: 0,
                 adjustable: true,
-                needleRadius: 130,
+                needleRadius: 140,
                 needleHeadWidth: 0.15,
+                needleLinewidth: 15,
                 events: {
                     
                     // Clear the canvas
@@ -54,10 +55,10 @@
                             obj.centerx, obj.centery
                         );
                         
-                        obj.path(
-                            'b a % % 12 0 6.29 false f black',
-                            obj.centerx, obj.centery
-                        );
+                        //obj.path(
+                        //    'b a % % 5 0 6.29 false f black',
+                        //    obj.centerx, obj.centery
+                        //);
                         
                         obj.path(
                             'b a % % 8 0 6.29 false f white',

@@ -17,9 +17,9 @@
     
     <script>
         colors = [
-            'Gradient(white:red)',
-            'Gradient(white:brown)',
-            'Gradient(white:blue)'
+            'Gradient(white:red:red:red)',
+            'Gradient(white:brown:brown:brown)',
+            'Gradient(white:blue:blue:blue)'
         ];
         
         bar1 = new RGraph.Bar({
@@ -93,7 +93,7 @@
         
         yaxis1 = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 25,
+            x: 50,
             options: {
                 yaxisScaleMax: 10,
                 yaxisLabelsColor: 'red',
@@ -104,7 +104,7 @@
         
         yaxis2 = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 75,
+            x: 150,
             options: {
                 yaxisScaleMax: 50,
                 yaxisLabelsColor: 'brown',
@@ -115,7 +115,7 @@
         
         yaxis3 = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 125,
+            x: 250,
             options: {
                 yaxisScaleMax: 100,
                 yaxisLabelsColor: 'blue',

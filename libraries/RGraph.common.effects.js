@@ -59,8 +59,8 @@
         if (!canvas.rgraph_wrapper) {
             // Create the place holder DIV
             var div = jQuery('<div></div>').css({
-                width:    canvas.width + 'px',
-                height:   canvas.height + 'px',
+                width:    canvas.offsetWidth + 'px',
+                height:   canvas.offsetHeight + 'px',
                 cssFloat: canvas.style.cssFloat,
                 left:     canvas.style.left,
                 top:      canvas.style.top,
@@ -220,8 +220,8 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'linear-gradient(135deg, rgba(255,255,255,0) ' + pc + '%, ' + color + ' ' + (pc + 20) + '%)',
-            width:obj.canvas.width + 'px',
-            height: obj.canvas.height + 'px',
+            width:obj.canvas.offsetWidth + 'px',
+            height: obj.canvas.offsetHeight + 'px',
             top: canvasXY[1] + 'px',
             left: canvasXY[0] + 'px',
             position: 'absolute'
@@ -280,8 +280,8 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'linear-gradient(135deg, ' + color + ' ' + pc + '%, rgba(255,255,255,0) ' + (pc + 20) + '%)',
-            width:obj.canvas.width + 'px',
-            height: obj.canvas.height + 'px',
+            width:obj.canvas.offsetWidth + 'px',
+            height: obj.canvas.offsetHeight + 'px',
             top: canvasXY[1] + 'px',
             left: canvasXY[0] + 'px',
             position: 'absolute'
@@ -344,8 +344,8 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'radial-gradient(rgba(255,255,255,0) 0%, white ' + radius + '%)',
-            width:      obj.canvas.width + 'px',
-            height:     obj.canvas.height + 'px',
+            width:      obj.canvas.offsetWidth + 'px',
+            height:     obj.canvas.offsetHeight + 'px',
             top:        canvasXY[1],
             left:       canvasXY[0],
             position:   'absolute'
@@ -406,8 +406,8 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'radial-gradient(rgba(255,255,255,0) 0%, white 0%)',
-            width:      obj.canvas.width + 'px',
-            height:     obj.canvas.height + 'px',
+            width:      obj.canvas.offsetWidth + 'px',
+            height:     obj.canvas.offsetHeight + 'px',
             top:        canvasXY[1],
             left:       canvasXY[0],
             position:   'absolute'
@@ -453,7 +453,7 @@
         var opt      = arguments[0] || {};
         var frames   = opt.frames || 120;
         var frame    = 0;
-        var radius   = Math.max(obj.canvas.width, obj.canvas.height);
+        var radius   = Math.max(obj.canvas.offsetWidth, obj.canvas.offsetHeight);
         var canvasXY = RGraph.getCanvasXY(obj.canvas);
         var color    = opt.color || 'white';
         var callback = arguments[1] || function () {};
@@ -467,11 +467,11 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'radial-gradient(rgba(255,255,255,0) 100%, rgba(255,255,255,0) 0%)',
-            width:obj.canvas.width + 'px',
-            height: obj.canvas.height + 'px',
-            top: canvasXY[1] + 'px',
-            left: canvasXY[0] + 'px',
-            position: 'absolute'
+            width:      obj.canvas.offsetWidth + 'px',
+            height:     obj.canvas.offsetHeight + 'px',
+            top:        canvasXY[1] + 'px',
+            left:       canvasXY[0] + 'px',
+            position:   'absolute'
         }).appendTo(jQuery(obj.canvas.parentNode));
 
         function iterator ()
@@ -512,7 +512,7 @@
         var opt      = arguments[0] || {};
         var frames   = opt.frames || 120;
         var frame    = 0;
-        var radius   = Math.max(obj.canvas.width, obj.canvas.height);
+        var radius   = Math.max(obj.canvas.offsetWidth, obj.canvas.offsetHeight);
         var canvasXY = RGraph.getCanvasXY(obj.canvas);
         var color    = opt.color || 'white';
         var callback = arguments[1] || function () {};
@@ -526,8 +526,8 @@
         // Create the cover
         jQuery('<div id="rgraph_fadeslide_cover_' + obj.id + '"></div>').css({
             background: 'radial-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%)',
-            width:obj.canvas.width + 'px',
-            height: obj.canvas.height + 'px',
+            width:obj.canvas.offsetWidth + 'px',
+            height: obj.canvas.offsetHeight + 'px',
             top: canvasXY[1],
             left: canvasXY[0],
             position: 'absolute'
@@ -577,10 +577,13 @@
         // variable is the chart object
         var obj       = this;
         var opt       = arguments[0] || {};
-        var bounce    = typeof opt.bounce === 'boolean' ? opt.bounce : true;
+        var bounce    = !RGraph.isNullish(opt.bounce) ? opt.bounce : true;
         var frames    = opt.frames || 60;
         var duration  = (frames / 60) * 1000;
         var callback  = arguments[1] || function () {};
+        
+        var width  = obj.canvas.offsetWidth;
+        var height = obj.canvas.offsetHeight;
 
         if (!this.canvas.rgraph_wrapper) {
             var div    = RGraph.Effects.wrap(this.canvas);
@@ -591,8 +594,8 @@
 
         div.style.position = 'relative';
         //this.canvas.style.position = 'relative'; // absolute should work here too - but doesn't in Chrome
-        this.canvas.style.top  = (this.canvas.height / 2) + 'px';
-        this.canvas.style.left = (this.canvas.width / 2) + 'px';
+        this.canvas.style.top  = (height / 2) + 'px';
+        this.canvas.style.left = (width / 2) + 'px';
 
         this.canvas.style.width  = 0;
         this.canvas.style.height = 0;
@@ -602,14 +605,39 @@
 
         RGraph.clear(this.canvas);
         RGraph.redrawCanvas(this.canvas);
+        
+        //
+        // 26th July 2025
+        //
+        // Need to reset the width/height to zero due to the
+        // scale property setting the canvas width/height.
+        //
+        this.canvas.style.width  = 0;
+        this.canvas.style.height = 0;
 
         if (bounce) {
 
-            jQuery('#' + obj.id).animate({opacity: 1, width: (obj.canvas.width * 1.2) + 'px', height: (obj.canvas.height * 1.2) + 'px', left: (obj.canvas.width * -0.1) + 'px', top: (obj.canvas.height * -0.1) + 'px'}, duration * 0.5, function ()
+            jQuery('#' + obj.id).animate({
+                opacity: 1,
+                width: (width * 1.2) + 'px',
+                height: (height * 1.2) + 'px',
+                left: (width * -0.1) + 'px',
+                top: (height * -0.1) + 'px'
+            }, duration * 0.5, function ()
             {
-                jQuery('#' + obj.id).animate({width: (obj.canvas.width * 0.9) + 'px', height: (obj.canvas.height * 0.9) + 'px', top: (obj.canvas.height * 0.05) + 'px', left: (obj.canvas.width * 0.05) + 'px'}, duration * 0.25, function ()
+                jQuery('#' + obj.id).animate({
+                    width: (width * 0.9) + 'px',
+                    height: (height * 0.9) + 'px',
+                    top: (height * 0.05) + 'px',
+                    left: (width * 0.05) + 'px'
+                }, duration * 0.25, function ()
                 {
-                    jQuery('#' + obj.id).animate({width: obj.canvas.width + 'px', height: obj.canvas.height + 'px', top: 0, left: 0}, duration * 0.25, function () {callback(obj);});
+                    jQuery('#' + obj.id).animate({
+                        width: width + 'px',
+                        height: height + 'px',
+                        top: 0,
+                        left: 0
+                    }, duration * 0.25, function () {callback(obj);});
                 });
               });
         
@@ -617,8 +645,8 @@
 
             jQuery(obj.canvas).animate({
                 opacity: 1,
-                width: obj.canvas.width + 'px',
-                height: obj.canvas.height + 'px',
+                width: width + 'px',
+                height: height + 'px',
                 left: 0,
                 top: 0
             }, duration, function () {callback(obj);})
@@ -646,8 +674,8 @@
     //
     RGraph.Effects.Common.contract = function ()
     {
-        // This function gets added to the chart object - so the this
-        // variable is the chart object
+        // This function gets added to the chart object - so the
+        // this variable is the chart object
         var obj       = this;
         var opt       = arguments[0] || {};
         var frames    = opt.frames || 60;
@@ -669,18 +697,18 @@
 
         if (opt.bounce !== false) {
             jQuery('#' + obj.id).animate({
-                width: (obj.canvas.width * 1.2) + 'px',
-                height: (obj.canvas.height * 1.2) + 'px',
-                left: (obj.canvas.width * -0.1) + 'px',
-                top: (obj.canvas.height * -0.1) + 'px'
+                width: (obj.canvas.offsetWidth * 1.2) + 'px',
+                height: (obj.canvas.offsetHeight * 1.2) + 'px',
+                left: (obj.canvas.offsetWidth * -0.1) + 'px',
+                top: (obj.canvas.offsetHeight * -0.1) + 'px'
             }, duration * 0.25, function ()
             {
                     jQuery('#' + obj.id).animate({
                         opacity: 0,
                         width: 0,
                         height: 0,
-                        left: (obj.canvas.width * 0.5) + 'px',
-                        top: (obj.canvas.height * 0.5) + 'px'
+                        left: (obj.canvas.offsetWidth * 0.5) + 'px',
+                        top: (obj.canvas.offsetHeight * 0.5) + 'px'
                     }, duration * 0.75, function () {callback(obj);});
             });
         } else {
@@ -688,8 +716,8 @@
                 opacity: 0,
                 width: 0,
                 height: 0,
-                left: (obj.canvas.width * 0.5) + 'px',
-                top: (obj.canvas.height * 0.5) + 'px'
+                left: (obj.canvas.offsetWidth * 0.5) + 'px',
+                top: (obj.canvas.offsetHeight * 0.5) + 'px'
             }, duration * 0.75, function () {callback(obj);});
         }
         
@@ -728,10 +756,10 @@
 
 
         var divs = [
-            ['rgraph_reveal_left_' + obj.id, xy[0], xy[1], obj.canvas.width  / 2, obj.canvas.height],
-            ['rgraph_reveal_right_' + obj.id,(xy[0] + (obj.canvas.width  / 2)),xy[1],(obj.canvas.width  / 2),obj.canvas.height],
-            ['rgraph_reveal_top_' + obj.id,xy[0],xy[1],obj.canvas.width,(obj.canvas.height / 2)],
-            ['rgraph_reveal_bottom_' + obj.id,xy[0],(xy[1] + (obj.canvas.height  / 2)),obj.canvas.width,(obj.canvas.height / 2)]
+            ['rgraph_reveal_left_'   + obj.id, xy[0], xy[1], obj.canvas.offsetWidth  / 2, obj.canvas.offsetHeight],
+            ['rgraph_reveal_right_'  + obj.id,(xy[0] + (obj.canvas.offsetWidth / 2)),xy[1],(obj.canvas.offsetWidth  / 2),obj.canvas.offsetHeight],
+            ['rgraph_reveal_top_'    + obj.id,xy[0],xy[1],obj.canvas.offsetWidth,(obj.canvas.offsetHeight / 2)],
+            ['rgraph_reveal_bottom_' + obj.id,xy[0],(xy[1] + (obj.canvas.offsetHeight  / 2)),obj.canvas.offsetWidth,(obj.canvas.offsetHeight / 2)]
         ];
         
         for (var i=0,len=divs.length; i<len; ++i) {
@@ -754,9 +782,9 @@
 
         // Animate the shrinking of the DIVs
         jQuery('#rgraph_reveal_left_' + obj.id).animate({width: 0}, duration);
-        jQuery('#rgraph_reveal_right_' + obj.id).animate({left: '+=' + (obj.canvas.width / 2),width: 0}, duration);
+        jQuery('#rgraph_reveal_right_' + obj.id).animate({left: '+=' + (obj.canvas.offsetWidth / 2),width: 0}, duration);
         jQuery('#rgraph_reveal_top_' + obj.id).animate({height: 0}, duration);
-        jQuery('#rgraph_reveal_bottom_' + obj.id).animate({top: '+=' + (obj.canvas.height / 2),height: 0}, duration);
+        jQuery('#rgraph_reveal_bottom_' + obj.id).animate({top: '+=' + (obj.canvas.offsetHeight / 2),height: 0}, duration);
         
         // Remove the DIVs from the DOM 100ms after the animation ends
         setTimeout(function ()
@@ -791,6 +819,8 @@
     //
     RGraph.Effects.Common.revealCircular = function ()
     {
+        var scaleFactor = RGraph.getScaleFactor(this);
+
         // This function gets added to the chart object - so the this
         // variable is the chart object
         var obj           = this;
@@ -799,8 +829,8 @@
         var frame         = 0;
         var callback      = arguments[1] || function () {};
         var currentRadius = 0
-        var centerx       = obj.canvas.width / 2;
-        var centery       = obj.canvas.height / 2;
+        var centerx       = (obj.canvas.width * scaleFactor) / 2;
+        var centery       = (obj.canvas.height * scaleFactor) / 2;
         var targetRadius  = Math.max(obj.canvas.height, obj.canvas.width);
         var step          = targetRadius / frames;
         var color         = opt.background || opt.color || opt.backgroundColor || 'transparent';
@@ -819,7 +849,14 @@
             obj.context.save();
                 // First draw the circle and clip to it
                 obj.context.beginPath();
-                obj.context.arc(centerx, centery, currentRadius, 0, RGraph.TWOPI, false);
+                obj.context.arc(
+                    centerx,
+                    centery,
+                    currentRadius,
+                    0,
+                    RGraph.TWOPI,
+                    false
+                );
                 obj.context.clip();
                 
                 // Clear the canvas to a white color
@@ -878,12 +915,11 @@
 
 
         var divs = [
-            ['rgraph_conceal_left_' + obj.id, xy[0], xy[1], 0, obj.canvas.height],
-            ['rgraph_conceal_right_' + obj.id,(xy[0] + obj.canvas.width),xy[1],0,obj.canvas.height],
-            ['rgraph_conceal_top_' + obj.id,xy[0],xy[1],obj.canvas.width,0],
-            ['rgraph_conceal_bottom_' + obj.id,xy[0],(xy[1] + obj.canvas.height),obj.canvas.width,0]
+            ['rgraph_conceal_left_' + obj.id, xy[0], xy[1], 0, obj.canvas.offsetHeight],
+            ['rgraph_conceal_right_' + obj.id,(xy[0] + obj.canvas.offsetWidth),xy[1],0,obj.canvas.offsetHeight],
+            ['rgraph_conceal_top_' + obj.id,xy[0],xy[1],obj.canvas.offsetWidth,0],
+            ['rgraph_conceal_bottom_' + obj.id,xy[0],(xy[1] + obj.canvas.offsetHeight),obj.canvas.offsetWidth,0]
         ];
-
 
 
 
@@ -900,10 +936,13 @@
         }
 
 
-        jQuery('#rgraph_conceal_left_' + obj.id).animate({width: '+=' + (obj.canvas.width / 2)}, duration);
-        jQuery('#rgraph_conceal_right_' + obj.id).animate({left: '-=' + (obj.canvas.width / 2),width: (obj.canvas.width / 2)}, duration);
-        jQuery('#rgraph_conceal_top_' + obj.id).animate({height: '+=' + (obj.canvas.height / 2)}, duration);
-        jQuery('#rgraph_conceal_bottom_' + obj.id).animate({top: '-=' + (obj.canvas.height / 2),height: (obj.canvas.height / 2)}, duration);
+        jQuery('#rgraph_conceal_left_' + obj.id).animate({width: '+=' + (obj.canvas.offsetWidth / 2)}, duration);
+        jQuery('#rgraph_conceal_right_' + obj.id).animate({left: '-=' + (obj.canvas.offsetWidth / 2),width: (obj.canvas.offsetWidth / 2)}, duration);
+        jQuery('#rgraph_conceal_top_' + obj.id).animate({height: '+=' + (obj.canvas.offsetHeight / 2)}, duration);
+        jQuery('#rgraph_conceal_bottom_' + obj.id).animate({
+            top: '-=' + (obj.canvas.offsetHeight / 2),
+            height: (obj.canvas.offsetHeight / 2)
+        }, duration);
         
         // Remove the DIVs from the DOM 100ms after the animation ends
         setTimeout(
@@ -958,15 +997,17 @@
         for (var i=0; i<5; ++i) {
             var div = doc.createElement('DIV');
                 div.id                    = 'rgraph_hblinds_' + i + '_' + obj.id;
-                div.style.width           =  this.canvas.width + 'px';
+                div.style.width           =  this.canvas.offsetWidth + 'px';
                 div.style.height          = height + 'px';
                 div.style.left            = xy[0] + 'px';
-                div.style.top             = (xy[1] + (this.canvas.height * (i / 5))) + 'px';
+                div.style.top             = (xy[1] + (this.canvas.offsetHeight * (i / 5))) + 'px';
                 div.style.position        = 'absolute';
                 div.style.backgroundColor = color;
             document.body.appendChild(div);
 
-            jQuery('#rgraph_hblinds_' + i + '_' + obj.id).animate({height: 0}, duration);
+            jQuery('#rgraph_hblinds_' + i + '_' + obj.id).animate({
+                height: 0
+            }, duration);
         }
 
         setTimeout(function () {doc.body.removeChild(doc.getElementById('rgraph_hblinds_0_' + obj.id));}, duration);
@@ -1003,22 +1044,24 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var height   = this.canvas.height / 5;
+        var height   = this.canvas.offsetHeight / 5;
 
 
 
         for (var i=0; i<5; ++i) {
             var div = doc.createElement('DIV');
                 div.id                    = 'rgraph_hblinds_' + i + '_' + obj.id;
-                div.style.width           = this.canvas.width + 'px';
+                div.style.width           = this.canvas.offsetWidth + 'px';
                 div.style.height          = 0;
                 div.style.left            = xy[0] + 'px';
-                div.style.top             = (xy[1] + (this.canvas.height * (i / 5))) + 'px';
+                div.style.top             = (xy[1] + (this.canvas.offsetHeight * (i / 5))) + 'px';
                 div.style.position        = 'absolute';
                 div.style.backgroundColor = color;
             doc.body.appendChild(div);
 
-            jQuery('#rgraph_hblinds_' + i + '_' + obj.id).animate({height: height + 'px'}, duration);
+            jQuery('#rgraph_hblinds_' + i + '_' + obj.id).animate({
+                height: height + 'px'
+            }, duration);
         }
 
 
@@ -1056,8 +1099,8 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
-        
+        var width    = this.canvas.offsetWidth / 10;
+
         //
         // First draw the chart
         //
@@ -1068,8 +1111,8 @@
             var div = doc.createElement('DIV');
                 div.id = 'rgraph_vblinds_' + i + '_' + obj.id;
                 div.style.width =  width + 'px';
-                div.style.height = this.canvas.height + 'px';
-                div.style.left   = (xy[0] + (this.canvas.width * (i / 10))) + 'px';
+                div.style.height = this.canvas.offsetHeight + 'px';
+                div.style.left   = (xy[0] + (this.canvas.offsetWidth * (i / 10))) + 'px';
                 div.style.top   = (xy[1]) + 'px';
                 div.style.position = 'absolute';
                 div.style.backgroundColor = color;
@@ -1118,8 +1161,8 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
-        
+        var width    = this.canvas.offsetWidth / 10;
+
         // Don't draw the chart
 
         // Create the blinds
@@ -1127,8 +1170,8 @@
             var div = doc.createElement('DIV');
                 div.id                    = 'rgraph_vblinds_' + i + '_' + obj.id;
                 div.style.width           = 0;
-                div.style.height          = this.canvas.height + 'px';
-                div.style.left            = (xy[0] + (this.canvas.width * (i / 10))) + 'px';
+                div.style.height          = this.canvas.offsetHeight + 'px';
+                div.style.left            = (xy[0] + (this.canvas.offsetWidth * (i / 10))) + 'px';
                 div.style.top             = (xy[1]) + 'px';
                 div.style.position        = 'absolute';
                 div.style.backgroundColor = color;
@@ -1223,9 +1266,10 @@
 
 
     //
-    // Slide out
+    // SlideOut
     // 
-    // This function is a wipe that can be used when switching the canvas to a new graph
+    // This function is a wipe that can be used when switching
+    // the canvas to a new chart.
     // 
     // @param object   Optional object containing configuration.
     // @param function Optional callback function
@@ -1242,24 +1286,23 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
         var div      = RGraph.Effects.wrap(obj.canvas);
         var to       = opt.to || 'left';
 
-        div.style.overflow= 'hidden';
+        div.style.overflow = 'hidden';
         
         obj.canvas.style.position = 'relative';
         obj.canvas.style.left = 0;
         obj.canvas.style.top  = 0;
         
         if (to == 'left') {
-            jQuery('#' + obj.id).animate({left: (0 - obj.canvas.width) + 'px'}, duration, function () {callback(obj);});
+            jQuery('#' + obj.id).animate({left: (0 - obj.canvas.offsetWidth) + 'px'}, duration, function () {callback(obj);});
         } else if (to == 'top') {
             jQuery('#' + obj.id).animate({left: 0, top: (0 - div.offsetHeight) + 'px'}, duration, function () {callback(obj);});
         } else if (to == 'bottom') {
             jQuery('#' + obj.id).animate({top: (0 + div.offsetHeight) + 'px'}, duration, function () {callback(obj);});
         } else {
-            jQuery('#' + obj.id).animate({left: (0 + obj.canvas.width) + 'px'}, duration, function () {callback(obj);});
+            jQuery('#' + obj.id).animate({left: (0 + obj.canvas.offsetWidth) + 'px'}, duration, function () {callback(obj);});
         }
         
         return this;
@@ -1291,9 +1334,9 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
+        var width    = this.canvas.offsetWidth / 10;
         var to       = opt.to || 'left';
-        var height   = obj.canvas.height / 5;
+        var height   = obj.canvas.offsetHeight / 5;
 
         //
         // First draw the chart
@@ -1306,10 +1349,10 @@
             if (!div) {
                 var div = doc.createElement('DIV');
                     div.id = 'rgraph_hscissors_' + i + '_' + obj.id;
-                    div.style.width =  obj.canvas.width + 'px';
+                    div.style.width =  obj.canvas.offsetWidth + 'px';
                     div.style.height = height + 'px';
                     div.style.left   = xy[0] + 'px';
-                    div.style.top   = (xy[1] + (obj.canvas.height * (i / 5))) + 'px';
+                    div.style.top   = (xy[1] + (obj.canvas.offsetHeight * (i / 5))) + 'px';
                     div.style.position = 'absolute';
                     div.style.backgroundColor = color;
                 doc.body.appendChild(div);
@@ -1363,7 +1406,7 @@
         var callback = arguments[1] || function () {};
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var height   = obj.canvas.height / 5;
+        var height   = obj.canvas.offsetHeight / 5;
 
 
         
@@ -1378,16 +1421,16 @@
                 div.id             = 'rgraph_hscissors_' + i + '_' + obj.id;
                 div.style.width    = 0;
                 div.style.height   = height + 'px';
-                div.style.left     = (i % 2 == 0 ? xy[0] + obj.canvas.width : xy[0]) + 'px';
-                div.style.top      = (xy[1] + (obj.canvas.height * (i / 5))) + 'px';
+                div.style.left     = (i % 2 == 0 ? xy[0] + obj.canvas.offsetWidth : xy[0]) + 'px';
+                div.style.top      = (xy[1] + (obj.canvas.offsetHeight * (i / 5))) + 'px';
                 div.style.position = 'absolute';
                 div.style.backgroundColor = color;
             doc.body.appendChild(div);
 
             if (i % 2 == 0) {
-                jQuery('#' + 'rgraph_hscissors_' + i + '_' + obj.id).animate({left: xy[0] + 'px', width: obj.canvas.width + 'px'}, duration);
+                jQuery('#' + 'rgraph_hscissors_' + i + '_' + obj.id).animate({left: xy[0] + 'px', width: obj.canvas.offsetWidth + 'px'}, duration);
             } else {
-                jQuery('#' + 'rgraph_hscissors_' + i + '_' + obj.id).animate({width: obj.canvas.width + 'px'}, duration);
+                jQuery('#' + 'rgraph_hscissors_' + i + '_' + obj.id).animate({width: obj.canvas.offsetWidth + 'px'}, duration);
             }
         }
         
@@ -1432,7 +1475,8 @@
         var xy       = RGraph.getCanvasXY(obj.canvas);
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
+        var width    = this.canvas.offsetWidth / 10;
+
         
         //
         // First draw the chart
@@ -1447,8 +1491,8 @@
                 var div = doc.createElement('DIV');
                     div.id = 'rgraph_vscissors_' + i + '_' + obj.id;
                     div.style.width    =  width + 'px';
-                    div.style.height   = obj.canvas.height + 'px';
-                    div.style.left     = xy[0] + (obj.canvas.width * (i / 10)) + 'px';
+                    div.style.height   = obj.canvas.offsetHeight + 'px';
+                    div.style.left     = xy[0] + (obj.canvas.offsetWidth * (i / 10)) + 'px';
                     div.style.top      = xy[1] + 'px';
                     div.style.position = 'absolute';
                     div.style.backgroundColor = color;
@@ -1456,7 +1500,7 @@
             }
 
             if (i % 2 == 0) {
-                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({top: xy[1] + obj.canvas.height + 'px', height: 0}, duration);
+                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({top: xy[1] + obj.canvas.offsetHeight + 'px', height: 0}, duration);
             } else {
                 jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({height: 0}, duration);
             }
@@ -1505,8 +1549,8 @@
         var xy       = RGraph.getCanvasXY(obj.canvas);
         var color    = opt.background || opt.color || opt.backgroundColor || 'white';
         var xy       = RGraph.getCanvasXY(this.canvas);
-        var width    = this.canvas.width / 10;
-        
+        var width    = this.canvas.offsetWidth / 10;
+
         //
         // First draw the chart
         //
@@ -1521,16 +1565,16 @@
                     div.style.width    =  width + 'px';
                     div.style.height   = 0;
                     div.style.left     = xy[0] + (width * i) + 'px';
-                    div.style.top      = (i % 2 == 0 ? xy[1] + obj.canvas.height : xy[1]) + 'px';
+                    div.style.top      = (i % 2 == 0 ? xy[1] + obj.canvas.offsetHeight : xy[1]) + 'px';
                     div.style.position = 'absolute';
                     div.style.backgroundColor = color;
                 doc.body.appendChild(div);
             }
 
             if (i % 2 == 0) {
-                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({top: xy[1] + 'px', height: obj.canvas.height + 'px'}, duration);
+                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({top: xy[1] + 'px', height: obj.canvas.offsetHeight + 'px'}, duration);
             } else {
-                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({height: obj.canvas.height + 'px'}, duration);
+                jQuery('#' + 'rgraph_vscissors_' + i + '_' + obj.id).animate({height: obj.canvas.offsetHeight + 'px'}, duration);
             }
         }
         
@@ -1565,6 +1609,10 @@
     {
         var obj = this;
         obj.draw();
+        
+        // Need to double the property values that we given by the
+        // user in order to account for scaling.
+        RGraph.scale.doublePropertyValues(obj, map);
 
         var totalFrames    = (map && map['frames']) ? map['frames'] : 30,
             currentFrame   = new Array(),

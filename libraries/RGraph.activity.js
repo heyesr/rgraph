@@ -182,9 +182,57 @@
 
             clearto:                            'rgba(0,0,0,0)',
             
-            events:                             {}
-        }
-        
+            events:                             {},
+            
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'radius',
+            'centerx',
+            'centery',
+            'width',
+
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+
+            'iconsWidth',
+            'iconsHeight',
+            'iconsOffsetx',
+            'iconsOffsety',
+
+            'textSize',
+
+            'labelsCenterSize',
+            'labelsCenterOffsetx',
+            'labelsCenterOffsety',
+            'labelsSize',
+            'labelsOffsetx',
+            'labelsOffsety'
+        ];
+
+
+
+
+
+
+
+
+
+
+
+
         //
         // Add the reverse look-up table  for property names
         // so that property names can be specified in any case.
@@ -306,6 +354,25 @@
         //
         this.draw = function ()
         {
+
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -321,7 +388,10 @@
             //
             // MUST be the first thing done to the canvas!
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -382,10 +452,11 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
+            var scaleFactor = RGraph.getScaleFactor(this);
 
-            if (typeof this.properties.radius  === 'string' && this.properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(this.properties.radius);
-            if (typeof this.properties.centerx === 'string' && this.properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(this.properties.centerx);
-            if (typeof this.properties.centery === 'string' && this.properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(this.properties.centery);
+            if (typeof this.properties.radius  === 'string' && this.properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(this.properties.radius) * scaleFactor;
+            if (typeof this.properties.centerx === 'string' && this.properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(this.properties.centerx) * scaleFactor;
+            if (typeof this.properties.centery === 'string' && this.properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(this.properties.centery) * scaleFactor;
 
             // The width variable is the width of an individual ring
             this.width = typeof properties.width === 'number' ? properties.width : ((this.radius * 0.75) / this.value.length);
@@ -1464,12 +1535,13 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas),
-                coords   = this.coords[args.index];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas),
+                coords      = this.coords[args.index],
+                scaleFactor = RGraph.getScaleFactor(this);
 
             //cx,cy,angle,radius
             var point = RGraph.getRadiusEndPoint({
@@ -1483,16 +1555,16 @@
             //args.tooltip.style.left = point[0] - (tooltip.offsetWidth / 2) + 'px';
             args.tooltip.style.left =
                   canvasXY[0]
-                + point[0]
+                + (point[0] / scaleFactor)
                 - (tooltip.offsetWidth / 2)
                 + obj.properties.tooltipsOffsetx
                 + 'px';
 
             args.tooltip.style.top =
                   canvasXY[1]
-                + point[1]
+                + (point[1] / scaleFactor)
                 - tooltip.offsetHeight
-                - 10
+                - (10 * scaleFactor)
                 + obj.properties.tooltipsOffsety
                 + 'px';
             
@@ -1852,6 +1924,35 @@
                 Math.max(this.canvas.width, this.canvas.height),
                 a1, a2
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

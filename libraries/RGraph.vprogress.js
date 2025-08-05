@@ -73,7 +73,7 @@
             shadowOffsety:                  3,
 
             title:                          '',
-            titleBold:                      null,
+            titleBold:                      true,
             titleItalic:                    null,
             titleFont:                      null,
             titleSize:                      null,
@@ -230,8 +230,108 @@
             corners:                             'square', // Can also be round
             cornersRoundRadius:                   10,
 
-            clearto:                        'rgba(0,0,0,0)'
-        }
+            clearto:                        'rgba(0,0,0,0)',
+            
+            events:                         {},
+            
+            scale:                          true,
+            scaleFactor:                    2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+            
+            'shadowBlur',
+            'shadowOffsetx',
+            'shadowOffsety',
+
+            'titleSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+
+            'titleSideSize',
+            'titleSideOffsetx',
+            'titleSideOffsety',
+
+            'textSize',
+
+            'highlightLinewidth',
+
+            'labelsInnerSize',
+            'labelsInnerBorderLinewidth',
+            'labelsInnerOffsetx',
+            'labelsInnerOffsety',
+
+            'labelsOffsetx',
+            'labelsOffsety',
+            'labelsSize',
+            
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyInteractiveHighlightChartLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+
+            'cornersRoundRadius',
+        ];
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = this.properties.scaleFactor;
+
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
+        };
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -368,6 +468,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -375,12 +488,15 @@
     
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -525,8 +641,10 @@
             }
             
             // Draw a key if necessary
-            if (properties.key && properties.key.length) {
+            if (properties.key && properties.key.length && RGraph.drawKey) {
                 RGraph.drawKey(this, properties.key, properties.colors);
+            } else if (properties.key && properties.key.length) {
+                alert('[ERROR] The key functionality doesn\'t exist - have you included the key library in your page?!');
             }
             
             //
@@ -1254,20 +1372,20 @@ if (properties.corners === 'round') {
                                 );
                                 
                                 this.path(
-                                    's % f %',
-                                    properties.highlightStroke,
-                                    properties.highlightFill
+                                    'f % s %',
+                                    properties.highlightFill,
+                                    properties.highlightStroke
                                 );
                             } else {
                                 this.path(
-                                    'b lw % r % % % % s % f %',
+                                    'b lw % r % % % % f % s %',
                                     properties.highlightLinewidth,
                                     this.coords[i][0],
                                     this.coords[i][1],
                                     this.coords[i][2],
                                     this.coords[i][3],
-                                    properties.highlightStroke,
-                                    properties.highlightFill
+                                    properties.highlightFill,
+                                    properties.highlightStroke
                                 );
                             }
                         }
@@ -1299,14 +1417,14 @@ if (properties.corners === 'round') {
                     } else {
 
                         this.path(
-                            'b lw % r % % % % s % f %',
+                            'b lw % r % % % % f % s %',
                             properties.highlightLinewidth,
                             this.coords[shape.index][0],
                             this.coords[shape.index][1],
                             this.coords[shape.index][2],
                             this.coords[shape.index][3],
-                            properties.highlightStroke,
-                            properties.highlightFill
+                            properties.highlightFill,
+                            properties.highlightStroke
                         );
                     }
                 }
@@ -1934,25 +2052,26 @@ if (properties.corners === 'round') {
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas)
+                coords      = this.coords[args.index],
+                scaleFactor = RGraph.getScaleFactor(this);
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                    // The X coordinate of the canvas
-                + coords[0]                      // The X coordinate of the bar on the chart
+                + (coords[0] / scaleFactor)                // The X coordinate of the bar on the chart
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
-                + (coords[2] / 2)                // Add half of the bar width
+                + (coords[2] / 2 / scaleFactor)  // Add half of the bar width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + coords[1]                      // The Y coordinate of the bar on the chart
+                + (coords[1] / scaleFactor)      // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 10                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset

@@ -28,8 +28,8 @@
             min: 0,
             max: 50,
             value: 22,
-            options: {//
-                anglesStart: RGraph.PI - 0.55,
+            options: {
+                 anglesStart: RGraph.PI - 0.55,
                 anglesEnd: RGraph.TWOPI + 0.5,
                 centery: 290,
                 textSize: 12,
@@ -49,6 +49,7 @@
                 tickmarksLargeCount: 0,
                 //needleRadius: 10,
                 needleColor: 'rgba(0,0,0,0)',
+                needleLinewidth: 15,
                 centerpinStroke: 'white',
                 centerpinFill: 'black',
                 scaleUnitsPost: 'pc',
@@ -56,13 +57,6 @@
                     beforedraw: function (obj)
                     {
                         RGraph.clear(obj.canvas, 'white');
-                    },
-                    draw: function (obj)
-                    {
-                        //obj.path(
-                        //    'b a % % % 0 6.2830 false f white',
-                        //    obj.centerx, obj.centery, obj.radius - 50
-                        //);
                     }
                 }
             }
@@ -75,7 +69,7 @@
             max: 100,
             value: 75,
             options: {
-                radius: meter1.radius - 10,
+                radius: (meter1.radius / 2) - 10,
                 backgroundColor: 'rgba(0,0,0,0)',
                 anglesStart: RGraph.PI - 0.55,
                 anglesEnd: RGraph.TWOPI + 0.5,
@@ -91,10 +85,11 @@
                 tickmarksSmallCount: 0,
                 tickmarksLargeCount: 0,
                 needleRadius: 150,
+                needleLinewidth: 15,
                 needleColor: 'gray',
                 centerpinStroke: 'gray',
                 centerpinFill: 'gray',
-                labelsRadiusOffset:-30,
+                labelsRadiusOffset:-70,
                 scaleUnitsPost:'%'
             }
         }).draw();
@@ -111,7 +106,9 @@
 
         
         
+        //
         // Make the second, more colorful example
+        //
         meter3 = new RGraph.Meter({
             id: 'cvs2',
             min: 0,
@@ -151,7 +148,7 @@
                     {
                         obj.path(
                             'b a % % % 0 6.2830 false f black',
-                            obj.centerx, obj.centery, obj.radius - 50
+                            obj.centerx, obj.centery, obj.radius - 100
                         );
                     }
                 }
@@ -164,7 +161,7 @@
             max: 100,
             value: 75,
             options: {
-                radius: meter1.radius - 50,
+                radius: meter1.radius - 315,
                 backgroundColor: 'black',
                 anglesStart: RGraph.PI - 0.55,
                 anglesEnd: RGraph.TWOPI + 0.5,
@@ -179,10 +176,11 @@
                 tickmarksLargeCount: 0,
                 needleRadius: 150,
                 needleColor: '#ddd',
+                needleLinewidth: 15,
                 centerpinStroke: 'black',
                 centerpinFill: '#ddd',
                 adjustable: true,
-                labelsRadiusOffset: -25
+                labelsRadiusOffset: -65
             }
         }).draw();
     </script>

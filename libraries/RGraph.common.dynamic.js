@@ -906,7 +906,8 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                                                     obj.data[shape.dataset];
 
                                         var mouseXY = RGraph.getMouseXY(e);
-
+                                        var scaleFactor = RGraph.getScaleFactor(obj);
+                                        
                                         RGraph.Registry.set('adjusting.gantt', {
                                             dataset:        shape.dataset,
                                             index:          shape.index,
@@ -916,7 +917,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                                             event:          data,
                                             event_start:    data.start,
                                             event_duration: data.duration,
-                                            mode:           (mouseXY[0] > (shape.x + shape.width - 5) ? 'resize' : 'move'),
+                                            mode:           (mouseXY[0] > (shape.x + shape.width - (10 * scaleFactor)) ? 'resize' : 'move'),
                                             shape:          shape
                                         });
                                     }
@@ -1776,9 +1777,8 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                         div.style.fontSize           = '10pt'
                         div.style.padding            = '2px';
                         div.style.opacity            = 1;
-                        div.style.WebkitBorderRadius = '3px';
                         div.style.borderRadius       = '3px';
-                        div.style.MozBorderRadius    = '3px';
+                        div.style.pointerEvents      = 'none';
                         div.style.lineHeight         = RGraph.ISIE ? 'normal' : 'initial';
                     document.body.appendChild(div);
                     
@@ -1793,8 +1793,10 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                     div.style.left = Math.max(2, (e.pageX - div.offsetWidth - 3)) + 'px';
                     div.style.top = Math.max(2, (e.pageY - div.offsetHeight - 3))  + 'px';
                 } else {
-                    div.style.left = canvasXY[0] + marginLeft + 3 + 'px';
-                    div.style.top  = canvasXY[1] + marginTop + 3 + 'px';
+                    var scaleFactor = RGraph.getScaleFactor(obj);
+
+                    div.style.left = canvasXY[0] + (marginLeft / scaleFactor) + (3 * scaleFactor) + 'px';
+                    div.style.top  = canvasXY[1] + (marginTop / scaleFactor) + (3 * scaleFactor) + 'px';
                 }
 
                 // Use the formatter functions if defined. This allows the user to format them as they wish

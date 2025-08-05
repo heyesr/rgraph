@@ -31,7 +31,7 @@
                 backgroundGridColor: '#fffc',
                 colors: ['#00a','#0f0','yellow','orange','purple','blue'],
                 textColor: 'white',
-                textSize: 8,
+                textSize: 10,
                 margin:3,
                 labels: ['NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'],
                 labelsOffsetRadius: 5,
@@ -47,17 +47,17 @@
                 titleX: 10,
                 titleY: 10,
                 titleSize: 32,
-                marginTop: 60,
-                textAccessible: true,
+                marginTop: 60
             }
         }).draw();
         
         RGraph.text({
             object: rose,
-            x: 10,
-            y: 100,
+            x: 20,
+            y: 200,
             color: 'white',
             valign: 'top',
+            size: 28,
             text: 'The length of each bar\n is the frequency of\ncardinal direction in\nwhich the wind blows.\nIt is also represented\nas a percentage (%).\n\nThe colors are the wind\nspeed  (m/s). The longest\ncolor is the most\nfrequent in each\ndirection.'
         });
     </script>

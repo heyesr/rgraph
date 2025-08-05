@@ -129,7 +129,7 @@
             titleFont:       null,
             titleSize:       null,
             titleColor:      null,
-            titleBold:       null,
+            titleBold:       true,
             titleItalic:     null,
             titleX:          null,
             titleY:          null,
@@ -171,8 +171,53 @@
             
             clip:             null,
             
-            events:           {}
-        }
+            events:           {},
+            
+            scale:            true,
+            scaleFactor:      2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+            'textSize',
+            'titleX',
+            'titleY',
+            'titleSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY'
+        ];
 
         //
         // Add the reverse look-up table  for property names
@@ -305,6 +350,17 @@
         //
         this.draw = function ()
         {
+
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that were in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
             //
             // Fire the onbeforedraw event
             //
@@ -325,12 +381,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -694,16 +753,26 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj        = args.object,
-                e          = args.event,
-                tooltip    = args.tooltip,
-                index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas);
+            var obj          = args.object,
+                e            = args.event,
+                tooltip      = args.tooltip,
+                index        = args.index,
+                canvasXY     = RGraph.getCanvasXY(obj.canvas)
+                width        = this.canvas.offsetWidth,
+                height       = this.canvas.offsetHeight,
+                scaleFactor  = RGraph.getScaleFactor(obj);
+
+            // SCALING
+            //
+            // Account for the (7.00) scaling
+            //
+            if (this.properties.scale) {
+            }
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                    // The X coordinate of the canvas
-                + ((this.canvas.width - properties.marginLeft - properties.marginRight) / 2) + properties.marginLeft// The X coordinate of the background
+                + (properties.marginLeft/2) + ((width - (properties.marginLeft/2) - (properties.marginRight/2)) / 2)
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
@@ -712,10 +781,43 @@
                   canvasXY[1]                    // The Y coordinate of the canvas
                 - tooltip.offsetHeight           // The height of the tooltip
                 + obj.properties.tooltipsOffsety // Add any user defined offset
-                + ((this.canvas.height - properties.marginTop - properties.marginBottom) / 2) + properties.marginTop// The Y coordinate of the background
+                + (properties.marginTop/2) + ((height - (properties.marginTop/2) - (properties.marginBottom/2)) / 2)// The Y coordinate of the background
                 - 10                             // An arbitrary amount
 
             ) + 'px';
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = this.properties.scaleFactor;
+            
+            if (name === 'backgroundGridDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

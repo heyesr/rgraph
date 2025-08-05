@@ -17,74 +17,82 @@
         <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
     </div>
     
-    <script>
-        scpOuter = new RGraph.SemiCircularProgress({
-            id: 'cvs',
-            min: 0,
-            max: 100,
-            value: 0,
-            options: {
-                labelsMin: false,
-                labelsMax: false,
-                labelsCenter: false,
-                width: 100,
-                colors: ['black'],
-                keyColors: ['red','black'],
-                key: ['Richard','Bazza'],
-                keyLabelsSize: 16
-            }
-        }).draw();
+<script>
+    scpOuter = new RGraph.SemiCircularProgress({
+        id: 'cvs',
+        min: 0,
+        max: 100,
+        value: 0,
+        options: {
+            labelsMin: false,
+            labelsMax: false,
+            labelsCenter: false,
+            width: 100,
+            colors: ['black'],
+            keyColors: ['red','black'],
+            key: ['Richard','Bazza'],
+            keyLabelsSize: 16
+        }
+    }).draw();
 
-        new RGraph.SemiCircularProgress({
-            id: 'cvs',
-            min: 0,
-            max: 100,
-            value: 64,
-            options: {
-                radius: scpOuter.radius - 52.5,
-                width: 42.5,
-                colors: ['black'],
-                labelsCenterSize: 50,
-                labelsCenterSpecific: '60%',
-                labelsMin: false,
-                labelsMax: false,
-                backgroundBackdrop: false,
-                tooltips: ['Bazza scored the best!'],
-                tooltipsCss: {
-                    fontSize: '20pt'
-                }
+    scpInner1 = new RGraph.SemiCircularProgress({
+        id: 'cvs',
+        min: 0,
+        max: 100,
+        value: 64,
+        options: {
+            centerx: scpOuter.centerx / 2,
+            centery: scpOuter.centery / 2,
+            radius: scpOuter.radius / 2 - 7,
+            width: 40,
+            colors: ['black'],
+            labelsCenterSize: 60,
+            labelsCenterOffsety: - 10,
+            labelsCenterSpecific: '60%',
+            labelsMin: false,
+            labelsMax: false,
+            backgroundBackdrop: false,
+            tooltips: ['Bazza scored the best!'],
+            tooltipsCss: {
+                fontSize: '20pt'
             }
-        }).grow();
+        }
+    }).grow();
 
-        new RGraph.SemiCircularProgress({
-            id: 'cvs',
-            min: 0,
-            max: 100,
-            value: 56,
-            options: {
-                radius: scpOuter.radius - 5,
-                width: 42.5,
-                colors: ['red'],
-                labelsCenter: false,
-                labelsMin: false,
-                labelsMax: false,
-                backgroundBackdrop: false,
-                text: [{
-                    x: scpOuter.centerx,
-                    y: scpOuter.centery + 15,
-                    text: 'Average score',
-                    color: '#aaa',
-                    font: 'Calibri, Verdana',
-                    halign: 'center',
-                    size: 16
-                }],
-                tooltips: ['Richard scored well'],
-                tooltipsCss: {
-                    fontSize: '20pt'
-                }
+    new RGraph.SemiCircularProgress({
+        id: 'cvs',
+        min: 0,
+        max: 100,
+        value: 56,
+        options: {
+            centerx: scpOuter.centerx / 2,
+            centery: scpOuter.centery / 2,
+            radius: (scpOuter.radius
+                     - 10 // A gap
+                     - 85 // The width of the outer SCP
+                     - 10) / 2, // Another gap
+            width: 40,
+            colors: ['red'],
+            labelsCenter: false,
+            labelsMin: false,
+            labelsMax: false,
+            backgroundBackdrop: false,
+            text: [{
+                x: scpOuter.centerx,
+                y: scpOuter.centery,
+                text: 'Average score',
+                color: '#aaa',
+                font: 'sans-serif',
+                halign: 'center',
+                size: 32
+            }],
+            tooltips: ['Richard scored well'],
+            tooltipsCss: {
+                fontSize: '20pt'
             }
-        }).grow();
-    </script>
+        }
+    }).grow();
+</script>
 
     <script>showSource()</script>
 

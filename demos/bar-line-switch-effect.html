@@ -36,8 +36,8 @@
             }
             
             div#canvas-container canvas#cvs1 {
-                top: 125px;
-                left: 300px;
+                top: 0;
+                left: 0;
                 width: 0;
                 height: 0;
                 opacity: 0;
@@ -54,6 +54,7 @@
             options: {
                 colors: ['#5690C9'],
                 marginInner: 25,
+                marginTop: 50,
                 colorsStroke: 'transparent',
                 axesLinewidth: 15,
                 textSize: 16,
@@ -63,7 +64,8 @@
                 xaxis: false,
                 yaxis: false,
                 shadow: false,
-                title: 'A Bar chart (click to switch to the Line chart)',
+                title: 'A Bar chart (click to switch)',
+                titleSize: 24,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxisLabels: ['John','Fred','Lucy']
@@ -89,7 +91,7 @@
                     // prefer.
                     obj.path(
                         'b a % % % % % false f %',
-                        x, y, 15, 0, 2 * Math.PI, false,
+                        x, y, 30, 0, 2 * Math.PI, false,
                         color
                     );
                 },
@@ -97,14 +99,15 @@
                 linewidth: 10,
                 shadow: false,
                 xaxisLabels: ['John','Fred','Lucy'],
-                title: 'A Line chart (click to switch to the Bar chart)',
+                title: 'A Line chart (click to switch)',
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
                 marginInner: 25,
+                marginTop: 50,
                 textSize: 16,
                 textColor: '#000',
-                titleSize: 12,
+                titleSize: 24,
                 yaxisColor: '#999'
             }
         }).draw();

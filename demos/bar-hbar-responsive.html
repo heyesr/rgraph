@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+    <!DOCTYPE html >
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
@@ -52,7 +52,7 @@
         function drawHbar ()
         {
             RGraph.reset('cvs');
-            
+
             new RGraph.HBar({
                 id: 'cvs',
                 data: data,
@@ -73,7 +73,8 @@
                     tooltipsCss: tooltipsStyle,
                     yaxisLabelsOffsetx: -10,
                     marginLeft: 75,
-                    marginLeftAuto: false
+                    marginLeftAuto: false,
+                    marginInner: 3
                 }
             }).draw();
         }

@@ -21,18 +21,18 @@
             id: 'cvs',
             data: [8,7,6,4,9,5,6],
             options: {
-                title: 'A scaled Line chart',
+                title: 'A scaled Line chart (which is now the default)',
                 textSize: 16,
                 marginTop: 40,
                 marginBottom: 55,
                 marginLeft: 40,
                 marginRight: 55,
                 xaxisLabels: ['Monday','\r\nTuesday','Wednesday','\r\nThursday','Friday','\r\nSaturday','Sunday'],
-                linewidth: 25,
+                linewidth: 10,
                 marginInner: 15,
                 shadow: true,
-                shadowOffsetx: 5,
-                shadowOffsety: 5,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
                 xaxisLabelsOffsety: 3,
                 xaxisTickmarks: false,
                 yaxis: false,
@@ -40,41 +40,7 @@
                 backgroundGridBorder: false,
                 backgroundGridVlines: false
             }
-        });
-    
-    
-        // Draw the chart but scaled up
-        function scaledDraw(obj)
-        {
-            var factor = 2;
-    
-            obj.canvas.style.width  = obj.canvas.width + 'px';
-            obj.canvas.style.height = obj.canvas.height + 'px';
-    
-            obj.canvas.width  *= factor;
-            obj.canvas.height *= factor;
-    
-            // Increase the size of various properties
-            for (v of ['marginInner',          'marginLeft',
-                       'marginRight',          'marginTop',
-                       'marginBottom',         'backgroundGridLinewidth',
-                       'textSize',             'titleSize',
-                       'xaxisLinewidth',       'yaxisLinewidth',
-                       'xaxisTickmarksLength', 'yaxisTickmarksLength',
-                       'xaxisLabelsOffsety',   'yaxisLabelsOffsetx',
-                       'tooltipsHotspotSize',  'tickmarksSize',
-                       'tickmarksStyleDotLinewidth', 'labelsAboveSize']) {
-                
-                if (RGraph.isNumeric(obj.properties[v])) {
-                    obj.properties[v] *= factor;
-                }
-            }
-    
-    
-            obj.trace({frames: 45});
-        };
-        
-        scaledDraw(myLine);
+        }).draw();
     </script>
     
     <script>showSource()</script>

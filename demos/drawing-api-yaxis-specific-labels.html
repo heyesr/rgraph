@@ -27,19 +27,20 @@
                 yaxisScale: false,
                 colors: ['blue','blue','blue','blue','blue','red','red','red','red','red'],
                 colorsSequential: true,
-                marginLeft: 100,
+                marginLeft: 125,
                 marginBottom: 30
             }
         }).draw();
         
         yaxes = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 100,
+            x: 250,
             options: {
                 yaxisScaleMax: 100,
                 marginBottom: 30,
                 yaxisTickmarksCount: 3,
                 yaxisLabelsSpecific: ['Lots','A fair amount','Not so many','A few'],
+                yaxisLabelsOffsetx: -10,
                 events: {
                     click: function (e, shape)
                     {

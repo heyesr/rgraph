@@ -14,7 +14,7 @@
     <h1>A basic example of the drawing API image object</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="250" style="border: 1px solid gray">[No canvas support]</canvas>
         
         <style>
             .RGraph_tooltip {
@@ -45,12 +45,24 @@
             y: coords[1] - 20,
             src: '../images/rgraph-text-only.png',
             options: {
-                width: 88,
-                height: 25,
-                halign: 'center',
-                valign: 'center',
-                colorsAlpha: 0.6,
-                tooltips: ['The tooltip!']
+                //width: 88,
+                //height: 25,
+                backgroundColor: '#fff',
+                //halign: 'left',valign: 'top',
+                //halign: 'center',valign: 'top',
+                //halign: 'right',valign: 'top',
+                //halign: 'left',valign: 'center',
+                //halign: 'center',valign: 'center',
+                //halign: 'right',valign: 'center',
+                //halign: 'left',valign: 'bottom',
+                halign: 'center',valign: 'bottom',
+                //halign: 'right',valign: 'bottom',
+                tooltips: ['The tooltip!'],
+                //border: true,
+                //borderRadius: 5,
+                //borderColor: 'red',
+                //borderLinewidth: 2,
+                //shadow: true
             }
         }).draw();
     </script>

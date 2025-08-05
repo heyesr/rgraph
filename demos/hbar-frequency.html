@@ -11,7 +11,7 @@
     <h1>Frequency ranges of various instruments</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="1000" height="450" style="background-color: black">[No canvas support]</canvas>
+        <canvas id="cvs" width="1100" height="450" style="background-color: black">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -41,6 +41,8 @@
             data: values,
             options: {
                 marginRight: 50,
+                marginLeft: 200,
+                marginLeftAuto: false,
                 textColor: 'white',
                 textSize: 16,
                 backgroundGridHlines: false,
@@ -81,12 +83,12 @@
                                     number:    data[j].max,
                                     unitspost:' hz'
                                 }),
-                                x:      obj.coords[i][0] + obj.coords[i][2] + 5,
+                                x:      obj.coords[i][0] + obj.coords[i][2] + 10,
                                 y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
                                 valign: 'center',
                                 halign: 'left',
                                 color:  'white',
-                                size: 10
+                                size: 20
                             });
                             
                             // Draw the text on the left of the bar
@@ -97,12 +99,12 @@
                                     number:    data[j].min,
                                     unitspost:' hz' 
                                 }),
-                                x:      obj.coords[i][0] - 5,
+                                x:      obj.coords[i][0] - 10,
                                 y:      obj.coords[i][1] + (obj.coords[i][3] / 2),
                                 valign: 'center',
                                 halign: 'right',
                                 color:  'white',
-                                size: 10
+                                size: 20
                             });
                         }
                     }

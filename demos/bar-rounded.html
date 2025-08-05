@@ -22,6 +22,8 @@
             data: '12,18,10,9,6,20,18',
             options: {
                 marginInner: 20,
+                marginLeft: 50,
+                marginBottom: 50,
                 colors: ['#0000'],
                 backgroundGridBorder: false,
                 backgroundGridVlines: false,
@@ -30,14 +32,13 @@
                 textSize: 20,
                 xaxisLabels: RGraph.DAYS_SHORT,
                 xaxisLabelsOffsety: 5,
-                marginBottom: 50,
                 events: {
                     draw: function (obj)
                     {
                         obj.coords.forEach(function (v, k, arr)
                         {
                             obj.path(
-                                'b lw 5 rr % % % % 20 f red s black',
+                                'b lw 10 rr % % % % 40 f red s black',
                                 v[0], v[1], v[2], v[3]
                             );
                         });

@@ -83,7 +83,7 @@
             titleColor:           null,
             titleFont:            null,
             titleSize:            null,
-            titleBold:            null,
+            titleBold:            true,
             titleItalic:          null,
             
             textFont:             'Arial, Verdana, sans-serif',
@@ -173,8 +173,50 @@
             
             clip:                       null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'titleSize',
+        
+            'linewidth',
+            
+            'marginLeft',
+            'marginRight',
+            'marginBottom',
+            'marginTop',
+            'marginInner',
+            
+            'textSize',
+            
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+        ];
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -298,6 +340,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -322,12 +377,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -636,8 +694,8 @@
 
 
         //
-        // This detemines the maximum text width of either the scale or text
-        // labels - whichever is given
+        // This detemines the maximum text width of either the scale
+        // or text labels - whichever is given.
         // 
         // @return number The maximum text width
         //
@@ -734,23 +792,24 @@
                 e          = args.event,
                 tooltip    = args.tooltip,
                 index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas);
+                canvasXY   = RGraph.getCanvasXY(obj.canvas),
+                scaleFactor = RGraph.getScaleFactor(obj);
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                                   // The X coordinate of the canvas
                 - (tooltip.offsetWidth / 2)                     // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx                // Add any user defined offset
-                + this.x                                        // Add the X coordinate
-                - (this.getWidth() / 2)
+                + (this.x / scaleFactor)                                        // Add the X coordinate
+                - (this.getWidth() * 0.25)
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                                   // The Y coordinate of the canvas
                 - tooltip.offsetHeight                          // The height of the tooltip
                 + obj.properties.tooltipsOffsety                // Add any user defined offset
-                + properties.marginTop
-                - ((properties.textSize * 1.5) / 2)                   // Account for the size of the text
+                + (properties.marginTop / 2)
+                + ((this.canvas.height - properties.marginTop - properties.marginBottom) / 4) // Put the tooltip in the center (vertically) of the Y axis
                 - 10                                            // An arbitrary amount
             ) + 'px';
         };

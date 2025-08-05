@@ -68,7 +68,7 @@
         });
 
         
-        line.set('marginInner', (line.canvas.width - line.get('marginLeft') - line.get('marginRight')) / (bar.data.length * 2))
+        line.set('marginInner', ((line.canvas.width - (line.get('marginLeft') + line.get('marginRight')) ) / (bar.data.length * 2)) / 2)
             .trace({frames: 30});
     </script>
     

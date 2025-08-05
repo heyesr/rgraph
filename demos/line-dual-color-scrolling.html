@@ -9,140 +9,152 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A dual-color scrolling Line chart</h1>
+    <h1>A tri-color scrolling Line chart</h1>
 
+    <p>
+        As well as clipping this could also be implemented by using a
+        gradient as well.
+    </p>
+    
    <div id="rgraph-demo-html">
        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
    </div>
 
     <script>
-        d1  = [];
-        l   = 0; // The letter 'L' - NOT a one
+        data   = [];
+        last   = 0;
+        delay  = 50;
+        config = {
+            backgroundGrid: false,
+            backgroundBarsColor1: 'white',
+            backgroundBarsColor2: 'white',
+            title: 'Bandwidth used',
+            xaxisTitle: 'Time >>>',
+            xaxisTitlePos: 0.5,
+            yaxisTitle: 'Bandwidth (MB/s)',
+            yaxisPosition: 'right',
+            yaxisScaleMax: 50,
+            filled: true,
+            colors: ['black'],
+            marginTop: 45,
+            marginBottom: 35,
+            marginRight: 50,
+            tickmarksStyle: [null,null],
+            shadow: false,
+            linewidth: 1,
+            xaxisTickmarks: null,
+            yaxisTickmarks: null,
+            yaxisLinewidth: 2,
+            xaxisLinewidth: 2
+        };
     
-        // Pre-pad the arrays with null values
+        // Pre-pad the data array with null values
         for (var i=0; i<600; ++i) {
-            d1.push(null);
+            data.push(null);
         }
-        
-        var obj = null;
 
-        function getGraph(id, d1)
+        function getGraph1(id, data)
         {
             // After creating the chart, store it in a global variable
-            if (!obj) {
+            if (!window.obj1) {
 
-                obj = new RGraph.Line({
+                var obj1 = new RGraph.Line({
                     id: id,
-                    data: d1,
+                    data: data,
                     options: {
-                        //xaxisTickmarksCount: 100,
-                        backgroundGrid: false,
-                        backgroundBarsColor1: 'white',
-                        backgroundBarsColor2: 'white',
-                        title: 'Bandwidth used',
-                        titleVpos: 0.5,
-                        xaxisTitle: 'Time >>>',
-                        xaxisTitlePos: 0.5,
-                        yaxisTitle: 'Bandwidth (MB/s)',
-                        yaxisPosition: 'right',
-                        yaxisScaleMax: 50,
-                        colors: ['black'],
-                        linewidth: 0.75,
-                        xaxisTickmarksCount: 25,
-                        filled: true,
-                        marginTop: 45,
-                        marginBottom: 35,
-                        marginRight: 50,
-                        tickmarksStyle: [null,null],
-                        shadow: false,
-                        colors: ['rgba(0,0,0,0.2)']
+                        ...config,
+                        clip: 'scale:min-10',
+                        filledColors: ['#f00']
                     }
-                })
-
-
-
-                var grad = obj.context.createLinearGradient(0,0,0,250 * 2);
-                grad.addColorStop(0, '#efefef');
-                grad.addColorStop(0.9, 'rgba(0,0,0,0)');
-
-                obj.set('filledColors', [grad]);
+                });
             }
 
-            return obj;
+            return obj1;
         }
 
-
-
-        //
-        // This gets called repeatedly to update the chart
-        //
-        function drawGraph ()
+        function getGraph2(id, data)
         {
-            RGraph.clear(document.getElementById("cvs"));
-            
-            var graph = getGraph('cvs', d1);
-            graph.draw();
+            // After creating the chart, store it in a global variable
+            if (!window.obj2) {
 
+                var obj2 = new RGraph.Line({
+                    id: id,
+                    data: data,
+                    options: {
+                        ...config,
+                        clip: 'scale:10-20',
+                        filledColors: ['#ff0'],
+                    }
+                });
+            }
 
+            return obj2;
+        }
 
+        function getGraph3(id, data)
+        {
+            // After creating the chart, store it in a global variable
+            if (!window.obj3) {
 
+                var obj3 = new RGraph.Line({
+                    id: id,
+                    data: data,
+                    options: {
+                        ...config,
+                        clip: 'scale:20-max',
+                        filledColors: ['#0f0'],
+                    }
+                });
+            }
 
-            // The color boundary
-            var boundary = (200 * ((graph.scale2.max - 20) / graph.scale2.max)) + 25;
+            return obj3;
+        }
+        
+        obj1 = getGraph1('cvs',data);
+        obj2 = getGraph2('cvs',data);
+        obj3 = getGraph3('cvs',data);
 
-
-            //
-            // Clip the canvas tag and draw the upper half
-            //
-            RGraph.clipTo.start(graph, [0,0,1200, boundary * 2]);                
-            
-            // Set the color
-            graph.set('filledColors', 'rgba(255,0,0,0.5)');
-            graph.draw();
-
-            RGraph.clipTo.end();
-
-
-
-
-
-
-            //
-            // Clip the canvas tag and draw the lower half
-            //
-            RGraph.clipTo.start(graph, [0,boundary * 2,1200,500 - boundary]);
-                
-            // Set the color
-            graph.set('filledColors', 'rgba(0,255,0,0.5)');
-            graph.draw();
-            
-            RGraph.clipTo.end();
-
-
-
-
-
-
-            // Add some data to the data arrays
-            var r1 = RGraph.random(
-                RGraph.isNull(d1[d1.length - 1]) ? 26 : d1[d1.length - 1] - 2,
-                RGraph.isNull(d1[d1.length - 1]) ? 24 : d1[d1.length - 1] + 2
+        obj1.draw();
+        obj2.draw();
+        obj3.draw();
+        
+        function draw ()
+        {
+            // Append a random value on to the array and remove the
+            // first value.
+            var random = RGraph.random(
+                RGraph.isNull(data[data.length - 1]) ? 26 : data[data.length - 1] - 2,
+                RGraph.isNull(data[data.length - 1]) ? 24 : data[data.length - 1] + 2
             );
 
-           r1 = Math.max(r1, 0);
-           r1 = Math.min(r1, 50);
+            // Constrain the value to be btween 0 and 50.
+            random = Math.max(random, 0);
+            random = Math.min(random, 50);
 
-            d1.push(r1);
+            // Push the new value on to the wend of the array
+            data.push(random);
             
-            if (d1.length > 600) {
-                d1 = RGraph.arrayShift(d1);
+            if (data.length > 600) {
+                data = RGraph.arrayShift(data);
             }
 
-            obj.original_data[0] = d1;
-            setTimeout(drawGraph, 50);
+            obj1.original_data[0] = data;
+            obj2.original_data[0] = data;
+            obj3.original_data[0] = data;
+
+            // Clear the canvas tag and redraw the chart
+            RGraph.clear(obj1.canvas);
+            
+            obj1.draw();
+            obj2.draw();
+            obj3.draw();
+            
+            setTimeout(draw, delay);
         }
-    
-        drawGraph();
+        
+        // Start the whole thing going
+        draw();
+        
     </script>
     
     <script>showSource()</script>

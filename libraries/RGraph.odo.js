@@ -74,6 +74,7 @@
             labelsValueOffsetx:        0,
             labelsValueOffsety:        0,
 
+            needleExtra:               [],
             needleColor:               'black',
             needleLength:              null,
             needleWidth:               2,
@@ -93,10 +94,10 @@
             text:                        null,
 
             colorsGreenMax:            max * 0.75,
-            colorsGreenColor:          'Gradient(white:#0c0)',
-            colorsYellowColor:         'Gradient(white:#ff0)',
+            colorsGreenColor:          '#0c0',
+            colorsYellowColor:         '#cc0',
             colorsRedMin:              max * 0.9,
-            colorsRedColor:            'Gradient(white:#f00)',
+            colorsRedColor:            '#c00',
 
             marginLeft:                35,
             marginRight:               35,
@@ -105,7 +106,7 @@
 
             title:                     '',
             titleFont:                 null,
-            titleBold:                 null,
+            titleBold:                 true,
             titleItalic:               null,
             titleSize:                 null,
             titleColor:                null,
@@ -148,10 +149,6 @@
             scaleUnitsPre:             '',
             scaleUnitsPost:            '',
             scaleZerostart:            false,
-            
-            resizable:                 false,
-            resizableHandleAdjust:     [0,0],
-            resizableHandleBackground: null,
             
             border:                    true,
             borderColor1:              '#BEBCB0',
@@ -199,8 +196,66 @@
 
             clearto:                   'rgba(0,0,0,0)',
             
-            events:                     {}
-        }
+            events:                     {},
+
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+        this.properties_scale = [
+            
+            'centerx',
+            'centery',
+            'radius',
+
+            'labelsMargin',
+            'labelsSize',
+            'labelsValueSize',
+            'labelsValueOffsetx',
+            'labelsValueOffsety',
+
+            'needleWidth',
+            'needleLength',
+
+            'textSize',
+
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+
+            'linewidth',
+            'shadowInnerOffsetx',
+            'shadowInnerOffsety',
+            'shadowInnerBlur',
+            'shadowOuterOffsetx',
+            'shadowOuterOffsety',
+            'shadowOuterBlur',
+
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+
+            'annotatableLinewidth'
+        ];
 
 
         //
@@ -307,6 +362,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -314,12 +382,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -374,9 +445,11 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius) * scaleFactor;
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx) * scaleFactor;
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery) * scaleFactor;
             
             //
             // Allow custom setting of the radius
@@ -588,6 +661,8 @@
         //
         this.drawBackground = function ()
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             this.context.beginPath();
 
             //
@@ -610,7 +685,7 @@
             this.context.arc(
                 this.centerx,
                 this.centery,
-                this.radius + (properties.border ? 20 : 0),
+                this.radius + (properties.border ? (20 * scaleFactor) : 0),
                 0.0001,
                 RGraph.TWOPI,
                 false
@@ -625,10 +700,17 @@
     
             // Draw a circle
             this.context.strokeStyle = '#666';
-            this.context.arc(this.centerx, this.centery, this.radius, 0, RGraph.TWOPI, false);
+            this.context.arc(
+                this.centerx,
+                this.centery,
+                this.radius,
+                0,
+                RGraph.TWOPI,
+                false
+            );
     
-            // Now draw a big white circle to make the lines appear as tick marks
-            // This is solely for Chrome
+            // Now draw a big white circle to make the lines appear
+            // as tick marks.  This is solely for Chrome.
             this.context.fillStyle = backgroundColor;
             this.context.arc(this.centerx, this.centery, this.radius, 0, RGraph.TWOPI, false);
             this.context.fill();
@@ -703,7 +785,7 @@
             // Draw the "tick highlight"
             if (properties.tickmarksHighlighted) {
                 this.context.beginPath();
-                this.context.lineWidth = 5;
+                this.context.lineWidth = 5 * scaleFactor;
                 this.context.strokeStyle = greengrad;
                 this.context.arc(this.centerx, this.centery, this.radius - 2.5,
                 
@@ -739,7 +821,7 @@
             // Draw the "tick highlight"
             if (properties.tickmarksHighlighted) {
                 this.context.beginPath();
-                this.context.lineWidth = 5;
+                this.context.lineWidth = 5 * scaleFactor;
                 this.context.strokeStyle = yellowgrad;
                 this.context.arc(this.centerx, this.centery, this.radius - 2.5, (
                 
@@ -774,7 +856,7 @@
             // Draw the "tick highlight"
             if (properties.tickmarksHighlighted) {
                 this.context.beginPath();
-                this.context.lineWidth = 5;
+                this.context.lineWidth = 5 * scaleFactor;
                 this.context.strokeStyle = redgrad;
                 this.context.arc(this.centerx, this.centery, this.radius - 2.5,(((properties.colorsRedMin - this.min) / (this.max - this.min)) * RGraph.TWOPI) - RGraph.HALFPI,RGraph.TWOPI - RGraph.HALFPI,0);
                 this.context.stroke();
@@ -803,18 +885,38 @@
             //
             if (properties.border) {
     
-                var grad = this.context.createRadialGradient(this.centerx, this.centery, this.radius, this.centerx, this.centery, this.radius + 20);
+                var grad = this.context.createRadialGradient(
+                    this.centerx,
+                    this.centery,
+                    this.radius,
+                    this.centerx,
+                    this.centery,
+                    this.radius + (20 * scaleFactor)
+                );
                 grad.addColorStop(0, properties.borderColor1);
                 grad.addColorStop(0.5, properties.borderColor2);
                 grad.addColorStop(1, properties.borderColor3);
-    
-                
+
                 this.context.beginPath();
                     this.context.fillStyle   = grad;
                     this.context.strokeStyle = 'rgba(0,0,0,0)'
                     this.context.lineWidth   = 0.001;
-                    this.context.arc(this.centerx, this.centery, this.radius + 20, 0, RGraph.TWOPI, 0);
-                    this.context.arc(this.centerx, this.centery, this.radius - 2, RGraph.TWOPI, 0, 1);
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        this.radius + (20 * scaleFactor),
+                        0,
+                        RGraph.TWOPI,
+                        0
+                    );
+                    this.context.arc(
+                        this.centerx,
+                        this.centery,
+                        this.radius - 2,
+                        RGraph.TWOPI,
+                        0,
+                        1
+                    );
                 this.context.fill();
             }
             
@@ -865,6 +967,8 @@
         //
         this.drawNeedle = function (opt)
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             // The optional length of the needle
             opt.length = opt.length ? opt.length : this.radius - properties.labelsMargin - 10;
 
@@ -876,7 +980,7 @@
                 this.context.moveTo(this.centerx, this.centery);
                 this.context.arc(
                     this.centerx, this.centery,
-                    10,
+                    10 * scaleFactor,
                     0, RGraph.TWOPI,
                     false
                 );
@@ -892,10 +996,19 @@
             this.context.fillStyle   = opt.color
             this.context.strokeStyle = '#666';
     
-            // Draw the centre bit
+            //
+            // Draw the black centrepin bit
+            //
             this.context.beginPath();
                 this.context.moveTo(this.centerx, this.centery);
-                this.context.arc(this.centerx, this.centery, 8, 0, RGraph.TWOPI, false);
+                this.context.arc(
+                    this.centerx,
+                    this.centery,
+                    8 * scaleFactor,
+                    0,
+                    RGraph.TWOPI,
+                    false
+                );
                 this.context.fill();
             this.context.closePath();
             
@@ -912,7 +1025,8 @@
                 // Draw the needle
                 this.context.beginPath();
 
-                    // The trailing bit on the opposite side of the dial
+                    // The trailing bit on the opposite side of
+                    // the dial.
                     this.context.beginPath();
                         this.context.moveTo(
                             this.centerx,
@@ -924,18 +1038,19 @@
                             this.context.arc(
                                 this.centerx,
                                 this.centery,
-                                20,
+                                20 * scaleFactor,
                                 (opt.value / this.range) * RGraph.TWOPI + RGraph.HALFPI,
                                 (opt.value / this.range) * RGraph.TWOPI + RGraph.HALFPI,
                                 false
                             );
                         }
 
-                    // Draw the long bit on the opposite side
+                    // Draw the long bit on the opposite
+                    // side
                     this.context.arc(
                         this.centerx,
                         this.centery,
-                        opt.length - 20,
+                        opt.length - ((0.1 * opt.length) * scaleFactor),
                         (((opt.value / this.range) * 360) - 90) / (180 / RGraph.PI),
                         (((opt.value / this.range) * 360) - 90 + 0.1 ) / (180 / RGraph.PI),
                         false
@@ -953,12 +1068,13 @@
                 this.context.lineJoin = 'miter';
 
                 //
-                // This draws the version of the pointer that becomes the border
+                // This draws the version of the pointer that
+                // becomes the border.
                 //
                 this.context.beginPath();
                     this.context.fillStyle = opt.triangleBorder;
-                    this.context.arc(this.centerx, this.centery, 11, (((opt.value / this.range) * 360)) / 57.3, ((((opt.value / this.range) * 360)) + 0.01) / 57.3, 0);
-                    this.context.arc(this.centerx, this.centery, 11, (((opt.value / this.range) * 360) + 180) / 57.3, ((((opt.value / this.range) * 360) + 180) + 0.01)/ 57.3, 0);
+                    this.context.arc(this.centerx, this.centery, 11 * scaleFactor, (((opt.value / this.range) * 360)) / 57.3, ((((opt.value / this.range) * 360)) + 0.01) / 57.3, 0);
+                    this.context.arc(this.centerx, this.centery, 11 * scaleFactor, (((opt.value / this.range) * 360) + 180) / 57.3, ((((opt.value / this.range) * 360) + 180) + 0.01)/ 57.3, 0);
                     this.context.arc(this.centerx, this.centery, opt.length - 5, (((opt.value / this.range) * 360) - 90) / 57.3, ((((opt.value / this.range) * 360) - 90) / 57.3) + 0.01, 0);
                 this.context.closePath();
                 this.context.fill();
@@ -981,14 +1097,14 @@
                     
                     this.centerx,
                     this.centery,
-                    7,
+                    7 * scaleFactor,
                     (((opt.value / this.range) * 360)) / 57.3,
                     ((((opt.value / this.range) * 360)) + 0.01) / 57.3,
                     
                     
                     this.centerx,
                     this.centery,
-                    7,
+                    7 * scaleFactor,
                     (((opt.value / this.range) * 360) + 180) / 57.3,
                     ((((opt.value / this.range) * 360) + 180) + 0.01)/ 57.3
                 );
@@ -1013,7 +1129,7 @@
             this.context.arc(
                 this.centerx,
                 this.centery,
-                opt.type === 'pointer' ? 7 : 12,
+                (opt.type === 'pointer' ? 7 : 12) * scaleFactor,
                 0.01,
                 RGraph.TWOPI,
                 false
@@ -1042,9 +1158,9 @@
                     this.context.arc(
                         this.centerx,
                         this.centery,
-                        opt.length - 20,
-                        RGraph.toRadians( ((opt.value / this.range) * 360) - (opt.length < 60 ? 80 : 85) ),
-                        RGraph.toRadians( ((opt.value / this.range) * 360) - (opt.length < 60 ? 100 : 95) ),
+                        opt.length - ((opt.length * 0.1) * scaleFactor),
+                        RGraph.toRadians( ((opt.value / this.range) * 360) - (this.radius > 300 ? (this.radius > 450 ? 87 : 85) : 82) ),
+                        RGraph.toRadians( ((opt.value / this.range) * 360) - (this.radius > 300 ? (this.radius > 450 ? 93 : 95) : 97) ),
                         true
                     );
                 this.context.closePath();
@@ -1554,7 +1670,7 @@
             } else {
                 if (index === 0) {
                     return this.value;
-                } else {
+                } else if (RGraph.isArray(this.properties.needleExtra) && this.properties.needleExtra[index - 1]) {
                     return this.properties.needleExtra[index - 1][0];
                 }
             }
@@ -1647,6 +1763,43 @@
                 Math.max(this.canvas.width, this.canvas.height),
                 a1, a2
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'needleLength' || name === 'needleWidth') {
+
+                for (var i=0; i<value.length; ++i) {
+                    if (RGraph.isNumeric(value[i])) {
+                        value[i] *= scaleFactor;
+                    }
+                }
+            }
+
+            return value;
         };
 
 

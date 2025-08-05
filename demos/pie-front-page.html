@@ -36,10 +36,10 @@
                         var index = shape.index;
                         var obj = shape.object;
                         
-                        // Reset all of the segments to 10
-                        obj.set('exploded', 10);
+                        // Reset all of the segments to 20
+                        obj.set('exploded', 20);
                         
-                        obj.explodeSegment(index, 15);
+                        obj.explodeSegment(index, 30);
                         
                         e.stopPropagation();
                     },
@@ -57,7 +57,7 @@
         
         window.addEventListener('mousedown', function (e)
         {
-            pie.set('exploded', 10);
+            pie.set('exploded', 20);
         }, true);
     </script>
 

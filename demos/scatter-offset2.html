@@ -11,7 +11,7 @@
     <h1>Another Scatter chart with an offset X-axis</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
+        <canvas id="cvs" width="750" height="300">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -24,9 +24,6 @@
             options: {
                 xaxisScaleMax: 500,
                 xaxisLabels: ['0-100','101-200','201-300','301-400','401-500'],
-                xaxisColor: '#999',
-                axesColor: '#999',
-                yaxisColor: '#999',
                 yaxisScaleMin: -300,
                 yaxisScaleMax: 100,
                 yaxisTickmarksCount: 4,
@@ -38,8 +35,8 @@
                 backgroundGridHlinesCount: 4,
                 backgroundGridColor: '#eee',
                 backgroundGridBorder: false,
-                yaxisScaleUnitsPost: ' %',
-                textColor: '#888',
+                yaxisScaleUnitsPost: '%',
+                textSize: 14,
                 tickmarksStyle: 'circle'
             }
         }).draw();

@@ -69,8 +69,16 @@
                 centery: 55,
                 radius: 25,
                 shadow: false,
-                colors: ['Gradient(white:#c11:#c11:#c11)', 'Gradient(white:#1cc:#1cc:#1cc)', 'Gradient(white:#11c:#11c:#11c)'],
-                tooltips: ['Total Monday sales: 270', 'Total Tuesday sales: 270', 'Total Wednesday sales: 264'],
+                colors: ['#c11', '#1cc', '#11c'],
+                tooltips: [
+                    'Total Monday sales: 270',
+                    'Total Tuesday sales: 270',
+                    'Total Wednesday sales: 264'
+                ],
+                tooltipsCss: {
+                    fontWeight: 'bold',
+                    fontSize: '18pt'
+                },
                 tooltipsEvent: 'mousemove',
                 colorsStroke: 'rgba(0,0,0,0)'
             }

@@ -237,7 +237,7 @@
             titleFont:                  null,
             titleSize:                  null,
             titleColor:                 null,
-            titleBold:                  null,
+            titleBold:                  true,
             titleItalic:                null,
             titleX:                     null,
             titleY:                     null,
@@ -520,8 +520,6 @@
             'shadowOffsety',
             'shadowBlur',
             'tooltipsHotspotSize',
-            'tooltipsPointerOffsetx',
-            'tooltipsPointerOffsety',
             'highlightPointRadius',
             'highlightDatasetLinewidth',
             'keyShadowBlur',
@@ -725,7 +723,7 @@
         {
             // MUST be the first thing that's done - but only
             // once!!
-            RGraph.runOnce('scale-up-the-canvas-once-in-the-constuctor-' + this.uid,  () =>
+            RGraph.runOnce('scale-up-the-canvas-once-in-the-draw-function-' + this.uid,  () =>
             {
                 // Note that were in an arrow function so the
                 // 'this' variable is OK to be used and refers
@@ -751,12 +749,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -4561,7 +4562,7 @@ $c(steps)
             //
             // SCALING
             //
-            // Account for the (6.5) scaling
+            // Account for the (7.00) scaling
             //
             if (this.properties.scale) {
                 coords[0] /= 2;
@@ -5715,39 +5716,45 @@ $c(steps)
         // properties as required. Called by the RGraph.scale()
         // function.
         //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
         this.scalePropertiesWorker = function (name, value)
         {
-            var factor = this.properties.scaleFactor;
+            var scaleFactor = this.properties.scaleFactor;
 
             if (name === 'trendlineDashArray') {
                 if (RGraph.isNumber(value[0]) && RGraph.isNumber(value[1])) {
-                    value[0] *= factor;
-                    value[1] *= factor;
+                    value[0] *= scaleFactor;
+                    value[1] *= scaleFactor;
                 } else if (RGraph.isArray(value)) {
                     for (var i=0; i<value.length; ++i) {
                         if (RGraph.isNumber(value[i][0]) && RGraph.isNumber(value[i][1])) {
-                            value[i][0] *= factor;
-                            value[i][1] *= factor;
+                            value[i][0] *= scaleFactor;
+                            value[i][1] *= scaleFactor;
                         }
                     }
                 }
             
             } else if (name === 'nullBridgeDashArray') {
-                value[0] *= factor;
-                value[1] *= factor;
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
             
             } else if (name === 'backgroundGridDashArray') {
-                value[0] *= factor;
-                value[1] *= factor;
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
             
             } else if (name === 'titleY') {
-                value = String(parseFloat(value) * factor);
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
             
             // Normally linewidth is just a number but it can
             // also be an array.
             } else if (name === 'linewidth') {
                 for (var i=0; i<value.length; ++i) {
-                    value[i] *= factor;
+                    value[i] *= scaleFactor;
                 }
             }
 

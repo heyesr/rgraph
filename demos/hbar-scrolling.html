@@ -20,6 +20,8 @@
         </div>
     </div>
     
+    <br clear="all" />
+    
     <script>
         hbar = new RGraph.HBar({
             id: 'cvs',
@@ -44,8 +46,8 @@
                 xaxisScale: true,
                 xaxisScaleMax: hbar.max,
                 colors: ['black'],
-                marginLeft: hbar.get('marginLeft'),
-                textSize: hbar.get('textSize')
+                marginLeft: hbar.get('marginLeft') / 2,
+                textSize: hbar.get('textSize') / 2
             }
         }).draw();
     </script>

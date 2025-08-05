@@ -29,6 +29,8 @@
             y                         = conf.y,
             radius                    = conf.radius,
             text                      = conf.text;
+        
+
 
         // id, x, y, radius, text)
         this.id                = id;
@@ -134,8 +136,59 @@
             
             clip:               null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'textSize',
+        
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+
+            'linewidth',
+            
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur'
+        ];
+
+
+
+// Now sort the radius out
+var scaleFactor = RGraph.getScaleFactor(this);
+
+if (!radius) {
+    var xy      = RGraph.measureText(conf.text);
+    radius      = xy[0] + (scaleFactor * 7);
+    this.radius = radius;
+}
+
+
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -262,6 +315,17 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -282,12 +346,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -775,17 +842,19 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj        = args.object,
-                e          = args.event,
-                tooltip    = args.tooltip,
-                index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas),
-                x          = this.centerx;
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                scaleFactor = RGraph.getScaleFactor(this),
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas),
+                x           = this.markerCenterx / scaleFactor,
+                y           = this.markerCentery / scaleFactor;
                 
             if (properties.align == 'left') {
-                x = x - this.radius - this.radius;
+                //x = x - (scaleFactor === 2 ? this.radius : this.radius + this.radius);
             } else if (properties.align == 'right') {
-                x = x + this.radius + this.radius;
+                //x = x + (scaleFactor === 2 ? this.radius : this.radius + this.radius);
             }
 
             // Position the tooltip in the X direction
@@ -799,10 +868,10 @@
             args.tooltip.style.top  = (
                   canvasXY[1]                            // The Y coordinate of the canvas
                 - tooltip.offsetHeight                   // The height of the tooltip
-                + obj.properties.tooltipsOffsety         // Add any user defined offset
-                + this.centery                           // Add the Y coordinate
-                - this.radius - this.radius - this.radius
-                - 15                                     // An arbitrary amount
+                //+ obj.properties.tooltipsOffsety         // Add any user defined offset
+                + (this.markerCentery / scaleFactor)                          // Add the Y coordinate
+                //- this.radius - this.radius - this.radius
+                - 10                                     // An arbitrary amount
             ) + 'px';
         };
 

@@ -353,7 +353,7 @@
             marginBottom:               35,
 
             title:                      '',
-            titleBold:                  null,
+            titleBold:                  true,
             titleItalic:                null,
             titleFont:                  null,
             titleSize:                  null,
@@ -401,7 +401,7 @@
             crosshairsColor:            '#333',
             crosshairsLinewidth:        1,
             crosshairsCoords:           false,
-            crosshairsCoordsFixed:      true,
+            crosshairsCoordsFixed:      false,
             crosshairsCoordsLabelsX:    'X',
             crosshairsCoordsLabelsY:    'Y',
             crosshairsCoordsFormatterX: null,
@@ -542,8 +542,143 @@
             
             horizontalLines:            null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+
+            'tickmarksStyleImageOffsetx',
+            'tickmarksStyleImageOffsety',
+            'tickmarksSize',
+            
+            'labelsIngraphSize',
+            'labelsIngraphOffsetx',
+            'labelsIngraphOffsety',
+            'labelsAboveSize',
+            'labelsAboveOffset',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+            
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            
+            'xaxisLinewidth',
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY',
+            
+            'textSize',
+            
+            'titleX',
+            'titleY',
+            'titleSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionX',
+            'keyPositionY',
+            'keyInteractiveHighlightChartLinewidth',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+            
+            'crosshairsLinewidth',
+            
+            'linewidth',
+            
+            'tooltipsHotspot',
+            
+            
+            'annotatableLinewidth',
+            
+            'errorbarsCappedWidth',
+            'errorbarsLinewidth',
+            
+            'lassoLinewidth',
+            'lassoHighlightLinewidth',
+            
+            'lineLinewidth',
+            'lineShadowBlur',
+            'lineShadowOffsetx',
+            'lineShadowOffsety',
+            'lineDash',
+            
+            'trendlineLinewidth',
+            'trendlineMargin',
+            'trendlineDashArray',
+            
+            'bubbleWidth',
+            'bubbleLinewidth',
+            'bubbleShadowBlur',
+            'bubbleShadowOffsetx',
+            'bubbleShadowOffsety',
+            
+            'marimekkoLinewidth',
+            'marimekkoLabelsSize',
+            'marimekkoLabelsOffsetx',
+            'marimekkoLabelsOffsety',
+            'marimekkoLabelsIngraphSize',
+            'marimekkoLabelsIngraphOffsetx',
+            'marimekkoLabelsIngraphyffsetx'
+        ];
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -721,6 +856,20 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
             // MUST be the first thing done!
             if (typeof properties.backgroundImage === 'string') {
                 RGraph.drawBackgroundImage(this);
@@ -740,12 +889,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -1509,7 +1661,8 @@
                              tickmarks.substr(0, 5) === 'data:'   ||
                              tickmarks.substr(0, 1) === '/'       ||
                              tickmarks.substr(0, 3) === '../'     ||
-                             tickmarks.substr(0, 7) === 'images/'
+                             tickmarks.substr(0, 7) === 'images/' ||
+                             tickmarks.substr(0, 8) === '/images/'
                             )
                           ) {
     
@@ -1524,6 +1677,9 @@
                     var obj = this;
                     img.onload = function ()
                     {
+                        var width  = this.width * scaleFactor;
+                        var height = this.height * scaleFactor;
+
                         if (properties.tickmarksStyleImageHalign === 'center') x -= (this.width / 2);
                         if (properties.tickmarksStyleImageHalign === 'right')  x -= this.width;
 
@@ -1533,7 +1689,7 @@
                         x += properties.tickmarksStyleImageOffsetx;
                         yCoord += properties.tickmarksStyleImageOffsety;
     
-                        obj.context.drawImage(this, x, yCoord);
+                        obj.context.drawImage(this, x, yCoord, width, height);
                     }
 
 
@@ -1734,7 +1890,8 @@
         {
             var labels  = obj.get('labelsIngraph');
             var labels_processed = [];
-    
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             if (!labels) {
                 return;
             }
@@ -1783,18 +1940,18 @@
                             var length = typeof labels_processed[i][4] == 'number' ? labels_processed[i][4] : 25;
                                 
                             var text_x = x;
-                            var text_y = y - 5 - length;
+                            var text_y = y - (5 * scaleFactor) - (length * scaleFactor);
     
-                            this.context.moveTo(x, y - 5);
-                            this.context.lineTo(x, y - 5 - length);
+                            this.context.moveTo(x, y - (5 * scaleFactor));
+                            this.context.lineTo(x, y - (5 * scaleFactor)- (length * scaleFactor));
                             
                             this.context.stroke();
                             this.context.beginPath();
                             
                             // This draws the arrow
-                            this.context.moveTo(x, y - 5);
-                            this.context.lineTo(x - 3, y - 10);
-                            this.context.lineTo(x + 3, y - 10);
+                            this.context.moveTo(x, y - (5 * scaleFactor));
+                            this.context.lineTo(x - (3 * scaleFactor), y - (10 * scaleFactor));
+                            this.context.lineTo(x + (3 * scaleFactor), y - (10 * scaleFactor));
                             this.context.closePath();
 
                             this.context.beginPath();
@@ -2281,7 +2438,9 @@
 
                 // Point highlight
                 } else {
-                    this.properties.highlightPointRadius = this.properties.tickmarksSize;
+                    var scaleFactor = RGraph.getScaleFactor(this);
+                    
+                    this.properties.highlightPointRadius = this.properties.tickmarksSize / scaleFactor;
                     RGraph.Highlight.point(this, shape);
                 }
             }
@@ -2926,14 +3085,14 @@
             //
             // Draw the line
             //
-            
+
             // Set dotted, dash or a custom dash array
             if (properties.trendlineDashed) {
-                this.context.setLineDash([4,4]);
+                this.context.setLineDash([4 * scaleFactor, 4 * scaleFactor]);
             }
             
             if (properties.trendlineDotted) {
-                this.context.setLineDash([1,4]);
+                this.context.setLineDash([1 * scaleFactor, 4 * scaleFactor]);
             }
             
             if (!RGraph.isNullish(properties.trendlineDashArray) && typeof properties.trendlineDashArray === 'object') {
@@ -3354,32 +3513,33 @@
 
 
 
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas),
-                indexes  = RGraph.sequentialIndexToGrouped(args.index, this.isMarimekko ? marimekko_data : this.data),
-                coords   = this.isMarimekko ? this.coordsMarimekko[indexes[0]][indexes[1]] : this.coords[indexes[0]][indexes[1]];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas),
+                indexes     = RGraph.sequentialIndexToGrouped(args.index, this.isMarimekko ? marimekko_data : this.data),
+                coords      = this.isMarimekko ? this.coordsMarimekko[indexes[0]][indexes[1]] : this.coords[indexes[0]][indexes[1]],
+                scaleFactor = RGraph.getScaleFactor(this);
 
 
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                 canvasXY[0]                      // The X coordinate of the canvas
-                + (this.isMarimekko ? (coords[0] + (coords[2] / 2) ) : coords[0]) // The X coordinate of the point on the chart
+                + (this.isMarimekko ? ((coords[0] + (coords[2] / 2) ) / scaleFactor) : coords[0] / scaleFactor) // The X coordinate of the point on the chart
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + coords[1]                      // The Y coordinate of the bar on the chart
+                + (coords[1] / scaleFactor)      // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 15                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
             ) + 'px';
-        };
+        }   ;
 
 
 
@@ -4318,6 +4478,47 @@
                 'b r % % % %',
                 x, y, width, height
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'backgroundGridDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'trendlineDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+
+            } else if (name === 'lineDash') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

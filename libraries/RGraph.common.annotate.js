@@ -106,7 +106,7 @@
         
         // Clear the recorded annotations
         RGraph.Registry.set('annotatable.actions', []);
-        
+
         // Fire the annotate event
         RGraph.fireCustomEvent(obj, 'onannotateend');
     };

@@ -160,7 +160,7 @@
             marginBottom:                   35,
 
             title:                          '',
-            titleBold:                      null,
+            titleBold:                      true,
             titleFont:                      null,
             titleSize:                      null,
             titleColor:                     null,
@@ -247,6 +247,7 @@
             keyShadowOffsetx:               2,
             keyShadowOffsety:               2,
             keyPositionGutterBoxed:         false,
+            keyPositionMarginHSpace:        10,
             keyPositionX:                   null,
             keyPositionY:                   null,
             keyColorShape:                  'square',
@@ -295,8 +296,113 @@
             
             clip:                           null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'centerxAdjust',
+            'centeryAdjust',
+
+            'linewidth',
+
+            'labelsSize',
+            'labelsRadiusOffset',
+            'labelsSticksLength',
+            'labelsSticksLinewidth',
+            'labelsSticksHlength',
+            'labelsListLeftOffsetx',
+            'labelsListLeftOffsety',
+            'labelsListRightOffsetx',
+            'labelsListRightOffsety',
+            
+            'labelsIngraphSize',
+            'labelsIngraphRadius',
+            'labelsIngraphRadiusOffset',
+            'labelsIngraphUndrawn',
+            'labelsIngraphUndrawnAsLabels',
+            'labelsIngraphUndrawnAlwaysShow',
+            
+            'labelsCenterSize',
+            'labelsCenterOffsetx',
+            'labelsCenterOffsety',
+            
+            'labelsInsideSize',
+            'labelsInsideOffsetr',
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'textSize',
+
+            'highlightStyleTwodLinewidth',
+            'highlightStyleOutlineWidth',
+
+            'centerx',
+            'centery',
+            'radius',
+
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionX',
+            'keyPositionY',
+            'keyPositionMarginHSpace',
+            'keyLinewidth',
+            'keyInteractiveHighlightChartLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+
+            'variantDonutWidth',
+            'variantThreedDepth',
+            
+            'exploded'
+        ];
+
+
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -431,6 +537,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -438,12 +557,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -488,9 +610,11 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius);
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx);
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery);
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius) * scaleFactor;
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx) * scaleFactor;
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery) * scaleFactor;
 
     
             if (this.radius <= 0) {
@@ -1165,7 +1289,8 @@
                 centerx      = this.centerx,
                 centery      = this.centery,
                 radius       = this.radius,
-                offset       = 50 // This may not be used - see the endpoint_outer var below
+                offset       = 100, // This may not be used - see the endpoint_outer var below
+                scaleFactor  = RGraph.getScaleFactor(this);
 
 
 
@@ -1277,15 +1402,16 @@
                         'lc round lw % b m % % qc % % % % s %',
                         properties.labelsSticksLinewidth,
                         labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
-                        labels_right[i][4][0] + explosionX,labels_right[i][4][1] + explosionY,ret.x - 5 ,ret.y + (ret.height / 2),
+                        labels_right[i][4][0] + explosionX,labels_right[i][4][1] + explosionY,
+                        ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
                         labels_right[i][5]
                     );
 
                     
                     // Draw a circle at the end of the stick
                     this.path(
-                        'b a % % 2 0 6.2830 false, f %',
-                        ret.x - 5,ret.y + (ret.height / 2),
+                        'b a % % 5 0 6.2830 false, f %',
+                        ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
                         labels_right[i][5]
                     );
                 }
@@ -1351,15 +1477,16 @@
                         'lw % b m % % qc % % % % s %',
                         properties.labelsSticksLinewidth,
                         labels_left[i][3][0] + explosionX,labels_left[i][3][1] + explosionY,
-                        labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),ret.x + 5 + ret.width,ret.y + (ret.height / 2),
+                        labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),
+                        ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
                         labels_left[i][5]
                     );
 
                     
                     // Draw a circle at the end of the stick
                     this.path(
-                        'b a % % 2 0 6.2830 false, f %',
-                        ret.x + 5 + ret.width,ret.y + (ret.height / 2),
+                        'b a % % 5 0 6.2830 false, f %',
+                        ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
                         labels_left[i][5]
                     );
                 }
@@ -1793,7 +1920,6 @@
                 setTimeout(
                     function ()
                     {
-
                         properties.exploded[index] += 1;
                         RGraph.clear(obj.canvas);
                         RGraph.redrawCanvas(obj.canvas);
@@ -2955,8 +3081,7 @@
 
             //
             // turn off the labels option whilst animating
-            //
-            var originalLabels = this.get('labels');
+            this.original_labels = this.get('labels');
             this.set('labels', false);
 
             for (var i=0,len=obj.data.length; i<len; i+=1) {
@@ -2995,7 +3120,11 @@
 
 
                 if (frame >= opt.frames) {
-                    obj.set('labels', originalLabels);
+                    obj.set({
+                        eventsEnabled: true,
+                        labels: obj.original_labels
+                    });
+
                     obj.waveRadiusMultiplier = RGraph.arrayFill([], obj.originalData.length, 1);
                     RGraph.redrawCanvas(obj.canvas);
                     callback(obj);
@@ -3328,14 +3457,15 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                segment  = this.angles[args.index],
-                angle    = ((segment[1] - segment[0]) / 2) + segment[0],
-                multiplier = 0.5;
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas),
+                segment     = this.angles[args.index],
+                angle       = ((segment[1] - segment[0]) / 2) + segment[0],
+                multiplier  = 0.5,
+                scaleFactor = RGraph.getScaleFactor(this);
 
             //
             // Determine the correct radius to use when calculating the
@@ -3372,14 +3502,14 @@
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                   canvasXY[0]                    // The X coordinate of the canvas
-                + endpoint[0]                      // The X coordinate of the shape on the chart
+                + (endpoint[0] / 2)              // The X coordinate of the shape on the chart
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + endpoint[1]                      // The Y coordinate of the shape on the chart
+                + (endpoint[1] / 2)              // The Y coordinate of the shape on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 + obj.properties.tooltipsOffsety // Add any user defined offset
                 - 10                             // Account for the pointer
@@ -3442,6 +3572,41 @@
         this.getKeyNumDatapoints = function ()
         {
             return this.data.length;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'exploded' && RGraph.isArray(value)) {
+                for (var i=0; i<value.length; ++i) {
+                    if (RGraph.isNumber(value[i])) {
+                        value[i] *= scaleFactor;
+                    }
+                }
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

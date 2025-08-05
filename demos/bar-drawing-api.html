@@ -34,7 +34,7 @@
         idx = 2;
         x   = bar.coords[idx][0] + (bar.coords[idx][2] / 2);
         y   = bar.coords[idx][1];
-        r   = 15;
+        r   = 30;
 
         marker = new RGraph.Drawing.Marker1({
             id: 'cvs',
@@ -44,6 +44,9 @@
             text: 'A',
             options: {
                 tooltips: ['James was the winner by a country mile.'],
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
                 highlightFill: 'rgba(255,0,0,0.2)'
             }
         }).draw();

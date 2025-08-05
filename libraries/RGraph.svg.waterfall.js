@@ -312,7 +312,7 @@
             titleSize:            null,
             titleColor:           null,
             titleFont:            null,
-            titleBold:            null,
+            titleBold:            true,
             titleItalic:          null,
             titleOffsetx:         0,
             titleOffsety:         0,

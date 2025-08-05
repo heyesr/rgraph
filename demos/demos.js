@@ -67,35 +67,63 @@
     //
     function showSource_tag (opt)
     {
-        document.write('<span style="margin: 5px">Put this where you want the chart to show up:</span>');
-        var html = document.getElementById('rgraph-demo-html').innerHTML;
+        var node = document.getElementById('rgraph-demo-html');
 
-        //
-        //  Get rid of the data attributes that rgraph adds for scaling
-        //
-        // Get rid of any RGraph data attributes that
-        // have beedn added to the tag
-        html = html.replace(/data-rgraph-[-a-z0-9]+="[-a-z0-9]+"\s*/g, '');
-
-
-        // For the SVG charts get rid of the <svg> tag from inside
-        // the <div> tag
-        // If SVG is found, get rid off CSS position and CSS display
-        // from the DIV tag
-        html = html.replace(/<svg.*<\/svg>/g,'')
-                   .replace(/position:? ?relative;?/g,'')
-                   .replace(/;? *display *: *inline-block;/g,'')
-                   .replace(/; *" /g,'" ');
-
-        var re = new RegExp('^        ','gm');
-        html = '<pre class="code">' + html.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(re,'').trim() + '</pre>';
-
-        // Turn HTML comments green
-        //html = html.replace(//isg, '<span>&lt;!--')
-        //html = html.replace(/--&gt;/isg, '--&gt;</span>')
-        html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>')
-
-        document.write(html);
+        if (node) {
+            document.write('<span style="margin: 5px">Put this where you want the chart to show up:</span>');
+            var html = node.innerHTML;
+    
+            //
+            //  Get rid of the data attributes that rgraph adds for scaling
+            //
+            // Get rid of any RGraph data attributes that
+            // have been added to the tag
+            if (html.indexOf('data-rgraph-scale') > 0) {
+            
+                // Get rid of any rgraph-scale data attributes
+                html = html.replace(/data-rgraph-scale[-a-z0-9]*="[-a-z0-9]+"\s*/g, '');
+                
+                // Get the width & height from the CSS attribute
+                var re
+                while(re = html.match(/<canvas.*style=".*width:\s*(\d+)px.*;\s*height:\s*(\d+)px.*".*<\/canvas>/)) {
+                    var orig = re[0];
+                    re[0] = re[0].replace(/width="\d+"/,'width="' + re[1] + '"');
+                    re[0] = re[0].replace(/height="\d+"/,'height="' + re[2] + '"');
+        
+        
+                    // Get rid of the CSS width/height/cursor directives
+                    re[0] = re[0].replace(/\s*width:\s*\d+px\s*;\s*/g, '');
+                    re[0] = re[0].replace(/\s*height:\s*\d+px\s*;\s*/g, '');
+                    re[0] = re[0].replace(/\s*cursor:.*;\s*/g, '');
+                    
+                    // Now get of the style tag entirely if its empty
+                    re[0] = re[0].replace(/\s*style="\s*"\s*/g, '');
+        
+                    html = html.replace(orig, re[0]);
+                }
+            }
+    
+    
+    
+            // For the SVG charts get rid of the <svg> tag from inside
+            // the <div> tag
+            // If SVG is found, get rid off CSS position and CSS display
+            // from the DIV tag
+            html = html.replace(/<svg.*<\/svg>/g,'')
+                       .replace(/position:? ?relative;?/g,'')
+                       .replace(/;? *display *: *inline-block;/g,'')
+                       .replace(/; *" /g,'" ');
+    
+            var re = new RegExp('^        ','gm');
+            html = '<pre class="code">' + html.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(re,'').trim() + '</pre>';
+    
+            // Turn HTML comments green
+            //html = html.replace(//isg, '<span>&lt;!--')
+            //html = html.replace(/--&gt;/isg, '--&gt;</span>')
+            html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>')
+    
+            document.write(html);
+        }
     }
     
     
@@ -114,7 +142,7 @@
         // Get all of the <script> tags
         els = document.querySelectorAll('script');
         
-        document.write('<span style="margin: 5px; display: inline-block">This is the code that generates the chart - it should be placed after the <code>canvas</code> / <code>div</code> (when using <code>svg</code> charts) tags:</span>');
+        document.write('<span style="margin: 5px; display: inline-block">This is the code that generates the chart - it should be placed after the canvas / DIV (when using SVG charts) tags:</span>');
         
         
         // Opening <pre> tag

@@ -12,7 +12,7 @@
     <h1>A basic Fuel chart</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="200" height="200">[No canvas support]</canvas>
+        <canvas id="cvs" width="200" height="200" style="border: 1px solid #ddd">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -21,7 +21,9 @@
             min: 0,
             max: 100,
             value: 56,
-            options: {
+            options: {            
+                centery: '-20',
+                radius: '-20',
                 scaleVisible: true,
                 scaleUnitsPost: '%',
                 textSize: 9

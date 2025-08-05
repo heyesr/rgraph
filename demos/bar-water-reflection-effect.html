@@ -19,6 +19,21 @@
     <script>
         function Draw(id)
         {
+            var events;
+
+            if (id === 'cvs2') {
+                events = {
+                    scale: function (obj)
+                    {
+                        // Draw the reflection (after inverting the canvas)
+                        co = document.getElementById("cvs2").getContext('2d');
+                        co.setTransform(1,0,0,-1,0,500);
+                    }
+                }
+            } else {
+                events = {};
+            }
+
             var bar = new RGraph.Bar({
                 id: id,
                 data: [[45,60],[65,30],[40,80],[62,48]],
@@ -34,36 +49,35 @@
                     yaxisScaleUnitsPre: '$',
                     marginLeft: 50,
                     marginRight: 15,
-                    colors: ['Gradient(white:rgba(255, 176, 176, 0.5))','Gradient(white:rgba(153, 208, 249,0.5))'],
+                    colors: [
+                        'Gradient(white:rgba(255,176,176,0.5))',
+                        'Gradient(white:rgba(153,208,249,0.5))'
+                    ],
                     backgroundGridHlinesCount: 5,
                     backgroundGridVlinesCount: 4,
                     title: 'A Bar chart with a reflection effect',
                     titleBold: true,
                     titleSize: 16,
+                    events: events
                 }
             }).draw()
             
             return bar;
         }
         
-        Draw('cvs1');
-        
-        // Draw the reflection (after inverting the canvas)
-        co = document.getElementById("cvs2").getContext('2d');
-        co.setTransform(1,0,0,-1,0,250);
-        
+        Draw('cvs1');        
         Draw('cvs2');
         
         // Reset the transformation
         co.setTransform(1,0,0,1,0,0);
 
         // Now draw a graduated white rect over the reflection
-        var grad = co.createLinearGradient(0,0,0,250)
+        var grad = co.createLinearGradient(0,0,0,500)
         grad.addColorStop(0, 'rgba(255,255,255,0.25)');
-        grad.addColorStop(0.75, 'rgba(255,255,255,.75)');
+        grad.addColorStop(1, '#fff');
 
         co.fillStyle = grad;
-        co.fillRect(0,0,600,250);
+        co.fillRect(0,0,1200,500);
     </script>
 
     <script>showSource()</script>

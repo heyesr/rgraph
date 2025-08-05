@@ -78,7 +78,7 @@
 
 
         //
-        // Some example background properties
+        // Some example properties
         //
         this.properties =
         {
@@ -138,8 +138,48 @@
             
             clip:                null,
             
-            events:              {}
-        }
+            events:              {},
+            
+            scale:               true,
+            scaleFactor:         2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'width',
+            'height',
+
+            'marginLeft',
+            'marginRight',
+            'marginBottom',
+            'marginTop',
+            'marginInner',
+
+            'textSize',
+
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'linewidth',
+            
+            'borderLinewidth',
+            'borderRadius'
+        ];
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -263,10 +303,25 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+            
+            var scaleFactor = RGraph.getScaleFactor(this);
 
 
 
@@ -287,12 +342,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -324,22 +382,23 @@
     
                 if (!obj.alignmentProcessed) {
                 
-                    var customWidthHeight = (typeof obj.properties.width == 'number' && typeof obj.properties.width == 'number');
+                    var customWidthHeight = (RGraph.isNumber(obj.properties.width) && RGraph.isNumber(obj.properties.width));
 
                     // Horizontal alignment
                     if (obj.properties.halign === 'center') {
-                        obj.x -= customWidthHeight ? (obj.properties.width / 2) : (this.width / 2);
+                        obj.x = obj.x - (customWidthHeight ? (obj.properties.width / 2) : (this.width / 2));
                     } else if (obj.properties.halign == 'right') {
-                        obj.x -= customWidthHeight ? obj.properties.width : this.width;
+                        obj.x = obj.x - (customWidthHeight ? obj.properties.width : this.width);
                     }
-                    
+
                     // Vertical alignment
                     if (obj.properties.valign === 'center') {
-                        obj.y -= customWidthHeight ? (obj.properties.height / 2) : (this.height / 2);
-                    } else if (obj.properties.valign == 'bottom') {
-                        obj.y -= customWidthHeight ? obj.properties.height : this.height;
+                        obj.y = obj.y - (customWidthHeight ? (obj.properties.height / 2) : (this.height / 2));
+                    } else if (obj.properties.valign === 'bottom') {
+                       obj.y = obj.y - (customWidthHeight ? obj.properties.height : this.height);
                     }
-                    
+
+
                     // Don't do this again
                     obj.alignmentProcessed = true;
                 }
@@ -382,6 +441,7 @@
                 //
                 // Draw a border around the image
                 //
+/// !!!!!!
                 if (properties.border) {
                     
                     this.context.strokeStyle = properties.borderColor;
@@ -404,17 +464,17 @@
                 
                 
                 
-                
+
                     this.context.beginPath();
                     this.roundedRect(
                         Math.round(this.x) - Math.round(this.context.lineWidth / 2),
                         Math.round(this.y) - Math.round(this.context.lineWidth / 2),
-                        (properties.width || this.img.width) + this.context.lineWidth,
-                        (properties.height || this.img.height) + this.context.lineWidth,
+                        (((properties.width)|| this.img.width)) + this.context.lineWidth,
+                        (((properties.height)|| this.img.height)) + this.context.lineWidth,
                         borderRadius
                     );
                 }
-                
+                this.context.stroke();
                 
                 
                 if (borderRadius) {
@@ -432,8 +492,8 @@
                     this.roundedRect(
                         Math.round(this.x) - Math.round(this.context.lineWidth / 2),
                         Math.round(this.y) - Math.round(this.context.lineWidth / 2),
-                        (properties.width || this.img.width) + this.context.lineWidth,
-                        (properties.height || this.img.height) + this.context.lineWidth,
+                        (((properties.width) || this.img.width)) + this.context.lineWidth,
+                        (((properties.height) || this.img.height)) + this.context.lineWidth,
                         borderRadius
                     );
                     this.context.clip();
@@ -446,25 +506,37 @@
 
 
                 if (typeof properties.height === 'number' || typeof properties.width === 'number') {
+
                     this.context.drawImage(
                         this.img,
                         Math.round(this.x),
                         Math.round(this.y),
-                        properties.width || this.width,
-                        properties.height || this.height
+                        (properties.width || this.width),
+                        (properties.height || this.height)
                     );
                 } else {
+                
+                    // Add the image to the document so that the
+                    // width/height can be ascertained
+                    document.body.appendChild(this.img);
+                    this.img.style.position = 'absolute';
+                    this.img.style.top      = '-1000px';
+                    this.img.style.left     = '-1000px';
+
                     this.context.drawImage(
                         this.img,
                         Math.round(this.x),
-                        Math.round(this.y)
+                        Math.round(this.y),
+                        this.img.offsetWidth,
+                        this.img.offsetHeight
                     );
                 }
 
 
 
 
-                // If borderRadius is enabled restore the canvas to it's pre-clipped state
+                // If borderRadius is enabled restore the canvas to it's
+                // pre-clipped state
                 if (borderRadius) {
                     this.context.restore();
                 }
@@ -609,7 +681,7 @@
             var mouseXY = RGraph.getMouseXY(e),
                 mouseX  = mouseXY[0],
                 mouseY  = mouseXY[1];
-    
+
             if (   this.coords
                 && this.coords[0]
                 && mouseXY[0] >= this.coords[0][0]
@@ -657,10 +729,20 @@
                 if (typeof properties.highlightStyle === 'function') {
                     (properties.highlightStyle)(shape);
                 } else {
+                    this.path('b');
+
+                    this.roundedRect(
+                        this.coords[0][0],
+                        this.coords[0][1],
+                        this.coords[0][2],
+                        this.coords[0][3],
+                        this.properties.borderRadius
+                    );
+
                     this.path(
-                        'b r % % % % f % s %',
-                        this.coords[0][0],this.coords[0][1],this.coords[0][2],this.coords[0][3],
-                        properties.highlightFill, properties.highlightStroke
+                        'f % s %',
+                        properties.highlightFill,
+                        properties.highlightStroke
                     );
                 }
             }
@@ -838,13 +920,17 @@
         //
         this.drawBackgroundColor = function (borderRadius)
         {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
             this.context.beginPath();
-            this.context.fillStyle = properties.backgroundColor;
+            this.context.strokeStyle = 'transparent';
+            this.context.fillStyle   = properties.backgroundColor;
+            
             this.roundedRect(
                 Math.round(this.x) - Math.round(this.context.lineWidth / 2),
                 Math.round(this.y) - Math.round(this.context.lineWidth / 2),
-                (properties.width || this.img.width) + this.context.lineWidth,
-                (properties.height || this.img.height) + this.context.lineWidth,
+                (((properties.width) || this.img.width)) + this.context.lineWidth,
+                (((properties.height) || this.img.height)) + this.context.lineWidth,
                 borderRadius
             );
             this.context.fill();
@@ -886,24 +972,46 @@
                 e          = args.event,
                 tooltip    = args.tooltip,
                 index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas);
+                canvasXY   = RGraph.getCanvasXY(obj.canvas),
+                scaleFactor = RGraph.getScaleFactor(obj);
 
             // Position the tooltip in the X direction
-            args.tooltip.style.left = (
-                canvasXY[0]                            // The X coordinate of the canvas
-                + this.x                               // The X coordinate of the image
-                + ((properties.width || this.img.width) / 2) // Add half of the image width
-                - (tooltip.offsetWidth / 2)            // Subtract half of the tooltip width
-                + obj.properties.tooltipsOffsetx       // Add any user defined offset
-            ) + 'px';
+            if (scaleFactor === 1) {
+                args.tooltip.style.left = (
+                    canvasXY[0]                                  // The X coordinate of the canvas
+                    + this.x                                     // The X coordinate of the image
+                    + ((properties.width || this.img.width) / 2) // Add half of the image width
+                    - (tooltip.offsetWidth / 2)                  // Subtract half of the tooltip width
+                    + obj.properties.tooltipsOffsetx             // Add any user defined offset
+                ) + 'px';
+            } else {
+                args.tooltip.style.left = (
+                    canvasXY[0]                            // The X coordinate of the canvas
+                    + (this.x / scaleFactor)               // The X coordinate of the image
+                    + ((properties.width || this.img.width) / 4) // Add half of the image width
+                    - (tooltip.offsetWidth / 2)            // Subtract half of the tooltip width
+                    + obj.properties.tooltipsOffsetx       // Add any user defined offset
+                ) + 'px';
+            }
 
-            args.tooltip.style.top  = (
-                  canvasXY[1]                            // The Y coordinate of the canvas
-                - tooltip.offsetHeight                   // The height of the tooltip
-                + obj.properties.tooltipsOffsety         // Add any user defined offset
-                + this.y                                 // Add the Y coordinate
-                - 10                                     // An arbitrary amount
-            ) + 'px';
+            // Positon the tooltip in the vertical direction
+            if (scaleFactor === 1) {
+                args.tooltip.style.top  = (
+                      canvasXY[1]                            // The Y coordinate of the canvas
+                    - tooltip.offsetHeight                   // The height of the tooltip
+                    + obj.properties.tooltipsOffsety         // Add any user defined offset
+                    + this.y                                 // Add the Y coordinate
+                    - (12 - properties.borderLinewidth)          // An arbitrary amount
+                ) + 'px';
+            } else {
+                args.tooltip.style.top  = (
+                      canvasXY[1]                            // The Y coordinate of the canvas
+                    - tooltip.offsetHeight                   // The height of the tooltip
+                    + obj.properties.tooltipsOffsety         // Add any user defined offset
+                    + (this.y / scaleFactor)                                 // Add the Y coordinate
+                    - ((7 * scaleFactor) - properties.borderLinewidth)          // An arbitrary amount
+                ) + 'px';
+            }
         };
 
 

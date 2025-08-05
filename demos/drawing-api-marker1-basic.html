@@ -14,7 +14,7 @@
     <h1>A basic example of the drawing API marker1 object</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="250" style="border: 1px gray solid">[No canvas support]</canvas>
     </div>
 
     <script>
@@ -29,9 +29,8 @@
 
         marker1 = new RGraph.Drawing.Marker1({
             id: 'cvs',
-            x: ((550 / 6) * 4) + 25,
+            x: line.coords[4][0],
             y: line.coords[4][1],
-            radius: 35,
             text: 'Woohoo!',
             options: {
                 tooltips: ['Lou'],

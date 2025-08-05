@@ -74,7 +74,7 @@
             anglesStart:                Math.PI,
             anglesEnd:                  (2 * Math.PI),
 
-            scale:                      false,
+            scaleVisible:               false,
             scaleMin:                   null,
             scaleMax:                   null, // Defaults to the charts max value
             scaleDecimals:              0,
@@ -150,7 +150,7 @@
             labelsMaxSpecific:       null,
 
             title:                      '',
-            titleBold:                  null,
+            titleBold:                  true,
             titleItalic:                null,
             titleFont:                  null,
             titleSize:                  null,
@@ -216,8 +216,8 @@
             highlightFill:              'rgba(255,255,255,0.7)',
 
             annotatable:                false,
-            annotatebleColor:           'black',
-            annotatebleLinewidth:       1,
+            annotatableColor:           'black',
+            annotatableLinewidth:      2,
 
             key:                                null,
             keyBackground:                      'white',
@@ -261,8 +261,87 @@
 
             clearto:                    'rgba(0,0,0,0)',
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridMargin',
+            'backgroundGridLinewidth',
+            
+            'linewidth',
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+
+            'radius',
+            'centerx',
+            'centery',
+
+            'width',
+
+            'scaleLabelsSize',
+            'scaleLabelsOffsetr',
+            'scaleLabelsOffsetx',
+            'scaleLabelsOffsety',
+
+            'shadowBlur',
+            'shadowOffsetx',
+            'shadowOffsety',
+
+            'labelsCenterSize',
+            'labelsCenterOffsetx',
+            'labelsCenterOffsety',
+
+            'labelsMinSize',
+            'labelsMinOffsetx',
+            'labelsMinOffsety',
+
+            'labelsMaxSize',
+            'labelsMaxOffsetx',
+            'labelsMaxOffsety',
+
+            'titleSize',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+
+            'textSize',
+
+            'annotatableLinewidth',
+
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety'
+        ];
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -392,6 +471,24 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -399,16 +496,25 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
             }
+
+            //
+            // Reset the linewidth to 1 because it may be left
+            // over as being something greater from previous
+            // draws.
+            this.context.lineWidth = 1;
 
 
             //
@@ -470,10 +576,13 @@
             //
             // Allow the centerx/centery/radius to be a plus/minus
             //
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += Number(properties.radius);
-            if (typeof properties.width   === 'string' && properties.width.match(/^\+|-\d+$/) )   this.width   += Number(properties.width);
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += Number(properties.centerx);
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += Number(properties.centery);
+            //
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += Number(properties.radius) * scaleFactor;
+            if (typeof properties.width   === 'string' && properties.width.match(/^\+|-\d+$/) )   this.width   += Number(properties.width) * scaleFactor;
+            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += Number(properties.centerx) * scaleFactor;
+            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += Number(properties.centery) * scaleFactor;
 
             this.coords = [];
 
@@ -1191,7 +1300,7 @@
         //
         this.drawScale = function ()
         {
-            if (properties.scale) {
+            if (properties.scaleVisible) {
             
                 // Get the max value
 
@@ -1856,7 +1965,7 @@
                     
                     RGraph.Effects.updateCanvas(iterator);
                 } else {
-                    callback();
+                    callback(obj);
                 }
             }
             
@@ -1946,13 +2055,14 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                shape = this.getShape(e),
-                angle = ((shape.angleEnd - shape.angleStart) / 2) + shape.angleStart;
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas)
+                shape       = this.getShape(e),
+                angle       = ((shape.angleEnd - shape.angleStart) / 2) + shape.angleStart,
+                scaleFactor = RGraph.getScaleFactor(this);
 
             var endpoint = RGraph.getRadiusEndPoint(
                 shape.x,
@@ -1964,15 +2074,15 @@
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
-                  canvasXY[0]                    // The X coordinate of the canvas
-                + endpoint[0]                      // The X coordinate of the bar on the chart
-                - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
-                + obj.properties.tooltipsOffsetx // Add any user defined offset
+                  canvasXY[0]                           // The X coordinate of the canvas
+                + (endpoint[0] / 2)                     // The X coordinate of the bar on the chart
+                - (tooltip.offsetWidth / scaleFactor)   // Subtract half of the tooltip width
+                + obj.properties.tooltipsOffsetx        // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + endpoint[1]                      // The Y coordinate of the bar on the chart
+                + (endpoint[1] / scaleFactor)    // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 + obj.properties.tooltipsOffsety // Add any user defined offset
                 - 10                             // Account for the pointer
@@ -2122,6 +2232,35 @@
                 Math.max(this.canvas.width, this.canvas.height),
                 r1, r2
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

@@ -15,43 +15,50 @@
     <h1>A Bar chart made with the Drawing API objects</h1>
     
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="250" style="border: 1px solid #ddd">[No canvas support]</canvas>
     </div>
     
     <script>
-        data    = [100,80,60,40,20];
-        labels  = ['Fred','Barney','Wilma','Betty','Dino'];
-        marginInner = 5;
-        max     = 100;
+        data        = [100,80,60,40,20];
+        labels      = ['Fred','Barney','Wilma','Betty','Dino'];
+        marginInner  = 65;
+        max          = 100;
+        marginLeft   = 35;
+        marginRight  = 35;
+        marginTop    = 35;
+        marginBottom = 35;
 
         xaxis = new RGraph.Drawing.XAxis({
             id: 'cvs',
-            y: 225,
+            y: (document.getElementById('cvs').height * 2) - (marginBottom * 2),
             options: {
                 xaxisLabels: labels,
-                marginLeft: 50,
+                marginLeft: marginLeft,
+                marginRight: marginRight,
+                xaxisTickmarksCount: 5,
+                xaxisTickmarksLastLeft: false,
                 tooltips: ['The X-axis shows Flintstones characters']
             }
         }).draw();
 
         yaxis = new RGraph.Drawing.YAxis({
             id: 'cvs',
-            x: 50,
+            x: marginLeft * 2,
             options: {
                 yaxisScaleMax: max,
-                marginBottom: 25,
-                yaxisTickmarksEndBottom: true,
-                yaxis: false,
-                tooltips: ['The Y-axis shows a scale of how much the characters did&lt;br /&gt; something - at some point']
+                marginTop: marginTop,
+                marginBottom: marginBottom,
+                yaxisTickmarksLastBottom: false,
+                tooltips: ['The Y-axis']
             }
         }).draw()
     
         for (var i=0; i<data.length; ++i) {
 
-            width = ((600-50-85) / data.length) - (marginInner * 2);
-            height = (data[i] / max) * (xaxis.canvas.height - 25 - 25);
-            x = 50 + (((600-50-25) / data.length) * i) + marginInner;
-            y = 250 - 25 - height;
+            width  = ((xaxis.canvas.width - (marginLeft*2) - (marginRight*2) ) / data.length) - (2 * marginInner);
+            height = (data[i] / max) * (xaxis.canvas.height - (marginTop*2) - (marginBottom*2) );
+            x      = (marginLeft*2) + (width * i) + marginInner + (marginInner * i * 2);
+            y      = xaxis.canvas.height - (marginBottom * 2) - height;
         
             rect = new RGraph.Drawing.Rect({
                 id: 'cvs',

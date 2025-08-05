@@ -114,7 +114,7 @@
             xaxisLabelsHalign:       null,
             xaxisLabelsValign:       null,
             xaxisLabelsPosition:     'section',
-            xaxisLabelsSpecificAlign:'LEFT',
+            xaxisLabelsSpecificAlign:'left',
             xaxisPosition:           'bottom',
             xaxisLabelsAngle:        0,
             xaxisTitle:              '',
@@ -178,34 +178,6 @@
             yaxisTitleValign:         null,
             yaxisTitleAccessible:     null,
 
-            yaxisTitle:                        '',
-            yaxisTitleBold:                    null,
-            yaxisTitleItalic:                  null,
-            yaxisTitleSize:                    null,
-            yaxisTitleFont:                    null,
-            yaxisTitleColor:                   null,
-            yaxisTitlePos:                     null,
-            yaxisTitleAlign:                   'left',
-            yaxisTitleX:                       null,
-            yaxisTitleY:                       null,
-            yaxisLabels:                       true,
-            yaxisLabelsCount:                  5,
-            yaxisLabelsOffsetx:                0,
-            yaxisLabelsOffsety:                0,
-            yaxisLabelsFont:                   null,
-            yaxisLabelsSize:                   null,
-            yaxisLabelsColor:                  null,
-            yaxisLabelsBold:                   null,
-            yaxisLabelsItalic:                 null,
-            yaxisScaleMax:                     null,
-            yaxisScaleMin:                     0,
-            yaxisScaleUnitsPre:                '',
-            yaxisScaleUnitsPost:               '',
-            yaxisScaleDecimals:                0,
-            yaxisScalePoint:                   '.',
-            yaxisScaleThousand:                ',',
-            yaxisScaleFormatter:               null,
-
             labelsAbove:                       false,
             labelsAboveFont:                   null,
             labelsAboveSize:                   null,
@@ -246,7 +218,7 @@
             text:                              null,
 
             title:                             '',
-            titleBold:                         null,
+            titleBold:                         true,
             titleFont:                         null,
             titleSize:                         null,
             titleItalic:                       null,
@@ -265,8 +237,6 @@
             titleSubtitleItalic:  null,
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
-
-
 
             shadow:               false,
             shadowOffsetx:        2,
@@ -315,9 +285,6 @@
             annotatableLinewidth:              1,
             annotatableColor:                  'black',
 
-            resizable:                         false,
-            resizableHandleBackground:         null,
-
             total:                             true,
 
             multiplierX:                       1, // Used for animation
@@ -361,8 +328,133 @@
             barOffsetx:                        0, // Used to facilitate multiple dataset Waterfall charts
             barOffsety:                        0, // Used to facilitate multiple dataset Waterfall charts
 
-            clearto:                           'rgba(0,0,0,0)'
-        }
+            clearto:                           'rgba(0,0,0,0)',
+            
+            events:                            {},
+            
+            scale:                             true,
+            scaleFactor:                       2
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundGridDashArray',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            
+            'xaxisLinewidth',
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY',
+            
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            
+            'labelsAboveSize',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+            'labelsAboveTotalSize',
+            'labelsAboveTotalOffsetx',
+            'labelsAboveTotalOffsety',
+            
+            'linewidth',
+            
+            'tickmarksLinewidth',
+            'tickmarksSize',
+            'tickmarksStyleDotLinewidth',
+            'tickmarksStyleImageOffsetx',
+            'tickmarksStyleImageOffsety',
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+            
+            'textSize',
+            
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'keyLabelsOffsetx',
+            'keyLabelsOffsety',
+            
+            'crosshairsLinewidth',
+            
+            'annotatableLinewidth',
+
+            'barOffsetx',
+            'barOffsety'
+        ];
+
+
+
+
+
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -516,18 +608,40 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
+
+
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -1964,25 +2078,26 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas)
+                coords      = this.coords[args.index],
+                scaleFactor = RGraph.getScaleFactor(this);
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
                 canvasXY[0]                      // The X coordinate of the canvas
-                + coords[0]                      // The X coordinate of the point on the chart
-                + (coords[2] / 2)                // Add half of the width of the bar
+                + (coords[0] / scaleFactor)                      // The X coordinate of the point on the chart
+                + ((coords[2] / 2) / scaleFactor)                // Add half of the width of the bar
                 - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                 + obj.properties.tooltipsOffsetx // Add any user defined offset
             ) + 'px';
 
             args.tooltip.style.top  = (
                   canvasXY[1]                    // The Y coordinate of the canvas
-                + coords[1]                      // The Y coordinate of the bar on the chart
+                + (coords[1] / scaleFactor)      // The Y coordinate of the bar on the chart
                 - tooltip.offsetHeight           // The height of the tooltip
                 - 10                             // An arbitrary amount
                 + obj.properties.tooltipsOffsety // Add any user defined offset
@@ -2176,6 +2291,52 @@
                     0,y2,this.canvas.width, Math.max(y1, y2) - Math.min(y1, y2)
                 );
             }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = this.properties.scaleFactor;
+
+            if (name === 'trendlineDashArray') {
+                if (RGraph.isNumber(value[0]) && RGraph.isNumber(value[1])) {
+                    value[0] *= scaleFactor;
+                    value[1] *= scaleFactor;
+                } else if (RGraph.isArray(value)) {
+                    for (var i=0; i<value.length; ++i) {
+                        if (RGraph.isNumber(value[i][0]) && RGraph.isNumber(value[i][1])) {
+                            value[i][0] *= scaleFactor;
+                            value[i][1] *= scaleFactor;
+                        }
+                    }
+                }
+            
+            } else if (name === 'backgroundGridDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

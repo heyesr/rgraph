@@ -16,11 +16,12 @@
     
     <div id="rgraph-demo-html">
         <div id="canvas-container">
-            <canvas id="cvs" width="350" height="250" data-image-src="page-demos-bar-basic.png">[No canvas support]</canvas>
+            <canvas id="cvs" width="350" height="250">[No canvas support]</canvas>
         </div>
     </div>
 
     <script id="rgraph-demo-source-code">
+
         new RGraph.Drawing.Background({
             id: 'cvs',
             options: {
@@ -28,11 +29,11 @@
                 backgroundGridVlinesCount: 18,
                 backgroundGridHlinesCount: 10,
                 backgroundGridHlinesCount: 14,
-                backgroundGridColor: 'gray',
-                backgroundGridLinewidth: 2
+                backgroundGridColor: '#000',
+                backgroundGridDashArray: [10,10],
             }
         }).draw();
-    
+
         new RGraph.Bar({
             id: 'cvs',
             data: [[9,7],[4,4],[2,4]],
@@ -59,6 +60,7 @@
                 textSize: 18
             }
         }).draw();
+
     </script>
 
     <script>showSource()</script>

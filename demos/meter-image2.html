@@ -12,18 +12,18 @@
     <h1>An image based Meter chart with background and needle images</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="640" height="640" style="width: 400px; height: 400px">[No canvas support]</canvas>
+        <canvas id="cvs" width="400" height="400" >[No canvas support]</canvas>
     </div>
 
     <script>
-        new RGraph.Meter({
+        meter = new RGraph.Meter({
             id: 'cvs',
             min: 0,
             max: 9,
             value: 8.5,
             options: {
-                centerx: 321,
-                centery: 298,
+                centerx: 200,
+                centery: 200,
                 backgroundColor: 'rgba(0,0,0,0)',
                 backgroundImageUrl: '../images/meter-image-sd.png',// DO NOT ADD / AT THE START OF THE PATH
                 backgroundImageStretch: true,
@@ -32,8 +32,8 @@
                 scaleDecimals: 1,
                 needleColor: 'rgba(0,0,0,0)',
                 needleImageUrl: '../images/meter-image-sd-needle.png', // DO NOT ADD / AT THE START OF THE PATH
-                needleImageOffsetx: -94,
-                needleImageOffsety: -40,
+                needleImageOffsetx: -62,
+                needleImageOffsety: -25,
                 colorsRanges: [],
                 tickmarksLargeCount: 0,
                 tickmarksSmallCount: 0,
@@ -42,20 +42,20 @@
                 textSize: 36,
                 centerpinStroke: 'rgba(0,0,0,0)',
                 centerpinFill: 'rgba(0,0,0,0)',
-                anglesStart: 2.69,
-                anglesEnd: 7.38
+                anglesStart: 2.76,
+                anglesEnd: 7.33
             }
         }).draw();
         
-        //meter.canvas.onclick = function (e)
-        //{
-        //    var value = meter.getValue(e);
-        //
-        //    if (typeof value === 'number') {
-        //        meter.value = value;
-        //        meter.grow();
-        //    }
-        //}
+        meter.canvas.onclick = function (e)
+        {
+            var value = meter.getValue(e);
+        
+            if (typeof value === 'number') {
+                meter.value = value;
+                meter.grow();
+            }
+        }
     </script>
 
     <script>showSource()</script>

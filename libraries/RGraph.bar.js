@@ -220,7 +220,7 @@
             titleFont:             null,
             titleSize:             null,
             titleColor:            null,
-            titleBold:             null,
+            titleBold:             true,
             titleItalic:           null,
             titleOffsetx:          0,
             titleOffsety:          0,
@@ -378,6 +378,7 @@
         //
         this.properties_scale = [
             'backgroundGridLinewidth',
+            'backgroundGridDashArray',
             'backgroundGridHsize',
             'backgroundGridVsize',
             'backgroundImageX',
@@ -420,7 +421,6 @@
             'xaxisTitleX',
             'xaxisTitleY',
             'textSize',
-            //'text',
             'titleX',
             'titleY',
             'titleSize',
@@ -453,7 +453,9 @@
             'errorbarsLinewidth',
             'cornersRoundRadius',
             'cornersRoundLeftRadius',
-            'cornersRoundRightRadius'
+            'cornersRoundRightRadius',
+            'variantThreedOffsetx',
+            'variantThreedOffsety'
         ];
     
     
@@ -647,10 +649,9 @@
         //
         this.draw = function ()
         {
-
             // MUST be the first thing that's done - but only
             // once!!
-            RGraph.runOnce(`scale-up-the-canvas-once-in-the-constuctor-${this.id}-${this.uid}`,  () =>
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
             {
                 // Note that were in an arrow function so the
                 // 'this' variable is OK to be used and refers
@@ -677,15 +678,18 @@
             // Translate half a pixel for antialiasing purposes - but
             // only if it hasn't been done already
             //
-            // MUST be the first thing done after clipping is installed!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
             }
 
-            // MUST be the second thing done!
+            // MUST be the THIRD thing done!
             if (typeof properties.backgroundImage === 'string') {
                 RGraph.drawBackgroundImage(this);
             }
@@ -1542,6 +1546,8 @@ this.context.lineTo(
                         } else if (variant == 'dot') {
 
 
+                            var scaleFactor = RGraph.getScaleFactor(this);
+
                             this.context.beginPath();
                             this.context.strokeStyle = this.properties.colors[0];
                             this.context.moveTo(x + (width / 2), y);
@@ -1553,7 +1559,7 @@ this.context.lineTo(
                             this.context.arc(
                                 x + (width / 2),
                                 y + (this.data[i] > 0 ? 0 : height),
-                                2,
+                                2 * scaleFactor,
                                 0,
                                 6.28,
                                 0
@@ -3861,7 +3867,7 @@ this.context.lineTo(
 
             // SCALING
             //
-            // Account for the (6.5) scaling
+            // Account for the (7.00) scaling
             //
             if (this.properties.scale) {
                 coords[0]    /= 2;
@@ -4274,6 +4280,39 @@ this.context.lineTo(
                 'b r % % % %',
                 x, y, width, height
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = RGraph.getScaleFactor(this);
+            
+            if (name === 'backgroundGridDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            }
+
+            return value;
         };
 
 

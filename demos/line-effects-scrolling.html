@@ -17,6 +17,8 @@
     <script>
         data = RGraph.arrayPad([], 500);
         last = 30;
+        max  = 60;
+        min  = 0;
 
         (function drawGraph ()
         {
@@ -31,7 +33,7 @@
                     linewidth: 1,
                     filled: true,
                     filledColors: 'rgba(255,0,0,0.5)',
-                    yaxisScaleMax: 60,
+                    yaxisScaleMax: max,
                     tickmarksStyle: null,
                     shadow: false,
                     xaxisTickmarksCount: 5,
@@ -40,15 +42,21 @@
                 }
             }).draw();
 
-            n    = RGraph.random(last - 5, last + 5);
-            last = n;
-            if (last < 0) last = 1;
+            // 
+            // Create a new random number
+            //
+            n = RGraph.random(last - 5, last + 5);
             
-            // Bounds constraints
-            Math.max(0, n);
-            Math.min(60, n);
+            // Constrain the number to the max and min
+            n    = Math.min(n, max);
+            n    = Math.max(n, min);
+            last = n;
 
-            data = [n].concat(data);
+            
+            //
+            // Add it to the end of the array and remove the first
+            //
+            data.unshift(n);
             data.pop();
 
             

@@ -27,13 +27,14 @@
                 labelsValue: true,
                 labelsValueUnitsPost: ',000k',
                 labelsRadiusOffset: -3,
+                needleLinewidth: 15,
                 responsive: [
                     // This is the configuration for small screens
                     {
                         maxWidth:900,
                         width:400,
                         height:200,
-                        options:{textSize: 8},
+                        options:{textSize: 8,needleLinewidth: 5,},
                         callback:function (obj)
                         {
                             // Set the width/height of the container

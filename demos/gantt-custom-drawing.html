@@ -17,7 +17,7 @@
     </div>
 
     <script>
-        height = 6;
+        height = 12;
 
         colors = {
             main: 'blue',
@@ -56,13 +56,13 @@
             
                             // Draw the LHS end donut
                             obj.path(
-                                'b a % % 10 0 6.29 false f %',
+                                'b a % % 20 0 6.29 false f %',
                                 obj.coords[i][0],
                                 obj.coords[i][1] + (obj.coords[i][3] / 2),
                                 colors.main
                             );
                             obj.path(
-                                'b a % % 6 0 6.29 false f white',
+                                'b a % % 12 0 6.29 false f white',
                                 obj.coords[i][0],
                                 obj.coords[i][1] + (obj.coords[i][3] / 2)
                             );
@@ -73,13 +73,13 @@
             
                             // Draw the RHS end circle
                             obj.path(
-                                'b a % % 10 0 6.29 false f %',
+                                'b a % % 20 0 6.29 false f %',
                                 obj.coords[i][0] + obj.coords[i][2],
                                 obj.coords[i][1] + (obj.coords[i][3] / 2),
                                 obj.coords[i][4].complete === 100 ? colors.main : colors.background
                             );
                             obj.path(
-                                'b a % % 6 0 6.29 false f white',
+                                'b a % % 12 0 6.29 false f white',
                                 obj.coords[i][0] + obj.coords[i][2],
                                 obj.coords[i][1] + (obj.coords[i][3] / 2)
                             );
@@ -88,7 +88,7 @@
                     beforedraw: function (obj)
                     {
                         // Dynamically determine the size of the lines
-                        obj.properties.marginInner = (((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) - height) / 2;
+                        obj.properties.marginInner = (((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length) - height) / 2 ;
                     }
                 }
             }

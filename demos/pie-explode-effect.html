@@ -35,7 +35,7 @@
                     },
                     exploded: 10,
                     radius: 80,
-                    textSize: 14,
+                    textSize: 16,
                     labels: ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'],
                     events: {
                         click: function (e, shape)
@@ -44,9 +44,9 @@
                             var obj = shape.object;
                             
                             // Reset all the segments to 10
-                            obj.set('exploded', 10);
+                            obj.set('exploded', 20);
                             
-                            obj.explodeSegment(index, 15);
+                            obj.explodeSegment(index, 30);
                             
                             e.stopPropagation();
                         },
@@ -60,7 +60,7 @@
             
             window.addEventListener('mousedown', function (e)
             {
-                pie.set('exploded', 10);
+                pie.set('exploded', 20);
             }, false);
         })
     </script>

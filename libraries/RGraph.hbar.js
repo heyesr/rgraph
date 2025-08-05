@@ -93,7 +93,7 @@
             linewidth:              1,
 
             title:                  '',
-            titleBold:             null,
+            titleBold:             true,
             titleItalic:           null,
             titleFont:             null,
             titleSize:             null,
@@ -387,8 +387,127 @@
 
             clearto:                'rgba(0,0,0,0)',
             
-            events:                 {}
-        }
+            events:                 {},
+            
+            scale:                  true,
+            scaleFactor:            2
+        };
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+            'backgroundGridLinewidth',
+            'backgroundGridHsize',
+            'backgroundGridVsize',
+            'backgroundGridDashArray',
+            'backgroundImageX',
+            'backgroundImageY',
+            'backgroundImageW',
+            'backgroundImageH',
+            'backgroundBorderLinewidth',
+            'backgroundBorderDashArray',
+            
+            'xaxisLinewidth',
+            'xaxisTickmarksLength',
+            'xaxisLabelsSize',
+            'xaxisLabelsOffsetx',
+            'xaxisLabelsOffsety',
+            'xaxisTitleSize',
+            'xaxisTitleOffsetx',
+            'xaxisTitleOffsety',
+            'xaxisTitleX',
+            'xaxisTitleY',
+            
+            'yaxisLinewidth',
+            'yaxisTickmarksLength',
+            'yaxisLabelsOffsetx',
+            'yaxisLabelsOffsety',
+            'yaxisLabelsSize',
+            'yaxisTitleSize',
+            'yaxisTitleX',
+            'yaxisTitleY',
+            'yaxisTitleOffsetx',
+            'yaxisTitleOffsety',
+            
+            'labelsAboveSize',
+            'labelsAboveOffsetx',
+            'labelsAboveOffsety',
+            
+            'linewidth',
+            
+            'tickmarksLinewidth',
+            'tickmarksSize',
+            'tickmarksStyleDotLinewidth',
+            'tickmarksStyleImageOffsetx',
+            'tickmarksStyleImageOffsety',
+            
+            'marginLeft',
+            'marginRight',
+            'marginTop',
+            'marginBottom',
+            'marginInner',
+            'marginInnerGrouped',
+            
+            'textSize',
+            
+            'titleSize',
+            'titleX',
+            'titleY',
+            'titleOffsetx',
+            'titleOffsety',
+            'titleSubtitleSize',
+            'titleSubtitleOffsetx',
+            'titleSubtitleOffsety',
+            
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur',
+            
+            'tooltipsHotspotSize',
+            'highlightPointRadius',
+            'highlightDatasetLinewidth',
+            'keyShadowBlur',
+            'keyShadowOffsetx',
+            'keyShadowOffsety',
+            'keyPositionMarginHSpace',
+            'keyPositionX',
+            'keyPositionY',
+            'keyLinewidth',
+            'keyLabelsSize',
+            'crosshairsLinewidth',
+            
+            'annotatableLinewidth',
+            
+            'variantThreedOffsetx',
+            'variantThreedOffsety',
+            
+            'cornersRoundRadius',
+            'cornersRoundTopRadius',
+            'cornersRoundBottomRadius',
+            
+            'labelsInbarSize',
+            'labelsInbarBackgroundPadding',
+            'labelsInbarOffsetx',
+            'labelsInbarOffsety',
+            
+            'lineLinewidth',
+            'lineShadowBlur',
+            'lineShadowOffsetx',
+            'lineShadowOffsety',
+            'lineTickmarksSize'
+        ];
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -559,6 +678,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -636,10 +768,15 @@
 
 
 
-            // Translate half a pixel for antialiasing purposes - but only if it hasn't been
-            // done already
+            // Translate half a pixel for antialiasing purposes - but
+            // only if it hasn't been done already
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            // The old style antialias fix
+            //
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -3447,12 +3584,13 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj      = args.object,
-                e        = args.event,
-                tooltip  = args.tooltip,
-                index    = args.index,
-                canvasXY = RGraph.getCanvasXY(obj.canvas)
-                coords   = this.coords[args.index];
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas)
+                coords      = RGraph.arrayClone(this.coords[args.index]),
+                scaleFactor = RGraph.getScaleFactor(this);
 
 
 
@@ -3469,19 +3607,19 @@
                 // Position the tooltip in the X direction
                 args.tooltip.style.left = (
                     canvasXY[0]                      // The X coordinate of the canvas
-                    + coords[0]                      // The X coordinate of the point on the chart
-                    + (this.properties.yaxisPosition === 'right' ? 0 : coords[2]) // Add the width of the bar if the yaxisPosition is  'left'
+                    + (coords[0] / scaleFactor)                      // The X coordinate of the point on the chart
+                    + (this.properties.yaxisPosition === 'right' ? 0 : (coords[2] / scaleFactor)) // Add the width of the bar if the yaxisPosition is  'left'
                     - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                     + obj.properties.tooltipsOffsetx // Add any user defined offset
                 ) + 'px';
     
                 args.tooltip.style.top  = (
-                      canvasXY[1]                       // The Y coordinate of the canvas
-                    + coords[1] + (coords[3] / 2)       // The Y coordinate of the bar on the chart plus half of the height
-                    - tooltip.offsetHeight              // The height of the tooltip
-                    - 12                                // An arbitrary amount
-                    + obj.properties.tooltipsOffsety    // Add any user defined offset
-                    - this.properties.lineTickmarksSize // Take off tickmarksize
+                      canvasXY[1]                         // The Y coordinate of the canvas
+                    + ((coords[1] / scaleFactor) + ((coords[3] / 2) / scaleFactor))     // The Y coordinate of the bar on the chart plus half of the height
+                    - tooltip.offsetHeight                // The height of the tooltip
+                    - (12 / scaleFactor)                  // An arbitrary amount
+                    + obj.properties.tooltipsOffsety      // Add any user defined offset
+                    - (this.properties.lineTickmarksSize) // Take off tickmarksize
                 ) + 'px';
             
             //
@@ -3492,15 +3630,15 @@
                 // Position the tooltip in the X direction
                 args.tooltip.style.left = (
                     canvasXY[0]                      // The X coordinate of the canvas
-                    + coords[0]                      // The X coordinate of the point on the chart
-                    + (coords[2] / 2)                // Add half of the width of the bar
+                    + (coords[0] / scaleFactor)                      // The X coordinate of the point on the chart
+                    + ((coords[2] / 2) / scaleFactor)                // Add half of the width of the bar
                     - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
                     + obj.properties.tooltipsOffsetx // Add any user defined offset
                 ) + 'px';
     
                 args.tooltip.style.top  = (
                       canvasXY[1]                    // The Y coordinate of the canvas
-                    + coords[1]                      // The Y coordinate of the bar on the chart
+                    + (coords[1] / scaleFactor)                      // The Y coordinate of the bar on the chart
                     - tooltip.offsetHeight           // The height of the tooltip
                     - 10                             // An arbitrary amount
                     + obj.properties.tooltipsOffsety // Add any user defined offset
@@ -4357,84 +4495,56 @@
 
 
 
-    //
-    // This function allows the drawing of custom lines
-    //
-    this.drawVerticalLines = function ()
-    {
-        var lines = this.properties.verticalLines,
-            avg,x,y,label,halign,valign,hmargin = 5,vmargin = 10,
-            position,textFont,textSize,textColor,textBold,textItalic,
-            data,linewidth;
 
-        if (lines) {
+        //
+        // Scale worker function that increases the size of
+        // properties as required. Called by the RGraph.scale()
+        // function.
+        //
+        // @param string name The name of the property
+        // @param mixed value The value of the property
+        //
+        this.scalePropertiesWorker = function (name, value)
+        {
+            var scaleFactor = this.properties.scaleFactor;
 
-            //
-            // Set some defaults for the configuration of
-            // each line
-            //
-            var defaults = {
-                dotted:             false,
-                dashed:             true,
-                color:              '#666', // Same as labelColor property below
-                linewidth:          1,
-                label:              'Average (%{value})',
-                labelPosition:      'top',
-                labelColor:         '#666', // Same as color property above
-                labelValueDecimals: 0,
-                labelOffsetx:       0,
-                labelOffsety:       0,
-                labelHalign:        'center',
-                labelValign:        'bottom'
-            };
-        
-        
-            // Loop through each line to be drawn
-            for (var i=0; i<this.properties.verticalLines.length; ++i) {
-
-                var conf       = lines[i],
-                    textFont   = conf.labelFont  || this.properties.textFont,
-                    textColor  = conf.labelColor || defaults.labelColor,
-                    textSize   = conf.labelSize  || this.properties.textSize,
-                    textBold   = conf.labelBold   ? conf.labelBold   : this.properties.textBold,
-                    textItalic = conf.labelItalic ? conf.labelItalic : this.properties.textItalic;
-
-
-
-
-
-
-
-
-                    if (typeof conf.value === 'number') {
-                        x = this.getXCoord(conf.value);
-                    
-                    } else {
-                        avg = RGraph.arraySum(this.data_arr) /  this.data_arr.length;
-                        x   = this.getXCoord(avg);
+            if (name === 'trendlineDashArray') {
+                if (RGraph.isNumber(value[0]) && RGraph.isNumber(value[1])) {
+                    value[0] *= scaleFactor;
+                    value[1] *= scaleFactor;
+                } else if (RGraph.isArray(value)) {
+                    for (var i=0; i<value.length; ++i) {
+                        if (RGraph.isNumber(value[i][0]) && RGraph.isNumber(value[i][1])) {
+                            value[i][0] *= scaleFactor;
+                            value[i][1] *= scaleFactor;
+                        }
                     }
-
-
-
-
-
-
-
-
-
-
-                //
-                // Dotted or dashed lines
-                //
-                linedash = '[1,1]';
-
-                if (conf.dotted === true) {
-                    linedash = '[1,3]';
                 }
-                
-                if (conf.dashed === true || (typeof conf.dashed === 'undefined' && RGraph.isUndefined(conf.dotted)) ) {
-                    linedash = '[6,6]';
+            
+            } else if (name === 'nullBridgeDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'backgroundGridDashArray') {
+                value[0] *= scaleFactor;
+                value[1] *= scaleFactor;
+            
+            } else if (name === 'titleY') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            } else if (name === 'titleX') {
+                value = String(parseFloat(value) * scaleFactor);
+            
+            // Normally linewidth is just a number but it can
+            // also be an array.
+            } else if (name === 'linewidth') {
+                for (var i=0; i<value.length; ++i) {
+                    value[i] *= scaleFactor;
                 }
+            }
+
+            return value;
+        };
 
 
 
@@ -4443,22 +4553,108 @@
 
 
 
-
-
+        //
+        // This function allows the drawing of custom lines
+        //
+        this.drawVerticalLines = function ()
+        {
+            var lines = this.properties.verticalLines,
+                avg,x,y,label,halign,valign,hmargin = 5,vmargin = 10,
+                position,textFont,textSize,textColor,textBold,textItalic,
+                data,linewidth;
+    
+            if (lines) {
+    
                 //
-                // Draw the line
+                // Set some defaults for the configuration of
+                // each line
                 //
-                this.path(
-                    'lw % ld % b m % % l % % s %',
-                    typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
-                    linedash,
-                    x, this.properties.marginTop,
-                    x, this.canvas.height - this.properties.marginBottom,
-                    conf.color || defaults.color
-                );
-
-
-
+                var defaults = {
+                    dotted:             false,
+                    dashed:             true,
+                    color:              '#666', // Same as labelColor property below
+                    linewidth:          1,
+                    label:              'Average (%{value})',
+                    labelPosition:      'top',
+                    labelColor:         '#666', // Same as color property above
+                    labelValueDecimals: 0,
+                    labelOffsetx:       0,
+                    labelOffsety:       0,
+                    labelHalign:        'center',
+                    labelValign:        'bottom'
+                };
+            
+            
+                // Loop through each line to be drawn
+                for (var i=0; i<this.properties.verticalLines.length; ++i) {
+    
+                    var conf       = lines[i],
+                        textFont   = conf.labelFont  || this.properties.textFont,
+                        textColor  = conf.labelColor || defaults.labelColor,
+                        textSize   = conf.labelSize  || this.properties.textSize,
+                        textBold   = conf.labelBold   ? conf.labelBold   : this.properties.textBold,
+                        textItalic = conf.labelItalic ? conf.labelItalic : this.properties.textItalic;
+    
+    
+    
+    
+    
+    
+    
+    
+                        if (typeof conf.value === 'number') {
+                            x = this.getXCoord(conf.value);
+                        
+                        } else {
+                            avg = RGraph.arraySum(this.data_arr) /  this.data_arr.length;
+                            x   = this.getXCoord(avg);
+                        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                    //
+                    // Dotted or dashed lines
+                    //
+                    linedash = '[1,1]';
+    
+                    if (conf.dotted === true) {
+                        linedash = '[1,3]';
+                    }
+                    
+                    if (conf.dashed === true || (typeof conf.dashed === 'undefined' && RGraph.isUndefined(conf.dotted)) ) {
+                        linedash = '[6,6]';
+                    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                    //
+                    // Draw the line
+                    //
+                    this.path(
+                        'lw % ld % b m % % l % % s %',
+                        typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth,
+                        linedash,
+                        x, this.properties.marginTop,
+                        x, this.canvas.height - this.properties.marginBottom,
+                        conf.color || defaults.color
+                    );
+    
+    
+    
 textX = x;
 textY = conf.labelPosition === 'bottom' ? this.canvas.height - this.properties.marginBottom + vmargin : this.properties.marginTop - vmargin;
 
@@ -4475,67 +4671,67 @@ if (RGraph.isNumber(conf.labelY)) textY = conf.labelY;
 if (!conf.labelValign && conf.labelPosition === 'bottom') {
     valign = 'top';
 }
-
-
-                
-
-                // Default pos for the label
-                conf.labelPosition = conf.labelPosition || defaults.labelPosition;
-
-                labelPosition = conf.labelPosition.trim();
-
-
-
-
-                // Account for linewidth
-                linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
-
-                //
-                // Determine the value to show
-                //
-                if (RGraph.isNumber(conf.value)) {
-                    var num = Number(conf.value).toFixed(conf.labelValueDecimals);
-                } else {
-                    num = avg;
-                    num = num.toFixed(conf.labelValueDecimals);
+    
+    
+                    
+    
+                    // Default pos for the label
+                    conf.labelPosition = conf.labelPosition || defaults.labelPosition;
+    
+                    labelPosition = conf.labelPosition.trim();
+    
+    
+    
+    
+                    // Account for linewidth
+                    linewidth = typeof conf.linewidth === 'number' ? conf.linewidth : defaults.linewidth;
+    
+                    //
+                    // Determine the value to show
+                    //
+                    if (RGraph.isNumber(conf.value)) {
+                        var num = Number(conf.value).toFixed(conf.labelValueDecimals);
+                    } else {
+                        num = avg;
+                        num = num.toFixed(conf.labelValueDecimals);
+                    }
+    
+                    num = RGraph.numberFormat({
+                       object: this,
+                       number: num,
+                     unitspre: conf.labelValueUnitsPre,
+                    unitspost: conf.labelValueUnitsPost,
+                     thousand: conf.labelValueThousand,
+                        point: conf.labelValuePoint,
+                    formatter: conf.labelValueFormatter
+                    });
+    
+    
+    
+    
+                    //
+                    // Draw the label
+                    //
+    
+                    RGraph.text({
+                                object: this,
+                                  text: (RGraph.isString(conf.label) ? conf.label : defaults.label).replace('%{value}', num),
+                                     x: RGraph.isNumber(conf.labelX) ? conf.labelX : (textX + (conf.labelOffsetx || 0)),
+                                     y: RGraph.isNumber(conf.labelY) ? conf.labelY : (textY + (conf.labelOffsety || 0)),
+                                valign: valign,
+                                halign: halign,
+                                  size: textSize,
+                                  font: textFont,
+                                 color: textColor,
+                                italic: textItalic,
+                                  bold: textBold,
+                              bounding: true,
+                          boundingFill: 'rgba(255,255,255,0.75)',
+                        boundingStroke: 'transparent'
+                    });
                 }
-
-                num = RGraph.numberFormat({
-                   object: this,
-                   number: num,
-                 unitspre: conf.labelValueUnitsPre,
-                unitspost: conf.labelValueUnitsPost,
-                 thousand: conf.labelValueThousand,
-                    point: conf.labelValuePoint,
-                formatter: conf.labelValueFormatter
-                });
-
-
-
-
-                //
-                // Draw the label
-                //
-
-                RGraph.text({
-                            object: this,
-                              text: (RGraph.isString(conf.label) ? conf.label : defaults.label).replace('%{value}', num),
-                                 x: RGraph.isNumber(conf.labelX) ? conf.labelX : (textX + (conf.labelOffsetx || 0)),
-                                 y: RGraph.isNumber(conf.labelY) ? conf.labelY : (textY + (conf.labelOffsety || 0)),
-                            valign: valign,
-                            halign: halign,
-                              size: textSize,
-                              font: textFont,
-                             color: textColor,
-                            italic: textItalic,
-                              bold: textBold,
-                          bounding: true,
-                      boundingFill: 'rgba(255,255,255,0.75)',
-                    boundingStroke: 'transparent'
-                });
             }
-        }
-    };
+        };
 
 
 

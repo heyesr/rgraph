@@ -41,9 +41,16 @@
             }
         }).grow();
         
+        coords = [[50,25],[100,75],[75,125],[25,125],[25,75],[50,25]];
+        
+        for (var i=0; i<coords.length; ++i) {
+            coords[i][0] *=2;
+            coords[i][1] *=2;
+        }
+        
         new RGraph.Drawing.Poly({
             id: 'cvs',
-            coords: [[50,25],[100,75],[75,125],[25,125],[25,75],[50,25]],
+            coords: coords,
             options: {
                 colorsStroke: ['black'],
                 colorsFill: ['rgba(255,128,128,0.5)'],

@@ -18,7 +18,7 @@
     
     <script>
         // This is the color of the bubbles. The Pie charts will go over them
-        color = 'rgba(0,0,0,0)';
+        color = 'rgba(0,0,0,0.1)';
     
         // The various data arrays
         scatter_data = [ [30,15,color], [60,5,color], [90,8,color], [120,19,color], [150,14,color], [50,12,color], [180,20,color], [250,21,color] ];
@@ -68,15 +68,15 @@
                 id: 'cvs',
                 data: pie_data[i],
                 options: {
-                    centerx: x,
-                    centery: y,
-                    radius: r,
+                    centerx: x / 2,
+                    centery: y / 2,
+                    radius: r / 2,
                     shadow: false,
                     linewidth: 0,
                     colorsStroke: 'white',
                     colors: pie_colors,
                 }
-            }).roundRobin({frames: 20});
+            }).roundRobin({frames: 30});
         }
     </script>
 

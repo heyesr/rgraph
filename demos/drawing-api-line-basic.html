@@ -14,28 +14,35 @@
     <h1>A basic example of the drawing API line object</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="250" style="border: 1px solid gray">[No canvas support]</canvas>
     </div>
 
     <script>
-        new RGraph.Line({
+        line = new RGraph.Line({
             id: 'cvs',
             data: [8,4,6,5,2,3,5],
             options: {
-                tooltips: 'The Line chart object'
+                tooltips: 'The Line chart object',
+                tooltipsCss: {
+                    fontSize: '26pt'
+                }
             }
         }).draw();
 
         line = new RGraph.Drawing.Line({
             id: 'cvs',
             coords: [
-                [35,100],[565,100]
+                [70,200],[(line.canvas.offsetWidth - 35) * 2, 200]
             ],
             options: {
                 linewidth: 5,
                 tooltips: 'The drawing API Line object',
                 tooltipsEvent: 'mousemove',
-                tooltipsPositionStatic: false
+                //tooltipsPositionStatic: false,
+                tooltipsOffsetx: 300,
+                tooltipsCss: {
+                    fontSize: '26pt'
+                }
             }
         }).draw();
     </script>

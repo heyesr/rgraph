@@ -120,8 +120,46 @@
             
             clip:                    null,
             
-            events:                     {}
-        }
+            events:                     {},
+            
+            scale:                      true,
+            scaleFactor:                2
+        };
+
+
+
+
+
+
+
+
+
+
+
+        //
+        // These are the properties that get scaled up if the
+        // scale option is enabled.
+        //
+        this.properties_scale = [
+        
+            'marginTop',
+            'marginBottom',
+            'marginLeft',
+            'marginRight',
+
+            'linewidth',
+            
+            'shadowOffsetx',
+            'shadowOffsety',
+            'shadowBlur'
+        ];
+
+
+
+
+
+
+
 
         //
         // Add the reverse look-up table  for property names
@@ -244,6 +282,19 @@
         //
         this.draw = function ()
         {
+            // MUST be the first thing that's done - but only
+            // once!!
+            RGraph.runOnce(`scale-up-the-canvas-once-in-the-draw-function-${this.id}-${this.uid}`,  () =>
+            {
+                // Note that we're in an arrow function so the
+                // 'this' variable is OK to be used and refers
+                // to the RGraph Line chart object.
+                RGraph.scale(this);
+            });
+
+
+
+
             //
             // Fire the onbeforedraw event
             //
@@ -268,9 +319,12 @@
             // Translate half a pixel for antialiasing purposes - but
             // only if it hasn't been done already
             //
-            // MUST be the first thing done!
+            // The old style antialias fix
             //
-            if (!this.canvas.__rgraph_aa_translated__) {
+            if (   !this.properties.scale
+                && this.properties.antialiasTranslate
+                && !this.canvas.__rgraph_aa_translated__) {
+
                 this.context.translate(0.5,0.5);
             
                 this.canvas.__rgraph_aa_translated__ = true;
@@ -702,60 +756,31 @@
         //
         this.positionTooltipStatic = function (args)
         {
-            var obj        = args.object,
-                e          = args.event,
-                tooltip    = args.tooltip,
-                index      = args.index,
-                canvasXY   = RGraph.getCanvasXY(obj.canvas);
-/*
-            // Calculate the minimum X coordinate
-            var p1 = coords[0];
-            var p2 = coords[1];
-            
-            var hypLength = RGraph.getHypLength({
-                x1: p1[0],
-                y1: p1[1],
-                x2: p2[0],
-                y2: p2[1]
-            });
-            
-            var angle = RGraph.getAngleByXY({
-                cx: p1[0],
-                cy: p1[1],
-                x: p2[0],
-                y: p2[1]
-            });
-            
-            // cx,cy,angle,radius
-            var point = RGraph.getRadiusEndPoint({
-                cx:     p1[0],
-                cy:     p1[1],
-                radius: hypLength / 2,
-                angle:  angle
-            });
-
-            var x = point[0];
-            var y = point[1];
-*/
+            var obj         = args.object,
+                e           = args.event,
+                tooltip     = args.tooltip,
+                index       = args.index,
+                canvasXY    = RGraph.getCanvasXY(obj.canvas),
+                scaleFactor = RGraph.getScaleFactor(obj);
 
             var x = this.coords[0][0];
             var y = this.coords[0][1];
 
             // Position the tooltip in the X direction
             args.tooltip.style.left = (
-                canvasXY[0]                            // The X coordinate of the canvas
-                - (tooltip.offsetWidth / 2)            // Subtract half of the tooltip width
-                + obj.properties.tooltipsOffsetx       // Add any user defined offset
-                + x
+                canvasXY[0]                      // The X coordinate of the canvas
+                - (tooltip.offsetWidth / 2)      // Subtract half of the tooltip width
+                + obj.properties.tooltipsOffsetx // Add any user defined offset
+                + (x / 2)
             ) + 'px';
 
             args.tooltip.style.top  = (
-                  canvasXY[1]                            // The Y coordinate of the canvas
-                - tooltip.offsetHeight                   // The height of the tooltip
-                + obj.properties.tooltipsOffsety         // Add any user defined offset
-                + y
-                 - properties.linewidth
-                  - 5
+                  canvasXY[1]                    // The Y coordinate of the canvas
+                - tooltip.offsetHeight           // The height of the tooltip
+                + obj.properties.tooltipsOffsety // Add any user defined offset
+                + (y/scaleFactor)
+                // - (properties.linewidth / 2)
+                - 10
             ) + 'px';
         };
 

@@ -22,7 +22,7 @@
             data: [4,6,3,5,2,5,8],
             options: {
                 labels: ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                textColor: '#aaa',
+                textColor: '#000',
                 exploded: 5,
                 radius: 100,
                 linewidth: 1,
@@ -33,7 +33,7 @@
                         //if (!pie.get('exploded') || !pie.get('exploded')[shape.index]) {
                         if (!window.animating) {
                             window.animating = true;
-                            pie.explodeSegment(shape.index, 25, function ()
+                            pie.explodeSegment(shape.index, 50, function ()
                             {
                                 window.animating = false;
                             });
@@ -54,7 +54,7 @@
         // Add the window click listener that resets the Pie chart
         window.onmousedown = function (e)
         {
-            pie.set('exploded', 5);
+            pie.set('exploded', 10);
             RGraph.redraw();
         }
     </script>

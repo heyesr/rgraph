@@ -54,21 +54,20 @@
                 title: 'A combined grouped Bar and VProgress bar chart',
                 titleBold: true,
                 titleSize: 16,
+                titleOffsety: -7,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false
             }
         }).draw();
 
-        function drawBottomAxis (obj)
+        function drawBottomAxis ()
         {
-            var context = bar.context;
             var x = bar.marginLeft;
             var y = bar.canvas.height - bar.marginBottom;
             var w = bar.canvas.width - bar.marginLeft - bar.marginRight
             var h = 0;
-
-            context.strokeStyle = 'black';
-            context.strokeRect(x, y, w, h);
+            
+            bar.path('b r % % % % s black', x, y, w, h);
         }
 
         // Now create the Vertical Progress bars
@@ -87,10 +86,9 @@
                 value: [25,75],
                 options: {
                     colorsBackground: 'rgba(0,0,0,0)',
-                    marginLeft: coords[0],
-                    marginTop: coords[1],
-                    marginRight: bar.canvas.width - (coords[0] + coords[2]),
-                    marginBottom: bar.marginBottom,
+                    marginLeft: coords[0] / 2, // Account for scaling
+                    marginTop: coords[1] / 2, // Account for scaling
+                    marginRight: (bar.canvas.width - coords[0] - coords[2]) / 2,
                     labelsSpecific: [],
                     tickmarks: false,
                     colors: ['yellow', 'rgba(255,0,0,0.5)'],

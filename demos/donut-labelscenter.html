@@ -37,12 +37,12 @@
                 events: {
                     beforedraw: function (obj)
                     {
-                        for (let i=10; i<=100; i+=10) {
+                        for (let i=5; i<=110; i+=10) {
                             obj.path(
-                                'b ld [5,6] lw 1 ci % % % s #666 ld [1,0]',
+                                'b ld [5,6] lw 2 ci % % % s #666 ld [1,0]',
                                 obj.centerx,
                                 obj.centery,
-                                obj.radius - i
+                                (obj.radius - (i * 2))
                             );
                         }
                     },

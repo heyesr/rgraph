@@ -20,14 +20,18 @@
             id: 'cvs',
             x: -4,
             y: 0,
-            src: '../images/odometer-background.png'
+            src: '../images/odometer-background.png',
+            options: {
+                width: 300,
+                height: 300,
+            }
         }).draw();
         
         new RGraph.Odometer({
             id: 'cvs',
             min: 0,
             max: 360,
-            value: 56,
+            value: 45,
             options: {
                 colorsGreenColor: 'rgba(0,0,0,0)',
                 colorsYellowColor: 'rgba(0,0,0,0)',
@@ -39,7 +43,7 @@
                 border: false,
                 tickmarksLargeColor: 'rgba(0,0,0,0)',
                 textColor: 'rgba(0,0,0,0)',
-                needleColor: '#ddd',
+                needleColor: '#fff',
                 needleTail: false,
                 needleLength: 100
             }

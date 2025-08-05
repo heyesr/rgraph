@@ -75,11 +75,10 @@
         {
             var text1 = new RGraph.Drawing.Text({
                 id: 'cvs',
-                x: 600 - 25 - 5,
-                y: 25 + 5,
+                x: 570 * 2,
+                y: 30 * 2,
                 text: 'Chart one',
                 options: {
-                    textAccessible: true,
                     textFont: 'Arial',
                     textSize: 14,
                     bounding: true,
@@ -105,11 +104,10 @@
 
             var text2 = new RGraph.Drawing.Text({
                 id: 'cvs',
-                x: 600 - 25 - 5 - 5 - text1.coords[0][2],
-                y: 25 + 5,
+                x: text1.coords[0][0] - 10,
+                y: 60,
                 text: 'Chart two',
                 options: {
-                    textAccessible: true,
                     textFont: 'Arial',
                     textSize: 14,
                     bounding: true,
