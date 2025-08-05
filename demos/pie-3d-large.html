@@ -1,0 +1,36 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A (large) 3D Pie chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="650" height="350">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Pie({
+            id: 'cvs',
+            data: [4,8,6,3,5,4,5],
+            options: {
+
+                variant: 'pie3d',
+                shadow: false,
+                variantThreedDepth:45,
+                colorsStroke: 'transparent',
+                centery: '-25',
+                exploded: [, 50]
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

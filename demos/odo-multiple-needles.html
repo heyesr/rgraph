@@ -1,0 +1,35 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.odo.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>   
+    <h1>An Odometer chart with multiple needles</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="400" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Odometer({
+            id: 'cvs',
+            min: 0,
+            max: 100,
+            value: [26,45],
+            options: {
+                needleLength: [50,null],
+                needleTail: false,
+                shadowOuter: true,
+                shadowOuterColor: '#aaa '
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
