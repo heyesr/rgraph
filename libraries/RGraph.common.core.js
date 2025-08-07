@@ -11592,6 +11592,76 @@
 
 
     //
+    // Returns a data: string that represents an image of the
+    // canvas.
+    //
+    // @param  object canvas  The canvas to get the image of
+    // @param  object options This can be
+    // @param number width   The width to size the image to
+    //
+    //                       OR
+    //
+    //                       this can be a number between
+    //                       0 and 1 in which case its multiplied
+    //                       with the original width height to
+    //                       get the desired wideth/height.
+    // @param number height  The height to size the image to
+    // @return string        A base64 encoded data: string
+    //
+    RGraph.getImage = function (canvas,opt = null)
+    {
+        //
+        // If the width argument is a number between 0 and 2
+        // then use it as a multiplier and multiply it with
+        // the original width/height.
+        //
+        if (RGraph.isNumber(opt) && opt >= 0 && opt <= 2 ) {
+            
+            var multiplier = opt;
+            
+            opt = {
+                height: multiplier * canvas.height,
+                width:  multiplier * canvas.width
+            }
+        } else if (RGraph.isNullish(null)) {
+            opt = {
+                height: canvas.offsetHeight,
+                width:  canvas.offsetWidth
+            }
+        }
+
+
+        //
+        // Create a new canvas
+        //
+        var canvas2              = document.createElement('canvas');
+            canvas2.width        = opt.width;
+            canvas2.height       = opt.height;
+
+        //
+        // Get the original canvas as a data: string
+        //
+        context2 = canvas2.getContext('2d');
+        context2.translate(0.5,0.5);
+        context2.fillStyle = opt.backgroundColor || 'white';
+        context2.fillRect(-5,-5,canvas2.width + 5, canvas2.height + 5);
+        context2.drawImage(
+            canvas,
+            0.5,0.5, canvas.width, canvas.height,
+            0,0, opt.width || canvas.offsetWidth, opt.height || canvas.offsetHeight
+        );
+
+        return canvas2.toDataURL('image/png');
+    };
+
+
+
+
+
+
+
+
+    //
     // Draw the chart scaled up
     //
     // @param  object obj The chart object

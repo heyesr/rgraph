@@ -333,7 +333,8 @@
             events:                            {},
             
             scale:                             true,
-            scaleFactor:                       2
+            scaleFactor:                       2,
+            antialiasTranslate:                false
         };
 
 

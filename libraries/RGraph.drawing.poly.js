@@ -120,9 +120,7 @@
             
             scale:                      true,
             scaleFactor:                2,
-            
-            scale:                      true,
-            scaleFactor:                2
+            antialiasTranslate:         false
         };
 
 
