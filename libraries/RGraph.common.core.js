@@ -11596,16 +11596,28 @@
     // canvas.
     //
     // @param  object canvas  The canvas to get the image of
-    // @param  object options This can be
-    // @param number width   The width to size the image to
+    // @param  mixed  options This can be either a number or
+    //                        an object of options. This object
+    //                        can contain:
+    //                         o backgroundColor
+    //                         o background      Using this option
+    //                                           you can specify a
+    //                                           background color
+    //                                           for the image. By
+    //                                           default the
+    //                                           background color
+    //                                           of the image is
+    //                                           white.
+    //                         o width           The width of the
+    //                                           image.
+    //                         o height          The height of the
+    //                                           image.
     //
-    //                       OR
-    //
-    //                       this can be a number between
-    //                       0 and 1 in which case its multiplied
+    //                       This can also be a number between
+    //                       0 and 1 in which case it's multiplied
     //                       with the original width height to
     //                       get the desired wideth/height.
-    // @param number height  The height to size the image to
+    //
     // @return string        A base64 encoded data: string
     //
     RGraph.getImage = function (canvas,opt = null)
