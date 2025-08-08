@@ -11616,14 +11616,20 @@
         // the original width/height.
         //
         if (RGraph.isNumber(opt) && opt >= 0 && opt <= 2 ) {
-            
+        
             var multiplier = opt;
             
             opt = {
-                height: multiplier * canvas.height,
-                width:  multiplier * canvas.width
+                height: multiplier * canvas.offsetHeight,
+                width:  multiplier * canvas.offsetWidth
             }
-        } else if (RGraph.isNullish(null)) {
+
+        } else if (RGraph.isObject(opt)) {
+
+            opt.width  = RGraph.isNumber(opt.width)  ? opt.width  : canvas.offsetWidth;
+            opt.height = RGraph.isNumber(opt.height) ? opt.height : canvas.offsetHeight;
+        
+        } else if (RGraph.isNullish(opt)) {
             opt = {
                 height: canvas.offsetHeight,
                 width:  canvas.offsetWidth
@@ -11643,7 +11649,7 @@
         //
         context2 = canvas2.getContext('2d');
         context2.translate(0.5,0.5);
-        context2.fillStyle = opt.backgroundColor || 'white';
+        context2.fillStyle = opt.backgroundColor || opt.background || 'white';
         context2.fillRect(-5,-5,canvas2.width + 5, canvas2.height + 5);
         context2.drawImage(
             canvas,
