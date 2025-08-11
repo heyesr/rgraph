@@ -15,31 +15,57 @@
     </div>
         
     <script>
+        // This is the configuration for the charts. Separated out
+        // so that it can be reused.
+        CONF = {
+            marginInner: 0,
+            title: 'A scrolling SVG Line chart',
+            marginLeft: 50,
+            marginBottom: 50,
+            yaxisScaleMax: 50,
+            yaxisScaleMin: -25,
+            yaxisLabelsCount: 3,
+            xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday', 'Friday'],
+            xaxisLabelsPosition: 'section',
+            xaxisTickmarks: false,
+            backgroundGridVlinesCount: 10,
+            xaxisColor: '#aaa',
+            yaxis: false,
+            backgroundGridColor: '#eee',
+            backgroundGridVlines: false,
+            backgroundGridBorder: false,
+            backgroundGridHlinesCount: 3,
+            colors: ['#000'],
+            linewidth: 1,
+            filled: true,
+            filledColors: ['rgba(0,0,0,0.25)'],
+            clip: 'scale:0-max'
+        };
+
+        //
+        // This is the top -  red - chart
+        //
         line = new RGraph.SVG.Line({
             id: 'chart-container',
             data: RGraph.SVG.arrayPad([],1200, 0),
             options: {
-                marginInner: 0,
-                title: 'A scrolling SVG Line chart',
-                marginLeft: 50,
-                marginBottom: 50,
-                yaxisScaleMax: 50,
-                yaxisScaleMin: -25,
-                yaxisLabelsCount: 3,
-                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday', 'Friday'],
-                xaxisLabelsPosition: 'section',
-                xaxisTickmarks: false,
-                backgroundGridVlinesCount: 10,
-                xaxisColor: '#aaa',
-                yaxis: false,
-                backgroundGridColor: '#eee',
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                backgroundGridHlinesCount: 3,
-                colors: ['#c00'],
-                linewidth: 1,
-                  filled: true,
-                filledColors: ['rgba(255,0,0,0.25)']
+                ...CONF,
+                xaxisLabels: []
+            }
+        }).draw();
+
+        //
+        // This is the bottom green chart
+        //
+        line2 = new RGraph.SVG.Line({
+            id: 'chart-container',
+            data: RGraph.SVG.arrayPad([],1200, 0),
+            options: {
+                ...CONF,
+                title: '',
+                colors: ['#f00'],
+                filledColors: ['rgba(255,0,0,0.25)'],
+                clip: 'scale:min-0'
             }
         }).draw();
 
@@ -49,16 +75,19 @@
         function update ()
         {
             // A global
+            //
+            // Generate a new value
             last = (window.last || (Math.random() * 75 + -25)) + (Math.random() * 4 - 2);
             last = Math.min(50, last);
-            last = Math.max(-25, last)
+            last = Math.max(-25, last);
 
             line.originalData[0].push(last);
             line.originalData[0].shift();
 
-            //RGraph.SVG.redraw();
-            RGraph.SVG.clear(line.svg);
-            line.draw();
+            line2.originalData[0].push(last);
+            line2.originalData[0].shift();
+
+            RGraph.SVG.redraw();
 
             setTimeout(function ()
             {

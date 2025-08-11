@@ -155,7 +155,7 @@
             
             scale:                  true,
             scaleFactor:            2,
-            antialiasTranslate:     false
+            antialiasTranslate:     false,
             
             scale:                  true,
             scaleFactor:            2

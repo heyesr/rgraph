@@ -30,13 +30,14 @@
             }
         }).wave().exec(function (obj)
         {
-            var coords = obj.coords;
-            var colors = [];
-$c(coords)
+            var coords      = obj.coords;
+            var colors      = [];
+            var scaleFactor = RGraph.getScaleFactor(obj);
+
             coords.forEach(v =>
             {
                 var grad = 'Gradient({colors:["#f00","#a00"],x1:{1},y1:0,x2:{2},y2:0})'.format(
-                    v[0],v[0] + v[2]
+                    v[0] / scaleFactor,(v[0] + v[2]) / scaleFactor
                 );
                 
                 colors.push(grad);

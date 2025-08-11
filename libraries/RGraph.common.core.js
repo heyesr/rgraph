@@ -11636,16 +11636,30 @@
                 width:  multiplier * canvas.offsetWidth
             }
 
-        } else if (RGraph.isObject(opt)) {
+        } else if (RGraph.isObject(opt) && (RGraph.isNumber(opt.width) || RGraph.isNumber(opt.height)) ) {
 
             opt.width  = RGraph.isNumber(opt.width)  ? opt.width  : canvas.offsetWidth;
             opt.height = RGraph.isNumber(opt.height) ? opt.height : canvas.offsetHeight;
         
-        } else if (RGraph.isNullish(opt)) {
-            opt = {
-                height: canvas.offsetHeight,
-                width:  canvas.offsetWidth
+        } else if (
+                      (RGraph.isObject(opt) && (!RGraph.isNullish(opt.background) || !RGraph.isNullish(opt.backgroundColor)))
+                   || RGraph.isNullish(opt)
+                  ) {
+            
+            RGraph.clear(canvas, opt ? (opt.background || opt.backgroundColor) : 'white');
+            
+            var objects = RGraph.ObjectRegistry.getObjectsByCanvasID(canvas.id);
+        
+            // Now draw each object
+            for (var i=0; i<objects.length; ++i) {
+                objects[i].draw();
             }
+        
+            var str = canvas.toDataURL('image/png');
+            
+            RGraph.redrawCanvas(canvas);
+            
+            return str;
         }
 
 
