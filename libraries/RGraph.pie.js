@@ -1403,18 +1403,21 @@
                         'lc round lw % b m % % qc % % % % s %',
                         properties.labelsSticksLinewidth,
                         labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
+                        
+                        // The quadraticCurveTo arguments
                         labels_right[i][4][0] + explosionX,labels_right[i][4][1] + explosionY,
                         ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
+                        
                         labels_right[i][5]
                     );
 
                     
                     // Draw a circle at the end of the stick
-                    this.path(
-                        'b a % % 5 0 6.2830 false, f %',
-                        ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
-                        labels_right[i][5]
-                    );
+                    //this.path(
+                    //    'b a % % 5 0 6.2830 false, f %',
+                    //    ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
+                    //    labels_right[i][5]
+                    //);
                 }
             }
 
@@ -1477,19 +1480,23 @@
                     this.path(
                         'lw % b m % % qc % % % % s %',
                         properties.labelsSticksLinewidth,
+                        
                         labels_left[i][3][0] + explosionX,labels_left[i][3][1] + explosionY,
+                        
+                        // The quadraticCurveTo arguments
                         labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),
                         ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
+                        
                         labels_left[i][5]
                     );
 
                     
                     // Draw a circle at the end of the stick
-                    this.path(
-                        'b a % % 5 0 6.2830 false, f %',
-                        ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
-                        labels_left[i][5]
-                    );
+                    //this.path(
+                    //    'b a % % 5 0 6.2830 false, f %',
+                    //    ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
+                    //    labels_left[i][5]
+                    //);
                 }
             }
         };

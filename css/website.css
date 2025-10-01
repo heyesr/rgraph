@@ -1443,3 +1443,6 @@ div.page-video p.intro {
     background-color: #eee;
     padding: 15px;
 }
+div.page-video p:not(.intro) {
+    font-style:italic;
+}

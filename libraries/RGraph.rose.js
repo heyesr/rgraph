@@ -2693,7 +2693,7 @@
 
 
                 if (frame >= opt.frames) {
-
+                    RGraph.redraw();
                     callback(obj);
                 } else {
 

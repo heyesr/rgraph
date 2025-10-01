@@ -11799,6 +11799,1408 @@
 
 
 
+    //
+    // A tree object. You can use to represent the tree
+    // structure.
+    //
+    // @param mixed  data  The data for this node. There doesn't
+    //                     have to be any data for the root node.
+    // @param number depth The depth of this node. If omitted then
+    //                     it defaults to zero - ie the root node.
+    //
+    RGraph.Tree = function (data = null, depth = 0)
+    {
+        //
+        // Set the data on this tree node. This function goes
+        // before the data for the object is setup so that the
+        // data that's passed to the constructor can be set on
+        // the object.
+        //
+        this.setData = function (data)
+        {
+            this.data = data;
+        };
+
+
+
+
+        //
+        //
+        // Set this as an alternative to using 'this'
+        //
+        var obj = this;
+
+        //
+        // The parent object is initially null
+        //
+        this.parent = null;
+
+        //
+        // Any child nodes of the tree/branch
+        //
+        this.children = [];
+
+        //
+        // The data for this node
+        //
+        this.setData(data);
+        
+        //
+        // The depth of this node
+        //
+        this.depth = depth;
+
+
+
+        
+        // This is used to add a function to the toHTML function
+        // before the toHTML function is fully defined - thus the
+        // variable must be set to a function here.
+        if (!RGraph.Tree.toHTML) {
+            RGraph.Tree.toHTML = function () {};
+        }
+
+
+
+
+
+
+
+
+        //
+        // Get the data from this tree node
+        //
+        // @return mixed The data of this node.
+        //
+        this.getData = function ()
+        {
+            return this.data;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Add a node to the tree
+        //
+        // @param  mixed data The (optional) data that you want to
+        //                    be associated with this node. This
+        //                    can be a string, a number, an array
+        //                    an object or any type you wish.
+        // @return object     The new node
+        //
+        this.add = function (data = null)
+        {
+            var child = new RGraph.Tree(data, this.depth + 1);
+            
+            // Set the parent to this object
+            child.parent = this;
+
+            this.children.push(child);
+            
+            return child;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns true/false as to whether this tree has any
+        // child nodes or not.
+        //
+        // @return bool Whether there are any child nodes or not
+        //
+        this.hasChildren = function ()
+        {
+            return this.children.length > 0;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Remove a node from the tree given its index
+        //
+        //@param mixed i  This can either be a number - ie the
+        //                index of the child node to remove or
+        //                it can be the child node itself.
+        // @return object The node that has been removed.
+        //
+        this.remove = function (i)
+        {
+            //
+            // Argument given is a number
+            //
+            if (RGraph.isNumber(i)) {
+                
+                // Does the requested child exist?
+                if (!this.children[i]) {
+                    return null;
+                }
+
+                //
+                // This is the node to be removed from the tree
+                //
+                var node        = this.children[i];
+                    node.parent = null;
+                    node.depth  = 0;
+
+                //
+                // Redo the depth property now that the node has
+                // been removed. OPERATES ON THE NODE THAT HAS
+                // BEEN REMOVED!!
+                //
+                node.iterate(function (n)
+                {
+                    n.depth = n.parent ? n.parent.depth + 1 : 0;
+                });
+                
+                // This nullifies the node in the tree
+                this.children[i] = null;
+    
+                // Now reindex the .children array so there are
+                // no empty slots in it.
+                this.children = this.children.filter(val => val !== null);
+                
+                return node;
+
+
+
+
+            //
+            // Argument given is a tree node
+            //
+            } else if (RGraph.isObject(i) && !RGraph.isNull(i.parent)) {
+                
+                // Look for the object in this nodes child nodes
+                for (var j=0; j<this.children.length; ++j) {
+                    if (this.children[j] === i) {
+                        return this.remove(j);
+                    }
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns whether the node is the root node - ie whether
+        // it has a parent or not.
+        //
+        // @return boolean Whether the node is the root or not.
+        //
+        this.isRoot = function ()
+        {
+            return !RGraph.isObject(this.parent);
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns true or false as to whether this node has any
+        // children or not. If not - it's a leaf.
+        //
+        // @return boolean Whether the node has any children or not.
+        //                 If not - it's a leaf.
+        //
+        this.isLeaf = function ()
+        {
+            return this.children.length === 0;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns how many children this node has.
+        //
+        // @param  boolean recurse Whether to recurse down this
+        //                         branch and count all of the
+        //                         children or not.
+        // @return number          The number of children that this node has.
+        //
+        this.numChildren = function (recurse = false)
+        {
+            var count = 0;
+            
+            if (recurse) {
+                this.iterate(function (root, node, depth)
+                {
+                    count++;
+                });
+                
+                count -=1;
+            } else {
+                count = this.children.length;
+            }
+
+            return count;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns a string representation of this node and the
+        // nodes (if any) beneath it in the tree.
+        //
+        // @param string spacer The spacing character to use for
+        //                      indenting nodes.
+        //                      This is normally just two
+        //                      space characters. This defaults
+        //                      to two space characters.
+        // @return string       A text representation of the tree.
+        //
+        this.toString = function (spacer = '  ')
+        {
+            var str = '';
+
+            var list = this.list();
+            
+            for (var i=0; i<list.length; ++i) {
+                str += spacer.repeat(list[i][1]) + ( ((RGraph.isObject(list[i][0].getData()) && !RGraph.isNullish(list[i][0].getData().text)) ? list[i][0].getData().text : list[i][0].getData())) + "\r\n";
+            }
+            
+            return str;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns this nodes parent node - if any.
+        //
+        // @return mixed The parent node or null if there is none.
+        //
+        this.getParent = function ()
+        {
+            return this.parent || null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the top level Tree object - ie the root of the
+        // tree.
+        //
+        // @return object The top of the tree.
+        //
+        this.getRoot = function ()
+        {
+            var node = this;
+
+            while (node.parent) {
+                node = node.parent;
+            }
+            
+            return node;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the first child node.
+        //
+        // @return object The first child of this node. If there 
+        //                are no child nodes this function returns
+        //                null.
+        //
+        this.firstChild = function ()
+        {
+            if (this.children.length) {
+                return this.children[0];
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the last child node.
+        //
+        // @return object The last child of this node. If there 
+        //                are no child nodes this function returns
+        //                null.
+        //
+        this.lastChild = function ()
+        {
+            if (this.children.length) {
+                return this.children[this.children.length - 1];
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns true or false as to whether the node is the
+        // first child of its parent node or not.
+        //
+        // @return boolean Whether the given node is the first
+        //                 child of its parent node or not.
+        //
+        this.isFirstChild = function ()
+        {
+            return this.parent && this === this.parent.children[0];
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns true or false as to whether the node is
+        // the last child of its parent node.
+        //
+        // @return boolean Whether this node is the last
+        //                 child of its parent node or not.
+        //
+        this.isLastChild = function ()
+        {
+            return this.parent && this === this.parent.children[this.parent.children.length - 1];
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the child node at the given index.
+        //
+        // @param  number index The index to use.
+        // @return object       The relevant child or null if the
+        //                      index doesn't exist.
+        //
+        this.child = function (index)
+        {
+            if (this.children[index]) {
+                return this.children[index];
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the index of the given node -  if it exists in
+        // this branches children. This function is not recursive.
+        //
+        // @param object node
+        // @return number The index of the node - or null if it's
+        //                not a child.
+        //
+        this.index = function (node)
+        {
+            for (var i=0; i<this.children.length; ++i) {
+                if (this.children[i] === node) {
+                    return i;
+                }
+            }
+            
+            return null;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns true or false as to whether the given node is
+        // one of this nodes immediate children.
+        //
+        // @param  object  node The node to check.
+        // @return boolean      Whether the node is an immediate
+        //                      child of this node or not.
+        //
+        this.isChild = function (node)
+        {
+            for (var i=0; i<this.children.length; ++i) {
+                if (this.children[i] === node) {
+                    return true;
+                }
+            }
+                
+            return false;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns the depth of this node in the tree.
+        //
+        // @return number The depth of this node.
+        //
+        this.getDepth = function ()
+        {
+            return this.depth;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns an array of the data values in the tree. Top to
+        // bottom, left to right.
+        //
+        // @return array A single dimension array of the data
+        //               values. Each entry in the array that's
+        //               returned is a two element array
+        //               consisting of the data value and also
+        //               it's depth in the tree.
+        //
+        this.list = function ()
+        {
+            var nodes = [];
+
+            this.iterate(function (root, node, depth)
+            {
+                nodes.push([node, depth]);
+            });
+            
+            return nodes;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Returns an array of the nodes in the tree which have
+        // matching data values as that that's given. Top to
+        // bottom, left to right. By default, only the first
+        // match is returned though this can be changed by
+        // setting the first argument to true.
+        //
+        // @param string  str    The string to search for. This can
+        //                       also be a number too. The comparison
+        //                       is done without checking types (ie
+        //                       string/number).
+        // @param object options Options that you can specify to
+        //                       change the operation of the
+        //                       function. These include:
+        //                        o all: Normally the search will
+        //                               just return the first node
+        //                               whose data matches the
+        //                               search subject. If this
+        //                               option is given however
+        //                               then ALL matching nodes
+        //                               are returned.
+        //                        o case: Whether to do a
+        //                                case-sensitives match or
+        //                                not. The default is to
+        //                                do a case-sensitive
+        //                                search. Set this to false
+        //                                to do a case-insensitive
+        //                                match.
+        //
+        // @return array The first node that's found - or all
+        //               of the nodes that have been found if
+        //               the all argument is set to true.
+        //
+        this.search = function (str, options = {all: false, case: true})
+        {
+            options.all  = RGraph.isBoolean(options.all)  ? options.all  : false;
+            options.case = RGraph.isBoolean(options.case) ? options.case : true;
+
+            var nodes = this.list();
+            var found = []; // Only used if all matching nodes
+                            // are to be returned.
+            
+            for (var i=0; i<nodes.length; ++i) {
+
+                if (   ( options.case && String(nodes[i][0].getData()).indexOf(str) !== -1) // Case-sensitive
+                    || (!options.case && String(nodes[i][0].getData()).toLowerCase().indexOf(str.toLowerCase()) !== -1) // Case-insensitive
+                   ) {
+                    if (!options.all) {
+                        return nodes[i][0];
+                    } else {
+                        found.push(nodes[i][0]);
+                    }
+                }
+            }
+            
+            return found;
+        };
+
+
+
+
+
+
+
+
+        //
+        // Moves the node to the new target that's given as
+        // the argument.
+        //
+        // @param object newParent The new parent of the node.
+        //
+        this.moveTo = function (newParent)
+        {
+            // Remove this node from its parents children
+            var index = this.parent.index(this);
+            this.parent.children.splice(index, 1);
+            
+            // Add the node to the new parent
+            newParent.children.push(this);
+
+            // Update the parent reference
+            this.parent = newParent;
+
+
+            this.calculateDepths();
+        };
+
+
+
+
+
+
+
+
+        //
+        // This function is used internally to recalculate the node
+        // depths.
+        //
+        this.calculateDepths = function ()
+        {
+            var list = this.getRoot().list();
+            
+            for (var i=0; i<list.length; ++i) {
+                list[i][0].depth = list[i][1];
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Moves a node up in the list of children. So if a node
+        // is the second child it becomes the first. If a node is
+        // the third child it becomes the second. And if a node
+        // is the first child nothing happens.
+        //
+        // @param number count The number of nodes to move this
+        //                     node up by. This argument defaults
+        //                     to 1.
+        //
+        this.moveUp = function (count = 1)
+        {
+            count = Number(count);
+
+            if (count > 1) {
+                while (count-- > 0) {
+                    this.moveUp();
+                }
+
+            } else if (count == 0) { // DOUBLE EQUALS
+                return;
+
+            } else {
+                var currentIndex = this.parent.index(this);
+    
+                // Only move the node if the currentIndex is bigger
+                // than 0
+                if (currentIndex > 0) {
+                    
+                    var tmp = this.parent.children[currentIndex - 1];
+                    
+                    this.parent.children[currentIndex - 1] = this;
+                    this.parent.children[currentIndex]         = tmp;
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Moves a node down in the list of children. So if a node
+        // is the second child it becomes the third. If a node is
+        // the third child it becomes the fourth. And if a node
+        // is the last child nothing happens.
+        //
+        // @param number count The number of nodes to move this
+        //                     node up by. This argument defaults
+        //                     to 1.
+        //
+        this.moveDown = function (count = 1)
+        {
+            count = Number(count);
+
+            if (count > 1) {
+                while (count-- > 0) {
+                    this.moveDown();
+                }
+
+            } else if (count == 0) { // DOUBLE EQUALS
+                return;
+
+            } else {
+                var currentIndex = this.parent.index(this);
+                var numChildren  = this.parent.numChildren();
+                
+                // Only move the node if the currentIndex is not the
+                // last.
+                if (currentIndex < (numChildren - 1) ) {
+
+                    var tmp = this.parent.children[currentIndex + 1];
+                    
+                    this.parent.children[currentIndex + 1] = this;
+                    this.parent.children[currentIndex]     = tmp;
+                }
+            }
+        };
+
+
+
+
+
+
+
+
+        //
+        // Copy this node to the given node. Copies are done on
+        // a shallow basis. So strings and numbers are copied
+        // but if the data for this node is an object then the
+        // new nodes data will be a reference to the same object.
+        // Child nodes are not copied.
+        //
+        // @param  object node The new node to copy this one to.
+        // @return object      The new copy of this node.
+        //
+        this.copyTo = function (node)
+        {
+            var newnode = node.add(this.data);
+            
+            return newnode;
+        };
+
+
+
+
+
+
+
+
+
+        //
+        // Iterates through the child nodes, running the provided
+        // function (which is passed the child node as the
+        // argument). This function recurses into each and every
+        // branch.
+        //
+        // @param function func  The function to run. The function
+        //                       is given the current child node as
+        //                       the argument.
+        // @param numer maxDepth The maximum depth that you wish to
+        //                       recurse to.
+        //
+        this.iterate = function (func, maxDepth = null)
+        {
+            var root         = this;
+            var currentDepth = 0;
+
+            // Reset the stop variable
+            root.stopIteration = false;
+
+
+            function iterate_worker (node, func, currentDepth)
+            {
+                // Call the callback function for this node.
+                var result = func(root, node, currentDepth);
+
+                if (result === false) {
+                    root.stopIteration = true;
+                }
+
+                // Loop through the child nodes if we chaven't
+                // been requested to stop
+                if (root.stopIteration !== true) {
+                    for (var i=0; (i<node.children.length && root.stopIteration !== true); ++i) {
+    
+                        // Now iterate through any children that the node
+                        // may have.
+                        if (RGraph.isNull(maxDepth)) {
+                            iterate_worker(node.children[i], func, currentDepth + 1);
+                        
+                        } else if (RGraph.isNumber(maxDepth) && currentDepth < maxDepth) {
+                            iterate_worker(node.children[i], func, currentDepth + 1);
+                        }
+                    }
+                }
+            }
+            
+            iterate_worker(this, func, currentDepth);
+        };
+
+
+
+
+
+
+
+
+        //
+        // Prints a HTML version of the tree
+        //
+        this.toHTML = function (options = {dynamic: true})
+        {
+            //
+            // This is a record of all of the RGraph.Tree
+            // objects. A mini-objectRegistry if you like, so
+            // that we can easily get the object when in an
+            // event handler function.
+            //
+
+            if (!RGraph.Tree.objects) {
+                RGraph.Tree.objects = {};
+            }
+            if (!RGraph.Tree.objects[options.id]) {
+                RGraph.Tree.objects[options.id] = this;
+            }
+            
+            this.options = options;
+            
+            //
+            // Add the default persistent option
+            //
+            if (RGraph.isNullish(obj.options.persistent)) {
+                obj.options.persistent = true;
+            }
+
+
+            var list         = this.list();
+            var html         = '';
+            var node         = null;
+            var depth        = 0;
+            var imageSrcs    = {
+                indent:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAALklEQVR4AezSIRIAAAgCQcf/P9pOPIlnM0DYYad8Fv5BNdQQCDgbgBYRDQMEvAcAAP//GaAxmgAAAAZJREFUAwCLOAAp5PB2EAAAAABJRU5ErkJggg==',
+                folder:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAA5klEQVR4AdSSuxGDMBBED3eiEDLqICOEduRScAeuwxkKVQrWypxAh2DE2IFhWHbu9zgY3ejH1wWBw6AmKaXUlPtnok8GqG1H6rrnLO1ck9ZEudAABKyuO7JWkzHDrNH5SMgDih4puXkAolCWPe1p2XrZHi+Sm0dAQIlezjJkXFviTgATXZxiCLzkZOzngIAwDB6zfJQH5GH4GuoR8SMPuIasoTHLR8dADKMNLqHIJ7QFYhiNcAnhGPUdRUB/oOlzmM2Ro+aUYgZg39uiqu5F0zzojCQ0ALlgrS3OimfhGyCS3+j/gW8AAAD//y75TksAAAAGSURBVAMAe9uqKZ3aWi0AAAAASUVORK5CYII=',
+                folderexp:    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABIElEQVR4AdSRLRbCMBCEB1QlV6hEIjkDDtleBclVGonrGZB1IHMUmOkraTbNg8JDAK/DJvvzZTdZ4su/PwU2TXlLNfdmJiMLtN9fUFWtkfxzoAaoIoEKf2JtB1wpULTyK54Tk8NngMG75upKGduZjnWAxCz6q5uslAdOYEzt4ex26BjBMhZ9AahR5HduB9cd4Bz1wkKHqChSAMqXewyNlUq5de1xPpdaGhlgUXgGh7E0Uio+jkatNkfmAd7XvY3/ApAnLjQusInj4zq5V14RWDPGh1UADvu8SWDgviybbK4B8sSxSxb1FbK6/NgysF15qMu23XI3fgb4cGv0py+t16ce+bGdANWlTp2rGKb1BCinc46jvyfVSVmgAp/q94F3AAAA//97gaZIAAAABklEQVQDANZG1ClmrOQuAAAAAElFTkSuQmCC',
+                page:         'data:image/gif;base64,R0lGODlhFAAUAPcAAAAAAAgICBAQEBgYGCEhISkpKTExMTk5OUJCQlJSUlpaWmNjY2tra3Nzc3t7e4SEhIyMjJSUlJycnKWlpa2trbW1tcbGxs7OztbW1t7e3ufn5+/v7/f39////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ywAAAAAFAAUAEAIhQA7CBxIsKDBDgIoHCwooOAGBwUGEBggkeLEAQYcMFRoMECFDQQsGEy4kGBDgg8GBFjJciUACAtJHtxQgcKEBhsRCtjJkydChhNKDjwptKhRoQMkHAwAoYCGgzILVhiAQMEBADl7+hyasyhRgVFLfkWoUKvWnwStXtDAtq3bCwaOyp3bISAAOw==',
+                line:         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAQklEQVR4AeyTsQoAIAgFq++WhvC/aw8ORBwcnqtwyulbo7gQ6MdvZhYCbdssBWrDsE48ihzKIRvAt1GWWdrX6e/wAQAA//8FGeIbAAAABklEQVQDAIG0JrLHYb14AAAAAElFTkSuQmCC',
+                branch:       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAVElEQVR4AeyTMQoAIAwD1XcXB+m/dWnGQJSCS12ylDNecbTkQ4G+fL/cRYE2racCq6Gsky6lHOY5hEs16VLwU26TAtFIfmsMUiCaxZwcFFgN/zk8AAAA//9oHHlPAAAABklEQVQDAPlOPrJToltUAAAAAElFTkSuQmCC',
+                branchtop:    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAATElEQVR4AeySMQoAIAwD1XcXB+m/lQwdAwa72ULJUo5wdLTkKeC70HL4tUNfviFATfo2Nq0DqCYFRjNAlaXAaKbAcEuB1RB6rjbd4QEAAP//76LCgAAAAAZJREFUAwBrSyqybI5nxQAAAABJRU5ErkJggg==',
+                branchbottom: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAT0lEQVR4AeyTMQoAIAhFq3NLQ3jvmlyEDyYODr9FAnnqE9cofhCoR2+mFgTKllkKZIdhnXApdFjn0FxGI1yKXcpvhMDwjC6RQCck8e3v8AEAAP//ZtMjvgAAAAZJREFUAwAU4jApXosB9wAAAABJRU5ErkJggg==',
+                plus:         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAkUlEQVR4AeyTwQqAIBBEq++WDuF/F8+DqDg5iceCYVdyn8NYx7b4kcB4xXvmLAkMZ9iXAn+Hdpz5UshsJIeagWzmZpV476gCNgNrv8MGbi97DnGGgFARfRI506jaA/KHIOaoiD6JjGlU7QHZP603YOXMPaECkovSZyCZjORAK4flAE7LtdtLIG5dSLlPAmcdPgAAAP//kmPtNwAAAAZJREFUAwADxWeyPGC/6wAAAABJRU5ErkJggg==',
+                plusbottom:   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAh0lEQVR4AeyTQQuAIAxGq98tHcL/XTwPwsTll+zQweCxRe45Zh5b8OMK85Xvmb1cYTrTHipcHcrjrIfCzEYo1ipkMSfrwXcFI2wKYv/DRi6/9jqkM0BCBPICcybxYk/IDQHqiEBeYMYkXuwJWT/Nm9B0pu5ghMzF47OQmYxQpKZDpWC05v/CBwAA///+SLqFAAAABklEQVQDAI6/YSlLstHBAAAAAElFTkSuQmCC',
+                plustop:      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAiklEQVR4AeyQwQ6AIAxD1e82Hgz/jTxOW8KgohcTTZpVM56l2/Ly8wOfF/qhDtOZ8khKIe7K+7GvkRQYOw7IB6NsvGx7QBliF1tAkiH2mAhfRc+YaLaAazmAyliYCF9Fx5hotoDsT6sHdMnUPzggvUS6DaSTkRSoS2gPkNS+qz4EklaF2L0QOJvwAgAA//8c2naUAAAABklEQVQDABYYW7KtBcfaAAAAAElFTkSuQmCC',
+                minus:        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAhElEQVR4AeyT0QqAIBRDq++WHsL/Lk4PF7o4HGI9FQyz5nFM3JbJjwTWo54je0lg2cs6FfgntOuMQ6GznhxqADFzskr8d/QAOgt6nk+A3JCsCEbPTNTYSsgNyYJxi455UWMLiH9Y7wLpRcmNHAnppCcHGsBsJmn+5swlkLQOIHskcDThBQAA//9MC+XhAAAABklEQVQDAGL6Z7KQzY0gAAAAAElFTkSuQmCC',
+                minusbottom:  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAeklEQVR4AeyT0QqAIBRDq++WHsL/Lk4PFxKHQyx6MBgmzuOYuC2DPwnMRz57zpLAtKd1KHAmtOuMS6GzlhxqADFzs0qsO3oAnQ0tzydAXkipCEbPTNRYS8gLKQXjFh3zo8YaEH+33gXSi5IbORLSSUsONICO2fH8H3gBAAD//7idHC0AAAAGSURBVAMA7fRhKR7u6w0AAAAASUVORK5CYII=',
+                minustop:     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAfElEQVR4AeyQ4QqAIBCDs+eWfoTvbTcEwcPh0AqCxOF5nB9z+3bz+oHrgX4ow3SmPJISSPPleMTApMAw0wDRWNUrwGwuvaxVNnJGxc6ew2APvKxVNjJGxc4eEPPTehaIXJhUy9UhMhlJgVagH4ZT31PuFAi3CsDPUOCswwsAAP//YEhUAAAAAAZJREFUAwB1TVuy7uFzbAAAAABJRU5ErkJggg=='
+            };
+            
+            
+            
+            //
+            // Allow the overriding by the user of the image
+            // paths/data: URLs.
+            //
+            if (RGraph.isObject(options.images)) {
+                for (i in options.images) {
+                    if (RGraph.isString(i)) {
+                        imageSrcs[i] = options.images[i];
+                    }
+                }
+            }
+
+
+
+            var indentImg       = '<img src="' + imageSrcs.indent +       '" align="center" class="rgraph-tree-structure-images indentImg" data-shortname="indent" />';
+            var folderImg       = '<img src="' + imageSrcs.folder +       '" align="center" class="rgraph-tree-structure-images folderImg" data-shortname="folder" />';
+            var folderexpImg    = '<img src="' + imageSrcs.folderexp +    '" align="center" class="rgraph-tree-structure-images folderexpImg rgraph-tree-structure-icon" data-shortname="folderexp" />';
+            var pageImg         = '<img src="' + imageSrcs.page +         '" align="center" class="rgraph-tree-structure-images pageImg rgraph-tree-structure-icon" data-shortname="page" />';
+            var lineImg         = '<img src="' + imageSrcs.line +         '" align="center" class="rgraph-tree-structure-images lineImg" data-shortname="line" />';
+            var branchImg       = '<img src="' + imageSrcs.branch +       '" align="center" class="rgraph-tree-structure-images branchImg" data-shortname="branch" />';
+            var branchtopImg    = '<img src="' + imageSrcs.branchtop +    '" align="center" class="rgraph-tree-structure-images branchtopImg" data-shortname="branchtop" />';
+            var branchbottomImg = '<img src="' + imageSrcs.branchbottom + '" align="center" class="rgraph-tree-structure-images branchbottomImg" data-shortname="branchbottom" />';
+            var plusImg         = '<img src="' + imageSrcs.plus +         '" align="center" class="rgraph-tree-structure-images plusImg" data-shortname="plus" />';
+            var plusbottomImg   = '<img src="' + imageSrcs.plusbottom +   '" align="center" class="rgraph-tree-structure-images plusbottomImg" data-shortname="plusbottom" />';
+            var plustopImg      = '<img src="' + imageSrcs.plustop +      '" align="center" class="rgraph-tree-structure-images plustopImg" data-shortname="plustop" />';
+            var minusImg        = '<img src="' + imageSrcs.minus +        '" align="center" class="rgraph-tree-structure-images minusImg" data-shortname="minus" />';
+            var minusbottomImg  = '<img src="' + imageSrcs.minusbottom +  '" align="center" class="rgraph-tree-structure-images minusbottomImg" data-shortname="minusbottom" />';
+            var minustopImg     = '<img src="' + imageSrcs.minustop +     '" align="center" class="rgraph-tree-structure-images minustopImg" data-shortname="minustop" />';
+
+
+
+
+            //
+            // First convert all the data properties on the nodes
+            // to objects.
+            //
+            for (var i=0; i<list.length; ++i) {
+
+                // If the given data is a string
+                if (list[i][0].getData() && RGraph.isString(list[i][0].getData())) {
+                    // Split on the first colon to get the name and
+                    // link
+                    var [text, ...rest] = list[i][0].getData().split(':')
+                    link = rest.join(':')
+    
+                    list[i][0].setData({
+                        text: text,
+                        link: link ? link : null
+                    });
+                }
+            }
+
+
+
+
+            //
+            // Add the node IDs to each node
+            //
+            function addID(node, id, index)
+            {
+                id += '_' + index;
+                node.getData().id = id;
+                
+                if (node.hasChildren()) {
+                    for (var i=0; i<node.children.length; ++i) {
+                        addID(node.children[i], id, i);
+                    }
+                }
+            }
+
+            addID(this, options.id + '_node', 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Print the nodes
+            //
+            function printNode (node, id, indent)
+            {
+                //
+                // This function is used to hide or show the
+                // branches of the tree.
+                //
+                RGraph.Tree.toHTML.toggleBranch = function (container, id)
+                {
+                    if (RGraph.isString(container)) {
+                        container = document.getElementById(container);
+                    }
+
+                    // This is the object
+                    var obj = RGraph.Tree.objects[id.split(/_node/)[0]];
+
+                    //
+                    // If dynamic is false then don't do this. Or
+                    // if the node is the first in the tree.
+                    //
+                    if (!container || obj.options.dynamic === false || container.id.match(/node_0$/)) {
+                        return;
+                    }
+
+                    var img_plus  = document.getElementById(container.id).querySelector('img[data-shortname^="plus"]');
+                    var img_minus = document.getElementById(container.id).querySelector('img[data-shortname^="minus"]');
+
+                    if (img_plus) {
+                        var shortname = img_plus.getAttribute('data-shortname').replace(/plus/,'minus');
+                        img_plus.src = imageSrcs[shortname];
+                        img_plus.setAttribute('data-shortname', shortname);
+                    } else if (img_minus) {
+                        var shortname = img_minus.getAttribute('data-shortname').replace(/minus/,'plus');
+                        img_minus.src = imageSrcs[shortname];
+                        img_minus.setAttribute('data-shortname', img_minus.getAttribute('data-shortname').replace(/minus/,'plus'));
+                    }
+
+                    var child_node_container = document.getElementById(container.id + '_children_container');
+                    if (child_node_container) {
+                        if (child_node_container.style.display === 'block' || !child_node_container.style.display) {
+                            child_node_container.style.display = 'none';
+                            container.setAttribute('data-rgraph-branch-status', '0');
+                        } else {
+                            child_node_container.style.display = 'block';
+                            container.setAttribute('data-rgraph-branch-status', '1');
+                        }
+                    }
+                };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //
+                // This function is used to show a branch of the
+                // tree.
+                //
+                RGraph.Tree.toHTML.openBranch = function (container)
+                {
+                    if (RGraph.isString(container)) {
+                        container = document.getElementById(container);
+                    }
+
+                    //
+                    // If dynamic is false then don't do this. Or if
+                    // the node is the first in the tree.
+                    //
+                    if (!container || options.dynamic === false || container.id.match(/node_0$/)) {
+                        return;
+                    }
+                    
+                    var img_plus  = document.getElementById(container.id).querySelector('img[data-shortname^="plus"]');
+
+                    if (img_plus) {
+                        var shortname = img_plus.getAttribute('data-shortname').replace(/plus/,'minus');
+                        img_plus.src  = imageSrcs[shortname];
+                        img_plus.setAttribute('data-shortname', shortname);
+                    }
+
+                    var child_node_container = document.getElementById(container.id + '_children_container');
+
+                    child_node_container.style.display = 'block';
+                    container.setAttribute('data-rgraph-branch-status', '1');
+                };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //
+                // This function is used to show a branchof the
+                // tree.
+                //
+                RGraph.Tree.toHTML.closeBranch = function (container)
+                {
+                    if (RGraph.isString(container)) {
+                        container = document.getElementById(container);
+                    }
+
+                    //
+                    // If dynamic is false then don't do this. Or if
+                    // the node is the first in the tree.
+                    //
+                    if (!container || options.dynamic === false || container.id.match(/node_0$/)) {
+                        return;
+                    }
+                    
+                    var img_minus = document.getElementById(container.id).querySelector('img[data-shortname^="minus"]');
+
+                    if (img_minus) {
+                        var shortname = img_minus.getAttribute('data-shortname').replace(/minus/,'plus');
+                        img_minus.src = imageSrcs[shortname];
+                        img_minus.setAttribute('data-shortname', img_minus.getAttribute('data-shortname').replace(/minus/,'plus'));
+                    }
+
+                    var child_node_container = document.getElementById(container.id + '_children_container');
+
+                    child_node_container.style.display = 'none';
+                    container.setAttribute('data-rgraph-branch-status', '0');
+                };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //
+                // This function stores the state of the branch
+                // status (open/closed) in the localStorage area.
+                //It saves ALL of the branches.
+                //
+                RGraph.Tree.toHTML.saveBranchStatus = function (id)
+                {
+                    var obj = RGraph.Tree.objects[id];
+                    var key = 'rgraph_tree_branch_status_' + id;
+                    var branch_status = window.localStorage[key];
+                    
+                    // If saving is disabled do nothing
+                    if (!obj.options.persistent) {
+                        return;
+                    }
+
+                    if (branch_status) {
+                        branch_status = JSON.parse(branch_status);
+                    } else {
+                        branch_status = {};
+                    }
+
+                    //
+                    // Get ALL of the branches and their states
+                    // and store them.
+                    //
+
+                    var elements = document.getElementById(id).getElementsByTagName('div')
+                    for (var i=0; i<elements.length; ++i) {
+                        if (elements[i].id.indexOf('_children_container') === -1) {
+                            branch_status[elements[i].id] = (parseInt(elements[i].getAttribute('data-rgraph-branch-status'))) ? 'expanded' : 'collapsed';
+                        }
+                    }
+
+                    // Store it in localStorage
+                    window.localStorage[key] = JSON.stringify(branch_status);
+                };
+
+
+
+
+
+
+
+
+
+
+                //
+                // This function loads the state of the branch
+                // status (open/closed) from the localStorage area.
+                //
+                RGraph.Tree.toHTML.loadBranchStatus = function (id)
+                {
+                    var obj = RGraph.Tree.objects[id];
+
+                    // If saving is disabled do nothing
+                    if (!obj.options.persistent) {
+                        return;
+                    }
+
+                    var key = 'rgraph_tree_branch_status_' + id;
+                    var branch_status = window.localStorage[key];
+
+                    if (branch_status) {
+                        branch_status = JSON.parse(branch_status);
+                    } else {
+                        branch_status = {};
+                    }
+                    
+                    for (var i in branch_status) {
+                        if (RGraph.isString(i)) {
+                            if (branch_status[i] === 'collapsed') {
+                                var n = document.getElementById(i.replace(/_children_container/,''));
+                                if (n) {
+                                    RGraph.Tree.toHTML.toggleBranch(n, id);
+                                }
+                            }
+                        }
+                    }
+                };
+
+
+
+
+
+
+
+
+
+
+                //
+                // This function returns the state of the branch
+                // status (open/closed) from the localStorage area.
+                // It doesn't modify the branches - only returns the
+                // state
+                //
+                getBranchStatusFromLocalData = function ()
+                {
+                    // Get the ID
+                    var id = node.getData().id.replace(/_node.*/,'');
+
+                    var key = 'rgraph_tree_branch_status_' + id;
+                    var branch_status = window.localStorage[key];
+
+                    if (branch_status) {
+                        branch_status = JSON.parse(branch_status);
+                    } else {
+                        branch_status = {};
+                    }
+                    
+                    return branch_status;
+                };
+                
+                
+                
+                
+
+
+
+
+
+
+
+
+
+                var userCSSClass = '';
+                if (node.getData() && RGraph.isString(node.getData().cssClass) ) {
+                    userCSSClass += ' ' + node.getData().cssClass;
+                }
+
+                var html = '<div id="' + id + '" ' + (node.getData().dynamic === false ? '' : 'onclick="RGraph.Tree.toHTML.toggleBranch(this, id); RGraph.Tree.toHTML.saveBranchStatus(\'' + options.id + '\');"') + ' data-rgraph-branch-status="1" style="cursor: ' + ( ((options.dynamic !== false) && node.getData().dynamic !== false && node.hasChildren() && !node.isRoot()) ? 'pointer' : 'default') + '" class="' + userCSSClass + '">'
+                        + indent;
+
+
+                //
+                // Determine the relevant branch icon
+                //
+                if (node.getRoot() === node) {
+                    var icon = '';
+                } else {
+                    if (node.isLastChild()) {
+                        var icon = node.hasChildren() ? minusbottomImg : branchbottomImg;
+                    } else {
+                        var icon = node.hasChildren() ? minusImg : branchImg;
+                    }
+                }
+
+                html += icon;
+                
+                //
+                // Add the image for this branch
+                //
+
+                if (RGraph.isObject(node.getData()) && RGraph.isString(node.getData().image)) {
+                    html += '<img src="' + node.getData().image + '" align="center" class="rgraph-tree-structure-images rgraph-tree-structure-icon" data-shortname="user" />';
+                } else if (node.hasChildren()) {
+                    html += folderexpImg;
+                } else {
+                    html += pageImg;
+                }
+                
+                
+
+                html += '<span class="rgraph-tree-branch-label">' + (node.getData().link
+                            ? '<a href="{1}">{2}</a>'.format(node.getData().link, node.getData().text)
+                            : node.getData().text) + '</span>';
+                html += '</div>';
+                
+                html +='<div id="' + id + '_children_container">';
+
+                
+                if (node.hasChildren()) {
+                    for (var i=0; i<node.children.length; ++i) {
+                        html += printNode(
+                            node.children[i],
+                            node.children[i].getData().id,
+                            indent + ((node.getRoot() === node) ? '' : ( node.isLastChild() ? indentImg : lineImg) )
+                        );
+                    }
+                }
+                
+                html += '</div>';
+
+                //
+                // This is a nasty way to do things, but necessary it would seem
+                //
+                setTimeout(function ()
+                {
+                    if (node.getData().dynamic === false) {
+                        node.getData().expanded = true;
+                        
+                        RGraph.Tree.toHTML.openBranch(node.getData().id);
+                    }
+                }, 5);
+
+                return html;
+            }
+
+
+
+
+            // Create the menu
+            html = printNode(this, options.id + '_node_0','');
+
+            document.getElementById(options.id).insertAdjacentHTML('afterbegin', html);
+
+
+
+            // if the options.dynamic is not exactly equal
+            // to false then read the localStorage variable
+            // and toggle the branches based on the nodes
+            // held in it.
+            if (options.dynamic !== false) {
+                RGraph.Tree.toHTML.loadBranchStatus(options.id);
+            }
+
+
+
+
+
+
+
+
+            //
+            // Loop through the list of nodes again now that the
+            // HTML has been added to the document.
+            // 
+            for (var i=0,list=this.list(),node,depth; i<list.length; ++i) {
+
+                node  = list[i][0];
+                depth = list[i][1];
+
+                // Add the HTML node to the object
+                node.getData().element = document.querySelector('div[id="' + node.getData().id + '"]');
+                
+                var localDataBranchStatus = getBranchStatusFromLocalData();
+                
+                if (RGraph.isNullish(localDataBranchStatus[node.getData().id]) || node.getData().prioritiseConfig) {
+                    if (node.getData().expanded === true || (RGraph.isNumber(node.getData().expanded) && node.getData().expanded) ) {
+                        RGraph.Tree.toHTML.openBranch(node.getData().id);
+                    } else if (node.getData().expanded === false || node.getData().expanded === 0) {
+                        RGraph.Tree.toHTML.closeBranch(node.getData().id);
+                    }
+                }
+            }
+            
+            if (!RGraph.isArray(obj.options.style)) {
+                obj.options.style = [];
+            }
+
+            for (var i=0; i<obj.options.style.length; ++i) {
+                
+                //Prepend div#XXX if it's not already there
+                var str = obj.options.style[i];
+                var re = new RegExp('^ *div#' + options.id + ' *');
+                if (!str.match(re)) {
+                    str = 'div#' + options.id + ' ' + str;
+                }
+                
+                // Add the CSS to a <style> block in the head
+                RGraph.addCss(str);
+            }
+
+            
+            // This will get the children of a node:
+            // document.querySelectorAll('div[-id^="node-0-2-0-"]')
+        };
+    };
+
+
+
+
+
+
+
+
     // Some utility functions that help identify the type of an object
     //
     // Note that isUndefined() should be used like this or you'll get an
