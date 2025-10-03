@@ -120,8 +120,16 @@
             // Turn HTML comments green
             //html = html.replace(//isg, '<span>&lt;!--')
             //html = html.replace(/--&gt;/isg, '--&gt;</span>')
-            html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>')
-    
+            html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>');
+            
+            //
+            // Do this for the treemenu examples - get rid of the
+            // html within the enclosing <div> tag.
+            //
+            if (location.href.match(/\/treemenu-/)) {
+                html = html.replace(/.*/,'<pre class="code">&lt;div id="myTree"&gt;&lt;/div&gt;</pre>');
+            }
+
             document.write(html);
         }
     }
