@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A simple tree menu</h1>
+
+    <div id="rgraph-demo-html">
+        <div id="myTree"></div>
+    </div>
+    
+    <p />
+
+    <script>
+        tree = new RGraph.Tree('My colours');
+        tree.add({text: 'Red'});
+        tree.add({text: 'Orange'});
+        tree.add({text: 'Yellow'});
+        grays = tree.add({text: 'Grays'});
+        pinks = tree.add({text: 'Pinks'});
+        
+        grays.add({text: 'Light gray'});
+        grays.add({text: 'Medium gray'});
+        grays.add({text: 'Dark gray'});
+        grays.add({text: 'Black'});
+        
+        cartoons = pinks.add({text: 'Cartoons'});
+        pinks.add({text: 'Barbie'});
+        pinks.add({text: 'Miss Piggie'});
+        pinks.add({text: 'Lady Penelopes roller'});
+        
+        cartoons.add({text: 'Wacky races'});
+        cartoons.add({text: 'Penelope Pitstop'});
+        
+        tree.toHTML({
+            id: 'myTree'
+        });
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
