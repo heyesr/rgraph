@@ -12691,7 +12691,11 @@
             if (RGraph.isObject(options.images)) {
                 for (i in options.images) {
                     if (RGraph.isString(i)) {
-                        imageSrcs[i] = options.images[i];
+                        if (RGraph.isString(options.images[i]) && (options.images[i] === '' || options.images[i] === 'none' || options.images[i].toLowerCase() === 'transparent') ) {
+                            imageSrcs[i] = imageSrcs['indent'];
+                        } else {
+                            imageSrcs[i] = options.images[i];
+                        }
                     }
                 }
             }
@@ -13081,7 +13085,7 @@
                 if (RGraph.isObject(node.getData()) && RGraph.isString(node.getData().image)) {
                     html += '<img src="' + node.getData().image + '" align="center" class="rgraph-tree-structure-images rgraph-tree-structure-icon" data-shortname="user" />';
                 } else if (node.hasChildren()) {
-                    html += folderexpImg;
+                    html += folderImg;
                 } else {
                     html += pageImg;
                 }

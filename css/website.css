@@ -85,7 +85,7 @@ div#main-body-container {
     margin-right: auto;
     position: relative;
     padding-right: 250px;
-    min-height: 1300px;
+    min-height: 1800px;
 }
 
 :is(h1,h2,h3,h4) {
