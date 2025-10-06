@@ -17,28 +17,32 @@
 
     <script>
         tree = new RGraph.Tree('My colours');
-        tree.add({text: 'Red'});
-        tree.add({text: 'Orange'});
-        tree.add({text: 'Yellow'});
+            tree.add({text: 'Red'});
+            tree.add({text: 'Orange'});
+            tree.add({text: 'Yellow'});
+
         grays = tree.add({text: 'Grays'});
+            grays.add({text: 'Light gray'});
+            grays.add({text: 'Medium gray'});
+            grays.add({text: 'Dark gray'});
+            grays.add({text: 'Black'});
+        
         pinks = tree.add({text: 'Pinks'});
-        
-        grays.add({text: 'Light gray'});
-        grays.add({text: 'Medium gray'});
-        grays.add({text: 'Dark gray'});
-        grays.add({text: 'Black'});
-        
+            pinks.add({text: 'Barbie'});
+            pinks.add({text: 'Miss Piggie'});
+            pinks.add({text: 'Lady Penelopes roller'});
+
         cartoons = pinks.add({text: 'Cartoons'});
-        pinks.add({text: 'Barbie'});
-        pinks.add({text: 'Miss Piggie'});
-        pinks.add({text: 'Lady Penelopes roller'});
-        
-        cartoons.add({text: 'Wacky races'});
-        cartoons.add({text: 'Penelope Pitstop'});
-        
-        tree.toHTML({
-            id: 'myTree'
-        });
+            cartoons.add({text: 'Wacky races'});
+            cartoons.add({text: 'Penelope Pitstop'});
+
+        new RGraph.Treemenu({
+            id: 'myTree',
+            data: tree,
+            options: {
+                persistent: false
+            }
+        }).draw();
     </script>
 
     <script>showSource()</script>

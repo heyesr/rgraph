@@ -12703,7 +12703,7 @@
 
 
             var indentImg       = '<img src="' + imageSrcs.indent +       '" align="center" class="rgraph-tree-structure-images indentImg" data-shortname="indent" />';
-            var folderImg       = '<img src="' + imageSrcs.folder +       '" align="center" class="rgraph-tree-structure-images folderImg" data-shortname="folder" />';
+            var folderImg       = '<img src="' + imageSrcs.folder +       '" align="center" class="rgraph-tree-structure-images folderImg rgraph-tree-structure-icon" data-shortname="folder" />';
             var folderexpImg    = '<img src="' + imageSrcs.folderexp +    '" align="center" class="rgraph-tree-structure-images folderexpImg rgraph-tree-structure-icon" data-shortname="folderexp" />';
             var pageImg         = '<img src="' + imageSrcs.page +         '" align="center" class="rgraph-tree-structure-images pageImg rgraph-tree-structure-icon" data-shortname="page" />';
             var lineImg         = '<img src="' + imageSrcs.line +         '" align="center" class="rgraph-tree-structure-images lineImg" data-shortname="line" />';
@@ -13195,6 +13195,31 @@
             
             // This will get the children of a node:
             // document.querySelectorAll('div[-id^="node-0-2-0-"]')
+        };
+    };
+
+
+
+
+
+
+
+
+    //
+    // A (sort of) pseudo class for creating tree menus
+    //
+    RGraph.Treemenu = function (conf)
+    {
+        this.id   = conf.id;
+        this.tree = conf.data;
+
+        //
+        // The main draw function
+        //
+        this.draw = function ()
+        {
+            conf.options.id = this.id;
+            this.tree.toHTML(conf.options);
         };
     };
 
