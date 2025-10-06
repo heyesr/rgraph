@@ -2795,8 +2795,8 @@
                         div.insertAdjacentHTML('afterbegin', '&zwnj;' + this.formatValue(this, this.data[row][column].value, row, column)); // Don't use innerHTML here
                     } else {
                         div.insertAdjacentHTML('afterbegin', '&zwnj;') // Don't use innerHTML here
-                        div.textContent = this.data[row][column].value ? (this.formatValue(this, this.data[row][column].value, row, column) || String.fromCharCode(0x00A0)) : String.fromCharCode(0x00A0);
-                        
+                        div.textContent = (this.data[row][column].value || this.data[row][column].value == 0) ? (this.formatValue(this, this.data[row][column].value, row, column) || String.fromCharCode(0x00A0)) : String.fromCharCode(0x00A0);
+
                         // Set the tooltip
                         td.title = this.formatValue(this, this.data[row][column].value, row, column);
                     }
