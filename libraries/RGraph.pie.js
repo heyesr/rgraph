@@ -3253,7 +3253,7 @@
                 frame    = 0,
                 frames   = opt.frames || 60,
                 radius   =  this.getRadius(),
-                labels   =  this.get('labels')
+                labels   =  this.get('labels');
             
             this.set('eventsEnabled', false);
             this.set('labels', []);

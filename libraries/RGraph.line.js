@@ -5072,12 +5072,7 @@ $c(steps)
                     } else {
     
     
-                        var hyp = RGraph.getHypLength({
-                            x1: coords[dataset][index][0],
-                            y1: coords[dataset][index][1],
-                            x2: mouseXY[0],
-                            y2: mouseXY[1]
-                        });
+                        var hyp = RGraph.getHypLength(coords[dataset][index][0],coords[dataset][index][1],mouseXY[0],mouseXY[1]);
                         
                         if (hyp <= tolerance) {
                             ret.push({dataset: dataset, index: index,distance: hyp});

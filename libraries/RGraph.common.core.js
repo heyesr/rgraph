@@ -243,8 +243,16 @@
     //
     // @return     object  An object containing scale information
     //
-    RGraph.getScale  = function (args)
+    RGraph.getScale = function (args)
     {
+        // CALCULATE THE HASH WHICH IS USED FOR CACHING
+        var hash = RGraph.md5([args.object.uid, args.options]);
+
+        // IF THE RESULTS ARE CACHED THEN USE THOSE
+        if (RGraph.getScale[hash]) {
+            return RGraph.getScale[hash];
+        }
+
         var properties   = args.object.properties,
             numlabels    = typeof args.options['scale.labels.count'] == 'number' ? args.options['scale.labels.count'] : 5,
             units_pre    = typeof args.options['scale.units.pre'] == 'string' ? args.options['scale.units.pre'] : '',
@@ -443,6 +451,11 @@
         for (var i=0; i<scale.values.length; ++i) {
             scale.values[i] = parseFloat(scale.values[i]);
         }
+        
+        // CACHE THE RESULTS SO THE FUNCTION  DOESN'T HAVE TO BE
+        // RUN AGAIN.
+        RGraph.getScale[hash] = scale;
+
 
         return scale;
     };
@@ -566,15 +579,13 @@
     // @param  args object An object consisting of:
     //                      o array
     //
-    RGraph.arrayInvert = function ()
+    RGraph.arrayInvert = function (arr)
     {
-        var args = RGraph.getArgs(arguments, 'array');
-
-        for (var i=0,len=args.array.length; i<len; ++i) {
-            args.array[i] = !args.array[i];
+        for (var i=0,len=arr.length; i<len; ++i) {
+            arr[i] = !arr[i];
         }
 
-        return args.array;
+        return arr;
     };
 
 
@@ -2442,6 +2453,22 @@
     //
     RGraph.numberFormat = function (args)
     {
+        // CALCULATE THE HASH THAT'S USED FOR CACHING
+        var hash = RGraph.md5([
+            args.object.uid,
+            args.number,
+            args.unitspre,
+            args.unitspost,
+            args.thousand,
+            args.point,
+            args.formatter
+        ]);
+
+        // IF THE RESULTS ARE CACHED THEN USE THOSE
+        if (RGraph.numberFormat[hash]) {
+            return RGraph.numberFormat[hash];
+        }
+
         var i;
         var prepend = args.unitspre ? String(args.unitspre) : '';
         var append  = args.unitspost ? String(args.unitspost) : '';
@@ -2455,7 +2482,7 @@
         if (typeof args.formatter === 'function') {
             return (args.formatter)(args);
         }
-
+        
         // Ignore the preformatted version of "1e-2"
         if (String(args.number).indexOf('e') > 0) {
             return String(prepend + String(args.number) + append);
@@ -2522,6 +2549,10 @@
         
         // Get rid of leading commas
         output = output.replace(/^,+/,'');
+
+        // CACHE THE RESULTS SO THE FUNCTION  DOESN'T HAVE TO BE
+        // RUN AGAIN.
+        RGraph.numberFormat[hash] = prepend + output + append;
 
         return prepend + output + append;
     };
@@ -4093,11 +4124,9 @@
     // @param number x2 The target X coordinate
     // @param number y2 The target Y  coordinate
     //
-    RGraph.getHypLength = function ()
+    RGraph.getHypLength = function (x1,y1,x2,y2)
     {
-        var args = RGraph.getArgs(arguments, 'x1,y1,x2,y2');
-
-        return Math.sqrt(((args.x2 - args.x1) * (args.x2 - args.x1)) + ((args.y2 - args.y1) * (args.y2 - args.y1)));
+        return Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
     };
 
 
@@ -4111,13 +4140,6 @@
     // This function gets the end point (X/Y coordinates) of a given radius.
     // You pass it the center X/Y, the angle and the radius and this function
     // will return the endpoint X/Y coordinates.
-    // 
-    // @param  args object An object consisting of:
-    //                      o cx
-    //                      o cy
-    //                      o angle
-    //                      o radius
-    // OR
     //
     // @param number cx     The center X coord
     // @param number cy     The center Y coord
@@ -4125,12 +4147,10 @@
     // @param number radius The length of the radius
     //
     //
-    RGraph.getRadiusEndPoint = function ()
+    RGraph.getRadiusEndPoint = function (cx, cy, angle, radius)
     {
-        var args = RGraph.getArgs(arguments, 'cx,cy,angle,radius');
-
-        var x    = args.cx + (Math.cos(args.angle) * args.radius);
-        var y    = args.cy + (Math.sin(args.angle) * args.radius);
+        var x    = cx + (Math.cos(angle) * radius);
+        var y    = cy + (Math.sin(angle) * radius);
 
         return [x, y];
     };
@@ -4145,38 +4165,35 @@
     //
     // This installs all of the event listeners
     // 
-    // @param  args object An object consisting of:
-    //                      o object
-    // OR
+    // @param object obj The chart object
     //
-    // @param object object The chart object
-    //
-    RGraph.installEventListeners = function ()
+    RGraph.installEventListeners = function (obj)
     {
-        var args       = RGraph.getArgs(arguments, 'object');
-        var properties = args.object.properties;
+        //var args       = RGraph.getArgs(arguments, 'object');
+        var properties = obj.properties;
 
         //
-        // If this function exists, then the dynamic file has been included.
+        // If this function exists, then the dynamic file has been
+        // included.
         //
         if (RGraph.installCanvasClickListener) {
 
-            RGraph.installWindowMousedownListener(args.object);
-            RGraph.installWindowMouseupListener(args.object);
-            RGraph.installCanvasMousemoveListener(args.object);
-            RGraph.installCanvasMouseupListener(args.object);
-            RGraph.installCanvasMousedownListener(args.object);
-            RGraph.installCanvasClickListener(args.object);
+            RGraph.installWindowMousedownListener(obj);
+            RGraph.installWindowMouseupListener(obj);
+            RGraph.installCanvasMousemoveListener(obj);
+            RGraph.installCanvasMouseupListener(obj);
+            RGraph.installCanvasMousedownListener(obj);
+            RGraph.installCanvasClickListener(obj);
         
-        } else if (   RGraph.hasTooltips(args.object)
+        } else if (   RGraph.hasTooltips(obj)
                    || properties.adjustable
                    || properties.annotatable
                    || properties.contextmenu
                    || properties.keyInteractive
-                   || typeof args.object.onclick     === 'function'
-                   || typeof args.object.onmousemove === 'function'
-                   || typeof args.object.onmouseout  === 'function'
-                   || typeof args.object.onmouseover === 'function'
+                   || typeof obj.onclick     === 'function'
+                   || typeof obj.onmousemove === 'function'
+                   || typeof obj.onmouseout  === 'function'
+                   || typeof obj.onmouseover === 'function'
                   ) {
 
             alert('[RGRAPH] You appear to have used dynamic features but not included the file: RGraph.common.dynamic.js');
@@ -5699,7 +5716,18 @@
         var args          = RGraph.getArgs(arguments, 'index,data');
         var group         = 0;
         var grouped_index = 0;
-        
+
+        // CALCULATE THE HASH THAT'S USED FOR CACHING
+        var hash = RGraph.md5([
+            args.index,
+            args.data
+        ]);
+
+        // IF THE RESULTS ARE CACHED THEN USE THOSE
+        if (RGraph.sequentialIndexToGrouped[hash]) {
+            return RGraph.sequentialIndexToGrouped[hash];
+        }
+
         //
         // Allow for the arguments to be in any order
         //
@@ -5732,7 +5760,11 @@
                 grouped_index = 0;
             }
         }
-        
+
+        // CACHE THE RESULTS SO THE FUNCTION  DOESN'T HAVE TO BE
+        // RUN AGAIN.
+        RGraph.sequentialIndexToGrouped[hash] = [group, grouped_index];
+
         return [group, grouped_index];
     };
 
@@ -5752,7 +5784,25 @@
     RGraph.groupedIndexToSequential = function ()
     {
         var args = RGraph.getArgs(arguments, 'object,dataset,index');
-        
+
+
+
+
+        // CALCULATE THE HASH THAT'S USED FOR CACHING
+        var hash = RGraph.md5([
+            args.object.uid,
+            args.dataset,
+            args.index
+        ]);
+
+        // IF THE RESULTS ARE CACHED THEN USE THOSE
+        if (RGraph.groupedIndexToSequential[hash]) {
+            return RGraph.groupedIndexToSequential[hash];
+        }
+
+
+
+
         // Handle just the data being given instead of the whole
         // object
         if (RGraph.isObject(args.object) && args.object.isrgraph) {
@@ -5771,7 +5821,11 @@
                 seq++;
             }
         }
-        
+
+        // CACHE THE RESULTS SO THE FUNCTION  DOESN'T HAVE TO BE
+        // RUN AGAIN.
+        RGraph.groupedIndexToSequential[hash] = seq;
+
         return seq;
     };
 
@@ -6887,9 +6941,9 @@
     //
     // @param function func The animation function
     //
-    RGraph.Effects.updateCanvas = function ()
+    RGraph.Effects.updateCanvas = function (func)
     {
-        var args = RGraph.getArgs(arguments, 'func');
+        //var args = RGraph.getArgs(arguments, 'func');
 
         window.requestAnimationFrame =    
                 window.requestAnimationFrame
@@ -6898,7 +6952,7 @@
             || window.mozRequestAnimationFrame
             || (function (func){setTimeout(func, 16.666);});
         
-        window.requestAnimationFrame(args.func);
+        window.requestAnimationFrame(func);
     };
 
 
@@ -10873,6 +10927,10 @@
     //
     RGraph.md5 = function (str)
     {
+        // Allow various data structures to be given as well as
+        // strings.
+        str = JSON.stringify(str);
+
         var hc="0123456789abcdef";
         function rh(n) {var j,s="";for(j=0;j<=3;j++) s+=hc.charAt((n>>(j*8+4))&0x0F)+hc.charAt((n>>(j*8))&0x0F);return s;}
         function ad(x,y) {var l=(x&0xFFFF)+(y&0xFFFF);var m=(x>>16)+(y>>16)+(l>>16);return (m<<16)|(l&0xFFFF);}
