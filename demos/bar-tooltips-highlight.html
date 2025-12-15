@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart with tooltips</h1>
+    
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [45,35,26,12,85,65,12],
+            options: {                
+                days: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                tooltips:'<span style="color: #ccc">Day:</span> <b>%{property:days[%{dataset}]} [%{value}%]</b>',
+                marginInner: 25,
+                tooltipsCss: {
+                    fontSize: '20pt'
+                },
+                title: 'A Bar chart with tooltips',
+                titleBold: true,
+                titleSize: 16,
+                backgroundImage: '../images/bg.png'
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

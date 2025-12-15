@@ -1,0 +1,47 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.line.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart with a background image</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>        
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [4,8,6,3,5,2,5,8,4,7,6,3,5,8,5,2,4,8,5,4,3],
+            options: {
+                xaxisLabels: [
+                    'A','B','C',
+                    'D','E','F',
+                    'G','H','~I',
+                    'J','K','L',
+                    'M','N','O',
+                    'P','Q','R',
+                    'S','T','U'
+                ],
+                titleBold: true,
+                titleSize: 16,
+                backgroundImage: '../images/bg.png',
+                backgroundGrid: false,
+                colors: ['red'],
+                marginTop: 60,
+                marginLeft: 55,
+                marginRight: 5,
+                spline: true
+            }
+        }).trace({frames: 30});
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
