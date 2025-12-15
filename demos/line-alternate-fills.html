@@ -87,11 +87,7 @@
                     borderBottom: '3px solid #999',
                     borderRight:  '3px solid #999'
                 },
-                tooltipsPointerOffsetx: 0,
-                tooltipsPointerOffsety: -1.75,
-                tooltipsPositionStatic: false,
-                tooltipsOffsetx: 0,
-                tooltipsOffsety: -5,
+                tooltipsPointerOffsety: -2,
                 tooltipsFormattedTableData: [
                     [
                         ['Time: ',  'Rich'],
@@ -202,19 +198,11 @@
                             obj.path('b');
                             
                             // Create a path from the first line
-                            RGraph.pathLine({
-                                context: obj.context,
-                                coords:  coordinates[0]
-                            });
+                            RGraph.pathLine(obj.context, coordinates[0]);
                             
                             // Add the second line to the path in reverse
                             // order
-                            RGraph.pathLine({
-                                context: obj.context,
-                                coords:  coordinates[1],
-                                moveto:  false,
-                                reverse: true
-                            });
+                            RGraph.pathLine(obj.context, coordinates[1], false, true);
                             
                             // Set the globalAlpha and then fill the shape
                             // that has just been drawn
@@ -239,16 +227,8 @@
             
                             // Draw both of the lines
                             obj.path('b');
-                                RGraph.pathLine({
-                                    context: obj.context,
-                                    coords:  coordinates[0]
-                                });
-                                RGraph.pathLine({
-                                    context: obj.context,
-                                    coords:  coordinates[1],
-                                    moveto:  false,
-                                    reverse: true
-                                });
+                                RGraph.pathLine(obj.context, coordinates[0]);
+                                RGraph.pathLine(obj.context, coordinates[1], false, true);
                             
                             // Set the globalAlpha and fill the shape in a green
                             // color
@@ -261,27 +241,31 @@
             
             
             
-            
                         //
-                        // Now, because the fills that were done above appear
-                        // a little bit over the lines, draw the lines again
-                        // along with the tickmarks.
+                        // Now, because the fills that were done
+                        // above appear a little bit over the
+                        // lines, draw the lines again along
+                        // with the tickmarks.
                         //
             
                         
-                        // Add a custom tickmark - just a regular circle
-                        // with the middle colored black
+                        // Add a custom tickmark - just a regular
+                        // circle with the middle colored black.
                         for (var i=0; i<2; ++i) {
                             
                             var coords = coordinates[i];
-                        
+
                             // Redraw the lines
-                            RGraph.drawLine({
-                                context:   obj.context,
-                                coords:    coords,
-                                linewidth: typeof obj.properties.linewidth === 'object' ? obj.properties.linewidth[i] : obj.properties.linewidth,
-                                stroke:    obj.properties.colors[i]
-                            });
+                            RGraph.drawLine(
+                                obj.context,
+                                coords,
+                                null,
+                                obj.properties.colors[i],
+                                (typeof obj.properties.linewidth === 'object'
+                                    ? obj.properties.linewidth[i]
+                                    : obj.properties.linewidth),
+                                null
+                            );
                             
                             
                             // Draw the tickmarks for the line if necessary

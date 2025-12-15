@@ -18,7 +18,7 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
-        <button onclick="RGraph.AJAX({url: '/getdata.html', callback: drawGraph})">Refresh the data</button>
+        <button onclick="RGraph.AJAX('/getdata.html', drawGraph)">Refresh the data</button>
     </div>
 
     <script>
@@ -26,7 +26,7 @@
         // Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html
         // If you view this in your browser you'll see that all it does is output a sequence of numbers.
         //
-        RGraph.AJAX({url: '/getdata.html', callback: drawGraph});
+        RGraph.AJAX('/getdata.html', drawGraph);
 
 
 

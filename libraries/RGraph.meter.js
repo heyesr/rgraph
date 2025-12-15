@@ -1267,8 +1267,8 @@
                     centerx,
                     centery,
                     angle + (((i == 0 || i == numLabels) && properties.border) ? (i == 0 ? 0.05 : -0.05) : 0),
-                    ((this.radius * 0.925) - (properties.textValign === 'bottom' ? 15 : 0) + offset
-                ));
+                    ((this.radius * 0.925) - (properties.textValign === 'bottom' ? 15 : 0) + offset)
+                );
                 
                 var angleStart = properties.anglesStart,
                     angleEnd   = properties.anglesEnd,
@@ -1677,7 +1677,7 @@
             obj.currentValue = obj.currentValue || obj.min;
 
             var opt      = arguments[0] || {};
-            var frames   = opt.frames || 30;
+            var frames   = opt.frames || 60;
             var frame    = 0;
             var diff     = obj.value - obj.currentValue;
             var step     = diff / frames;

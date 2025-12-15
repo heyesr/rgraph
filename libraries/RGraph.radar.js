@@ -227,6 +227,7 @@
             highlightStroke:            'gray',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightPointRadius:       2,
+            highlightStyle:             'point',
 
             scaleMax:              null,
             scaleDecimals:         0,
@@ -1204,11 +1205,7 @@
                 // into an array.
                 //
                 if (typeof properties.labels === 'string') {
-                    properties.labels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data[0].length,
-                        value:  properties.labels
-                    });
+                    properties.labels = RGraph.arrayPad([], this.data[0].length, properties.labels);
                 }
 
                 for (var i=0; i<properties.labels.length; ++i) {
@@ -1287,11 +1284,11 @@
                        bounding: bgBoxed,
                    boundingFill: bgFill,
                             tag: 'labels',
-                       cssClass: RGraph.getLabelsCSSClassName({
-                                     object: this,
-                                       name: 'labelsClass',
-                                      index: i
-                                 })
+                       cssClass: RGraph.getLabelsCSSClassName(
+                                     this,
+                                     'labelsClass',
+                                     i
+                                 )
                         });
                     }
                 }
@@ -1649,58 +1646,61 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            
-            
-            
-            
-            // Inverted highlighting
-            } else if (properties.highlightStyle === 'invert') {
-            
-                var radius = 25;
-
-                this.path(
-                    'b a % % % % % true',
-                    shape.x,shape.y,radius,4.72, -1.57
-                );
-
-               for (var a=0; a<=360; a+=(360 / this.data[0].length)) {
-                    this.path('a % % % % % false');
-                    this.context.arc(
-                        this.centerx,
-                        this.centery,
-                        this.radius,
-                        RGraph.toRadians(a) - RGraph.HALFPI,
-                        RGraph.toRadians(a) + 0.001 - RGraph.HALFPI,
-                        false
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                
+                
+                
+                
+                
+                // Inverted highlighting
+                } else if (obj.properties.highlightStyle === 'invert') {
+                
+                    var radius = 25;
+    
+                    obj.path(
+                        'b a % % % % % true',
+                        shape.x,shape.y,radius,4.72, -1.57
                     );
+    
+                   for (var a=0; a<=360; a+=(360 / obj.data[0].length)) {
+                        obj.path('a % % % % % false');
+                        obj.context.arc(
+                            obj.centerx,
+                            obj.centery,
+                            obj.radius,
+                            RGraph.toRadians(a) - RGraph.HALFPI,
+                            RGraph.toRadians(a) + 0.001 - RGraph.HALFPI,
+                            false
+                        );
+                    }
+                    
+                    // Go back to the top of the chart and then stroke/fill it
+                    obj.path(
+                        'a % % % % % false c f %',
+                        obj.centerx,obj.centery,obj.radius,0 - RGraph.HALFPI,0.001 - RGraph.HALFPI,
+                        obj.properties.highlightFill
+                    );
+                    
+                    // Draw the stroke around the circular cutout
+                    obj.path(
+                        'b a % % % % % false s %',
+                        shape.x,shape.y,radius,0,6.29,
+                        obj.properties.highlightStroke
+                    );
+    
+    
+    
+    
+    
+    
+    
+                } else {
+                    RGraph.Highlight.point(obj, shape);
                 }
-                
-                // Go back to the top of the chart and then stroke/fill it
-                this.path(
-                    'a % % % % % false c f %',
-                    this.centerx,this.centery,this.radius,0 - RGraph.HALFPI,0.001 - RGraph.HALFPI,
-                    properties.highlightFill
-                );
-                
-                // Draw the stroke around the circular cutout
-                this.path(
-                    'b a % % % % % false s %',
-                    shape.x,shape.y,radius,0,6.29,
-                    properties.highlightStroke
-                );
-
-
-
-
-
-
-
-            } else {
-                RGraph.Highlight.point(this, shape);
-            }
+            });
         };
 
 
@@ -2381,7 +2381,7 @@
             var obj      = this,
                 callback = arguments[1] ? arguments[1] : function () {},
                 opt      = arguments[0] ? arguments[0] : {},
-                frames   = opt.frames ? opt.frames : 30,
+                frames   = opt.frames ? opt.frames : 60,
                 frame    = 0;
 
             function iterator ()

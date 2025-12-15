@@ -868,19 +868,38 @@
             });
 
 
-
-
-
-            // MUST be the first thing done!
-            if (typeof properties.backgroundImage === 'string') {
-                RGraph.drawBackgroundImage(this);
-            }
-
-
             //
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+
+
+            if (typeof properties.backgroundImage === 'string') {
+
+                //
+                // Install clipping for the background image. This
+                // is not the main installation of clipping - it's
+                // just for the background image.
+                //
+                // The this.scale2 check means that clipping is only
+                // installed if that variable is present - ie this
+                // is most likely a redraw and the necessary things
+                // have been calculated so clipping can be
+                // installed correctly.
+                //
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.start(this, this.properties.clip);
+                }
+
+                RGraph.drawBackgroundImage(this);
+
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.end();
+                }
+            }
 
 
 
@@ -932,11 +951,7 @@
                 // into an array.
                 //
                 if (typeof properties.xaxisLabels === 'string') {
-                    properties.xaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: properties.xaxisLabelsCount,
-                        value:  properties.xaxisLabels
-                    });
+                    properties.xaxisLabels = RGraph.arrayPad([], properties.xaxisLabelsCount, properties.xaxisLabels);
                 }
 
                 for (var i=0; i<properties.xaxisLabels.length; ++i) {
@@ -1107,6 +1122,7 @@
             //
             // Draw an X scale
             //
+
             if (!properties.xaxisScaleMax) {
               
                 var xmax = 0;
@@ -1385,6 +1401,7 @@
         //
         this.drawMarks = function (i)
         {
+
             //
             //  Reset the coords array
             //
@@ -1393,6 +1410,7 @@
             //
             // Plot the values
             //
+
             var xmax          = properties.xaxisScaleMax;
             var default_color = properties.colorsDefault;
 
@@ -1401,7 +1419,7 @@
                 // This is here because tooltips are optional
                 //
                 var data_points = this.data[i];
-                
+// (i) Why was this here?
                 // Allow for null points
                 if (RGraph.isNullish(data_points[j])) {
                     continue;
@@ -1440,6 +1458,7 @@
         //
         this.drawMark = function (data_set_index, x, y, xMax, yMax, color, tooltip, coords, data, data_index)
         {
+
             var tickmarks = properties.tickmarksStyle,
                 tickSize  = properties.tickmarksSize,
                 xMin      = properties.xaxisScaleMin,
@@ -1575,7 +1594,7 @@
             // Draw the tickmark, but not for boxplots
             //
             if (properties.lineVisible && typeof y == 'number' && !y0 && !y1 && !y2 && !y3 && !y4) {
-    
+
                 if (tickmarks == 'circle') {
                     this.context.arc(x, yCoord, halfTickSize, 0, 6.28, 0);
                     this.context.fillStyle = color;
@@ -2375,76 +2394,80 @@
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            // Inverted highlight style
-            } else if (properties.highlightStyle === 'invert') {
-            
-                var tickmarksSize = properties.tickmarksSize;
-
-                // Clip to the graph area
-                this.path(
-                    'sa b r % % % % cl',
-                    properties.marginLeft - tickmarksSize, properties.marginTop - tickmarksSize,
-                    this.canvas.width - properties.marginLeft - properties.marginRight + tickmarksSize + tickmarksSize,
-                    this.canvas.height - properties.marginTop - properties.marginBottom + tickmarksSize + tickmarksSize
-                );
-
-                this.path(
-                    'b m % % a % % 25 4.71 4.72 true l % % l % % l % % l % % l % % c f %',
-                    shape.x, properties.marginTop,
-                    shape.x, shape.y,
-                    shape.x, 0,
-                    this.canvas.width, 0,
-                    this.canvas.width, this.canvas.height,
-                    0, this.canvas.height,
-                    0, 0,
-                    properties.highlightFill
-                );
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 
-                // Draw a border around the circular cutout
-                this.path(
-                    'b a % % 25 0 6.29 false s % rs',
-                    shape.x, shape.y,
-                    properties.highlightStroke
-                );
-            } else {
-
-                // Boxplot highlight
-                if (shape.height) {
-                    RGraph.Highlight.rect(this, shape);
+                // Inverted highlight style
+                } else if (obj.properties.highlightStyle === 'invert') {
                 
-                // Bubble chart highlight
-                } else if (
-                              RGraph.isNumber(this.properties.bubbleMin)
-                           && RGraph.isNumber(this.properties.bubbleMax)
-                           && RGraph.isNumber(this.properties.bubbleWidth)
-                           && RGraph.isArray(this.properties.bubbleData)
-                           && RGraph.isNumber(this.properties.bubbleData[shape.sequentialIndex])
-                          ) {
-                    var value = this.properties.bubbleData[shape.sequentialIndex];
-                    var min   = this.properties.bubbleMin;
-                    var max   = this.properties.bubbleMax;
-                    var width = this.properties.bubbleWidth;
-
-                    this.properties.highlightPointRadius = (value - min) / (max - min) * width / 2;
-                    RGraph.Highlight.point(this, shape);
-
-                // Point highlight
-                } else {
-                    var scaleFactor = RGraph.getScaleFactor(this);
+                    var tickmarksSize = obj.properties.tickmarksSize;
+    
+                    // Clip to the graph area.
+                    obj.path(
+                        'sa b r % % % % cl',
+                        obj.properties.marginLeft - tickmarksSize, obj.properties.marginTop - tickmarksSize,
+                        obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight + tickmarksSize + tickmarksSize,
+                        obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom + tickmarksSize + tickmarksSize
+                    );
+    
+                    obj.path(
+                        'b m % % a % % 25 4.71 4.72 true l % % l % % l % % l % % l % % c f %',
+                        shape.x, obj.properties.marginTop,
+                        shape.x, shape.y,
+                        shape.x, 0,
+                        obj.canvas.width, 0,
+                        obj.canvas.width, obj.canvas.height,
+                        0, obj.canvas.height,
+                        0, 0,
+                        obj.properties.highlightFill
+                    );
                     
-                    this.properties.highlightPointRadius = this.properties.tickmarksSize / scaleFactor;
-                    RGraph.Highlight.point(this, shape);
+                    // Draw a border around the circular cutout.
+                    obj.path(
+                        'b a % % 25 0 6.29 false s % rs',
+                        shape.x, shape.y,
+                        obj.properties.highlightStroke
+                    );
+                } else {
+    
+                    // Boxplot highlight
+                    if (shape.height) {
+                        RGraph.Highlight.rect(obj, shape);
+                    
+                    // Bubble chart highlight
+                    } else if (
+                                  RGraph.isNumber(obj.properties.bubbleMin)
+                               && RGraph.isNumber(obj.properties.bubbleMax)
+                               && RGraph.isNumber(obj.properties.bubbleWidth)
+                               && RGraph.isArray(obj.properties.bubbleData)
+                               && RGraph.isNumber(obj.properties.bubbleData[shape.sequentialIndex])
+                              ) {
+                        var value = obj.properties.bubbleData[shape.sequentialIndex];
+                        var min   = obj.properties.bubbleMin;
+                        var max   = obj.properties.bubbleMax;
+                        var width = obj.properties.bubbleWidth;
+    
+                        obj.properties.highlightPointRadius = (value - min) / (max - min) * width / 2;
+                        RGraph.Highlight.point(obj, shape);
+    
+                    // Point highlight
+                    } else {
+                        var scaleFactor = RGraph.getScaleFactor(obj);
+                        
+                        obj.properties.highlightPointRadius = obj.properties.tickmarksSize / scaleFactor;
+                        RGraph.Highlight.point(obj, shape);
+                    }
                 }
-            }
+            });
         };
 
 
@@ -3011,11 +3034,8 @@
         //
         //@param dataset The index of the dataset to use
         //
-        this.drawTrendline = function  ()
+        this.drawTrendline = function  (dataset)
         {
-            var args = RGraph.getArgs(arguments, 'dataset');
-
-
             var color     = properties.trendlineColor,
                 linewidth = properties.trendlineLinewidth,
                 margin    = properties.trendlineMargin;
@@ -3029,40 +3049,40 @@
 
 
             // handle the options being arrays
-            if (typeof color === 'object' && color[args.dataset]) {
-                color = color[args.dataset];
+            if (typeof color === 'object' && color[dataset]) {
+                color = color[dataset];
             } else if (typeof color === 'object') {
                 color = 'gray';
             }
             
-            if (typeof linewidth === 'object' && typeof linewidth[args.dataset] === 'number') {
-                linewidth = linewidth[args.dataset];
+            if (typeof linewidth === 'object' && typeof linewidth[dataset] === 'number') {
+                linewidth = linewidth[dataset];
             } else if (typeof linewidth === 'object') {
                 linewidth = 1;
             }
             
-            if (typeof margin === 'object' && typeof margin[args.dataset] === 'number') {
-                margin = margin[args.dataset];
+            if (typeof margin === 'object' && typeof margin[dataset] === 'number') {
+                margin = margin[dataset];
             } else if (typeof margin === 'object'){
                 margin = 25;
             }
             
 
             // Step 1: Calculate the mean values of the X coords and the Y coords
-            for (var i=0,totalX=0,totalY=0; i<this.data[args.dataset].length; ++i) {
-                totalX += this.data[args.dataset][i][0];
-                totalY += this.data[args.dataset][i][1];
+            for (var i=0,totalX=0,totalY=0; i<this.data[dataset].length; ++i) {
+                totalX += this.data[dataset][i][0];
+                totalY += this.data[dataset][i][1];
             }
             
-            var averageX = totalX / this.data[args.dataset].length;
-            var averageY = totalY / this.data[args.dataset].length;
+            var averageX = totalX / this.data[dataset].length;
+            var averageY = totalY / this.data[dataset].length;
 
             // Step 2: Calculate the slope of the line
             
             // a: The X/Y values minus the average X/Y value
-            for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[args.dataset].length; ++i) {
-                xCoordMinusAverageX[i] = this.data[args.dataset][i][0] - averageX;
-                yCoordMinusAverageY[i] = this.data[args.dataset][i][1] - averageY;
+            for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[dataset].length; ++i) {
+                xCoordMinusAverageX[i] = this.data[dataset][i][0] - averageX;
+                yCoordMinusAverageY[i] = this.data[dataset][i][1] - averageY;
                 
                 // b. Multiply the averages
                 valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
@@ -3103,21 +3123,21 @@
 
             // Clip the canvas again so that the line doesn't look overly long
             // (use the minimum an maximum points for this)
-            for (var i=0,xValues=[],yValues=[]; i<this.data[args.dataset].length; ++i) {
-                if (typeof this.data[args.dataset][i][0] === 'number') {
-                    xValues.push(this.data[args.dataset][i][0]);
+            for (var i=0,xValues=[],yValues=[]; i<this.data[dataset].length; ++i) {
+                if (typeof this.data[dataset][i][0] === 'number') {
+                    xValues.push(this.data[dataset][i][0]);
                 }
             
-                if (typeof this.data[args.dataset][i][1] === 'number') {
-                    yValues.push(this.data[args.dataset][i][1]);
+                if (typeof this.data[dataset][i][1] === 'number') {
+                    yValues.push(this.data[dataset][i][1]);
                 }
             }
 
             // These are the minimum and maximum X/Y values for this dataset
-            var x1 = RGraph.arrayMin({array: xValues});
-            var y1 = RGraph.arrayMin({array: yValues});
-            var x2 = RGraph.arrayMax({array: xValues});
-            var y2 = RGraph.arrayMax({array: yValues});
+            var x1 = RGraph.arrayMin(xValues);
+            var y1 = RGraph.arrayMin(yValues);
+            var x2 = RGraph.arrayMax(xValues);
+            var y2 = RGraph.arrayMax(yValues);
             
             
             // Convert the X/Y values into coordinates on the canvas
@@ -3160,7 +3180,7 @@
             );
             
             // Store the coordinates of the trendline on the object
-            this.coordsTrendline[args.dataset] = [
+            this.coordsTrendline[dataset] = [
                 [x1, y1],
                 [x2, y2]
             ];
@@ -3192,7 +3212,7 @@
             var obj       = this,
                 callback  = arguments[2],
                 opt       = arguments[0] || {},
-                frames    = opt.frames || 30,
+                frames    = opt.frames || 60,
                 frame     = 0,
                 callback  = arguments[1] || function () {}
 
@@ -3247,7 +3267,7 @@
             var obj       = this,
                 callback  = arguments[2],
                 opt       = arguments[0] || {},
-                frames    = opt.frames || 15,
+                frames    = opt.frames || 60,
                 frame     = 0,
                 callback  = arguments[1] || function () {},
                 originX   = this.properties.xaxisScaleMax / 2,

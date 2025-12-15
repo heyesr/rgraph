@@ -514,18 +514,19 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
+            RGraph.clipTo.callback(this, function (obj)
+            {
                 if (typeof properties.highlightStyle === 'function') {
                     (properties.highlightStyle)(shape);
                 } else {
                     //path(this.context, ['b','a',this.centerx, this.centery, this.radius + 0.5, 0, RGraph.TWOPI, false,'f',properties.highlightFill,'s',properties.highlightStroke]);
-                    this.path(
+                    obj.path(
                         'b a % % % % % false f % s %',
-                        this.centerx,this.centery,this.radius + 0.5,0,RGraph.TWOPI,
+                        obj.centerx,obj.centery,obj.radius + 0.5,0,RGraph.TWOPI,
                         properties.highlightFill,properties.highlightStroke
                     );
                 }
-            }
+            });
         };
 
 

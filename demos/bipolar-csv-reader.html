@@ -22,7 +22,7 @@ w<!DOCTYPE html >
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the first three columns to use as labels and the left/right data
             var labels = csv.column(0),
@@ -37,7 +37,7 @@ w<!DOCTYPE html >
                     yaxisLabels:  labels
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

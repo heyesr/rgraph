@@ -750,11 +750,7 @@
                 // into an array.
                 //
                 if (typeof properties.labels === 'string') {
-                    properties.labels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.coords.length + 1,
-                        value:  properties.labels
-                    });
+                    properties.labels = RGraph.arrayPad([], this.coords.length + 1,properties.labels);
                 }
 
                 //
@@ -843,11 +839,11 @@
                         boundingFill:   properties.labelsBackground,
                         boundingStroke: 'rgba(0,0,0,0)',
                         tag:            'labels',
-                        cssClass:       RGraph.getLabelsCSSClassName({
-                                          object: this,
-                                            name: 'labelsClass',
-                                           index: j
-                                        })
+                        cssClass:       RGraph.getLabelsCSSClassName(
+                                           this,
+                                           'labelsClass',
+                                           j
+                                        )
                     });
 
 
@@ -904,11 +900,11 @@
                         boundingFill:   'rgba(255,255,255,0.7)',
                         boundingStroke: 'rgba(0,0,0,0)',
                         tag:            'labels',
-                        cssClass:       RGraph.getLabelsCSSClassName({
-                                          object: this,
-                                            name: 'labelsClass',
-                                           index: j
-                                        })
+                        cssClass:       RGraph.getLabelsCSSClassName(
+                                            this,
+                                            'labelsClass',
+                                            j
+                                        )
                     });
     
                     if (properties.labelsSticks) {
@@ -1002,48 +998,49 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-            
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                     return;
                 }
 
-            if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        
-                        var coords = this.coords[i];
-
-                        this.path(
-                            'b m % % l % % l % % l % % c s % f %',
-                            coords[0] - 0.5, coords[1] - 0.5,
-                            coords[2] + 0.5, coords[3] - 0.5,
-                            coords[4] + 0.5, coords[5] + 0.5,
-                            coords[6] - 0.5, coords[7] + 0.5,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+                if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            
+                            var coords = obj.coords[i];
+    
+                            obj.path(
+                                'b m % % l % % l % % l % % c s % f %',
+                                coords[0] - 0.5, coords[1] - 0.5,
+                                coords[2] + 0.5, coords[3] - 0.5,
+                                coords[4] + 0.5, coords[5] + 0.5,
+                                coords[6] - 0.5, coords[7] + 0.5,
+                                obj.properties.highlightStroke,
+                                obj.properties.highlightFill
+                            );
+                        }
                     }
+                    
+                    return;
                 }
-                
-                return;
-            }
 
 
 
                 var coords = shape.coords;
                 
-                this.path(
+                obj.path(
                     'b m % % l % % l % % l % % c s % f %',
                     coords[0] - 0.5, coords[1] - 0.5,
                     coords[2] + 0.5, coords[3] - 0.5,
                     coords[4] + 0.5, coords[5] + 0.5,
                     coords[6] - 0.5, coords[7] + 0.5,
-                    properties.highlightStroke,
-                    properties.highlightFill
+                    obj.properties.highlightStroke,
+                    obj.properties.highlightFill
                 );
-            }
+            });
         };
 
 
@@ -1470,7 +1467,7 @@
             var obj      = this,
                 canvas   = this.canvas,
                 opt      = arguments[0] ? arguments[0] : {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 callback = arguments[1] ? arguments[1] : function () {};
 

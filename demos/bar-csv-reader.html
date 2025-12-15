@@ -32,7 +32,7 @@
     
     <script>
         //new RGraph.CSV('id:csvData', function (csv)
-        new RGraph.CSV({url:'/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the first row of the CSV file, starting at the second column
             var data = csv.column(3);
@@ -61,7 +61,7 @@
                     colors: ['Gradient(#DDF:#01B4FF)']
                 }                    
             }).grow();
-        }});
+        });
     </script>
     
     <script>showSource()</script>

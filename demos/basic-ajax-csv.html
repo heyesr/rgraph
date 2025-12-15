@@ -25,7 +25,7 @@
         // Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html
         // If you view this in your browser you'll see that all it does is output a sequence of numbers.
         //
-        RGraph.AJAX.getCSV({url: '/getdata.html', callback: drawGraph});
+        RGraph.AJAX.getCSV('/getdata.html', drawGraph);
 
         //
         // This is the AJAX callback function. The AJAX getCSV() converts the strings to numbers for you.

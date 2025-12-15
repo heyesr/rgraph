@@ -26,10 +26,10 @@
         // Initiate the AJAX request. The AJAX page is: http://www.rgraph.net/getdata.html
         // If you view this in your browser you'll see that all it does is output a sequence of numbers.
         //
-        RGraph.AJAX.getNumber({url: '/getdata.html', callback: function (num)
+        RGraph.AJAX.getNumber('/getdata.html', function (num)
         {
             drawGraph(num);
-        }});
+        });
 
 
 

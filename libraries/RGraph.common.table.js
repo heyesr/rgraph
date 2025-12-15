@@ -22,10 +22,8 @@
     // This function has been taken out of the RGraph.common.core.js file to
     // enable the table reader to work standalone.
     //
-    RGraph.HTMLTable.AJAX = function ()
+    RGraph.HTMLTable.AJAX = function (url,callback)
     {
-        var args = RGraph.HTMLTable.getArgs(arguments, 'url,callback');
-
         // Mozilla, Safari, ...
         if (win.XMLHttpRequest) {
             var httpRequest = new XMLHttpRequest();
@@ -38,13 +36,13 @@
         httpRequest.onreadystatechange = function ()
         {
             if (this.readyState == 4 && this.status == 200) {
-                this.__user_callback__ = args.callback;
+                this.__user_callback__ = callback;
 
                 this.__user_callback__(this.responseText);
             }
         }
 
-        httpRequest.open('GET', args.url, true);
+        httpRequest.open('GET', url, true);
         httpRequest.send();
     };
 
@@ -58,15 +56,13 @@
     //
     // Use the AJAX function above to fetch a string
     //
-    RGraph.HTMLTable.AJAX.getString = function ()
+    RGraph.HTMLTable.AJAX.getString = function (url, callback)
     {
-        var args = RGraph.HTMLTable.getArgs(arguments, 'url,callback');
-
-        RGraph.HTMLTable.AJAX(args.url, function ()
+        RGraph.HTMLTable.AJAX(url, function ()
         {
             var str = String(this.responseText);
 
-            args.callback(str);
+            callback(str);
         });
     };
 
@@ -77,7 +73,7 @@
 
 
 
-    RGraph.HTMLTable = function ()
+    RGraph.HTMLTable = function (id, callback)
     {
         //
         // The fetch function that starts everythjing going
@@ -312,72 +308,16 @@
 
 
 
-        var args = RGraph.HTMLTable.getArgs(arguments, 'id,callback');
 
         //
         // Some default values
         //
-        this.id       = args.id.replace(/^#/,'');
-        this.callback = args.callback;
+        this.id       = id.replace(/^#/,'');
+        this.callback = callback;
         this.data     = [];
 
         this.fetch();
     };
-
-
-
-
-
-
-
-
-    //
-    // This function allows both object based arguments to functions
-    // and also regular arguments as well.
-    //
-    // You can call it from inside a function like this:
-    //
-    // args = RGraph.HTMLTable.getArgs(arguments, 'object,id,foo,bar');
-    //
-    // So you're passing it the arguments object and a comma seperated list of names
-    // for the arguments.
-    //
-    // @param array args   The arguments object that you get when inside a function
-    // @param string names A comma seperated list of desired names for the arguments
-    //                     eg: 'object,color,size'
-    //
-    RGraph.HTMLTable.getArgs = function (args, names)
-    {
-        var ret   = {};
-        var count = 0;
-        names     = names.trim().split(/ *, */);
-
-        if (   args
-            && args[0]
-            && args.length === 1
-            && typeof args[0][names[0]] !== 'undefined') {
-            
-            for (var i=0; i<names.length; ++i) {
-                if (typeof args[0][names[i]] === 'undefined') {
-                    args[0][names[i]] = null;
-                }
-            }
-
-            return args[0];
-        } else {
-            for (var i in names) {
-                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
-                
-                count += 1;
-            }
-        }
-
-        return ret;
-    };
-
-
-
-
 
 
 

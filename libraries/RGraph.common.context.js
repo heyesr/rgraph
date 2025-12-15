@@ -24,13 +24,9 @@
     // @param array  menuitems The context menu menuitems
     // @param object e         The event object
     //
-    RGraph.contextMenu = function ()
+    RGraph.contextMenu = function (obj, menuitems, e)
     {
-        var args      = RGraph.getArgs(arguments, 'object,menuitems,event'),
-            obj       = args.object,
-            menuitems = args.menuitems,
-            e         = args.event,
-            canvas    = obj.canvas;
+        var canvas = obj.canvas;
 
         //
         // Fire the custom RGraph event onbeforecontextmenu
@@ -311,11 +307,8 @@
     // Shows the context menu after making a few checks - not opera (doesn't support oncontextmenu,
     // not safari (tempermentality), not chrome (hmmm)
     //
-    RGraph.showContext = function ()
+    RGraph.showContext = function (obj)
     {
-        var args = RGraph.getArgs(arguments, 'object'),
-            obj  = args.object;
-
         RGraph.hidePalette();
 
         if (obj.get('contextmenu') && obj.get('contextmenu').length) {
@@ -367,13 +360,8 @@
     // @param object obj  The graph object
     // @param object menu The context menu
     //
-    RGraph.contextMenu_submenu = function ()
+    RGraph.contextMenu_submenu = function (obj, menuitems, parentMenuItem)
     {
-        var args           = RGraph.getArgs(arguments, 'object,menuitems,parentMenuItem'),
-            obj            = args.object,
-            menuitems      = args.menuitems,
-            parentMenuItem = args.parentMenuItem;
-
         RGraph.hideContextSubmenu();
 
         var canvas  = obj.canvas;

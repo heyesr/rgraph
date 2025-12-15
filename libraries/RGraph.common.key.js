@@ -18,9 +18,16 @@
     //
     // Draws the graph key (used by various graphs)
     //
-    RGraph.drawKey = function ()
+    RGraph.drawKey = function (obj,key,colors)
     {
-        var args = RGraph.getArgs(arguments, 'object,key,colors');
+        // This is here so that the "args." doesn't have to taken out of
+        // the whole file. Because there's a lot of references to it and
+        // bugs would no doubt be caused. :-(
+        var args = {
+            object: obj,
+            key:    key,
+            colors: colors
+        };
 
         if (!args.key) {
             return;
@@ -276,14 +283,14 @@
 
                         args.object.context.beginPath();
 
-                        RGraph.roundedRect({
-                            context: args.object.context,
-                                  x: Math.round(hpos),
-                                  y: Math.round(vpos),
-                              width: width - (5 * scaleFactor),
-                             height: (5 * scaleFactor) + ( (text_size + (5 * scaleFactor) ) * RGraph.getKeyLength(key)),
-                             radius: (4 * scaleFactor)
-                        });
+                        RGraph.roundedRect(
+                            args.object.context,
+                            Math.round(hpos),
+                            Math.round(vpos),
+                            width - (5 * scaleFactor),
+                            (5 * scaleFactor) + ( (text_size + (5 * scaleFactor) ) * RGraph.getKeyLength(key)),
+                            (4 * scaleFactor)
+                        );
 
                         args.object.context.strokeStyle = strokestyle;
                         args.object.context.stroke();
@@ -608,14 +615,14 @@
 
                     if (properties.keyRounded) {
 
-                        RGraph.roundedRect({
-                            context: args.object.context,
-                                  x: hpos,
-                                  y: vpos - vmargin - (scaleFactor * 4),
-                              width: length,
-                             height: text_size + vmargin + vmargin,
-                             radius:  2 * scaleFactor
-                        });
+                        RGraph.roundedRect(
+                            args.object.context,
+                            hpos,
+                            vpos - vmargin - (scaleFactor * 4),
+                            length,
+                            text_size + vmargin + vmargin,
+                             2 * scaleFactor
+                        );
                     } else {
                         args.object.context.rect(
                             hpos,

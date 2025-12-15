@@ -534,17 +534,18 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
-                    this.path(
+                    obj.path(
                         'b r % % % % f % s %',
-                        this.coords[0][0],this.coords[0][1],this.coords[0][2],this.coords[0][3],
-                        properties.highlightFill,properties.highlightStroke
+                        obj.coords[0][0],obj.coords[0][1],obj.coords[0][2],obj.coords[0][3],
+                        obj.properties.highlightFill, obj.properties.highlightStroke
                     );
                 }
-            }
+            }); // End of clipping callback.
         };
 
 

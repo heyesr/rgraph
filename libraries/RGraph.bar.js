@@ -691,8 +691,28 @@
             }
 
             // MUST be the THIRD thing done!
-            if (typeof properties.backgroundImage === 'string') {
+            if (typeof properties.backgroundImage === 'string' && properties.backgroundImage) {
+
+                //
+                // Install clipping for the background image. This
+                // is not the main installation of clipping - it's
+                // just for the background image.
+                //
+                // The this.scale2 check means that clipping is only
+                // installed if that variable is present - ie this
+                // is most likely a redraw and the necessary things
+                // have been calculated so clipping can be
+                // installed correctly.
+                //
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.start(this, this.properties.clip);
+                }
+
                 RGraph.drawBackgroundImage(this);
+
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.end();
+                }
             }
 
 
@@ -1090,11 +1110,11 @@
             //
             if (properties.xaxisLabels && properties.xaxisLabels.length) {
                 if (typeof properties.xaxisLabels === 'string') {
-                    properties.xaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data.length,
-                        value:  properties.xaxisLabels
-                    });
+                    properties.xaxisLabels = RGraph.arrayPad(
+                        [],
+                        this.data.length,
+                        properties.xaxisLabels
+                    );
                 }
 
                 // Label substitution
@@ -1361,18 +1381,18 @@
                         } else if (variant == 'bar' || variant == '3d' || variant == 'glass' || variant == 'bevel') {
 
                             if (variant == 'glass') {
-                                RGraph.roundedRect({
-                                    context: this.context,
-                                          x: x + hmargin,
-                                          y: y,
-                                      width: barWidth,
-                                     height: height,
-                                     radius: RGraph.isNumber(properties.cornersRoundRadius) ? properties.cornersRoundRadius : 5,
-                                    roundtl: this.data[i] > 0,
-                                    roundtr: this.data[i] > 0,
-                                    roundbl: this.data[i] < 0,
-                                    roundbr: this.data[i] < 0
-                                });
+                                RGraph.roundedRect(
+                                    this.context,
+                                    x + hmargin,
+                                    y,
+                                    barWidth,
+                                    height,
+                                    RGraph.isNumber(properties.cornersRoundRadius) ? properties.cornersRoundRadius : 5,
+                                    this.data[i] > 0,
+                                    this.data[i] > 0,
+                                    this.data[i] < 0,
+                                    this.data[i] < 0
+                                );
                                 this.context.stroke();
                                 this.context.fill();
                             } else {
@@ -2437,66 +2457,70 @@ this.context.lineTo(
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape.
         //
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            // Highlight all of the rects except this one - essentially
-            // an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b r % % % % s % f %',
-                            this.coords[i][0],this.coords[i][1],this.coords[i][2],this.coords[i][3],
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
-                    }
-                }
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 
-                // Redraw the X axis so the highlight doesn't
-                // appear over the X axis. But not the X axis
-                // labels or the title. This is new in
-                // September 2024.
-                RGraph.drawXAxis(this, {
-                    labels: false,
-                     title: false
-                });
-            } else {
-                if (properties.grouping === 'stacked' && shape.index === 0 && properties.xaxisPosition === 'bottom') {
-                
-                    this.context.beginPath();
-                    this.context.strokeStyle = properties.highlightStroke;
-                    this.context.fillStyle   = properties.highlightFill;
-                    
-                    if (properties.corners === 'round') {
-                        this.roundedCornersRect(shape.x,shape.y,shape.width,shape.height);
-                    } else {
-                        this.context.rect(shape.x, shape.y, shape.width, shape.height);
+                // Highlight all of the rects except this one - essentially
+                // an inverted highlight
+                } else if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            obj.path(
+                                'b r % % % % s % f %',
+                                obj.coords[i][0],pbj.coords[i][1],obj.coords[i][2],obj.coords[i][3],
+                                obj.properties.highlightStroke,
+                                obj.properties.highlightFill
+                            );
+                        }
                     }
-
-                    this.context.stroke();
-                    this.context.fill();
-                } else {
-                    // Add the new highlight
-                    RGraph.Highlight.rect(this, shape);
                     
                     // Redraw the X axis so the highlight doesn't
                     // appear over the X axis. But not the X axis
                     // labels or the title. This is new in
                     // September 2024.
-                    RGraph.drawXAxis(this, {
+                    RGraph.drawXAxis(obj, {
                         labels: false,
                          title: false
                     });
+                } else {
+                    if (properties.grouping === 'stacked' && shape.index === 0 && obj.properties.xaxisPosition === 'bottom') {
+                    
+                        obj.context.beginPath();
+                        obj.context.strokeStyle = obj.properties.highlightStroke;
+                        obj.context.fillStyle   = obj.properties.highlightFill;
+                        
+                        if (obj.properties.corners === 'round') {
+                            obj.roundedCornersRect(shape.x,shape.y,shape.width,shape.height);
+                        } else {
+                            obj.context.rect(shape.x, shape.y, shape.width, shape.height);
+                        }
+    
+                        obj.context.stroke();
+                        obj.context.fill();
+                    } else {
+                        // Add the new highlight
+                        RGraph.Highlight.rect(obj, shape);
+                        
+                        // Redraw the X axis so the highlight doesn't
+                        // appear over the X axis. But not the X axis
+                        // labels or the title. This is new in
+                        // September 2024.
+                        RGraph.drawXAxis(obj, {
+                            labels: false,
+                             title: false
+                        });
+                    }
                 }
-            }
+            }); // End of clipping callback function.
         };
 
 
@@ -2677,7 +2701,10 @@ this.context.lineTo(
 
                 // Allow for JSON gradients
                 if (color.match(/^gradient\(({.*})\)$/i)) {
-                    return RGraph.parseJSONGradient({object: this, def: RegExp.$1});
+                    return RGraph.parseJSONGradient({
+                        object: this,
+                           def: RegExp.$1
+                    });
                 }
 
 
@@ -3407,7 +3434,7 @@ this.context.lineTo(
 
             // Callback
             var opt         = arguments[0] || {},
-                frames      = opt.frames || 30,
+                frames      = opt.frames || 60,
                 frame       = 0,
                 callback    = arguments[1] || function () {},
                 obj         = this,

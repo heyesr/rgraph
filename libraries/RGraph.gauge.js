@@ -995,11 +995,7 @@
                     // If the labelsSpecific option is a string then turn it
                     // into an array.
                     if (typeof properties.labelsSpecific === 'string' ) {
-                        properties.labelsSpecific = RGraph.arrayPad({
-                            array:  [],
-                            length: properties.labelsCount,
-                            value:  properties.labelsSpecific
-                        });
+                        properties.labelsSpecific = RGraph.arrayPad([], properties.labelsCount, properties.labelsSpecific);
                     }
 
 
@@ -1088,11 +1084,7 @@
                             valign: vAlign,
                                tag:    properties.labelsSpecific ? 'labels.specific' : 'labels',
                           cssClass:   properties.labelsSpecific
-                                    ? RGraph.getLabelsCSSClassName({
-                                      object: this,
-                                        name: 'labelsClass',
-                                       index: i
-                                      })
+                                    ? RGraph.getLabelsCSSClassName(this, 'labelsClass', i)
                                     : ''
                         });
                     }
@@ -1205,13 +1197,13 @@
 
             // Move the Y coord up if there's a subtitle
             if (typeof properties.titleTopSubtitle === 'string' || typeof properties.titleTopSubtitle === 'number') {
-                var titleTopSubtitleDim = RGraph.measureText({
-                    bold:   properties.titleTopSubtitleBold,
-                    italic: properties.titleTopSubtitleItalic,
-                    size:   properties.titleTopSubtitleSize,
-                    font:   properties.titleTopSubtitleFont,
-                    text:   'Mg'
-                });
+                var titleTopSubtitleDim = RGraph.measureText(
+                    'Mg',
+                    properties.titleTopSubtitleItalic,
+                    properties.titleTopSubtitleBold,
+                    properties.titleTopSubtitleFont,
+                    properties.titleTopSubtitleSize
+                );
             
                 y -= titleTopSubtitleDim[1];
             }
@@ -1904,7 +1896,7 @@
             var obj      = this,
                 opt      = arguments[0] ? arguments[0] : {},
                 callback = arguments[1] ? arguments[1] : function () {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0;
 
             // Don't want any strings

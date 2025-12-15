@@ -1163,46 +1163,49 @@
         //
         this.highlight = function (shape)
         {
-            // First check for inverted highlighting
-            if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.rect(
-                            this.context,
-                            this.coords[i][0] - 0.5,
-                            this.coords[i][1] - 0.5,
-                            this.coords[i][2] + 1,
-                            this.coords[i][3] + 1,
-                            {
-                             fill:   this.properties.highlightFill,
-                             stroke: this.properties.highlightStroke,
-                             begin:  true,
-                             radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
-                            }
-                        );
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                // First check for inverted highlighting
+                if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            obj.rect(
+                                obj.context,
+                                obj.coords[i][0] - 0.5,
+                                obj.coords[i][1] - 0.5,
+                                obj.coords[i][2] + 1,
+                                obj.coords[i][3] + 1,
+                                {
+                                 fill:   obj.properties.highlightFill,
+                                 stroke: obj.properties.highlightStroke,
+                                 begin:  true,
+                                 radius: obj.properties.corners === 'round' ? obj.properties.cornersRoundRadius : 0
+                                }
+                            );
+                        }
                     }
+                    
+                    return;
                 }
-                
-                return;
-            }
-
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            } else {
-                this.rect(
-                    this.context,
-                    shape.x,
-                    shape.y,
-                    shape.width,
-                    shape.height,
-                    {
-                     fill:   this.properties.highlightFill,
-                     stroke: this.properties.highlightStroke,
-                     begin:  true,
-                     radius: this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0
-                    }
-                );
-            }
+    
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                } else {
+                    obj.rect(
+                        obj.context,
+                        shape.x,
+                        shape.y,
+                        shape.width,
+                        shape.height,
+                        {
+                         fill:   obj.properties.highlightFill,
+                         stroke: obj.properties.highlightStroke,
+                         begin:  true,
+                         radius: obj.properties.corners === 'round' ? obj.properties.cornersRoundRadius : 0
+                        }
+                    );
+                }
+            });
         };
 
 
@@ -1628,7 +1631,7 @@
                 callback        = arguments[1] ? arguments[1] : function () {},
                 canvas          = obj.canvas,
                 context         = obj.context,
-                numFrames       = opt.frames || 30,
+                numFrames       = opt.frames || 60,
                 frame           = 0;
                 original_events = window.structuredClone(obj.data);
 

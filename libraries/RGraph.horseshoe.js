@@ -821,12 +821,7 @@
                 var mouseX = value.offsetX,
                     mouseY = value.offsetY;
     
-                var angle = RGraph.getAngleByXY({
-                    cx: this.centerx,
-                    cy: this.centery,
-                    x:  mouseX,
-                    y:  mouseY
-                });
+                var angle = RGraph.getAngleByXY(this.centerx, this.centery, mouseX, mouseY);
             }
 
             if (value === this.max) angle -= 0.00001;
@@ -1003,7 +998,7 @@
             obj.currentValue = obj.currentValue || obj.min;
 
             var opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 diff     = obj.value - obj.currentValue,
                 step     = diff / frames,

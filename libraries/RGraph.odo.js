@@ -1591,7 +1591,7 @@
 
             var obj       = this;
             var opt       = arguments[0] || {};
-            var frames    = opt.frames || 30;
+            var frames    = opt.frames || 60;
             var frame     = 0;
             var current   = this.currentValue || 0;
             var origValue = Number(obj.currentValue);

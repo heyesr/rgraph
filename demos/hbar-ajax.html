@@ -21,7 +21,7 @@
    </div>
 
    <script>
-       RGraph.AJAX.getCSV({url: '/getdata.html', callback: function (data)
+       RGraph.AJAX.getCSV('/getdata.html', function (data)
        {
             new RGraph.HBar({
                 id: 'cvs',
@@ -37,7 +37,7 @@
                     marginLeft: 100
                 }
             }).draw();
-       }});
+       });
    </script>
 
     <script>showSource()</script>

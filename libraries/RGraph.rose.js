@@ -1425,11 +1425,7 @@
                 //
 
                 if (typeof properties.labels === 'string') {
-                    properties.labels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data.length,
-                        value:  properties.labels
-                    });
+                    properties.labels = RGraph.arrayPad([], this.data.length, properties.labels);
                 }
 
                 for (var i=0; i<properties.labels.length; ++i) {
@@ -1755,11 +1751,7 @@
                     halign: halign,
                     valign: 'center',
                     tag:    'labels',
-                  cssClass: RGraph.getLabelsCSSClassName({
-                              object: this,
-                                name: 'labelsClass',
-                               index: i
-                            })
+                  cssClass: RGraph.getLabelsCSSClassName(this, 'labelsClass', i)
                 });
             }
         };
@@ -1973,49 +1965,42 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-
-                if (typeof properties.highlightStyle === 'function'){
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function'){
+                    (obj.properties.highlightStyle)(shape);
                     return;
                 }
 
 
-
-
-
-
-
-
-
                 // Highlight all of the rects except this one - essentially an inverted highlight
-                if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                    for (var i=0; i<this.angles.length; ++i) {
+                if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.angles.length; ++i) {
 
                         if (i !== shape.sequentialIndex) {
 
                             // Add the new segment highlight
-                            this.path(
+                            obj.path(
                                 'b m % % a % % % % % false',
-                                this.angles[i][4], this.angles[i][5],this.angles[i][4], this.angles[i][5],this.angles[i][3],this.angles[i][0], this.angles[i][1]
+                                obj.angles[i][4], obj.angles[i][5],obj.angles[i][4], obj.angles[i][5],obj.angles[i][3],obj.angles[i][0], obj.angles[i][1]
                             );
             
-                            if (this.angles[i][2] > 0) {
-                                this.path(
+                            if (obj.angles[i][2] > 0) {
+                                obj.path(
                                     'a % % % % % true',
-                                    this.angles[i][4], this.angles[i][5],this.angles[i][2],this.angles[i][1], this.angles[i][0]
+                                    obj.angles[i][4], obj.angles[i][5],obj.angles[i][2],obj.angles[i][1], obj.angles[i][0]
                                 );
 
                             } else {
-                                this.path(
+                                obj.path(
                                     'l % %',
-                                    this.angles[i][4], this.angles[i][5]
+                                    obj.angles[i][4], obj.angles[i][5]
                                 );
                             }
                             
-                            this.path(
+                            obj.path(
                                 'c s % f %',
-                                properties.highlightStroke, properties.highlightFill
+                                obj.properties.highlightStroke, obj.properties.highlightFill
                             );
                         }
                     }
@@ -2025,28 +2010,17 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
                 // Add the new segment highlight
-                this.path('b a % % % % % false',shape.x, shape.y, shape.radiusEnd, shape.angleStart, shape.angleEnd);
+                obj.path('b a % % % % % false',shape.x, shape.y, shape.radiusEnd, shape.angleStart, shape.angleEnd);
 
                 if (shape.radiusStart > 0) {
-                    this.path('a % % % % % true',shape.x, shape.y, shape.radiusStart, shape.angleEnd, shape.angleStart);
+                    obj.path('a % % % % % true',shape.x, shape.y, shape.radiusStart, shape.angleEnd, shape.angleStart);
                 } else {
-                    this.path('l % %',shape.x, shape.y);
+                    obj.path('l % %',shape.x, shape.y);
                 }
                 
-                this.path('c s % f %', properties.highlightStroke, properties.highlightFill);
-            }
+                obj.path('c s % f %', obj.properties.highlightStroke, obj.properties.highlightFill);
+            });
         };
 
 
@@ -2312,7 +2286,7 @@
             var obj         = this,
                 opt         = arguments[0] || {},
                 callback    = arguments[1] || function (){},
-                frames      = opt.frames ? opt.frames : 30,
+                frames      = opt.frames ? opt.frames : 60,
                 scaleFactor = RGraph.getScaleFactor(this),
                 frame       = 0,
                 explodedMax = Math.max(this.canvas.width * scaleFactor, this.canvas.height * scaleFactor),
@@ -2399,7 +2373,7 @@
 
             var obj             = this,
                 opt             = arguments[0] || {},
-                frames          = opt.frames || 30,
+                frames          = opt.frames || 60,
                 frame           = 0,
                 margin          = (360 / this.data.length) / 2,
                 callback        = arguments[1] || function () {}
@@ -2467,7 +2441,7 @@
             var obj              = this,
                 opt              = arguments[0] || {},
                 callback         = arguments[1] || function (){},
-                frames           = opt.frames || 30,
+                frames           = opt.frames || 60,
                 frame            = 0,
                 explodedMax      = Math.max(this.canvas.width, this.canvas.height),
                 originalExploded = RGraph.arrayClone(this.get('exploded'));
@@ -2551,7 +2525,7 @@
             var obj      = this,
                 opt      = arguments[0] || {},
                 callback = arguments[1] || function (){},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0;
 
             function iterator ()

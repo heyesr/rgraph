@@ -22,7 +22,7 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the two rows of data from the CSV file, starting at the second column
             var row1 = csv.row(0, 1), // First row
@@ -47,7 +47,7 @@
                     yaxisScaleUnitsPost: '%'
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

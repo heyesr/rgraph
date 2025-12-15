@@ -547,29 +547,20 @@
         //
         this.highlight = function (shape)
         {
-            // Evidentally this is necessary
-            this.context.fillStyle = properties.colorsFill;
-
-            // Close a path thats been left open.
-            //
-            // Taken out 17/11/19
-            //
-            // this.path(
-            //     'c f % s %',
-            //     properties.highlightFill,
-            //     properties.highlightStroke
-            // );
-
-            // Add the new highlight
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                // Evidentally this is necessary
+                obj.context.fillStyle = obj.properties.colorsFill;
+    
+                // Add the highlight
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
-                    this.path('b');
-                    this.drawPoly();
-                    this.path('f % s %', properties.highlightFill, properties.highlightStroke);
+                    obj.path('b');
+                    obj.drawPoly();
+                    obj.path('f % s %', obj.properties.highlightFill, obj.properties.highlightStroke);
                 }
-            }
+            }); // End of clipping callback.
         };
 
 

@@ -1122,20 +1122,23 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-            
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
-                    return;
-                }
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (obj.properties.tooltipsHighlight) {
                 
-                this.pathBar();
-            
-                this.path(
-                    's % f %',
-                    properties.highlightStroke, properties.highlightFill
-                );
-            }
+                    if (typeof obj.properties.highlightStyle === 'function') {
+                        (obj.properties.highlightStyle)(shape);
+                        return;
+                    }
+                    
+                    obj.pathBar();
+                
+                    obj.path(
+                        's % f %',
+                        obj.properties.highlightStroke, obj.properties.highlightFill
+                    );
+                }
+            });
         };
 
 

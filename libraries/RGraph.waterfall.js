@@ -670,11 +670,7 @@
             if (properties.xaxisLabels && properties.xaxisLabels.length) {
 
                 if (typeof properties.xaxisLabels === 'string') {
-                    properties.xaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data.length + (properties.total ? 1 : 0),
-                        value:  properties.xaxisLabels
-                    });
+                    properties.xaxisLabels = RGraph.arrayPad([], this.data.length + (properties.total ? 1 : 0), properties.xaxisLabels);
                 }
 
                 // Label substitution
@@ -780,10 +776,34 @@
 
     
             
-            //
-            // Draw the background image
-            //
-            RGraph.drawBackgroundImage(this);
+
+
+
+
+
+            if (typeof properties.backgroundImage === 'string') {
+
+                //
+                // Install clipping for the background image. This
+                // is not the main installation of clipping - it's
+                // just for the background image.
+                //
+                // The this.scale2 check means that clipping is only
+                // installed if that variable is present - ie this
+                // is most likely a redraw and the necessary things
+                // have been calculated so clipping can be
+                // installed correctly.
+                //
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.start(this, this.properties.clip);
+                }
+
+                RGraph.drawBackgroundImage(this);
+
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.end();
+                }
+            }
 
 
 
@@ -1624,24 +1644,28 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            // Highlight all of the rects except this one - essentially an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b r % % % % s % f %',
-                            this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                
+                // Highlight all of the rects except this one -
+                // essentially an inverted highlight.
+                } else if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            obj.path(
+                                'b r % % % % s % f %',
+                                obj.coords[i][0] - 0.5, obj.coords[i][1] - 0.5, obj.coords[i][2] + 1, obj.coords[i][3] + 1,
+                                obj.properties.highlightStroke,
+                                obj.properties.highlightFill
+                            );
+                        }
                     }
+                } else {
+                    RGraph.Highlight.rect(obj, shape);
                 }
-            } else {
-                RGraph.Highlight.rect(this, shape);
-            }
+            });
         };
 
 

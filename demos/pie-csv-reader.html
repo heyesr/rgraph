@@ -22,7 +22,7 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the labels from the CSV file (the first column)
             var labels = csv.column(0);
@@ -38,7 +38,7 @@
                     exploded: 5
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

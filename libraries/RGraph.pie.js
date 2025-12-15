@@ -1101,11 +1101,11 @@
                 // into an array.
                 //
                 if (typeof properties.labels === 'string') {
-                    properties.labels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data.length,
-                        value:  properties.labels
-                    });
+                    properties.labels = RGraph.arrayPad(
+                        [],
+                        this.data.length,
+                        properties.labels
+                    );
                 }
                 
                 for (var i=0; i<properties.labels.length; ++i) {
@@ -1257,11 +1257,11 @@
                             valign: vAlignment,
                             halign: hAlignment,
                                tag: 'labels',
-                          cssClass: RGraph.getLabelsCSSClassName({
-                                      object: this,
-                                        name: 'labelsClass',
-                                       index: i
-                                    })
+                          cssClass: RGraph.getLabelsCSSClassName(
+                                      this,
+                                      'labelsClass',
+                                      i
+                                    )
                         });
                 }
                 
@@ -1387,11 +1387,11 @@
                         halign: 'left',
                            tag: 'labels',
                          color: labels_right[i][5],
-                      cssClass: RGraph.getLabelsCSSClassName({
-                                    object: this,
-                                      name: 'labelsClass',
-                                     index: i
-                                })
+                      cssClass: RGraph.getLabelsCSSClassName(
+                                    this,
+                                    'labelsClass',
+                                    i
+                                )
                     });
                     
                     if (ret && ret.node) {
@@ -1466,11 +1466,11 @@
                         valign: 'center',
                         halign: 'right',
                            tag: 'labels',
-                      cssClass: RGraph.getLabelsCSSClassName({
-                                    object: this,
-                                      name: 'labelsClass',
-                                     index: i
-                                })
+                      cssClass: RGraph.getLabelsCSSClassName(
+                                    this,
+                                    'labelsClass',
+                                    i
+                                )
                     });
                     
                     if (ret && ret.node) {
@@ -1987,156 +1987,138 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
+            RGraph.clipTo.callback(this, function (obj)
+            {
                 
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
-
-
-
-
-
-
-
-
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
 
                 //
                 // Inverted style of highlighting
                 //
-                } else if (properties.highlightStyle === 'invert') {
+                } else if (obj.properties.highlightStyle === 'invert') {
 
                     // Loop through all of the segments
-                    for (var i=0; i<this.angles.length; ++i) {
+                    for (var i=0; i<obj.angles.length; ++i) {
 
                         if (i !== shape.index) {
-                            this.path(
+                            obj.path(
                                 'b lw % m % % a % % % % % false c s % f %',
-                                properties.highlightStyleTwodLinewidth,
-                                this.angles[i][2], this.angles[i][3],
-                                this.angles[i][2], this.angles[i][3],shape.radius, this.angles[i][0], this.angles[i][1],
-                                properties.highlightStyleTwodStroke,
-                                properties.highlightStyleTwodFill
+                                obj.properties.highlightStyleTwodLinewidth,
+                                obj.angles[i][2], obj.angles[i][3],
+                                obj.angles[i][2], obj.angles[i][3],shape.radius, obj.angles[i][0], obj.angles[i][1],
+                                obj.properties.highlightStyleTwodStroke,
+                                obj.properties.highlightStyleTwodFill
                             );
                         }
                     }
 
-                    //this.context.beginPath();
+                    //obj.context.beginPath();
     
-                    //    this.context.strokeStyle = properties.highlightStyleTwodStroke;
-                    //    this.context.fillStyle   = properties.highlightStyleTwodFill;
+                    //    obj.context.strokeStyle = obj.properties.highlightStyleTwodStroke;
+                    //    obj.context.fillStyle   = obj.properties.highlightStyleTwodFill;
 
-                    //    if (properties.variant.indexOf('donut') > -1) {
-                    //        this.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
-                    //        this.context.arc(shape.x, shape.y, typeof properties.variantDonutWidth == 'number' ? this.radius - properties.variantDonutWidth : shape.radius / 2, shape.angleEnd, shape.angleStart, true);
+                    //    if (obj.properties.variant.indexOf('donut') > -1) {
+                    //        obj.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
+                    //        obj.context.arc(shape.x, shape.y, typeof obj.properties.variantDonutWidth == 'number' ? obj.radius - obj.properties.variantDonutWidth : shape.radius / 2, shape.angleEnd, shape.angleStart, true);
                     //    } else {
-                    //        this.context.arc(shape.x, shape.y, shape.radius + 1, shape.angleStart, shape.angleEnd, false);
-                    //        this.context.lineTo(shape.x, shape.y);
+                    //        obj.context.arc(shape.x, shape.y, shape.radius + 1, shape.angleStart, shape.angleEnd, false);
+                    //        obj.context.lineTo(shape.x, shape.y);
                     //    }
-                    //this.context.closePath();
+                    //obj.context.closePath();
         
-                    //this.context.stroke();
-                    //this.context.fill();
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    //obj.context.stroke();
+                    //obj.context.fill();
 
                 //
                 // 3D style of highlighting
                 //
-                } else if (properties.highlightStyle == '3d') {
+                } else if (obj.properties.highlightStyle == '3d') {
 
-                    this.context.lineWidth = 1;
+                    obj.context.lineWidth = 1;
                     
-                    // This is the extent of the 2D effect. Bigger values will give the appearance of a larger "protusion"
-                    var extent = 2;
+                    // This is the extent of the 3D effect.
+                    // Bigger values will give the appearance
+                    // of a larger "protusion".
+                    var extent = 2 * RGraph.getScaleFactor(obj);
             
                     // Draw a white-out where the segment is
-                    this.context.beginPath();
-                        RGraph.noShadow(this);
-                        this.context.fillStyle   = 'rgba(0,0,0,0)';
-                        this.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
-                        if (properties.variant == 'donut') {
-                            this.context.arc(shape.x, shape.y, shape.radius / 5, shape.angleEnd, shape.angleStart, true);
+                    obj.context.beginPath();
+                        RGraph.noShadow(obj);
+                        obj.context.fillStyle   = 'rgba(0,0,0,0)';
+                        obj.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
+                        if (obj.properties.variant == 'donut') {
+                            obj.context.arc(shape.x, shape.y, shape.radius / 5, shape.angleEnd, shape.angleStart, true);
                         } else {
-                            this.context.lineTo(shape.x, shape.y);
+                            obj.context.lineTo(shape.x, shape.y);
                         }
-                    this.context.closePath();
-                    this.context.fill();
+                    obj.context.closePath();
+                    obj.context.fill();
         
                     // Draw the new segment
-                    this.context.beginPath();
+                    obj.context.beginPath();
         
-                        this.context.shadowColor   = '#666';
-                        this.context.shadowBlur    = 3;
-                        this.context.shadowOffsetX = 3;
-                        this.context.shadowOffsetY = 3;
+                        obj.context.shadowColor   = '#666';
+                        obj.context.shadowBlur    = 3;
+                        obj.context.shadowOffsetX = 3;
+                        obj.context.shadowOffsetY = 3;
         
-                        this.context.fillStyle   = properties.colors[shape.index];
-                        this.context.strokeStyle = properties.colorsStroke;
-                        this.context.arc(shape.x - extent, shape.y - extent, shape.radius, shape.angleStart, shape.angleEnd, false);
-                        if (properties.variant == 'donut') {
-                            this.context.arc(shape.x - extent, shape.y - extent, shape.radius / 2, shape.angleEnd, shape.angleStart,  true)
+                        obj.context.fillStyle   = obj.properties.colors[shape.index];
+                        obj.context.strokeStyle = obj.properties.colorsStroke;
+                        obj.context.arc(shape.x - extent, shape.y - extent, shape.radius, shape.angleStart, shape.angleEnd, false);
+                        if (obj.properties.variant == 'donut') {
+                            obj.context.arc(shape.x - extent, shape.y - extent, shape.radius / 2, shape.angleEnd, shape.angleStart,  true)
                         } else {
-                            this.context.lineTo(shape.x - extent, shape.y - extent);
+                            obj.context.lineTo(shape.x - extent, shape.y - extent);
                         }
-                    this.context.closePath();
+                    obj.context.closePath();
                     
-                    this.context.stroke();
-                    this.context.fill();
+                    obj.context.stroke();
+                    obj.context.fill();
                     
                     // Turn off the shadow
-                    RGraph.noShadow(this);
+                    RGraph.noShadow(obj);
         
                     //
                     // If a border is defined, redraw that
                     //
-                    if (properties.border) {
-                        this.context.beginPath();
-                        this.context.strokeStyle = properties.borderColor;
-                        this.context.lineWidth = 5;
-                        this.context.arc(shape.x - extent, shape.y - extent, shape.radius - 2, shape.angleStart, shape.angleEnd, false);
-                        this.context.stroke();
+                    if (obj.properties.border) {
+                        obj.context.beginPath();
+                        obj.context.strokeStyle = obj.properties.borderColor;
+                        obj.context.lineWidth = 5;
+                        obj.context.arc(shape.x - extent, shape.y - extent, shape.radius - 2, shape.angleStart, shape.angleEnd, false);
+                        obj.context.stroke();
                     }
                 
 
 
 
                 // Outline style of highlighting
-                } else if (properties.highlightStyle === 'outline') {
+                } else if (obj.properties.highlightStyle === 'outline') {
             
                     var index  = shape.index,
-                        coords = this.angles[index],
-                        color  = this.get('colors')[index]
-                        width  = this.radius / 12.5;
+                        coords = obj.angles[index],
+                        color  = obj.get('colors')[index]
+                        width  = obj.radius / 12.5;
 
                     // Allow custom setting of outline
-                    if (typeof properties.highlightStyleOutlineWidth === 'number') {
-                        width = properties.highlightStyleOutlineWidth;
+                    if (typeof obj.properties.highlightStyleOutlineWidth === 'number') {
+                        width = obj.properties.highlightStyleOutlineWidth;
                     }
 
 
 
-                    this.path(
+                    obj.path(
                         'ga 0.25 b a % % % % % false a % % % % % true c f % ga 1',
                         coords[2],
                         coords[3],
-                        this.radius + 2 + width,
+                        obj.radius + 2 + width,
                         coords[0],
                         coords[1],
                         
                         coords[2],
                         coords[3],
-                        this.radius + 2,
+                        obj.radius + 2,
                         coords[1],
                         coords[0],
                         color
@@ -2150,27 +2132,27 @@
                 // Default 2D style of  highlighting
                 } else {
     
-                        this.path(
+                        obj.path(
                             'b ss % fs % lw %',
-                            properties.highlightStyleTwodStroke,
-                            properties.highlightStyleTwodFill,
-                            properties.highlightStyleTwodLinewidth
+                            obj.properties.highlightStyleTwodStroke,
+                            obj.properties.highlightStyleTwodFill,
+                            obj.properties.highlightStyleTwodLinewidth
                         );
 
 
-                        if (properties.variant.indexOf('donut') > -1) {
-                            this.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
-                            this.context.arc(shape.x, shape.y, typeof properties.variantDonutWidth == 'number' ? this.radius - properties.variantDonutWidth : shape.radius / 2, shape.angleEnd, shape.angleStart, true);
+                        if (obj.properties.variant.indexOf('donut') > -1) {
+                            obj.context.arc(shape.x, shape.y, shape.radius, shape.angleStart, shape.angleEnd, false);
+                            obj.context.arc(shape.x, shape.y, typeof obj.properties.variantDonutWidth == 'number' ? obj.radius - obj.properties.variantDonutWidth : shape.radius / 2, shape.angleEnd, shape.angleStart, true);
                         } else {
-                            this.context.arc(shape.x, shape.y, shape.radius + 1, shape.angleStart, shape.angleEnd, false);
-                            this.context.lineTo(shape.x, shape.y);
+                            obj.context.arc(shape.x, shape.y, shape.radius + 1, shape.angleStart, shape.angleEnd, false);
+                            obj.context.lineTo(shape.x, shape.y);
                         }
-                    this.context.closePath();
+                    obj.context.closePath();
         
-                    this.context.stroke();
-                    this.context.fill();
+                    obj.context.stroke();
+                    obj.context.fill();
                 }
-            }
+            });
         };
 
 
@@ -2660,7 +2642,10 @@
 
                 // Allow for JSON gradients
                 if (color.match(/^gradient\(({.*})\)$/i)) {
-                    return RGraph.parseJSONGradient({object: this, def: RegExp.$1});
+                    return RGraph.parseJSONGradient({
+                        object: this,
+                        def: RegExp.$1
+                    });
                 }
 
                 var parts = RegExp.$1.split(':');
@@ -2942,7 +2927,7 @@
             var obj            = this;
             var opt            = arguments[0] ? arguments[0] : {};
             var callback       = arguments[1] ? arguments[1] : function () {};
-            var frames         = opt.frames ? opt.frames : 30;
+            var frames         = opt.frames ? opt.frames : 60;
             var frame          = 0;
             var maxExplode     = Number(typeof opt.radius === 'number' ? opt.radius : Math.max(this.canvas.width, this.canvas.height));
             var currentExplode = Number(obj.get('exploded')) || 0;
@@ -3008,7 +2993,7 @@
             var obj      = this;
             var canvas   = obj.canvas;
             var opt      = arguments[0] ? arguments[0] : {};
-            var frames   = opt.frames || 30;
+            var frames   = opt.frames || 60;
             var frame    = 0;
             var callback = arguments[1] ? arguments[1] : function () {};
             var radius   = obj.getRadius();
@@ -3176,7 +3161,7 @@
                 opt      = arguments[0] || {},
                 callback = arguments[1] || function () {},
                 frame    = 0,
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 radius   =  obj.getRadius(),
                 labels   =  obj.get('labels')
             
@@ -3240,16 +3225,14 @@
         // @param object OPTIONAL Options for the effect
         // @param function OPTIONAL A callback function
         //
-        this.roundRobinSequential = function ()
+        this.roundRobinSequential = function (options, callback)
         {
-            var args = RGraph.getArgs(arguments, 'options,callback');
-
             // Cancel any stop request if one is pending
             this.cancelStopAnimation();
 
             var obj      = this,
-                opt      = args.options || {},
-                callback = args.callback || function () {},
+                opt      = options || {},
+                callback = callback || function () {},
                 frame    = 0,
                 frames   = opt.frames || 60,
                 radius   =  this.getRadius(),
@@ -3338,7 +3321,7 @@
             var obj         = this,
                 opt         = arguments[0] || {},
                 callback    = arguments[1] || function (){},
-                frames      = opt.frames || 30,
+                frames      = opt.frames || 60,
                 frame       = 0,
                 
                 current_exploded = Number(this.get('exploded'));

@@ -22,11 +22,11 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Just fetch the first row of the CSV file
             var row = csv.row(0);
-            
+
             var odo = new RGraph.Odometer({
                 id: 'cvs',
                 min: 0,
@@ -35,7 +35,7 @@
                 options: {
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

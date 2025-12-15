@@ -735,16 +735,36 @@
 
 
 
-            // MUST be the SECOND thing that's done!!
-            if (typeof properties.backgroundImage == 'string') {
-                RGraph.drawBackgroundImage(this);
-            }
-    
-
             //
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
+
+            if (typeof properties.backgroundImage === 'string') {
+
+                //
+                // Install clipping for the background image. This
+                // is not the main installation of clipping - it's
+                // just for the background image.
+                //
+                // The this.scale2 check means that clipping is only
+                // installed if that variable is present - ie this
+                // is most likely a redraw and the necessary things
+                // have been calculated so clipping can be
+                // installed correctly.
+                //
+
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.start(this, this.properties.clip);
+                }
+
+                RGraph.drawBackgroundImage(this);
+
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.end();
+                }
+            }
 
 
 
@@ -794,11 +814,7 @@
                 // into an array.
                 //
                 if (typeof properties.xaxisLabels === 'string') {
-                    properties.xaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.original_data[0].length,
-                        value:  properties.xaxisLabels
-                    });
+                    properties.xaxisLabels = RGraph.arrayPad([], this.original_data[0].length, properties.xaxisLabels);
                 }
     
                 for (var i=0; i<properties.xaxisLabels.length; ++i) {
@@ -1517,8 +1533,8 @@
                 var prevLineCoords = this.coords2[index - 1];
             }
             
-            this.setLinecap({index: index});
-            this.setLinejoin({index: index});
+            this.setLinecap(index);
+            this.setLinejoin(index);
 
 
             // Work out the X interval
@@ -2340,8 +2356,8 @@ data_point *= this.growEffectMultiplier;
                 return;
             }
 
-            this.setLinejoin({index: index});
-            this.setLinecap({index: index});
+            this.setLinejoin(index);
+            this.setLinecap(index);
 
             this.context.beginPath();
     
@@ -2515,11 +2531,13 @@ data_point *= this.growEffectMultiplier;
 
 
         //
-        // The getShape() method - used to get the point the mouse is currently over, if any
+        // The getShape() method - used to get the point the mouse is
+        // currently over, if any.
         // 
-        // @param object e The event object
-        // @param object   OPTIONAL You can pass in the bar object instead of the
-        //                          function getting it from the canvas
+        // @param object e The event object.
+        // @param object   OPTIONAL You can pass in the object instead
+        //                          of the function getting it from the
+        //                          'this' variable.
         //
         this.getShape = function (e)
         {
@@ -2557,7 +2575,7 @@ data_point *= this.growEffectMultiplier;
                     && mouseY >= (y - properties.tooltipsHotspotSize)
                     && (this.properties.clip ? RGraph.clipTo.test(this, mouseX, mouseY) : true)
                    ) {
-    
+
                         if (RGraph.parseTooltipText) {
                             var tooltip = RGraph.parseTooltipText(properties.tooltips, i);
                         }
@@ -2801,10 +2819,14 @@ data_point *= this.growEffectMultiplier;
 
 
         //
-        // When you click on the chart, this method can return the Y value at that point. It works for any point on the
-        // chart (that is inside the gutters) - not just points on the Line.
+        // When you click on the chart, this method can return the Y value
+        // at that point. It works for any point on the chart (that is
+        // inside the margins) - not just points on the Line.
         // 
-        // @param object e The event object
+        // @param mixed arg This can EITHER be the event argument or a
+        //                  two-element array that contains the X and Y
+        //                  coordinates.
+        //
         //
         this.getValue = function (arg)
         {
@@ -2850,55 +2872,55 @@ data_point *= this.growEffectMultiplier;
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            var scaleFactor = RGraph.getScaleFactor(this);
-            
-            
-            if (properties.tooltipsHighlight) {
-                
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                var scaleFactor = RGraph.getScaleFactor(obj);
+                    
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 
                 // Inverted highlighting
-                } else if (properties.highlightStyle === 'invert') {
+                } else if (obj.properties.highlightStyle === 'invert') {
 
                     // Clip to the graph area
-                    this.path(
+                    obj.path(
                         'sa b r % % % % cl',
-                         properties.marginLeft,  properties.marginTop,
-                        this.canvas.width -  properties.marginLeft -  properties.marginRight,
-                        this.canvas.height -  properties.marginTop -  properties.marginBottom 
+                         obj.properties.marginLeft,  obj.properties.marginTop,
+                        obj.canvas.width -  obj.properties.marginLeft -  obj.properties.marginRight,
+                        obj.canvas.height -  obj.properties.marginTop -  obj.properties.marginBottom 
                     );
 
-                    this.path(
+                    obj.path(
                         'b m % % a % % 25 4.71 4.72 true l % % l % % l % % l % % l % % c f %',
-                        shape.x,  properties.marginTop,
+                        shape.x,  obj.properties.marginTop,
                         shape.x, shape.y,
-                        shape.x,  properties.marginTop,
-                        this.canvas.width -  properties.marginRight,  properties.marginTop,
-                        this.canvas.width -  properties.marginRight, this.canvas.height -  properties.marginBottom,
-                         properties.marginLeft, this.canvas.height -  properties.marginBottom,
-                         properties.marginLeft,  properties.marginTop,
-                        properties.highlightFill
+                        shape.x,  obj.properties.marginTop,
+                        obj.canvas.width -  obj.properties.marginRight,  obj.properties.marginTop,
+                        obj.canvas.width -  obj.properties.marginRight, obj.canvas.height -  obj.properties.marginBottom,
+                         obj.properties.marginLeft, obj.canvas.height -  obj.properties.marginBottom,
+                         obj.properties.marginLeft,  obj.properties.marginTop,
+                        obj.properties.highlightFill
                     );
 
                     // Draw a border around the circular cutout
-                    this.path(
+                    obj.path(
                         'b a % % 25 0 6.29 false s % rs',
                         shape.x, shape.y,
-                        properties.highlightStroke
+                        obj.properties.highlightStroke
                     );
 
                 // Halo style highlighting
-                } else if (properties.highlightStyle === 'halo') {
+                } else if (obj.properties.highlightStyle === 'halo') {
                     
                     var obj   = shape.object,
-                        color =  properties.colors[shape.dataset];
+                        color =  obj.properties.colors[shape.dataset];
 
                     // Clear a space in white first for the tickmark
                     obj.path(
@@ -2932,10 +2954,10 @@ data_point *= this.growEffectMultiplier;
                     );
                 
                 } else {
-                    this.context.lineWidth = 1;
-                    RGraph.Highlight.point(this, shape);
+                    obj.context.lineWidth = 1;
+                    RGraph.Highlight.point(obj, shape);
                 }
-            }
+            });// End of clipping callback function
         };
 
 
@@ -3721,7 +3743,7 @@ data_point *= this.growEffectMultiplier;
             var obj      = this,
                 callback = arguments[1] ? arguments[1] : function () {},
                 opt      = arguments[0] ? arguments[0] : {},
-                frames   = opt.frames ? opt.frames : 30,
+                frames   = opt.frames ? opt.frames : 60,
                 frame    = 0,
                 data     = RGraph.arrayClone(this.unmodified_data);
 
@@ -3782,7 +3804,7 @@ data_point *= this.growEffectMultiplier;
 
             var obj      = this,
                 opt      = arguments[0] ? arguments[0] : {},
-                frames   = opt.frames ? opt.frames : 30,
+                frames   = opt.frames ? opt.frames : 60,
                 frame    = 0,
                 callback = arguments[1] ? arguments[1] : function () {},
                 initial  = properties.animationUnfoldInitial;
@@ -3841,7 +3863,7 @@ data_point *= this.growEffectMultiplier;
 
             var obj      = this,
                 opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 callback = arguments[1] || function () {};
 
@@ -4055,7 +4077,7 @@ data_point *= this.growEffectMultiplier;
 
             var obj      = this,
                 opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 callback = arguments[1] || function () {},
                 center_value = obj.scale2.max / 2;
@@ -4129,7 +4151,7 @@ data_point *= this.growEffectMultiplier;
 
             var obj      = this,
                 opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 data     = RGraph.arrayClone(obj.original_data),
                 callback = arguments[1] || function () {};
@@ -4201,7 +4223,7 @@ data_point *= this.growEffectMultiplier;
         
             var obj           = this,
                 opt           = arguments[0] || {},
-                frames        = opt.frames || 30,
+                frames        = opt.frames || 60,
                 frame         = 0,
                 callback      = arguments[1] || function () {};
             
@@ -4239,7 +4261,7 @@ data_point *= this.growEffectMultiplier;
                     }
                 }
             }
-$c(steps)
+
             function iterator ()
             {
                 if (obj.stopAnimationRequested) {
@@ -4455,16 +4477,11 @@ $c(steps)
                         // Add the dataset index to the object
                         obj.tooltipsDatasetIndex = dataset;
 
-                        RGraph.tooltip({
-                            object: obj,
-                            text: typeof obj.properties.tooltipsDataset === 'string'
-                                      ? obj.properties.tooltipsDataset
-                                      : obj.properties.tooltipsDataset[dataset],
-                            x: 0,
-                            y: 0,
-                            index: dataset,
-                            event: e
-                        });
+                        RGraph.tooltip(obj,
+                            typeof obj.properties.tooltipsDataset === 'string'
+                              ? obj.properties.tooltipsDataset
+                              : obj.properties.tooltipsDataset[dataset],
+                            0, 0, dataset, e);
 
 
 
@@ -4549,7 +4566,10 @@ $c(steps)
 
 
         //
-        // This allows for static tooltip positioning
+        // This allows for static tooltip positioning.
+        //
+        // @param object args An object containg the arguments to
+        //                    the function.
         //
         this.positionTooltipStatic = function (args)
         {
@@ -4596,13 +4616,12 @@ $c(steps)
 
         //
         // Draws a trendline on the Scatter chart. This is also known
-        // as a "best-fit line"
+        // as a "best-fit line".
         //
-        // @param dataset The index of the dataset to use
+        // @param number dataset The index of the dataset to use.
         //
-        this.drawTrendline = function ()
+        this.drawTrendline = function (dataset)
         {
-            var args         = RGraph.getArgs(arguments, 'dataset');
             var obj          = this;
             var color        = properties.trendlineColor;
             var linewidth    = properties.trendlineLinewidth;
@@ -4645,40 +4664,40 @@ $c(steps)
     
     
                 // handle the options being arrays
-                if (typeof color === 'object' && color[args.dataset]) {
-                    color = color[args.dataset];
+                if (typeof color === 'object' && color[dataset]) {
+                    color = color[dataset];
                 } else if (typeof color === 'object') {
                     color = 'gray';
                 }
     
-                if (typeof linewidth === 'object' && typeof linewidth[args.dataset] === 'number') {
-                    linewidth = linewidth[args.dataset];
+                if (typeof linewidth === 'object' && typeof linewidth[dataset] === 'number') {
+                    linewidth = linewidth[dataset];
                 } else if (typeof linewidth === 'object') {
                     linewidth = 1;
                 }
     
-                if (typeof margin === 'object' && typeof margin[args.dataset] === 'number') {
-                    margin = margin[args.dataset];
+                if (typeof margin === 'object' && typeof margin[dataset] === 'number') {
+                    margin = margin[dataset];
                 } else if (typeof margin === 'object'){
                     margin = 25;
                 }
     
     
                 // Step 1: Calculate the mean values of the X coords and the Y coords
-                for (var i=0,totalX=0,totalY=0; i<this.data[args.dataset].length; ++i) {
-                    totalX += data[args.dataset][i][0];
-                    totalY += data[args.dataset][i][1];
+                for (var i=0,totalX=0,totalY=0; i<this.data[dataset].length; ++i) {
+                    totalX += data[dataset][i][0];
+                    totalY += data[dataset][i][1];
                 }
     
-                var averageX = totalX / data[args.dataset].length;
-                var averageY = totalY / data[args.dataset].length;
+                var averageX = totalX / data[dataset].length;
+                var averageY = totalY / data[dataset].length;
     
                 // Step 2: Calculate the slope of the line
                 
                 // a: The X/Y values minus the average X/Y value
-                for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[args.dataset].length; ++i) {
-                    xCoordMinusAverageX[i] = data[args.dataset][i][0] - averageX;
-                    yCoordMinusAverageY[i] = data[args.dataset][i][1] - averageY;
+                for (var i=0,xCoordMinusAverageX=[],yCoordMinusAverageY=[],valuesMultiplied=[],xCoordMinusAverageSquared=[]; i<this.data[dataset].length; ++i) {
+                    xCoordMinusAverageX[i] = data[dataset][i][0] - averageX;
+                    yCoordMinusAverageY[i] = data[dataset][i][1] - averageY;
     
                     // b. Multiply the averages
                     valuesMultiplied[i] = xCoordMinusAverageX[i] * yCoordMinusAverageY[i];
@@ -4719,13 +4738,13 @@ $c(steps)
                 
                 // Set dotted, dash or a custom dash array
                 if (   properties.trendlineDashed === true
-                    || (RGraph.isArray(properties.trendlineDashed) && properties.trendlineDashed[args.dataset]) ) {
+                    || (RGraph.isArray(properties.trendlineDashed) && properties.trendlineDashed[dataset]) ) {
                     this.context.setLineDash([4 * scaleFactor, 4 * scaleFactor]);
                 }
 
                 if (RGraph.isNull(this.properties.trendlineDashArray)) {
                     if (   (properties.trendlineDotted === true
-                        || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[args.dataset])) ) {
+                        || (RGraph.isArray(properties.trendlineDotted) && properties.trendlineDotted[dataset])) ) {
                         
                         this.context.setLineDash([1 * scaleFactor, 4 * scaleFactor]);
                     }
@@ -4747,11 +4766,11 @@ $c(steps)
                         ]);
                     
                     } else if (   RGraph.isArray(properties.trendlineDashArray)
-                               && RGraph.isArray(properties.trendlineDashArray[args.dataset])) {
+                               && RGraph.isArray(properties.trendlineDashArray[dataset])) {
 
                         this.context.setLineDash([
-                            properties.trendlineDashArray[args.dataset][0] * scaleFactor,
-                            properties.trendlineDashArray[args.dataset][1] * scaleFactor
+                            properties.trendlineDashArray[dataset][0] * scaleFactor,
+                            properties.trendlineDashArray[dataset][1] * scaleFactor
                         ]);
                     }
                 }
@@ -4773,11 +4792,11 @@ $c(steps)
                     linewidth,
     
                     // moveTo
-                    x1 = Math.max(coords[0][0], this.coords2[args.dataset][0][0] - margin),
+                    x1 = Math.max(coords[0][0], this.coords2[dataset][0][0] - margin),
                     y1 = coords[0][1],
                     
                     // lineTo
-                    x2 = Math.min(coords[1][0], this.coords2[args.dataset][this.coords2[args.dataset].length - 1][0] + margin),
+                    x2 = Math.min(coords[1][0], this.coords2[dataset][this.coords2[dataset].length - 1][0] + margin),
                     y2 = coords[1][1],
                     
                     // stroke color
@@ -4785,7 +4804,7 @@ $c(steps)
                 );
                 
                 // Store the trendline coordinates
-                this.coordsTrendline[args.dataset] = [
+                this.coordsTrendline[dataset] = [
                     [x1, y1],
                     [x2, y2]
                 ];
@@ -4958,12 +4977,7 @@ $c(steps)
                     }
 
                     // Work out the angle that the text should be drawn at
-                    var angle = RGraph.getAngleByXY({
-                        cx: coords[i][0],
-                        cy: coords[i][1],
-                        x:  coords[i + 1][0],
-                        y:  coords[i + 1][1],
-                    });
+                    var angle = RGraph.getAngleByXY(coords[i][0], coords[i][1], coords[i + 1][0], coords[i + 1][1]);
 
                     // Use the API function to add the text to the chart
                     RGraph.text({
@@ -4995,16 +5009,16 @@ $c(steps)
         //
         // Sets the linecap style
         // Not always very noticeable, but these do have an effect
-        // with thick lines
+        // with thick lines.
         //
         // butt square round
         //
-        this.setLinecap = function ()
+        // @param index number The zero-indexed number of the line.
+        //
+        this.setLinecap = function (index)
         {
-            var args = RGraph.getArgs(arguments, 'index');
-
-            if (RGraph.isArray(properties.linecap) && RGraph.isString(properties.linecap[args.index])) {
-                this.context.lineCap =  properties.linecap[args.index];
+            if (RGraph.isArray(properties.linecap) && RGraph.isString(properties.linecap[index])) {
+                this.context.lineCap =  properties.linecap[index];
             
             } else if ( RGraph.isString(properties.linecap) ) {
                 this.context.lineCap =  properties.linecap;
@@ -5021,61 +5035,55 @@ $c(steps)
 
 
         //
-        // Finds the closest point to the given mouseX coordinate. It allows a
-        // tolerance of 10 (or so) pixels.
+        // Finds the closest point to the given mouseX coordinate. It allows
+        // a (default) tolerance of 25 pixels.
+        // a (default) tolerance of 25 pixels.
         //
-        //  @param object opt An object consisting of;
-        //                     o coords The coordinates of the points
-        //                     o mousex The mouseX coordinate
-        //                     o tolerance The number of pixels leeway
-        //                       that is allowed. Default is 10
+        // @param object  event     The event object.
+        // @param boolean xonly     Whether to only consider the X
+        //                          coordinates. Defaults to false.
+        // @param number  tolerance How far can the mouse pointer be away from the
+        //                          point? Defaults to 25.
         //
-        this.closest = function (opt)
+        this.closest = function (event, xonly = false, tolerance = 25)
         {
-            var DEFAULT_TOLERANCE = 25,
-                ret               = [];
-    
-            // custom object given
-            if (typeof opt === 'object' && typeof opt.event === 'object' && !opt.event.type) {
-                if (typeof opt.tolerance !== 'number') {
-                    opt.tolerance = DEFAULT_TOLERANCE;
-                }
-    
-            // Event object
-            } else if (typeof opt === 'object' && typeof opt.pageX === 'number') {
-                var e = opt;
-                opt = {event: e, tolerance: DEFAULT_TOLERANCE};
-            }
+            var ret = [];
 
-            var coords    = this.coords2,
-                mouseXY   = RGraph.getMouseXY(opt.event),
-                tolerance = (typeof opt.tolerance === 'number' ? opt.tolerance : DEFAULT_TOLERANCE);
+            var coords  = this.coords2,
+                mouseXY = RGraph.getMouseXY(event);
     
             // Loop through the coordinates looking for the closest
             // (going by X coordinate)
             for (var dataset=0; dataset<coords.length; ++dataset) {
                 for (var index=0; index<coords[dataset].length; ++index) {
-                    
+
                     //
                     // Only go by the x coordinate
                     //
-                    if (opt.xonly) {
+                    if (xonly) {
                         if (   mouseXY[0] > (coords[dataset][index][0] - tolerance)
                             && mouseXY[0] < (coords[dataset][index][0] + tolerance)) {
                             
-                            ret.push({dataset: dataset, index: index, distance: Math.abs(mouseXY[0] - coords[dataset][index][0])});
+                            ret.push({
+                                dataset:  dataset,
+                                index:    index,
+                                distance: Math.abs(mouseXY[0] - coords[dataset][index][0])
+                            });
                         }
 
                     //
                     // Go by both the X and Y coordinates
                     //
                     } else {
-    
-    
+
                         var hyp = RGraph.getHypLength(coords[dataset][index][0],coords[dataset][index][1],mouseXY[0],mouseXY[1]);
                         
                         if (hyp <= tolerance) {
-                            ret.push({dataset: dataset, index: index,distance: hyp});
+                            ret.push({
+                                dataset:  dataset,
+                                index:    index,
+                                distance: hyp
+                            });
                         }
                     } // End else clause
                 } // End for loop
@@ -5088,7 +5096,7 @@ $c(steps)
             {
                 return a.distance - b.distance;
             });
-            
+
             // Return the point closest to the click
             return ret[0];
         };
@@ -5105,28 +5113,29 @@ $c(steps)
         // a new position. Give it the index, the new value and
         // optionally the dataset too (this defaults to zero).
         //
-        // @param number dataset The dataset of the point OPTIONAL
-        // @param number index   The index of the point
-        // @param number value   The value to grow the point to
+        // @param number dataset The dataset of the point. Usally this is
+        //                       zero if you only have one line on your
+        //                       chart.
+        // @param number index   The index of the point.
+        // @param number value   The value to grow the point to.
         // @param number frames  The number of frames to use whilst
-        //                       animating to the new position OPTIONAL
+        //                       animating to the new position. This
+        //                       optional and defaults to 15.
         //
-        this.growPoint = function ()
+        this.growPoint = function (dataset, index, value, frames = 15)
         {
-            var args = RGraph.getArgs(arguments, 'index,value'),
-                obj  = this;
-            
+            var obj = this;            
             
             // args.dataset should default to zero if not given
-            if (typeof args.dataset !== 'number') {
-                args.dataset = 0;
+            if (typeof dataset !== 'number') {
+                dataset = 0;
             }
             
             // Determine the original value or the point that's being adjusted
-            var original_value = this.original_data[args.dataset][args.index];
+            var original_value = this.original_data[dataset][index];
     
     
-            var frames = typeof args.frames === 'number' ? args.frames : 15,
+            var frames = typeof frames === 'number' ? frames : 15,
                 delay  = 16.666;  
     
             for (var i=0; i<frames; i++) {
@@ -5134,7 +5143,7 @@ $c(steps)
                 {
                     setTimeout(function ()
                     {
-                        obj.original_data[args.dataset][args.index] = ((args.value - original_value) * (i + 1) / frames) + original_value;
+                        obj.original_data[dataset][index] = ((value - original_value) * (i + 1) / frames) + original_value;
                         
                         // Update this so that the above labels are correctly updated
                         obj.data_arr = RGraph.arrayLinearize(obj.original_data);
@@ -5153,16 +5162,16 @@ $c(steps)
 
 
         //
-        // Sets the linejoin style
+        // Sets the linejoin style.
         //
         // round miter bevel
         //
-        this.setLinejoin = function ()
+        //@param number index The index of the line.
+        //
+        this.setLinejoin = function (index)
         {
-            var args = RGraph.getArgs(arguments, 'index');
-
-            if (RGraph.isArray(properties.linejoin) && RGraph.isString(properties.linejoin[args.index])) {
-                this.context.lineJoin = properties.linejoin[args.index];
+            if (RGraph.isArray(properties.linejoin) && RGraph.isString(properties.linejoin[index])) {
+                this.context.lineJoin = properties.linejoin[index];
             } else if ( RGraph.isString(properties.linejoin) ) {
                 this.context.lineJoin =  properties.linejoin;
             } else {
@@ -5249,7 +5258,6 @@ $c(steps)
         //
         this.over = function (x, y)
         {
-            var args     = RGraph.getArgs(arguments, 'x,y');
             var datasets = properties.spline ? this.coordsSpline : this.coords2;
 
             // Loop through the set of coords for each line
@@ -5401,8 +5409,8 @@ $c(steps)
 
                 // Return the index of the line if the mouse
                 // pointer is over it it's in the stroke
-                if (   this.context.isPointInStroke(args.x, args.y)
-                    || (this.properties.filled && this.context.isPointInPath(args.x, args.y))
+                if (   this.context.isPointInStroke(x, y)
+                    || (this.properties.filled && this.context.isPointInPath(x, y))
                    ) {
 
                     // This shape object is created up above
@@ -5424,91 +5432,97 @@ $c(steps)
 
         //
         // Used to highlight a particular dataset. This
-        // function accommodates fill, non-filled, splines
+        // function accommodates filled, non-filled, splines
         // and non-spline charts.
         //
-        // @param opt object A little object that should
+        // @param opt object An object that should
         //                   contain configuration
         //                   information:
         //
-        //                   linewidth: The linewidth
+        //                   dataset:   The dataset to highlight.
+        //                   linewidth: The linewidth.
         //                   stroke:    The color of the
-        //                              stroke
-        //                   fill:      The color of the fill
+        //                              stroke.
+        //                   fill:      The color of the fill.
+        //                   dotted:    Whether the highlight is dotted or
+        //                              not.
+        //                   dashed:    Whether the highlight is dashed or
+        //                              not.
+        //                   linedash   This can be a custom dash array if
+        //                              desired.
         //
-        this.highlightDataset = function ()
+        this.highlightDataset = function (opt = {})
         {
-            var args         = RGraph.getArgs(arguments, 'opt');
             var coords       = this.properties.spline ? this.coordsSpline : this.coords2;
             var scaleFactor  = RGraph.getScaleFactor(this);
 
-            // Default to the first dataset
-            args.opt.dataset = parseInt(args.opt.dataset) || 0;
-
-            // Default this to an empty object
-            if (!args.opt)                              args.opt = {};
-            if (!args.opt.stroke)                       args.opt.stroke    = this.properties.highlightDatasetStroke;
-            if (!args.opt.fill)                         args.opt.fill      = this.properties.highlightDatasetFill;
-            if (!args.opt.dotted)                       args.opt.fotted    = this.properties.highlightDatasetDotted;
-            if (!args.opt.dashed)                       args.opt.dashed    = this.properties.highlightDatasetDashed;
-            if (!args.opt.linedash)                     args.opt.linedash  = this.properties.highlightDatasetDashArray;
-            if (!RGraph.isNumber(args.opt.linewidth))   args.opt.linewidth = this.properties.linewidth;
+            // Defaults
+            opt.dataset = parseInt(opt.dataset) || 0;
+            
+            if (!opt.stroke)                       opt.stroke    = this.properties.highlightDatasetStroke;
+            if (!opt.fill)                         opt.fill      = this.properties.highlightDatasetFill;
+            if (!opt.dotted)                       opt.fotted    = this.properties.highlightDatasetDotted;
+            if (!opt.dashed)                       opt.dashed    = this.properties.highlightDatasetDashed;
+            if (!opt.linedash)                     opt.linedash  = this.properties.highlightDatasetDashArray;
+            if (!RGraph.isNumber(opt.linewidth))   opt.linewidth = this.properties.linewidth;
 
             //
             // If the colors are arrays - deal with that
-            if (RGraph.isArray(args.opt.stroke) && args.opt.stroke[args.opt.dataset]) {
-                args.opt.stroke = args.opt.stroke[args.opt.dataset];
+            if (RGraph.isArray(opt.stroke) && opt.stroke[opt.dataset]) {
+                opt.stroke = opt.stroke[opt.dataset];
             }
 
-            if (RGraph.isArray(args.opt.fill) && args.opt.fill[args.opt.dataset]) {
-                args.opt.fill = args.opt.fill[args.opt.dataset];
+            if (RGraph.isArray(opt.fill) && opt.fill[opt.dataset]) {
+                opt.fill = opt.fill[opt.dataset];
             }
 
             // Start the path
             this.context.beginPath();
 
-            // Set the colors and linewidth
-            this.context.strokeStyle = args.opt.stroke;
-            this.context.fillStyle   = args.opt.fill;
-            this.context.lineWidth   = args.opt.linewidth;
+            // Set the colors and linewidth/linecap
+            this.context.strokeStyle = opt.stroke;
+            this.context.fillStyle   = opt.fill;
+            this.context.lineWidth   = opt.linewidth;
+            this.context.lineCap     = this.properties.linecap;
+            
 
             // If the highlighDatasetStrokeUseColors property is set
             // then set the strokeStyle to the relevant
             // obj.properties.colors color
-            if (this.properties.highlightDatasetStrokeUseColors && this.properties.colors[args.opt.dataset]) {
-                this.context.strokeStyle = this.properties.colors[args.opt.dataset];
+            if (this.properties.highlightDatasetStrokeUseColors && this.properties.colors[opt.dataset]) {
+                this.context.strokeStyle = this.properties.colors[opt.dataset];
             }
             
             // If the highlighDatasetFillUseColors property is set
             // then set the fillStyle to the relevant
             // obj.properties.colors color
-            if (this.properties.highlightDatasetFillUseColors && this.properties.colors[args.opt.dataset]) {
-                this.context.fillStyle = this.properties.colors[args.opt.dataset];
+            if (this.properties.highlightDatasetFillUseColors && this.properties.colors[opt.dataset]) {
+                this.context.fillStyle = this.properties.colors[opt.dataset];
             }
             
             // If the highlighDatasetFillUseColors property is set AND the
             // obj.properties.filledColors property is being used
             // then set the fillStyle to the relevant
             // obj.properties.filledColors color
-            if (this.properties.highlightDatasetFillUseColors && RGraph.isArray(this.properties.filledColors) && this.properties.filledColors[args.opt.dataset]) {
-                this.context.fillStyle = this.properties.filledColors[args.opt.dataset];
+            if (this.properties.highlightDatasetFillUseColors && RGraph.isArray(this.properties.filledColors) && this.properties.filledColors[opt.dataset]) {
+                this.context.fillStyle = this.properties.filledColors[opt.dataset];
             }
 
             // Fotted or dashed settings
-            if (args.opt.dotted || args.opt.dashed) {
-                if (args.opt.dashed) {
+            if (opt.dotted || opt.dashed) {
+                if (opt.dashed) {
                     this.context.setLineDash([2 * scaleFactor, 6 * scaleFactor])
-                } else if (args.opt.dotted) {
+                } else if (opt.dotted) {
                     this.context.setLineDash([1 * scaleFactor, 5 * scaleFactor])
                 }
-            } else if (args.opt.linedash) {
+            } else if (opt.linedash) {
                 this.context.setLineDash([
-                    args.opt.linedash[0] * scaleFactor,
-                    args.opt.linedash[1] * scaleFactor
+                    opt.linedash[0] * scaleFactor,
+                    opt.linedash[1] * scaleFactor
                 ]);
             }
 
-            if (args.opt.linewidth === 0) {
+            if (opt.linewidth === 0) {
                 this.context.strokeStyle = 'transparent';
             }
 
@@ -5516,10 +5530,10 @@ $c(steps)
 
             // Loop through the coordinates
             // of the shape
-            for (var i=0; i<coords[args.opt.dataset].length; ++i) {
+            for (var i=0; i<coords[opt.dataset].length; ++i) {
                 i === 0
-                    ? this.context.moveTo(coords[args.opt.dataset][i][0], coords[args.opt.dataset][i][1])
-                    : this.context.lineTo(coords[args.opt.dataset][i][0], coords[args.opt.dataset][i][1]);
+                    ? this.context.moveTo(coords[opt.dataset][i][0], coords[opt.dataset][i][1])
+                    : this.context.lineTo(coords[opt.dataset][i][0], coords[opt.dataset][i][1]);
             }
 
             //
@@ -5529,19 +5543,19 @@ $c(steps)
             //
             if (   this.properties.filled
                 && this.properties.filledAccumulative
-                && args.opt.dataset > 0
+                && opt.dataset > 0
                ) {
 
                 // Necessary?
                 this.context.lineTo(
-                    coords[args.opt.dataset - 1][coords[args.opt.dataset - 1].length - 1][0],
-                    coords[args.opt.dataset - 1][coords[args.opt.dataset - 1].length - 1][1]
+                    coords[opt.dataset - 1][coords[opt.dataset - 1].length - 1][0],
+                    coords[opt.dataset - 1][coords[opt.dataset - 1].length - 1][1]
                 );
                 
-                for (let i=(coords[args.opt.dataset - 1].length - 1); i>=0; --i) {
+                for (let i=(coords[opt.dataset - 1].length - 1); i>=0; --i) {
                     this.context.lineTo(
-                        coords[args.opt.dataset - 1][i][0],
-                        coords[args.opt.dataset - 1][i][1]
+                        coords[opt.dataset - 1][i][0],
+                        coords[opt.dataset - 1][i][1]
                     );
                 }
             }
@@ -5557,10 +5571,10 @@ $c(steps)
             //
             // *** ONLY DO THIS FOR FILLED CHARTS ***
             //
-            if (this.properties.filled && (args.opt.dataset === 0 || !this.properties.filledAccumulative) ) {
-                if (args.opt.dataset === 0 || !this.properties.filledAccumulative) {
+            if (this.properties.filled && (opt.dataset === 0 || !this.properties.filledAccumulative) ) {
+                if (opt.dataset === 0 || !this.properties.filledAccumulative) {
                     this.context.lineTo(
-                        coords[args.opt.dataset][coords[args.opt.dataset].length - 1][0],
+                        coords[opt.dataset][coords[opt.dataset].length - 1][0],
                         this.canvas.height - this.properties.marginBottom
                     );
                 }
@@ -5629,14 +5643,14 @@ $c(steps)
             // library
             if (RegExp.$1 === 'min') from = this.scale2.min; else from = Number(RegExp.$1);
             if (RegExp.$2 === 'max') to   = this.scale2.max; else to   = Number(RegExp.$2);
-    
+
             var width  = this.canvas.width,
                 y1     = this.getYCoord(from),
                 y2     = this.getYCoord(to),
                 height = Math.abs(y2 - y1),
                 x      = 0,
                 y      = Math.min(y1, y2);
-        
+
             // Increase the height if the maximum value is "max"
             if (RegExp.$2 === 'max') {
                 y = 0;

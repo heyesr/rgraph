@@ -584,37 +584,41 @@
 
         //
         // Each object type has its own Highlight() function which
-        // highlights the appropriate shape
+        // highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            // Add the new highlight
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
 
-                    this.context.beginPath();
-                    this.pathLine(this.coords);
-                    this.path(
-                        's %',
-                        properties.highlightStroke
+                    obj.context.beginPath();
+                    obj.pathLine(obj.coords);
+                    obj.path(
+                        'lw % s %',
+                        obj.properties.linewidth,
+                        obj.properties.highlightStroke
                     );
                 }
-            }
+            });// End of clipping callback.
         };
 
 
 
 
+
+
+
+
         //
-        // This allows for easy specification of gradients
+        // This allows for easy specification of gradients.
         //
         this.parseColors = function ()
         {
-
             // Save the original colors so that they can be restored when the canvas is reset
             if (this.original_colors.length === 0) {
                 this.original_colors.colorsStroke    = RGraph.arrayClone(properties.colorsStroke);

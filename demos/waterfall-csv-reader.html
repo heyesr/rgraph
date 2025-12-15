@@ -22,7 +22,7 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Just fetch the first row of the CSV file, starting at the second column
             var data = csv.row(0, 1);
@@ -34,7 +34,7 @@
                     xaxisLabels: ['Mon','Tue','Wed','Thurs','Fri','Sat','Sun','Total']
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

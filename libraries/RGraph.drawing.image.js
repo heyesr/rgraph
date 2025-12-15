@@ -720,33 +720,35 @@
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function
+        // which highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
-                    this.path('b');
+                    obj.path('b');
 
-                    this.roundedRect(
-                        this.coords[0][0],
-                        this.coords[0][1],
-                        this.coords[0][2],
-                        this.coords[0][3],
-                        this.properties.borderRadius
+                    obj.roundedRect(
+                        obj.coords[0][0],
+                        obj.coords[0][1],
+                        obj.coords[0][2],
+                        obj.coords[0][3],
+                        obj.properties.borderRadius
                     );
 
-                    this.path(
+                    obj.path(
                         'f % s %',
-                        properties.highlightFill,
-                        properties.highlightStroke
+                        obj.properties.highlightFill,
+                        obj.properties.highlightStroke
                     );
                 }
-            }
+            });// End of clipping callback.
         };
 
 

@@ -891,11 +891,7 @@
             });
 
             if (typeof properties.labels === 'string') {
-                properties.labels = RGraph.arrayPad({
-                    array:  [],
-                    length: this.coords.length,
-                    value:  properties.labels
-                });
+                properties.labels = RGraph.arrayPad([], this.coords.length, properties.labels);
             }
 
 
@@ -1040,12 +1036,12 @@
                 
                 
                 // cx,cy,angle,radius
-                var xy = RGraph.getRadiusEndPoint({
-                        cx: this.centerx,
-                        cy: this.centery,
-                     angle: this.coords[i].angleEnd,
-                    radius: ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + this.coords[i].radiusInner
-                });
+                var xy = RGraph.getRadiusEndPoint(
+                    this.centerx,
+                    this.centery,
+                    this.coords[i].angleEnd,
+                    ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + this.coords[i].radiusInner
+                );
                 
                 this.path(
                     'b a % % % % % false f %',
@@ -1120,12 +1116,12 @@
 
 
                     // cx,cy,angle,radius of the circle at the end of the bar
-                    var xy = RGraph.getRadiusEndPoint({
-                            cx: this.centerx,
-                            cy: this.centery,
-                         angle: this.coords[i].angleEnd,
-                        radius: ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + this.coords[i].radiusInner
-                    });
+                    var xy = RGraph.getRadiusEndPoint(
+                        this.centerx,
+                        this.centery,
+                        this.coords[i].angleEnd,
+                        ((this.coords[i].radiusOuter - this.coords[i].radiusInner) / 2) + this.coords[i].radiusInner
+                    );
 
                     this.path(
                         'm % %    a % % % % % false',
@@ -1360,54 +1356,48 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                
-                if (properties.tooltipsHighlight) {
-                    (properties.highlightStyle)(shape);
-                }
-
-
-
-
-            // Highlight all of the rings except this one - essentially an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-            
-                if (properties.tooltipsHighlight) {
-                    this.context.beginPath();
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof properties.highlightStyle === 'function') {
                     
-                    for (var i=0; i<this.coords.length; ++i) {
+                    if (properties.tooltipsHighlight) {
+                        (properties.highlightStyle)(shape);
+                    }
+    
+    
+    
+    
+                // Highlight all of the rings except this one - essentially an inverted highlight
+                } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
+
+                    obj.context.beginPath();
+                    
+                    for (var i=0; i<obj.coords.length; ++i) {
                         if (shape.index !== i) {
-                            this.pathBar(i);
+                            obj.pathBar(i);
                         }
                     }
                 
-                    this.context.fillStyle   = properties.highlightFill;
-                    this.context.strokeStyle = properties.highlightStroke;
-                    this.context.stroke();
-                    this.context.fill();
-                }
-
-
-
-
-            // Regular highlighting
-            } else {
-                
-                if (properties.tooltipsHighlight) {
-                    this.context.beginPath();
+                    obj.context.fillStyle   = properties.highlightFill;
+                    obj.context.strokeStyle = properties.highlightStroke;
+                    obj.context.stroke();
+                    obj.context.fill();
+    
+    
+    
+    
+                // Regular highlighting
+                } else {
+                    obj.context.beginPath();
                     
-                    this.pathBar(shape.index);
+                    obj.pathBar(shape.index);
                 
-                    this.context.fillStyle   = properties.highlightFill;
-                    this.context.strokeStyle = properties.highlightStroke;
-                    this.context.stroke();
-                    this.context.fill();
+                    obj.context.fillStyle   = properties.highlightFill;
+                    obj.context.strokeStyle = properties.highlightStroke;
+                    obj.context.stroke();
+                    obj.context.fill();
                 }
-            }
-
-
-
-
+            }); // End of RGraph.clipTo.callback();
         };
 
 
@@ -1440,12 +1430,12 @@
             );
             
             // Get the center x/y coords of the end of the bar
-            var xy = RGraph.getRadiusEndPoint({
-                cx:     this.centerx,
-                cy:     this.centery,
-                angle:  this.coords[index].angleEnd,
-                radius: this.coords[index].radiusInner + ((this.coords[index].radiusOuter - this.coords[index].radiusInner) / 2)
-            });
+            var xy = RGraph.getRadiusEndPoint(
+                this.centerx,
+                this.centery,
+                this.coords[index].angleEnd,
+                this.coords[index].radiusInner + ((this.coords[index].radiusOuter - this.coords[index].radiusInner) / 2)
+            );
         
             // Path the ending curved end if the ends are round
             if (properties.ends === 'round') {
@@ -1545,12 +1535,12 @@
                 scaleFactor = RGraph.getScaleFactor(this);
 
             //cx,cy,angle,radius
-            var point = RGraph.getRadiusEndPoint({
-                cx:     this.centerx,
-                cy:     this.centery,
-                radius: ((coords.radiusOuter - coords.radiusInner) / 2) + coords.radiusInner,
-                angle:  ((coords.angleEnd - coords.angleStart) / 2) + (0 - RGraph.HALFPI)
-            });
+            var point = RGraph.getRadiusEndPoint(
+                this.centerx,
+                this.centery,
+                ((coords.angleEnd - coords.angleStart) / 2) + (0 - RGraph.HALFPI),
+                ((coords.radiusOuter - coords.radiusInner) / 2) + coords.radiusInner
+            );
 
             // Position the tooltip in the X direction
             //args.tooltip.style.left = point[0] - (tooltip.offsetWidth / 2) + 'px';
@@ -1755,7 +1745,7 @@
             }
 
             var opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 diff     = [],
                 step     = [],

@@ -590,11 +590,7 @@
                 // into an array.
                 //
                 if (typeof properties.yaxisLabels === 'string') {
-                    properties.yaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.left.length,
-                        value:  properties.yaxisLabels
-                    });
+                    properties.yaxisLabels = RGraph.arrayPad([], this.left.length, properties.yaxisLabels);
                 }
 
                 //
@@ -2588,11 +2584,7 @@
                     
                     marker:   false,
                     tag:      'labels',
-                    cssClass: RGraph.getLabelsCSSClassName({
-                                object: this,
-                                  name: 'yaxisLabelsClass',
-                                 index: i
-                              })
+                    cssClass: RGraph.getLabelsCSSClassName(this, 'yaxisLabelsClass', i)
                 });
             }
 
@@ -3140,34 +3132,42 @@
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own Highlight() function which
+        // highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-
-            // Highlight all of the rects except this one - essentially an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b r % % % % s % f %',
-                            this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+            // Install clipping so that the highlight is clipped
+            // as well as the main chart.
+            //
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof properties.highlightStyle === 'function') {
+                    (properties.highlightStyle)(shape);
+    
+                // Highlight all of the rects except this one -
+                // essentially an inverted highlight.
+                } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            obj.path(
+                                'b r % % % % s % f %',
+                                obj.coords[i][0] - 0.5, obj.coords[i][1] - 0.5, obj.coords[i][2] + 1, obj.coords[i][3] + 1,
+                                properties.highlightStroke,
+                                properties.highlightFill
+                            );
+                        }
                     }
+                    
+                    obj.drawAxes();
+    
+                } else {
+                    RGraph.Highlight.rect(obj, shape);
+                    obj.drawAxes();
                 }
-                
-                this.drawAxes();
-
-            } else {
-                RGraph.Highlight.rect(this, shape);
-                this.drawAxes();
-            }
+            }); // End of the clipping callback.
         };
 
 
@@ -3577,9 +3577,10 @@
         //
         this.getMarginCenter = function ()
         {
-            var bold        = typeof properties.yaxisLabelsBold === 'boolean' ? properties.yaxisLabelsBold : properties.textBold,
-                font        = typeof properties.yaxisLabelsFont === 'string'  ? properties.yaxisLabelsFont : properties.textFont,
-                size        = typeof properties.yaxisLabelsSize === 'number'  ? properties.yaxisLabelsSize : properties.textSize,
+            var italic      = typeof properties.yaxisLabelsItalic === 'boolean' ? properties.yaxisLabelsItalic : properties.textItalic,
+                bold        = typeof properties.yaxisLabelsBold   === 'boolean' ? properties.yaxisLabelsBold   : properties.textBold,
+                font        = typeof properties.yaxisLabelsFont   === 'string'  ? properties.yaxisLabelsFont   : properties.textFont,
+                size        = typeof properties.yaxisLabelsSize   === 'number'  ? properties.yaxisLabelsSize   : properties.textSize,
                 scaleFactor = RGraph.getScaleFactor(this);
 
             // Loop through the labels measuring them
@@ -3587,6 +3588,7 @@
 
                 len = Math.max(len, RGraph.measureText(
                     properties.yaxisLabels[i],
+                    italic,
                     bold,
                     font,
                     size
@@ -3618,7 +3620,7 @@
 
             // Callback
             var opt      = arguments[0] || {},
-                frames   = opt.frames || 30,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 callback = arguments[1] || function () {},
                 obj      = this;
@@ -3714,7 +3716,7 @@
 
             var obj                   = this,
                 opt                   = arguments[0] || {};
-                opt.frames            =  opt.frames || 120;
+                opt.frames            =  opt.frames || 60;
                 opt.startFrames_left  = [];
                 opt.startFrames_right = [];
                 opt.counters_left     = [];

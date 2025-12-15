@@ -1306,7 +1306,7 @@
                 // Get the max value
 
                 this.scale2 = RGraph.getScale({
-                    object:              this,
+                    object: this,
                     options: {
                         'scale.max':         properties.scaleMax || this.max,
                         'scale.strict':      true,
@@ -1334,12 +1334,12 @@
                         prefix: 'scaleLabels'
                     });
 
-                    var xy = RGraph.getRadiusEndPoint({
-                        cx:     this.centerx,
-                        cy:     this.centery,
-                        angle:  properties.anglesStart + (((i+1) / this.scale2.labels.length) * (properties.anglesEnd - properties.anglesStart) ),
-                        radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
-                    });
+                    var xy = RGraph.getRadiusEndPoint(
+                        this.centerx,
+                        this.centery,
+                        properties.anglesStart + (((i+1) / this.scale2.labels.length) * (properties.anglesEnd - properties.anglesStart) ),
+                        this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                    );
 
                     // Draw the label
                     RGraph.text({
@@ -1370,12 +1370,12 @@
                 //
                 // Draw the minimum label
                 //
-                var xy = RGraph.getRadiusEndPoint({
-                    cx:     this.centerx,
-                    cy:     this.centery,
-                    angle:  properties.anglesStart,
-                    radius: this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
-                });
+                var xy = RGraph.getRadiusEndPoint(
+                    this.centerx,
+                    this.centery,
+                    properties.anglesStart,
+                    this.radius + (properties.backgroundGrid ? properties.backgroundGridMargin : 0) + textConf.size + properties.scaleLabelsOffsetr + 5
+                );
 
                 RGraph.text({
                     object: this,
@@ -1525,23 +1525,26 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            } else {
-                this.context.beginPath();
-                
-                this.pathBar({
-                    startAngle: shape.angleStart,
-                    endAngle:   shape.angleEnd,
-                    index:      shape.index
-                });
-
-                this.path(
-                    'c f % s % lw 1',
-                    properties.highlightFill,
-                    properties.highlightStroke
-                );
-            }
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                } else {
+                    obj.context.beginPath();
+                    
+                    obj.pathBar({
+                        startAngle: shape.angleStart,
+                        endAngle:   shape.angleEnd,
+                        index:      shape.index
+                    });
+    
+                    obj.path(
+                        'c f % s % lw 1',
+                        obj.properties.highlightFill,
+                        obj.properties.highlightStroke
+                    );
+                }
+            });
         };
 
 
@@ -1908,7 +1911,7 @@
 
             var obj           = this,
                 opt           = arguments[0] || {},
-                numFrames     = opt.frames || 30,
+                numFrames     = opt.frames || 60,
                 frame         = 0,
                 callback      = arguments[1] || function () {};
             

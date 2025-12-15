@@ -22,7 +22,7 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the first row of the CSV file, starting at the second
             // column
@@ -43,7 +43,7 @@
                     margin: 3
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

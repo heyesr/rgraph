@@ -15,7 +15,7 @@
 
     <div id="rgraph-demo-html">
         <div id="canvas-container">
-            <canvas id="cvs" width="600" height="250" style="margin-bottom: 50px">[No canvas support]</canvas>
+            <canvas id="cvs" width="600" height="250" style="border: 1px solid #ddd; margin-bottom: 50px">[No canvas support]</canvas>
         </div>
     </div>
 
@@ -47,14 +47,14 @@
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 shadow: false,
-                textSize:18,
+                textSize:14,
                 colorsStroke: 'rgba(0,0,0,0)',
                 marginInner: 10,
                 marginInnerGrouped: 1,
                 marginLeft: 45,
                 yaxis: false,
                 responsive: [
-                    {maxWidth: null, width:600,height:250, options: {marginBottom: 125,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:18,marginInner:10},css: {marginBottom: 0},parentCss:{textAlign:'none'}},
+                    {maxWidth: null, width:600,height:250, options: {marginBottom: 110,xaxisLabelsOffsety: 10,xaxisLabelsAngle: 25,xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],textSize:14,marginInner:10},css: {marginBottom: 0},parentCss:{textAlign:'left'}},
                     {maxWidth: 900,width: 400,height: 150,options: {marginBottom: 25,xaxisLabelsOffsety: 0,xaxisLabelsAngle: 0,xaxisLabels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],textSize: 10,marginInner:5},css: {marginBottom: '35px'},parentCss:{textAlign:'center'}}
                 ]
             }

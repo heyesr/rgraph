@@ -22,7 +22,7 @@
     </div>
     
     <script>
-        RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        RGraph.CSV('/sample.csv', function (csv)
         {
             var data = [];
 
@@ -48,7 +48,7 @@
                     backgroundGridRadials: 0
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

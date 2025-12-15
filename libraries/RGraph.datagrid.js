@@ -341,13 +341,12 @@
 
         // Returns the data
         //
-        // @param mixed ... This can be a string noting the cell
+        // @param string id This can be a string noting the cell
         //                  to get. It's optional and if not given
         //                  the whole data is returned as 2D array.
         //
-        this.getData = function ()
+        this.getData = function (id = null)
         {
-            var args = RGraph.getArgs(arguments, 'id');
             var out  = [];
 
             //
@@ -357,7 +356,7 @@
             // myDatagrid.getData();
             //
             //
-            if (RGraph.isNullish(args.id)) {
+            if (RGraph.isNullish(id)) {
                 for (var i=0; i<this.data.length; ++i) {
                     
                     out[i] = [];
@@ -442,21 +441,18 @@
         //
         // Sets data on the Datagrid. 
         //
-        // @param number arg1 The index of the data to set.
-        // @param array  arg2 This should be the new data to set on
+        // @param array  data This should be the new data to set on
         //                    the datagrid.
         //
-        this.setData = function ()
-        {
-            var args = RGraph.getArgs(arguments, 'data');
-                
-            for (var i=0,data=[]; i<args.data.length; ++i) {
+        this.setData = function (newdata)
+        {                
+            for (var i=0,data=[]; i<newdata.length; ++i) {
                 
                 data[i]=[];
                 
                 var row_id = RGraph.createUID();
                 
-                for (var j=0; j<args.data[i].length; ++j) {
+                for (var j=0; j<newdata[i].length; ++j) {
                 
                     // If the rowsIDs has been given
                     // then assign those to  the data too.
@@ -474,11 +470,11 @@
                         user_id = this.properties.rowsIDs[i];
                     }
                     
-                    var value = RGraph.isNumeric(args.data[i][j]) ? parseFloat(args.data[i][j]): args.data[i][j];
+                    var value = RGraph.isNumeric(newdata[i][j]) ? parseFloat(newdata[i][j]): newdata[i][j];
 
                     data[i][j] = {
                          value: value,
-                original_value: args.data[i][j],
+                original_value: newdata[i][j],
                            uid: RGraph.createUID(),
                        user_id: user_id,
             original_row_index: i,
@@ -490,7 +486,7 @@
             this.data = data;
             
             // Also set the original_data variable
-            this.original_data = RGraph.arrayClone(args.data, true);
+            this.original_data = RGraph.arrayClone(newdata, true);
             
             return data;
         };
@@ -729,13 +725,11 @@
         // Adds new data to the Datagrid. Most commonly it's used
         // to append data to the end of the dataset.
         //
-        // @param array  data  This should be the new data to add to
-        //                     the datagrid - an array.
+        // @param array  newdata This should be the new data to add to
+        //                       the datagrid - an array.
         //
-        this.append = function ()
+        this.append = function (newdata)
         {
-            var args = RGraph.getArgs(arguments, 'data');
-
             // Get the raw array of data (ie not modified by the
             // datagrid code)
             var data = this.getUnsortedData();
@@ -743,16 +737,16 @@
             //
             // Sanitise the data first
             //
-            if (!RGraph.isArray(args.data)) {
-                args.data = [args.data];
+            if (!RGraph.isArray(newdata)) {
+                newdata = [newdata];
             }
             
             //
             // Pad the new data array if necessary
             //
-            if (args.data.length < this.numcolumns) {
-                args.data = RGraph.arrayPad(
-                    args.data,
+            if (newdata.length < this.numcolumns) {
+                newdata = RGraph.arrayPad(
+                    newdata,
                     this.numcolumns,
                     ''
                 );
@@ -761,7 +755,7 @@
             //
             // Push the data on to the data array
             //
-            data.push(args.data);
+            data.push(newdata);
 
 
             //
@@ -781,7 +775,7 @@
             //
             RGraph.fireCustomEvent(this, 'append', {
                 object: this,
-                  data: args.data
+                  data: newdata
             });
         };
 
@@ -797,10 +791,8 @@
         //
         // @param array data The new row to add
         //
-        this.prepend = function ()
+        this.prepend = function (newdata)
         {
-            var args = RGraph.getArgs(arguments, 'data');
-
             // Get the raw array of data (ie not modified by the
             // datagrid code)
             var data = this.getUnsortedData();
@@ -808,16 +800,16 @@
             //
             // Sanitise the data first
             //
-            if (!RGraph.isArray(args.data)) {
-                args.data = [args.data];
+            if (!RGraph.isArray(newdata)) {
+                newdata = [newdata];
             }
             
             //
             // Pad the new data array if necessary
             //
-            if (args.data.length < this.numcolumns) {
-                args.data = RGraph.arrayPad(
-                    args.data,
+            if (newdata.length < this.numcolumns) {
+                newdata = RGraph.arrayPad(
+                    newdata,
                     this.numcolumns,
                     ''
                 );
@@ -826,7 +818,7 @@
             //
             // Unshift the data on to the data array
             //
-            data.unshift(args.data);
+            data.unshift(newdata);
 
 
             //
@@ -847,7 +839,7 @@
             //
             RGraph.fireCustomEvent(this, 'prepend', {
                 object: this,
-                  data: args.data
+                  data: newdata
             });
         };
 
@@ -868,14 +860,12 @@
         // @param number index The index at which is inserted.
         // @param array  data  The new row to add to the dataset.
         //
-        this.insert = function ()
+        this.insert = function (index, newdata)
         {
-            var args = RGraph.getArgs(arguments, 'index,data');
-
             //
             // Sanitize the index
             //
-            args.index = parseInt(args.index) || 0;
+            index = parseInt(index) || 0;
 
             // Get the raw array of data (ie not modified by the
             // datagrid code)
@@ -884,34 +874,66 @@
             //
             // Sanitise the arguments
             //
-            if (!RGraph.isArray(args.data)) {
-                args.data = [args.data];
+            if (!RGraph.isArray(newdata)) {
+                newdata = [newdata];
             }
 
             //
             // Pad the new data array if necessary
             //
-            if (args.data.length < this.numcolumns) {
-                args.data = RGraph.arrayPad(
-                    args.data,
+            if (newdata.length < this.numcolumns) {
+                newdata = RGraph.arrayPad(
+                    newdata,
                     this.numcolumns,
                     ''
                 );
             }
 
             //
-            // Check that the index is in the correct range
+            // Check that the index is in the correct range. Still need to
+            // fire the insert evesnt though.
             //
-            if (args.index > (data.length - 1) ) {
-                return this.append(args.data);
+            if (index > (data.length - 1) ) {
+
+                var ret = this.append(newdata);
+                
+                //
+                // Fire the insert custom event despite the data actually
+                // being appended.
+                //
+                RGraph.fireCustomEvent(this, 'insert', {
+                    object: this,
+                      data: newdata
+                });
+                
+                return ret;
+            }
+            
+            //
+            // Prepend the data if the index is zero.
+            //
+            if (index === 0) {
+
+                var ret = this.prepend(newdata);
+                
+                //
+                // Fire the insert custom event despite the data actually
+                // being prepended.
+                //
+                RGraph.fireCustomEvent(this, 'insert', {
+                    object: this,
+                      data: newdata
+                });
+                
+                return ret;
             }
 
-            if (args.index < 0) {
-                args.index = args.index + data.length;
+            if (index < 0) {
+                index = index + data.length;
             }
 
-            if (args.index < 0) {
-                args.index = 0;
+            if (index < 0) {
+                index = 0;
             }
 
             //
@@ -919,13 +941,13 @@
             // place
             //
 
-            for (var i=0,newData=[]; i<args.index; ++i) {
+            for (var i=0,newData=[]; i<index; ++i) {
                 newData.push(data[i]);
             }
             
-            newData.push(args.data);
+            newData.push(newdata);
             
-            for (var i=args.index; i<data.length; ++i) {
+            for (var i=index; i<data.length; ++i) {
                 newData.push(data[i]);
             }
 
@@ -948,7 +970,7 @@
             //
             RGraph.fireCustomEvent(this, 'insert', {
                 object: this,
-                  data: args.data
+                  data: newdata
             });
         };
 
@@ -968,16 +990,14 @@
         //                        the counting begins at the end
         //                        of the dataset.
         //
-        this.delete = function ()
+        this.delete = function (index)
         {
-            var args = RGraph.getArgs(arguments, 'index');
-
             //
             // Sanitize the index
             //
-            args.index = parseInt(args.index);
+            index = parseInt(index);
             
-            if (!RGraph.isNumber(args.index) || RGraph.isNullish(args.index)) {
+            if (!RGraph.isNumber(index) || RGraph.isNullish(index)) {
                 return false;
             }
 
@@ -985,27 +1005,27 @@
             // datagrid code)
             var data = this.getUnsortedData();
 
-            if (args.index < 0) {
-                args.index = args.index + data.length;
+            if (index < 0) {
+                index = index + data.length;
             }
 
-            if (args.index < 0) {
-                args.index = 0;
+            if (index < 0) {
+                index = 0;
             }
 
             //
             // Check that the index exists in the dataset.
             //
-            if (!data[args.index]) {
+            if (!data[index]) {
                 return false;
             }
 
             //
             // Recreate the array without the relevant piece of data
             //
-            if (data[args.index]) {
+            if (data[index]) {
                 for (var i=0,newData=[]; i<data.length; ++i) {
-                    if (i !== args.index) {
+                    if (i !== index) {
                         newData.push(data[i]);
                     }
                 }
@@ -4347,10 +4367,10 @@ for (var i=0; i<ths.length; ++i) {
         // F  = [5,null]
         // 4  = [null,3]
         //
-        this.parseCellIdentifier = function()
+        this.parseCellIdentifier = function(cellID)
         {
             // 
-            //Converts letter row identifiers to a row ID
+            // Converts letter row identifiers to a row ID
             //
             var lettersToId = function (letters)
             {
@@ -4374,28 +4394,22 @@ for (var i=0; i<ths.length; ++i) {
 
                 return column;
             }
-
-
-
-
-
-            var args = RGraph.getArgs(arguments, 'id');
             
-            if (RGraph.isString(args.id)) {
-                args.id = args.id.trim();
+            if (RGraph.isString(cellID)) {
+                cellID = cellID.trim();
     
                 // Get a specific cell
-                if (args.id.match(/^([a-z]+)([0-9]+)$/i)) {
+                if (cellID.match(/^([a-z]+)([0-9]+)$/i)) {
                     var column = lettersToId(RegExp.$1);
                     var row    = parseInt(RegExp.$2) - 1;
     
                 // Get a row
-                } else if (args.id.match(/^([0-9])+$/i)) {
+                } else if (cellID.match(/^([0-9])+$/i)) {
                     var clumn = null;
                     var row  = parseInt(RegExp.$1) - 1;
                 
                 // Get a column
-                } else if (args.id.match(/^([a-z])+$/i)) {
+                } else if (cellID.match(/^([a-z])+$/i)) {
                     var column = lettersToId(RegExp.$1) ;
                     var row    = null;
                 }
@@ -4403,17 +4417,17 @@ for (var i=0; i<ths.length; ++i) {
             //
             // An array of indexes has been given
             //
-            } else if (RGraph.isArray(args.id)) {
-                var column = args.id[0];
-                var row    = args.id[1];
+            } else if (RGraph.isArray(cellID)) {
+                var column = cellID[0];
+                var row    = cellID[1];
              
              //
              // A number has been given - return null for the column
              //
-             } else if (RGraph.isNumber(args.id)) {
+             } else if (RGraph.isNumber(cellID)) {
 
                 var column = null;
-                var row    = parseInt(args.id) < 0 ? 0 : parseInt(args.id);
+                var row    = parseInt(cellID) < 0 ? 0 : parseInt(cellID);
              }
             
             return {
@@ -4505,14 +4519,12 @@ for (var i=0; i<ths.length; ++i) {
         // @param string  str    The pattern given in the
         //                       editableColumns property.
         //
-        this.isEditableColumn = function ()
+        this.isEditableColumn = function (column, pattern = '')
         {
-            var args = RGraph.getArgs(arguments, 'column,pattern');
-
             // A much shorter version of this function
-            return this.inRange(args.pattern, args.column);
+            return this.inRange(pattern, column);
             
-            //var parts   = String(args.pattern).split(/\s*,\s*/);
+            //var parts   = String(pattern).split(/\s*,\s*/);
             //var columns = [];
 
             //for (var i=0; i<parts.length; ++i) {
@@ -4544,7 +4556,7 @@ for (var i=0; i<ths.length; ++i) {
             //    }
             //}
 
-            //return columns.includes(Number(args.column));
+            //return columns.includes(Number(column));
         };
 
 
@@ -4600,10 +4612,9 @@ for (var i=0; i<ths.length; ++i) {
         //
         // @return boolean Whether the column is in the range or not
         //
-        this.inRange = function ()
+        this.inRange = function (range, column)
         {
-            var args    = RGraph.getArgs(arguments, 'range,column');
-            var parts   = String(args.range).split(/\s*,\s*/);
+            var parts   = String(range).split(/\s*,\s*/);
             var columns = [];
 
             for (var i=0; i<parts.length; ++i) {
@@ -4635,7 +4646,7 @@ for (var i=0; i<ths.length; ++i) {
                 }
             }
 
-            return columns.includes(Number(args.column));
+            return columns.includes(Number(column));
         };
 
 

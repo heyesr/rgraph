@@ -535,11 +535,7 @@
                 //
 
                 if (typeof properties.labels === 'string') {
-                    properties.labels = RGraph.arrayPad({
-                        array:  [],
-                        length: properties.labelsCount,
-                        value:  properties.labels
-                    });
+                    properties.labels = RGraph.arrayPad([], properties.labelsCount, properties.labels);
                 }
 
                 for (var i=0; i<properties.labels.length; ++i) {
@@ -1319,11 +1315,7 @@
                     valign: 'center',
                     halign: ((this.centerx + x) > this.centerx) ? 'left' : 'right',
                     tag:    'labels',
-                  cssClass: RGraph.getLabelsCSSClassName({
-                              object: this,
-                                name: 'labelsClass',
-                               index: i
-                            })
+                  cssClass: RGraph.getLabelsCSSClassName(this, 'labelsClass', i)
                 });
             }
         };
@@ -1518,67 +1510,50 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-
-
-
-
-
-            } else if (properties.highlightStyle === 'invert') {
-            
-                var radius = RGraph.isNumber(properties.highlightSize) ? properties.highlightSize : 25;
-
-                this.path(
-                    'b a % % % -1 6.29 false',
-                    this.centerx, this.centery, this.radius
-                );
-
-                this.path(
-                    'a % % % 0 6.29 true c s rgba(0,0,0,0) f %',
-                    shape.x, shape.y, radius,
-                    properties.highlightFill
-                );
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+    
+                } else if (obj.properties.highlightStyle === 'invert') {
                 
-                // Draw a border around the circular cutout
-                this.path(
-                    'b a % % % 0 6.29 false s %',
-                    shape.x, shape.y, radius,
-                    properties.highlightStroke
-                );
-
-
-
-
-            } else {
-
-
-
-
-            //
-            // Draw an arc on the canvas to highlight the appropriate area
-            //
-            this.context.beginPath();
-                this.context.strokeStyle = properties.highlightStroke;
-                this.context.fillStyle   = properties.highlightFill;
-
-                this.context.arc(
-                    shape.x, shape.y, RGraph.isNumber(properties.highlightSize) ? properties.highlightSize : properties.tickmarksSize,
-                    0, RGraph.TWOPI, false
-                );
-            this.context.stroke();
-            this.context.fill();
-
-
-
-
-
-
-
-
-
-
-}
+                    var radius = RGraph.isNumber(obj.properties.highlightSize) ? obj.properties.highlightSize : 25;
+    
+                    obj.path(
+                        'b a % % % -1 6.29 false',
+                        obj.centerx, obj.centery, obj.radius
+                    );
+    
+                    obj.path(
+                        'a % % % 0 6.29 true c s rgba(0,0,0,0) f %',
+                        shape.x, shape.y, radius,
+                        obj.properties.highlightFill
+                    );
+                    
+                    // Draw a border around the circular cutout
+                    obj.path(
+                        'b a % % % 0 6.29 false s %',
+                        shape.x, shape.y, radius,
+                        obj.properties.highlightStroke
+                    );
+    
+                } else {
+    
+                    //
+                    // Draw an arc on the canvas to highlight the appropriate area
+                    //
+                    obj.context.beginPath();
+                    obj.context.strokeStyle = obj.properties.highlightStroke;
+                    obj.context.fillStyle   = obj.properties.highlightFill;
+        
+                    obj.context.arc(
+                        shape.x, shape.y, RGraph.isNumber(obj.properties.highlightSize) ? obj.properties.highlightSize : obj.properties.tickmarksSize,
+                        0, RGraph.TWOPI, false
+                    );
+                    obj.context.stroke();
+                    obj.context.fill();
+                }
+            });
         };
 
 
@@ -1853,7 +1828,7 @@
             var obj      = this,
                 callback = arguments[2],
                 opt      = arguments[0] || {},
-                frames   = opt.frames || 15,
+                frames   = opt.frames || 60,
                 frame    = 0,
                 callback = arguments[1] || function () {},
                 step     = 1 / frames,

@@ -571,17 +571,18 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
+            RGraph.clipTo.callback(this, function (obj)
+            {
                 if (typeof properties.highlightStyle === 'function') {
                     (properties.highlightStyle)(shape);
                 } else {
-                    this.path(
+                    obj.path(
                         'b r % % % % f % s %',
-                        properties.marginLeft,properties.marginTop,this.canvas.width - properties.marginLeft - properties.marginRight,this.canvas.height - properties.marginTop - properties.marginBottom,
+                        properties.marginLeft,properties.marginTop,obj.canvas.width - properties.marginLeft - properties.marginRight,obj.canvas.height - properties.marginTop - properties.marginBottom,
                         properties.highlightFill,properties.highlightStroke
                     );
                 }
-            }
+            });
         };
 
 

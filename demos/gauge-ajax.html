@@ -63,7 +63,7 @@
             // Make another AJAX call after the delay (which is in milliseconds)
             setTimeout(function ()
             {
-                RGraph.AJAX.getNumber({url: '/getdata.html', callback: myAJAXCallback});
+                RGraph.AJAX.getNumber('/getdata.html', myAJAXCallback);
             },
             delay);
         }
@@ -73,7 +73,7 @@
         //
         setTimeout(function ()
         {
-            RGraph.AJAX.getNumber({url: '/getdata.html', callback: myAJAXCallback});
+            RGraph.AJAX.getNumber('/getdata.html', myAJAXCallback);
         }, delay);
     </script>
     

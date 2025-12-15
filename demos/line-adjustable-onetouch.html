@@ -32,14 +32,11 @@
         
         line.canvas.onclick = function (e)
         {
-            var indexes = line.closest({event:e,xonly:true,tolerance: 50});
+            var indexes = line.closest(e, true, 50);
             var value = line.getValue(e);
 
             if (indexes) {
-                line.growPoint(
-                    indexes.index,
-                    value
-                );
+                line.growPoint(indexes.dataset, indexes.index, value);
             }
         };
     </script>

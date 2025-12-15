@@ -364,6 +364,7 @@
 
             this.metrics = RGraph.measureText(
                 this.text,
+                properties.textItalic,
                 properties.textBold,
                 properties.textFont,
                 properties.textSize
@@ -398,8 +399,8 @@
 
             var x      = this.alignRight ? this.x - this.metrics[0] - 6 : this.x,
                 y      = this.y - 6 - properties.voffset - this.metrics[1],
-                width  = this.metrics[0] + 6,
-                height = this.metrics[1];
+                width  = this.metrics[0] + 12,
+                height = this.metrics[1] + 6;
             
             // Store these coords as the coords of the label
             this.coords[0] = [x, y, width, height];
@@ -448,16 +449,13 @@
 
             // Draw the text
             RGraph.text({
-            
               object: this,
-
                 font:   properties.textFont,
                 size:   properties.textSize,
                 color:  properties.textColor,
                 bold:   properties.textBold,
                 italic: properties.textItalic,
-
-                x:      Math.round(this.x) - (this.alignRight ? this.metrics[0] + 3 : -3),
+                x:      Math.round(this.x) - (this.alignRight ? this.metrics[0] : -6),
                 y:      y + (height / 2),
                 text:   this.text,
                 valign: 'center',
@@ -643,24 +641,25 @@
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
 
-                    this.path(
+                    obj.path(
                         'b r % % % % f % s %',
-                        this.coords[0][0],this.coords[0][1],this.coords[0][2],this.coords[0][3],
-                        properties.highlightFill,properties.highlightStroke
+                        obj.coords[0][0],obj.coords[0][1],obj.coords[0][2],obj.coords[0][3],
+                        obj.properties.highlightFill,obj.properties.highlightStroke
                     );
 
-                    this.path(
+                    obj.path(
                         'b r % % % % f % s %',
-                        this.coords[0][0],this.coords[0][1],this.coords[0][2],this.coords[0][3],
-                        properties.highlightFill,properties.highlightStroke
+                        obj.coords[0][0],obj.coords[0][1],obj.coords[0][2],obj.coords[0][3],
+                        obj.properties.highlightFill,obj.properties.highlightStroke
                     );
                 }
-            }
+            });// End of clipping callback.
         };
 
 

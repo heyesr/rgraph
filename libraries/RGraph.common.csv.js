@@ -16,12 +16,11 @@
 
 
     //
-    // This function has been taken out of the RGraph.common.core.js file to
-    // enable the CSV reader to work standalone.
+    // This function has been taken out of the RGraph.common.core.js
+    // file to enable the CSV reader to work standalone.
     //
-    if (!RGraph.AJAX) RGraph.AJAX = function ()
+    if (!RGraph.AJAX) RGraph.AJAX = function (url, callback)
     {
-        var args = RGraph.getArgs(arguments, 'url,callback');
 
         // Mozilla, Safari, ...
         if (window.XMLHttpRequest) {
@@ -35,13 +34,13 @@
         httpRequest.onreadystatechange = function ()
         {
             if (this.readyState == 4 && this.status == 200) {
-                this.__user_callback__ = args.callback;
+                this.__user_callback__ = callback;
 
                 this.__user_callback__(this.responseText);
             }
         }
 
-        httpRequest.open('GET', args.url, true);
+        httpRequest.open('GET', url, true);
         httpRequest.send();
     };
 
@@ -55,15 +54,14 @@
     //
     // Use the AJAX function above to fetch a string
     //
-    if (!RGraph.AJAX.getString) RGraph.AJAX.getString = function ()
+    if (!RGraph.AJAX.getString) RGraph.AJAX.getString = function (url, callback)
     {
-        var args = RGraph.getArgs(arguments, 'url,callback');
 
-        RGraph.AJAX(args.url, function ()
+        RGraph.AJAX(url, function ()
         {
             var str = String(this.responseText);
 
-            args.callback(str);
+            callback(str);
         });
     };
 
@@ -93,71 +91,18 @@
 
 
 
-    //
-    // This function allows both object based arguments to functions
-    // and also regular arguments as well.
-    //
-    // You can call it from inside a function like this:
-    //
-    // args = RGraph.HTMLTable.getArgs(arguments, 'object,id,foo,bar');
-    //
-    // So you're passing it the arguments object and a comma seperated list of names
-    // for the arguments.
-    //
-    // @param array args   The arguments object that you get when inside a function
-    // @param string names A comma seperated list of desired names for the arguments
-    //                     eg: 'object,color,size'
-    //
-    if (!RGraph.getArgs) RGraph.getArgs = function (args, names)
+    RGraph.CSV = function (url, callback, separator = ',', eol = /\r?\n/)
     {
-        var ret   = {};
-        var count = 0;
-        names     = names.trim().split(/ *, */);
-
-        if (   args
-            && args[0]
-            && args.length === 1
-            && typeof args[0][names[0]] !== 'undefined') {
-            
-            for (var i=0; i<names.length; ++i) {
-                if (typeof args[0][names[i]] === 'undefined') {
-                    args[0][names[i]] = null;
-                }
-            }
-
-            return args[0];
-        } else {
-            for (var i in names) {
-                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
-                
-                count += 1;
-            }
-        }
-
-        return ret;
-    };
-
-
-
-
-
-
-
-
-    RGraph.CSV = function ()
-    {
-        var args = RGraph.getArgs(arguments, 'url,callback,separator,eol');
-
         //
         // Some default values
         //
-        this.url       = args.url;
-        this.ready     = args.callback;
+        this.url       = url;
+        this.ready     = callback;
         this.data      = null;
         this.numrows   = null;
         this.numcols   = null;
-        this.separator = args.separator || ',';
-        this.endofline = args.eol || /\r?\n/;
+        this.separator = separator;
+        this.endofline = eol
         this.uid       = RGraph.createUID();
 
 
@@ -305,7 +250,7 @@
 
             } else {
 
-                RGraph.AJAX.getString({url: this.url, callback: function (data)
+                RGraph.AJAX.getString(this.url, function (data)
                 {
                     data = data.replace(/(\r?\n)+$/, '');
 
@@ -350,7 +295,7 @@
 
                     // Call the ready function straight away
                     obj.ready(obj);
-                }});
+                });
             }
         };
 

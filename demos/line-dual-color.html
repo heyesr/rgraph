@@ -16,9 +16,6 @@
 
     <script>
         data      = [14,16,18,19,29,28,29,35,34,38,41,45,56,58,65];
-        threshold = 40;
-        color1    = 'red';
-        color2    = 'green';
 
         line = new RGraph.Line({
             id: 'cvs', 
@@ -30,20 +27,13 @@
                 tickmarksStyle: 'endcircle',
                 tickmarksSize: 7,
                 marginInner: 10,
-                colors: [color1],
+                colors: ['red'],
                 yaxisScaleMax: 100,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
                 yaxis: false,
-                events: {
-                    firstdraw: function (obj)
-                    {
-                        var boundary = obj.getYCoord(threshold);
-                        obj.set('clip', [0,0,obj.canvas.width, boundary]);
-                        RGraph.redraw();
-                    }
-                }
+                clip: 'scale:40-max'
             }
         }).draw();
 
@@ -57,20 +47,13 @@
                 tickmarksStyle: 'endcircle',
                 tickmarksSize: 7,
                 marginInner: 10,
-                colors: [color2],
+                colors: ['green'],
                 yaxisScaleMax: 100,
                 backgroundGridVlines: false,
                 backgroundGridBorder: false,
                 xaxis: false,
                 yaxis: false,
-                events: {
-                    firstdraw: function (obj)
-                    {
-                        var boundary = obj.getYCoord(threshold);
-                        obj.set('clip', [0,boundary,obj.canvas.width, 999]);
-                        RGraph.redraw();
-                    }
-                }
+                clip: 'scale:min-40'
             }
         
         }).draw();

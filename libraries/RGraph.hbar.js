@@ -699,7 +699,36 @@
 
 
 
-            
+
+            if (typeof this.properties.backgroundImage === 'string') {
+                //
+                // Install clipping for the background image. This
+                // is not the main installation of clipping - it's
+                // just for the background image.
+                //
+                // The this.scale2 check means that clipping is only
+                // installed if that variable is present - ie this
+                // is most likely a redraw and the necessary things
+                // have been calculated so clipping can be
+                // installed correctly.
+                //
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.start(this, this.properties.clip);
+                }
+    
+                RGraph.drawBackgroundImage(this);
+    
+                if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
+                    RGraph.clipTo.end();
+                }
+            }
+
+
+
+
+
+
+
 
             
             // Reset this so that it doesn't grow uncontrollably
@@ -721,6 +750,7 @@
                     
                     var length = RGraph.measureText(
                         labels[i],
+                        textConf.italic,
                         textConf.bold,
                         textConf.font,
                         textConf.size
@@ -740,6 +770,7 @@
 
                     var titleSize = RGraph.measureText(
                          properties.yaxisTitle,
+                        textConf.italic,
                         textConf.bold,
                         textConf.font,
                         textConf.size
@@ -1169,11 +1200,7 @@
                 // into an array.
                 //
                 if (typeof properties.yaxisLabels === 'string') {
-                    properties.yaxisLabels = RGraph.arrayPad({
-                        array:  [],
-                        length: this.data.length,
-                        value:  properties.yaxisLabels
-                    });
+                    properties.yaxisLabels = RGraph.arrayPad([], this.data.length, properties.yaxisLabels);
                 }
 
                 //
@@ -2288,59 +2315,62 @@
         //
         this.highlight = function (shape)
         {
-            // highlightStyle is a function - user defined highlighting
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            
-            // Highlight all of the rects except this one -
-            // essentially an inverted highlight
-            } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                for (var i=0; i<this.coords.length; ++i) {
-                    if (i !== shape.sequentialIndex) {
-                        this.path(
-                            'b r % % % % s % f %',
-                            this.coords[i][0] - 0.5, this.coords[i][1] - 0.5, this.coords[i][2] + 1, this.coords[i][3] + 1,
-                            properties.highlightStroke,
-                            properties.highlightFill
-                        );
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                // highlightStyle is a function - user defined highlighting
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                
+                // Highlight all of the rects except this one -
+                // essentially an inverted highlight.
+                } else if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
+                        if (i !== shape.sequentialIndex) {
+                            obj.path(
+                                'b r % % % % s % f %',
+                                obj.coords[i][0] - 0.5, obj.coords[i][1] - 0.5, obj.coords[i][2] + 1, obj.coords[i][3] + 1,
+                                obj.properties.highlightStroke,
+                                obj.properties.highlightFill
+                            );
+                        }
+    
+                        // Redraw the Y axis so the highlight doesn't
+                        // appear over the Y axis. But not the Y axis
+                        // labels or the title. This is new in
+                        // September 2024.
+                        RGraph.drawYAxis(obj, {
+                            labels: false,
+                             title: false
+                        });
                     }
-
+                // Circular highlighting (for vertical lines)
+                } else if (obj.properties.tooltipsHotspotShape === 'point') {
+                    
+                    var index = shape.sequentialIndex;
+    
+                    obj.path(
+                        'b a % % % 0 6.29 false s % f %',
+                        obj.coords[index][0] + obj.coords[index][2],
+                        obj.coords[index][1] + (obj.coords[index][3] / 2),
+                        obj.properties.lineTickmarksSize,
+                        obj.properties.highlightStroke,
+                        obj.properties.highlightFill
+                    );
+    
+                // Standard higlight
+                } else {
+                    RGraph.Highlight.rect(obj, shape);
+                    
                     // Redraw the Y axis so the highlight doesn't
                     // appear over the Y axis. But not the Y axis
                     // labels or the title. This is new in
                     // September 2024.
-                    RGraph.drawYAxis(this, {
+                    RGraph.drawYAxis(obj, {
                         labels: false,
                          title: false
                     });
                 }
-            // Circular highlighting (for vertical lines)
-            } else if (this.properties.tooltipsHotspotShape === 'point') {
-                
-                var index = shape.sequentialIndex;
-
-                this.path(
-                    'b a % % % 0 6.29 false s % f %',
-                    this.coords[index][0] + this.coords[index][2],
-                    this.coords[index][1] + (this.coords[index][3] / 2),
-                    this.properties.lineTickmarksSize,
-                    this.properties.highlightStroke,
-                    this.properties.highlightFill
-                );
-
-            // Standard higlight
-            } else {
-                RGraph.Highlight.rect(this, shape);
-                
-                // Redraw the Y axis so the highlight doesn't
-                // appear over the Y axis. But not the Y axis
-                // labels or the title. This is new in
-                // September 2024.
-                RGraph.drawYAxis(this, {
-                    labels: false,
-                     title: false
-                });
-            }
+            });// End clipTo.worker().
         };
 
 
@@ -2786,12 +2816,7 @@
                             formatter: properties.labelsInbarFormatter
                         });
 
-                        var dimensions = RGraph.measureText({
-                            text: str,
-                            bold: textConf.bold,
-                            font: textConf.font,
-                            size: textConf.size
-                        });
+                        var dimensions = RGraph.measureText(str, textConf.italic, textConf.bold, textConf.font, textConf.size);
 
                         var x      = this.coords[i][0] + (this.coords[i][2]  / 2) + properties.labelsInbarOffsetx,
                             y      = this.coords[i][1] + (this.coords[i][3] / 2) + properties.labelsInbarOffsety,
@@ -2870,7 +2895,7 @@
 
             // Callback
             var opt         = arguments[0] || {},
-                frames      = opt.frames || 120,
+                frames      = opt.frames || 60,
                 frame       = 0,
                 callback    = arguments[1] || function () {},
                 obj         = this,
@@ -2898,7 +2923,13 @@
                     }
                 }
 
-                var scale2 = RGraph.getScale({object: obj, options: {'scale.max':xmax, 'scale.round': obj.properties.xaxisScaleRound}});
+                var scale2 = RGraph.getScale({
+                    object: obj,
+                    options: {
+                        'scale.max':xmax,
+                        'scale.round': obj.properties.xaxisScaleRound
+                    }
+                });
                 obj.set('xaxisScaleMax', scale2.max);
             }
 
@@ -3134,7 +3165,7 @@
 
             var obj = this,
                 opt = arguments[0] || {};
-                opt.frames      = opt.frames || 120;
+                opt.frames      = opt.frames || 60;
                 opt.startFrames = [];
                 opt.counters    = [];
 
@@ -3832,11 +3863,11 @@
                         coordinates[0][0][1]
                     );
                     
-                    RGraph.pathLine({
-                        context: this.context,
-                        coords:  coordinates[0],
-                        moveto:  false
-                    });
+                    RGraph.pathLine(
+                        this.context,
+                        coordinates[0],
+                        false
+                    );
                     
                     this.path(
                         'c f %',
@@ -3860,12 +3891,13 @@
                 // spline onto the canvas.
                 //
 
-                RGraph.drawLine({
-                    context:   this.context,
-                    coords:    coordinates[0],
-                    stroke:    this.properties.lineColor,
-                    linewidth: this.properties.lineLinewidth
-                });
+                RGraph.drawLine(
+                    this.context,
+                    coordinates[0],
+                    true,  // moveTo
+                    this.properties.lineColor,
+                    this.properties.lineLinewidth
+                );
                 
                 //
                 // Store the coordinates that were generated

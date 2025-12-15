@@ -618,11 +618,11 @@
                     valign:   'top',
                     
                     tag:      'labels',
-                    cssClass: RGraph.getLabelsCSSClassName({
-                                object: this,
-                                  name: 'labelsClass',
-                                 index: 0
-                              })
+                    cssClass: RGraph.getLabelsCSSClassName(
+                                this,
+                                'labelsClass',
+                                0
+                              )
                 });
 
 
@@ -659,11 +659,11 @@
                     valign:   'top',
                     
                     tag:      'labels',
-                    cssClass: RGraph.getLabelsCSSClassName({
-                                object: this,
-                                  name: 'labelsClass',
-                                 index: 1
-                              })
+                    cssClass: RGraph.getLabelsCSSClassName(
+                                this,
+                                'labelsClass',
+                                1
+                              )
                 });
             }
 
@@ -1218,7 +1218,7 @@
 
             var callback  = arguments[1] || function () {};
             var opt       = arguments[0] || {};
-            var numFrames = opt.frames || 30;
+            var numFrames = opt.frames || 60;
             var frame     = 0;
             var obj       = this;
             var origValue = Number(this.currentValue);

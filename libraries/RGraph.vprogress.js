@@ -532,11 +532,7 @@
                 // into an array.
                 //
                 if (typeof properties.labelsSpecific === 'string') {
-                    properties.labelsSpecific = RGraph.arrayPad({
-                        array:  [],
-                        length: properties.labelsCount,
-                        value:  properties.labelsSpecific
-                    });
+                    properties.labelsSpecific = RGraph.arrayPad([], properties.labelsCount, properties.labelsSpecific);
                 }
 
                 for (var i=0; i<properties.labelsSpecific.length; ++i) {
@@ -1343,50 +1339,53 @@ if (properties.corners === 'round') {
 
 
         //
-        // Each object type has its own Highlight() function which highlights the appropriate shape
+        // Each object type has its own highlight() function which
+        // highlights the appropriate shape.
         // 
-        // @param object shape The shape to highlight
+        // @param object shape The shape to highlight.
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 
-                // Highlight all of the rects except this one - essentially an inverted highlight
-                } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
-                    for (var i=0; i<this.coords.length; ++i) {
+                // Highlight all of the rects except this
+                // one - essentially an inverted highlight.
+                } else if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
+                    for (var i=0; i<obj.coords.length; ++i) {
                         if (i !== shape.sequentialIndex) {
-                            if (properties.corners === 'round') {
+                            if (obj.properties.corners === 'round') {
 
-                                this.path(
+                                obj.path(
                                     'b lw %',
-                                    properties.highlightLinewidth
+                                    obj.properties.highlightLinewidth
                                 );
                                 
-                                this.drawbarStackedSection(
-                                    this.coords[i][0],
-                                    this.coords[i][1],
-                                    this.coords[i][2],
-                                    this.coords[i][3],
+                                obj.drawbarStackedSection(
+                                    obj.coords[i][0],
+                                    obj.coords[i][1],
+                                    obj.coords[i][2],
+                                    obj.coords[i][3],
                                     i
                                 );
                                 
-                                this.path(
+                                obj.path(
                                     'f % s %',
-                                    properties.highlightFill,
-                                    properties.highlightStroke
+                                    obj.properties.highlightFill,
+                                    obj.properties.highlightStroke
                                 );
                             } else {
-                                this.path(
+                                obj.path(
                                     'b lw % r % % % % f % s %',
-                                    properties.highlightLinewidth,
-                                    this.coords[i][0],
-                                    this.coords[i][1],
-                                    this.coords[i][2],
-                                    this.coords[i][3],
-                                    properties.highlightFill,
-                                    properties.highlightStroke
+                                    obj.properties.highlightLinewidth,
+                                    obj.coords[i][0],
+                                    obj.coords[i][1],
+                                    obj.coords[i][2],
+                                    obj.coords[i][3],
+                                    obj.properties.highlightFill,
+                                    obj.properties.highlightStroke
                                 );
                             }
                         }
@@ -1394,14 +1393,14 @@ if (properties.corners === 'round') {
     
                 } else {
 
-                    if (properties.corners === 'round') {
+                    if (obj.properties.corners === 'round') {
     
-                        this.path(
+                        obj.path(
                             'b lw %',
-                            properties.highlightLinewidth
+                            obj.properties.highlightLinewidth
                         );
 
-                        this.drawbarStackedSection(
+                        obj.drawbarStackedSection(
                             shape.x,
                             shape.y,
                             shape.width,
@@ -1409,30 +1408,30 @@ if (properties.corners === 'round') {
                             shape.index
                         );
                     
-                        this.path(
+                        obj.path(
                             's % f %',
-                            properties.highlightStroke,
-                            properties.highlightFill
+                            obj.properties.highlightStroke,
+                            obj.properties.highlightFill
                         );
                     
                     } else {
 
-                        this.path(
+                        obj.path(
                             'b lw % r % % % % f % s %',
-                            properties.highlightLinewidth,
-                            this.coords[shape.index][0],
-                            this.coords[shape.index][1],
-                            this.coords[shape.index][2],
-                            this.coords[shape.index][3],
-                            properties.highlightFill,
-                            properties.highlightStroke
+                            obj.properties.highlightLinewidth,
+                            obj.coords[shape.index][0],
+                            obj.coords[shape.index][1],
+                            obj.coords[shape.index][2],
+                            obj.coords[shape.index][3],
+                            obj.properties.highlightFill,
+                            obj.properties.highlightStroke
                         );
                     }
                 }
                     
                 // Reset the linewidth
-                this.path('lw %', 1);
-            }
+                obj.path('lw %', 1);
+            });
         };
 
 
@@ -1558,11 +1557,7 @@ if (properties.corners === 'round') {
                             halign:     halign,
                             tag:        'labels.specific',
                           cssClass:     properties.labelsSpecific
-                                        ? RGraph.getLabelsCSSClassName({
-                                            object: this,
-                                              name: 'labelsClass',
-                                             index: i
-                                          })
+                                        ? RGraph.getLabelsCSSClassName(this, 'labelsClass', i)
                                         : ''
                         });
                     }

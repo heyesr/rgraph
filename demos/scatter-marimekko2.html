@@ -21,7 +21,7 @@
             options: {
                 marginLeft: 75,
                 marginTop: 75,
-                textSize: 20,
+                textSize: 12,
                 marimekkoData: [
                     [6,[30,70]],
                     [4,[50,50]]
@@ -41,16 +41,21 @@
             }
         }).draw();
 
-        new RGraph.Scatter.Marimekko({
+        // This draws the axes.
+        new RGraph.Scatter({
             id: 'cvs',
             data: [],
             options: {
                 marginLeft: 75,
                 marginTop: 75,
-                textSize: 20,
+                textSize: 12,
+                backgroundGrid: false,
                 xaxis: true,
                 xaxisScale: true,
                 xaxisScaleUnitsPost: '%',
+                yaxisScaleUnitsPost: '%',
+                yaxisScaleMax: 100,
+                xaxisScaleMax: 100,
                 xaxisLinewidth: 3,
                 xaxisTickmarksLength: 7,
                 yaxis: true,

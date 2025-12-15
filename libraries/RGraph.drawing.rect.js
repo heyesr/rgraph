@@ -544,11 +544,14 @@
         //
         this.highlight = function (shape)
         {
-            if (typeof properties.highlightStyle === 'function') {
-                (properties.highlightStyle)(shape);
-            } else {
-                RGraph.Highlight.rect(this, shape);
-            }
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
+                } else {
+                    RGraph.Highlight.rect(obj, shape);
+                }
+            });
         };
 
 

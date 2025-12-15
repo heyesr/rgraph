@@ -24,7 +24,7 @@
     
     <script id="rgraph-demo-source-code">
         // Use the CSV connector to read the sample.csv file from the server
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             // Fetch the first row of the CSV file, starting at the second column
             // (as with many things in programming - counting starts at zero)
@@ -40,12 +40,12 @@
                     yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                     marginLeft: 95,
                     responsive: [
-                        {maxWidth: null,parentCss:{textAlign:'none'}},
+                        {maxWidth: null,parentCss:{textAlign:'left'}},
                         {maxWidth: 750,parentCss:{textAlign:'center'}}
                     ]
                 }
             }).draw();
-        }});
+        });
     </script>
 
     <script>showSource()</script>

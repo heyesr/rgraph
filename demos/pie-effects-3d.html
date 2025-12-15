@@ -19,13 +19,8 @@
     </div>
 
     <script>
-        colors   = ['red','yellow','blue','cyan','green','pink','white','#ddd'];
-        data     = [4,5,5,7,5,8,4,9];
-        tooltips = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];
-        
-        for (var i=0; i<data.length; i++) {
-            tooltips[i] = '{1}: {2}%'.format(tooltips[i], data[i]);
-        }
+        data  = [4,5,5,7,5,8,4,9];
+        names = ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'];
 
         new RGraph.Pie({
             id: 'cvs',
@@ -39,8 +34,7 @@
                 shadowColor: '#ddd',
                 shadowBlur: 15,
                 radius: 80,
-                colors: colors,
-                tooltips: tooltips,
+                tooltips: '%{global:names[%{index}]}: %{value}%',
                 tooltipsCss: {
                     fontSize: '18pt'
                 }

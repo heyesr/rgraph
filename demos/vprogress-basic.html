@@ -26,7 +26,7 @@
             options: {
                 margin: 7,
                 tooltips: '%{property:key[%{index}]} %{value}%',
-                colors: ['red','yellow','pink','white'],
+                colors: ['red','yellow','pink','green'],
                 key: ['Alf','Berty','Carlos','Dave'],
                 keyPositionX: 125,
                 marginRight: 125
@@ -35,13 +35,14 @@
         {
             var background = RGraph.linearGradient({
                 object: obj,
-                x1:     25, y1: 0, x2: obj.canvas.width - 25, y2: 0,
-                colors: ['#ccc','white', 'white', 'white']
+                x1:     25,
+                y1: 0,
+                x2: obj.canvas.width - 25,
+                y2: 0,
+                colors: ['#aaa', 'white', 'white']
             });
-            
-            obj.set({
-                colorsBackground: background
-            });
+
+            obj.set({backgroundColor: background});
         }).grow();
     </script>
 

@@ -240,7 +240,9 @@
                                         e
                                     );
 
-                                    obj.highlight(shape);
+                                    if (obj.properties.tooltipsHighlight) {
+                                        obj.highlight(shape);
+                                    }
 
                                     // Add the shape that triggered the tooltip
                                     if (RGraph.Registry.get('tooltip')) {

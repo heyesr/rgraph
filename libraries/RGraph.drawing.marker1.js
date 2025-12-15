@@ -171,14 +171,6 @@
 
 
 
-// Now sort the radius out
-var scaleFactor = RGraph.getScaleFactor(this);
-
-if (!radius) {
-    var xy      = RGraph.measureText(conf.text);
-    radius      = xy[0] + (scaleFactor * 7);
-    this.radius = radius;
-}
 
 
 
@@ -362,6 +354,25 @@ if (!radius) {
             }
 
 
+            // 
+            // Sort the radius out. This has been moved here from the
+            // constructor so that it can access the properties - specifically
+            // the text configuration properties.
+            //
+            var scaleFactor = RGraph.getScaleFactor(this);
+
+            if (!radius) {
+                var xy = RGraph.measureText(
+                    this.text,
+                    this.properties.textItalic,
+                    this.properties.textBold,
+                    this.properties.textFont,
+                    this.properties.textSize
+                );
+            
+                radius      = (xy[0] / 2) + (7 * scaleFactor);
+                this.radius = radius;
+            }
             var r = this.radius;
     
             if (properties.align == 'left') {
@@ -613,20 +624,20 @@ if (!radius) {
         //
         this.highlight = function (shape)
         {
-            if (properties.tooltipsHighlight) {
-                if (typeof properties.highlightStyle === 'function') {
-                    (properties.highlightStyle)(shape);
+            RGraph.clipTo.callback(this, function (obj)
+            {
+                if (typeof obj.properties.highlightStyle === 'function') {
+                    (obj.properties.highlightStyle)(shape);
                 } else {
-                    
-                    this.context.beginPath(); 
-                    this.context.strokeStyle = properties.highlightStroke;
-                    this.context.fillStyle   = properties.highlightFill;
-                    this.drawMarker();
-                    this.context.closePath();
-                    this.context.stroke();
-                    this.context.fill();
+                    obj.context.beginPath(); 
+                    obj.context.strokeStyle = obj.properties.highlightStroke;
+                    obj.context.fillStyle   = obj.properties.highlightFill;
+                    obj.drawMarker();
+                    obj.context.closePath();
+                    obj.context.stroke();
+                    obj.context.fill();
                 }
-            }
+            });// End of clipping callback.
         };
 
 

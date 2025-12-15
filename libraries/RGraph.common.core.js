@@ -8075,7 +8075,7 @@
                         //
                         obj.path('b m % % l % % s #bbb',
                             Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin )) * (obj.canvas.width - properties.marginLeft - properties.marginRight) )), obj.canvas.height - properties.marginBottom,
-                            Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + 20
+                            Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + (20 * RGraph.getScaleFactor(obj))
                         );
                         
                         // Draw the final indicator line if
@@ -8083,7 +8083,7 @@
                         if (i === properties.xaxisLabels.length - 1) {
                             obj.path('b m % % l % % s #bbb',
                                 obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom,
-                                obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + 20
+                                obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + (20 * RGraph.getScaleFactor(obj))
                             );
                         }
     
