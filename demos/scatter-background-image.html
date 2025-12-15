@@ -1,0 +1,35 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.scatter.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Scatter chart with a background image</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Scatter({
+            id: 'cvs',
+            data: [[45,36],[156,32],[142,23],[256,59],[123,48]],
+            options: {
+                xaxisScaleMax: 365,
+                yaxisScaleMax: 60,
+                xaxisLabels: ['Q1','Q2','Q3','Q4'],
+                yaxisLabelsCount: 6,
+                backgroundGrid: false,
+                backgroundImage: '../images/bg.png'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

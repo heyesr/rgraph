@@ -1,0 +1,33 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.waterfall.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Waterfall chart with a background image</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.Waterfall({
+            id: 'cvs',
+            data: [1,5,8,-4,-6,5,-8],
+            options: {
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun',''],
+                backgroundGrid: false,
+                backgroundImage: '../images/bg.png',
+                marginInner: 15
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
