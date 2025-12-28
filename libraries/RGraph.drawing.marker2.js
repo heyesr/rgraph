@@ -103,6 +103,7 @@
             highlightStyle:             null,
             highlightStroke:            'rgba(0,0,0,0)',
             highlightFill:              '#fcc',
+            highlightFade:              true,
 
             tooltips:                   null,
             tooltipsHighlight:          true,

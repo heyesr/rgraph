@@ -228,6 +228,7 @@
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightPointRadius:       2,
             highlightStyle:             'point',
+            highlightFade:              true,
 
             scaleMax:              null,
             scaleDecimals:         0,

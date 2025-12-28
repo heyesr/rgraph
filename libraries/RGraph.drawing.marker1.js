@@ -110,6 +110,7 @@
             
             highlightStroke:    'rgba(0,0,0,0)',
             highlightFill:      'rgba(255,0,0,0.7)',
+            highlightFade:      true,
             
             tooltips:                   null,
             tooltipsHighlight:          true,

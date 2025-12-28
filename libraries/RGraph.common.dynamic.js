@@ -28,6 +28,12 @@
 
             RGraph.window_mousedown_event_listener = function (e)
             {
+                // First things first - if the highlighting is in
+                // progress - do nothing.
+                if (RGraph.highlighting) {
+                    return;
+                }
+
                 //
                 // For firefox add the window.event object
                 //
@@ -64,6 +70,12 @@
         if (!RGraph.window_mouseup_event_listener) {
             RGraph.window_mouseup_event_listener = function (e, obj = {})
             {
+                // First things first - if the highlighting is in
+                // progress - do nothing.
+                if (RGraph.highlighting) {
+                    return;
+                }
+
                 //
                 // For firefox add the window.event object
                 //
@@ -168,6 +180,11 @@
         if (!obj.canvas.rgraph_mouseup_event_listener) {
             obj.canvas.rgraph_mouseup_event_listener = function (e)
             {
+                // First things first - if the highlighting is in
+                // progress - do nothing.
+                if (RGraph.highlighting) {
+                    return;
+                }
 
                 //
                 // For firefox add the window.event object
@@ -211,7 +228,6 @@
                         // Tooltips
                         // ========================================================================
     
-
                         if (!RGraph.isNullish(obj) && RGraph.tooltip) {
 
                             var shape = obj.getShape(e);
@@ -228,8 +244,10 @@
                                     RGraph.redraw();
                                     RGraph.Registry.set('tooltip.shape', shape);
 
-                                    // Note that tooltips are positioned at the pointer
-                                    // now; and thats done within the .tooltip() function
+                                    // Note that tooltips are positioned at the
+                                    // pointer now (2015-12-24 not so with current 
+                                    // positioning); and thats done within the
+                                    // .tooltip() function.
 
                                     RGraph.tooltip(
                                         obj,
@@ -240,8 +258,33 @@
                                         e
                                     );
 
-                                    if (obj.properties.tooltipsHighlight) {
-                                        obj.highlight(shape);
+                                    if (obj.properties.tooltipsHighlight && !RGraph.highlighting) {
+
+                                        if (obj.properties.highlightFade) {
+
+                                            RGraph.highlighting = true;
+
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 20);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 40);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 60);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 80);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 100);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 120);
+                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 140);
+                                            setTimeout(function() {RGraph.highlighting = false;}, 400);
+                                            
+                                        } else {
+                                            obj.highlight(shape);
+                                        }
+
+                                        // Store details of the originating object
+                                        RGraph.Registry.set('tooltip-highlight-source-indexes', {
+                                            uid:             shape.object.uid,
+                                            dataset:         shape.dataset,
+                                            index:           shape.index,
+                                            sequentialIndex: shape.sequentialIndex,
+                                            shape:           shape
+                                        });
                                     }
 
                                     // Add the shape that triggered the tooltip
@@ -857,6 +900,12 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
         if (!obj.canvas.rgraph_mousedown_event_listener) {
             obj.canvas.rgraph_mousedown_event_listener = function (e)
             {
+                // First things first - if the highlighting is in
+                // progress - do nothing.
+                if (RGraph.highlighting) {
+                    return;
+                }
+
                 //
                 // For firefox add the window.event object
                 //
@@ -1000,6 +1049,12 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
         if (!obj.canvas.rgraph_click_event_listener) {
             obj.canvas.rgraph_click_event_listener = function (e)
             {
+                // First things first - if the highlighting is in
+                // progress - do nothing.
+                if (RGraph.highlighting) {
+                    return;
+                }
+
                 //
                 // For firefox add the window.event object
                 //

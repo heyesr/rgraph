@@ -106,6 +106,7 @@
 
             highlightStyle:         null,
             highlightStroke:        'rgba(255,255,255,0.7)',
+            highlightFade:          true,
 
             shadow:                  false,
             shadowColor:             'rgba(0,0,0,0.2)',

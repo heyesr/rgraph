@@ -179,6 +179,7 @@
             highlightStyle:                     null,
             highlightStroke:                    'rgba(0,0,0,0)',
             highlightFill:                      'rgba(255,255,255,0.5)',
+            highlightFade:                       true,
 
             clearto:                            'rgba(0,0,0,0)',
             

@@ -97,6 +97,7 @@
             delay:                       50,
 
             highlightFill:               'rgba(255,0,0,1.0)',
+            highlightFade:               true,
 
             tooltips:                   null,
             tooltipsCssClass:           'RGraph_tooltip',

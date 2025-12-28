@@ -90,8 +90,9 @@
 
             text:              null,
 
-            highlightStroke:   'black',
-            highlightFill:   'rgba(255,255,255,0.7)',
+            highlightStroke:            'black',
+            highlightFill:              'rgba(255,255,255,0.7)',
+            highlightFade:              true,
             
             tooltips:                   null,
             tooltipsEffect:             'slide',

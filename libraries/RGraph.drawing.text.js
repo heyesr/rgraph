@@ -84,6 +84,7 @@
 
             highlightStroke:        '#ccc',
             highlightFill:          'rgba(255,255,255,0.5)',
+            highlightFade:          true,
 
             tooltips:                   null,
             tooltipsEffect:             'slide',

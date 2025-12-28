@@ -1742,6 +1742,82 @@
                 ///////////////////////////////////
                 if (this.properties.search) {
 
+
+                    
+                    //
+                    // This function performs the search and is
+                    // triggerred when the enter key ias pressed
+                    // or the search icon is clicked.
+                    //
+                    // @param string text  The text to search for.
+                    // @param object event The event object.
+                    //
+
+                    this.searchBoxSubmit = function (text, event)
+                    {
+                        if (obj.properties.searchUrlUpdate) {
+
+                            // Reset paging start and perPage
+                            obj.properties.pagingCurrent = 1;
+
+                            var url = new URL(location.href);
+                            
+                            url.searchParams.delete(obj.properties.searchUrlQueryStringParameter);
+                            if (RGraph.isString(obj.properties.searchUrlRandom) && obj.properties.searchUrlRandom) {
+                                url.searchParams.delete(obj.properties.searchUrlRandom);
+                            }
+                            url.searchParams.append(obj.properties.searchUrlQueryStringParameter, e.target.value);
+                        
+                            // Add a random number to the URL to try
+                            // and negate the effects of caching.
+                            // This can be disabled by setting it to
+                            // a falsey value.
+                            if (RGraph.isString(obj.properties.searchUrlRandom) && obj.properties.searchUrlRandom) {
+                                url.searchParams.append(obj.properties.searchUrlRandom, RGraph.random(1,9999999999));
+                            }
+                        
+                            url.hash = obj.properties.searchUrlAnchor;
+                        
+                            // Redirect to the new URL
+                            location.href = url.toString();
+
+                            return;
+                        }
+
+
+                        obj.clearSearch();
+                        obj.resetSortData();
+                        obj.applyStoredEdits();
+
+                        // First thing is to clear sorting so
+                        // the data is presented in its
+                        // initial state.
+                        obj.clearSort();
+
+                        obj.resetData();
+                        
+                        // Reset paging start and perPage.
+                        obj.properties.pagingCurrent = 1;
+
+                        obj.searchData(text);
+
+                        obj.redraw();
+                        
+                        // Re-focus the text input
+                        var el = obj.container.querySelector('.rgraph-datagrid-search-input');
+                        el.focus();
+
+                        //
+                        // Stop the event from going any
+                        // further.
+                        //
+                        event.stopPropagation();
+                        event.preventDefault();
+                        return false;
+                    };
+
+
+
                     // Add the search input to the td
                     var div = document.createElement('div');
                         div.className      = 'rgraph-datagrid-search-input-container';
@@ -1756,6 +1832,33 @@
                         searchInput.placeholder      = obj.properties.searchPlaceholder;
                     div.appendChild(searchInput);
                     
+                    // Add the searchInput value from the browsers
+                    // session storage
+                    searchInput.value = window.sessionStorage[this.searchPersistentSessionStorageKey] || '';
+
+
+                    // Add an icon so that the user can click on it
+                    // and trigger a search.
+                    if (!searchInput.value) {
+                        var div_search_icon = document.createElement('div');
+                        div_search_icon.insertAdjacentHTML('afterbegin', '&#x26B2;');
+                        div_search_icon.className = 'rgraph-datagrid-submit-search-icon';
+                        div_search_icon.style.display = 'inline-block';
+                        div_search_icon.style.transform = 'rotate(45deg)';
+                        div_search_icon.style.fontSize  = '200%';
+                        div_search_icon.style.position  = 'absolute';
+                        div_search_icon.style.top       = '1px';
+                        div_search_icon.style.right     = '15px';
+                        div_search_icon.style.cursor    = 'pointer';
+                        div.appendChild(div_search_icon);
+                        
+                        div_search_icon.onclick = function (e)
+                        {
+                            return obj.searchBoxSubmit(searchInput.value, e);
+                        };
+                    }
+                    
+                    
                     if (this.properties.searchFocus) {
                         searchInput.focus();
                     }
@@ -1763,10 +1866,6 @@
                     
                     // Add an aria-placeholder attribute
                     searchInput.setAttribute('aria-placeholder',this.properties.searchPlaceholder);
-
-                    // Add the searchInput value from the browsers
-                    // session storage
-                    searchInput.value = window.sessionStorage[this.searchPersistentSessionStorageKey] || '';
 
                     // If the search is being handled by the server
                     // and there's a search string in the correct
@@ -1860,6 +1959,7 @@
                             pagingLinks.replaceChildren();
                         }
                     };
+                    
 
 
 
@@ -2064,70 +2164,7 @@
 
 
                         if (e.keyCode === 13) {
-                        
-                            if (obj.properties.searchUrlUpdate) {
-
-                                // Reset paging start and perPage
-                                obj.properties.pagingCurrent = 1;
-
-                                var url = new URL(location.href);
-                                
-                                url.searchParams.delete(obj.properties.searchUrlQueryStringParameter);
-                                if (RGraph.isString(obj.properties.searchUrlRandom) && obj.properties.searchUrlRandom) {
-                                    url.searchParams.delete(obj.properties.searchUrlRandom);
-                                }
-                                url.searchParams.append(obj.properties.searchUrlQueryStringParameter, e.target.value);
-                            
-                                // Add a random number to the URL to try
-                                // and negate the effects of caching.
-                                // This can be disabled by setting it to
-                                // a falsey value.
-                                if (RGraph.isString(obj.properties.searchUrlRandom) && obj.properties.searchUrlRandom) {
-                                    url.searchParams.append(obj.properties.searchUrlRandom, RGraph.random(1,9999999999));
-                                }
-                            
-                                url.hash = obj.properties.searchUrlAnchor;
-                            
-                                // Redirect to the new URL
-                                location.href = url.toString();
-
-                                return;
-                            }
-
-
-                            obj.clearSearch();
-                            obj.resetSortData();
-                            obj.applyStoredEdits();
-
-                            // First thing is to clear sorting so
-                            // the data is presented in its
-                            // initial state
-                            obj.clearSort();
-
-
-
-
-                            obj.resetData();
-                            
-                            // Reset paging start and perPage
-                            obj.properties.pagingCurrent = 1;
-
-                            obj.searchData(e.target.value);
-
-
-                            obj.redraw();
-                            
-                            // Re-focus the text input
-                            var el = obj.container.querySelector('.rgraph-datagrid-search-input');
-                            el.focus();
-
-                            //
-                            // Stop the event from going any
-                            // further
-                            //
-                            e.stopPropagation();
-                            e.preventDefault();
-                            return false;
+                            return obj.searchBoxSubmit(e.target.value, e);
                         }
                     }, false);
                 }

@@ -1347,6 +1347,8 @@
     //
     RGraph.hideTooltip = function ()
     {
+        var existingHighlightIndexes = RGraph.Registry.get('tooltip-highlight-source-indexes');
+        
         var tooltip = RGraph.Registry.get('tooltip');
         var uid     = arguments[0] && arguments[0].uid ? arguments[0].uid : null;
 
@@ -1372,6 +1374,10 @@
             tooltip.style.display    = 'none';                
             tooltip.style.visibility = 'hidden';
             RGraph.Registry.set('tooltip', null);
+            
+            // Get rid of the highlght information that's stored
+            // in the registry.
+            RGraph.Registry.set('tooltip-highlight-source-indexes', null);
         }
     };
 

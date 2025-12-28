@@ -146,6 +146,7 @@
             highlightLinewidth:             1,
             highlightStroke:                'rgba(0,0,0,0)',
             highlightFill:                  'rgba(255,255,255,0.7)',
+            highlightFade:                  true,
 
             annotatable:                    false,
             annotatableColor:               'black',

@@ -228,6 +228,7 @@
             highlightStyleTwodStroke:       'transparent',
             highlightStyleTwodLinewidth:    2,
             highlightStyleOutlineWidth:     null,
+            highlightFade:                  true,
 
             centerx:                        null,
             centery:                        null,

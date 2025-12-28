@@ -294,6 +294,7 @@
             highlightStroke:            'gray',
             highlightFill:              'white',
             highlightPointRadius:       2,
+            highlightFade:              true,
             
             highlightDataset:                false,
             highlightDatasetStroke:          'rgba(0,0,0,0.25)',

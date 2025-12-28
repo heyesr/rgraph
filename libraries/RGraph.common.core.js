@@ -183,8 +183,8 @@
     //
     // IMPORTANT:
     //
-    // This function is being phased out to try and improve
-    // performance.
+    // THIS FUNCTION IS NO LONGER USED TO TRY AND IMPROVE
+    // PERFORMANCE.
     //
     // This function allows both object based arguments to functions
     // and also regular arguments as well.

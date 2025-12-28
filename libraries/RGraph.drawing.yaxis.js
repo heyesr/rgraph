@@ -167,6 +167,8 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             
+            highlightFade:              true,
+            
             xaxisPosition:              'bottom',
 
             clearto:                    'rgba(0,0,0,0)',

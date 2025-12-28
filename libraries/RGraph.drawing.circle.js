@@ -95,6 +95,7 @@
             highlightStyle:    null,
             highlightStroke:   'black',
             highlightFill:     'rgba(255,255,255,0.7)',
+            highlightFade:     true,
 
             tooltips:                   null,
             tooltipsHighlight:          true,

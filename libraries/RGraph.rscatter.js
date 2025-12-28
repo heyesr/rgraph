@@ -257,6 +257,7 @@
             highlightFill:                          'rgba(255,255,255,0.7)',
             highlightSize:                          null,
             highlightStyle:                         null,
+            highlightFade:                          true,
 
             segmentHighlight:                       false,
             segmentHighlightCount:                  null,
