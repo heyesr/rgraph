@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -21,23 +20,7 @@
             data: [1,2,5,10,20,30,40,45,50],
             options: {
                 textSize: 14,
-                yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
-                adjustable: true,
-                backgroundImage: '../images/bg.png',
-                events: {
-                    //
-                    // This adjust event listener makes it so that when you
-                    // adjust the chart the bar being adjusted snaps to the
-                    // nearest whole value.
-                    //
-                    adjust: function (obj)
-                    {
-                        var shape = RGraph.Registry.get('adjusting.shape');
-                         obj.data[shape.dataset] = Math.round(obj.data[shape.dataset]);
-
-                        RGraph.redraw();
-                    }
-                }
+                yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan']
             }
         }).draw();
     </script>
