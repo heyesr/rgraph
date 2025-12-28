@@ -1850,6 +1850,7 @@
                         div_search_icon.style.top       = '1px';
                         div_search_icon.style.right     = '15px';
                         div_search_icon.style.cursor    = 'pointer';
+                        div_search_icon.style.color     = '#777';
                         div.appendChild(div_search_icon);
                         
                         div_search_icon.onclick = function (e)
