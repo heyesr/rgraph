@@ -1,0 +1,51 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An adjustable Horizontal Bar chart smapping to whole numbers</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="450">[No canvas support]</canvas>
+    </div>
+
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [1,8,6,8,2,3,4,3,2],
+            options: {
+                colorsSequential: true,
+                yaxisLabels: ['Kev','Indigo','Florence','Mark','Neil','Jacky','Lou','Kevin','Paul'],
+                adjustable: true,
+                colors: ['black'],
+                marginLeft: 100,
+                xaxis: false,
+                marginInner: 2,
+                events: {
+                    //
+                    // This adjust event listener makes it so that
+                    // when you adjust the chart the bar being
+                    // adjusted snaps to the nearest whole value.
+                    //
+                    adjust: function (obj)
+                    {
+                        var shape = RGraph.Registry.get('adjusting.shape');
+                         obj.data[shape.dataset] = Math.round(obj.data[shape.dataset]);
+
+                        RGraph.redraw();
+                    }
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
