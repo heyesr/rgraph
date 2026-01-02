@@ -2010,7 +2010,11 @@
                             // start of a loop through the words
                             // in this row.
                             //
-                            var searchWords = obj.search.trim().split(/\s+/);
+                            
+                            // Use the newer split string function
+                            // now. This allows for quoted words
+                            // now that can contain spaces.
+                            var searchWords = RGraph.splitStringArray(obj.search, ' ');
 
                             
                             //

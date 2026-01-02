@@ -9260,6 +9260,82 @@
 
 
     //
+    // Split a string into an array whilst allowing for quoted
+    // sections.
+    //
+    // @param  str   string  The string to Split
+    // @param  split string  The character to split on (default=,)
+    // @param  quote string  The quote character - either a single
+    //                       or double quote (default=")
+    // @param  empty boolean Whether to keep empty elements or not 
+    //                       (default=true)
+    // @return       array   The resulting array
+    //
+    RGraph.splitStringArray = function (str, split = ',', quote = '"', empty = true)
+    {
+        // Loop over the string, character-by-character
+        var ret = [], quoted = false, buf = '';
+        
+        for (var i=0; i<str.length; ++i) {
+        
+            var chr  = str[i];
+            var prev = i === 0 ? '' : str[i-1];
+            var next = i === (str.length - 1) ? '' : str[i+1];
+            
+            // First - if this character is a backslash add the
+            // next character no matter what it is
+            if (chr === "\\") {
+                buf += next;
+                i++;
+                continue;
+            }
+
+            // Encountered the split char
+            if (chr === split && !quoted) {
+                // Add the buffer to the return array if the buffer isn't
+                // empty or empty elements are being kept (the default)
+                if (buf.trim() || empty) {
+                    ret.push(buf);
+                    buf = '';
+                }
+                continue;
+            }
+
+            // Quote character
+            if (chr === quote) {
+                
+                // Opening quote...
+                if (!quoted) {
+                    quoted = true;
+                    continue;
+                
+                // Closing quote...
+                } else {
+                    quoted = false;
+                    continue;
+                }
+            }
+            
+            buf += chr;
+        }
+        
+         // Add the last bit to the returned array
+         if (buf.trim() || empty) {
+            ret.push(buf);
+            buf = '';
+         }
+         
+         return ret;
+    };
+
+
+
+
+
+
+
+
+    //
     // A set of functions which help you get data from the GET
     // string (the query string). This function simply returns
     // the querystring as-is.

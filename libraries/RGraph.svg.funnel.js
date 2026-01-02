@@ -225,12 +225,13 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke: 'rgba(0,0,0,0)',
+            highlightStroke:    'rgba(0,0,0,0)',
             // Lighter than usual because the backgroundBars option can
             // mean highlight segments fade into the background
-            highlightStroke: 'rgba(0,0,0,0)',
-            highlightFill: 'rgba(255,255,255,0.7)',
+            highlightStroke:    'rgba(0,0,0,0)',
+            highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
+            highlightFade:      true,
             
             title: '',
             titleX:      null,
@@ -970,10 +971,25 @@
                     'stroke-width': properties.highlightLinewidth
                 },
                 style: {
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
+                    opacity: this.properties.highlightFade ? 0 : 1
                 }
             });
 
+            // If highlightFade is enable (the default) then fade
+            // the highlight in.
+            if (this.properties.highlightFade) {
+
+                for (var i=1; i<=5; ++i) {
+                    (function (index)
+                    {
+                        setTimeout(function ()
+                        {
+                            highlight.style.opacity = (index / 5) * 1;
+                        }, (index / 5) * 100);
+                    })(i);
+                }
+            }
 
             if (properties.tooltipsEvent === 'mousemove') {
                 highlight.addEventListener('mouseout', function (e)

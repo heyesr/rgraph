@@ -293,6 +293,7 @@
             //highlightStroke: 'rgba(0,0,0,0)',
             //highlightFill: 'rgba(255,255,255,0.7)',
             //highlightLinewidth: 1,
+            highlightFade:        true,
             
             tickmarksStyle: 'none',
             tickmarksSize: 5,
@@ -1435,7 +1436,13 @@
                                 });
 
 
-                                // Highlight the chart here
+                                // Highlight the chart.
+                                //
+                                // 2025-12-28
+                                //
+                                // Why is this done here and not
+                                // in the highlight() function?
+                                //
                                 var outer_highlight1 = RGraph.SVG.create({
                                     svg: obj.svg,
                                     parent: obj.svgAllGroup,
@@ -1448,7 +1455,8 @@
                                         'fill-opacity': 0.5
                                     },
                                     style: {
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        opacity: obj.properties.highlightFade ? 0 : 1
                                     }
                                 });
 
@@ -1465,7 +1473,8 @@
                                         'fill-opacity': 0.75
                                     },
                                     style: {
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        opacity: obj.properties.highlightFade ? 0 : 1
                                     }
                                 });
 
@@ -1481,7 +1490,8 @@
                                         fill: 'white'
                                     },
                                     style: {
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        opacity: obj.properties.highlightFade ? 0 : 1
                                     }
                                 });
 
@@ -1497,9 +1507,28 @@
                                         fill: typeof obj.properties.highlightFill === 'string' ? obj.properties.highlightFill : obj.properties.colors[dataset]
                                     },
                                     style: {
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        opacity: obj.properties.highlightFade ? 0 : 1
                                     }
                                 });
+                                // If highlightFade is enable (the default) then fade
+                                // the highlight in.
+
+                                if (obj.properties.highlightFade) {
+                                    for (var i=1; i<=5; ++i) {
+                                        (function (index)
+                                        {
+                                            setTimeout(function ()
+                                            {
+                                                outer_highlight1.style.opacity = (index / 5) * 1;
+                                                outer_highlight2.style.opacity = (index / 5) * 1;
+                                                inner_highlight1.style.opacity = (index / 5) * 1;
+                                                inner_highlight2.style.opacity = (index / 5) * 1;
+                                            }, (index / 5) * 100);
+                                        })(i);
+                                    }
+                                }
+
 
                                 // Set the highlight in the registry
                                 RGraph.SVG.REG.set('highlight', [
@@ -1845,7 +1874,8 @@
 
 
         //
-        // This function can be used to highlight a bar on the chart
+        // This function can be used to highlight a bar on
+        // the chart.
         // 
         // TODO This function looks like its needs updating
         // 
@@ -2829,7 +2859,8 @@
                         'stroke-linecap':'round'
                     },
                     style: {
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        opacity: this.properties.highlightFade ? 0 : 1
                     }
                 });
 
@@ -2852,6 +2883,7 @@
                         var previous_highlight = RGraph.SVG.REG.get('tooltip-dataset-highlight');
                         if (previous_highlight) {
                             previous_highlight.setAttribute(obj.properties.filled ? 'fill' : 'stroke', 'transparent');
+                            previous_highlight.style.opacity = obj.properties.highlightFade ? 0 : 1;
                             RGraph.SVG.REG.set('tooltip-dataset-highlight', null);
                         }
 
@@ -2886,6 +2918,22 @@
                             e.target.setAttribute('fill','#fff9');
                         }
                         e.target.setAttribute('stroke','#fff9');
+
+
+                        // If highlightFade is enable (the default) then fade
+                        // the highlight in.
+                        if (obj.properties.highlightFade) {
+
+                            for (let i=1; i<=5; ++i) {
+                                (function (index)
+                                {
+                                    setTimeout(function ()
+                                    {
+                                        e.target.style.opacity = (index / 5) * 1;
+                                    }, (index / 5) * 100);
+                                })(i);
+                            }
+                        }
 
                         RGraph.SVG.REG.set('tooltip-dataset-highlight', e.target);
                 

@@ -216,6 +216,7 @@
             highlightStroke:                    'rgba(0,0,0,0)',
             highlightFill:                      'rgba(255,255,255,0.7)',
             highlightLinewidth:                 1,
+            highlightFade:                      true,
             
             clip:                               null,
             
@@ -1155,8 +1156,27 @@
                     'data-end-angle':    angle,
                     'data-radius-inner': radiusInner,
                     'data-radius-outer': radiusOuter
+                },
+                style: {
+                    pointerEvents: 'none',
+                    opacity: this.properties.highlightFade ? 0 : 1
                 }
             });
+            
+            // If highlightFade is enable (the default) then fade
+            // the highlight in.
+            if (this.properties.highlightFade) {
+
+                for (var i=1; i<=5; ++i) {
+                    (function (index)
+                    {
+                        setTimeout(function ()
+                        {
+                            path.style.opacity = (index / 5) * 1;
+                        }, (index / 5) * 100);
+                    })(i);
+                }
+            }
 
 
 
