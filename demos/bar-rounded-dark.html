@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Bar chart with rounded corners and a dark theme</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="750" height="250" style="background-color: black">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">	
+        data = [
+            8.432,1.256,5.435,6.663,5.488,7.846,
+            4.653,9.564,3.245,5.433,5.468,4.845
+        ];
+
+        threshhold = 8;
+		
+        for (var i=0,labelsAboveSpecific=[]; i<12; ++i) {
+            if (data[i] >= threshhold) {
+                labelsAboveSpecific[i] = '✓';
+            }
+        }
+	
+        new RGraph.Bar({
+            id: 'cvs',
+            data: data,
+            options: {
+                labelsAbove: true,
+                labelsAboveSpecific: labelsAboveSpecific,
+                labelsAboveOffsety: -30,
+                labelsAboveColor: 'black',
+                labelsAboveBold: true,
+                marginInner: 15,
+                marginLeft: 10,
+                marginRight: 50,
+                marginBottom: 50,
+                colors: ['#0000'],
+                backgroundGrid: false,
+                xaxis: false,
+                yaxis: false,
+                textSize: 14,
+                textColor: 'white',
+                xaxisLabels: ['J','F','M','A','M','J','J','A','S','O','N','D'],
+                xaxisLabelsOffsety: 5,
+                textBold: true,
+                yaxisLabelsCount: 2,
+                yaxisPosition: 'right',
+                yaxisScaleUnitsPost: 'k',
+                horizontalLines: [{
+                    value: threshhold,
+                    color: '#76FADD',
+                    dotted: false,
+                    dashed: false,
+                    linewidth: 2,
+                    label: '',
+                    labelOffsetx: 900
+                }],
+                events: {
+                    draw: function (obj)
+                    {
+                        obj.coords.forEach(function (v, k, arr)
+                        {
+                            obj.path(
+                                'gco destination-over b lw 10 rr % % % % 40 f #76FADD gco source-over',
+                                v[0], v[1], v[2], v[3]
+                            );
+                        });
+                    }
+                }
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
