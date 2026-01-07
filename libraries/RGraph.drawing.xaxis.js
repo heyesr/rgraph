@@ -538,6 +538,33 @@
         //
         this.highlight = function (shape)
         {
+            // If the highlightFade property is not set then call
+            // the highlight function multiple times when the
+            // globalAlpha is set at varying levels of transparency
+            // to fade the highlight in. If the variable is set,
+            // however, then this call is probably a part of said
+            // highlighting process so don't call ourselves
+            // again - just highlight the chart.
+            if (this.properties.highlightFade && !this.highlight.highlighting) {
+            
+                // Add a variable to the highlight function (this
+                // function) to indicate that we're currently in
+                // the process of highlighting.
+                this.highlight.highlighting = true;
+                
+                var obj = this;
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 20);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 40);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 60);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 80);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 100);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 120);
+                setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 140);
+                setTimeout(function() {obj.highlight.highlighting = false;}, 400);
+            
+                return;
+            }
+
             RGraph.clipTo.callback(this, function (obj)
             {
                 if (typeof obj.properties.highlightStyle === 'function') {

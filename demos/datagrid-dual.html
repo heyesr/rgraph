@@ -13,14 +13,14 @@
     <div id="rgraph-demo-html">
         
         <p style="text-align: center">The first datagrid...</p>
-        <div id="myGrid2" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+        <div id="myGrid1" style="width: 700px; margin-left: auto; margin-right: auto"></div>
         
         <p style="text-align: center">
             And the second (editable) datagrid. When changing the
             <b>Amount</b> column the amount will only be accepted
             if it's 100 or less.
         </p>
-        <div id="myGrid3" style="width: 700px; margin-left: auto; margin-right: auto"></div>
+        <div id="myGrid2" style="width: 700px; margin-left: auto; margin-right: auto"></div>
     </div>
     
     <script>
@@ -32,7 +32,7 @@
         document.addEventListener('DOMContentLoaded', function ()
         {
             new RGraph.Datagrid({
-                id: 'myGrid2',
+                id: 'myGrid1',
                 data: [
                     [324, 'Horatio','Tuesday',   84],
                     [468, 'Liam',   'Wednesday', 32],
@@ -57,6 +57,10 @@
                 ],
                 options: {
                     pagingPerPage: 5,
+                    pagingPosition: 'top',
+                    pagingLabel:'Page No:',
+                    pagingUrlUpdate: true,
+                    pagingUrlQueryStringParameter: 'p',
                     columnsHeaders: ['ID','Name','Day','Score'],
                     columnsWidths: [50],
                     sortablePersistent: true
@@ -64,7 +68,7 @@
             }).draw();
 
             grid = new RGraph.Datagrid({
-                id: 'myGrid3',
+                id: 'myGrid2',
                 data: [
                     [324, 'Jemima',  'Tuesday',   84],
                     [468, 'Lucy',    'Wednesday', 32],

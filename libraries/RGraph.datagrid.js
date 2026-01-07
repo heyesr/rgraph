@@ -1954,7 +1954,7 @@
 
                         
                         // Clear the paging links
-                        var pagingLinks = document.querySelector('div#' + obj.id + ' div.rgraph-datagrid-paging-links');
+                        var pagingLinks = obj.container.querySelector('div#' + obj.id + ' div.rgraph-datagrid-paging-links');
                         
                         if (pagingLinks) {
                             pagingLinks.replaceChildren();
@@ -2010,11 +2010,7 @@
                             // start of a loop through the words
                             // in this row.
                             //
-                            
-                            // Use the newer split string function
-                            // now. This allows for quoted words
-                            // now that can contain spaces.
-                            var searchWords = RGraph.splitStringArray(obj.search, ' ');
+                            var searchWords = RGraph.splitStringArray(obj.search, ' ');;
 
                             
                             //
@@ -2623,9 +2619,9 @@
                             
                             var span = document.createElement('span');
                             span.style.cssText =
-                                `position: absolute;
-                                 right: 6px;
-                                 top: 50%;
+                                `position: relative;
+                                 left: 6px;
+                                 top: 3px;
                                  font-size: 10pt;
                                  display: inline-block;
                                  pointer-events: none;
@@ -2640,14 +2636,16 @@
                             if (this.sortDir === 1) {
                                 span.style.transform = 'rotate(0deg) translateY(-50%)';
                                 th.setAttribute('aria-sort','ascending');
+                                th.setAttribute('title','Sorted in ascending order');
                             } else if (this.sortDir === -1) {
                                 span.style.transform = 'rotate(180deg) translateY(50%)';
                                 th.setAttribute('aria-sort','descending');
+                                th.setAttribute('title','Sorted in descending order');
                             } else {
                                 span.style.transform = 'translateY(-50%)';
                             }
     
-                            th.appendChild(span);
+                            +                            th.children[0].appendChild(span);
                         }
                     }
                 }

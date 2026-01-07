@@ -260,22 +260,7 @@
 
                                     if (obj.properties.tooltipsHighlight && !RGraph.highlighting) {
 
-                                        if (obj.properties.highlightFade) {
-
-                                            RGraph.highlighting = true;
-
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 20);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 40);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 60);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 80);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 100);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 120);
-                                            setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape);obj.context.globalAlpha = 1;}, 140);
-                                            setTimeout(function() {RGraph.highlighting = false;}, 400);
-                                            
-                                        } else {
-                                            obj.highlight(shape);
-                                        }
+                                        obj.highlight(shape);
 
                                         // Store details of the originating object
                                         RGraph.Registry.set('tooltip-highlight-source-indexes', {

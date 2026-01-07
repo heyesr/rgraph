@@ -10660,31 +10660,36 @@
     // it will create one and then reuse it on subsequent
     // calls to this function.
     //
-    // @param string style The styles to assign to the
-    //                     new class. An example:
+    // @param string style        The styles to assign to the
+    //                            new class. An example:
     //
-    //                     table tr td {color: red;}
+    //                            table tr td {color: red;}
     //
-    RGraph.addCss = function (style)
+    // @param object styleElement The style element to which the
+    //                            style is attached.
+    // @param object parent       If given (default is null),
+    //                            this is the node to which the
+    //                            style element is attached. If
+    //                            not given then the style element
+    //                            is added to the <head>.
+    //
+    RGraph.addCss = function (style, styleElement = null, parent = null)
     {
-        var append = false;
-
-        if (!RGraph.addCss.styleElement) {
-            RGraph.addCss.styleElement = document.createElement('style');
-            
-            // Should the element be appended to the
-            // document?
-            append = true;
-        }
-        
-        var el = RGraph.addCss.styleElement;
+        // Create a style element and add the CSS
+        var el = styleElement || document.createElement('style');
             el.insertAdjacentHTML('beforeend', style);
 
         // Append the style element to the document? Only
-        // do this on newly created style elements.
-        if (append) {
+        // do this on newly created style elements. You can
+        // optionally pass in an element on which to attach
+        // the style element instead of the head.
+        if (parent) {
+            parent.appendChild(el);
+        } else {
             document.head.appendChild(el);
         }
+        
+        return el;
     };
 
 
