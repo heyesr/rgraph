@@ -469,7 +469,7 @@
     //
     // Parse a gradient thats in JSON format like this:
     //
-    // Gradient({colors: ["red","white"],x1:0,y1:25,x2:0,y2:275}).
+    // Gradient({colors: ["red","white"],x1:0,y1:25,x2:0,y2:275})
     //
     // @param object args The gradient definition. Possible keys
     //                    in this object are:
@@ -10661,7 +10661,7 @@
     // calls to this function.
     //
     // @param string style        The styles to assign to the
-    //                            new class. An example:
+    //                            new CSS. An example:
     //
     //                            table tr td {color: red;}
     //
@@ -10796,7 +10796,9 @@
     {
         // Allow various data structures to be given as well as
         // strings.
-        str = String(str);
+        if (!RGraph.isString(str)) {
+            str = JSON.stringify(str);
+        }
 
         var hc="0123456789abcdef";
         function rh(n) {var j,s="";for(j=0;j<=3;j++) s+=hc.charAt((n>>(j*8+4))&0x0F)+hc.charAt((n>>(j*8))&0x0F);return s;}

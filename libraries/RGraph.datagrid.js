@@ -2391,6 +2391,8 @@
                                 var div = document.createElement('div');
                                 div.id                      = 'rgraph-datagrid-paging-page-selector';
                                 div.style.position          = 'absolute';
+                                div.style.textAlign         = 'center';
+                                div.style.cursor            = 'pointer';
                                 div.style.width             = '50px';
                                 div.style.maxHeight         = '200px';
                                 div.style.backgroundColor   = 'white';
@@ -2413,8 +2415,17 @@
                                         {
                                             obj.setPage(index);
                                         };
-                                    })(pn);
-                                }
+// TODO Make this color an option
+pnDiv.addEventListener('mouseover', function (e)
+{
+    e.target.style.backgroundColor = '#ccc';
+});
+pnDiv.addEventListener('mouseout', function (e)
+{
+    e.target.style.backgroundColor = 'white';
+});
+    })(pn);
+}
                                 
                                 // Now position the div
                                 div.style.top  = ((xy[1] - div.offsetHeight) > 0 ? (xy[1] - div.offsetHeight) : 10) + 'px';
