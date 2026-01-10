@@ -10318,7 +10318,7 @@
     // foo=bar,foo2=bar2,foo3="bar 3"
     //
     // @param  string  string    The string to parse.
-    // @param  string  separator The string to parse.
+    // @param  string  separator The separator used to separate values.
     // @param  boolean preserve  By default the values are
     //                           trim()med to remove any trailing
     //                           or leading whitepsace - by
@@ -10939,7 +10939,6 @@
                 context.strokeStyle = stroke;
                 context.stroke();
             }
-            
     };
 
 
