@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A clipped Bar chart using the clipping callback</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        
+        bar = new RGraph.Bar({
+            id: 'cvs',
+            data: [12,18,10,9,6,20,18],
+            options: {
+                clip: 'circle: 150 , 150 , 500'
+            }
+        }).draw();
+
+        RGraph.clipTo.callback(bar, function (obj)
+        {
+            RGraph.text({
+                object: obj,
+                x: obj.canvas.width / 2,
+                y: obj.get('marginTop') - 10,
+                size: 36, // Remember: You need to double the size that
+                          // you want to see because of scaling!
+                bold: true,
+                text: 'A title that is subject to the clipping!',
+                halign: 'center',
+                valign: 'bottom'
+            });
+        });
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
