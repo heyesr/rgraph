@@ -292,7 +292,8 @@
             
             zoom:             false,
             
-            events:           {}
+            events:           {},
+            clip:             null
         };
 
 

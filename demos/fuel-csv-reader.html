@@ -23,7 +23,7 @@
     </div>
     
     <script>
-        new RGraph.CSV({url: '/sample.csv', callback: function (csv)
+        new RGraph.CSV('/sample.csv', function (csv)
         {
             var row   = csv.row(0),
                 value = row[1]; // The first cell is a label
@@ -39,7 +39,7 @@
                     radius: '-20'
                 }
             }).draw();
-        }});
+        });
     </script>
     
     <script>showSource()</script>

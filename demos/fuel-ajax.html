@@ -21,9 +21,7 @@
     </div>
     
     <script>
-        RGraph.AJAX.getNumber({url: '/getdata.html', callback: drawFuel});
-
-        function drawFuel (num)
+        RGraph.AJAX.getNumber('/getdata.html', function (num)
         {
             var fuel = new RGraph.Fuel({
                 id: 'cvs',
@@ -34,7 +32,7 @@
                     bulbRadius: 15
                 }
             }).draw();
-        }
+        });
     </script>
     
     <script>showSource()</script>

@@ -53,31 +53,29 @@
         
         line1.canvas.onclick = function (e)
         {
-            var indexes = line1.closest({
-                event: e,
-                tolerance: 25, // Optional - defaults to 25
-                xonly: true    // Optional - defaults to false
-            });
+            // event, xonly = false, tolerance = 25
+            var indexes = line1.closest(e, true, 25);
 
             if (!indexes) {
                 return;
             }
 
             var value = line1.getValue(e);
+
+
+            line1.growPoint(
+                0,
+                indexes.index,
+                value,
+                15  // Optional - defaults to 15
+            );
     
-            line1.growPoint({
-                index:   indexes.index,
-                value:   value,
-                dataset: 0,  // Optional - defaults to 0
-                frames:  15  // Optional - defaults to 15
-            });
-    
-            line2.growPoint({
-                index:   indexes.index,
-                value:   value,
-                dataset: 0,  // Optional - defaults to 0
-                frames:  15  // Optional - defaults to 15
-            });
+            line2.growPoint(
+                0,
+                indexes.index,
+                value,
+                15  // Optional - defaults to 15
+            );
         }
     </script>
 

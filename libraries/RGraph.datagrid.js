@@ -1144,7 +1144,11 @@
 
         this.defaultCss = [
             // Container and table
-            'div#' + this.id + ' {line-height: initial;}',
+
+            //Try to reset the CSS
+            'div#' + this.id + ' {line-height: initial;margin:0;padding:0;border:none;position:static;float: none;display:revert;}',
+            'div#' + this.id + ' * {line-height: initial;margin:0;padding:0;border:none;position:static;float: none;display:revert;}',
+
             'div#' + this.id + ' table { border-collapse: collapse;font-family: sans-serif;}',
             
             // Table header

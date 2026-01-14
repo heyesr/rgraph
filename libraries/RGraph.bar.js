@@ -365,6 +365,7 @@
             clearto: 'rgba(0,0,0,0)',
             
             events:  {},
+            clip:    null,
             
             scale:                  true,
             scaleFactor:            2,
@@ -2504,7 +2505,7 @@ this.context.lineTo(
                         if (i !== shape.sequentialIndex) {
                             obj.path(
                                 'b r % % % % s % f %',
-                                obj.coords[i][0],pbj.coords[i][1],obj.coords[i][2],obj.coords[i][3],
+                                obj.coords[i][0],obj.coords[i][1],obj.coords[i][2],obj.coords[i][3],
                                 obj.properties.highlightStroke,
                                 obj.properties.highlightFill
                             );

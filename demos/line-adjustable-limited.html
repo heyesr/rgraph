@@ -41,11 +41,19 @@
                         // Highlight the point that's adjustable
                         var point = obj.coords[2];
                         
-                        obj.path(
-                            'b a % % 40 0 6.29 false f rgba(255,0,0,0.25)',
-                            point[0],
-                            point[1]
-                        );
+                        if (obj.get('outofboundsClip')) {
+                            obj.path(
+                                'sa b r 70 70 1060 360 cl b a % % 40 0 6.29 false f rgba(255,0,0,0.25) rs',
+                                point[0],
+                                point[1]
+                            );
+                        } else {
+                            obj.path(
+                                'b a % % 40 0 6.29 false f rgba(255,0,0,0.25)',
+                                point[0],
+                                point[1]
+                            );
+                        }
                     }
                 }
             }

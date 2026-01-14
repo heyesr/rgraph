@@ -289,6 +289,7 @@
             rightVisible:               true,
             
             events:                     {},
+            clip:                       null,
 
             scale:                      true,
             scaleFactor:                2,

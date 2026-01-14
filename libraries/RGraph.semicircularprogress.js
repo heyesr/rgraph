@@ -263,6 +263,7 @@
             clearto:                    'rgba(0,0,0,0)',
             
             events:                     {},
+            clip:                       null,
             
             scale:                      true,
             scaleFactor:                2,

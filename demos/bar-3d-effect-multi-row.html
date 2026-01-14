@@ -47,6 +47,9 @@
         
         // And the X-axis labels for the chart
         xaxisLabels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        
+        // Number of frames for the grow() effect
+        frames = 30;
 
 
 
@@ -92,7 +95,7 @@
                 yaxisLabelsOffsety: -10,
                 variantThreedYaxis: false
             }
-        }).grow(null, draw2);
+        }).grow({frames: frames}, draw2);
 
 
 
@@ -136,7 +139,7 @@
                     yaxis: false,
                     yaxisScale: false
                 }
-            }).grow(null, draw3);
+            }).grow({frames: frames}, draw3);
         }
 
 
@@ -181,7 +184,7 @@
                     yaxis: false,
                     yaxisScale: false
                 }
-            }).grow();
+            }).grow({frames: frames});
         }
     </script>
 

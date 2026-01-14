@@ -269,6 +269,7 @@
             clearto:             'rgba(0,0,0,0)',
             
             events:              {},
+            clip:                null,
             
             scale:               true,
             scaleFactor:         2,
@@ -2140,14 +2141,14 @@
     
 
             // Show a tooltip
-            RGraph.tooltip({
-                object: this,
-                  text: text,
-                     x: x,
-                     y: y,
-                 index: 0,
-                 event: e
-                });
+            RGraph.tooltip(
+                this,
+                text,
+                x,
+                y,
+                0,
+                e
+            );
         };
 
 

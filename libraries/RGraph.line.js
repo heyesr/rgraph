@@ -451,6 +451,7 @@
             lines:                  null, // Used to show an average line indicator (for example)
             
             events:                 {},
+            clip:                   null,
             
             scale:                  true,
             scaleFactor:            2,

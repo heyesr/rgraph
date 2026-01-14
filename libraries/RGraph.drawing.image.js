@@ -140,6 +140,7 @@
             clip:                null,
             
             events:              {},
+            clip:                null,
             
             scale:               true,
             scaleFactor:         2,
