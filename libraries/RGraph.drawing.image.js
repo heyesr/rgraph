@@ -406,7 +406,7 @@
                     obj.alignmentProcessed = true;
                 }
             }
-    
+
     
     
     
@@ -439,12 +439,13 @@
 
 
 
-
+                // Need this to stop a rectangle being drawn around
+                // the llast path that was added to the canvas.
+                this.context.beginPath();
 
                 //
                 // Draw a border around the image
                 //
-/// !!!!!!
                 if (properties.border) {
                     
                     this.context.strokeStyle = properties.borderColor;
@@ -478,7 +479,8 @@
                     );
                 }
                 this.context.stroke();
-                
+
+
                 
                 if (borderRadius) {
                     this.context.save();
