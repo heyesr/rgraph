@@ -1163,7 +1163,7 @@
             'div#' + this.id + ' table tfoot tr th div {padding: 0; box-sizing: border-box;}',
             
             // Search input and cancel icon
-            'div#' + this.id + ' div.rgraph-datagrid-search-input-container input {margin: 5px; padding: 3px; font-size: 150%; width: 200px;}',
+            'div#' + this.id + ' div.rgraph-datagrid-search-input-container input {margin: 5px; padding: 3px; font-size: 150%; width: 200px;; border: 1px solid #666;}',
             'div#' + this.id + ' div.rgraph-datagrid-search-input-container span.rgraph-datagrid-cancel-search-icon {position: absolute;right: 15px;top: 50%;transform: translateY(calc(-50% - 2px));cursor: pointer;}',
 
             // Paging links
@@ -1770,7 +1770,10 @@
                             if (RGraph.isString(obj.properties.searchUrlRandom) && obj.properties.searchUrlRandom) {
                                 url.searchParams.delete(obj.properties.searchUrlRandom);
                             }
-                            url.searchParams.append(obj.properties.searchUrlQueryStringParameter, e.target.value);
+                            url.searchParams.append(
+                                obj.properties.searchUrlQueryStringParameter,
+                                event.target.value
+                            );
                         
                             // Add a random number to the URL to try
                             // and negate the effects of caching.

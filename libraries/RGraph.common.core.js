@@ -201,36 +201,36 @@
     // @param string names A comma seperated list of desired names for the
     //                     arguments eg: 'object,color,size'.
     //
-    RGraph.getArgs = function (args, names)
-    {
-        var ret   = {};
-        var count = 0;
-        names     = names.trim().split(/ *, */);
+    //RGraph.getArgs = function (args, names)
+    //{
+    //    var ret   = {};
+    //    var count = 0;
+    //    names     = names.trim().split(/ *, */);
 
-        if (   args
-            && args[0]
-            && args.length === 1
-            && typeof args[0][names[0]] !== 'undefined') {
-            
-            for (var i=0; i<names.length; ++i) {
-                if (typeof args[0][names[i]] === 'undefined') {
-                    args[0][names[i]] = null;
-                }
-            }
+    //    if (   args
+    //        && args[0]
+    //        && args.length === 1
+    //        && typeof args[0][names[0]] !== 'undefined') {
+    //        
+    //        for (var i=0; i<names.length; ++i) {
+    //            if (typeof args[0][names[i]] === 'undefined') {
+    //                args[0][names[i]] = null;
+    //            }
+    //        }
 
-            return args[0];
-        } else {
-            for (var i in names) {
-                if (RGraph.isString(i)) {
-                    ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
-                    
-                    count += 1;
-                }
-            }
-        }
+    //        return args[0];
+    //    } else {
+    //        for (var i in names) {
+    //            if (RGraph.isString(i)) {
+    //                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
+    //                
+    //                count += 1;
+    //            }
+    //        }
+    //    }
 
-        return ret;
-    };
+    //    return ret;
+    //};
 
 
 
@@ -10277,14 +10277,25 @@
     //                 or not. If it is clipping will be installed
     //                 first.
     //
-    RGraph.clipTo.callback = function (obj, callback)
+    RGraph.clipTo.callback = function ()
     {
+        // Accommodate being given two or three arguments
+        var obj = arguments[0];
+        
+        if (arguments.length === 2) {
+            var clip     = obj.properties.clip;
+            var callback = arguments[1];
+        } else if (arguments.length === 3) {
+            var clip     = arguments[1];
+            var callback = arguments[2];
+        }
+
         var endClipping = false;
         
         // Install clipping so that the highlight is clipped
         // as well as the main chart.
-        if (!RGraph.isNullish(obj.properties.clip)) {
-            RGraph.clipTo.start(obj, obj.properties.clip);
+        if (!RGraph.isNullish(clip)) {
+            RGraph.clipTo.start(obj, clip);
             endClipping = true;
         }
 

@@ -26,7 +26,11 @@
             }
         }).draw();
 
-        RGraph.clipTo.callback(bar, function (obj)
+        // Clips to the same as the chart object
+        // RGraph.clipTo.callback(bar, function (obj)
+
+        // Specify the clipping to use
+        RGraph.clipTo.callback(bar, 'righthalf', function (obj)
         {
             RGraph.text({
                 object: obj,
