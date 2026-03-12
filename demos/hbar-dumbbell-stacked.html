@@ -1,0 +1,60 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A stacked dumbbell Horizontal Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+    
+    
+        db = new RGraph.HBar({
+            id: 'cvs',
+            data: [
+                [0,13,17,20],
+                [2,15,17,19],
+                [1,15,16,19],
+                [5,8,16,20]
+            ],
+            options: {
+                variant: 'dumbbell',
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 3,
+                colors: ['black','red','green','blue'],
+                textSize: 23,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabelsOffsetx: -5,
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxisLabelsCount: 4,
+                backgroundGridVlinesCount: 4,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                tooltips: 'A tooltip!',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
+            }
+        }).wave({frames: 90});
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

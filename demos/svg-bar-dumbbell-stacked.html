@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A stacked SVG dumbbell chat</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 650px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+
+        new RGraph.SVG.Bar({
+            id: 'chart-container',
+            data: [[0,10,20],[5,8,10],[10,13,15],[5,11,20],[5,8,12],[3,6,8],[6,12,20]],
+            options: {
+                marginLeft: 45,
+                marginBottom: 45,
+                xaxisScaleMax: 20,
+                variant: 'dumbbell',
+                colors: ['black','red'],
+                textSize: 23,
+                xaxisLinewidth: 3,
+                xaxisLabelsOffsety: 3,
+                xaxisTickmarks: false,
+                yaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                yaxisLabelsCount: 4,
+                backgroundGridHlinesCount: 4,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                _daysLong: ['The blacks!','The reds!'],                
+                tooltips: '%{property:_daysLong[%{index}]}',
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 2,
+                tooltipsCSS: {
+                    fontSize: '20pt'
+                }
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

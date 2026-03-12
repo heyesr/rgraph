@@ -1,0 +1,92 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A grouped dumbbell Horizontal Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [0,0,0,0],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                xaxis: false,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                textSize: 23,
+                yaxisLabelsOffsetx: -10,
+                xaxisScaleMax: 20
+            }
+        }).draw();
+
+
+
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[3,20],[5,10],[10,15],[15,20]],
+            options: {
+                variant: 'dumbbell',
+                //variantDumbbellLinewidth: 4,
+                //variantDumbbellEndLeft: false,
+                //variantDumbbellEndRight: false,
+                //variantDumbbellEndRadius: 15,
+                shadow: false,
+                colors: ['#000'],
+                textSize: 23,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabelsOffsetx: -5,
+                xaxis: false,
+                xaxisScale: false,
+                yaxis: false,
+                backgroundGrid: false,
+                xaxisLabelsCount: 4,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                marginTop: 15,
+                marginBottom: 55,
+                tooltips: ['Jim (b)','Berty (b)','Lois (b)','Cava (b)'],
+                tooltipsOffsety: 10
+            }
+        }).wave();
+
+        new RGraph.HBar({
+            id: 'cvs',
+            data: [[1,12],[6,12],[9,13],[1,10]],
+            options: {
+                variant: 'dumbbell',
+                shadow: false,
+                colors: ['red'],
+                yaxis: false,
+                xaxis: false,
+                xaxisScale: false,
+                backgroundGrid: false,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                marginTop: 55,
+                marginBottom: 15,
+                marginInner: 35,
+                tooltips: ['Jim (r)','Berty (r)','Lois (r)','Cava (r)'],
+                tooltipsOffsety: 10
+            }
+        }).wave();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

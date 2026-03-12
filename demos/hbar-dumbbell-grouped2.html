@@ -1,0 +1,48 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A grouped dumbbell Horizontal Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="600" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        db = new RGraph.HBar({
+            id: 'cvs',
+            data: [
+                [6,18],
+                [1,5,23],
+                [0,5,10,15,20,25]
+            ],
+            options: {
+                variant: 'dumbbell',
+                colors: ['black','red','green','blue','orange','pink','lime','gray'],
+                colorsSequential: true,
+                textSize: 23,
+                xaxisLinewidth: 3,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabels: ['Jimmy','Joseph'],
+                yaxisLabelsOffsetx: -15,
+                marginTop: 15,
+                marginBottom: 55,
+                tooltips: 'A tooltip!',
+                tooltipsOffsety: -5
+            }
+        }).draw();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

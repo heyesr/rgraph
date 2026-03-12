@@ -1,0 +1,80 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A vertical dumbbell Bar chart using clipping</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width=800" height="300">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: DATA = [[0,20],[5,10],[10,15],[5,20],[5,12],[3,8],[6,20]],
+            options: OPTIONS = {
+                marginLeft: 45,
+                marginBottom: 45,
+                xaxisScaleMax: 20,
+                variant: 'dumbbell',
+                colors: ['black'],
+                textSize: 23,
+                xaxisLinewidth: 3,
+                xaxisLabelsOffsety: 3,
+                xaxisTickmarks: false,
+                yaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                yaxisLabelsCount: 4,
+                backgroundGridHlinesCount: 4,
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+                _daysLong: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],                
+                tooltips: '%{property:_daysLong[%{group}]}',
+                clip: 'scale:min-6.666',
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 2,
+                tooltipsCSS: {
+                    fontSize: '20pt'
+                }
+            }
+        }).grow();
+
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['red'],
+                textSize: 23,
+                clip: 'scale:6.666-13.333'
+            }
+        }).grow();
+
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['green'],
+                textSize: 23,
+                clip: 'scale:13.333-max'
+            }
+        }).grow();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

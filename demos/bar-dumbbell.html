@@ -1,0 +1,50 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A vertical dumbbell Bar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="canvas-container">
+            <canvas id="cvs" width="750" height="450">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script id="rgraph-demo-source-code">
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[5,25],[3,8],[4,23],[4,16],[1,19],[0,8],[13,20]],
+            options: {
+                variant: 'dumbbell',                
+                backgroundGrid: false,
+                colors: ['red'],
+                textSize: 26,
+                marginLeft: 55,
+                marginBottom: 55,
+                yaxisLinewidth:3,
+                yaxisTickmarks:false,
+                yaxisLabelsOffsetx: -3,
+                xaxisTickmarks:false,
+                xaxisLinewidth:3,
+                xaxisLabels: ['Neil','Polly','Rick','Lucy','Pete','Lou','John'],
+                xaxisLabelsOffsety: 3,
+                tooltips: 'A tooltip. dataset: %{dataset} index: %{index} Sequential index: %{seq}',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
+            }
+        }).grow();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

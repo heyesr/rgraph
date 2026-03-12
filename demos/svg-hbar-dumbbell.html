@@ -1,0 +1,52 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG dumbbell chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 750px; height: 300px"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[15,42],[8,38],[26,36],[16,45]],
+            options: {
+                variant: 'dumbbell',
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 3,
+                colors: ['red'],
+                textSize: 23,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabelsOffsetx: -5,
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxisLabelsCount: 4,
+                backgroundGridVlinesCount: 4,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                tooltips: 'A tooltip!',
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A grouped SVG horizontal dumbbell chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 500px; height: 500px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [0,0,0,0],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                xaxis: false,
+                marginBottom: 50,
+                marginLeftAuto: false,
+                marginLeft: 170,
+                textSize: 20,
+                yaxisLabelsOffsetx: -10,
+                xaxisScaleMax: 20
+            }
+        }).draw();
+
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[3,20],[5,10],[10,15],[15,20]],
+            options: {
+                variant: 'dumbbell',
+                //variantDumbbellLinewidth: 2,
+                //variantDumbbellEndTop: false,
+                //variantDumbbellEndBottom: false,
+                //variantDumbbellEndRadius: 5,
+                shadow: false,
+                colors: ['black'],
+                textSize: 24,
+                yaxisLinewidth: 3,
+                xaxis: false,
+                yaxis: false,
+                xaxisScale: false,
+                backgroundGrid: false,
+                marginLeftAuto: false,
+                marginLeft: 170,
+                marginTop: 20,
+                marginBottom: 50,
+                tooltips: ['Jim (b)','Berty (b)','Lois (b)','Cava (b)'],
+                shadow: true
+            }
+        }).draw();
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[4,16],[6,12],[9,13],[1,10]],
+            options: {
+                variant: 'dumbbell',
+                colors: ['red'],
+                xaxis: false,
+                yaxis: false,
+                xaxisScale: false,
+                backgroundGrid: false,
+                marginLeftAuto: false,
+                marginLeft: 170,
+                marginTop: 50,
+                marginBottom: 20,
+                tooltips: ['Jim (r)','Berty (r)','Lois (r)','Cava (r)'],
+                shadow: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

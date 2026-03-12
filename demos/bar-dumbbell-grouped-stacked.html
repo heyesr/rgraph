@@ -1,0 +1,105 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A grouped and stacked dumbbell Bar chart</h1>
+
+    <div id="rgraph-demo-html">
+        <canvas id="cvs" width="800" height="500">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [0,0,0,0],
+            options: {
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                xaxisLabelsOffsety: 5,
+                xaxisLinewidth: 3,
+                xaxisTickmarks: false,
+                yaxis: false,
+                marginBottom: 50,
+                marginLeft: 50,
+                textSize: 23,
+                xaxisLabelsOffsetx: -10,
+                yaxisScaleMax: 25
+            }
+        }).draw();
+        
+        tooltipsA = [
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)'
+        ];
+        
+        tooltipsB = [
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)'
+        ];
+
+
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[5,15,20],[5,6,10],[10,13,15],[15,18,20]],
+            options: {
+                variant: 'dumbbell',
+                //variantDumbbellLinewidth: 4,
+                //variantDumbbellEndTop: false,
+                //variantDumbbellEndBottom: false,
+                //variantDumbbellEndRadius: 15,
+                shadow: false,
+                colors: ['#000','orange'],
+                textSize: 23,
+                xaxisLinewidth: 3,
+                xaxis: false,
+                xaxisTickmarks: false,
+                xaxisLabelsOffsetx: -5,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                xaxisLabelsCount: 4,
+                marginBottom: 50,
+                marginLeft: 5,
+                marginRight: 65,
+                tooltips: tooltipsA,
+                shadow: true,
+                yaxisScaleMax: 25
+            }
+        }).grow();
+
+        new RGraph.Bar({
+            id: 'cvs',
+            data: [[0,10,25],[0,10,25],[10,15,25],[0,10,20]],
+            options: {
+                variant: 'dumbbell',
+                colors: ['red','gray'],
+                xaxis: false,
+                yaxis: false,
+                yaxisScale: false,
+                backgroundGrid: false,
+                marginBottom: 50,
+                marginLeft: 65,
+                marginRight: 5,
+                tooltips: tooltipsB,
+                shadow: true,
+                yaxisScaleMax: 25
+            }
+        }).grow();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>

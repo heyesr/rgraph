@@ -1,0 +1,96 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A grouped and stacked SVG horizontal dumbell chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 600px; height: 400px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [0,0,0,0],
+            options: {
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                yaxisLabelsOffsety: 5,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxis: false,
+                textSize: 26,
+                yaxisLabelsOffsetx: -3,
+                xaxisScaleMax: 25,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                marginBottom: 50,
+                xaxisScaleMax: 25
+            }
+        }).draw();
+        
+        tooltipsA = [
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)',
+            'Jim (b)','Jim (o)'
+        ];
+        
+        tooltipsB = [
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)',
+            'Berty (r)','Berty (g)'
+        ];
+
+
+        COMMON = {
+            variant: 'dumbbell',
+            textSize: 26,
+            xaxis: false,
+            yaxis: false,
+            xaxisScale: false,
+            backgroundGrid: false,
+            marginLeftAuto: false,
+            marginLeft: 200,
+            xaxisScaleMax: 25,
+            shadow: true
+        };
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[5,15,20],[5,6,10],[10,13,15],[15,18,20]],
+            options: {
+                ...COMMON,
+                shadow: false,
+                colors: ['#000','orange'],
+                marginTop: 20,
+                marginBottom: 50,
+                tooltips: tooltipsA
+            }
+        }).draw();
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[0,10,25],[0,10,25],[10,15,25],[0,10,20]],
+            options: {
+                ...COMMON,
+                colors: ['red','gray'],
+                marginTop: 50,
+                marginBottom: 20,
+                tooltips: tooltipsB
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG clipped dumbbell chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 750px; height: 300px"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: DATA = [[0,20],[5,10],[10,15],[15,20]],
+            options: OPTIONS = {
+                xaxisScaleMax: 20,
+                variant: 'dumbbell',
+                colors: ['black'],
+                textSize: 23,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabelsOffsetx: -5,
+                xaxis: false,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxisLabelsCount: 4,
+                backgroundGridVlinesCount: 4,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                tooltips: '%{property:yaxisLabels[%{seq}]} (b)',
+                clip: 'scale:min-6.666'
+            }
+        }).draw();
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['red'],
+                textSize: 23,
+                clip: 'scale:6.666-13.333',
+                tooltips: '%{property:yaxisLabels[%{seq}]} (r)'
+            }
+        }).draw();
+
+
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: DATA,
+            options: {
+                ...OPTIONS,
+                colors: ['green'],
+                textSize: 23,
+                clip: 'scale:13.333-max',
+                tooltips: '%{property:yaxisLabels[%{seq}]} (g)'
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

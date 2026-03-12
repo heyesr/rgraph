@@ -1,0 +1,53 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.bar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG Bar chart dumbbell variant</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 750px; height: 300px" id="cc1"></div>
+    </div>
+
+    <script>
+        bar = new RGraph.SVG.Bar({
+            id: 'cc1',
+            data: [[5,9],[4,6],[1,8],[9,15]],
+            //data: [[1,9,15],[4,5,10],[1,6,8],[9,12,15]],
+            //data: [[1,9,15,20],[4,5,10,16],[1,6,8,20],[9,12,15,20]],
+            options: {
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                shadow: true,
+                //shadowOffsetx: 2,
+                //shadowOffsety: 2,
+                //shadowBlur: 2,
+                //shadowColor: '#aaa',
+                colors:['red','#6f6','#66f'],
+                variant: 'dumbbell',
+                xaxisLinewidth: 3,
+                xaxisTickmarks: false,
+                yaxis: false,
+                yaxisTickmarks: false,
+                textSize: 20,
+                marginLeft: 50,
+                marginBottom: 50,
+                tooltips: '%{property:xaxisLabels[%{dataset}]}',
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                tooltipsCss: {
+                    fontSize: '20pt'
+                }
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>

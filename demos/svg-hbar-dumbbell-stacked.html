@@ -1,0 +1,40 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.svg.hbar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>An SVG stacked dumbbell chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div id="chart-container" style="width: 750px; height: 300px"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.HBar({
+            id: 'chart-container',
+            data: [[0,5,10,15,20],[0,10,20,30],[10,12,13],[4,9,19],[6,9,13],[14,16,19],[12,15,18]],
+            options: {
+                variant: 'dumbbell',
+                tooltips: 'A tooltip! %{seq} %{dataset} %{index}',
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                textSize: 20,
+                backgroundGridHlines: false,
+                backgroundGridBorder: false,
+                xaxis: false,
+                yaxisLinewidth: 3,
+                yaxisTickmarksLength: 0,
+                shadow: true
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
