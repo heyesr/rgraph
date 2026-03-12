@@ -1,13 +1,14 @@
-    // o---------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:                |
-    // |                                                                                 |
-    // |                       https://www.rgraph.net/license.html                       |
-    // |                                                                                 |
-    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-    // | free to use and there are no restrictions on what you can use RGraph for!       |
-    // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option available. See the URL above for more details.        |
-    // o---------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:          |
+    // |                                                                           |
+    // |                           https://www.rgraph.net                          |
+    // |                                                                           |
+    // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+    // | that it's free to use for any purpose. The GPL license does have          |
+    // | consequences on the license of the software that you include it in,       |
+    // | however. If this is not desirable, then there's an inexpensive commercial |
+    // | license option available. See the RGraph website for more details.        |
+    // o---------------------------------------------------------------------------o
 
     RGraph = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
 
@@ -347,6 +348,12 @@
             variantThreedYaxis:   true,
             variantThreedXaxisColor: '#ddd',
             variantThreedYaxisColor: '#ddd',
+            variantDumbbellLinewidth:      8,
+            variantDumbbellEndLeft:        true,
+            variantDumbbellEndRight:       true,
+            variantDumbbellEndRadius:      13,
+            variantDumbbellEndLeftRadius:  null,
+            variantDumbbellEndRightRadius: null,
             
             adjustable:             false,
             adjustableOnly:        null,
@@ -488,6 +495,10 @@
             
             'variantThreedOffsetx',
             'variantThreedOffsety',
+            'variantDumbbellLinewidth',
+            'variantDumbbellEndRadius',
+            'variantDumbbellEndLeftRadius',
+            'variantDumbbellEndRightRadius',
             
             'cornersRoundRadius',
             'cornersRoundTopRadius',
@@ -793,7 +804,7 @@
 
                 this.set(
                     name,
-                    this.yaxisLabelsSize + this.yaxisTitleSize + 10
+                    this.yaxisLabelsSize + this.yaxisTitleSize + 10 + Math.abs(this.properties.yaxisTitleOffsetx || 0) + Math.abs(this.properties.yaxisLabelsOffsetx || 0)
                 );
             }
 
@@ -915,12 +926,24 @@
 
 
 
+            // If a dumbbell chart is being drawn then a few
+            // properties need to be massaged
+            if (!this.properties.colorsDumbbell && this.properties.variant === 'dumbbell') {
+                this.set({
+                    colorsDumbbell: this.get('colors')
+                });
+
+
+                this.set({
+                    colors: ['#0000']
+                });
+            };
+
 
             //////////////////////
             // SCALE GENERATION //
             //////////////////////
 
-            
 
             //
             // Work out the max value
@@ -972,6 +995,7 @@
                 this.max = this.scale2.max;
                 this.min = this.scale2.min;
             }
+
     
             if ( properties.xaxisScaleDecimals == null && Number(this.max) == 1) {
                 this.set('xaxisScaleDecimals', 1);
@@ -1020,6 +1044,15 @@
             }
             
             this.drawAxes();
+            
+            //
+            // Draw the dumbbell bars variant Draw this here
+            // so that the dumbells are drawn over the axes.
+            //
+            if (this.properties.variant === 'dumbbell') {
+                this.drawdumbbell();
+            }
+
             this.drawLabels();
             
             
@@ -1269,7 +1302,8 @@
             var colorIdx = 0;
             
             //
-            // For grouped bars we need to calculate the number of bars
+            // For grouped bars we need to calculate the number of
+            // bars
             //
             this.numbars = RGraph.arrayLinearize(this.data).length;
 
@@ -1277,9 +1311,11 @@
 
 
             //
-            // if the chart is adjustable fix the scale so that it doesn't change.
+            // if the chart is adjustable fix the scale so that it
+            // doesn't change.
             // 
-            // It's here (after the scale generation) so that the max value can be
+            // It's here (after the scale generation) so that the
+            // max value can be
             // set to the maximum scale value)
             //
             if (properties.adjustable && ! properties.xaxisScaleMax) {
@@ -1350,42 +1386,212 @@
                 //
                 this.context.beginPath();
 
-                    // Standard (non-grouped and non-stacked) bars here
-                    if (typeof this.data[i] === 'number' || RGraph.isNullish(this.data[i])) {
 
-                        var barHeight = height - (2 * vmargin),
-                            barWidth  = ((this.data[i] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * this.graphwidth,
-                            barX      = x;
 
-                        // Accommodate an offset Y axis
-                        if (this.scale2.min < 0 && this.scale2.max > 0 &&  properties.yaxisPosition === 'left') {
-                            barWidth = (this.data[i] / (this.max -  properties.xaxisScaleMin)) * this.graphwidth;
+
+
+
+
+                // Standard (non-grouped and non-stacked) bars here
+                if (typeof this.data[i] === 'number' || RGraph.isNullish(this.data[i])) {
+
+                    var barHeight = height - (2 * vmargin),
+                        barWidth  = ((this.data[i] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * this.graphwidth,
+                        barX      = x;
+
+                    // Accommodate an offset Y axis
+                    if (this.scale2.min < 0 && this.scale2.max > 0 &&  properties.yaxisPosition === 'left') {
+                        barWidth = (this.data[i] / (this.max -  properties.xaxisScaleMin)) * this.graphwidth;
+                    }
+
+                    // Account for Y axis pos
+                    if ( properties.yaxisPosition == 'center') {
+                        barWidth /= 2;
+                        barX += halfwidth;
+                        
+                        if (this.data[i] < 0) {
+                            barWidth = (Math.abs(this.data[i]) -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin);
+                            barWidth = barWidth * (this.graphwidth / 2);
+                            barX = ((this.graphwidth / 2) + this.marginLeft) - barWidth;
+                        } else if (this.data[i] > 0) {
+                            barX = (this.graphwidth / 2) + this.marginLeft;
+                        }
+                        
+
+                    } else if ( properties.yaxisPosition == 'right') {
+
+                        barWidth = Math.abs(barWidth);
+                        barX = this.canvas.width - this.marginRight - barWidth;
+
+                    }
+
+                    // Set the fill color
+                    this.context.strokeStyle = properties.colorsStroke;
+                    this.context.fillStyle   = properties.colors[0];
+
+                    // Sequential colors
+                    ++colorIdx;
+                    if (properties.colorsSequential && typeof colorIdx === 'number') {
+                        if (properties.colors[this.numbars - colorIdx]) {
+                            this.context.fillStyle = properties.colors[this.numbars - colorIdx];
+                        } else {
+                            this.context.fillStyle = properties.colors[properties.colors.length - 1];
+                        }
+                    }
+
+
+                    if (properties.corners === 'round') {
+                        this.context.rectOld = this.context.rect;
+                        this.context.rect    = this.roundedCornersRect;
+                    }
+
+                    this.context.beginPath();
+                    this.context.lineJoin = 'miter';
+                    this.context.lineCap  = 'square';
+                    
+                    // Draw the rounded corners rect positive or negative
+                    if (properties.corners === 'square' || (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') ) {
+                        this.context.rect(
+                            barX,
+                            this.marginTop + (i * height) + properties.marginInner,
+                            barWidth,
+                            barHeight
+                        );
+                    } else {
+                        this.roundedCornersRectNegative(
+                            barX,
+                            this.marginTop + (i * height) + properties.marginInner,
+                            barWidth,
+                            barHeight
+                        );
+                    }
+
+                    this.context.stroke();
+                    this.context.fill();
+
+                    // Put the rect function back to what it was
+                    if (properties.corners === 'round' ) {
+                        this.context.rect    = this.context.rectOld;
+                        this.context.rectOld = null;
+                    }
+
+
+                    // This skirts an annoying "extra fill bug"
+                    // by getting rid of the last path which
+                    //was drawm - which is usually the last
+                    //bar to be drawn (the bars are drawn
+                    //from bottom to top). Woo.
+                    this.path('b');
+
+
+                    this.coords.push([
+                        barX,
+                        y + vmargin,
+                        barWidth,
+                        height - (2 * vmargin),
+                        this.context.fillStyle,
+                        this.data[i],
+                        true
+                    ]);
+
+
+
+
+
+
+                    // Draw the 3D effect using the coords that have just been stored
+                    if (properties.variant === '3d' && typeof this.data[i] == 'number') {
+
+
+                        var prevStrokeStyle = this.context.strokeStyle,
+                            prevFillStyle   = this.context.fillStyle;
+
+                        //
+                        // Turn off the shadow for the 3D bits
+                        //
+                        RGraph.noShadow(this);
+                        
+                        // DRAW THE 3D BITS HERE
+                        var barX    = barX,
+                            barY    = y + vmargin,
+                            barW    = barWidth,
+                            barH    = height - (2 * vmargin),
+                            offsetX = properties.variantThreedOffsetx,
+                            offsetY = properties.variantThreedOffsety,
+                            value   = this.data[i];
+
+
+                        this.path(
+                            'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
+                            barX, barY,
+                            barX + offsetX - ( properties.yaxisPosition == 'left' && value < 0 ? offsetX : 0), barY - offsetY,
+                            barX + barW + offsetX - ( properties.yaxisPosition == 'center' && value < 0 ? offsetX : 0), barY - offsetY,
+                            barX + barW, barY,
+                            this.context.strokeStyle,this.context.fillStyle
+                        );
+
+                        if (    properties.yaxisPosition !== 'right'
+                            && !( properties.yaxisPosition === 'center' && value < 0)
+                            && value >= 0
+                            && !RGraph.isNullish(value)
+                           ) {
+
+                            this.path(
+                                'b fs % m % % l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
+                                prevFillStyle,
+                                barX + barW, barY,
+                                barX + barW + offsetX, barY - offsetY,
+                                barX + barW + offsetX, barY - offsetY + barH,
+                                barX + barW, barY + barH,
+                                this.context.strokeStyle,prevFillStyle
+                            );
+                        }
+                    }
+
+
+
+
+
+
+                //
+                // Stacked bar chart
+                //
+                } else if (typeof this.data[i] == 'object' && properties.grouping === 'stacked') {
+
+                    if ( properties.yaxisPosition == 'center') {
+                        alert('[HBAR] You can\'t have a stacked chart with the Y axis in the center, change it to grouped');
+                    } else if ( properties.yaxisPosition == 'right') {
+                        var x = this.canvas.width - this.marginRight
+                    }
+
+                    var barHeight = height - (2 * vmargin);
+
+                    if (typeof this.coords2[i] == 'undefined') {
+                        this.coords2[i] = [];
+                    }
+
+                    for (j=0; j<this.data[i].length; ++j) {
+
+                        // The previous 3D segments would have turned the shadow off - so turn it back on
+                        if (properties.shadow && properties.variant === '3d') {
+                            this.context.shadowColor   = properties.shadowColor;
+                            this.context.shadowBlur    = properties.shadowBlur;
+                            this.context.shadowOffsetX = properties.shadowOffsetx;
+                            this.context.shadowOffsetY = properties.shadowOffsety;
                         }
 
-                        // Account for Y axis pos
-                        if ( properties.yaxisPosition == 'center') {
-                            barWidth /= 2;
-                            barX += halfwidth;
-                            
-                            if (this.data[i] < 0) {
-                                barWidth = (Math.abs(this.data[i]) -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin);
-                                barWidth = barWidth * (this.graphwidth / 2);
-                                barX = ((this.graphwidth / 2) + this.marginLeft) - barWidth;
-                            } else if (this.data[i] > 0) {
-                                barX = (this.graphwidth / 2) + this.marginLeft;
-                            }
-                            
+                        //
+                        // Ensure the number is positive
+                        //(even though having the X axis on the right implies a
+                        //negative value)
+                        //
+                        if (!RGraph.isNullish(this.data[i][j])) this.data[i][j] = Math.abs(this.data[i][j]);
 
-                        } else if ( properties.yaxisPosition == 'right') {
 
-                            barWidth = Math.abs(barWidth);
-                            barX = this.canvas.width - this.marginRight - barWidth;
-
-                        }
-
-                        // Set the fill color
+                        var last = (j === (this.data[i].length - 1) );
+                        
+                        // Set the fill/stroke colors
                         this.context.strokeStyle = properties.colorsStroke;
-                        this.context.fillStyle   = properties.colors[0];
 
                         // Sequential colors
                         ++colorIdx;
@@ -1395,10 +1601,30 @@
                             } else {
                                 this.context.fillStyle = properties.colors[properties.colors.length - 1];
                             }
+                        } else if (properties.colors[j]) {
+                            this.context.fillStyle = properties.colors[j];
                         }
+                        
+
+                        var width = (((this.data[i][j]) / (this.max))) * this.graphwidth;
+                        var totalWidth = (RGraph.arraySum(this.data[i]) / this.max) * this.graphwidth;
+                        
+                        if ( properties.yaxisPosition === 'right') {
+                            x -= width;
+                        }
+                        
 
 
-                        if (properties.corners === 'round') {
+
+
+
+
+
+
+
+
+
+                        if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
                             this.context.rectOld = this.context.rect;
                             this.context.rect    = this.roundedCornersRect;
                         }
@@ -1406,49 +1632,260 @@
                         this.context.beginPath();
                         this.context.lineJoin = 'miter';
                         this.context.lineCap  = 'square';
-                        
+
                         // Draw the rounded corners rect positive or negative
-                        if (properties.corners === 'square' || (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') ) {
-                            this.context.rect(
-                                barX,
-                                this.marginTop + (i * height) + properties.marginInner,
-                                barWidth,
-                                barHeight
-                            );
+                        if (properties.corners === 'square' || (j < (this.data[i].length - 1)  && this.data[i][j] > 0) ) {
+                            this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
                         } else {
-                            this.roundedCornersRectNegative(
-                                barX,
-                                this.marginTop + (i * height) + properties.marginInner,
-                                barWidth,
-                                barHeight
+                            if (this.properties.yaxisPosition === 'left') {
+                                this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                            } else {
+                                this.roundedCornersRectNegative(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                            }
+                        }
+
+                        this.context.stroke();
+                        this.context.fill();
+                        
+                        // This avoids a "double fill"bug by resetting
+                        // the path
+                        this.context.beginPath();
+                        
+                        // Put the rect function back to what it was
+                        if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
+                            this.context.rect    = this.context.rectOld;
+                            this.context.rectOld = null;
+                        }
+
+                        //this.context.strokeRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+                        //this.context.fillRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
+
+
+                        //
+                        // Store the coords for tooltips
+                        //
+
+                        // The last property of this array is a boolean which tells you whether the value is the last or not
+                        this.coords.push([
+                            x,
+                            y + vmargin,
+                            width,
+                            height - (2 * vmargin),
+                            this.context.fillStyle,
+                            RGraph.arraySum(this.data[i]),
+                            j == (this.data[i].length - 1)
+                        ]);
+
+                        this.coords2[i].push([
+                            x,
+                            y + vmargin,
+                            width,
+                            height - (2 * vmargin),
+                            this.context.fillStyle,
+                            RGraph.arraySum(this.data[i]),
+                            j == (this.data[i].length - 1)
+                        ]);
+
+
+
+
+
+
+                        // 3D effect
+                        if (properties.variant === '3d') {
+                        
+                            //
+                            // Turn off the shadow for the 3D bits
+                            //
+                            RGraph.noShadow(this);
+
+                            var prevStrokeStyle = this.context.strokeStyle,
+                                prevFillStyle   = this.context.fillStyle;
+
+                            // DRAW THE 3D BITS HERE
+                            var barX    = x,
+                                barY    = y + vmargin,
+                                barW    = width,
+                                barH    = height - (2 * vmargin),
+                                offsetX = properties.variantThreedOffsetx,
+                                offsetY = properties.variantThreedOffsety,
+                                value   = this.data[i][j];
+
+                            if (!RGraph.isNullish(value)) {
+                                this.path(
+                                    'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
+                                    barX, barY,
+                                    barX + offsetX, barY - offsetY,
+                                    barX + barW + offsetX, barY - offsetY,
+                                    barX + barW, barY,
+                                    this.context.strokeStyle,this.context.fillStyle
+                                );
+                            }
+
+                            if (    properties.yaxisPosition !== 'right'
+                                && !( properties.yaxisPosition === 'center' && value < 0)
+                                && !RGraph.isNullish(value)
+                               ) {
+
+                                this.path(
+                                    'fs % b m % % l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
+                                    prevFillStyle,
+                                    barX + barW, barY,
+                                    barX + barW + offsetX, barY - offsetY,
+                                    barX + barW + offsetX, barY - offsetY + barH,
+                                    barX + barW, barY + barH,
+                                    this.context.strokeStyle,prevFillStyle
+                                );
+                            }
+                        
+                            this.context.beginPath();
+                            this.context.strokeStyle = prevStrokeStyle;
+                            this.context.fillStyle   = prevFillStyle;
+                        }
+
+
+
+
+
+
+                        if ( properties.yaxisPosition !== 'right') {
+                            x += width;
+                        }
+                    }
+
+
+
+
+
+
+
+
+                //
+                // A grouped bar chart
+                //
+                } else if (typeof this.data[i] == 'object' && properties.grouping == 'grouped') {
+
+                    var vmarginGrouped      = properties.marginInnerGrouped;
+                    var individualBarHeight = ((height - (2 * vmargin) - ((this.data[i].length - 1) * vmarginGrouped)) / this.data[i].length)
+                    
+                    if (typeof this.coords2[i] == 'undefined') {
+                        this.coords2[i] = [];
+                    }
+
+                    for (j=(this.data[i].length - 1); j>=0; --j) {
+
+                        //
+                        // Turn on the shadow if need be
+                        //
+                        if (properties.shadow) {
+                            RGraph.setShadow(
+                                this,
+                                properties.shadowColor,
+                                properties.shadowOffsetx,
+                                properties.shadowOffsety,
+                                properties.shadowBlur
                             );
+                        }
+
+                        // Set the fill/stroke colors
+                        this.context.strokeStyle = properties.colorsStroke;
+
+                        // Sequential colors
+                        ++colorIdx;
+                        if (properties.colorsSequential && typeof colorIdx === 'number') {
+                            if (properties.colors[this.numbars - colorIdx]) {
+                                this.context.fillStyle = properties.colors[this.numbars - colorIdx];
+                            } else {
+                                this.context.fillStyle = properties.colors[properties.colors.length - 1];
+                            }
+                        } else if (properties.colors[j]) {
+                            this.context.fillStyle = properties.colors[j];
+                        }
+
+
+
+                        var startY = this.marginTop + (height * i) + (individualBarHeight * j) + vmargin + (vmarginGrouped * j);
+                        
+                        if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
+                            var width = ((this.data[i][j] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight );
+                            var startX = this.getXCoord((properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) ? properties.xaxisScaleMin : 0);//this.marginLeft;
+                        } else {
+                            var width = (this.data[i][j] / (this.max - properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight);
+                            var startX = this.getXCoord(0);
+                        }
+
+
+
+                        // Account for the Y axis being in the middle
+                        if ( properties.yaxisPosition == 'center') {
+                            width  /= 2;
+
+                        // Account for the Y axis being on the right
+                        } else if ( properties.yaxisPosition == 'right') {
+                            width = Math.abs(width);
+                            startX = this.canvas.width - this.marginRight - Math.abs(width);
+                        }
+                        
+                        if (width < 0) {
+                            startX += width;
+                            width *= -1;
+                        }
+
+                        if (properties.corners === 'round') {
+                            this.context.rectOld = this.context.rect;
+                            this.context.rect    = this.roundedCornersRect;
+                        }
+                        
+                        this.context.beginPath();
+                        this.context.lineJoin = 'miter';
+                        this.context.lineCap  = 'square';
+
+                        // Draw the rounded corners rect positive or negative
+                        if (properties.corners === 'square' || (this.properties.yaxisPosition === 'left' || this.properties.yaxisPosition === 'center')) {
+                            if (properties.corners === 'square' || this.data[i][j] > 0) {
+                                this.context.rect(startX, startY, width, individualBarHeight);
+                            } else {
+                                this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
+                            }
+                        } else {
+                            if (this.data[i][j] > 0 && properties.corners === 'round') {
+                                this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
+                            } else {
+                                this.context.rect(startX + width, startY, width, individualBarHeight);
+                            }
                         }
 
                         this.context.stroke();
                         this.context.fill();
 
                         // Put the rect function back to what it was
-                        if (properties.corners === 'round' ) {
+                        if (properties.corners === 'round') {
                             this.context.rect    = this.context.rectOld;
                             this.context.rectOld = null;
                         }
 
 
-                        // This skirts an annoying "extra fill bug"
-                        // by getting rid of the last path which
-                        //was drawm - which is usually the last
-                        //bar to be drawn (the bars are drawn
-                        //from bottom to top). Woo.
-                        this.path('b');
+
+
 
 
                         this.coords.push([
-                            barX,
-                            y + vmargin,
-                            barWidth,
-                            height - (2 * vmargin),
+                            startX,
+                            startY,
+                            width,
+                            individualBarHeight,
                             this.context.fillStyle,
-                            this.data[i],
+                            this.data[i][j],
+                            true
+                        ]);
+
+                        this.coords2[i].push([
+                            startX,
+                            startY,
+                            width,
+                            individualBarHeight,
+                            this.context.fillStyle,
+                            this.data[i][j],
                             true
                         ]);
 
@@ -1457,33 +1894,37 @@
 
 
 
-                        // Draw the 3D effect using the coords that have just been stored
-                        if (properties.variant === '3d' && typeof this.data[i] == 'number') {
 
 
-                            var prevStrokeStyle = this.context.strokeStyle,
-                                prevFillStyle   = this.context.fillStyle;
 
+
+
+
+                        // 3D effect
+                        if (properties.variant === '3d') {
+                        
                             //
                             // Turn off the shadow for the 3D bits
                             //
                             RGraph.noShadow(this);
-                            
+
+                            var prevStrokeStyle = this.context.strokeStyle,
+                                prevFillStyle   = this.context.fillStyle;
+                        
                             // DRAW THE 3D BITS HERE
-                            var barX    = barX,
-                                barY    = y + vmargin,
-                                barW    = barWidth,
-                                barH    = height - (2 * vmargin),
+                            var barX    = startX,
+                                barY    = startY,
+                                barW    = width,
+                                barH    = individualBarHeight,
                                 offsetX = properties.variantThreedOffsetx,
                                 offsetY = properties.variantThreedOffsety,
-                                value   = this.data[i];
-
-
+                                value   = this.data[i][j];
+                            
                             this.path(
                                 'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
                                 barX, barY,
-                                barX + offsetX - ( properties.yaxisPosition == 'left' && value < 0 ? offsetX : 0), barY - offsetY,
-                                barX + barW + offsetX - ( properties.yaxisPosition == 'center' && value < 0 ? offsetX : 0), barY - offsetY,
+                                barX + offsetX, barY - offsetY,
+                                barX + barW + offsetX - (value < 0 ? offsetX : 0), barY - offsetY,
                                 barX + barW, barY,
                                 this.context.strokeStyle,this.context.fillStyle
                             );
@@ -1495,7 +1936,7 @@
                                ) {
 
                                 this.path(
-                                    'b fs % m % % l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
+                                    'fs % b m % %  l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
                                     prevFillStyle,
                                     barX + barW, barY,
                                     barX + barW + offsetX, barY - offsetY,
@@ -1504,425 +1945,26 @@
                                     this.context.strokeStyle,prevFillStyle
                                 );
                             }
-                        }
 
 
 
 
-
-
-                    //
-                    // Stacked bar chart
-                    //
-                    } else if (typeof this.data[i] == 'object' && properties.grouping === 'stacked') {
-
-                        if ( properties.yaxisPosition == 'center') {
-                            alert('[HBAR] You can\'t have a stacked chart with the Y axis in the center, change it to grouped');
-                        } else if ( properties.yaxisPosition == 'right') {
-                            var x = this.canvas.width - this.marginRight
-                        }
-
-                        var barHeight = height - (2 * vmargin);
-
-                        if (typeof this.coords2[i] == 'undefined') {
-                            this.coords2[i] = [];
-                        }
-
-                        for (j=0; j<this.data[i].length; ++j) {
-
-                            // The previous 3D segments would have turned the shadow off - so turn it back on
-                            if (properties.shadow && properties.variant === '3d') {
-                                this.context.shadowColor   = properties.shadowColor;
-                                this.context.shadowBlur    = properties.shadowBlur;
-                                this.context.shadowOffsetX = properties.shadowOffsetx;
-                                this.context.shadowOffsetY = properties.shadowOffsety;
-                            }
-
-                            //
-                            // Ensure the number is positive
-                            //(even though having the X axis on the right implies a
-                            //negative value)
-                            //
-                            if (!RGraph.isNullish(this.data[i][j])) this.data[i][j] = Math.abs(this.data[i][j]);
-
-    
-                            var last = (j === (this.data[i].length - 1) );
-                            
-                            // Set the fill/stroke colors
-                            this.context.strokeStyle = properties.colorsStroke;
-
-                            // Sequential colors
-                            ++colorIdx;
-                            if (properties.colorsSequential && typeof colorIdx === 'number') {
-                                if (properties.colors[this.numbars - colorIdx]) {
-                                    this.context.fillStyle = properties.colors[this.numbars - colorIdx];
-                                } else {
-                                    this.context.fillStyle = properties.colors[properties.colors.length - 1];
-                                }
-                            } else if (properties.colors[j]) {
-                                this.context.fillStyle = properties.colors[j];
-                            }
-                            
-    
-                            var width = (((this.data[i][j]) / (this.max))) * this.graphwidth;
-                            var totalWidth = (RGraph.arraySum(this.data[i]) / this.max) * this.graphwidth;
-                            
-                            if ( properties.yaxisPosition === 'right') {
-                                x -= width;
-                            }
-                            
-
-
-
-
-
-
-
-
-
-
-
-                            if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
-                                this.context.rectOld = this.context.rect;
-                                this.context.rect    = this.roundedCornersRect;
-                            }
 
                             this.context.beginPath();
-                            this.context.lineJoin = 'miter';
-                            this.context.lineCap  = 'square';
-
-                            // Draw the rounded corners rect positive or negative
-                            if (properties.corners === 'square' || (j < (this.data[i].length - 1)  && this.data[i][j] > 0) ) {
-                                this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-                            } else {
-                                if (this.properties.yaxisPosition === 'left') {
-                                    this.context.rect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-                                } else {
-                                    this.roundedCornersRectNegative(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-                                }
-                            }
-
-                            this.context.stroke();
-                            this.context.fill();
-                            
-                            // This avoids a "double fill"bug by resetting
-                            // the path
-                            this.context.beginPath();
-                            
-                            // Put the rect function back to what it was
-                            if (properties.corners === 'round' && j === (this.data[i].length - 1) ) {
-                                this.context.rect    = this.context.rectOld;
-                                this.context.rectOld = null;
-                            }
-
-                            //this.context.strokeRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-                            //this.context.fillRect(x, this.marginTop + properties.marginInner + (this.graphheight / this.data.length) * i, width, height - (2 * vmargin) );
-
-
-                            //
-                            // Store the coords for tooltips
-                            //
-    
-                            // The last property of this array is a boolean which tells you whether the value is the last or not
-                            this.coords.push([
-                                x,
-                                y + vmargin,
-                                width,
-                                height - (2 * vmargin),
-                                this.context.fillStyle,
-                                RGraph.arraySum(this.data[i]),
-                                j == (this.data[i].length - 1)
-                            ]);
-
-                            this.coords2[i].push([
-                                x,
-                                y + vmargin,
-                                width,
-                                height - (2 * vmargin),
-                                this.context.fillStyle,
-                                RGraph.arraySum(this.data[i]),
-                                j == (this.data[i].length - 1)
-                            ]);
-
-
-
-
-
-
-                            // 3D effect
-                            if (properties.variant === '3d') {
-                            
-                                //
-                                // Turn off the shadow for the 3D bits
-                                //
-                                RGraph.noShadow(this);
-
-                                var prevStrokeStyle = this.context.strokeStyle,
-                                    prevFillStyle   = this.context.fillStyle;
-
-                                // DRAW THE 3D BITS HERE
-                                var barX    = x,
-                                    barY    = y + vmargin,
-                                    barW    = width,
-                                    barH    = height - (2 * vmargin),
-                                    offsetX = properties.variantThreedOffsetx,
-                                    offsetY = properties.variantThreedOffsety,
-                                    value   = this.data[i][j];
-
-                                if (!RGraph.isNullish(value)) {
-                                    this.path(
-                                        'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
-                                        barX, barY,
-                                        barX + offsetX, barY - offsetY,
-                                        barX + barW + offsetX, barY - offsetY,
-                                        barX + barW, barY,
-                                        this.context.strokeStyle,this.context.fillStyle
-                                    );
-                                }
-    
-                                if (    properties.yaxisPosition !== 'right'
-                                    && !( properties.yaxisPosition === 'center' && value < 0)
-                                    && !RGraph.isNullish(value)
-                                   ) {
-
-                                    this.path(
-                                        'fs % b m % % l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
-                                        prevFillStyle,
-                                        barX + barW, barY,
-                                        barX + barW + offsetX, barY - offsetY,
-                                        barX + barW + offsetX, barY - offsetY + barH,
-                                        barX + barW, barY + barH,
-                                        this.context.strokeStyle,prevFillStyle
-                                    );
-                                }
-                            
-                                this.context.beginPath();
-                                this.context.strokeStyle = prevStrokeStyle;
-                                this.context.fillStyle   = prevFillStyle;
-                            }
-    
-    
-    
-    
-    
-    
-                            if ( properties.yaxisPosition !== 'right') {
-                                x += width;
-                            }
+                            this.context.strokeStyle = prevStrokeStyle;
+                            this.context.fillStyle   = prevFillStyle;
                         }
-
-
-
-
-
-
-
-
-                    //
-                    // A grouped bar chart
-                    //
-                    } else if (typeof this.data[i] == 'object' && properties.grouping == 'grouped') {
-
-                        var vmarginGrouped      = properties.marginInnerGrouped;
-                        var individualBarHeight = ((height - (2 * vmargin) - ((this.data[i].length - 1) * vmarginGrouped)) / this.data[i].length)
-                        
-                        if (typeof this.coords2[i] == 'undefined') {
-                            this.coords2[i] = [];
-                        }
-
-                        for (j=(this.data[i].length - 1); j>=0; --j) {
-    
-                            //
-                            // Turn on the shadow if need be
-                            //
-                            if (properties.shadow) {
-                                RGraph.setShadow(
-                                    this,
-                                    properties.shadowColor,
-                                    properties.shadowOffsetx,
-                                    properties.shadowOffsety,
-                                    properties.shadowBlur
-                                );
-                            }
-    
-                            // Set the fill/stroke colors
-                            this.context.strokeStyle = properties.colorsStroke;
-
-                            // Sequential colors
-                            ++colorIdx;
-                            if (properties.colorsSequential && typeof colorIdx === 'number') {
-                                if (properties.colors[this.numbars - colorIdx]) {
-                                    this.context.fillStyle = properties.colors[this.numbars - colorIdx];
-                                } else {
-                                    this.context.fillStyle = properties.colors[properties.colors.length - 1];
-                                }
-                            } else if (properties.colors[j]) {
-                                this.context.fillStyle = properties.colors[j];
-                            }
-    
-    
-    
-                            var startY = this.marginTop + (height * i) + (individualBarHeight * j) + vmargin + (vmarginGrouped * j);
-                            
-                            if (properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) {
-                                var width = ((this.data[i][j] -  properties.xaxisScaleMin) / (this.max -  properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight );
-                                var startX = this.getXCoord((properties.xaxisScaleMin > 0 && properties.xaxisScaleMax > properties.xaxisScaleMin) ? properties.xaxisScaleMin : 0);//this.marginLeft;
-                            } else {
-                                var width = (this.data[i][j] / (this.max - properties.xaxisScaleMin)) * (this.canvas.width - this.marginLeft - this.marginRight);
-                                var startX = this.getXCoord(0);
-                            }
-
-    
-
-                            // Account for the Y axis being in the middle
-                            if ( properties.yaxisPosition == 'center') {
-                                width  /= 2;
-
-                            // Account for the Y axis being on the right
-                            } else if ( properties.yaxisPosition == 'right') {
-                                width = Math.abs(width);
-                                startX = this.canvas.width - this.marginRight - Math.abs(width);
-                            }
-                            
-                            if (width < 0) {
-                                startX += width;
-                                width *= -1;
-                            }
-
-                            if (properties.corners === 'round') {
-                                this.context.rectOld = this.context.rect;
-                                this.context.rect    = this.roundedCornersRect;
-                            }
-                            
-                            this.context.beginPath();
-                            this.context.lineJoin = 'miter';
-                            this.context.lineCap  = 'square';
-
-                            // Draw the rounded corners rect positive or negative
-                            if (properties.corners === 'square' || (this.properties.yaxisPosition === 'left' || this.properties.yaxisPosition === 'center')) {
-                                if (properties.corners === 'square' || this.data[i][j] > 0) {
-                                    this.context.rect(startX, startY, width, individualBarHeight);
-                                } else {
-                                    this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
-                                }
-                            } else {
-                                if (this.data[i][j] > 0 && properties.corners === 'round') {
-                                    this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
-                                } else {
-                                    this.context.rect(startX + width, startY, width, individualBarHeight);
-                                }
-                            }
-
-                            this.context.stroke();
-                            this.context.fill();
-
-                            // Put the rect function back to what it was
-                            if (properties.corners === 'round') {
-                                this.context.rect    = this.context.rectOld;
-                                this.context.rectOld = null;
-                            }
-
-
-
-
-
-
-                            this.coords.push([
-                                startX,
-                                startY,
-                                width,
-                                individualBarHeight,
-                                this.context.fillStyle,
-                                this.data[i][j],
-                                true
-                            ]);
-    
-                            this.coords2[i].push([
-                                startX,
-                                startY,
-                                width,
-                                individualBarHeight,
-                                this.context.fillStyle,
-                                this.data[i][j],
-                                true
-                            ]);
-
-
-
-
-
-
-
-
-
-
-
-
-                            // 3D effect
-                            if (properties.variant === '3d') {
-                            
-                                //
-                                // Turn off the shadow for the 3D bits
-                                //
-                                RGraph.noShadow(this);
-
-                                var prevStrokeStyle = this.context.strokeStyle,
-                                    prevFillStyle   = this.context.fillStyle;
-                            
-                                // DRAW THE 3D BITS HERE
-                                var barX    = startX,
-                                    barY    = startY,
-                                    barW    = width,
-                                    barH    = individualBarHeight,
-                                    offsetX = properties.variantThreedOffsetx,
-                                    offsetY = properties.variantThreedOffsety,
-                                    value   = this.data[i][j];
-                                
-                                this.path(
-                                    'b m % % l % % l % % l % % c s % f % f rgba(255,255,255,0.6)',
-                                    barX, barY,
-                                    barX + offsetX, barY - offsetY,
-                                    barX + barW + offsetX - (value < 0 ? offsetX : 0), barY - offsetY,
-                                    barX + barW, barY,
-                                    this.context.strokeStyle,this.context.fillStyle
-                                );
-    
-                                if (    properties.yaxisPosition !== 'right'
-                                    && !( properties.yaxisPosition === 'center' && value < 0)
-                                    && value >= 0
-                                    && !RGraph.isNullish(value)
-                                   ) {
-
-                                    this.path(
-                                        'fs % b m % %  l % % l % % l % % c s % f % f rgba(0,0,0,0.25)',
-                                        prevFillStyle,
-                                        barX + barW, barY,
-                                        barX + barW + offsetX, barY - offsetY,
-                                        barX + barW + offsetX, barY - offsetY + barH,
-                                        barX + barW, barY + barH,
-                                        this.context.strokeStyle,prevFillStyle
-                                    );
-                                }
-
-
-
-
-
-                                this.context.beginPath();
-                                this.context.strokeStyle = prevStrokeStyle;
-                                this.context.fillStyle   = prevFillStyle;
-                            }
-                        }
-
-                        startY += vmargin;
-                      
-                        // This skirts an annoying "extra fill bug"
-                        // by getting rid of the last path which
-                        // was drawn - which is usually the last
-                        // bar to be drawn (the bars are drawn
-                        // from bottom to top). Woo.
-                        this.path('b');
                     }
+
+                    startY += vmargin;
+                  
+                    // This skirts an annoying "extra fill bug"
+                    // by getting rid of the last path which
+                    // was drawn - which is usually the last
+                    // bar to be drawn (the bars are drawn
+                    // from bottom to top). Woo.
+                    this.path('b');
+                }
 
                 this.context.closePath();
             }
@@ -2394,10 +2436,16 @@
                     // appear over the Y axis. But not the Y axis
                     // labels or the title. This is new in
                     // September 2024.
-                    RGraph.drawYAxis(obj, {
-                        labels: false,
-                         title: false
-                    });
+                    //
+                    // As of March 2026 this does not include
+                    // dumbbell charts.
+                    //
+                    if (obj.properties.variant !== 'dumbbell') {
+                        RGraph.drawYAxis(obj, {
+                            labels: false,
+                             title: false
+                        });
+                    }
                 }
             });// End clipTo.worker().
         };
@@ -2426,11 +2474,22 @@
                 var adjustment = properties.variantThreedAngle * mouseXY[0];
                 mouseXY[1] -= adjustment;
             }
+            
+            //
+            // Make an allowance for the dumbbell chart.
+            //
 
+            var dbEndLeftradius  = 0;
+            var dbEndRightradius = 0;
+
+            if (this.properties.variant === 'dumbbell') {
+                dbEndLeftradius  = this.properties.variantDumbbellEndLeftRadius  || this.properties.variantDumbbellEndRadius;
+                dbEndRightradius = this.properties.variantDumbbellEndRightRadius || this.properties.variantDumbbellEndRadius;
+            }
 
             if (
-                   mouseXY[0] >= this.marginLeft
-                && mouseXY[0] <= (this.canvas.width - this.marginRight)
+                   mouseXY[0] >= (this.marginLeft - dbEndLeftradius)
+                && mouseXY[0] <= (this.canvas.width - this.marginRight + dbEndRightradius)
                 && mouseXY[1] >= this.marginTop
                 && mouseXY[1] <= (this.canvas.height - this.marginBottom)
                 ) {
@@ -3565,12 +3624,41 @@
 
 
         //
-        // A worker function that handles Bar chart specific tooltip substitutions
+        // A worker function that handles HBar chart
+        // specific tooltip substitutions.
         //
         this.tooltipSubstitutions = function (opt)
         {
             var indexes = RGraph.sequentialIndexToGrouped(opt.index, this.data);
+
+            // This makes dumbbell charts work correctly
+            //
+            // Match the current index with the correct group/index
+            // values by looking through the coords2 array using the
+            // current mouse position.
+            if (this.properties.variant === 'dumbbell') {
             
+                var mouseXY = RGraph.getMouseXY(window.event);
+                
+                outer:
+                for (var i=0; i<this.coords2.length; ++i) {
+                    for (var j=0; j<this.coords2[i].length; ++j) {
+                        if (
+                               mouseXY[0] > this.coords2[i][j][0]
+                            && mouseXY[0] < (this.coords2[i][j][0] + this.coords2[i][j][2])
+                            && mouseXY[1] > this.coords2[i][j][1]
+                            && mouseXY[1] < (this.coords2[i][j][1] + this.coords2[i][j][3])
+                           ) {
+                           
+                           indexes = [i, j];
+                           
+                           break outer;
+                        }
+                    }
+                }
+            }
+
+
             if (typeof this.data[indexes[0]] === 'object') {
                 var values = this.data[indexes[0]];
             } else {
@@ -4496,7 +4584,7 @@
                 x = 0;
                 width = x2;
             }
-//$a([x, y, width, height]);
+
             this.path(
                 'sa b r % % % % cl',
                 x, y, width, height
@@ -4798,6 +4886,251 @@ if (!conf.labelValign && conf.labelPosition === 'bottom') {
 
 
 
+
+
+
+
+        //
+        // Draw a dumbbell chart
+        //
+        this.drawdumbbell = function ()
+        {
+            var dumbbellCoords  = [];
+            var obj             = this;
+            var seq             = 0;
+            var x               = obj.getXCoord(this.data[0][0]);
+            
+            this.coords  = [];
+            this.coords2 = [];
+            
+            this.data.forEach(function (v, k, arr)
+            {
+                var section = ((obj.canvas.height - obj.properties.marginTop - obj.properties.marginBottom) / obj.data.length);
+                var coordY  = (section * k) + obj.properties.marginTop + (section / 2);
+                var coordH  = obj.properties.variantDumbbellEndRadius;
+            
+
+            
+                if (obj.properties.shadow) {
+                    RGraph.setShadow(
+                        obj,
+                        obj.properties.shadowColor,
+                        obj.properties.shadowOffsetx,
+                        obj.properties.shadowOffsety,
+                        obj.properties.shadowBlur
+                    );
+                }
+
+                if (v.length > 2) {
+                    
+                    obj.coords2[k] = [];
+                    
+                    for (var j=1; j<v.length; ++j) {
+                        
+                        var coordX = obj.getXCoord(v[j - 1]);
+                        var coordW = obj.getXCoord(v[j]) - obj.getXCoord(v[j - 1]);
+                        
+                        obj.context.beginPath();
+                        obj.context.rect(
+                            coordX,
+                            coordY,
+                            coordW,
+                            coordH,//(coordH * 2) + (2 * obj.properties.shadowOffsety)
+                        );
+
+                        obj.pathDumbbell(
+                            coordX,
+                            coordY,
+                            coordW,
+                            coordH,
+                            j === 1 && (RGraph.isNull(obj.properties.variantDumbbellEndLeft) || obj.properties.variantDumbbellEndLeft), // Left end
+                            j === (v.length - 1) && (RGraph.isNull(obj.properties.variantDumbbellEndRight) || obj.properties.variantDumbbellEndRight)// Right end
+                        );
+
+                        // Add the rect to the canvas
+                        if (obj.properties.colorsSequential) {
+                            obj.path('f ' + obj.properties.colorsDumbbell[seq]);
+                        } else {
+                            obj.path('f ' + obj.properties.colorsDumbbell[j - 1]);
+                        }
+
+
+                        // Determine the height of the
+                        // hotspot
+                        var radius = Math.max(
+                            (obj.properties.variantDumbbellEndLeftRadius || obj.properties.variantDumbbellEndLeftRadius || 0),
+                            (obj.properties.variantDumbbellEndRightRadius || obj.properties.variantDumbbellEndRightRadius || 0)
+                        );
+                        radius = Math.max(coordH, radius);
+                        
+                        //
+                        // Calculate the shadowOffset so that the
+                        // highlight covers the shadow as well.
+                        //
+                        var shadowOffset = Math.max(
+                            Math.abs(obj.properties.shadowOffsetx),
+                            Math.abs(obj.properties.shadowOffsety)
+                        );
+
+                        var coords = [
+                            coordX - (j === 1 ? radius : 0),
+                            coordY - radius - 10,
+                            coordW + (j === 1 || (j === v.length - 1) ? radius : 0),
+                            coordH + (2 * radius)
+                        ];
+
+
+
+
+                        // Modify the coords so that the
+                        // shadowOffset is taken into account when
+                        // the highlight is added.
+                        
+                        // First segment
+                        if (j === 1) {
+                            
+                            // Horizontal offset manglement
+                            if (obj.properties.shadowOffsetx < 0) {
+                                coords[0] -= shadowOffset;
+                                coords[2] += shadowOffset;
+                            }
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsety < 0) {
+                                coords[1] -= shadowOffset;
+                                coords[3] += shadowOffset;
+                            } else {
+                                coords[3] += shadowOffset;
+                            }
+                        
+                        // Last segment
+                        } else if (j === (v.length - 1) ) {
+                            
+                            // Horizontal offset manglement
+                            if (obj.properties.shadowOffsetx > 0) {
+                                coords[2] += shadowOffset;
+                            }
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsety > 0) {
+                                coords[3] += shadowOffset;
+                            } else if (obj.properties.shadowOffsety < 0) {
+                                coords[1] -= shadowOffset;
+                                coords[3] += shadowOffset;
+                            }
+
+                        // Middle segments
+                        } else {
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsety > 0) {
+                                coords[3] += shadowOffset;
+                            } else {
+                                coords[1] -= shadowOffset;
+                                coords[3] += shadowOffset;
+                            }
+                        }
+                        
+                        obj.coords.push(coords);
+                        obj.coords2[k].push(coords);
+
+
+
+
+                        
+                        seq++;  
+                    }
+                    
+                    // //
+                    // Need this so that the colors are
+                    // used in the coorect order
+                    //
+                    seq--;
+
+
+
+
+                 // Only TWO X values - so a minimum and a
+                 // maximum.
+                } else {
+                
+                    obj.coords2[k] = [];
+                
+                    var coordX = obj.getXCoord(v[0]);
+                    var coordW = obj.getXCoord(v[1]) - obj.getXCoord(v[0]);
+
+                    obj.pathDumbbell(
+                        coordX,
+                        coordY,
+                        coordW,
+                        coordH
+                    );
+                    
+                    if (obj.properties.colorsSequential) {
+                        obj.path('f ' + obj.properties.colorsDumbbell[k]);
+                    } else {
+                        obj.path('f ' + obj.properties.colorsDumbbell[0]);
+                    }
+
+
+                    // Store the dumbbell coordinates
+                    var coords = [
+                        coordX - obj.properties.variantDumbbellEndRadius - obj.properties.shadowOffsetx,
+                        coordY - coordH - obj.properties.shadowOffsety,
+                        coordW + (2 * obj.properties.variantDumbbellEndRadius) + (2 * obj.properties.shadowOffsetx),
+                        (coordH * 2) + (2 * obj.properties.shadowOffsety)
+                    ];
+
+                    obj.coords.push(coords);
+                    obj.coords2[k].push(coords);
+                }
+                seq++;
+                RGraph.noShadow(obj);
+            });
+        };
+    
+    
+    
+    
+    
+    
+    
+    
+       //
+       // Paths a dumbbell bar
+       //
+        this.pathDumbbell = function (x, y, w, h, leftEnd = true, rightEnd = true)
+        {
+            this.path(
+                'b r % % % %',
+                x,
+                y - (this.properties.variantDumbbellLinewidth / 2),
+                w,
+                this.properties.variantDumbbellLinewidth
+            );
+
+
+
+
+            if (this.properties.variantDumbbellEndLeft && leftEnd) {
+                this.path(
+                    'm % %          a % % % 0 6.29 false',
+                    x, y + (h / 2),
+                    x, y, (RGraph.isNumber(this.properties.variantDumbbellEndLeftRadius) ? this.properties.variantDumbbellEndLeftRadius : this.properties.variantDumbbellEndRadius)
+                );
+            }
+
+
+
+
+            if (this.properties.variantDumbbellEndRight && rightEnd) {
+                this.path(
+                    'm % %          a % % % 0 6.29 false',
+                    x + w, y + (h / 2),
+                    x + w, y, (RGraph.isNumber(this.properties.variantDumbbellEndRightRadius) ? this.properties.variantDumbbellEndRightRadius : this.properties.variantDumbbellEndRadius)
+                );
+            }
+        };
 
 
 

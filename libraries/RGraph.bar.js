@@ -1,13 +1,14 @@
-    // o---------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:                |
-    // |                                                                                 |
-    // |                       https://www.rgraph.net/license.html                       |
-    // |                                                                                 |
-    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-    // | free to use and there are no restrictions on what you can use RGraph for!       |
-    // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option available. See the URL above for more details.        |
-    // o---------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:          |
+    // |                                                                           |
+    // |                           https://www.rgraph.net                          |
+    // |                                                                           |
+    // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+    // | that it's free to use for any purpose. The GPL license does have          |
+    // | consequences on the license of the software that you include it in,       |
+    // | however. If this is not desirable, then there's an inexpensive commercial |
+    // | license option available. See the RGraph website for more details.        |
+    // o---------------------------------------------------------------------------o
 
     RGraph = window.RGraph || {isrgraph:true,isRGraph: true,rgraph:true};
 
@@ -240,15 +241,21 @@
 
             grouping:               'grouped',
 
-            variant:                'bar',
-            variantSketchVerticals: true,
-            variantThreedXaxis:   true,
-            variantThreedYaxis:   true,
-            variantThreedAngle:   0.1,
-            variantThreedOffsetx: 10,
-            variantThreedOffsety: 5,
-            variantThreedXaxisColor: '#ddd',
-            variantThreedYaxisColor: '#ddd',
+            variant:                        'bar',
+            variantSketchVerticals:         true,
+            variantThreedXaxis:             true,
+            variantThreedYaxis:             true,
+            variantThreedAngle:             0.1,
+            variantThreedOffsetx:           10,
+            variantThreedOffsety:           5,
+            variantThreedXaxisColor:        '#ddd',
+            variantThreedYaxisColor:        '#ddd',
+            variantDumbbellLinewidth:       8,
+            variantDumbbellEndTop:          true,
+            variantDumbbellEndBottom:       true,
+            variantDumbbellEndRadius:       13,
+            variantDumbbellEndTopRadius:    null,
+            variantDumbbellEndBottomRadius: null,
 
             shadow:                false,
             shadowColor:           '#aaa',
@@ -434,6 +441,10 @@
             'titleSubtitleOffsety',
             'variantThreedOffsetx',
             'variantThreedOffsety',
+            'variantDumbbellLinewidth',
+            'variantDumbbellEndRadius',
+            'variantDumbbellEndTopRadius',
+            'variantDumbbellEndBottomRadius',
             'shadowOffsetx',
             'shadowOffsety',
             'shadowBlur',
@@ -817,10 +828,24 @@
 
 
 
+            // If a dumbbell chart is being drawn then a few
+            // properties need to be massaged
+            if (!this.properties.colorsDumbbell && this.properties.variant === 'dumbbell') {
+                this.set({
+                    colorsDumbbell: this.get('colors')
+                });
+            
+            
+                this.set({
+                    colors: ['#0000']
+                });
+            };
+
+
             //
             // Work out the max value
             //
-            if (properties.yaxisScaleMax) {
+            if (this.properties.yaxisScaleMax) {
 
                 this.scale2 = RGraph.getScale({object: this, options: {
                     'scale.max':         properties.yaxisScaleMax,
@@ -898,6 +923,12 @@
 
 
 
+
+
+
+
+
+
                 this.scale2 = RGraph.getScale({object: this, options: {
                     'scale.max':         this.max,
                     'scale.min':         properties.yaxisScaleMin,
@@ -948,9 +979,19 @@
             //    this.drawAxes();
             //    this.drawbars();
             //} else {
-                this.drawbars();
-                this.drawAxes();
+            this.drawbars();
+            this.drawAxes();
             //}
+
+            //
+            // Draw the dumbbell bars variant Draw this here
+            // so that the dumbells are drawn over the axes.
+            //
+            if (this.properties.variant === 'dumbbell') {
+                this.drawdumbbell();
+            }
+
+
             this.drawLabels();
 
 
@@ -1184,7 +1225,7 @@
                 RGraph.drawBars(this);
             }
 
-            var variant = properties.variant;
+            var variant = this.properties.variant;
 
             //
             // Draw the 3D axes is necessary
@@ -1320,7 +1361,7 @@
                             this.context.fillStyle = colors[i];
                         }
 
-                        if (variant == 'sketch') {
+                        if (variant === 'sketch') {
 
                             this.context.lineCap = 'round';
 
@@ -1380,7 +1421,7 @@
                             this.context.stroke();
 
                         // Regular bar
-                        } else if (variant == 'bar' || variant == '3d' || variant == 'glass' || variant == 'bevel') {
+                        } else if (variant === 'bar' || variant === '3d' || variant === 'glass' || variant === 'bevel' || variant === 'dumbbell') {
 
                             if (variant == 'glass') {
                                 RGraph.roundedRect(
@@ -1566,7 +1607,7 @@ this.context.lineTo(
 
 
                         // Dot chart
-                        } else if (variant == 'dot') {
+                        } else if (variant === 'dot') {
 
 
                             var scaleFactor = RGraph.getScaleFactor(this);
@@ -2516,10 +2557,12 @@ this.context.lineTo(
                     // appear over the X axis. But not the X axis
                     // labels or the title. This is new in
                     // September 2024.
-                    RGraph.drawXAxis(obj, {
-                        labels: false,
-                         title: false
-                    });
+                    if (obj.properties.variant !== 'dumbbell') {
+                        RGraph.drawXAxis(obj, {
+                            labels: false,
+                             title: false
+                        });
+                    }
                 } else {
                     if (properties.grouping === 'stacked' && shape.index === 0 && obj.properties.xaxisPosition === 'bottom') {
                     
@@ -2543,10 +2586,12 @@ this.context.lineTo(
                         // appear over the X axis. But not the X axis
                         // labels or the title. This is new in
                         // September 2024.
-                        RGraph.drawXAxis(obj, {
-                            labels: false,
-                             title: false
-                        });
+                        if (obj.properties.variant !== 'dumbbell') {
+                            RGraph.drawXAxis(obj, {
+                                labels: false,
+                                 title: false
+                            });
+                        }
                     }
                 }
             }); // End of clipping callback function.
@@ -2574,13 +2619,19 @@ this.context.lineTo(
                 mouseXY[1] -= adjustment;
             }
 
-
+            var dbEndLeftradius  = 0;
+            var dbEndRightradius = 0;
+            
+            if (this.properties.variant === 'dumbbell') {
+                dbEndTopradius    = this.properties.variantDumbbellEndTopRadius  || this.properties.variantDumbbellEndRadius;
+                dbEndBottomradius = this.properties.variantDumbbellEndBottomRadius || this.properties.variantDumbbellEndRadius;
+            }
 
             if (
-                   mouseXY[0] >= properties.marginLeft
-                && mouseXY[0] <= (this.canvas.width - properties.marginRight)
-                && mouseXY[1] >= properties.marginTop
-                && mouseXY[1] <= (this.canvas.height - properties.marginBottom)
+                   mouseXY[0] >= this.properties.marginLeft
+                && mouseXY[0] <= (this.canvas.width - this.properties.marginRight)
+                && mouseXY[1] >= this.properties.marginTop - dbEndTopradius
+                && mouseXY[1] <= (this.canvas.height - this.properties.marginBottom + dbEndBottomradius)
                 ) {
 
                 return this;
@@ -3850,7 +3901,35 @@ this.context.lineTo(
         {
             var indexes = RGraph.sequentialIndexToGrouped(opt.index, this.data);
             var values = this.data[indexes[0]];
+
+
+            // This makes dumbbell charts work correctly
+            //
+            // Match the current index with the correct group/index
+            // values by looking through the coords2 array using the
+            // current mouse position.
+            if (this.properties.variant === 'dumbbell') {
             
+                var mouseXY = RGraph.getMouseXY(window.event);
+                
+                outer:
+                for (var i=0; i<this.coords2.length; ++i) {
+                    for (var j=0; j<this.coords2[i].length; ++j) {
+                        if (
+                               mouseXY[0] > this.coords2[i][j][0]
+                            && mouseXY[0] < (this.coords2[i][j][0] + this.coords2[i][j][2])
+                            && mouseXY[1] > this.coords2[i][j][1]
+                            && mouseXY[1] < (this.coords2[i][j][1] + this.coords2[i][j][3])
+                           ) {
+                           
+                           indexes = [i, j];
+                           
+                           break outer;
+                        }
+                    }
+                }
+            }
+
             if (typeof values === 'number') {
                 values = [values];
             }
@@ -4372,6 +4451,261 @@ this.context.lineTo(
             return value;
         };
 
+
+
+
+
+
+
+
+        //
+        // Draw a dumbbell chart
+        //
+        this.drawdumbbell = function ()
+        {
+            var dumbbellCoords  = [];
+            var obj             = this;
+            var seq             = 0;
+            //var y               = obj.getYCoord(this.data[0]);
+
+            this.coords  = [];
+            this.coords2 = [];
+            
+            this.data.forEach(function (v, k, arr)
+            {
+                var section = ((obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight) / obj.data.length);
+                var coordX  = (section * k) + obj.properties.marginLeft + (section / 2);
+                var coordW  = obj.properties.variantDumbbellEndRadius;
+
+        
+            
+                if (obj.properties.shadow) {
+                    RGraph.setShadow(
+                        obj,
+                        obj.properties.shadowColor,
+                        obj.properties.shadowOffsetx,
+                        obj.properties.shadowOffsety,
+                        obj.properties.shadowBlur
+                    );
+                }
+        
+                //
+                // TODO Need to convert this if condition
+                //
+                if (v.length > 2) {
+                    
+                    obj.coords2[k] = [];
+
+                    for (var j=1; j<v.length; ++j) {
+                        
+                        var coordY = obj.getYCoord(v[j]);
+                        var coordH = obj.getYCoord(v[j - 1]) - obj.getYCoord(v[j]);
+
+                        obj.path('b r % % % %',
+                            coordX,
+                            coordY,
+                            coordW,
+                            coordH//(coordH * 2) + (2 * obj.properties.shadowOffsety)
+                        );
+        
+                        obj.pathDumbbell(
+                            coordX,
+                            coordY,
+                            coordW,
+                            coordH,
+                            j === (v.length - 1) && (RGraph.isNull(obj.properties.variantDumbbellEndTop) || obj.properties.variantDumbbellEndTop),
+                            j === 1 && (RGraph.isNull(obj.properties.variantDumbbellEndBottom) || obj.properties.variantDumbbellEndBottom)
+                        );
+        
+                        // Add the rect to the canvas
+                        if (obj.properties.colorsSequential) {
+                            obj.path('f ' + obj.properties.colorsDumbbell[seq]);
+                        } else {
+                            obj.path('f ' + obj.properties.colorsDumbbell[j - 1]);
+                        }
+        
+        
+                        // Determine the height of the
+                        // hotspot
+                        var radius = Math.max(
+                            (obj.properties.variantDumbbellEndTopRadius || obj.properties.variantDumbbellEndTopRadius || 0),
+                            (obj.properties.variantDumbbellEndBottomRadius || obj.properties.variantDumbbellEndBottomRadius || 0)
+                        );
+                        radius = Math.max(coordW, radius);
+                        
+                        //
+                        // Calculate the shadowOffset so that the
+                        // highlight covers the shadow as well.
+                        //
+                        var shadowOffset = Math.max(
+                            Math.abs(obj.properties.shadowOffsetx),
+                            Math.abs(obj.properties.shadowOffsety)
+                        );
+        
+                        var coords = [
+                            coordX - radius,
+                            coordY - (j === (v.length - 1) ? radius : 0),
+                            coordW + (2 * radius),
+                            coordH + (j === 1 || (j === v.length - 1) ? radius : 0),
+                        ];
+        
+        
+        
+        
+                        // Modify the coords so that the
+                        // shadowOffset is taken into account when
+                        // the highlight is added.
+/*
+                        // First segment
+                        if (j === 1) {  
+                            
+                            // Horizontal offset manglement
+                            if (obj.properties.shadowOffsetx < 0) {
+                                coords[0] -= shadowOffset;
+                                coords[2] += shadowOffset;
+                            } else {
+                                coords[2] += shadowOffset;
+                            }
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsety > 0) {
+                                coords[3] += shadowOffset;
+                            }
+                        
+                        // Last segment
+                        } else if (j === (v.length - 1) ) {
+                            
+                            // Horizontal offset manglement
+                            if (obj.properties.shadowOffsetx > 0) {
+                                coords[2] += shadowOffset;
+                            } else {
+                                coords[0] -= shadowOffset;
+                                coords[2] += shadowOffset;
+                            }
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsety > 0) {
+                                //coords[3] += shadowOffset;
+                            } else if (obj.properties.shadowOffsety < 0) {
+                                coords[1] -= shadowOffset;
+                                coords[3] += shadowOffset;
+                            }
+        
+                        // Middle segments
+                        } else {
+                            
+                            // Vertical offset manglement
+                            if (obj.properties.shadowOffsetx > 0) {
+                                coords[2] += shadowOffset;
+                            } else {
+                                coords[0] -= shadowOffset;
+                                coords[2] += shadowOffset;
+                            }
+                        }
+*/
+                        
+                        obj.coords.push(coords);
+                        obj.coords2[k].push(coords);
+        
+        
+        
+        
+                        
+                        seq++;  
+                    }
+                    
+                    // //
+                    // Need this so that the colors are
+                    // used in the coorect order
+                    //
+                    seq--;
+        
+        
+        
+        
+                 // Only TWO Y values - so a minimum and a
+                 // maximum.
+                } else {
+                
+                    obj.coords2[k] = [];
+
+                    var coordH = obj.getYCoord(v[0]) - obj.getYCoord(v[1]);
+                    var coordY = obj.getYCoord(v[0]) - coordH;
+
+                    
+
+                    obj.pathDumbbell(
+                        coordX,
+                        coordY,
+                        coordW,
+                        coordH
+                    );
+
+                    if (obj.properties.colorsSequential) {
+                        obj.path('f ' + obj.properties.colorsDumbbell[k]);
+                    } else {
+                        obj.path('f ' + obj.properties.colorsDumbbell[0]);
+                    }
+        
+        
+                    // Store the dumbbell coordinates
+                    var coords = [
+                        coordX - obj.properties.variantDumbbellEndRadius - obj.properties.shadowOffsetx,
+                        coordY - obj.properties.shadowOffsety - obj.properties.variantDumbbellEndRadius,
+                        coordW + (2 * obj.properties.variantDumbbellEndRadius) + (2 * obj.properties.shadowOffsetx),
+                        coordH  + (2 * obj.properties.variantDumbbellEndRadius) + (2 * obj.properties.shadowOffsety)
+                    ];
+        
+                    obj.coords.push(coords);
+                    obj.coords2[k].push(coords);
+                }
+                seq++;
+                RGraph.noShadow(obj);
+            });
+        };
+        
+        
+        
+        
+        
+        
+        
+        
+        //
+        // Paths a dumbbell bar
+        //
+        this.pathDumbbell = function (x, y, w, h, topEnd = true, bottomEnd = true)
+        {
+            this.path(
+                'b r % % % %',
+                x + (this.properties.variantDumbbellLinewidth / 2) - 2,
+                y,
+                this.properties.variantDumbbellLinewidth,
+                h
+            );
+        
+        
+        
+        
+            if (this.properties.variantDumbbellEndTop && topEnd) {
+                this.path(
+                    'm % %          a % % % 0 6.29 false',
+                    x + (w/2), y,
+                    x + (w/2), y, (RGraph.isNumber(this.properties.variantDumbbellEndTopRadius) ? this.properties.variantDumbbellEndTopRadius : this.properties.variantDumbbellEndRadius)
+                );
+            }
+        
+        
+        
+        
+            if (this.properties.variantDumbbellEndBottom && bottomEnd) {
+                this.path(
+                    'm % %          a % % % 0 6.29 false',
+                    x + (w/2), y+h,
+                    x + (w/2), y+h, (RGraph.isNumber(this.properties.variantDumbbellEndBottomRadius) ? this.properties.variantDumbbellEndBottomRadius : this.properties.variantDumbbellEndRadius)
+                );
+            }
+        };
 
 
 

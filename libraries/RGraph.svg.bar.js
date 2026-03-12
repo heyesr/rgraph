@@ -1,13 +1,14 @@
-    // o---------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:                |
-    // |                                                                                 |
-    // |                       https://www.rgraph.net/license.html                       |
-    // |                                                                                 |
-    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-    // | free to use and there are no restrictions on what you can use RGraph for!       |
-    // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option available. See the URL above for more details.        |
-    // o---------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:          |
+    // |                                                                           |
+    // |                           https://www.rgraph.net                          |
+    // |                                                                           |
+    // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+    // | that it's free to use for any purpose. The GPL license does have          |
+    // | consequences on the license of the software that you include it in,       |
+    // | however. If this is not desirable, then there's an inexpensive commercial |
+    // | license option available. See the RGraph website for more details.        |
+    // o---------------------------------------------------------------------------o
 
     RGraph = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
     RGraph.SVG = RGraph.SVG || {};
@@ -126,9 +127,16 @@
             marginTop:    35,
             marginBottom: 35,
             
-            variant:          null,
-            variant3dOffsetx: 10,
-            variant3dOffsety: 5,
+            variant:                        null,
+            variant3dOffsetx:               10,
+            variant3dOffsety:               5,
+            variantDumbbellLinewidth:       9,
+            variantDumbbellEndTop:          true,
+            variantDumbbellEndBottom:       true,
+            variantDumbbellEndRadius:       13,
+            variantDumbbellEndTopRadius:    null,
+            variantDumbbellEndBottomRadius: null,
+
 
             backgroundColor:            null,
             backgroundImage:            null,
@@ -505,6 +513,39 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// If a dumbbell chart is being drawn then a few
+// properties need to be massaged
+if (!this.properties.colorsDumbbell && this.properties.variant === 'dumbbell') {
+    this.set({
+        colorsDumbbell: this.get('colors')
+    });
+
+
+    this.set({
+        colors: RGraph.SVG.arrayFill([], 99, '#0000')
+    });
+};
+
+
+
+
+
+
+
+
+
             // Go through the data and work out the maximum value
             // This now also accounts for errorbars
             var values = [];
@@ -729,8 +770,34 @@
 
 
 
+            // Draw the axes over the bars
+            if (this.properties.variant === 'dumbbell') {
+                RGraph.SVG.drawXAxis(this);
+                RGraph.SVG.drawYAxis(this);
+            }
+            
+            
+            
+            
+
+
+
+            ///////////////////////////////////////////////////
+            // Draw the dumbbell bars variant Draw this here //
+            // so that the dumbells are drawn over the axes. //
+            ///////////////////////////////////////////////////
+            if (this.properties.variant === 'dumbbell') {
+                this.drawdumbbell();
+            }
+
+
+
+
+
             // Draw the bars
-            this.drawBars();
+            if (this.properties.variant !== 'dumbbell')  {
+                this.drawBars();
+            }
 
 
 
@@ -769,8 +836,10 @@
 
 
             // Draw the axes over the bars
-            RGraph.SVG.drawXAxis(this);
-            RGraph.SVG.drawYAxis(this);
+            if (this.properties.variant !== 'dumbbell') {
+                RGraph.SVG.drawXAxis(this);
+                RGraph.SVG.drawYAxis(this);
+            }
             
             
             // Draw the labelsAbove labels
@@ -1871,11 +1940,13 @@ if (this.scale.min === 0 && this.scale.max > this.scale.min) {
             
             // Redraw the X axis so that the highlight appears
             // beneath it
-            RGraph.SVG.drawXAxis(this, {
-                axis: true,
-                title: false,
-                labels: false
-            });
+            if (this.properties.variant !== 'dumbbell') {
+                RGraph.SVG.drawXAxis(this, {
+                    axis: true,
+                    title: false,
+                    labels: false
+                });
+            }
 
 
             // Store the highlight rect in the rebistry so
@@ -2781,14 +2852,26 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
         //
         this.tooltipSubstitutions = function (opt)
         {
-            var indexes = RGraph.SVG.sequentialIndexToGrouped(opt.index, this.data);
+            var dataClone = RGraph.SVG.arrayClone(this.data, true);
+
+            // Need to mangle the data if we're showing a stacked
+            // dumbbell chart.
+            if (this.properties.variant === 'dumbbell') {                
+                for (var i=0; i<dataClone.length; ++i) {
+                    dataClone[i].shift();
+                }
+            }
+
+            var indexes = RGraph.SVG.sequentialIndexToGrouped(opt.index, dataClone);
+            var index   = indexes[1];
+            var dataset = indexes[0];
 
             return {
-                  index: indexes[1],
-                dataset: indexes[0],
+                  index: index,
+                dataset: dataset,
         sequentialIndex: opt.index,
-                  value: typeof this.data[indexes[0]] === 'number' ? this.data[indexes[0]] : this.data[indexes[0]][indexes[1]],
-                 values: typeof this.data[indexes[0]] === 'number' ? [this.data[indexes[0]]] : this.data[indexes[0]]
+                  value: typeof dataClone[dataset] === 'number' ? dataClone[dataset] : dataClone[dataset][index],
+                 values: typeof dataClone[dataset] === 'number' ? [dataClone[dataset]] : dataClone[dataset]
             };
         };
 
@@ -2957,6 +3040,466 @@ obj.drawTop3dFace({rect: obj.coords[seq].element});
                 'clip-path',
                 'url(#' + clipPath.id + ')'
             );
+        };
+
+
+
+
+
+
+
+
+        //
+        // Draw a dumbbell chart
+        //
+        this.drawdumbbell = function ()
+        {
+            //var dumbbellCoords  = [];
+            var obj             = this;
+            var seq             = 0;
+            
+            this.coords  = [];
+            this.coords2 = [];
+            
+            this.data.forEach(function (v, k, arr)
+            {
+                var section = ((obj.width - obj.properties.marginLeft - obj.properties.marginRight) / obj.data.length);
+                var coordX  = (section * k) + obj.properties.marginLeft + (section / 2);
+                var coordW  = obj.properties.variantDumbbellLinewidth;
+
+
+                if (obj.properties.shadow) {
+                    RGraph.SVG.setShadow({
+                        object:  obj,
+                        offsetx: obj.properties.shadowOffsetx,
+                        offsety: obj.properties.shadowOffsety,
+                        blur:    obj.properties.shadowBlur,
+                        color:   obj.properties.shadowColor,
+                        id:      'dropShadow'
+                    });
+                }
+
+
+
+
+
+                //
+                // STACKED DUMBBELLS
+                //
+                if (v.length > 2) {
+                    
+                    obj.coords2[k] = [];
+
+
+
+                    //
+                    // Create a group for this stack
+                    //
+                    var group = RGraph.SVG.create({
+                        svg: obj.svg,
+                        type: 'g',
+                        parent: obj.svgAllGroup, 
+                        attr: {
+                            filter: obj.properties.shadow ? 'url(#dropShadow)' : ''
+                        }
+                    });
+
+                    
+                    for (var j=1; j<v.length; ++j) {
+
+                        var coordY = obj.getYCoord(v[j]);
+                        var coordH = obj.getYCoord(v[j - 1]) - obj.getYCoord(v[j]);
+
+                        // Determine the color
+                        if (obj.properties.colorsSequential) {
+                            var color = obj.properties.colorsDumbbell[seq]
+                        } else {
+                            var color = obj.properties.colorsDumbbell[j - 1];
+                        }
+
+                        obj.pathDumbbell({
+                            x:      coordX,
+                            y:      coordY,
+                            width:  coordW,
+                            height: coordH,
+                            color:  color,
+                            top:    j === (v.length - 1) ? true : false,
+                            bottom: j === 1 ? true : false,
+                            group: group
+                        });
+
+                        // Determine the height of the
+                        // hotspot
+                        var radius = Math.max(
+                            (obj.properties.variantDumbbellEndTopRadius || obj.properties.variantDumbbellEndTopRadius || 0),
+                            (obj.properties.variantDumbbellEndBottomRadius || obj.properties.variantDumbbellEndBottomRadius || 0)
+                        );
+                        radius = Math.max(
+                            radius,
+                            (obj.properties.variantDumbbellEndRadius || obj.properties.variantDumbbellEndRadius || 0)
+                        );
+
+                        var endRadius = radius;
+                        radius = Math.max(coordH, radius);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+                        //
+                        // Add the tooltip to the group
+                        //
+                        if (   !RGraph.SVG.isNullish(obj.properties.tooltips)
+                            && (!RGraph.SVG.isNullish(obj.properties.tooltips[k]) || typeof obj.properties.tooltips === 'string')
+                           ) {
+    
+                            //
+                            // Add tooltip event listeners (click and
+                            // mousemove)
+                            //
+                            var rect = (function (dataset, index)
+                            {
+                                // Get the sequential index - the
+                                // common API function needs the
+                                // data massaging before it can
+                                // be used.
+                                var dataClone = RGraph.SVG.arrayClone(obj.data, true);
+                                for (var a=0; a<dataClone.length; ++a) {
+                                    dataClone[a].shift();
+                                }
+                                
+                                // Now the groupedIndexToSequential
+                                // function can be used.
+                                var seq = RGraph.SVG.groupedIndexToSequential({
+                                    object:  {data: dataClone},
+                                    dataset: dataset,
+                                    index:   index
+                                });
+
+                                // Add a rectangle that serves as the
+                                // tooltip hotspot.
+                                var topRadius    = obj.properties.variantDumbbellEndTopRadius ? obj.properties.variantDumbbellEndTopRadius : obj.properties.variantDumbbellEndRadius;
+                                var bottomRadius = obj.properties.variantDumbbellEndBottomRadius ? obj.properties.variantDumbbellEndBottomRadius : obj.properties.variantDumbbellEndRadius;
+                                var radius       = Math.max(topRadius, bottomRadius) + 10;
+    
+                                var rect = obj.create('<rect x="%1" y="%2" width="%3" height="%4" fill="transparent" onmousemove="this.style.cursor=\'pointer\'">'.format(
+                                    coordX - radius,
+                                    coordY - (j === (v.length - 1) ? radius : 0),
+                                    coordW + (2 * radius),
+                                    coordH + (j === 1 ? radius : (j === (v.length - 1) ? radius : 0))
+                                ), obj.svgAllGroup);
+    
+
+                                rect.addEventListener(properties.tooltipsEvent.replace(/^on/, ''), function (e)
+                                {
+                                    obj.removeHighlight();
+
+                                    RGraph.SVG.tooltip({
+                                        object: obj,
+                                         index: index,
+                                         group: dataset,
+                               sequentialIndex: seq,
+                                          text: typeof obj.properties.tooltips === 'string' ?  obj.properties.tooltips : obj.properties.tooltips[seq],
+                                         event: e
+                                    });
+                                    
+                                    obj.highlight(e.target);
+                                }, false);
+    
+                                group.addEventListener('mousemove', function (e)
+                                {
+                                    e.target.style.cursor = 'pointer'
+                                }, false);
+                                
+                                // Return the hotspot rect so it
+                                // can be stored in the coords
+                                //array.
+                                return rect;
+    
+                            })(k, j - 1);
+                            
+                            
+                        }
+
+                        var coords = {
+                            element: rect,
+                            object:  obj,
+                            x:       coordX,// - (j === 1 ? radius : 0),
+                            y:       coordY - (j === (v.length - 1) ? endRadius : 0),
+                            width:   coordW,// + (j === 1 || (j === v.length - 1) ? radius : 0),
+                            height:  coordH// + (2 * radius)
+                        };
+
+
+                        obj.coords.push(coords);
+                        obj.coords2[k].push(coords);
+
+                        seq++;  
+                    }
+                    
+                    //
+                    // Need this so that the colors are
+                    // used in the coorect order
+                    //
+                    seq--;
+        
+        
+
+
+
+
+
+        
+                //
+                // REGULAR DUMBBELLS
+                //
+                // Only TWO X values - so a minimum and a
+                // maximum.
+                } else {
+
+                    obj.coords2[k] = [];
+                
+                    var coordY = obj.getYCoord(v[1]);
+                    var coordH = obj.getYCoord(v[0]) - obj.getYCoord(v[1]);
+        
+                    // Determine the color
+                    if (obj.properties.colorsSequential) {
+                        var color = obj.properties.colorsDumbbell[k]
+                    } else {
+                        var color = obj.properties.colorsDumbbell[0];
+                    }
+                    
+                    // Create a group
+                    var group = RGraph.SVG.create({
+                        svg: obj.svg,
+                        type: 'g',
+                        parent: obj.svgAllGroup, 
+                        attr: {
+                            'data-tooltip': (!RGraph.SVG.isNullish(obj.properties.tooltips) && obj.properties.tooltips.length) ? obj.properties.tooltips[k] : '',
+                            'data-index': k,
+                            'data-sequential-index': k,
+                            'data-value': obj.data[k],
+                            filter: obj.properties.shadow ? 'url(#dropShadow)' : ''
+                        }
+                    });
+
+                    // Add the dumbbell to the scene
+                    obj.pathDumbbell({
+                        x:      coordX,
+                        y:      coordY,
+                        width:  coordW,
+                        height: coordH,
+                        color:  color,
+                        group:  group
+                    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //
+                    // Add the tooltip to the group
+                    //
+                    if (   !RGraph.SVG.isNullish(obj.properties.tooltips)
+                        && (!RGraph.SVG.isNullish(obj.properties.tooltips[k]) || typeof obj.properties.tooltips === 'string')
+                       ) {
+
+                        //
+                        // Add tooltip event listeners (click and
+                        // mousemove)
+                        //
+                        (function (index)
+                        {
+                            // Add a rectangle that serves as the
+                            // tooltip hotspot.
+                            var topRadius    = obj.properties.variantDumbbellEndTopRadius ? obj.properties.variantDumbbellEndTopRadius : obj.properties.variantDumbbellEndRadius;
+                            var bottomRadius = obj.properties.variantDumbbellEndBottomRadius ? obj.properties.variantDumbbellEndBottomRadius : obj.properties.variantDumbbellEndRadius;
+                            var radius       = Math.max(topRadius, bottomRadius);
+
+                            var rect = obj.create('<rect x="%1" y="%2" width="%3" height="%4" fill="transparent" onmousemove="this.style.cursor=\'pointer\'">'.format(
+                                coordX - radius,
+                                coordY - radius,
+                                coordW + (2 * radius),
+                                coordH + (2 * radius)
+                            ), group);
+
+
+
+                            rect.addEventListener(properties.tooltipsEvent.replace(/^on/, ''), function (e)
+                            {
+                                obj.removeHighlight();
+
+                                RGraph.SVG.tooltip({
+                                    object: obj,
+                                     index: index,
+                                     group: null,
+                           sequentialIndex: index,
+                                      text: typeof properties.tooltips === 'string' ?  properties.tooltips : properties.tooltips[index],
+                                     event: e
+                                });
+
+                                obj.highlight(e.target);
+                            }, false);
+
+                            rect.addEventListener('mousemove', function (e)
+                            {
+                                e.target.style.cursor = 'pointer'
+                            }, false);
+
+                        })(k);
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+        
+                    // Store the dumbbell coordinates
+                    var coords = {
+                        element: rect,
+                        object:  obj,
+                        x:       coordX - 10,
+                        y:       coordY - 10,
+                        width:   coordW + 20,
+                        height:  coordH + 20
+                    };
+        
+                    obj.coords.push(coords);
+                    obj.coords2[k].push(coords);
+                }
+                seq++;
+            });
+        };
+        
+        
+        
+        
+        
+        
+        
+        
+        //
+        // Paths a dumbbell bar
+        //
+        this.pathDumbbell = function (opt)
+        {
+            RGraph.SVG.create({
+                svg: this.svg,
+                type: 'rect',
+                parent: opt.group, 
+                attr: {
+                    stroke: 'transparent',
+                    fill: opt.color,
+                    x: opt.x,
+                    y: opt.y,
+                    width: opt.width,
+                    height: opt.height,
+                    'data-original-x': opt.x,
+                    'data-original-y': opt.y,
+                    'data-original-width': opt.width,
+                    'data-original-height': opt.height,
+                    
+                    //'data-tooltip': (!RGraph.SVG.isNullish(properties.tooltips) && properties.tooltips.length) ? properties.tooltips[i] : '',
+                    //'data-index': i,
+                    //'data-sequential-index': sequentialIndex,
+                    //'data-value': this.data[i]
+                }
+            });
+            
+            
+            
+
+            //
+            // Draw the top circle
+            //
+            if (this.properties.variantDumbbellEndTop && opt.top !== false) {
+                
+                // The top end radius
+                var r = this.properties.variantDumbbellEndTopRadius ? this.properties.variantDumbbellEndTopRadius : this.properties.variantDumbbellEndRadius;
+
+                RGraph.SVG.create({
+                    svg: this.svg,
+                    type: 'circle',
+                    parent: opt.group, 
+                    attr: {
+                        stroke: 'transparent',
+                        fill: opt.color,
+                        cx: opt.x + (opt.width / 2),
+                        cy: opt.y,
+                        r: r,
+                        'stroke-width': this.properties.linewidth,
+                        'data-original-x': opt.x,
+                        'data-original-y': opt.y,
+                        'data-original-radius': r
+                    }
+                });
+            }
+        
+        
+        
+
+
+
+
+            //
+            // Draw the bottom circle
+            //
+            if (this.properties.variantDumbbellEndBottom && opt.bottom !== false ) {
+
+                // The bottom end radius
+                var r = this.properties.variantDumbbellEndBottomRadius ? this.properties.variantDumbbellEndBottomRadius : this.properties.variantDumbbellEndRadius;
+            
+                RGraph.SVG.create({
+                    svg: this.svg,
+                    type: 'circle',
+                    parent: opt.group, 
+                    attr: {
+                        stroke: 'transparent',
+                        fill: opt.color,
+                        cx: opt.x + (opt.width / 2),
+                        cy: opt.y + opt.height,
+                        r: r,
+                        'stroke-width': this.properties.linewidth,
+                        'data-original-x': opt.x,
+                        'data-original-y': opt.y + opt.height,
+                        'data-original-radius': r
+                    }
+                });
+            }
+            
+            return opt.group;
         };
 
 

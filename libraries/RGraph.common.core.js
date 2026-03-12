@@ -1,14 +1,14 @@
-    //
-    // o---------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:                |
-    // |                                                                                 |
-    // |                       https://www.rgraph.net/license.html                       |
-    // |                                                                                 |
-    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-    // | free to use and there are no restrictions on what you can use RGraph for!       |
-    // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option available. See the URL above for more details.        |
-    // o---------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:          |
+    // |                                                                           |
+    // |                           https://www.rgraph.net                          |
+    // |                                                                           |
+    // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+    // | that it's free to use for any purpose. The GPL license does have          |
+    // | consequences on the license of the software that you include it in,       |
+    // | however. If this is not desirable, then there's an inexpensive commercial |
+    // | license option available. See the RGraph website for more details.        |
+    // o---------------------------------------------------------------------------o
 
     window.RGraph = window.RGraph || {isrgraph:true,isRGraph: true,rgraph:true};
 

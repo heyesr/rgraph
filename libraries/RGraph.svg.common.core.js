@@ -1,13 +1,14 @@
-    // o---------------------------------------------------------------------------------o
-    // | This file is part of the RGraph package - you can learn more at:                |
-    // |                                                                                 |
-    // |                       https://www.rgraph.net/license.html                       |
-    // |                                                                                 |
-    // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-    // | free to use and there are no restrictions on what you can use RGraph for!       |
-    // | If the GPL license does not suit you however, then there's an inexpensive       |
-    // | commercial license option available. See the URL above for more details.        |
-    // o---------------------------------------------------------------------------------o
+    // o---------------------------------------------------------------------------o
+    // | This file is part of the RGraph package - you can learn more at:          |
+    // |                                                                           |
+    // |                           https://www.rgraph.net                          |
+    // |                                                                           |
+    // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+    // | that it's free to use for any purpose. The GPL license does have          |
+    // | consequences on the license of the software that you include it in,       |
+    // | however. If this is not desirable, then there's an inexpensive commercial |
+    // | license option available. See the RGraph website for more details.        |
+    // o---------------------------------------------------------------------------o
 
     RGraph        = window.RGraph || {isrgraph:true,isRGraph:true,rgraph:true};
     RGraph.SVG    = RGraph.SVG    || {};
@@ -207,6 +208,30 @@
     //
     RGraph.SVG.create = function (opt)
     {
+        // Facilitate easier  creation of SVG tags
+        if (   (arguments.length === 2 || arguments.length === 3)
+            && arguments[0].isrgraph
+            && arguments[0].svg
+            && RGraph.SVG.isString(arguments[1])
+            ) {
+            
+            var parent = arguments[2] ? arguments[2] : arguments[0].svgAllGroup;
+            var opt    = RGraph.SVG.create.parseStr(arguments[0], arguments[1]);
+
+            var tag = RGraph.SVG.create({
+                object: arguments[0],
+                type:   opt.type,
+                parent: parent,
+                style:  opt.style,
+                attr:   opt.attr
+            });
+
+            return tag;
+        }
+
+
+
+
         var ns  = "http://www.w3.org/2000/svg";
         var tag = doc.createElementNS(ns, opt.type);
 
@@ -7381,38 +7406,43 @@ backgroundRounded = opt.backgroundRounded || 0,
     //
     // This function handles the installation of clipping
     //
-    RGraph.SVG.installClipping = function (obj)
+    RGraph.SVG.installClipping = function (obj, clip = null)
     {
+        // Get the clipping from the object
+        if (RGraph.SVG.isNull(clip)) {
+            clip = obj.properties.clip;
+        }
+
         var id       = 'rgraph-clipping-' + RGraph.SVG.random(0, 9999999);
         var clipPath = obj.create(
             '<clipPath id="{1}">'.format(id), obj.svg.defs
         );
 
-        if (RGraph.SVG.isString(obj.properties.clip)) {
+        if (RGraph.SVG.isString(clip)) {
             
             // TOPHALF
-            if (obj.properties.clip === 'tophalf') {
+            if (clip === 'tophalf') {
                 var halfHeight   = (obj.height - obj.properties.marginTop - obj.properties.marginBottom) * 0.5;
                 var clipPathRect = obj.create('<rect x="0" y="0" width="{1}" height="{2}">'.format(obj.width, halfHeight + obj.properties.marginTop), clipPath);
     
             // BOTTOM HALF
-            } else if (obj.properties.clip === 'bottomhalf') {
+            } else if (clip === 'bottomhalf') {
                 var halfHeight   = (obj.height - obj.properties.marginTop - obj.properties.marginBottom) * 0.5;
                 var clipPathRect = obj.create('<rect x="0" y="{1}" width="{2}" height="{3}">'.format(obj.properties.marginTop + halfHeight,obj.width,halfHeight + obj.properties.marginBottom),clipPath);
             
             // LEFT HALF
-            } else if (obj.properties.clip === 'lefthalf') {
+            } else if (clip === 'lefthalf') {
                 var halfWidth    = (obj.width - obj.properties.marginLeft - obj.properties.marginRight) * 0.5;
                 var clipPathRect = obj.create('<rect x="0" y="0" width="{1}" height="{2}">'.format(obj.properties.marginLeft + halfWidth, obj.height), clipPath);
             
             
             // RIGHT HALF
-            } else if (obj.properties.clip === 'righthalf') {
+            } else if (clip === 'righthalf') {
                 var halfWidth    = (obj.width - obj.properties.marginLeft - obj.properties.marginRight) * 0.5;
                 var clipPathRect = obj.create('<rect x="{1}" y="0" width="{2}" height="{3}">'.format(obj.properties.marginLeft + halfWidth, halfWidth + obj.properties.marginRight, obj.height),clipPath);
             
             // HORIZONTAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^x:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
+            } else if (clip.match(/^x:([-.0-9minax]+)%?-([.0-9minax]+)%?$/i)) {
 
                 // Accommodate the min/max keywords
                 var from = RegExp.$1,
@@ -7437,7 +7467,7 @@ backgroundRounded = opt.backgroundRounded || 0,
                 ),clipPath);
             
             // VERTICAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^y:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+            } else if (clip.match(/^y:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
     
                 // Accommodate the min/max keywords
                 var from = RegExp.$1,
@@ -7477,7 +7507,7 @@ backgroundRounded = opt.backgroundRounded || 0,
 
 
             // RADIAL PERCENTAGES
-            } else if (obj.properties.clip.match(/^r(?:adius)?:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
+            } else if (clip.match(/^r(?:adius)?:([-.0-9minax]+)%?-([.0-9minax]+)%?/i)) {
             
                 // Accommodate the min/max keywords
                 var from = RegExp.$1,
@@ -7529,7 +7559,7 @@ backgroundRounded = opt.backgroundRounded || 0,
             //
             // CLIP TO A SEGMENT
             //
-            } else if (obj.properties.clip.match(/^(?:segment|arc): *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+)$/i)) {
+            } else if (clip.match(/^(?:segment|arc): *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+) *, *([-.0-9degrad]+)$/i)) {
                 
                 var centerx = RegExp.$1,
                     centery = RegExp.$2,
@@ -7591,7 +7621,7 @@ backgroundRounded = opt.backgroundRounded || 0,
             //
             // CLIP TO A CIRCLE
             //
-            } else if (obj.properties.clip.match(/^circle: *([-.0-9]+) *, *([-.0-9]+) *, *([-.0-9]+)$/i)) {
+            } else if (clip.match(/^circle: *([-.0-9]+) *, *([-.0-9]+) *, *([-.0-9]+)$/i)) {
                 
                 var centerx = RegExp.$1,
                     centery = RegExp.$2,
@@ -7638,7 +7668,7 @@ backgroundRounded = opt.backgroundRounded || 0,
             // charts handle scales differently this is
             // handled by worker functions on each object
             //
-            } else if (obj.properties.clip.match(/^(?:scale: *)([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
+            } else if (clip.match(/^(?:scale: *)([-.0-9min]+) *- *([-.0-9max]+) *$/)) {
 
                 if (obj.clipToScaleWorker) {
                     obj.clipToScaleWorker(clipPath);
@@ -7653,34 +7683,34 @@ backgroundRounded = opt.backgroundRounded || 0,
                     type: 'path',
                     parent: clipPath,
                     attr: {
-                        d: obj.properties.clip
+                        d: clip
                     }
                 });
             }
         
         // An array of four numbers
-        } else if (   RGraph.SVG.isArray(obj.properties.clip)
-                   && obj.properties.clip.length === 4
-                   && RGraph.SVG.isNumber(obj.properties.clip[0])
-                   && RGraph.SVG.isNumber(obj.properties.clip[1])
-                   && RGraph.SVG.isNumber(obj.properties.clip[2])
-                   && RGraph.SVG.isNumber(obj.properties.clip[3])
+        } else if (   RGraph.SVG.isArray(clip)
+                   && clip.length === 4
+                   && RGraph.SVG.isNumber(clip[0])
+                   && RGraph.SVG.isNumber(clip[1])
+                   && RGraph.SVG.isNumber(clip[2])
+                   && RGraph.SVG.isNumber(clip[3])
                   ) {
 
             var clipPathRect = obj.create('<rect x="{1}" y="{2}" width="{3}" height="{4}">'.format(
-                obj.properties.clip[0],
-                obj.properties.clip[1],
-                obj.properties.clip[2],
-                obj.properties.clip[3]
+                clip[0],
+                clip[1],
+                clip[2],
+                clip[3]
             ),clipPath);
         
         // A 2D array of path coordinates (x/y pairs)
         //    eg [[0,0],[100,0],[100,100],[0,100]]
-        } else if (   RGraph.SVG.isArray(obj.properties.clip)
-                   && RGraph.SVG.isArray(obj.properties.clip[0])
-                   && obj.properties.clip[0].length === 2
+        } else if (   RGraph.SVG.isArray(clip)
+                   && RGraph.SVG.isArray(clip[0])
+                   && clip[0].length === 2
                   ) {
-            var str   = RGraph.SVG.create.pathString(obj.properties.clip);
+            var str   = RGraph.SVG.create.pathString(clip);
             var path = RGraph.SVG.create({
                 svg: obj.svg,
                 type: 'path',
