@@ -18,19 +18,21 @@
     </div>
 
     <script id="rgraph-demo-source-code">
-        // This is the combined maximum value of all of the bars on the chart.
-        combinedMax = 300;
-
+    
+        original_data = [180,45,32,68,88,45,12];
+        yaxisScaleMax = 300;
+        
+    
         // Create the Bar chart and configure it with the maximum Y value set to the
         // combined maximum value. The Bar chart is configured to be adjustable.
         bar = new RGraph.Bar({
             id: 'cvs',
-            data: [180,20,20,20,20,20,20],
+            data: RGraph.arrayClone(original_data),
             options: {
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 adjustable: true,
                 marginLeft: 50,
-                yaxisScaleMax: combinedMax,
+                yaxisScaleMax: yaxisScaleMax,
                 labelsAbove: true,
                 labelsAboveDecimals: 1,
                 
@@ -41,34 +43,34 @@
                     {maxWidth: 900,width:400,height:200,options: {labelsAboveSize: 10,textSize: 10}}
                 ],
                 events: {
+                    
+                    // Here's the adjust event that changes the bars
+                    // based on the one thats being adjusted and what
+                    // it has been adjusted to.
                     adjust: function (obj)
                     {
-                        // Get the shape object of the bar that's being adjusted from the
-                        // RGraph registry. You too can use the RGraph registry if you
-                        // have some settings to store.
-                        var shape = RGraph.Registry.get('adjusting.shape');
-            
-                        // Get the new value of the bar that's just been adjusted and then
-                        // calculate what the value is that the other bars should be set to.
-                        var dataset = shape.dataset;
-                        var value   = bar.data[dataset];
-                        var other   = (combinedMax - value) / (bar.data.length - 1);
+                        // First - determine what the diff is between
+                        // the current data value and the original
+                        // value of this data piece.
+                        var shape    = RGraph.Registry.get('adjusting.shape');
+                        var current  = obj.data[shape.dataset];
+                        var original = original_data[shape.dataset];
+                        var diff     = current - original;
+                        var value    = null; // Used later
                         
-                        // Now adjust all of the values of the bars that aren't being
-                        // adjusted.
-                        for (var i=0; i<bar.data.length; ++i) {
-                            if (i != dataset) {
-                                bar.data[i] = other;
-                            }
+                        // Now we know the diff add it to each of the
+                        // data pieces
+                        for (var i=0; i<obj.data.length; ++i) {
+                            value = Math.min(original_data[i] + diff, 300);
+                            value = Math.max(value, 0);
+
+                            obj.data[i] = value;
                         }
                         
                         RGraph.redraw();
                     }
                 }
             }
-        
-        // Here's the adjust event that changes the bars based on the one thats being
-        // adjusted and what it has been adjusted to.
         }).draw();
     </script>
 

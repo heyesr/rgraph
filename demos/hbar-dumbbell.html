@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -11,46 +13,45 @@
     <h1>A dumbbell Horizontal Bar chart</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="500">[No canvas support]</canvas>
     </div>
     
     <script>
-        new RGraph.HBar({
+    
+    
+        db = new RGraph.HBar({
             id: 'cvs',
-            data: [[3,4],[5,3],[4,8],[1,9],[4,6],[9,4],[8,5]],
+            data: [
+                [15,42],
+                [8,38],
+                [26,36],
+                [16,45]
+            ],
             options: {
-                colors: ['transparent'],
-                grouping: 'stacked',
-                textSize: 14,
-                yaxisLabels: ['Venus','Felicity\nJones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
+                variant: 'dumbbell',
+                shadow: true,
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 3,
+                colors: ['red'],
+                textSize: 23,
+                yaxisLinewidth: 3,
+                yaxisTickmarks: false,
+                yaxisLabelsOffsetx: -5,
                 xaxis: false,
                 backgroundGridHlines: false,
                 backgroundGridBorder: false,
-                events: {
-                    draw: function (obj)
-                    {
-                        var coords = obj.coords;
-            
-                        coords.forEach(function (v, k, arr)
-                        {
-                            if (k % 2 === 0) {
-                            
-                                var color1 = 'black';
-                                var color2 = 'black';
-            
-                                obj.path(
-                                    'lw 10 b m % % l % % s black     b a % % 20 0 6.29 false f %    b a % % 20 0 6.29 false f %',
-                                    v[0], v[1] + (v[3] / 2),
-                                    v[0] + v[2], v[1] + (v[3] / 2),
-                                    v[0], v[1] + (v[3] / 2),color1,
-                                    v[0] + v[2], v[1] + (v[3] / 2), color1
-                                );
-                            }
-                        });
-                    }
+                xaxisLabelsCount: 4,
+                backgroundGridVlinesCount: 4,
+                marginLeftAuto: false,
+                marginLeft: 200,
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday'],
+                tooltips: 'A tooltip!',
+                tooltipsCss: {
+                    fontSize: '20pt'
                 }
             }
-        }).draw();
+        }).grow();
     </script>
     
     <script>showSource()</script>
