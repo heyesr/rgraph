@@ -247,6 +247,7 @@
             titleSubtitleItalic: null,
             
             needleColor: '#666',
+            needleLength: null,
             
             centerpinRadius: 15,
             
@@ -1297,7 +1298,7 @@
             var coords = RGraph.SVG.TRIG.toCartesian({
                 cx:    this.centerx,
                 cy:    this.centery,
-                r:     this.radius - 60,
+                r:     this.properties.needleLength || this.radius - 60,
                 angle: angle
             });
 
