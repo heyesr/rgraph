@@ -166,6 +166,10 @@ samp {
     color: #c00;
 }*/
 
+div.svg-chart-container {
+    margin: 5px;
+}
+
 
 /*
 * This facilitates the "copy" link in the top right of PRE code samples
@@ -873,10 +877,10 @@ div#front-page-50-howto-guides-container div#ygyufjyu {
 
 
 ul#front-page-advantages-list {
-    float: left;
     list-style-type: none;
     -list-style-image: url(/images/page-index-tick.png);
     line-height: 45px;
+    font-size: 24px;
 }
 
 span#download-button,
@@ -1201,7 +1205,7 @@ div#infobox-container ul li div div {
 }
 
 div#front-page-download-buttons {
-    margin-top: 20px;
+    -margin-top: 20px;
 }
 
 #sidebar-background-images-first,
@@ -1320,6 +1324,7 @@ div#page-index div.features p span {
 
 div#page-index-import-links {
     display: flex;
+    max-width: 450px;
 }
 
 div#page-index-import-links div {
@@ -1403,7 +1408,7 @@ div#page-common-right-floated-information-bar {
     position: absolute;
     right: 25px;
     right: 10px;
-    top: 50px;
+    top: 30px;
     bottom: 0;
     width: 200px;
     background-color: #eee;

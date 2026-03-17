@@ -1,17 +1,4 @@
 @media screen and (width <= 1220px){
-    #page-index-chart-types-image {
-        display: none;
-    }
-    
-    ul#front-page-advantages-list {
-        float: none;
-        text-align: left;
-        display: inline-block;
-    }
-
-    div#front-page-advantages-list-container {
-        text-align: center;
-    }
 }
 
 @media screen and (width <= 1200px){
@@ -106,6 +93,9 @@
 
 
 
+@media only screen and (width < 1000px){
+}
+
 @media only screen and (width <= 950px){
 }
 
@@ -119,6 +109,7 @@
     div#main-body-container {
         padding-right: 20px !important;
     }
+    
 }
 
 @media screen and (width <= 875px){
@@ -166,6 +157,8 @@
     }
 }
 
+
+
 @media screen and (width <= 600px){
     div#frontpage-latest-version-large{
         display:none;
@@ -188,6 +181,7 @@
     #aboutpage img#html5-logo {
         float:none !important;
     }
+
 }
 
 @media screen and (width <= 450px){
@@ -206,3 +200,9 @@
 @media screen and (width <= 350px){
     
 }
+
+/*
+* Media queries for the front-page #cc1 #cc2 #cc3 #cc4 #cc5
+* #cc6 #cc7 #cc8 #cc9 are in the index.html page due to some
+* strange bug
+*/

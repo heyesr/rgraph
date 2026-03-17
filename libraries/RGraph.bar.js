@@ -2619,8 +2619,8 @@ this.context.lineTo(
                 mouseXY[1] -= adjustment;
             }
 
-            var dbEndLeftradius  = 0;
-            var dbEndRightradius = 0;
+            var dbEndTopradius  = 0;
+            var dbEndBottomradius = 0;
             
             if (this.properties.variant === 'dumbbell') {
                 dbEndTopradius    = this.properties.variantDumbbellEndTopRadius  || this.properties.variantDumbbellEndRadius;
