@@ -1,0 +1,29 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.radar.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic SVG Radar chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 600px; height: 500px" id="chart-container"></div>
+    </div>
+        
+    <script>
+        new RGraph.SVG.Radar({
+            id: 'chart-container',
+            data: [8,6,3,4,8,1,5,5],
+            options: {
+            }
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
