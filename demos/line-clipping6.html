@@ -1,0 +1,110 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="https://www.rgraph.net/demos/demos.css" type="text/css" media="screen" />
+    <script src="https://www.rgraph.net/libraries/RGraph.common.core.js" ></script>
+    <script src="https://www.rgraph.net/libraries/RGraph.line.js" ></script>
+    <script src="https://www.rgraph.net/demos/demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A Line chart clipping effect</h1>
+
+    <div id="rgraph-demo-html">
+        <div>
+            <canvas id="cvs" width="600" height="250" style="border: 1px solid gray">[No canvas support]</canvas>
+        </div>
+    </div>
+
+    <script>
+        // Create an empty array for the circles.
+        circles = [];
+        
+        // Define how many circles we want. Too many will slow the
+        // browser down.
+        numcircles = 25;
+        
+        // Create the initial circle coordinates.
+        for (var i=0; i<numcircles; ++i) {
+            circles.push([
+                RGraph.random(0,document.getElementById('cvs').width * 2),
+                RGraph.random(0, -1000),
+                10
+            ]);
+        }
+
+        // Create the line chart.
+        line = new RGraph.Line({
+            id: 'cvs',
+            data: [5,6,8,4,5,7,4,6,3,22,5,5],
+            options: {
+                textSize: 16,
+                spline: true,
+                shadow: false,
+                backgroundGridBorder: false,
+                backgroundGridVlines: false,
+                xaxis: false,
+                yaxis: false,
+                xaxisLabels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            }
+        });
+        
+        //
+        // This is the function that is repeatedly called.
+        //
+        func = function()
+        {
+            // Create a empty string which will become the path for
+            // the circles.
+            var str = '';
+            
+            // Loop through each of the circles.
+            for (var i=0; i<circles.length; ++i) {
+            
+                // Create the path string for the circles.
+                str += ` m ${circles[i][0]} ${circles[i][1]}
+                        a ${circles[i][0]} ${circles[i][1]} ${circles[i][2]} 0 6.29 false
+                        s #ccc0`;
+                
+                // Increment the Y coordinate of the current circle.
+                circles[i][0] += 0;
+                circles[i][1] += 5;
+                circles[i][2] += 0;
+                
+                // Wrap the Y coordinate for a continuous effect
+                // (ie circles that go off the bottom of the
+                // canvas will be redrawn at the top - continuing
+                // to fall).
+                if (circles[i][1] > 500) {
+                    circles[i][1] = -10;
+                    circles[i][2] += 25;
+                }
+            }
+            
+            // Create the path string that's set on the clip:
+            // property.
+            str = 'b ' + str;
+
+            // Set the clip: string.
+            line.properties.clip = str;
+            
+            
+            // Redraw the canvas.
+            RGraph.redraw();
+            
+            // If the radius of the circles is less than 300 then
+            // continue the animation - otherwise stop.
+            if (circles[0][2] < 300) {
+                requestAnimationFrame(func);
+                line.properies.clip = null;
+                Regraph.redraw();
+            }
+        };
+        
+        func();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
