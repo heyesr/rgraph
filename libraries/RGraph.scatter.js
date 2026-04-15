@@ -165,18 +165,18 @@
         // Various config properties
         this.properties = {
             backgroundBarsCount:        null,
-            backgroundBarsColor1:       'rgba(0,0,0,0)',
-            backgroundBarsColor2:       'rgba(0,0,0,0)',
+            backgroundBarsColor1:       'transparent',
+            backgroundBarsColor2:       'transparent',
             backgroundHbars:            null,
             backgroundVbars:            null,
             backgroundGrid:             true,
             backgroundGridLinewidth:    1,
-            backgroundGridColor:        '#ddd',
+            backgroundGridColor:        '#eee',
             backgroundGridHsize:        20,
             backgroundGridVsize:        20,
-            backgroundGridVlines:       true,
+            backgroundGridVlines:       false,
             backgroundGridHlines:       true,
-            backgroundGridBorder:       true,
+            backgroundGridBorder:       false,
             backgroundGridAutofit:      true,
             backgroundGridAutofitAlign: true,
             backgroundGridHlinesCount:  5,
@@ -201,7 +201,7 @@
 
 
             colors:                     [], // This is used internally for the tooltip key
-            colorsBubbleGraduated:      true,
+            colorsBubbleGraduated:      false,
             colorsBubbleStroke:         null,
             
             textColor:                  'black',
@@ -242,7 +242,7 @@
             tooltipsHotspotIgnore:      null,
 
 
-            xaxis:                      true,
+            xaxis:                      false,
             xaxisLinewidth:             1,
             xaxisColor:                 'black',
             xaxisTickmarks:             true,
@@ -294,7 +294,7 @@
             xaxisScaleThousand:         ',',
             xaxisScalePoint:            '.',
 
-            yaxis:                    true,
+            yaxis:                    false,
             yaxisLinewidth:           1,
             yaxisColor:               'black',
             yaxisTickmarks:           true,
@@ -341,12 +341,12 @@
             yaxisTitleValign:         null,
             yaxisTitleAccessible:     null,
             
-            tickmarksStyle:             'cross',
+            tickmarksStyle:             'circle',
             tickmarksStyleImageHalign:  'center',
             tickmarksStyleImageValign:  'center',
             tickmarksStyleImageOffsetx: 0,
             tickmarksStyleImageOffsety: 0,
-            tickmarksSize:              5,
+            tickmarksSize:              10,
             
             marginLeft:                 35,
             marginRight:                35,
@@ -483,7 +483,7 @@
             trendlineDashArray:         null,
             trendlineClipping:          null,
 
-            highlightStroke:            'rgba(0,0,0,0)',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightFade:              true,
             
@@ -535,7 +535,7 @@
             adjustable:                 false,
             adjustableOnly:             null,
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
             
             outofbounds:                false,
 

@@ -46,7 +46,9 @@
                     columnsFormatted: [0], // First column
                     columnsFormatter: [function (opt)
                     {
-                        return RGraph.PHP.date('H:i jS F Y', RGraph.parseDate(opt.value, 's'))
+                        var seconds = RGraph.parseDate(opt.value, 's');
+
+                        return RGraph.PHP.date('H:i jS F Y', seconds)
                     }]
                 }
             }).draw();

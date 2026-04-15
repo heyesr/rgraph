@@ -149,7 +149,7 @@
                 '#f66', '#6f6', '#66f', '#ff6', '#6ff', '#ccc',
                 'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'
             ],
-            colorsStroke:      'rgba(0,0,0,0)',
+            colorsStroke:      'transparent',
             
             textColor: 'black',
             textFont: 'Arial, Verdana, sans-serif',
@@ -191,7 +191,7 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke:            'rgba(0,0,0,0)',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightLinewidth:         1,
             highlightStyle:             'normal',

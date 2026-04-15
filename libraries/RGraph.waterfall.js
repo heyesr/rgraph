@@ -46,8 +46,8 @@
         this.properties =
         {
             backgroundBarsCount:                null,
-            backgroundBarsColor1:               'rgba(0,0,0,0)',
-            backgroundBarsColor2:               'rgba(0,0,0,0)',
+            backgroundBarsColor1:               'transparent',
+            backgroundBarsColor2:               'transparent',
             backgroundGrid:                     true,
             backgroundGridAutofit:              true,
             backgroundGridAutofitAlign:         true,
@@ -55,9 +55,9 @@
             backgroundGridLinewidth:            1,
             backgroundGridHsize:                20,
             backgroundGridVsize:                20,
-            backgroundGridVlines:               true,
+            backgroundGridVlines:               false,
             backgroundGridHlines:               true,
-            backgroundGridBorder:               true,
+            backgroundGridBorder:               false,
             backgroundGridAlign:                true,
             backgroundGridHlinesCount:          5,
             backgroundGridVlinesCount:          20,
@@ -79,7 +79,7 @@
 
             linewidth:                          1,
 
-            colorsStroke:                       '#666',
+            colorsStroke:                       'transparent',
             colors:                             ['green','red','blue'],
             colorsSequential:                   false,
             colorsConnectors:                   '#666',
@@ -90,7 +90,7 @@
             marginBottom:                      35,
             marginInner:                       5,
 
-            xaxis:                   true,
+            xaxis:                   false,
             xaxisPosition:           'bottom',
             xaxisLinewidth:          1,
             xaxisColor:              'black',
@@ -133,7 +133,7 @@
             xaxisTitleValign:        'top',
 
 
-            yaxis:                    true,
+            yaxis:                    false,
             yaxisPosition:            'left',
             yaxisLinewidth:           1,
             yaxisColor:               'black',
@@ -330,7 +330,7 @@
             barOffsetx:                        0, // Used to facilitate multiple dataset Waterfall charts
             barOffsety:                        0, // Used to facilitate multiple dataset Waterfall charts
 
-            clearto:                           'rgba(0,0,0,0)',
+            clearto:                           'transparent',
             
             events:                            {},
             clip:                              null,

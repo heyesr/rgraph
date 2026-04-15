@@ -47,8 +47,8 @@
         this.properties =
         {
             colors:                         ['#0c0','red','blue','yellow','pink','cyan','black','white','gray'],
-            colorsStrokeInner:              '#999',
-            colorsStrokeOuter:              '#999',
+            colorsStrokeInner:              'transparent',
+            colorsStrokeOuter:              'black',
 
             tickmarksOuter:                 true,
             tickmarksInner:                 false,
@@ -65,7 +65,7 @@
 
 
             //backgroundColor:                'Gradient(#ccc:#eee:#efefef)',
-            backgroundColor:                '#eee',
+            backgroundColor:                '#fff',
 
             shadow:                         false,
             shadowColor:                    'rgba(0,0,0,0.5)',
@@ -145,7 +145,7 @@
             tooltipsHotspotIgnore:      null,
 
             highlightLinewidth:             1,
-            highlightStroke:                'rgba(0,0,0,0)',
+            highlightStroke:                'transparent',
             highlightFill:                  'rgba(255,255,255,0.7)',
             highlightFade:                  true,
 
@@ -229,8 +229,8 @@
 
             borderInner:                    true,
 
-            corners:                             'square', // Can also be round
-            cornersRoundRadius:                   10,
+            corners:                             'round', // Can also be round
+            cornersRoundRadius:                   5,
 
             clearto:                        'rgba(0,0,0,0)',
             
@@ -817,7 +817,7 @@
 
                     if (properties.borderInner) {
                         this.path(
-                            'b rr % % % % % s %',
+                            'lw 1 b rr % % % % % s %',
                             this.marginLeft + margin,
                             startPoint - segmentHeight,
                             this.width - margin - margin,
@@ -856,7 +856,7 @@
 
 
             //
-            // Inner inner tickmarks
+            // Inner tickmarks
             //
             if (properties.tickmarksInnerCount > 0) {
             

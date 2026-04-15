@@ -226,10 +226,9 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke:    'rgba(0,0,0,0)',
             // Lighter than usual because the backgroundBars option can
             // mean highlight segments fade into the background
-            highlightStroke:    'rgba(0,0,0,0)',
+            highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
             highlightFade:      true,

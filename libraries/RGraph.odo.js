@@ -48,7 +48,7 @@
         this.properties =
         {
             backgroundBorder:          'black',
-            backgroundColor:           '#eee',
+            backgroundColor:           '#fff',
             backgroundLinesColor:      '#ddd',
             
             centerx:                   null,
@@ -80,7 +80,7 @@
             needleLength:              null,
             needleWidth:               2,
             needleHead:                true,
-            needleTail:                true,
+            needleTail:                false,
             needleType:                'pointer',
             needleTriangleBorder:      '#aaa',
 
@@ -151,7 +151,7 @@
             scaleUnitsPost:            '',
             scaleZerostart:            false,
             
-            border:                    true,
+            border:                    false,
             borderColor1:              '#BEBCB0',
             borderColor2:              '#F0EFEA',
             borderColor3:              '#BEBCB0',
@@ -195,7 +195,7 @@
 
             adjustable:                false,
 
-            clearto:                   'rgba(0,0,0,0)',
+            clearto:                   'transparent',
             
             events:                     {},
             clip:                       null,

@@ -14,7 +14,7 @@
     <h1>A basic Vertical Progress bar</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="200" height="400">[No canvas support]</canvas>
+        <canvas id="cvs" width="110" height="400">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -22,27 +22,11 @@
             id: 'cvs',
             min: 0,
             max: 100,
-            value: [10,10,10,10],
+            value: 67,
             options: {
-                margin: 7,
-                tooltips: '%{property:key[%{index}]} %{value}%',
-                colors: ['red','yellow','pink','green'],
-                key: ['Alf','Berty','Carlos','Dave'],
-                keyPositionX: 125,
-                marginRight: 125
+                colors: ['red'],
+                marginInner: 7
             }
-        }).exec(function (obj)
-        {
-            var background = RGraph.linearGradient({
-                object: obj,
-                x1:     25,
-                y1: 0,
-                x2: obj.canvas.width - 25,
-                y2: 0,
-                colors: ['#aaa', 'white', 'white']
-            });
-
-            obj.set({backgroundColor: background});
         }).grow();
     </script>
 

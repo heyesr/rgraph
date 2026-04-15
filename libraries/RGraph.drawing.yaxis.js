@@ -148,7 +148,7 @@
 
             linewidth:       1,
             
-            tooltips:        null,
+            tooltips:                   null,
             tooltipsEffect:             'slide',
             tooltipsCssClass:           'RGraph_tooltip',
             tooltipsCss:                null,

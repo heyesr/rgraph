@@ -118,7 +118,7 @@
             
             effectRoundrobinMultiplier:         1,
 
-            clearto:                            'rgba(0,0,0,0)',
+            clearto:                            'transparent',
             
             events:                     {},
             clip:                       null,

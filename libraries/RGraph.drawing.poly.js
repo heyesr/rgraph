@@ -78,7 +78,7 @@
 
             linewidth:               1,
 
-            colorsStroke:            'black',
+            colorsStroke:            'transparent',
             colorsFill:              'red',
 
             tooltips:                   null,

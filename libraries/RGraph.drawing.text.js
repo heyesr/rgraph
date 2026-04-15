@@ -83,7 +83,7 @@
 
             colors:                  ['black'],
 
-            highlightStroke:        '#ccc',
+            highlightStroke:        'transparent',
             highlightFill:          'rgba(255,255,255,0.5)',
             highlightFade:          true,
 

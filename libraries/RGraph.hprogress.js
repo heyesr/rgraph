@@ -50,16 +50,15 @@
 
         this.properties =
         {
-            colors:                             ['#0c0','red','green','yellow','pink','cyan','black','white','gray'],
-            colorsStrokeInner:                  '#999',
-            colorsStrokeOuter:                  '#999',
+            colors:                             ['red','green','yellow','pink','cyan','black','white','gray'],
+            colorsStrokeInner:                  'transparent',
+            colorsStrokeOuter:                  'transparent',
 
             tickmarksColor:                      '#999',
             tickmarksInnerCount:                0,
             tickmarksOuterCount:                0,
 
-            backgroundColor:                    'Gradient(#ccc:#eee:#efefef)',
-            //backgroundColor:                    '#eee',
+            backgroundColor:                    '#efefef',
 
             marginLeft:                         35,
             marginRight:                        35,
@@ -70,9 +69,7 @@
             shadowColor:                        'rgba(0,0,0,0.5)',
             shadowBlur:                         3,
             shadowOffsetx:                      3,
-            shadowOffsety:                      3,
-
-            
+            shadowOffsety:                      3,            
             
             title:                 '',
             titleX:                null,
@@ -141,7 +138,7 @@
             tooltipsHotspotIgnore:      null,
 
             highlightLinewidth:                 1,
-            highlightStroke:                    'rgba(0,0,0,0)',
+            highlightStroke:                    'transparent',
             highlightFill:                      'rgba(255,255,255,0.7)',
             highlightFade:                      true,
 
@@ -225,19 +222,19 @@
             keyFormattedValueSpecific:          null,
             keyFormattedItemsCount:             null,
 
-            borderInner:                        true,
+            borderInner:                        false,
             
-            corners:                             'square', // Can also be round
-            cornersRoundRadius:                   10,
+            corners:                             'round', // Can also be round
+            cornersRoundRadius:                   5,
 
-            clearto:                            'rgba(0,0,0,0)',
+            clearto:                            'transparent',
             
             events:                             {},
             clip:                               null,
             
-            scale:                  true,
-            scaleFactor:            2,
-            antialiasTranslate:     false
+            scale:                              true,
+            scaleFactor:                        2,
+            antialiasTranslate:                 false
         };
 
 

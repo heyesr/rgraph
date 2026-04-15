@@ -46,7 +46,7 @@
 
             backgroundColor:           'white',
 
-            colorsStroke:               'black',
+            colorsStroke:               '#000',
             colors:                     ['red'],
 
             marginLeft:                 35,
@@ -55,7 +55,7 @@
             marginBottom:               35,
 
             tickmarksSize:              2,
-            tickmarksCount:             10,
+            tickmarksCount:             0,
 
             textColor:                  'black',
             textFont:                   'Arial, Verdana, sans-serif',
@@ -101,14 +101,11 @@
             titleSideOffsetx:           0,
             titleSideOffsety:           0,
 
-            shadow:                     true,
+            shadow:                     false,
             shadowOffsetx:              0,
             shadowOffsety:              0,
             shadowBlur:                 15,
             shadowColor:                '#ddd',
-
-            resizable:                  false,
-            resizableHandleBackground:  null,
             
             contextmenu:                null,
 
@@ -171,11 +168,11 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:            'rgba(0,0,0,0)',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightFade:              true,
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
 
             bulbBottomRadiusAdjust:     0,
             bulbBottomRadius:           null,

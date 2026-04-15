@@ -156,7 +156,7 @@
             marginBottom:  35,
             
             backgroundGrid: true,
-            backgroundGridColor:            '#ddd',
+            backgroundGridColor:            '#eee',
             backgroundGridRadialsCount:     null,
             backgroundGridConcentricsCount: 5,
             backgroundGridLinewidth:        1,
@@ -231,12 +231,12 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke:    'rgba(0,0,0,0)',
+            highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
             highlightFade:      true,
             
-            tickmarksStyle: 'circle',
+            tickmarksStyle: null,
             tickmarksLinewidth: 1,
             tickmarksSize: 6,
             tickmarksFill: 'white',

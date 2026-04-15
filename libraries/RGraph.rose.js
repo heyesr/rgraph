@@ -58,7 +58,7 @@
             backgroundGrid:                 true,
             backgroundGridColor:            '#ccc',
             backgroundGridSize:             null,
-            backgroundGridRadialsCount:     null,
+            backgroundGridRadialsCount:     0,
             backgroundGridRadialsOffset:    0,
             backgroundGridCirclesCount:     5,
             // [TODO] Need linewidth setting
@@ -75,7 +75,7 @@
             colors:                         ['rgba(255,0,0,0.5)', 'rgba(255,255,0,0.5)', 'rgba(0,255,255,0.5)', 'rgb(0,255,0)', 'gray', 'blue', 'rgb(255,128,255)','green', 'pink', 'gray', 'aqua'],
             colorsSequential:               false,
             colorsAlpha:                    null,
-            colorsStroke:                   'rgba(0,0,0,0)',
+            colorsStroke:                   'transparent',
             
             margin:                        5,
             marginLeft:                    35,
@@ -241,7 +241,7 @@
             segmentHighlightFill:          'rgba(0,255,0,0.5)',
             segmentHighlightStroke:        'rgba(0,0,0,0)',
 
-            clearto:                       'rgba(0,0,0,0)',
+            clearto:                       'transparent',
             
             events:                     {},
             clip:                       null,

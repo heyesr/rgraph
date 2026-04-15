@@ -160,7 +160,7 @@
             backgroundFillOpacity:      0.15,
             backgroundGrid:             false,
             backgroundGridMargin:       20,
-            backgroundGridColor:        '#ddd',
+            backgroundGridColor:        '#eee',
             backgroundGridLinewidth:    1,
             backgroundGridCircles:      true,
             backgroundGridRadials:      true,
@@ -264,7 +264,7 @@
 
             adjustable:         false,
 
-            highlightStroke:    'rgba(0,0,0,0)',
+            highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
             highlightFade:      true,

@@ -221,7 +221,7 @@
                 var borderRadius = '15px';
     
                 ModalDialog.dialog.style.borderRadius = borderRadius;
-                ModalDialog.dialog.style.boxShadow    = '3px 3px 3px rgba(96,96,96,0.5)';
+                ModalDialog.dialog.style.boxShadow    = '0 0 0 transparent';
 
                 //ModalDialog.dialog.style.MozBorderRadius    = borderRadius;
                 //ModalDialog.dialog.style.WebkitBorderRadius = borderRadius;

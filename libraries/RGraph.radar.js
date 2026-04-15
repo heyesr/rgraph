@@ -82,12 +82,15 @@
             marginTop:            35,
             marginBottom:         35,
 
+            axesColor:             'transparent',
+            axesLinewidth:         1,
+            
             linewidth:             2,
 
             colorsStroke:           'black',
-            colors:                ['rgba(255,0,0,0.9925)','rgba(0,255,255,0.9925)','rgba(255,0,0,0.5)', 'red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
-            colorsAlpha:          null,
-            circle:                0,
+            colors:                 ['red','#0ff','red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
+            colorsAlpha:            0.5,
+            circle:                 0,
 
             circleFill:           'red',
             circleStroke:         'black',
@@ -122,10 +125,10 @@
             labelsAxesOffsetx:    0,
             labelsAxesOffsety:    0,
 
-            backgroundGrid:    true,
-            backgroundGridCount: null,
-            backgroundGridColor: '#ddd',
-            backgroundGridPoly:  true,
+            backgroundGrid:       true,
+            backgroundGridCount:  null,
+            backgroundGridColor:  '#aaa',
+            backgroundGridPoly:   true,
             backgroundGridSpokes: 24,
 
             textSize:             12,
@@ -220,12 +223,14 @@
             tooltipsFormattedTableHeaders: null,
             tooltipsFormattedTableData: null,
             tooltipsPointer:            true,
+            tooltipsOffsetx:            0,
+            tooltipsOffsety:            0,
             tooltipsPointerOffsetx:     0,
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:            'gray',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightPointRadius:       2,
             highlightStyle:             'point',
@@ -250,9 +255,7 @@
 
             yaxisTickmarksCount:  5,
 
-            axesColor:           'rgba(0,0,0,0)',
-
-            tickmarks:           true,
+            tickmarks:           false,
             tickmarksStroke:     null,
             tickmarksFill:       'white',
             tickmarksLinewidth:  null,
@@ -262,12 +265,12 @@
             fillMousemove:       null,
             fillTooltips:        null,
             fillHighlightFill:   'rgba(255,255,255,0.7)',
-            fillHighlightStroke: 'rgba(0,0,0,0)',
+            fillHighlightStroke: 'transparent',
             fillMousemoveRedraw: false,
 
             animationTraceClip:  1,
 
-            clearto:             'rgba(0,0,0,0)',
+            clearto:             'transparent',
             
             events:              {},
             clip:                null,

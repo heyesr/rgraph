@@ -20,47 +20,10 @@
     </div>
     
     <script id="rgraph-demo-source-code">
-    
-        labels = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
         new RGraph.Pie({
             id: 'cvs',
-            data: [20,1,1,1,1,1,1],
+            data: [13,20,13,15,18,26],
             options: {
-                
-                // This is the tooltip property using formatted tooltips
-                tooltips: '%{property:myDaynames[%{index}]}<br /><span style="font-weight: bold; font-size:26pt">%{value_formatted}</span>',
-                
-                // The units that are appended to the %{value_formatted} value
-                tooltipsFormattedUnitsPost: '%',
-                
-                // Turn the little triangular pointer off
-                tooltipsPointer: false,
-                
-                // Turn fixed positioning off
-                tooltipsPositionStatic: false,
-                
-                // Some CSS values that are set on the tooltips so that you can customise them
-                tooltipsCss: {
-                    backgroundColor: 'white',
-                    color: 'black',
-                    border: '3px solid black'
-                },
-
-                // A custom property - the formatted tooltips can then
-                // access this to use the data inside the tooltip
-                myDaynames: labels,
-
-                shadow: false,
-                colorsStroke: 'transparent',
-                keyPositionGraphBoxed: false,
-                
-                // Add responsive capabilities. On smaller screens the width
-                // is reduced and the labels are changed to a key. This takes up less space.
-                responsive: [
-                    {maxWidth: null,width:550,height:250,options: {centerx: null,key: [],labels: labels}},
-                    {maxWidth: 900,width:420,height:250,options: {centerx: 150,key:labels, labels: []}}
-                ]
             }
         }).draw();
     </script>

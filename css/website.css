@@ -764,7 +764,6 @@ div#front-page-download-buttons span#download-button {
     margin: -10px 10px 10px 10px;
     background-color: #0b0;
     width: 150px;
-    box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
 
@@ -780,7 +779,6 @@ div#front-page-download-buttons span#front-page-setup-introduction-button {
     -background-image: linear-gradient(225deg, #c00, #f00);
     transition: transform linear .25s;
     width: 150px;
-    box-shadow: 1px 1px 1px gray;
     line-height: 45px;
 }
 
@@ -795,7 +793,6 @@ div#front-page-download-buttons span#front-page-setup-donate-button {
     background-image: linear-gradient(225deg, #36A2EB, #66f);
     transition: transform linear .25s;
     width: 150px;
-    box-shadow: 1px 1px 3px gray;
 }
 
 div#front-page-download-buttons span#front-page-setup-download-button {
@@ -809,7 +806,6 @@ div#front-page-download-buttons span#front-page-setup-download-button {
     background-image: linear-gradient(225deg, #4BC0C0, #4BC0C0);
     transition: transform linear .25s;
     width: 150px;
-    box-shadow: 1px 1px 3px gray;
 }
 
 div#front-page-download-buttons span#front-page-github-button {
@@ -823,7 +819,6 @@ div#front-page-download-buttons span#front-page-github-button {
     background-image: linear-gradient(225deg, gray, #ccc);
     transition: transform linear .25s;
     width: 200px;
-    box-shadow: 1px 1px 3px gray;
 }
 
 div#front-page-download-buttons span#front-page-interactive-button {
@@ -837,7 +832,6 @@ div#front-page-download-buttons span#front-page-interactive-button {
     background-image: linear-gradient(225deg, blue, #ccc);
     transition: transform linear .25s;
     width: 200px;
-    box-shadow: 1px 1px 3px gray;
 }
 
 div#front-page-download-buttons span#front-page-interactive-button:hover,
@@ -1300,8 +1294,7 @@ div#page-index div.features {
 div#page-index div.features div {
     width: 50%;
     padding: 0 20px 0 20px;
-    border-radius: 10px;
-    box-shadow: #aaa 1px 1px 3px;
+    border-radius: 5px;
 }
 div#page-index div.features div {
     margin-bottom: 15px;
@@ -1417,7 +1410,6 @@ div#page-common-right-floated-information-bar {
     padding: 10px;
     padding-top: 0;
     overflow: hidden;
-    box-shadow: #aaa 1px 1px 3px;
 }
 
 div#page-common-right-floated-information-bar div {

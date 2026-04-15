@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A basic, responsive Meter chart</h1>
+    <h1>A basic Meter chart</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
@@ -21,42 +21,6 @@
             max: 100,
             value: 45,
             options: {
-                colorsGreenColor: 'Gradient(green:#040)',
-                colorsYellowColor: 'Gradient(#ff0:#440)',
-                colorsRedColor: 'Gradient(#f00:#400)',
-                labelsValue: true,
-                labelsValueUnitsPost: ',000k',
-                labelsRadiusOffset: -3,
-                needleLinewidth: 15,
-                responsive: [
-                    // This is the configuration for small screens
-                    {
-                        maxWidth:900,
-                        width:400,
-                        height:200,
-                        options:{textSize: 8,needleLinewidth: 5,},
-                        callback:function (obj)
-                        {
-                            // Set the width/height of the container
-                            obj.canvas.parentNode.style.width  = '400px';
-                            obj.canvas.parentNode.style.height = '200px';
-                        }
-                    },
-        
-                    // This is the default configuration (for larger screens)
-                    {
-                        maxWidth:null,
-                        width:600,
-                        height:300,
-                        options:{textSize: 18},
-                        callback:function (obj)
-                        {
-                            // Set the width/height of the container
-                            obj.canvas.parentNode.style.width  = '600px';
-                            obj.canvas.parentNode.style.height = '300px';
-                        }
-                    }
-                ]
             }
         }).draw();
     </script>

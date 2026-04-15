@@ -95,7 +95,7 @@
             textAccessiblePointerevents: false,
             text:                        null,
 
-            shadow:                     true,
+            shadow:                     false,
             shadowColor:                'gray',
             shadowOffsetx:              3,
             shadowOffsety:              3,

@@ -61,6 +61,7 @@
 
             colors:                      ['red'],
             
+            bulbColor:                   'black',
             bulbRadius:                  20,
             
             needleColor:                 'red',
@@ -730,7 +731,7 @@
     
             // Draw the bulb
             this.context.beginPath();
-                this.context.fillStyle = grad;
+                this.context.fillStyle = this.properties.bulbColor ? this.properties.bulbColor : grad;
                 this.context.moveTo(this.centerx, this.centery);
                 this.context.arc(
                     this.centerx,

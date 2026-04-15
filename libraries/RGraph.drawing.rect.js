@@ -79,7 +79,7 @@
             marginLeft:            35, // Used for clipping
             marginRight:           35, // Used for clipping
 
-            colorsStroke:    'rgba(0,0,0,0)',
+            colorsStroke:    'transparent',
             colorsFill:      'red',
             
             shadow:           false,
@@ -91,7 +91,7 @@
 
             text:              null,
 
-            highlightStroke:            'black',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightFade:              true,
             
@@ -116,7 +116,7 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             
-            clearto:   'rgba(0,0,0,0)',
+            clearto:   'transparent',
             
             clip:      null,
             

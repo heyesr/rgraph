@@ -13,7 +13,7 @@
     <h1>A basic Horizontal Progress bar</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
+        <canvas id="cvs" width="600" height="130">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -21,22 +21,11 @@
             id: 'cvs',
             min: 0,
             max: 100,
-            value: [10,10,10,10],
+            value: 40,
             options: {
-                marginInner: 7,
-                marginLeft: 20,
-                marginRight: 20,
-                marginTop: 20,
-                marginBottom: 20,
-                tooltips: [
-                    '<b>An example tooltip!</b>',
-                    'Foo',
-                    'bar',
-                    'Jello'
-                ],
-                colors: ['red','yellow','pink','white']
+                marginInner: 12
             }
-        }).grow();
+        }).grow({frames: 30});
     </script>
 
     <script>showSource()</script>

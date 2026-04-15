@@ -145,13 +145,13 @@
             backgroundImageW:           null,
             backgroundImageH:           null,
             backgroundGrid:             true,
-            backgroundGridColor:        '#ddd', 
+            backgroundGridColor:        '#eee', 
             backgroundGridLinewidth:    1,
             backgroundGridHlines:       true,
             backgroundGridHlinesCount:  null,
-            backgroundGridVlines:       true,
+            backgroundGridVlines:       false,
             backgroundGridVlinesCount:  null,
-            backgroundGridBorder:       true,
+            backgroundGridBorder:       false,
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
@@ -170,7 +170,7 @@
             errorbarsLinewidth:   1,
             errorbarsCapwidth:    10,
 
-            yaxis:                true,
+            yaxis:                false,
             yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
@@ -203,7 +203,7 @@
             yaxisTitleHalign:          null,
             yaxisTitleValign:          null,
 
-            xaxis:                true,
+            xaxis:                false,
             xaxisLinewidth:       1,
             xaxisTickmarks:       true,
             xaxisTickmarksLength: 5,
@@ -295,7 +295,7 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke:      'rgba(0,0,0,0)',
+            highlightStroke:      'transparent',
             highlightFill:        'rgba(255,255,255,0.7)',
             highlightLinewidth:   1,
             highlightFade:        true,
@@ -339,7 +339,7 @@
             bubbleShadowOffsety: 2,
             bubbleShadowBlur:    1,
             bubbleShadowColor:   '#aaa',
-            
+
             errorbars:            null,
             errorbarsColor:       'black',
             errorbarsLinewidth:   1,

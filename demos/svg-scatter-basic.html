@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A basic SVG Scatter chart with X and Y-axis titles</h1>
+    <h1>A basic SVG Scatter chart</h1>
     
     <div id="rgraph-demo-html">
         <div style="width: 1000px; height: 300px" id="chart-container"></div>
@@ -20,8 +20,7 @@
         for (var i=0,data=[]; i<=11; ++i) {
             data.push({
                 x:i,
-                y: RGraph.SVG.random({min: 0, max: 50}),
-                above: 'Foo'
+                y: RGraph.SVG.random({min: 0, max: 50})
             });
         }
 
@@ -30,32 +29,8 @@
             id: 'chart-container',
             data: data,
             options: {
-                
-                marginTop: 50,
-                marginBottom: 60,
-                marginRight: 60,
-                marginLeft: 60,
-                
-                xaxisLabels: ['A','B','C','D','E','F','G','H','I','J','K','L'],
-                xaxisLabelsPosition: 'edge',
-                xaxisLabelsPositionEdgeTickmarksCount: 12,
-                xaxisScaleMax: 11,
-                xaxisColor: '#333',
-                xaxisTitle: 'The various stages of the operation',
-                xaxisTitleItalic: true,
-                xaxisTitleSize: 18,
-                xaxisTitleBold: true,
-                
-                backgroundGridColor: '#eee',
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-
-                yaxisTitleBold: true,
-                yaxisTitle: 'Achievement',
-                yaxisTitleItalic: true,
-                yaxisTitleSize: 18,
-                
-                line: true
+                marginLeft: 100,
+                xaxisScaleMax: 11
             }
         }).trace();
     </script>

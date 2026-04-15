@@ -103,7 +103,7 @@
             textAccessiblePointerevents: false,
             text:                        null,
             
-            shadow:             true,
+            :             false,
             shadowColor:        '#aaa',
             shadowOffsetx:      0,
             shadowOffsety:      0,

@@ -164,12 +164,12 @@
             
             backgroundGrid: true,
             backgroundGridColor:            '#ddd',
-            backgroundGridRadialsCount:     null,
+            backgroundGridRadialsCount:     0,
             backgroundGridRadialsAngleOffset: 0,
             backgroundGridConcentricsCount: 5,
             backgroundGridLinewidth:        1,
 
-            colorsStroke: 'white',
+            colorsStroke: 'transparent',
             colors: [
                 'red', 'black', 'orange', 'green', '#6ff', '#ccc',
                 'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'
@@ -238,7 +238,7 @@
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
 
-            highlightStroke:    'rgba(0,0,0,0)',
+            highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
             highlightFade:      true,
@@ -268,7 +268,6 @@
             shadowColor:   'rgba(0,0,0,0.25)',
 
             exploded: 0,
-
 
             key:            null,
             keyColors:      null,

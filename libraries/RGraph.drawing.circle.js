@@ -94,7 +94,7 @@
             shadowBlur:        5,
 
             highlightStyle:    null,
-            highlightStroke:   'black',
+            highlightStroke:   'transparent',
             highlightFill:     'rgba(255,255,255,0.7)',
             highlightFade:     true,
 

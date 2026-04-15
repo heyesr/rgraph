@@ -63,10 +63,10 @@
             marginTop:             				35,
             marginBottom:          				35,
 
-            linewidth:              			1,
-            linewidthSegments:     				0,
+            linewidth:                          1,
+            linewidthSegments:                  0,
 
-            colorsStroke:            			null,
+            colorsStroke:            		    null,
             
             border:                 			true,
             borderColor:           				'black',
@@ -134,13 +134,13 @@
 
             colorsGreenStart:            		((this.max - this.min) * 0.35) + this.min,
             colorsGreenEnd:              		this.max,
-            colorsGreenColor:            		'#207A20',
+            colorsGreenColor:            		'#0c0',
             colorsYellowStart:           		((this.max - this.min) * 0.1) + this.min,
             colorsYellowEnd:             		((this.max - this.min) * 0.35) + this.min,
-            colorsYellowColor:           		'#D0AC41',
+            colorsYellowColor:           		'yellow',
             colorsRedStart:              		this.min,
             colorsRedEnd:                		((this.max - this.min) * 0.1) + this.min,
-            colorsRedColor:              		'#9E1E1E',
+            colorsRedColor:              		'red',
             colorsRanges:          				null,
 
             contextmenu:            			null,

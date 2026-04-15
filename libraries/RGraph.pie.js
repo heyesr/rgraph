@@ -70,7 +70,7 @@
             centeryAdjust:                  0,
 
             colors:                         ['red', '#ccc', '#cfc', 'blue', 'pink', 'yellow', 'black', 'orange', 'cyan', 'purple', '#78CAEA', '#E284E9', 'white', 'blue', '#9E7BF6'],
-            colorsStroke:                   'white',
+            colorsStroke:                   'transparent',
 
             linewidth:                      3,
 
@@ -181,7 +181,7 @@
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
 
-            shadow:                         true,
+            shadow:                         false,
             shadowColor:                    '#aaa',
             shadowOffsetx:                  0,
             shadowOffsety:                  0,
@@ -283,7 +283,7 @@
             variantDonutWidth:              null,
             variantThreedDepth:             20,
 
-            exploded:                       [],
+            exploded:                       5,
 
             effectRoundrobinMultiplier:     1,
 
@@ -293,7 +293,7 @@
 
             origin:                         0 - (Math.PI / 2),
 
-            clearto:                        'rgba(0,0,0,0)',
+            clearto:                        'transparent',
             eventsEnabled:                  true,
             
             clip:                           null,

@@ -1156,7 +1156,7 @@
             'div#' + this.id + ' table thead tr th div:not(.rgraph-datagrid-resize-handle-container):not(.rgraph-datagrid-resizable-handle) {text-align: center;box-sizing: border-box; padding: 10px;}',
             
             // Table body
-            'div#' + this.id + ' table tbody tr td div {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;border: 1px solid #eee;}',
+            'div#' + this.id + ' table tbody tr td div {position: relative; top: 0; left: 0;right: 0; bottom: 0;box-sizing: border-box;padding: 5px;}',
             'div#' + this.id + ' table tbody tr:nth-child(even) {background-color: #eee6;}',
             
             // Table footer

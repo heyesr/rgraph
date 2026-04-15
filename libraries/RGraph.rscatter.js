@@ -95,7 +95,7 @@
         {
             backgroundColor:                        'transparent',
             backgroundGrid:                         true,
-            backgroundGridRadials:                  true,
+            backgroundGridRadials:                  false,
             backgroundGridRadialsCount:             null,
             backgroundGridCircles:                  true,
             backgroundGridCirclesCount:             null,
@@ -235,11 +235,8 @@
             annotatableColor:                       'black',
             annotatableLinewidth:                   1,
 
-            resizable:                              false,
-            resizableHandleBackground:              null,
-
             scaleMax:                               null,
-            scaleMin:                               0, // TODO Not fully implemented
+            scaleMin:                               0, // NB: Not fully implemented
             scaleDecimals:                          null,
             scalePoint:                             '.',
             scaleThousand:                          ',',
@@ -248,9 +245,9 @@
             scaleUnitsPre:                          '',
             scaleUnitsPost:                         '',
 
-            tickmarks     :                         'cross', // This is done like this for BC
+            tickmarks     :                         'circle', // This is done like this for BC
             tickmarksStyle:                         null,    // This is done like this for BC ** Use this one **
-            tickmarksSize:                          3,
+            tickmarksSize:                          5,
 
             axesColor:                              'transparent',
 
@@ -263,7 +260,7 @@
             segmentHighlight:                       false,
             segmentHighlightCount:                  null,
             segmentHighlightFill:                   'rgba(0,255,0,0.5)',
-            segmentHighlightStroke:                 'rgba(0,0,0,0)',
+            segmentHighlightStroke:                 'transparent',
 
             line:                                   false,
             lineClose:                              false,
@@ -275,7 +272,7 @@
             lineShadowOffsetx:                      3,
             lineShadowOffsety:                      3,
 
-            clearto:                                'rgba(0,0,0,0)',
+            clearto:                                'transparent',
             
             events:                                 {},
             clip:                                   null,

@@ -68,14 +68,14 @@
         this.properties =
         {
             backgroundGrid:             true,
-            backgroundGridColor:        '#ddd',
+            backgroundGridColor:        '#eee',
             backgroundGridVlines:       true,
-            backgroundGridHlines:       true,
+            backgroundGridHlines:       false,
             backgroundGridLinewidth:    1,
             backgroundGridVlinesCount:  null,
             backgroundGridHlinesCount:  null,
 
-            xaxis:                      true,
+            xaxis:                      false,
             xaxisTickmarks:             true,
             xaxisTickmarksLength:       3,
             xaxisTickmarksCount:        5,
@@ -97,7 +97,7 @@
             xaxisLabelsOffsetx:         0,
             xaxisLabelsOffsety:         0,
 
-            yaxis:                      true,
+            yaxis:                      false,
             yaxisTickmarks:             true,
             yaxisTickmarksCount:        null,
             yaxisTickmarksLength:       3,

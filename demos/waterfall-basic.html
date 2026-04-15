@@ -10,23 +10,14 @@
 <body>
     <h1>A basic Waterfall chart</h1>
 
-    <div id="rgraph-demo-html">
-        <canvas id="cvs" width="900" height="250">[No canvas support]</canvas><br />
-        <button onclick="waterfall.set('xaxisPosition', 'bottom'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at bottom</button>
-        <button onclick="waterfall.set('xaxisPosition', 'center'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at center</button>
-        <button onclick="waterfall.set('xaxisPosition', 'top'); RGraph.redraw();" style="font-size: 14pt; cursor: pointer">Set X-axis position at top</button>
-    </div>
+    <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
 
     <script>
         waterfall = new RGraph.Waterfall({
             id: 'cvs',
             data: [10,10,5,-2,-15,6,-5],
             options: {
-                xaxisLabels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Total'],
-                yaxis: false,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                colorsStroke: 'rgba(0,0,0,0)'
+                marginInner: 25
             }
         }).draw();
     </script>

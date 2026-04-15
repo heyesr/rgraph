@@ -157,10 +157,10 @@
             marginBottom: 35,
             rmargin:      null, // This is set below
             
-            backgroundFill:      'Gradient(white:#FEFEFE:#E6E6E6:#dedede)',
+            backgroundFill:      '#ddd',
             backgroundStroke:    '#ddd',
             backgroundGrid:      true,
-            backgroundGridColor: '#ddd',
+            backgroundGridColor: '#aaa',
 
             linewidth:   1,
             colors: ['black','black'],
@@ -903,38 +903,40 @@
                 if (properties.scaleOuter) {
                     
                     // Draw the OUTER tickmarks
-                    var path_a = RGraph.SVG.TRIG.getArcPath3({
-                        cx: this.centerx,
-                        cy: this.centery,
-                        r:  this.radius - properties.rmargin,
-                        start: this.angleStart + (i * gap),
-                        end: this.angleStart + (i * gap),
-                        anticlockwise: false,
-                        lineto: false
-                    });
-        
-                    var path_b = RGraph.SVG.TRIG.getArcPath3({
-                        cx: this.centerx,
-                        cy: this.centery,
-                        r:  this.radius + properties.tickmarksOuterSize - properties.rmargin,
-                        start: this.angleStart + (i * gap),
-                        end: this.angleStart + (i * gap),
-                        anticlockwise: false,
-                        lineto: true
-                    });
-        
-                    RGraph.SVG.create({
-                        svg: this.svg,
-                        type: 'path',
-                        parent: this.nodes.outerAxisGroup,
-                        attr: {
-                            d: path_a + ' ' + path_b,
-                            stroke: properties.colors[0],
-                            fill: 'transparent',
-                            'stroke-width': properties.linewidth,
-                            'stroke-linecap':  'square'
-                        }
-                    });
+                    if (this.properties.tickmarks) {
+                        var path_a = RGraph.SVG.TRIG.getArcPath3({
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  this.radius - properties.rmargin,
+                            start: this.angleStart + (i * gap),
+                            end: this.angleStart + (i * gap),
+                            anticlockwise: false,
+                            lineto: false
+                        });
+            
+                        var path_b = RGraph.SVG.TRIG.getArcPath3({
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  this.radius + properties.tickmarksOuterSize - properties.rmargin,
+                            start: this.angleStart + (i * gap),
+                            end: this.angleStart + (i * gap),
+                            anticlockwise: false,
+                            lineto: true
+                        });
+            
+                        RGraph.SVG.create({
+                            svg: this.svg,
+                            type: 'path',
+                            parent: this.nodes.outerAxisGroup,
+                            attr: {
+                                d: path_a + ' ' + path_b,
+                                stroke: properties.colors[0],
+                                fill: 'transparent',
+                                'stroke-width': properties.linewidth,
+                                'stroke-linecap':  'square'
+                            }
+                        });
+                    }
 
                     //
                     // Determine the correct gap for the outer labels#
@@ -1082,44 +1084,43 @@
 
 
 
-
-                // Draw the INNER tickmarks
-
-
-
-
-                var path_a = RGraph.SVG.TRIG.getArcPath3({
-                    cx: this.centerx,
-                    cy: this.centery,
-                    r:  this.radius - properties.rmargin - properties.innerGap,
-                    start: this.angleStart + (i * gap),
-                    end: this.angleStart + (i * gap),
-                    anticlockwise: false,
-                    lineto: false
-                });
-                
-                var path_b = RGraph.SVG.TRIG.getArcPath3({
-                    cx: this.centerx,
-                    cy: this.centery,
-                    r:  this.radius  - properties.innerGap - properties.tickmarksOuterSize - properties.rmargin,
-                    start: this.angleStart + (i * gap),
-                    end: this.angleStart + (i * gap),
-                    anticlockwise: false,
-                    lineto: true
-                });
-
-                RGraph.SVG.create({
-                    svg: this.svg,
-                    type: 'path',
-                    parent: this.nodes.innerAxisGroup,
-                    attr: {
-                        d: path_a + ' ' + path_b,
-                        stroke: properties.colors[1],
-                        fill: 'transparent',
-                        'stroke-width': properties.linewidth,
-                        'stroke-linecap':  'square'
+                if (this.properties.tickmarks) {
+                    // Draw the INNER tickmarks
+                    if (this.properties.tickmarksCount > 0) {
+                        var path_a = RGraph.SVG.TRIG.getArcPath3({
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  this.radius - properties.rmargin - properties.innerGap,
+                            start: this.angleStart + (i * gap),
+                            end: this.angleStart + (i * gap),
+                            anticlockwise: false,
+                            lineto: false
+                        });
+                        
+                        var path_b = RGraph.SVG.TRIG.getArcPath3({
+                            cx: this.centerx,
+                            cy: this.centery,
+                            r:  this.radius  - properties.innerGap - properties.tickmarksOuterSize - properties.rmargin,
+                            start: this.angleStart + (i * gap),
+                            end: this.angleStart + (i * gap),
+                            anticlockwise: false,
+                            lineto: true
+                        });
+        
+                        RGraph.SVG.create({
+                            svg: this.svg,
+                            type: 'path',
+                            parent: this.nodes.innerAxisGroup,
+                            attr: {
+                                d: path_a + ' ' + path_b,
+                                stroke: properties.colors[1],
+                                fill: 'transparent',
+                                'stroke-width': properties.linewidth,
+                                'stroke-linecap':  'square'
+                            }
+                        });
                     }
-                });
+                }
 
 
                 //

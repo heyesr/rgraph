@@ -66,10 +66,10 @@
             backgroundGridLinewidth:    1,
             backgroundGridHsize:        25,
             backgroundGridVsize:        25,
-            backgroundGridColor:        '#ddd',
-            backgroundGridVlines:       true,
+            backgroundGridColor:        '#eee',
+            backgroundGridVlines:       false,
             backgroundGridHlines:       true,
-            backgroundGridBorder:       true,
+            backgroundGridBorder:       false,
             backgroundGridAutofit:      true,
             backgroundGridAutofitAlign: true,
             backgroundGridHlinesCount:  5,
@@ -93,7 +93,7 @@
             backgroundBorderDotted:     false,
             backgroundBorderDashArray:  null,
 
-            xaxis:                   true,
+            xaxis:                   false,
             xaxisLinewidth:          1,
             xaxisColor:              'black',
             xaxisTickmarks:          true,
@@ -134,7 +134,7 @@
             xaxisTitleHalign:     'center',
             xaxisTitleValign:     'top',
 
-            yaxis:                    true,
+            yaxis:                    false,
             yaxisLinewidth:           1,
             yaxisColor:               'black',
             yaxisTickmarks:           true,
@@ -197,7 +197,7 @@
             labelsAboveOffsety:        0,
             labelsAboveFormatter:      null,
 
-            linewidth:                  2.001,
+            linewidth:                  3.001,
             linecap:                    'round',
             linejoin:                   'round',
 
@@ -255,7 +255,7 @@
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
 
-            shadow:                     true,
+            shadow:                     false,
             shadowOffsetx:              2,
             shadowOffsety:              2,
             shadowBlur:                 3,

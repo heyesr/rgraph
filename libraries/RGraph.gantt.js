@@ -48,12 +48,12 @@
             backgroundBarsColor2:   'rgba(0,0,0,0)',
             backgroundGrid:        true,
             backgroundGridLinewidth:  1,
-            backgroundGridColor:  '#ddd',
+            backgroundGridColor:  '#eee',
             backgroundGridHsize:  20,
             backgroundGridVsize:  20,
             backgroundGridHlines: true,
-            backgroundGridVlines: true,
-            backgroundGridBorder: true,
+            backgroundGridVlines: false,
+            backgroundGridBorder: false,
             backgroundGridAlign:  true,
             backgroundGridAutofit:true,
             backgroundGridAutofitAlign:true,
@@ -224,7 +224,7 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:       'rgba(0,0,0,0)',
+            highlightStroke:       'transparent',
             highlightFill:         'rgba(255,255,255,0.7)',
             highlightFade:         true,
 
@@ -237,8 +237,8 @@
             adjustable:               false,
             adjustableOnly:           null,
             
-            corners:                  'square',
-            cornersRoundRadius:       25,
+            corners:                  'round',
+            cornersRoundRadius:       10,
             
             clearto:                  'rgba(0,0,0,0)',
             

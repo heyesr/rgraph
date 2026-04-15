@@ -44,7 +44,7 @@
 
         this.properties =
         {
-            backgroundColor:            'rgba(0,0,0,0)',
+            backgroundColor:            'transparent',
             backgroundGrid:             false,
             backgroundGridMargin:       20,
             backgroundGridColor:        '#ddd',
@@ -59,7 +59,7 @@
 
             linewidth:                  2,
 
-            colorsStroke:               '#666',
+            colorsStroke:               'transparent',
 
             marginLeft:                 35,
             marginRight:                35,
@@ -213,7 +213,7 @@
             tooltipsHotspotIgnore:           null,
 
             highlightStyle:             null,
-            highlightStroke:            'rgba(0,0,0,0)',
+            highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
             highlightFade:              true,
 
@@ -261,7 +261,7 @@
             
             variant:                    'default',
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
             
             events:                     {},
             clip:                       null,

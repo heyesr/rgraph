@@ -51,7 +51,7 @@
             backgroundBarsOpacity:  0.25,
             backgroundBarsColors:   null,
 
-            colorsStroke:           'rgba(0,0,0,0)',
+            colorsStroke:           'transparent',
             colors:                 ['red','green','gray','black','pink','orange','blue','yellow','green','red'],
 
             marginLeft:           35,
@@ -59,7 +59,7 @@
             marginTop:            35,
             marginBottom:         35,
             
-            labels:                null,
+            labels:               null,
             labelsFont:           null,
             labelsSize:           null,
             labelsColor:          null,
@@ -189,7 +189,7 @@
 
             effectGrowMultiplier: 1,
 
-            clearto:   'rgba(0,0,0,0)',
+            clearto:   'transparent',
             
             events:    {},
             clip:      null,

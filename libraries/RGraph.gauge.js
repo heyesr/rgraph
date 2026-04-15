@@ -99,7 +99,6 @@
             titleTopPos:      null,
             titleTopOffsetx:  0,
             titleTopOffsety:  0,
-
             titleTopSubtitle:         null,
             titleTopSubtitleFont:     null,
             titleTopSubtitleSize:     null,
@@ -148,7 +147,8 @@
             labelsColor:                      null,
             labelsBold:                       null,
             labelsItalic:                     null,
-            labelsValue:                 false,
+            
+            labelsValue:               false,
             labelsValueYPos:           0.5,
             labelsValueUnitsPre:       '',
             labelsValueUnitsPost:      '',
@@ -186,8 +186,9 @@
             borderOutline:   'black',
             borderGradient:  false,
 
-            centerpinColor:  'blue',
-            centerpinRadius: null,
+            centerpinColor:    'black',
+            centerpinGradient: false,
+            centerpinRadius:   null,
 
             tickmarksSmall:        25,
             tickmarksSmallColor:  'black',
@@ -202,13 +203,13 @@
             annotatableLinewidth: 1,
             annotatableColor:     'black',
 
-            shadow:           true,
+            shadow:           false,
             shadowColor:     'gray',
             shadowOffsetx:   0,
             shadowOffsety:   0,
             shadowBlur:      15,
 
-            clearto:   'rgba(0,0,0,0)',
+            clearto:   'transparent',
             
             events:    {},
             clip:      null,
@@ -932,17 +933,24 @@
             var scaleFactor = RGraph.getScaleFactor(this);
 
             var offset = (6 * scaleFactor);
-    
-            var grad = this.context.createRadialGradient(
-                this.centerx + offset,
-                this.centery - offset,
-                0,
-                this.centerx + offset,
-                this.centery - offset,
-                (25 * scaleFactor)
-            );
-            grad.addColorStop(0, '#ddf');
-            grad.addColorStop(1, properties.centerpinColor);
+
+            //
+            // Gradient or not
+            //
+            if (this.properties.centerpinGradient) {
+                var grad = this.context.createRadialGradient(
+                    this.centerx + offset,
+                    this.centery - offset,
+                    0,
+                    this.centerx + offset,
+                    this.centery - offset,
+                    (25 * scaleFactor)
+                );
+                grad.addColorStop(0, '#ddf');
+                grad.addColorStop(1, this.properties.centerpinColor);
+            } else {
+                grad = this.properties.centerpinColor;
+            }
     
             this.context.beginPath();
                 this.context.fillStyle = grad;
