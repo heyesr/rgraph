@@ -222,16 +222,11 @@
     
                 ModalDialog.dialog.style.borderRadius = borderRadius;
                 ModalDialog.dialog.style.boxShadow    = '0 0 0 transparent';
-
-                //ModalDialog.dialog.style.MozBorderRadius    = borderRadius;
-                //ModalDialog.dialog.style.WebkitBorderRadius = borderRadius;
-                //ModalDialog.dialog.style.MozBoxShadow = '3px 3px 3px rgba(96,96,96,0.5)';
-                //ModalDialog.dialog.style.WebkitBoxShadow = 'rgba(96,96,96,0.5) 3px 3px 3px';
     
                 ModalDialog.dialog.style.position        = 'fixed';
                 ModalDialog.dialog.style.backgroundColor = 'white';
                 ModalDialog.dialog.style.width           = parseInt(ModalDialog.width) + 'px';
-                ModalDialog.dialog.style.border          = '2px solid #999';
+                ModalDialog.dialog.style.border          = '1px solid #999';
                 ModalDialog.dialog.style.zIndex          = 32767;
                 ModalDialog.dialog.style.padding         = '5px';
                 ModalDialog.dialog.style.paddingTop      = ModalDialog.options.topbar ? '25px' : '5px'
@@ -284,8 +279,7 @@
                         bar.style.width        = '100%';//(ModalDialog.dialog.offsetWidth - 4) + 'px';
                         bar.style.height       = '20px';
                         bar.style.backgroundColor = '#bbb';
-                        bar.style.borderBottom = '2px solid #999';
-                        //bar.style.zIndex     = 50000;
+                        bar.style.borderBottom = '1px solid #999';
                         bar.style.position     = 'absolute';
                         
                         var borderRadius = '11px';
