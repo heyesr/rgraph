@@ -46,8 +46,8 @@
         this.properties =
         {
             backgroundBarsCount:        null,
-            backgroundBarsColor1:       'rgba(0,0,0,0)',
-            backgroundBarsColor2:       'rgba(0,0,0,0)',
+            backgroundBarsColor1:       'transparent',
+            backgroundBarsColor2:       'transparent',
             backgroundGrid:             true,
             backgroundGridColor:        '#eee',
             backgroundGridLinewidth:    1,
@@ -234,8 +234,20 @@
             titleSubtitleOffsetx: 0,
             titleSubtitleOffsety: 0,
 
-            colorsStroke:          'rgba(0,0,0,0)',
-            colors:                 ['red','#0f0','blue','pink','orange','cyan','black','white','green','magenta'],
+            colorsStroke:          'transparent',
+            colors:                [
+                '#ff000088','#00ff0088','#0000ff88',
+                '#ffc0cb88','#ffA50088','#00ffff88',
+                '#00000088','#ffff6688','#00800088',
+                '#ff00ff88','#ffff0088','#aaffaa88',
+                '#ffaaaa88','#aaaaff88','#aaffff88',
+                '#ffffaa88','#ffaaff88','#00ffff88',
+                '#964B0088','#80808088','#00000088',
+                '#ffc0cb88','#aaffaa88','#ffaaaa88',
+                '#aaaaff88','#aaffff88','#ffffaa88',
+                '#ffaaff88','#00ffff88','#964b0088',
+                '#80808088','#00000088','#ffc0cb88'
+            ],
             colorsSequential:      false,
             colorsReverse:         false,
 

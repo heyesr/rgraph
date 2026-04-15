@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bipolar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -19,33 +17,12 @@
     <script>
         new RGraph.Bipolar({
             id: 'cvs',
-            left: [8,4,6,5,2,5,8],
+            left:  [8,4,6,5,2,5,8],
             right: [4,8,6,3,9,5,2],
-            //left: [[4,6,6],[9,5,9],[2,3,5]],
-            //right: [[5,6,6],[2,3,5],[8,4,9]],
             options: {
-                axes: false,
-                
-                colors: ['gradient(red:white:red)','pink','green'],
-                
-                xaxisScaleUnitsPost: '%',
-                yaxisLabelsSize: 20,
                 yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                
-                highlightStyle: 'invert',
-                highlightStroke: 'rgba(255,255,255,0.7)',
-                highlightFade: false,
-                
-                // A custom property which is used by the tooltip templates
-                names: ['John','Luke','Pete','Jane','Fred','Kim','Lula'],
-
-                tooltips: '%{property:names[%{dataset2}]}: %{value}%',
-                tooltipsCss: {
-                    backgroundColor: 'black',
-                    color: 'white',
-                    fontSize: '20pt'
-                },
-                grouping:'stacked'
+                textSize: 16,
+                colorsSequential: true
             }
         }).draw();
     </script>

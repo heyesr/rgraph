@@ -65,7 +65,7 @@
 
 
             //backgroundColor:                'Gradient(#ccc:#eee:#efefef)',
-            backgroundColor:                '#fff',
+            backgroundColor:                '#efefef',
 
             shadow:                         false,
             shadowColor:                    'rgba(0,0,0,0.5)',
