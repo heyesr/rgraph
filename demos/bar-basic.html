@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -22,24 +20,9 @@
         
         new RGraph.Bar({
             id: 'cvs',
-            data: '12,18,10,9,6,20,18',
+            data: [12,18,10,9,6,20,18],
             options: {
-                yaxisScaleUnitsPost: 'k',
-                colors: ['red'],
-                title: 'A basic Bar chart',
-                xaxis: false,
-                yaxis: false,
-                marginLeft: 50,
-                marginBottom: 50,
-                tooltips: '%{color:red} Dave %{value_formatted}',
-                tooltipsFormattedUnitsPost: '%',
-                tooltipsCss: {
-                    fontSize: '26pt'
-                },
-                responsive: [
-                    {maxWidth:null,width:750,height:250,options: {textSize:14,xaxisLabels: ['Monday\n(yuck!)','Tuesday','Wednesday','Thursday','Friday\n(woo!)','Saturday','Sunday'],marginInner: 20}},
-                    {maxWidth:900,width:500,height:200,options: {textSize:12,xaxisLabels:['Mon\n(yuck!)','Tue','Wed','Thu','Fri\n(woo!)','Sat','Sun'],marginInner: 10}}
-                ]
+                marginInner: 25
             }
         }).draw();
     </script>
