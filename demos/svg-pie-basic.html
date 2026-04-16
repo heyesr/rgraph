@@ -1,0 +1,30 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.svg.common.core.js" ></script>
+    <script src="../libraries/RGraph.svg.pie.js" ></script>
+    <script src="demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>A basic SVG Pie chart</h1>
+    
+    <div id="rgraph-demo-html">
+        <div style="width: 750px; height: 300px" id="chart-container"></div>
+    </div>
+
+    <script>
+        new RGraph.SVG.Pie({
+            id: 'chart-container',
+            data: [12,15,16,14,18],
+            options: {
+                exploded: 5
+            }                    
+        }).draw();
+    </script>
+
+    <script>showSource()</script>
+
+</body>
+</html>
