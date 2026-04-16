@@ -3,78 +3,27 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.svg.common.core.js" ></script>
-    <script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.svg.common.key.js" ></script>
     <script src="../libraries/RGraph.svg.bar.js" ></script>
-    <script src="../libraries/RGraph.svg.line.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>An SVG basic Bar chart with gradients with gradients and an HTML key</h1>
-
-    <div id="rgraph-demo-html">
-        <style>
-            table td {
-                line-height: initial;
-                font-size: 18pt
-            }
-        </style>
-
+    <h1>A basic SVG Bar chart</h1>
+    
+    <div id="rgraph-demo-html">    
         <div id="container" style="position: relative">
             <div style="width: 750px; height: 300px" id="chart-container"></div>
         </div>
     </div>
 
     <script>
-        data = [213,268,542,355,129,785,465,654,123,653,452,584];
-        
-        // Draw the key first
-        RGraph.SVG.HTML.key('container', {
-            labels: ['Last years results'],
-            colors: ['red'],
-            tableCss: {
-                top: '5px',
-                left: '325px',
-                position: 'absolute'
-            },
-            blobCss: {
-                width: '20px !important',
-                height: '20px !important'
-            }
-        });
-
-        bar = new RGraph.SVG.Bar({
+        new RGraph.SVG.Bar({
             id: 'chart-container',
-            data: data,
+            data: [4,6,8,5,4,2,3],
             options: {
-                marginLeft: 75,
-                marginInner: 5,
-                marginRight: 50,
-                marginBottom: 100,
-                colors: ['Gradient(red:red:red:white:white)'],
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                xaxisTickmarks: false,
-                xaxisLabels: RGraph.SVG.MONTHS_SHORT,
-                xaxisTitle: '1994',
-                xaxisTitleSize: 18,
-                xaxisTitleBold: true,
-                yaxisTickmarks: false,
-                yaxisScaleMax: 1000,
-                xaxisLinewidth: 3,
-                yaxisLinewidth: 3,
-                yaxisTitle: 'Sales for the year',
-                yaxisTitleSize: 18,
-                yaxisTitleBold: true,
-                labelsAbove: true,
-                tooltips: 'This is a tooltip: %{value}',
-                tooltipsCss: {
-                    fontSize: '20pt'
-                },
-                shadow: true
+                marginInner: 25
             }
-        }).wave();
+        }).draw();
     </script>
 
     <script>showSource()</script>

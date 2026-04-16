@@ -156,8 +156,8 @@
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
 
-            tickmarksStyle:       'cross',
-            tickmarksSize:        7,
+            tickmarksStyle:       'circle',
+            tickmarksSize:        10,
             
             colors:               null,
             colorsDefault:        'black',

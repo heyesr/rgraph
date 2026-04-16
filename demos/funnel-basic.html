@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.funnel.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -21,24 +19,10 @@
             id: 'cvs',
             data: [100,42,34,23],
             options: {
-                names: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
-                labels: '%{property:names[%{index}]}, (%{value})',
-                tooltips: '%{property:names[%{index}]} %{value_formatted}',
-                tooltipsFormattedUnitsPost: '%',
-                tooltipsCss: {
-                    fontSize: '20pt'
-                },
-                tooltipsOffsety: 75,
+                labels: ['All potential Customers','Pre-sale enquiry','Sale finalised','Follow up telephone call'],
                 labelsSticks: true,
                 labelsX: 2,
-                marginLeft: 230,
-                colorsStroke: 'rgba(0,0,0,0)',
-                textBoxed: false,
-                shadow: true,
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                shadowBlur: 3,
-                shadowColor: 'gray'
+                marginLeft: 230
             }
         }).draw();
     </script>

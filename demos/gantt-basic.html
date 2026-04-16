@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
-    <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.gantt.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -17,27 +16,26 @@
 
     <script>
         data = [
-            {start: 31, duration: 28,  complete: 67,label: 'Richard', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 0,  duration: 28,  complete: 50, label: 'Rachel', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 12, duration: 28,  complete: 45, label: 'Fred', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 59, duration: 14,  complete: 0,  label: 'Barney', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 59, duration: 21,  complete: 5,  label: 'Gloria', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 46, duration: 31,  complete: 92, label: 'Paul', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 80, duration: 21,  complete: 46, label: 'Harry', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 94, duration: 17,  complete: 84, label: 'Shane', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 34, duration: 14,  complete: 32, label: 'Kyle', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 64, duration: 14,  complete: 28, label: 'Cynthia', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 13, duration: 61,  complete: 74, label: 'Mabel', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 34, duration: 31,  complete: 16, label: 'Paul', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 80, duration: 22,  complete: 45, label: 'Kiffen', linewidth: 0, color: 'red', background: 'pink'},
-            {start: 0,  duration: 115, complete: 50, label: 'John', linewidth: 0, color: 'red', background: 'pink'}
+            {start: 31, duration: 28, linewidth: 0, color: 'red'},
+            {start: 0,  duration: 28, linewidth: 0, color: 'red'},
+            {start: 12, duration: 28, linewidth: 0, color: 'red'},
+            {start: 59, duration: 14, linewidth: 0, color: 'red'},
+            {start: 59, duration: 21, linewidth: 0, color: 'red'},
+            {start: 46, duration: 31, linewidth: 0, color: 'red'},
+            {start: 80, duration: 21, linewidth: 0, color: 'red'},
+            {start: 94, duration: 17, linewidth: 0, color: 'red'},
+            {start: 34, duration: 14, linewidth: 0, color: 'red'},
+            {start: 64, duration: 14, linewidth: 0, color: 'red'},
+            {start: 13, duration: 61, linewidth: 0, color: 'red'},
+            {start: 34, duration: 31, linewidth: 0, color: 'red'},
+            {start: 80, duration: 22, linewidth: 0, color: 'red'},
+            {start: 0,  duration: 115,linewidth: 0, color: 'red'}
         ];
 
         gantt = new RGraph.Gantt({
             id: 'cvs',
             data: data,
             options: {
-                xaxisLabels: ['January', 'February', 'March', 'April'],
                 xaxisScaleMax: 122
             }
         }).draw();
