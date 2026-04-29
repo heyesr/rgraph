@@ -44,8 +44,8 @@
         this.properties =
         {
             backgroundBarsCount:    null,
-            backgroundBarsColor1:   'rgba(0,0,0,0)',
-            backgroundBarsColor2:   'rgba(0,0,0,0)',
+            backgroundBarsColor1:   'transparent',
+            backgroundBarsColor2:   'transparent',
             backgroundGrid:        true,
             backgroundGridLinewidth:  1,
             backgroundGridColor:  '#eee',
@@ -190,15 +190,15 @@
             yaxisTitleSize:       null,
             yaxisTitleColor:      null,
             yaxisTitlePos:        null,
-            yaxisTitleOffsetx:    null,
-            yaxisTitleOffsety:    null,
+            yaxisTitleOffsetx:    0,
+            yaxisTitleOffsety:    0,
             yaxisTitleX:          null,
             yaxisTitleY:          null,
             yaxisTitleHalign:     null,
             yaxisTitleValign:     null,
             yaxisTitleAccessible: null,
 
-            colorsDefault:        'white',
+            colorsDefault:        RGraph.getColors()[0],
 
             borders:              true,
 
@@ -240,11 +240,11 @@
             corners:                  'round',
             cornersRoundRadius:       10,
             
-            clearto:                  'rgba(0,0,0,0)',
+            clearto:                  'transparent',
             
-            events:                   {},
-            clip:                     null,
-            
+            events:                      {},
+            clip:                        null,
+            responsive:                  null,
             scale:                       true,
             scaleFactor:                 2,
             antialiasTranslate:          false

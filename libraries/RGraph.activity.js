@@ -155,7 +155,7 @@
             tooltipsEffect:                     'slide',
             tooltipsCssClass:                   'RGraph_tooltip',
             tooltipsCss:                        null,
-            tooltipsEvent:                      'onclick',
+            tooltipsEvent:                      'click',
             tooltipsHighlight:                  true,
             tooltipsPersistent:                 false,
             tooltipsHotspotXonly:               false,
@@ -178,11 +178,11 @@
             tooltipsPositionStatic:             true,
 
             highlightStyle:                     null,
-            highlightStroke:                    'rgba(0,0,0,0)',
+            highlightStroke:                    'transparent',
             highlightFill:                      'rgba(255,255,255,0.5)',
             highlightFade:                       true,
 
-            clearto:                            'rgba(0,0,0,0)',
+            clearto:                            'transparent',
             
             events:                             {},
             clip:                               null,

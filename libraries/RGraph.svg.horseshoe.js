@@ -140,6 +140,11 @@
             textColor:             'black',
             textBold:              false,
             textItalic:            false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:                  null,
 
             labelsCenter:          true,
@@ -170,11 +175,9 @@
             adjustable:            false,
             
             clip:                  null,
-            
+            responsive:            null,
             zoom:                  false,
-            
-            events:                {},
-            clip:                  null
+            events:                {}
         };
 
 

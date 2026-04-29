@@ -162,9 +162,9 @@
             backgroundGrid:      true,
             backgroundGridColor: '#aaa',
 
-            linewidth:   1,
-            colors: ['black','black'],
-            innerGap:    5,
+            linewidth:          1,
+            colors:             RGraph.SVG.getColors(),
+            innerGap:           5,
 
             tickmarksOuterSize: 3,
             tickmarksInnerSize: 3,
@@ -175,6 +175,11 @@
             textSize:       12 ,
             textBold:       false,
             textItalic:     false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:           null,
             
             labelsIngraph:           true,
@@ -225,7 +230,7 @@
             shadow:        false,
             shadowOffsetx: 2,
             shadowOffsety: 2,
-            shadowColor: 'rgba(0,0,0,0.25)',
+            shadowColor:   'rgba(0,0,0,0.25)',
             shadowBlur:    2,
 
             title:       '',
@@ -247,16 +252,12 @@
             titleSubtitleItalic: null,
             
             needleColor: '#666',
-            needleLength: null,
-            
+            needleLength: null,            
             centerpinRadius: 15,
             
             adjustable: false,
-            
-            clip:       null,
-            
-            zoom:       false,
-            
+            responsive: null,
+            zoom:       false,            
             events:     {},
             clip:       null
         };

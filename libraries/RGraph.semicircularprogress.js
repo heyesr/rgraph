@@ -47,7 +47,7 @@
             backgroundColor:            'transparent',
             backgroundGrid:             false,
             backgroundGridMargin:       20,
-            backgroundGridColor:        '#ddd',
+            backgroundGridColor:        '#eee',
             backgroundGridLinewidth:    1,
             backgroundGridCircles:      true,
             backgroundGridRadials:      true,
@@ -55,11 +55,11 @@
             backgroundFill:           true,
             backgroundFillColor:      null,
 
-            colors:                     ['#0c0', '#f66', '#66f', 'yellow', 'pink','#ccc','#cc0','#0cc','#c0c'],
-
-            linewidth:                  2,
-
+            colors:                     RGraph.getColors(),
             colorsStroke:               'transparent',
+
+            linewidth:                  1,
+
 
             marginLeft:                 35,
             marginRight:                35,
@@ -219,7 +219,7 @@
 
             annotatable:                false,
             annotatableColor:           'black',
-            annotatableLinewidth:      2,
+            annotatableLinewidth:      1,
 
             key:                                null,
             keyBackground:                      'white',
@@ -265,7 +265,7 @@
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false
@@ -769,7 +769,7 @@
             }});
 
             // Draw the backgroundColor
-            if (properties.backgroundColor !== 'rgba(0,0,0,0)') {
+            if (properties.backgroundColor !== 'transparent') {
                 this.path(
                     'fs % fr % % % %',
                     properties.backgroundColor,
@@ -793,7 +793,7 @@
             if (properties.backgroundFill) {
                 this.path(
                     'lw % b ',
-                    this.linewidth
+                    this.properties.linewidth
                 );
     
                 // Draw the path for the bar

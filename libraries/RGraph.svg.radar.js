@@ -155,19 +155,16 @@
             marginTop:     35,
             marginBottom:  35,
             
-            backgroundGrid: true,
+            backgroundGrid:                 true,
             backgroundGridColor:            '#eee',
             backgroundGridRadialsCount:     null,
             backgroundGridConcentricsCount: 5,
             backgroundGridLinewidth:        1,
             backgroundGridPoly:             true,
 
-            colors: [
-                'red', 'black', 'orange', 'green', '#6ff', '#ccc',
-                'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'
-            ],
-            filled: false,
-            filledOpacity: 0.25,
+            colors:             RGraph.SVG.getColors(),
+            filled:             false,
+            filledOpacity:      0.25,
             filledAccumulative: true,
             
             textColor:  'black',
@@ -175,6 +172,11 @@
             textSize:   12,
             textBold:   false,
             textItalic: false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:       null,
 
             labels: [],
@@ -211,7 +213,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'mousemove',
@@ -226,10 +228,14 @@
             tooltipsFormattedKeyLabels:      [],
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:       null,
             tooltipsPointer:                 true,
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
@@ -242,22 +248,26 @@
             tickmarksFill: 'white',
             
             title: '',
-            titleX: null,
-            titleY: null,
-            titleHalign: 'center',
-            titleValign: null,
-            titleSize:   null,
-            titleColor:  null,
-            titleFont:   null,
-            titleBold:   true,
-            titleItalic: null,
+            titleX:         null,
+            titleY:         null,
+            titleOffsetx:   0,
+            titleOffsety:   0,
+            titleHalign:    'center',
+            titleValign:    null,
+            titleSize:      null,
+            titleColor:     null,
+            titleFont:      null,
+            titleBold:      true,
+            titleItalic:    null,
             
-            titleSubtitle: null,
-            titleSubtitleSize:   null,
-            titleSubtitleColor:  '#aaa',
-            titleSubtitleFont:   null,
-            titleSubtitleBold:   null,
-            titleSubtitleItalic: null,
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
             
             shadow:        false,
             shadowOffsetx: 2,
@@ -278,13 +288,12 @@
             keyLabelsItalic:  null,
             keyLabelsFont:    null,
             keyLabelsColor:   null,
+            keyColorShape:    'rect',
             
             clip:             null,
-            
+            responsive:       null,
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            events:           {}
         };
 
 

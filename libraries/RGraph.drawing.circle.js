@@ -84,8 +84,8 @@
             marginLeft:        35, // Used for clipping
             marginRight:       35, // Used for clipping
 
-            colorsStroke:      'rgba(0,0,0,0)',
-            colorsFill:        'red',
+            colorsStroke:      'transparent',
+            colorsFill:        RGraph.getColors()[0],
 
             shadow:            false,
             shadowColor:       'gray',
@@ -121,13 +121,11 @@
 
             text:              null,
 
-            clearto:           'rgba(0,0,0,0)',
+            clearto:           'transparent',
             
-            clip:              null,
-            
-            events:            {},
-            clip:              null,
-            
+            clip:                   null,
+            responsive:             null,
+            events:                 {},
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false

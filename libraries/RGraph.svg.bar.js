@@ -122,11 +122,15 @@
 
         this.properties =
         {
-            marginLeft:   35,
-            marginRight:  35,
-            marginTop:    35,
-            marginBottom: 35,
-            
+            marginLeft:         35,
+            marginRight:        35,
+            marginTop:          35,
+            marginBottom:       35,
+            marginInner:        3,
+            marginInnerGrouped: 2,
+            marginInnerLeft:    0,
+            marginInnerRight:   0,
+
             variant:                        null,
             variant3dOffsetx:               10,
             variant3dOffsety:               5,
@@ -158,23 +162,20 @@
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
+            backgroundBorder:           false,
+            backgroundBorderColor:      '#aaa',
+            backgroundBorderDashed:     false,
+            backgroundBorderDashed:     false,
+            backgroundBorderDashed:     null,
             
-            // 20 colors. If you need more you need to set the colors property
-            colors: [
-                'red', '#0f0', '#00f', '#ff0', '#0ff', '#0f0','pink','orange','gray','black',
-                'red', '#0f0', '#00f', '#ff0', '#0ff', '#0f0','pink','orange','gray','black'
-            ],
+            colors:               RGraph.SVG.getColors(),
             colorsSequential:     false,
             colorsStroke:         'transparent',
             
             errorbars:            null,
-            
-            marginInner:          3,
-            marginInnerGrouped:   2,
-            marginInnerLeft:      0,
-            marginInnerRight:     0,
 
             yaxis:                false,
+            yaxisPosition:        'left',
             yaxisLinewidth:       1,
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
@@ -270,6 +271,11 @@
             textSize:             12,
             textBold:             false,
             textItalic:           false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:                 null,
 
             linewidth:            1,
@@ -277,7 +283,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -305,6 +311,8 @@
             title:                '',
             titleX:               null,
             titleY:               null,
+            titleOffsetx:         0,
+            titleOffsety:         null,
             titleHalign:          'center',
             //titleValign:          null,
             titleSize:            null,
@@ -319,6 +327,8 @@
             titleSubtitleFont:    null,
             titleSubtitleBold:    null,
             titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
             
             shadow:               false,
             shadowOffsetx:        2,
@@ -344,11 +354,9 @@
             keyLabelsFont:    null,
             
             clip:             null,
-            
             zoom:             false,
-            
             events:           {},
-            clip:             null
+            responsive:       null
         };
 
         //

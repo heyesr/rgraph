@@ -80,7 +80,7 @@
             marginRight:           35, // Used for clipping
 
             colorsStroke:    'transparent',
-            colorsFill:      'red',
+            colorsFill:      RGraph.getColors()[0],
             
             shadow:           false,
             shadowColor:     'gray',
@@ -116,16 +116,14 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
             
-            clearto:   'transparent',
+            clearto:                    'transparent',
             
-            clip:      null,
-            
-            events:                     {},
             clip:                       null,
-            
-            scale:                  true,
-            scaleFactor:            2,
-            antialiasTranslate:     false
+            responsive:                 null,
+            events:                     {},
+            scale:                      true,
+            scaleFactor:                2,
+            antialiasTranslate:         false
         };
 
 

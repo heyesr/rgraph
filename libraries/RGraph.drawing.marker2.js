@@ -102,7 +102,7 @@
             shadowBlur:                 5,
 
             highlightStyle:             null,
-            highlightStroke:            'rgba(0,0,0,0)',
+            highlightStroke:            'transparent',
             highlightFill:              '#fcc',
             highlightFade:              true,
 
@@ -126,14 +126,14 @@
             tooltipsPositionStatic:     true,
 
             voffset:                    20,
+            
+            linewidth:                   2,
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
             
             clip:                       null,
-            
             events:                     {},
-            clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

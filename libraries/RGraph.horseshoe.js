@@ -98,7 +98,7 @@
             labelsCenterDecimals:                      0,
             labelsCenterPoint:                         '.',
             labelsCenterThousand:                      ',',
-            labelsCenterSpecific:                      '',
+            labelsCenterSpecific:                      null,
             labelsCenterSpecificFormattedDecimals:     0,
             labelsCenterSpecificFormattedPoint:        '.',
             labelsCenterSpecificFormattedThousand:     ',',
@@ -118,11 +118,11 @@
 
             adjustable:                           false,
 
-            clearto:                               'rgba(0,0,0,0)',
+            clearto:                               'transparent',
             
             events:                                {},
             clip:                                  null,
-
+            responsive:                            null,
             scale:                                 true,
             scaleFactor:                           2,
             antialiasTranslate:                    false

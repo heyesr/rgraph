@@ -145,10 +145,7 @@
             marginTop:     35,
             marginBottom:  35,
             
-            colors: [
-                '#f66', '#6f6', '#66f', '#ff6', '#6ff', '#ccc',
-                'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'
-            ],
+            colors:            RGraph.SVG.getColors(),
             colorsStroke:      'transparent',
             
             textColor: 'black',
@@ -156,6 +153,11 @@
             textSize: 12,
             textBold: false,
             textItalic: false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:       null,
             
             labels: [],
@@ -167,11 +169,29 @@
             labelsFormattedUnitsPre:  '',
             labelsFormattedUnitsPost: '',
 
+            labelsIngraph:            false,
+            labelsIngraphHalign:      'center',
+            labelsIngraphValign:      'center',
+            labelsIngraphFont:        null,
+            labelsIngraphSize:        null,
+            labelsIngraphItalic:      null,
+            labelsIngraphBold:        null,
+            labelsIngraphColor:       null,
+            labelsIngraphRadiusPos:   0.5,
+            labelsIngraphSpecific:    null,
+            labelsIngraphUnitsPre:    '',
+            labelsIngraphUnitsPost:   '',
+            labelsIngraphPoint:       '.',
+            labelsIngraphThousand:    ',',
+            labelsIngraphBackground:  null,
+            labelsIngraphFormatter: null,
+            labelsIngraphDecimals:  0,
+
             linewidth: 1,
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -184,12 +204,16 @@
             tooltipsFormattedKeyColors:      null,
             tooltipsFormattedKeyColorsShape: 'square',
             tooltipsFormattedKeyLabels:      [],
+            tooltipsFormattedListType:       null,
+            tooltipsFormattedListItems:      null,
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
             tooltipsPointer:                 true,
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             highlightStroke:            'transparent',
             highlightFill:              'rgba(255,255,255,0.7)',
@@ -201,6 +225,8 @@
             title:       '',
             titleX:      null,
             titleY:      null,
+            titleOffsetx: 0,
+            titleOffsety: 0,
             titleHalign: 'center',
             titleValign: null,
             titleSize:   null,
@@ -208,13 +234,14 @@
             titleFont:   null,
             titleBold:   true,
             titleItalic: null,
-            
-            titleSubtitle:       null,
-            titleSubtitleSize:   null,
-            titleSubtitleColor:  '#aaa',
-            titleSubtitleFont:   null,
-            titleSubtitleBold:   null,
-            titleSubtitleItalic: null,
+            titleSubtitle:        null,
+            titleSubtitleSize:    null,
+            titleSubtitleColor:   '#aaa',
+            titleSubtitleFont:    null,
+            titleSubtitleBold:    null,
+            titleSubtitleItalic:  null,
+            titleSubtitleOffsetx: 0,
+            titleSubtitleOffsety: 0,
             
             shadow: false,
             shadowOffsetx: 2,
@@ -239,13 +266,12 @@
             keyLabelsSize:    null,
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
+            keyColorShape:    'rect',
             
             clip:             null,
-            
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            responsive:       true,
+            events:           {}
         };
 
         //

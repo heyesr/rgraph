@@ -46,7 +46,7 @@
 
         this.properties =
         {
-            colors:                         ['#0c0','red','blue','yellow','pink','cyan','black','white','gray'],
+            colors:                         RGraph.getColors(),
             colorsStrokeInner:              'transparent',
             colorsStrokeOuter:              'black',
 
@@ -64,7 +64,6 @@
             marginInner:                    0,
 
 
-            //backgroundColor:                'Gradient(#ccc:#eee:#efefef)',
             backgroundColor:                '#efefef',
 
             shadow:                         false,
@@ -151,6 +150,7 @@
 
             annotatable:                    false,
             annotatableColor:               'black',
+            annotatableLinewidth:           1,
 
             arrows:                         false,
 
@@ -232,11 +232,11 @@
             corners:                             'round', // Can also be round
             cornersRoundRadius:                   5,
 
-            clearto:                        'rgba(0,0,0,0)',
+            clearto:                        'transparent',
             
             events:                         {},
             clip:                           null,
-            
+            responsive:                     null,
             scale:                          true,
             scaleFactor:                    2,
             antialiasTranslate:             false

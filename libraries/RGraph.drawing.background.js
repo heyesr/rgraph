@@ -64,10 +64,10 @@
         this.properties =
         {
             backgroundBarsCount:       null,
-            backgroundBarsColor1:      'rgba(0,0,0,0)',
-            backgroundBarsColor2:      'rgba(0,0,0,0)',
+            backgroundBarsColor1:      'transparent',
+            backgroundBarsColor2:      'transparent',
             backgroundGrid:            true,
-            backgroundGridColor:       '#ddd',
+            backgroundGridColor:       '#eee',
             backgroundGridLinewidth:   1,
             backgroundGridVlines:      true,
             backgroundGridHlines:      true,
@@ -86,13 +86,20 @@
             backgroundImageH:          null,
             backgroundImageAlign:      null,
             backgroundColor:           null,
+            backgroundBorder:           false,
+            backgroundBorderLinewidth:  1,
+            backgroundBorderColor:      '#aaa',
+            backgroundBorderDashed:     false,
+            backgroundBorderDotted:     false,
+            backgroundBorderDashArray:  null,
+
 
             marginLeft:                35,
             marginRight:               35,
             marginTop:                 35,
             marginBottom:              35,
 
-            textColor:                   'black', // Gradients aren't supported for this color
+            textColor:                   'black',
             textSize:                    12,
             textFont:                    'Arial, Verdana, sans-serif',
             textBold:                    false,
@@ -120,8 +127,10 @@
             tooltipsPointerOffsetx:     0,
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
+            tooltipsOffsetx:            0,
+            tooltipsOffsety:            0,
 
-            highlightStroke:   'rgba(0,0,0,0)',
+            highlightStroke:   'transparent',
             highlightFill:     'rgba(255,255,255,0.7)',
             highlightFade:     true,
 
@@ -169,13 +178,11 @@
             yaxisTitleY:      null,
             yaxisTitlePos:    null,
 
-            clearto:          'rgba(0,0,0,0)',
-            
-            clip:             null,
-            
-            events:           {},
-            clip:             null,
-            
+            clearto:          'transparent',
+
+            responsive:         null,
+            events:             {},
+            clip:               null,
             scale:              true,
             scaleFactor:        2,
             antialiasTranslate: false

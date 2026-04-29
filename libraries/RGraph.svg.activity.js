@@ -135,14 +135,14 @@
 
             backgroundColor:                    'black',
             backgroundGrid:                     false,
-            backgroundGridColor:                '#ddd',
+            backgroundGridColor:                '#eee',
             backgroundGridRadials:              true,
             backgroundGridRadialsCount:         8,
             backgroundRings:                    true,
             backgroundRingsColors:              null,
             backgroundRingsAlpha:               0.5,
 
-            colors:                             ['#F45B5B','#90EE7E','#2B908F','red','green','blue','yellow','pink'],
+            colors:                             RGraph.SVG.getColors(['#F45B5B','#90EE7E','#2B908F']),// Old colors: ['#F45B5B','#90EE7E','#2B908F','red','green','blue','yellow','pink'],
 
             icons:                                 null,
             iconsWidth:                            null,
@@ -152,9 +152,14 @@
             
             textFont:                              'Arial, Verdana, sans-serif',
             textSize:                              12,
-            textColor:                             '#aaa',
+            textColor:                             'black',
             textBold:                              false,
             textItalic:                            false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:                                  null,
 
             labelsCenter:                              false,
@@ -201,6 +206,8 @@
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
             tooltipsPersistent:              false,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
             tooltipsFormattedThousand:       ',',
             tooltipsFormattedPoint:          '.',
             tooltipsFormattedDecimals:       0,
@@ -213,18 +220,20 @@
             tooltipsFormattedTableData:      null,
             tooltipsPointer:                 true,
             tooltipsPositionStatic:          true,
+            tooltipsPointerOffsetx:          0,
+            tooltipsPointerOffsety:          0,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
 
-            highlightStroke:                    'rgba(0,0,0,0)',
+            highlightStroke:                    'transparent',
             highlightFill:                      'rgba(255,255,255,0.7)',
             highlightLinewidth:                 1,
             highlightFade:                      true,
             
             clip:                               null,
-            
+            responsive:                         null,
             zoom:                               false,
-            
-            events:                             {},
-            clip:                               null
+            events:                             {}
         };
 
         //

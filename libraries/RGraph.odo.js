@@ -48,13 +48,14 @@
         this.properties =
         {
             backgroundBorder:          'black',
-            backgroundColor:           '#fff',
+            backgroundColor:           'white',
             backgroundLinesColor:      '#ddd',
             
             centerx:                   null,
             centery:                   null,
             radius:                    null,
 
+            labels:                    null,
             labelsMargin:              35,
             labelsFont:                null,
             labelsSize:                null,
@@ -95,10 +96,10 @@
             text:                        null,
 
             colorsGreenMax:            max * 0.75,
-            colorsGreenColor:          '#0c0',
-            colorsYellowColor:         '#cc0',
+            colorsGreenColor:          '#00cc0088',
+            colorsYellowColor:         '#ffff0088',
             colorsRedMin:              max * 0.9,
-            colorsRedColor:            '#c00',
+            colorsRedColor:            '#ff000088',
 
             marginLeft:                35,
             marginRight:               35,
@@ -143,6 +144,7 @@
             
             annotatable:               false,
             annotatableColor:          'black',
+            annotatableLinewidth:      1,
             
             scaleDecimals:             0,
             scalePoint:                '.',
@@ -159,8 +161,6 @@
             tickmarks:                 false,
             tickmarksHighlighted:      true,
             tickmarksLargeColor:       '#999',
-
-            labels:                    null,
 
             key:                       null,
             keyBackground:             'white',
@@ -199,7 +199,7 @@
             
             events:                     {},
             clip:                       null,
-
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

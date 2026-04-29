@@ -201,6 +201,7 @@
 
 
             colors:                     [], // This is used internally for the tooltip key
+            colorsDefault:              RGraph.getColors()[0],
             colorsBubbleGraduated:      false,
             colorsBubbleStroke:         null,
             
@@ -241,6 +242,18 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
+            crosshairs:                 false,
+            crosshairsColor:            '#333',
+            crosshairsLinewidth:        1,
+            crosshairsHline:            true,
+            crosshairsVline:            true,
+            crosshairsSnapToScale:      false,
+            crosshairsCoords:           false,
+            crosshairsCoordsFixed:      false,
+            crosshairsCoordsLabelsX:    'X',
+            crosshairsCoordsLabelsY:    'Y',
+            crosshairsCoordsFormatterX: null,
+            crosshairsCoordsFormatterY: null,
 
             xaxis:                      false,
             xaxisLinewidth:             1,
@@ -393,8 +406,6 @@
             labelsAboveOffsety:         0,
             
             contextmenu:                null,
-            
-            colorsDefault:              'black',
 
             crosshairs:                 false,
             crosshairsHline:            true,
@@ -430,7 +441,7 @@
             line:                       false,
             lineLinewidth:              1,
             lineColors:                 ['green', 'red','blue','orange','pink','brown','black','gray'],
-            lineShadowColor:            'rgba(0,0,0,0)',
+            lineShadowColor:            'transparent',
             lineShadowBlur:             2,
             lineShadowOffsetx:          3,
             lineShadowOffsety:          3,
@@ -501,7 +512,7 @@
             marimekkoLinewidth:               10,
             marimekkoColors:                  ['#faa', '#afa', '#aaf', '#ffa', '#faf', '#aff'],
             marimekkoColorsSequential:        false,
-            marimekkoColorsStroke:            'white',
+            marimekkoColorsStroke:            'transparent',
             marimekkoLabels:                  null,
             marimekkoLabelsColor:             null,
             marimekkoLabelsSize:              null,
@@ -546,7 +557,7 @@
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

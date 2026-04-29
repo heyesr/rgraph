@@ -11738,6 +11738,48 @@
 
 
     //
+    // Returns default colors that are used in many of the charts.
+    //
+    // @param  array colors You can pass in your own colors to
+    //               this function if you wish and those will
+    //               be the ones that are used.
+    // @return array The array of colors.
+    //
+    RGraph.getColors = function (colors = [])
+    {
+        var defaultColors = [
+            '#ff000088','#00ff0088','#0000ff88',
+            '#ffc0cb88','#ffA50088','#00ffff88',
+            '#00000088','#ffff6688','#00800088',
+            '#ff00ff88','#ffff0088','#aaffaa88',
+            '#ffaaaa88','#aaaaff88','#aaffff88',
+            '#ffffaa88','#ffaaff88','#00ffff88',
+            '#964B0088','#80808088','#00000088',
+            '#ffc0cb88','#aaffaa88','#ffaaaa88',
+            '#aaaaff88','#aaffff88','#ffffaa88',
+            '#ffaaff88','#00ffff88','#964b0088',
+            '#80808088','#00000088','#ffc0cb88'
+        ];
+        
+        if (colors.length) {
+            // Nada
+        } else {
+            for (var i=0; i<5; ++i) {
+                colors = colors.concat(defaultColors);
+            }
+        }
+
+        return colors;
+    };
+
+
+
+
+
+
+
+
+    //
     // A tree object. You can use to represent the tree
     // structure.
     //

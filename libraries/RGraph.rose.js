@@ -72,7 +72,7 @@
             
             linewidth:                      1,
             
-            colors:                         ['rgba(255,0,0,0.5)', 'rgba(255,255,0,0.5)', 'rgba(0,255,255,0.5)', 'rgb(0,255,0)', 'gray', 'blue', 'rgb(255,128,255)','green', 'pink', 'gray', 'aqua'],
+            colors:                         RGraph.getColors(),
             colorsSequential:               false,
             colorsAlpha:                    null,
             colorsStroke:                   'transparent',
@@ -163,7 +163,7 @@
             keyLinewidth:                  1,
             keyColors:                     null,
             keyInteractive:                false,
-            keyinteractiveKeyHighlightChartLinewidth: 20,
+            keyinteractiveHighlightChartLinewidth: 20,
             keyInteractiveHighlightChartStroke: 'black',
             keyInteractiveHighlightChartFill: 'rgba(255,255,255,0.7)',
             keyInteractiveHighlightLabel:  'rgba(255,0,0,0.2)',
@@ -185,7 +185,7 @@
             contextmenu:                   null,
 
             tooltips:                      null,
-            tooltipsEvent:                 'onclick',
+            tooltipsEvent:                 'click',
             tooltipsEffect:                'slide',
             tooltipsCssClass:              'RGraph_tooltip',
             tooltipsCss:                   null,
@@ -209,7 +209,7 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:               'rgba(0,0,0,0)',
+            highlightStroke:               'transparent',
             highlightFill:                 'rgba(255,255,255,0.7)',
             highlightFade:                 true,
 
@@ -239,13 +239,13 @@
             segmentHighlight:              false,
             segmentHighlightCount:         null,
             segmentHighlightFill:          'rgba(0,255,0,0.5)',
-            segmentHighlightStroke:        'rgba(0,0,0,0)',
+            segmentHighlightStroke:        'transparent',
 
             clearto:                       'transparent',
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

@@ -172,16 +172,14 @@
             
             xaxisPosition:              'bottom',
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
             
             clip:                       null,
-            
+            responsive:                 null,
             events:                     {},
-            clip:                       null,
-            
-            scale:                  true,
-            scaleFactor:            2,
-            antialiasTranslate:     false
+            scale:                      true,
+            scaleFactor:                2,
+            antialiasTranslate:         false
         };
 
 

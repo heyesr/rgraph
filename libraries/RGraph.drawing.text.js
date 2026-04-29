@@ -135,16 +135,14 @@
             shadowOffsety:                 2,
             shadowBlur:                    3,
 
-            clearto:                        'rgba(0,0,0,0)',
+            clearto:                        'transparent',
             
             clip:                           null,
-            
-            events:                     {},
-            clip:                       null,
-            
-            scale:                      true,
-            scaleFactor:                2,
-            antialiasTranslate:         false
+            responsive:                     null,
+            events:                         {},
+            scale:                          true,
+            scaleFactor:                    2,
+            antialiasTranslate:             false
         };
 
 

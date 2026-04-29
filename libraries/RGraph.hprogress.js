@@ -50,11 +50,11 @@
 
         this.properties =
         {
-            colors:                             ['red','green','yellow','pink','cyan','black','white','gray'],
+            colors:                             RGraph.getColors(),
             colorsStrokeInner:                  'transparent',
             colorsStrokeOuter:                  'transparent',
 
-            tickmarksColor:                      '#999',
+            tickmarksColor:                     '#999',
             tickmarksInnerCount:                0,
             tickmarksOuterCount:                0,
 
@@ -64,6 +64,7 @@
             marginRight:                        35,
             marginTop:                          35,
             marginBottom:                       35,
+            marginInner:                        0,
 
             shadow:                             false,
             shadowColor:                        'rgba(0,0,0,0.5)',
@@ -147,8 +148,6 @@
 
             arrows:                             false,
 
-            marginInner:                        0,
-
             labelsPosition:                     'bottom',
             labelsSpecific:                     null,
             labelsSpecificFormattedDecimals:    0,
@@ -182,6 +181,7 @@
             labelsInnerScaleThousand:           null,
             labelsInnerUnitsPre:                '',
             labelsInnerUnitsPost:               '',
+            labelsInnerPoint:                   null,
             labelsInnerSpecific:                null,
 
             key:                                null,
@@ -231,7 +231,7 @@
             
             events:                             {},
             clip:                               null,
-            
+            responsive:                         null,
             scale:                              true,
             scaleFactor:                        2,
             antialiasTranslate:                 false

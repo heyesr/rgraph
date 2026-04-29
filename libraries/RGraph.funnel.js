@@ -52,7 +52,7 @@
             backgroundBarsColors:   null,
 
             colorsStroke:           'transparent',
-            colors:                 ['red','green','gray','black','pink','orange','blue','yellow','green','red'],
+            colors:                 RGraph.getColors(),
 
             marginLeft:           35,
             marginRight:          35,
@@ -189,11 +189,12 @@
 
             effectGrowMultiplier: 1,
 
-            clearto:   'transparent',
+            clearto:    'transparent',
+            responsive: null,
             
-            events:    {},
-            clip:      null,
-            
+            events:                 {},
+            clip:                   null,
+            responsive:             null,
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false

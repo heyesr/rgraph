@@ -59,7 +59,7 @@
             centery:                    null,            
             radius:                     null,
 
-            colors:                      ['red'],
+            colors:                      RGraph.getColors(),
             
             bulbColor:                   'black',
             bulbRadius:                  20,
@@ -86,6 +86,7 @@
             
             annotatable:                 false,
             annotatableColor:            'black',
+            annotatableLinewidth:        1,
             
             adjustable:                  false,
             
@@ -114,11 +115,11 @@
             scaleThousand:               ',',
             scaleLabelsCount:            5,
             
-            clearto:                     'rgba(0,0,0,0)',
+            clearto:                     'transparent',
             
             events:                      {},
             clip:                        null,
-            
+            responsive:                  null,
             scale:                       true,
             scaleFactor:                 2,
             antialiasTranslate:          false
@@ -369,22 +370,26 @@
             
             
             //
-            // You can now specify chart.centerx, chart.centery and chart.radius
+            // You can now specify centerx, centery and radius.
             //
             if (typeof properties.centerx === 'number') this.centerx = properties.centerx;
             if (typeof properties.centery === 'number') this.centery = properties.centery;
             if (typeof properties.radius  === 'number') this.radius  = properties.radius;
 
             //
-            // Allow the centerx/centery/radius to be a plus/minus
+            // Allow the centerx/centery/radius/bulbRadius to be a
+            // plus or minus number.
             //
             //
             var scaleFactor = RGraph.getScaleFactor(this);
 
-            if (typeof properties.radius  === 'string' && properties.radius.match(/^\+|-\d+$/) )  this.radius  += parseFloat(properties.radius) * scaleFactor;
-            if (typeof properties.centerx === 'string' && properties.centerx.match(/^\+|-\d+$/) ) this.centerx += parseFloat(properties.centerx) * scaleFactor;
-            if (typeof properties.centery === 'string' && properties.centery.match(/^\+|-\d+$/) ) this.centery += parseFloat(properties.centery) * scaleFactor;
-    
+            if (typeof properties.radius     === 'string' && properties.radius.match(/^\+|-\d+$/) )     this.radius           += parseFloat(properties.radius) * scaleFactor;
+            if (typeof properties.centerx    === 'string' && properties.centerx.match(/^\+|-\d+$/) )    this.centerx          += parseFloat(properties.centerx) * scaleFactor;
+            if (typeof properties.centery    === 'string' && properties.centery.match(/^\+|-\d+$/) )    this.centery          += parseFloat(properties.centery) * scaleFactor;
+
+            if (typeof properties.bulbRadius === 'string' && properties.bulbRadius.match(/^\+|-\d+$/) ) {
+                properties.bulbRadius  = Number(20 + parseFloat(properties.bulbRadius));
+            }
     
             //
             // Parse the colors. This allows for simple gradient syntax
@@ -1057,6 +1062,7 @@
             if (this.original_colors.length === 0) {
                 this.original_colors.colors      = RGraph.arrayClone(properties.colors);
                 this.original_colors.needleColor = RGraph.arrayClone(properties.needleColor);
+                this.original_colors.bulbColor   = RGraph.arrayClone(properties.bulbColor);
             }
 
             var colors = properties.colors;
@@ -1066,6 +1072,7 @@
             }
             
             properties.needleColor = this.parseSingleColorForRadialGradient(properties.needleColor);
+            properties.bulbColor   = this.parseSingleColorForRadialGradient(properties.bulbColor);
         };
 
 

@@ -142,6 +142,11 @@
             textColor:                             'gray',
             textBold:                              false,
             textItalic:                            false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:                                  null,
 
             labelsCenter:                           true,
@@ -170,10 +175,8 @@
             
             effectRoundrobinMultiplier:         1,
 
-            clip: null,
-            
-            zoom:             false,
-            
+            responsive:       null,
+            zoom:             false,            
             events:           {},
             clip:             null
         };

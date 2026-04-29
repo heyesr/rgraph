@@ -38,6 +38,7 @@
         zIndex:     3,
         borderRadius: '5px',
         boxShadow:  'rgba(96,96,96,0.5) 0 0 5px',
+        //opacity: 0.25, // Leave this unset!!
         transition: 'left ease-out .25s, top ease-out .25s'
     };
 
@@ -123,6 +124,9 @@ opt.object.removeHighlight();
                     }
                 }
             }
+            
+            //
+
 
 
 
@@ -804,6 +808,25 @@ opt.object.removeHighlight();
 
         // Add the tooltip to the document
         document.body.appendChild(tooltipObj);
+
+        // If the effect is fade - then fade the tooltip in.
+        // This is done by setting the opacity to 1 and letting
+        // the CSS transition do the hard work.
+        if (obj.properties.tooltipsEffect === 'fade' && !RGraph.SVG.REG.get('tooltip')) {
+        
+            tooltipObj.style.opacity = 0.5;
+
+            // If the tooltipsEffect is set to fade then set the
+            // CSS transition to one that facilitates the fade.
+            tooltipObj.style.transition = 'opacity ease-out .25s';
+
+            setTimeout(function ()
+            {
+                tooltipObj.style.opacity = 1;
+            }, 5);
+        } else {
+            //tooltipObj.style.opacity = 0.1;
+        }
 
 
 

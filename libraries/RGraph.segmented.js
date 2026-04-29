@@ -122,7 +122,7 @@
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false

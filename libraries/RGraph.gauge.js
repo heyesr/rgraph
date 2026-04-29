@@ -127,21 +127,19 @@
             scaleThousand:             ',',
             scaleUnitsPre:            '',
             scaleUnitsPost:           '',
-            scalePoint:                '.',
-            scaleThousand:             ',',
             
             labelsCount:                      5,
             labelsCentered:                   false,
             labelsOffsetRadius:              0,
             labelsOffsetAngle:               0,
+            labelsOffsetx:                    0,
+            labelsOffsety:                    0,
             labelsSpecific:                   null,
             labelsSpecificFormattedDecimals: 0,
             labelsSpecificFormattedPoint: '.',
             labelsSpecificFormattedThousand: ',',
             labelsSpecificFormattedUnitsPre: '',
             labelsSpecificFormattedUnitsPost: '',
-            labelsOffsetx:                    0,
-            labelsOffsety:                    0,
             labelsFont:                       null,
             labelsSize:                       null,
             labelsColor:                      null,
@@ -166,12 +164,12 @@
 
 
             colorsRedStart:      0.9 * this.max,
-            colorsRedColor:      '#DC3912',
+            colorsRedColor:      '#dc3912',
             colorsRedWidth:      5,
-            colorsYellowColor:   '#FF9900',
+            colorsYellowColor:   '#ff9900',
             colorsYellowWidth:   5,
             colorsGreenEnd:      0.7 * this.max,
-            colorsGreenColor:    'rgba(0,0,0,0)',
+            colorsGreenColor:    'transparent',
             colorsGreenWidth:    5,
             colorsRanges:        null,
 
@@ -211,9 +209,9 @@
 
             clearto:   'transparent',
             
-            events:    {},
-            clip:      null,
-            
+            events:                 {},
+            clip:                   null,
+            responsive:             null,
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false

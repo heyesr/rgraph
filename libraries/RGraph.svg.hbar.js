@@ -138,10 +138,14 @@
         {
             marginLeft:      100,
             marginRight:     35,
-            marginRightAuto: null,
             marginTop:       35,
             marginBottom:    35,
             marginLeftAuto:  true,
+            marginRightAuto: null,
+            marginInner:              3,
+            marginInnerGrouped:       2,
+            marginInnerTop:           0,
+            marginInnerBottom:        0,
 
             backgroundColor:            null,
             backgroundImage:            null,
@@ -163,19 +167,17 @@
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
-            
-            // 20 colors. If you need more you need to set the colors property
-            colors: [
-                'red', '#0f0', '#00f', '#ff0', '#0ff', '#0f0','pink','orange','gray','black',
-                'red', '#0f0', '#00f', '#ff0', '#0ff', '#0f0','pink','orange','gray','black'
-            ],
-            colorsSequential:     false,
+            backgroundBorder:           false,
+            backgroundBorderLinewidth:  1,
+            backgroundBorderColor:      '#aaa',
+            backgroundBorderDashed:     false,
+            backgroundBorderDotted:     false,
+            backgroundBorderDashArray:  null,
+
+            colors:                RGraph.SVG.getColors(),
+            colorsSequential:      false,
             colorsStroke:          'transparent',
 
-            marginInner:              3,
-            marginInnerGrouped:       2,
-            marginInnerTop:           0,
-            marginInnerBottom:        0,
 
             xaxis:                false,
             xaxisLinewidth:       1,
@@ -191,7 +193,7 @@
             xaxisScaleUnitsPost:       '',
             xaxisScaleStrict:          false,
             xaxisScaleDecimals:        0,
-            xaxisScaleThousand:           '.',
+            xaxisScaleThousand:        '.',
             xaxisScaleThousand:        ',',
             xaxisScaleRound:           false,
             xaxisScaleMax:             null,
@@ -218,16 +220,17 @@
 
             yaxis:                false,
             yaxisLinewidth:       1,
+            yaaxisPosition:       'left',
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 3,
             yaxisTickmarksCount: 5,
+            yaxisScale:           false,
+            yaxisColor:           'black',
             yaxisLabels:          [],
             yaxisLabelsPosition:  'section',
             yaxisLabelsOffsetx:   0,
             yaxisLabelsOffsety:   0,
-            yaxisScale:           false,
             yaxisLabelsPositionSectionTickmarksCount: null,
-            yaxisColor:           'black',
             yaxisLabelsFont:      null,
             yaxisLabelsSize:      null,
             yaxisLabelsColor:     null,
@@ -257,6 +260,11 @@
             textSize:             12,
             textBold:             false,
             textItalic:           false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:                 null,
             
             labelsAbove:                  false,
@@ -304,7 +312,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -323,6 +331,10 @@
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
+            tooltipsOffsetx:                0,
+            tooltipsOffsety:                0,
 
             highlightStroke:      'transparent',
             highlightFill:        'rgba(255,255,255,0.7)',
@@ -357,6 +369,7 @@
 
             key:              null,
             keyColors:        null,
+            keyColorShape:    'rect',
             keyOffsetx:       0,
             keyOffsety:       0,
             keyLabelsOffsetx: 0,
@@ -374,6 +387,7 @@
             lineTickmarksLinewidth:         2,
             lineTickmarksStyle:             null,
             lineTickmarksSize:              5,
+            lineTickmarksDrawNonNull:       false,
             lineColor:                      'black',
             lineShadow:                     false,
             lineShadowColor:               '#666',
@@ -381,7 +395,6 @@
             lineShadowOffsetx:              2,
             lineShadowOffsety:              2,
             lineSpline:                     false,
-            lineTickmarksDrawNonNull:       false,
 
             variant:                        null,
             variantDumbbellLinewidth:       9,
@@ -392,11 +405,10 @@
             variantDumbbellEndRightRadius:  null,
 
             clip:                           null,
-            
+            responsive:                     null,
             zoom:                           false,
-            
             events:                         {},
-            clip:                           null
+            verticalLines:                  null
         };
 
 

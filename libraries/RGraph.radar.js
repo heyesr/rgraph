@@ -88,7 +88,7 @@
             linewidth:             2,
 
             colorsStroke:           'black',
-            colors:                 ['red','#0ff','red', 'green', 'blue', 'pink', 'aqua','brown','orange','grey'],
+            colors:                 RGraph.getColors(),
             colorsAlpha:            0.5,
             circle:                 0,
 
@@ -117,7 +117,7 @@
             labelsAxesColor:      null,
             labelsAxesBold:       null,
             labelsAxesItalic:     null,
-            labelsAxesBoxed:      null, // This defaults to true - but that's set in the Draw() method
+            labelsAxesBoxed:      null,
             labelsAxesBoxedZero: true,
             labelsAxesBoxedBackground: 'rgba(255,255,255,0.7)',
             labelsAxesSpecific:   null,
@@ -245,14 +245,11 @@
 
             accumulative:           false,
 
-            radius:                 null,
-
             centerx:              null,
             centery:              null,
             radius:               null,
 
             xaxisTickmarksCount:  5,
-
             yaxisTickmarksCount:  5,
 
             tickmarks:           false,
@@ -274,7 +271,7 @@
             
             events:              {},
             clip:                null,
-            
+            responsive:          null,
             scale:               true,
             scaleFactor:         2,
             antialiasTranslate:         false

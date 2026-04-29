@@ -107,7 +107,7 @@
             radius:                                 null,
 
             colors:                                 [], // This is used internally for the key
-            colorsDefault:                          'black',
+            colorsDefault:                          RGraph.getColors()[0],
 
             marginLeft:                             35,
             marginRight:                            35,
@@ -205,7 +205,7 @@
             contextmenu:                            null,
 
             tooltips:                               null,
-            tooltipsEvent:                          'onmousemove',
+            tooltipsEvent:                          'mousemove',
             tooltipsEffect:                         'slide',
             tooltipsCssClass:                       'RGraph_tooltip',
             tooltipsCss:                            null,
@@ -236,8 +236,8 @@
             annotatableLinewidth:                   1,
 
             scaleMax:                               null,
-            scaleMin:                               0, // NB: Not fully implemented
-            scaleDecimals:                          null,
+            scaleMin:                               0,
+            scaleDecimals:                          0,
             scalePoint:                             '.',
             scaleThousand:                          ',',
             scaleRound:                             false,
@@ -276,7 +276,7 @@
             
             events:                                 {},
             clip:                                   null,
-            
+            responsive:                             null,
             scale:                                  true,
             scaleFactor:                            2,
             antialiasTranslate:                     false

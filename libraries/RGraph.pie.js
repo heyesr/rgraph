@@ -69,7 +69,7 @@
             centerxAdjust:                  0,
             centeryAdjust:                  0,
 
-            colors:                         ['red', '#ccc', '#cfc', 'blue', 'pink', 'yellow', 'black', 'orange', 'cyan', 'purple', '#78CAEA', '#E284E9', 'white', 'blue', '#9E7BF6'],
+            colors:                         RGraph.getColors(),
             colorsStroke:                   'transparent',
 
             linewidth:                      3,
@@ -86,11 +86,13 @@
             labelsBold:                     null,
             labelsItalic:                   null,
             labelsRadiusOffset:             0,
+            
             labelsSticks:                   false,
             labelsSticksLength:             7,
             labelsSticksColors:             null,
             labelsSticksLinewidth:          1,
             labelsSticksHlength:            5,
+            
             labelsList:                     true,
             labelsListLeftOffsetx:          0,
             labelsListLeftOffsety:          0,
@@ -104,8 +106,8 @@
             labelsIngraphBold:              null,
             labelsIngraphItalic:            null,
             labelsIngraphBounding:          true,
-            labelsIngraphBoundingFill:      'rgba(255,255,255,0.85)',
-            labelsIngraphBoundingStroke:    'rgba(0,0,0,0)',
+            labelsIngraphBoundingFill:      'white',
+            labelsIngraphBoundingStroke:    'transparent',
             labelsIngraphSpecific:          null,
             labelsIngraphSpecificFormattedDecimals:  0,
             labelsIngraphSpecificFormattedPoint:     '.',
@@ -278,6 +280,7 @@
 
             annotatable:                    false,
             annotatableColor:               'black',
+            annotatableLinewidth:           1,
 
             variant:                        'pie',
             variantDonutWidth:              null,
@@ -296,11 +299,10 @@
             clearto:                        'transparent',
             eventsEnabled:                  true,
             
-            clip:                           null,
-            
+            clip:                       null,
+            responsive:                 null,
             events:                     {},
             clip:                       null,
-            
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false
@@ -474,6 +476,8 @@
                 // Accommodate some BC
                 if (name.toLowerCase() === 'labelsoffsetradius') { name = 'labelsRadiusOffset'; }
                 if (name.toLowerCase() === 'labelsoffsetr')      { name = 'labelsRadiusOffset'; }
+                if (name.toLowerCase() === 'centerxoffset') {name = 'centerxAdjust';}
+                if (name.toLowerCase() === 'centeryoffset') {name = 'centeryAdjust';}
             }
             
             // Set the colorsParsed flag to false if the colors

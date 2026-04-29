@@ -163,24 +163,27 @@
             amargin:       '3deg',
             
             backgroundGrid: true,
-            backgroundGridColor:            '#ddd',
+            backgroundGridColor:            '#eee',
             backgroundGridRadialsCount:     0,
             backgroundGridRadialsAngleOffset: 0,
             backgroundGridConcentricsCount: 5,
             backgroundGridLinewidth:        1,
 
-            colorsStroke: 'transparent',
-            colors: [
-                'red', 'black', 'orange', 'green', '#6ff', '#ccc',
-                'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'
-            ],
-            colorsOpacity: 1,
+            colorsStroke:       'transparent',
+            colors:             RGraph.SVG.getColors(),
+            colorsOpacity:      1,
+            colorsSequential:   false,
             
             textColor:  'black',
             textFont:   'Arial, Verdana, sans-serif',
             textSize:   12,
             textBold:   false,
             textItalic: false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:       null,
 
             labels:       [],
@@ -218,7 +221,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -231,46 +234,60 @@
             tooltipsFormattedKeyColors:      null,
             tooltipsFormattedKeyColorsShape: 'square',
             tooltipsFormattedKeyLabels:      [],
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
             tooltipsPointer:                 true,
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
             highlightLinewidth: 1,
             highlightFade:      true,
             
-            title: '',
-            titleX: null,
-            titleY: null,
-            titleHalign: 'center',
-            titleValign: null,
-            titleSize:   null,
-            titleColor:  null,
-            titleFont:   null,
-            titleBold:   true,
-            titleItalic: null,
+            title:          '',
+            titleX:         null,
+            titleY:         null,
+            titleOffsetx:   0,
+            titleOffsety:   0,
+            titleHalign:    'center',
+            titleValign:    null,
+            titleSize:      null,
+            titleColor:     null,
+            titleFont:      null,
+            titleBold:      true,
+            titleItalic:    null,
             
-            titleSubtitle: null,
-            titleSubtitleSize:   null,
-            titleSubtitleColor:  '#aaa',
-            titleSubtitleFont:   null,
-            titleSubtitleBold:   null,
-            titleSubtitleItalic: null,
+            titleSubtitle:          null,
+            titleSubtitleSize:      null,
+            titleSubtitleColor:     '#aaa',
+            titleSubtitleFont:      null,
+            titleSubtitleBold:      null,
+            titleSubtitleItalic:    null,
+            titleSubtitleOffsetx:   0,
+            titleSubtitleOffsety:   0,
 
-            shadow:        false,
-            shadowOffsetx: 2,
-            shadowOffsety: 2,
-            shadowBlur:    2,
-            shadowColor:   'rgba(0,0,0,0.25)',
+            // 28th April 2026
+            //
+            // Shadow support appears to have been removed from the
+            // SVG Rose library
+            //
+            //shadow:        false,
+            //shadowOffsetx: 2,
+            //shadowOffsety: 2,
+            //shadowBlur:    2,
+            //shadowColor:   'rgba(0,0,0,0.25)',
 
             exploded: 0,
 
             key:            null,
             keyColors:      null,
+            keyColorShape:  'rect',
             keyOffsetx:     0,
             keyOffsety:     0,
             keyLabelsOffsetx: 0,
@@ -288,12 +305,11 @@
             effectGrowMultiplier:       1,// Do not delete this
             effectRoundrobinMultiplier: 1, // Do not delete this
             
-            clip: null,
-            
+            clip:             null,
+            responsive:       null,
+            responsive:       null,
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            events:           {}
         };
 
 

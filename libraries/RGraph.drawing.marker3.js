@@ -93,44 +93,42 @@
             marginLeft:            35, // Used for clipping
             marginRight:           35, // Used for clipping
 
-            colorsFill:                  'black',
+            colorsFill:                  RGraph.getColors()[0],
 
             delay:                       50,
 
-            highlightFill:               'rgba(255,0,0,1.0)',
+            highlightFill:               'rgba(255,255,255,0.7)',
             highlightFade:               true,
 
-            tooltips:                   null,
-            tooltipsCssClass:           'RGraph_tooltip',
-            tooltipsCss:                null,
-            tooltipsHighlight:          true,
-            tooltipsEffect:             'slide',
-            tooltipsEvent:              'onclick',
-            tooltipsPersistent:         false,
-            tooltipsFormattedPoint:     '.',
-            tooltipsFormattedThousand:  ',',
-            tooltipsFormattedDecimals:  0,
-            tooltipsFormattedUnitsPre:  '',
-            tooltipsFormattedUnitsPost: '',
-            tooltipsFormattedListType:  'ul',
-            tooltipsFormattedListItems: null,
-            tooltipsPointer:            true,
-            tooltipsPointerOffsetx:     0,
-            tooltipsPointerOffsety:     0,
-            tooltipsPositionStatic:     true,
+            //tooltips:                   null,
+            //tooltipsCssClass:           'RGraph_tooltip',
+            //tooltipsCss:                null,
+            //tooltipsHighlight:          true,
+            //tooltipsEffect:             'slide',
+            //tooltipsEvent:              'onclick',
+            //tooltipsPersistent:         false,
+            //tooltipsFormattedPoint:     '.',
+            //tooltipsFormattedThousand:  ',',
+            //tooltipsFormattedDecimals:  0,
+            //tooltipsFormattedUnitsPre:  '',
+            //tooltipsFormattedUnitsPost: '',
+            //tooltipsFormattedListType:  'ul',
+            //tooltipsFormattedListItems: null,
+            //tooltipsPointer:            true,
+            //tooltipsPointerOffsetx:     0,
+            //tooltipsPointerOffsety:     0,
+            //tooltipsPositionStatic:     true,
 
             textAccessible:              false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
             text:                        null,
 
-            clearto:                     'rgba(0,0,0,0)',
+            clearto:                     'transparent',
             
             clip:                        null,
-            
-            events:                     {},
-            clip:                       null,
-            
+            responsive:                  null,
+            events:                      {},
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

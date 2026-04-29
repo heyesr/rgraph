@@ -52,7 +52,7 @@
         // Various config type stuff
         this.properties =
         {
-            backgroundImageUrl:     			null,
+            backgroundImageUrl:     		    null,
             backgroundImageOffsetx: 			0,
             backgroundImageOffsety: 			0,
             backgroundImageStretch: 			true,
@@ -105,7 +105,7 @@
             labelsValueUnitsPost:        	'',
             labelsValueBackground:        	true,
             labelsValueBackgroundFill:   	'rgba(255,255,255,0.75)',
-            labelsValueBackgroundStroke: 	'rgba(0,0,0,0)',
+            labelsValueBackgroundStroke: 	'transparent',
             labelsValueSpecific:          	null,
             labelsValueAccessible:        	false,
             labelsValueOffsetx:             0,
@@ -134,13 +134,13 @@
 
             colorsGreenStart:            		((this.max - this.min) * 0.35) + this.min,
             colorsGreenEnd:              		this.max,
-            colorsGreenColor:            		'#0c0',
+            colorsGreenColor:            		'#00cc0088',
             colorsYellowStart:           		((this.max - this.min) * 0.1) + this.min,
             colorsYellowEnd:             		((this.max - this.min) * 0.35) + this.min,
-            colorsYellowColor:           		'yellow',
+            colorsYellowColor:           		'#ffff0088',
             colorsRedStart:              		this.min,
             colorsRedEnd:                		((this.max - this.min) * 0.1) + this.min,
-            colorsRedColor:              		'red',
+            colorsRedColor:              		'#ff000088',
             colorsRanges:          				null,
 
             contextmenu:            			null,
@@ -195,7 +195,7 @@
             
             events:                             {},
             clip:                               null,
-            
+            responsive:                         null,
             scale:                              true,
             scaleFactor:                        2,
             antialiasTranslate:                 false

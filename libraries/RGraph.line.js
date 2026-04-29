@@ -60,8 +60,8 @@
         this.properties =
         {
             backgroundBarsCount:        null,
-            backgroundBarsColor1:       'rgba(0,0,0,0)',
-            backgroundBarsColor2:       'rgba(0,0,0,0)',
+            backgroundBarsColor1:       'transparent',
+            backgroundBarsColor2:       'transparent',
             backgroundGrid:             true,
             backgroundGridLinewidth:    1,
             backgroundGridHsize:        25,
@@ -93,7 +93,7 @@
             backgroundBorderDotted:     false,
             backgroundBorderDashArray:  null,
 
-            xaxis:                   false,
+            xaxis:                   false, 
             xaxisLinewidth:          1,
             xaxisColor:              'black',
             xaxisTickmarks:          true,
@@ -182,7 +182,7 @@
             yaxisTitleAccessible:     null,
             
             labelsAbove:                false,
-            labelsAboveDecimals:        null,
+            labelsAboveDecimals:        0,
             labelsAboveSize:            null,
             labelsAboveColor:           null,
             labelsAboveFont:            null,
@@ -201,7 +201,7 @@
             linecap:                    'round',
             linejoin:                   'round',
 
-            colors:                     ['red', '#0f0', '#00f', '#f0f', '#ff0', '#0ff','green','pink','blue','black'],
+            colors:                     RGraph.getColors(),
             
             tickmarksStyle:             'none',
             tickmarksLinewidth:         null,
@@ -293,7 +293,7 @@
 
             highlightStyle:             null,
             highlightStroke:            'gray',
-            highlightFill:              'white',
+            highlightFill:              'rgba(255,255,255,0.5)',
             highlightPointRadius:       2,
             highlightFade:              true,
             
@@ -406,7 +406,7 @@
             combinedEffectOptions:      null,
             combinedEffectCallback:     null,
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
 
             dotted:                     false,
             dashed:                     false,
@@ -453,7 +453,7 @@
             
             events:                 {},
             clip:                   null,
-            
+            responsive:             null,
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false

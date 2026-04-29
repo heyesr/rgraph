@@ -103,7 +103,7 @@
             textAccessiblePointerevents: false,
             text:                        null,
             
-            :             false,
+            shadow:             false,
             shadowColor:        '#aaa',
             shadowOffsetx:      0,
             shadowOffsety:      0,
@@ -134,13 +134,11 @@
             
             align:              'center',
             
-            clearto:            'rgba(0,0,0,0)',
+            clearto:            'transparent',
             
-            clip:               null,
-            
-            events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
+            events:                     {},
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

@@ -146,18 +146,17 @@
             centerx: null,
             centery: null,
             radius:  null,
-
-            width: 60,
+            width:   60,
 
             marginLeft:    35,
             marginRight:   35,
             marginTop:     35,
             marginBottom:  35,
 
-            backgroundStrokeLinewidth:  0.25,
-            backgroundStroke:           'gray',
+            //backgroundStrokeLinewidth:  0.25,
+            //backgroundStroke:           'gray',
             backgroundFill:             null,
-            backgroundFillOpacity:      0.15,
+            backgroundFillOpacity:      null,
             backgroundGrid:             false,
             backgroundGridMargin:       20,
             backgroundGridColor:        '#eee',
@@ -166,7 +165,7 @@
             backgroundGridRadials:      true,
             backgroundGridRadialsCount: 10,
 
-            colors: ['#6d6','#FFA5A5','#A0A2F8','yellow','gray','pink','orange','cyan','green'],
+            colors:       RGraph.SVG.getColors(),
             colorsStroke: 'transparent',
 
             textColor:      'black',
@@ -174,6 +173,11 @@
             textSize:       12,
             textBold:       false,
             textItalic:     false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:           null,
 
             scale:                      false,
@@ -242,7 +246,7 @@
 
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -257,12 +261,14 @@
             tooltipsFormattedKeyLabels:      [],
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
             tooltipsPointer:                 true,
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
-
-            adjustable:         false,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             highlightStroke:    'transparent',
             highlightFill:      'rgba(255,255,255,0.7)',
@@ -287,12 +293,11 @@
             titleSubtitleBold:   null,
             titleSubtitleItalic: null,
             
-            clip: null,
-            
+            responsive:       null,
+            adjustable:       false,
+            clip:             null,
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            events:           {}
         };
 
         //

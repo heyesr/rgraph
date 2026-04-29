@@ -92,7 +92,6 @@
 
             width:            null,
             height:           null,
-
             halign:           'left',
             valign:           'top',
 
@@ -120,8 +119,10 @@
             tooltipsPointerOffsetx:     0,
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
+            tooltipsOffsetx:            0,
+            tooltipsOffsety:            0,
 
-            highlightStroke:     'rgba(0,0,0,0)',
+            highlightStroke:     'transparent',
             highlightFill:       'rgba(255,255,255,0.7)',
             highlightFade:       true,
 
@@ -132,17 +133,15 @@
             borderLinewidth:     1,
             borderRadius:        0,
 
-            backgroundColor:     'rgba(0,0,0,0)',
+            backgroundColor:     'transparent',
 
             text:                null,
 
-            clearto:             'rgba(0,0,0,0)',
+            clearto:             'transparent',
             
             clip:                null,
-            
             events:              {},
-            clip:                null,
-            
+            responsive:          null,
             scale:               true,
             scaleFactor:         2,
             antialiasTranslate:  false

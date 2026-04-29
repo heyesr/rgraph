@@ -125,7 +125,7 @@
             textAccessiblePointerevents: false,
             text:                        null,
 
-            colors:                 ['red', 'blue', 'green', 'pink', 'yellow', 'cyan', 'navy', 'gray', 'black'],
+            colors:                 RGraph.getColors(),
             colorsSequential:       false,
             colorsStroke:           'transparent',
 
@@ -170,8 +170,8 @@
             xaxisTitleColor:      null,
             xaxisTitleX:          null,
             xaxisTitleY:          null,
-            xaxisTitleOffsetx:    null,
-            xaxisTitleOffsety:    null,
+            xaxisTitleOffsetx:    0,
+            xaxisTitleOffsety:    0,
             xaxisTitlePos:        null,
             xaxisTitleHalign:     null,
             xaxisTitleValign:     null,
@@ -377,7 +377,7 @@
             lineLinejoin:                   'round',
             lineLinecap:                    'round',
             lineLinewidth:                  1,
-            lineShadow:                     true,
+            lineShadow:                     false,
             lineShadowColor:                '#666',
             lineShadowBlur:                 2,
             lineShadowOffsetx:              2,
@@ -397,7 +397,7 @@
             
             events:                 {},
             clip:                   null,
-            
+            responsive:             null,
             scale:                  true,
             scaleFactor:            2,
             antialiasTranslate:     false
@@ -861,8 +861,8 @@
                     this.context.setTransform(1,properties.variantThreedAngle,0,1,0.5,0.5);
                 }
                 
-                // Enlarge the margin if its 25
-                if (properties.marginBottom === 25) {
+                // Enlarge the margin if its 35
+                if (properties.marginBottom === 35) {
                     this.set('marginBottom', 80);
                 }
             }

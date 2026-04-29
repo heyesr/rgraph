@@ -69,7 +69,7 @@
 
             colors:                     ['black'],
             
-            textColor:                  'black', // Defaults to same as chart.colors
+            textColor:                  'black',
             textFont:                   'Arial, Verdana, sans-serif',
             textSize:                   12,
             textBold:                   false,
@@ -150,19 +150,14 @@
             
             highlightFade:              true,
 
-            clearto:                    'rgba(0,0,0,0)',
+            clearto:                    'transparent',
             
-            clip:                       null,
-            
-            events:                     {},
-            clip:                       null,
-            
+            events:                 {},
+            clip:                   null,
+            responsive:             null,
             scale:                  true,
             scaleFactor:            2,
-            antialiasTranslate:     false,
-            
-            scale:                  true,
-            scaleFactor:            2
+            antialiasTranslate:     false
         };
 
 

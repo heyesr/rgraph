@@ -178,13 +178,18 @@
             backgroundBarsColors: null,
 
             colorsStroke: 'white',
-            colors: ['red', 'black', 'orange', 'green', '#6ff', '#ccc', 'pink', 'orange', 'cyan', 'maroon', 'olive', 'teal'],
+            colors:       RGraph.SVG.getColors(),
             
             textColor:  'black',
             textFont:   'Arial, Verdana, sans-serif',
             textSize:   12,
             textBold:   false,
             textItalic: false,
+            textLinkColor:  'blue',
+            textLinkFont:   null,
+            textLinkSize:   null,
+            textLinkBold:   null,
+            textLinkItalic: null,
             text:       null,
 
             labels:       [],
@@ -206,7 +211,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -225,6 +230,10 @@
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             // Lighter than usual because the backgroundBars option can
             // mean highlight segments fade into the background
@@ -236,6 +245,8 @@
             title: '',
             titleX:      null,
             titleY:      null,
+            titleOffsetx: 0,
+            titleOffsety: 0,
             titleHalign: 'center',
             titleValign: null,
             titleSize:   null,
@@ -250,9 +261,12 @@
             titleSubtitleFont:   null,
             titleSubtitleBold:   null,
             titleSubtitleItalic: null,
+            titleSubtitleOffsetx:0,
+            titleSubtitleOffsety:0,
 
             key:            null,
             keyColors:      null,
+            keyColorShape:  'rect',
             keyOffsetx:     0,
             keyOffsety:     0,
             keyLabelsOffsetx: 0,
@@ -264,11 +278,9 @@
             keyLabelsItalic:  null,
 
             clip:             null,
-            
+            responsive:       null,
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            events:           {}
         };
 
         //

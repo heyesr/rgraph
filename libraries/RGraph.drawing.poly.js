@@ -79,7 +79,7 @@
             linewidth:               1,
 
             colorsStroke:            'transparent',
-            colorsFill:              'red',
+            colorsFill:              RGraph.getColors()[0],
 
             tooltips:                   null,
             tooltipsOverride:           null,
@@ -101,7 +101,7 @@
             tooltipsPointerOffsety:     0,
             tooltipsPositionStatic:     true,
 
-            highlightStroke:        'rgba(0,0,0,0)',
+            highlightStroke:        'transparent',
             highlightFill:          'rgba(255,255,255,0.7)',
             highlightFade:          true,
 
@@ -112,15 +112,14 @@
             shadowBlur:              5,
 
 
+            textAccessible:          false,
             text:                    null,
 
-            clearto:                 'rgba(0,0,0,0)',
-            
-            clip:                    null,
+            clearto:                 'transparent',
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false

@@ -163,9 +163,15 @@
             backgroundGridDashed:       false,
             backgroundGridDotted:       false,
             backgroundGridDashArray:    null,
-            
-            // 20 colors. If you need more you need to set the colors property
-            colors:               ['black', 'red', 'blue'],
+            backgroundBorder:           false,
+            backgroundBorderLinewidth:  1,
+            backgroundBorderColor:      '#aaa',
+            backgroundBorderDashed:     false,
+            backgroundBorderDotted:     false,
+            backgroundBorderDashArray:  null,
+
+
+            colors:               RGraph.SVG.getColors(),
             colorsSequential:     false,
             colorsStroke:          'transparent',
             colorsConnectors:      '#666',
@@ -175,6 +181,7 @@
 
             yaxis:                false,
             yaxisLinewidth:       1,
+            yaxisPosition:        'left',
             yaxisTickmarks:       true,
             yaxisTickmarksLength: 5,
             yaxisColor:           'black',
@@ -183,6 +190,13 @@
             yaxisLabelsOffsetx:   0,
             yaxisLabelsOffsety:   0,
             yaxisLabelsCount:     5,
+            yaxisLabelsHalign:     'right',
+            yaxisLabelsValign:     'center',
+            yaxisLabelsColor:       null,
+            yaxisLabelsBold:        null,
+            yaxisLabelsItalic:      null,
+            yaxisLabelsFont:        null,
+            yaxisLabelsSize:        null,
             yaxisScaleUnitsPre:        '',
             yaxisScaleUnitsPost:       '',
             yaxisScaleStrict:          false,
@@ -193,11 +207,6 @@
             yaxisScaleMax:             null,
             yaxisScaleMin:             0,
             yaxisScaleFormatter:       null,
-            yaxisLabelsColor:       null,
-            yaxisLabelsBold:        null,
-            yaxisLabelsItalic:      null,
-            yaxisLabelsFont:        null,
-            yaxisLabelsSize:        null,
             yaxisTitle:                '',
             yaxisTitleBold:            null,
             yaxisTitleSize:            null,
@@ -281,7 +290,7 @@
             
             tooltips:                        null,
             tooltipsOverride:                null,
-            tooltipsEffect:                  'fade',
+            tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
             tooltipsEvent:                   'click',
@@ -296,10 +305,14 @@
             tooltipsFormattedKeyLabels:      [],
             tooltipsFormattedTableHeaders:   null,
             tooltipsFormattedTableData:      null,
+            tooltipsFormattedListType:       'ul',
+            tooltipsFormattedListItems:      null,
             tooltipsPointer:                 true,
             tooltipsPointerOffsetx:          0,
             tooltipsPointerOffsety:          0,
             tooltipsPositionStatic:          true,
+            tooltipsOffsetx:                 0,
+            tooltipsOffsety:                 0,
 
             highlightStroke:      'transparent',
             highlightFill:        'rgba(255,255,255,0.7)',
@@ -318,7 +331,6 @@
             titleItalic:          null,
             titleOffsetx:         0,
             titleOffsety:         0,
-
             titleSubtitle:        null,
             titleSubtitleSize:    null,
             titleSubtitleColor:   '#aaa',
@@ -326,14 +338,15 @@
             titleSubtitleBold:    null,
             titleSubtitleItalic:  null,
             
-            //shadow:               false,
-            //shadowOffsetx:        2,
-            //shadowOffsety:        2,
-            //shadowBlur:           2,
-            //shadowColor:        'rgba(0,0,0,0.25)',
+            shadow:               false,
+            shadowOffsetx:        2,
+            shadowOffsety:        2,
+            shadowBlur:           2,
+            shadowColor:          'rgba(0,0,0,0.25)',
 
             key:            null,
             keyColors:      null,
+            keyColorShape: 'rect',
             keyOffsetx:     0,
             keyOffsety:     0,
             keyLabelsOffsetx: 0,
@@ -344,12 +357,10 @@
             keyLabelsBold:    null,
             keyLabelsItalic:  null,
             
-            clip: null,
-            
+            responsive:       null,
+            clip:             null,
             zoom:             false,
-            
-            events:           {},
-            clip:             null
+            events:           {}
         };
 
 

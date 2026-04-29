@@ -51,7 +51,7 @@
             backgroundGrid:                     true,
             backgroundGridAutofit:              true,
             backgroundGridAutofitAlign:         true,
-            backgroundGridColor:                '#ddd',
+            backgroundGridColor:                '#eee',
             backgroundGridLinewidth:            1,
             backgroundGridHsize:                20,
             backgroundGridVsize:                20,
@@ -80,7 +80,7 @@
             linewidth:                          1,
 
             colorsStroke:                       'transparent',
-            colors:                             ['green','red','blue'],
+            colors:                             RGraph.getColors(),
             colorsSequential:                   false,
             colorsConnectors:                   '#666',
 
@@ -151,6 +151,7 @@
             yaxisScalePoint:          '.',
             yaxisScaleThousand:       ',',
             yaxisScaleRound:          false,
+            yaxisScaleInvert:         false,
             yaxisScaleFormatter:      null,
             yaxisLabelsSpecific:      null,
             yaxisLabelsCount:         5,
@@ -271,7 +272,7 @@
             tooltipsPositionStatic:     true,
             tooltipsHotspotIgnore:      null,
 
-            highlightStroke:                   'rgba(0,0,0,0)',
+            highlightStroke:                   'transparent',
             highlightFill:                     'rgba(255,255,255,0.7)',
             highlightFade:                     true,
 
@@ -334,7 +335,7 @@
             
             events:                            {},
             clip:                              null,
-            
+            responsive:                        null,
             scale:                             true,
             scaleFactor:                       2,
             antialiasTranslate:                false

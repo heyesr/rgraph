@@ -46,8 +46,8 @@
 
             backgroundColor:           'white',
 
-            colorsStroke:               '#000',
-            colors:                     ['red'],
+            colorsStroke:               'black',
+            colors:                     RGraph.getColors(),
 
             marginLeft:                 35,
             marginRight:                35,
@@ -179,7 +179,7 @@
             
             events:                     {},
             clip:                       null,
-            
+            responsive:                 null,
             scale:                      true,
             scaleFactor:                2,
             antialiasTranslate:         false
