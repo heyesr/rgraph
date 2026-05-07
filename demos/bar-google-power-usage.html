@@ -49,29 +49,25 @@
                 // 'terawatts' appended to the number.
                 yaxisPosition: 'right',
                 yaxisLabelsSpecific: ['10 terawatts','9','8','7','6','5','4','3','2','1','0'],
-                yaxis: false,
-
                 xaxisLabels: ['2012','2013','2014','2015','2016','2017','2018'],
-                xaxis: false,
                 xaxisTickmarksCount: 0,
-                grouping: 'stacked',                
+                grouping: 'stacked',           
+                backgroundGrid: false,
                 
-                // No background grid
-                backgroundGrid: false,                
-                
-                // Define the key and position it on the left in the middle(ish).
+                // Define the key and position it on the left in
+                // the middle(ish).
                 key: ['Total energy consumption','Renewable energy'],
                 keyPositionGraphBoxed: false,
                 keyColorShape: 'circle',
 
-                // Position the (multiline) title on the left-hand-side
+                // Position the (multiline) title on the
+                // left-hand-side.
                 title: 'Renewable energy\npurchasing compared with\ntotal electricity use',
                 titleHalign: 'left',
                 titleX: 50,
                 titleY: '+50',
-                titleBold: true,
                 responsive: [
-                    {maxWidth: null,width:650,height:350,options:{textSize: 10,marginInner: 15,titleSize: 16,keyPositionY: 100,keyPositionGraphBoxed:false,keyBackground:'rgba(0,0,0,0)',keyPositionX: 50}},
+                    {maxWidth: null,width:650,height:350,options:{textSize: 10,marginInner: 15,titleSize: 16,keyPositionY: 100,keyPositionGraphBoxed:false,keyBackground:'transparent',keyPositionX: 50}},
                     {maxWidth: 800,width:350,height:250,options:{textSize: 8,marginInner: 5,titleSize: 10,keyPositionY: 170,keyPositionGraphBoxed: true,keyBackground:'rgba(255,255,255,0.75)',keyPositionX: 120}}
                 ]
             }

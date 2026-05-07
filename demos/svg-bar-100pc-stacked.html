@@ -46,10 +46,8 @@
                 tooltipsFormattedUnitsPost: '%',
                 grouping: 'stacked',
                 marginInner: 20,
-                linewidth:3,
                 yaxisScaleMax: 100,
                 title: 'A 100% Bar chart',
-                shadow: true,
                 tooltipsCss: {
                     backgroundColor: 'black',
                     color: 'white',
@@ -58,25 +56,6 @@
                 }
             }
         }).grow();
-
-
-
-
-        // Add this to have "whole bar" tooltips by covering the
-        // stacked bar chart with a regular bar chart.
-        //
-        //new RGraph.SVG.Bar({
-        //    id: 'chart-container',
-        //    data: [100,100,100,100,100,100,100],
-        //    options: {
-        //        marginLeft: 50,
-        //        backgroundGrid: false,
-        //        colors: ['transparent'],
-        //        marginInner: 20,
-        //        yaxisScaleMax: 100,
-        //        tooltips: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-        //    }
-        //}).grow();
     </script>
 
     <script>showSource()</script>

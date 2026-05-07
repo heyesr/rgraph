@@ -16,13 +16,13 @@
     
     <script>
         data = [
-            {label:'Electric guitar',   min: 82,  max: 1397},
-            {label:'4 string Bass guitar',       min: 41,  max: 262},
-            {label:'Concert flute',     min: 262, max: 1976},
-            {label:'Accoustic guitar',  min: 82,  max: 1397},
-            {label:'Violin',            min: 196, max: 3136},
-            {label:'Trumpet',           min: 165, max: 988},
-            {label:'Piano',             min: 28,  max: 4186}
+            {label:'Electric guitar',       min: 82,  max: 1397},
+            {label:'4 string Bass guitar',  min: 41,  max: 262},
+            {label:'Concert flute',         min: 262, max: 1976},
+            {label:'Accoustic guitar',      min: 82,  max: 1397},
+            {label:'Violin',                min: 196, max: 3136},
+            {label:'Trumpet',               min: 165, max: 988},
+            {label:'Piano',                 min: 28,  max: 4186}
         ];
         labels = [];
         values = [];    
@@ -45,20 +45,14 @@
                 marginLeftAuto: false,
                 textColor: 'white',
                 textSize: 16,
-                backgroundGridHlines: false,
                 backgroundGridVlinesCount: 4,
                 backgroundGridColor: 'white',
-                backgroundGridBorder: false,
                 backgroundGridColor: 'gray',
                 backgroundGridLinewidth: 3,
                 yaxisLabels: labels,
                 xaxisScaleMax: 4,
                 xaxisScale: false,
                 xaxisLabels: ['0 hz', '10 hz','100hz','1,000 hz','10,000 hz'],
-                xaxisColor: 'white',
-                yaxisColor: 'white',
-                xaxisTickmarksLength: 7,
-                yaxisTickmarksLength: 7,
                 colorsSequential: true,
                 colors: [
                     'Gradient(white:white:#F9B67F:#F9B67F)', '#0000',
@@ -70,6 +64,7 @@
                     'Gradient(white:white:#4F81BC:#4F81BC)', '#0000'
                 ],
                 grouping: 'stacked',
+                corners: 'square',
                 events: {
                     draw: function (obj)
                     {

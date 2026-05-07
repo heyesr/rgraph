@@ -30,17 +30,18 @@
                 titleSize: 16,
                 titleBold: true,
                 marginLeft: 35,
-                shadow: false,
-                colorsStroke: 'rgba(0,0,0,0)',
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
-                colors: ['Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)', 'Gradient(black:#aaa:black)'],
+                colors: [
+                    'Gradient(black:#aaa:black)',
+                    'Gradient(black:#aaa:black)',
+                    'Gradient(black:#aaa:black)'
+                ],
                 marginInner: 25,
                 backgroundGridVlinesCount: 3,
                 xaxisPosition: 'center',
                 textSize: 14,
-                yaxisScaleMax: 10
+                yaxisScaleMax: 10,
+                cornersRoundRadius: 10
             }
         }).wave();
 
@@ -49,12 +50,16 @@
             data: data2,
             options: {
                 marginLeft: 35,
-                shadow: false,
-                colors: ['Gradient(red:#faa:red)', 'Gradient(red:#faa:red)', 'Gradient(red:#faa:red)'],
+                colors: [
+                    'Gradient(red:#faa:red)',
+                    'Gradient(red:#faa:red)',
+                    'Gradient(red:#faa:red)'
+                ],
                 marginInner: 25,
                 xaxisPosition: 'center',
                 backgroundGrid: false,
-                yaxisScaleMax: 10
+                yaxisScaleMax: 10,
+                cornersRoundRadius: 10
             }
         }).wave();
     </script>

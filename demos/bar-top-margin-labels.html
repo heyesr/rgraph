@@ -35,8 +35,6 @@
                 textSize: 16,
                 colors: ['transparent'],
                 backgroundGrid: false,
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 marginInner: 55
             }
@@ -50,15 +48,10 @@
                 xaxisLabels: ['Monday','Tuesday','Wednesday'],
                 textSize: 16,
                 marginInner: 55,
-                xaxisTickmarks: false,
-                yaxisTickmarks: false,
-                yaxisLinewidth: 3,
-                xaxisLinewidth: 3,
                 tooltips: '%{global:names[%{index}]} on %{property:xaxisLabels[%{dataset}]}',
                 tooltipsCss: {
                     fontSize: '20pt'
-                },
-                backgroundGridVlines: false
+                }
             }
         }).wave();
     </script>

@@ -25,8 +25,7 @@
         {
             var data   = sheet.get('B2:B13'),
                 labels = sheet.get('A2:A13');
-            
-            // TODO Carriage returns don't work yet
+
             for (var i=0; i<labels.length; i+=2) {
                 labels[i] = "\n" + labels[i];
             }
@@ -42,13 +41,7 @@
                     textSize: 9,
                     xaxisLabels: labels,
                     tooltips: labels,
-                    yaxis: false,
-                    backgroundGridColor: '#eee',
-                    backgroundGridVlines: false,
-                    backgroundGridBorder: false,
-                    colorsStroke: '#aaa',
                     yaxisLabelsCount: 6,
-                    xaxisColor: '#333',
                     title: 'Cumulative total of widgets sold by Brian',
                     titleSubtitle: 'Numbers are sales by store only',
                     titleSubtitleItalic: true,

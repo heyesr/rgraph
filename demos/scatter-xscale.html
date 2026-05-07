@@ -30,7 +30,7 @@
             var obj  = opt.object;
             var ms   = opt.number;
 
-            return RGraph.PHP.date('d\\TH:i', ms / 1000);
+            return RGraph.PHP.date('jS M H:i', ms / 1000);
         }
 
         new RGraph.Scatter({
@@ -41,10 +41,10 @@
                 xaxisScaleMin: '2024-11-29 00:00:00',
                 xaxisScaleMax: '2024-12-01 23:59:59',
                 xaxisScaleFormatter: dateFormatter,
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
                 tickmarksStyle: 'circle',
-                tickmarksSize: 10
+                tickmarksSize: 10,
+                marginLeft: 60,
+                marginRight: 60
             }
         }).draw();
     </script>

@@ -43,10 +43,6 @@
             id: 'cvs',
             data: data,
             options: {
-                xaxis: false,
-                yaxis: false,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 backgroundGridHlinesCount: 3,
                 yaxisLabelsCount: 3,
                 textColor: '#666',
@@ -68,7 +64,8 @@
                 key: ['SPD','CDU','Grune','Linke','AfD','FDP'],
                 keyPosition: 'margin',
                 keyPositionY: 320,
-                keyTextSize: 12
+                keyTextSize: 12,
+                cornersRoundRadius: 3
             }
         }).draw();
 

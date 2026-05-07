@@ -34,10 +34,7 @@
             options: {
                 marginLeft: 50,
                 xaxisLabels: ['John','Lewis','Pete','Jill','Total'],
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
-                xaxis: false,
-                yaxis: false
+                marginInner: 35
             }
         }).draw();
 
@@ -61,8 +58,6 @@
                         textSize:         8,
                         colorsSequential: true,
                         backgroundGrid: false,
-                        xaxis:          false,
-                        yaxis:          false,
                         yaxisScale:     false,
                         marginLeft:     waterfall.coords[index].x,
                         marginRight:    waterfall.width - (waterfall.coords[index].x + waterfall.coords[index].width),

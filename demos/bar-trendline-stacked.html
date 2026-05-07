@@ -36,10 +36,6 @@
                 data: data,
                 marginInner: 25,
                 tooltips: '',
-                xaxis: false,
-                yaxis: false,
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
                 xaxisLabels: RGraph.DAYS_LONG,
                 tooltips: '%{color:%{property:colors[%{index}]}} %{property:xaxisLabels[%{dataset}]}: %{property:data[%{dataset}]}%',
                 tooltipsCss: {
@@ -61,12 +57,9 @@
             id: 'cvs',
             data: data_line,
             options: {
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 backgroundGrid: false,
                 colors: ['transparent'],
-                shadow: false,
                 marginInner: 50,
                 trendline: true,
                 trendlineColors: ['black'],

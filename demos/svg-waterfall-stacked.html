@@ -33,11 +33,7 @@
             data: RGraph.SVG.arrayClone(data.waterfall),
             options: {
                 marginLeft: 50,
-                xaxisLabels: ['John','Lewis','Pete','Jill','Total'],
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
-                xaxis: false,
-                yaxis: false
+                xaxisLabels: ['John','Lewis','Pete','Jill','Total']
             }
         }).draw();
 
@@ -51,7 +47,6 @@
                     id: 'chart-container',
                     data: [RGraph.SVG.arrayClone(data.bar[index])],
                     options: {
-                        ColorsStroke: 'rgba(0,0,0,0)',
                         colors: ['red','#eee'],
                         labelsAbove: true,
                         labelsAboveBold: true,
@@ -59,19 +54,17 @@
                         labelsAboveBackgroundPadding: 3,
                         labelsAboveColor: 'white',
                         labelsAboveUnitsPost: '%',
-                        textSize:         8,
+                        textSize: 8,
                         colorsSequential: true,
                         backgroundGrid: false,
-                        xaxis:          false,
-                        yaxis:          false,
-                        yaxisScaleMax:       RGraph.SVG.arraySum(data.bar[index]),
-                        yaxisScale:     false,
-                        marginLeft:     waterfall.coords[index].x,
-                        marginRight:    waterfall.width - (waterfall.coords[index].x + waterfall.coords[index].width),
-                        marginTop:      waterfall.coords[index].y,
-                        marginBottom:   waterfall.height - (waterfall.coords[index].y + waterfall.coords[index].height),
-                        marginInner:    -1,
-                        grouping:       'stacked'
+                        yaxisScaleMax: RGraph.SVG.arraySum(data.bar[index]),
+                        yaxisScale: false,
+                        marginLeft: waterfall.coords[index].x,
+                        marginRight: waterfall.width - (waterfall.coords[index].x + waterfall.coords[index].width),
+                        marginTop: waterfall.coords[index].y,
+                        marginBottom: waterfall.height - (waterfall.coords[index].y + waterfall.coords[index].height),
+                        marginInner: -1,
+                        grouping: 'stacked'
                     }
                 }).draw();
             })(k);

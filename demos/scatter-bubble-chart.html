@@ -14,7 +14,7 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="200">[No canvas support]</canvas><br />
-        <button onclick="var scatter = RGraph.ObjectRegistry.getFirstObjectByType('scatter'); scatter.set('colorsBubbleGraduated', !scatter.get('colorsBubbleGraduated') ); RGraph.redraw();">Toggle gradients</button>
+        <button onclick="var scatter = RGraph.ObjectRegistry.getFirstObjectByType('scatter'); scatter.set('colorsBubbleGraduated', !scatter.get('colorsBubbleGraduated') ); RGraph.redraw();" style="cursor:pointer; font-size: 20pt">Toggle gradients</button>
     </div>
     
     <script>
@@ -35,11 +35,7 @@
                 xaxisScaleMax: 365,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 textSize:14,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                xaxis:false,
-                tooltipsHotspot: 10,
-                
+                tooltipsHotspot: 10,                
                 bubbleMin:0,
                 bubbleMax: 100,
                 bubbleWidth: 50,

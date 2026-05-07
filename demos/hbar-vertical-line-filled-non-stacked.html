@@ -28,18 +28,12 @@
         // The configuration values shared by all three charts
         //
         config = {
-            backgroundGridGrid: false,
-            backgroundGridColor: '#aaa',
-            backgroundGridHlines: false,
-            backgroundGridBorder: false,
+            backgroundGrid: false,
             xaxisScaleUnitsPost: '%',
             xaxisScale: false,
-            xaxis: false,
-            yaxis: false,
-            colors: ['#0000'],
+            colors: ['transparent'],
             textSize: 14,
-            title: 'A stacked vertical spline',
-            titleBold: true,
+            title: 'A non-stacked vertical spline',
             marginTop: 50,
             marginLeft: 120,
             marginLeftAuto: false,
@@ -53,15 +47,14 @@
             
             // Normally this property is a string - it gets set to
             // string further down
-            lineFilledColor: ['#f007','#0f07','#00f7']
+            lineFilledColor: ['#00f7','#0f07','#f007']
         };
         
         
         
-        for (var i=(data.length - 1); i>=0; --i) {
+        for (var i=0; i<data.length; i+=1) {
 
             if (i === 0) {
-                config.backgroundGrid  = true;
                 config.xaxisScale      = true;
                 config.xaxisLabelsBold = true;
                 config.yaxisLabels     = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -74,7 +67,8 @@
                 data: data[i],
                 options: {
                     ...config,
-                    lineFilledColor: config.lineFilledColor[i]
+                    lineFilledColor: config.lineFilledColor[i],
+                    backgroundGrid: (config.lineFilledColor[i] === '#00f7')
                 }
             }).draw();
         }

@@ -24,8 +24,8 @@
             data: [14,16,18,19,13,14],
             options: {
                 title: 'A Bar chart with Pie charts in the tooltips',
-                titleBold: true,
                 titleSize: 18,
+                marginInner: 20,
                 xaxisLabels: ['Fred','John','James','Louis','Pete','Kevin'],
                 tooltips: '<div style="text-align: center; font-weight: bold; font-size: 16pt">%{property:xaxisLabels[%{dataset}]}</div><br  /><canvas id="tooltip_canvas" width="270" height="110"></canvas>',
                 tooltipsPointer: false,
@@ -59,8 +59,6 @@
                                 labelsOffsetr: 5,
                                 marginBottom: 25,
                                 colors: ['red','#00c','#0c0'],
-                                colorsStroke: 'rgba(0,0,0,0)',
-                                shadow: false,
                                 exploded: 1
                             }
                         }).draw();

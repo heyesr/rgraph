@@ -47,10 +47,7 @@
                 dataset2
             ],
             options: {
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 backgroundGridColor: '#999',
-                shadow: false,
                 textColor: 'white',
                 textSize: 16,
                 xaxisLabels: [
@@ -59,8 +56,6 @@
                     '', 'Q3', '',
                     '', 'Q4', ''
                 ],
-                xaxis: false,
-                yaxis: false,
                 yaxisScaleUnitsPost: 'kg',
                 marginBottom: 35,
                 marginLeft: 70,
@@ -71,10 +66,9 @@
                 filledAccumulative: true,
                 filledColors: [
                     'Gradient(rgba(255,0,0,0.3):rgba(255,0,0,1))',
-                    'rgba(0,0,0,0)'
+                    'transparent'
                 ],
-                colors: ['red','transparent'],
-                tickmarksStyle: null
+                colors: ['red','transparent']
             }
         }).trace();
         

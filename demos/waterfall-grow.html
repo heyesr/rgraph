@@ -23,15 +23,12 @@
             data: [50,12,-50,-19, -130, -30],
             options: {
                 backgroundGridHlinesCount: 4,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 title: 'A chart showing income/expenditure',
                 titleY: 10,
                 colors: ['black','red','blue'],
                 colorsStroke: 'white',
                 yaxisLabelsCount: 2,
                 yaxisScaleUnitsPre: '$',
-                yaxisTickmarksCount: 4,
                 total: true,
                 xaxisLabels: ['Sales', 'Misc', 'Wages','Fees','Supplies','Food','Gross'],
                 tooltips: [
@@ -43,12 +40,7 @@
                     'Food to keep the staff alive and running at peak efficiency',
                     'Gross income before any taxes have been paid'
                 ],
-                highlightStroke: 'rgba(0,0,0,0)',                
-                // In older versions of Firefox this seriously slows down the grow() animation
-                shadowColor: '#aaa',
-                shadowBlur: 5,
-                shadowOffsetx: 0,
-                shadowOffsety: 0,
+                highlightStroke: 'transparent',                
                 marginLeft: 70,
                 textSize: 12,
                 xaxisPosition: 'center'

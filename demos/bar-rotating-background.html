@@ -23,18 +23,12 @@
             data: [1,5,3,2,5,6,8],
             options: {
                 colors: ['Gradient(#fcc:red)'],
-                xaxisTickmarks: false,
-                xaxisLinewidth: 2,
-                yaxisLinewidth: 2,
-                axesLinewidth: 2,
-                yaxisTickmarksCount: 0,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 backgroundGrid: false,
-                shadow: false,
                 textSize: 14,
                 title: 'An example of a Bar chart with a StarBurst at the back',
-                titleBold: true,
-                titleSize: 16
+                titleSize: 16,
+                marginInner: 20
             }
         });
 
@@ -43,7 +37,7 @@
             id: 'cvs',
             options: {
                 radius: 1500,
-                colors:['rgba(255,0,0,0.01)','red'],
+                colors:['#f000','red'],
                 callback: function ()
                 {
                     bar.draw();

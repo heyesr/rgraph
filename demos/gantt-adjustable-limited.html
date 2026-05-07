@@ -17,19 +17,19 @@
 
     <script>
         data = [
-            [{start: 0, duration: 31, complete: 67, label: 'Richard'}, {start: 59, duration: 28, complete: 67}],
-            {start: 0,  duration: 28, complete: 50, label: 'Rachel'},
-            {start: 12, duration: 28, complete: 45, label: 'Fred'},
-            [{start: 0, duration: 14, complete: 0, label: 'Barney'}, {start: 59, duration: 21, complete: 5}],            
-            {start: 46, duration: 31,  complete: 92, label: 'Paul', color: 'red'},
-            {start: 80, duration: 21,  complete: 46, label: 'Harry'},
-            {start: 94, duration: 17,  complete: 84, label: 'Shane'},
-            {start: 34, duration: 14,  complete: 32, label: 'Kyle'},
-            {start: 64, duration: 14,  complete: 28, label: 'Cynthia'},
-            {start: 13, duration: 61,  complete: 74, label: 'Mabel'},
-            {start: 84, duration: 31,  complete: 16, label: 'Paul'},
-            {start: 80, duration: 22,  complete: 45, label: 'Kiffen'},
-            {start: 0,  duration: 115, complete: 50, label: 'John'}
+            [{start: 0, duration: 31, complete: 67, label: 'Richard', border: 'transparent'}, {start: 59, duration: 28, complete: 67, border: 'transparent'}],
+            {start: 0,  duration: 28, complete: 50, label: 'Rachel', border: 'transparent'},
+            {start: 12, duration: 28, complete: 45, label: 'Fred', border: 'transparent'},
+            [{start: 0, duration: 14, complete: 0, label: 'Barney', border: 'transparent'}, {start: 59, duration: 21, complete: 5, border: 'transparent'}],            
+            {start: 46, duration: 31,  complete: 92, label: 'Paul', color: 'red', border: 'transparent'},
+            {start: 80, duration: 21,  complete: 46, label: 'Harry', border: 'transparent'},
+            {start: 94, duration: 17,  complete: 84, label: 'Shane', border: 'transparent'},
+            {start: 34, duration: 14,  complete: 32, label: 'Kyle', border: 'transparent'},
+            {start: 64, duration: 14,  complete: 28, label: 'Cynthia', border: 'transparent'},
+            {start: 13, duration: 61,  complete: 74, label: 'Mabel', border: 'transparent'},
+            {start: 84, duration: 31,  complete: 16, label: 'Paul', border: 'transparent'},
+            {start: 80, duration: 22,  complete: 45, label: 'Kiffen', border: 'transparent'},
+            {start: 0,  duration: 115, complete: 50, label: 'John', border: 'transparent'}
         ];
 
         new RGraph.Gantt({
@@ -41,7 +41,8 @@
                 labelsComplete: true,
                 backgroundGridVlinesCount: 4,
                 adjustable: true,
-                adjustableOnly: [,,,,,,true]
+                adjustableOnly: [,,,,,,true],
+                cornersRoundRadius: 50
             }
         }).draw();
     </script>

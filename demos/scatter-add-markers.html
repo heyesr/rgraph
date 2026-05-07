@@ -22,7 +22,7 @@
 
         scatter = new RGraph.Scatter({
             id: 'cvs',
-            data: [[15,91]],
+            data: [[15,91,'transparent']],
             options: {
                 marginLeft: 25,
                 xaxisScaleMax: 365,
@@ -64,12 +64,7 @@
                 
                 circle.set({
                     colorsFill: 'red',
-                    tooltips: ['A tooltip from the circle with UID: ' + circle.uid],
-                    shadow: true,
-                    shadowColor: '#aaa',
-                    shadowBlur:1,
-                    shadowOffsetx:2,
-                    shadowOffsety:2
+                    tooltips: ['A tooltip from the circle with UID: ' + circle.uid]
                 }).draw();
             }
         }

@@ -15,52 +15,47 @@
     </div>
     
     <script>
-        max = 50;
+        top_data    = [20,18,17,3,0,5,6,15,24,21,25,15,18,23,24,22,1,5,4,8,20,23,34,26,20,6,1,2,3,4];;
+        bottom_data = [20,18,17,3,0,5,6,15,24,21,25,15,18,23,24,22,1,5,4,8,20,23,34,26,20,6,1,2,3,4];
+        max         = 50;
+
+        // Make all of the bottom data values negative
+        bottom_data.forEach(function (v,k,arr)
+        {
+            arr[k] = -1 * v;
+        });
 
         new RGraph.Bar({
             id: 'cvs',
-            data: [20,18,17,3,0,5,6,15,24,21,25,15,18,23,24,22,1,5,4,8,20,23,34,26,20,6,1,2,3,4],
+            data: top_data,
             options: {
                 marginInner: 2,
-                marginRight: 10,
-                marginTop: 10,
-                marginBottom: 100,
                 yaxisScaleMax: max,
                 yaxisLabelsCount: 1,
-                yaxis: false,
-                xaxisColor: 'white',
-                xaxisLinewidth: 2,
                 colors: ['#0071BC'],
-                backgroundGrid: true,
-                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 1,
-                backgroundGridBorder: false,
+                corners: 'square',
+                xaxisPosition: 'center'
 
             }
         }).wave();
-
-    
-    
     
         new RGraph.Bar({
             id: 'cvs',
-            data: [20,18,17,3,0,5,6,15,24,21,25,15,18,23,24,22,1,5,4,8,20,23,34,26,20,6,1,2,3,4],
+            data: bottom_data,
             options: {
-                yaxisScaleMax: max,
-                yaxisLabelsCount: 1,
-                yaxis: false,
-                xaxisColor: 'white',
+                corners: 'square',
+                yaxisScale: false,
                 xaxisLinewidth: 2,
+                xaxisColor: 'white',
                 colors: ['#F7931E'],
-                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 1,
-                backgroundGridBorder: false,
-                xaxisPosition: 'top',
-                yaxisLabelsSpecific: ['',max],
+                xaxisPosition: 'center',
                 marginInner: 2,
-                marginRight: 10,
-                marginTop: 100,
-                marginBottom: 10
+                xaxis: true,
+                xaxisPosition: 'center',
+                xaxisLinewidth: 2,
+                xaxisColor: 'white'
             }
         }).wave();
     </script>

@@ -36,21 +36,19 @@
             data: data,
             options: {
                 title: 'A Bar chart with clickable "whole" bars',
-                titleBold: true,
                 titleSize: 16,
                 xaxisLabels: labels,
                 labelsAbove: true,
                 labelsAboveDecimals: 2,
                 linewidth: 2,
                 colorsStroke: 'white',
-                colors: ['Gradient(#4572A7:#66f)','Gradient(#AA4643:white)','Gradient(#89A54E:white)'],
-                shadow: false,
+                colors: [
+                    'Gradient(#4572A7:#66f)',
+                    'Gradient(#AA4643:white)',
+                    'Gradient(#89A54E:white)'
+                ],
                 marginInner: 25,
                 marginLeft: 45,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                xaxisColor: '#ccc',
-                yaxis: false,
                 grouping: 'stacked'
             }
         }).draw();
@@ -66,8 +64,6 @@
                 marginInner: 25,
                 marginLeft: 45,
                 backgroundGrid: false,
-                xaxis: false,
-                yaxis: false,
                 tooltips: '%{prop:myLabels[%{dataset}]}\'s results',
                 tooltipsCss: {
                     fontSize: '20pt'

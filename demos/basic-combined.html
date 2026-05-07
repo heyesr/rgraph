@@ -28,9 +28,8 @@
                 marginRight: 5,
                 yaxisScaleMax: 250,
                 colors: ['yellow'],
-                colorsStroke: '#ddd',
+                textSize: 16,
                 xaxisLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                shadow: false,
                 tooltips: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             }
         });
@@ -40,11 +39,7 @@
             data: [14,35,15,36,37,26,28,18,38,17,9,14],
             options: {
                 backgroundGrid: false,
-                xaxis: false,
-                yaxis: false,
                 linewidth: 3,
-                tickmarksStyle: 'endcircle',
-                tickmarksSize: 7,
                 yaxisScaleMax: 50,
                 title: 'A combined Bar and Line chart',
                 tooltips: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -53,7 +48,8 @@
                 marginRight: bar.get('marginRight'),
                 marginInner: 45,
                 yaxisScale: false,
-                spline: true
+                spline: true,
+                textSize: 16
             }
         });
         

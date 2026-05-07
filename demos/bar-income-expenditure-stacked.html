@@ -26,11 +26,8 @@
                 title: 'A stacked income/expenditure chart',
                 titleSize: 16,
                 titleBold: true,
-                shadow: false,
-                colorsStroke: 'rgba(0,0,0,0)',
                 colors: ['blue','pink','aqua'],
                 marginInner: 25,
-                colorsStroke: 'rgba(0,0,0,0)',
                 backgroundGrid: false,
                 marginBottom: 125,
                 grouping: 'stacked',
@@ -43,13 +40,15 @@
             id: 'cvs',
             data: data2,
             options: {
-                shadow: false,
                 colors: ['red'],
                 marginInner: 25,
                 xaxisPosition: 'center',
                 backgroundGrid: false,
                 yaxisScaleMax: 20,
-                yaxisTickmarksCount: 10
+                yaxisTickmarksCount: 10,
+                xaxis: true,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 3
             }
         }).wave();
     </script>

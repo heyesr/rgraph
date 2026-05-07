@@ -23,44 +23,7 @@
                 {start: 3, duration: 2, complete: 25, label: 'John'},
                 {start: 3, duration: 2, complete: 10, label: 'Fred'}
             ],
-            options: {
-                //yaxis: false,
-                //yaxisLabelsFont:  'Monospace',
-                //yaxisLabelsColor: 'red',
-                //yaxisLabelsSize:  26,
-                //yaxisLabelsItalic:  true,
-                //yaxisLabelsBold:  true,
-                //yaxisLabelsOffsetx:  50,
-                //yaxisLabelsOffsety:  50,
-                //yaxisLabelsHalign:  'left',
-                //yaxisLabelsValign:  'top',
-                //yaxisTitle: 'Worker',
-                //yaxisTitleColor: 'red',
-                //yaxisTitleFont: 'Verdana',
-                //yaxisTitleSize: 20,
-                //yaxisTitleBold: true,
-                //yaxisTitleItalic: true,
-                //yaxisTitleOffsetx: 150,
-                //yaxisTitleOffsety: 150,
-                //yaxisTitleX: 50,
-                //yaxisTitleY: 50,
-                //yaxisTitleHalign: 'right',
-                //yaxisTitleValign: 'top',
-                //yaxisTitlePos: 0.1,
-
-
-                //xaxisTitle: 'Worker',
-                //xaxisTitleColor: 'red',
-                //xaxisTitleFont: 'Verdana',
-                //xaxisTitleSize: 20,
-                //xaxisTitleBold: true,
-                //xaxisTitleItalic: true,
-                //xaxisTitleX: 50,
-                //xaxisTitleY: 50,
-                //xaxisTitleHalign: 'left',
-                //xaxisTitleValign: 'bottom',
-                //xaxisTitlePos: 0.1,
-                
+            options: {                
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
                 xaxisScaleMax: 5,
                 title: 'A dashed background grid',
@@ -68,6 +31,8 @@
                 backgroundGridColor: 'gray',
                 marginRight: 45,
                 marginLeft: 145,
+                marginInner: 15,
+                borders: false
             }
         }).draw();
 
@@ -81,6 +46,8 @@
                 {start: 3, duration: 2, complete: 10, label: 'Freed'}
             ],
             options: {
+                marginInner: 15,
+                borders: false,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
                 xaxisScaleMax: 5,
                 title: 'A dotted background grid',

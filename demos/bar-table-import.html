@@ -96,7 +96,6 @@
     <script>
         new RGraph.HTMLTable('myTable', function (table)
         {
-            
             // Create the data for the chart
             var data = [];
 
@@ -122,21 +121,14 @@
                 options: {
                     xaxisLabels: labels,
                     marginInner: 10,
-                    xaxis: false,
-                    yaxis: false,
-                    backgroundGridVlines: false,
-                    backgroundGridBorder: false,
                     xaxisLabels: labels,
                     xaxisLabelsOffsety: 2,
                     textSize: 16,
                     colors: ['#010100','#fdb750','#fc2e20','#fd7f20'],
-                    shadow: true,
-                    shadowOffsetx: 2,
-                    shadowOffsety: 2,
-                    shadowBlur: 2,
                     key: key,
                     keyPosition: 'margin',
-                    marginTop: 50
+                    marginTop: 50,
+                    cornersRoundRadius: 3
                 }
             }).wave();
         });

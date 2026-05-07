@@ -104,14 +104,10 @@
                 data: table.column(2, 1),
                 options:{
                     title: 'A Bar chart using the table reader',
-                    titleBold: true,
                     titleSize: 16,
                     marginInner: 25,
-                    xaxis: false,
-                    yaxis: false,
-                    backgroundGridVlines: false,
-                    backgroundGridBorder: false,
-                    xaxisLabels: table.column(0, 1)
+                    xaxisLabels: table.column(0, 1),
+                    colors:['red']
                 }
             }).wave();
         });

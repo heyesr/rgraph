@@ -33,20 +33,10 @@
             options: {
                 yaxisLabels: ['2005','2004', '2003', '2002','2001'],
                 yaxisColor: 'white',
-                yaxisTickmarks: null,
-                xaxis: false,
-                
-                // Turn off the background grid horizontal lines
-                backgroundGridHlines: false,
-                backgroundGridBorder: false,
                 backgroundGridColor: 'white',
-
                 title: 'Annual revenue for Star Tech',
                 textColor: 'white',
                 textSize: 8,
-                
-                // Use the RGraph short gradient syntax to add some colors
-                // to the chart.
                 colors: [
                     'Gradient(#9B68C0:#E4C1FD)',
                     'Gradient(#9B9B9B:#E5E5E5)',
@@ -54,24 +44,15 @@
                     'Gradient(#4E81B4:#B2D4F6)',
                     'Gradient(#9B0303:#E57F7F)'
                 ],
-                
-                // So that all of the bars are a separate color (as defined
-                // above) the colorsSequential option should be given.
                 colorsSequential: true,
-
                 labelsAbove: true,
                 xaxisScaleUnitsPre: '$',
                 xaxisScaleUnitsPost: 'm',
-                
-                // Add a responsive configuration that resizes the
-                // chart when you use a smaller screen
                 responsive: [
                     {maxWidth:null,width:650,height:300},
                     {maxWidth:900, width:400,height:250}
                 ]
             }
-        
-        // Draw the chart
         }).draw();
     </script>
 

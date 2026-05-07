@@ -28,12 +28,7 @@
 
             options: {
                 colors: ['black',color],
-                shadow: false,
-                axes: false,
-                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 3,
-                backgroundGridBorder: false,
-                yaxisTickmarksCount: 3,
                 yaxisLabelsCount: 3,
                 yaxisScaleMax: 30000,
                 yaxisScaleUnitsPre: '$',
@@ -48,10 +43,6 @@
                 tickmarksSize: 0,
                 textSize: 14,
                 textFont: 'Segoe UI',
-                shadow: true,
-                shadowOffsetx: 0,
-                shadowOffsety: 0,
-                shadowBlur: 0,
                 events: {
                     draw: function (obj)
                     {
@@ -82,9 +73,9 @@
                         RGraph.text(obj,
                         {
                             x: x,
-                            y: 100,
+                            y: 90,
                             text: 'TODAY',
-                            size: 30,
+                            size: 24,
                             halign: 'center',
                             bold: true
                         });
@@ -107,10 +98,7 @@
             obj.animate({
                 frames: 7,
                 tickmarksSize: 10,
-                tickmarksStyleDotLinewidth: 3,
-                shadowOffsetx: 1,
-                shadowOffsety: 1,
-                shadowBlur: 2
+                tickmarksStyleDotLinewidth: 3
             }, function ()
             {
                 obj.animate({

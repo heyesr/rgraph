@@ -25,7 +25,8 @@
         for (var i=0,data=[]; i<12; ++i) {
             data.push({
                 x: i,
-                y: RGraph.SVG.random({min: 0, max: 50})
+                y: RGraph.SVG.random({min: 0, max: 50}),
+                color: 'green'
             });
         }
         
@@ -39,21 +40,13 @@
             id: 'chart-container',
             data: data,
             options: {
-                
                 marginTop: 50,
                 marginBottom: 60,
-                marginRight: 35,
                 marginLeft: 60,
-                
                 xaxisLabels: '%{global:names[%{index}]} %{function:getValue(%{index})}',
                 xaxisLabelsCount: names.length,
-                xaxisTickmarksCount: 4,
                 xaxisScaleMax: 11,
-                xaxisColor: '#333',
-                
-                backgroundGridColor: '#eee',
                 backgroundGrid: false,
-                
                 line: true,
                 lineLinewidth: 1,
                 lineColors: ['green']

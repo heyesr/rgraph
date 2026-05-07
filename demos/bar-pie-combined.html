@@ -27,29 +27,17 @@
                 // Used for tooltips
                 days: ['Monday','Tuesday','Wednesday'],
 
-                marginTop: 35,
-                marginLeft: 35,
                 marginRight: 15,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 colors: ['Gradient(white:#f11:#f11)', 'Gradient(white:#1cc:#1cc)', 'Gradient(white:#00f:#00f)'],
                 tooltips: '<b style="font-size: 18pt">%{property:xaxisLabels[%{dataset}]} on %{property:days[%{index}]}: %{value} sales</b>',
-                highlightStroke: 'rgba(0,0,0,0.1)',
-                colorsStroke: 'rgba(0,0,0,0)',
-                shadow: false,
-                shadowOffsetx: -2,
-                shadowOffsety: -2,
                 yaxisScaleMax: 150,
-                yaxis: false,
                 yaxisScale: false,
                 xaxisLabels: ['Bob', 'Jamie', 'Cynthia', 'Peter'],
                 labelsAbove: true,
                 labelsAboveSize: 8,
                 labelsAboveOffsety: 5,
-                linewidth: 2,
                 marginInner: 15,
                 title: 'A combined Bar and Pie chart',
-                titleBold: true,
                 titleSize: 16,
                 titleX: 415,
                 titleHalign: 'right'
@@ -60,7 +48,7 @@
             id: 'cvs',
             data: [270,270,164],
             options: {
-                exploded: [7,2,],
+                exploded: [5,2,],
                 labels: ['Mondays sales'],
                 labelsSticks: [true],
                 labelsList: false,
@@ -68,7 +56,6 @@
                 centerx: 60,
                 centery: 55,
                 radius: 25,
-                shadow: false,
                 colors: ['#c11', '#1cc', '#11c'],
                 tooltips: [
                     'Total Monday sales: 270',
@@ -79,8 +66,7 @@
                     fontWeight: 'bold',
                     fontSize: '18pt'
                 },
-                tooltipsEvent: 'mousemove',
-                colorsStroke: 'rgba(0,0,0,0)'
+                tooltipsEvent: 'mousemove'
             }
         }).draw();
 

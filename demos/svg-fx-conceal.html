@@ -21,6 +21,7 @@
             id: 'chart-container',
             data: [4,8,6,3,5,9,6],
             options: {
+                colors: ['red'],
                 linewidth: 5,
                 marginInner: 0,
                 title: 'The conceal() effect',
@@ -30,8 +31,7 @@
                 tickmarksStyle: 'circle',
                 tickmarksLinewidth: 5,
                 tickmarksSize: 7,
-                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                shadow: true
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
             }
         }).draw()
           .conceal({frames: 120});

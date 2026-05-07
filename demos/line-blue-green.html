@@ -30,9 +30,6 @@
                 colors: ['#0091FE','#90AA00'],
                 backgroundColor: '#eee',
                 backgroundGridColor: 'white',
-                backgroundGridVlines: false,
-                xaxis: false,
-                yaxis: false,
                 yaxisScaleMax: 180,
                 yaxiScaleDecimals: 2,
                 textSize: 8,
@@ -42,15 +39,14 @@
                 yaxisLabelsCount: 6,
                 tickmarksStyle: 'dot',
                 tickmarksSize: 5,
-                tickmarksStyleDotLinewidth: 1,
-                shadow: false
+                tickmarksStyleDotLinewidth: 1
             }
         }).trace({frames: 60});
         
-        grad = line.context.createLinearGradient(825 - 65,0,825 + 65,0);
+        grad = line.context.createLinearGradient(1600,0,1950,0);
         grad.addColorStop(0, 'green');
         grad.addColorStop(0.4, 'yellow');
-        grad.addColorStop(0.6, 'yellow');
+        grad.addColorStop(0.4, 'yellow');
         grad.addColorStop(1, 'red');
 
 
@@ -61,18 +57,15 @@
             min: 0,
             max: 100,
             options: {
-                centerx: 1650,
+                centerx: 850,
                 centery: 127,
-                radius: 150,
+                radius: 100,
                 anglesStart: 3.14 - 0.785,
                 anglesEnd: 6.28 + 0.785,
-                colorsGreenEnd: 100,
-                colorsRedStart: 100,
-                colorsYellowColor: 'transparent',
-                colorsRedColor: 'transparent',
+                colorsYellowColor: grad,
+                colorsRedColor: grad,
                 colorsGreenColor: grad,
                 textColor: 'gray',
-                textSize: 24,
                 labelsCount: 0,
                 labelsValue: true,
                 labelsValueBounding: false,
@@ -80,24 +73,12 @@
                 labelsValueUnitsPost: '%',
                 tickmarksLargeColor: 'transparent',
                 tickmarksSmallColor: 'transparent',
-                shadow: false,
                 needleColors: ['blue'],
-                backgroundColor: 'rgba(0,0,0,0)',
-                borderOuter: 'rgba(0,0,0,0)',
-                borderInner: 'rgba(0,0,0,0)',
-                borderOutline: 'rgba(0,0,0,0)',
-                adjustable: true,
-                events: {
-                    beforedraw: function (obj)
-                    {
-                        // On the first frame obj.centerx is not
-                        // defined, but it is on subsequent frames
-                        obj.path(
-                            'b a % % 120 0 6.28 false f rgba(232,232,232,.5)',
-                            obj.centerx, obj.centery
-                        );
-                    }
-                }
+                backgroundColor: 'transparent',
+                borderOuter: 'transparent',
+                borderInner: 'transparent',
+                borderOutline: 'transparent',
+                adjustable: true
             }
         }).draw();
 
@@ -155,7 +136,6 @@
             options: {
                 marginTop: 70,
                 marginBottom: 70,
-                yaxis: false,
                 yaxisPosition: 'right',
                 yaxisScaleMax: 10,
                 yaxiScaleDecimals: 1,

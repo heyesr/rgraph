@@ -18,7 +18,7 @@
         iteration = 0;
         data      = [];
         last      = 0;
-        DELAY     = 50;
+        delay     = 50;
 
         line = new RGraph.SVG.Line({
             id: 'chart-container',
@@ -26,31 +26,15 @@
             options: {
                 marginInner: 0,
                 title: 'An updating SVG Line chart',
-                yaxis: false,
-                xaxis: false,
-                backgroundGridColor: '#ccc',
-                backgroundGridVlinesCount: 15,
-                backgroundGridBorder: true,
+                backgroundGridColor: '#aaa',
                 colors: ['#c00'],
                 linewidth: 1,
                 yaxisScaleMax: 100
             }
         }).draw();
-        
-        RGraph.SVG.create({
-            svg: line.svg,
-            type: 'rect',
-            attr: {
-                x:35,
-                y:35,
-                width:680,
-                height:230,
-                stroke: '#ccc',
-                fill: 'transparent'
-            }
-        });
 
-
+        // Add a border around the chart
+        line.create('<rect x="35" y="35" width="680" height="230" stroke="#ccc" fill="transparent"></rect>');
 
 
         function update ()
@@ -77,7 +61,7 @@
             setTimeout(function ()
             {
                 update()
-            }, DELAY); // Change this to 60000 for a whole days worth of monitoring
+            }, delay); // Change this to 60000 for a whole days worth of monitoring
         }
 
         update();

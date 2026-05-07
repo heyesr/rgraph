@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Horizontal Bar chart with rounded ends</h1>
+    <h1>A Horizontal Bar chart with big, rounded ends</h1>
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="400" height="500">[No canvas support]</canvas>
@@ -19,14 +19,9 @@
             id: 'cvs',
             data: [4,8,6,3,5,4,2],
             options: {
-                xaxis: false,
-                yaxis: false,
                 marginInner: 10,
                 yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
                 textSize: 20,
-                corners: 'round',
                 cornersRoundRadius: 25,
             }
         }).grow();

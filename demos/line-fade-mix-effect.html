@@ -28,9 +28,9 @@
             data: [1,5,3,4,6],
             options: {
                 xaxisLabels: ['Jane','Luis','Pete','Hoolio','Rich'],
-                backgroundGridVlinesCount: 4,
-                shadow: false,
-                tickmarksStyle: 'filledcircle'
+                tickmarksStyle: 'filledcircle',
+                tickmarksSize: 8,
+                colors: ['red']
             }
         }).fadeIn({frames: 60});
 
@@ -43,9 +43,9 @@
             data: [1,5,3,4,6],
             options: {
                 xaxisLabels: ['Jane','Luis','Pete','Hoolio','Rich'],
-                backgroundGridVlinesCount: 5,
-                shadow: false,
-                marginInner: 20
+                marginInner: 20,
+                colors: ['red'],
+                cornersRoundRadius: 10
             }
         }).draw();
 

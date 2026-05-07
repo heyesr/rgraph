@@ -26,8 +26,6 @@
                 keyColorShape: 'circle',
                 keyTextSize: 10,
                 keyOffsetx: -220,
-                marginTop: 35,
-                marginLeft: 35,
                 marginRight: 15,
                 marginBottom: 165,
                 filled: true,
@@ -37,10 +35,8 @@
                 filledOpacity:  0.75,
                 filledColors:  ['#E6F4FA'],
                 textSize: 8,
-                yaxis: false,
                 yaxisScaleMax: 400,
                 yaxisLabelsCount: 2,
-                xaxis:false,
                 
                 // The X-axis labels for the chart
                 xaxisLabels: [
@@ -49,9 +45,6 @@
                     '12:00','','','','16:00','',
                     '','','20:00','','','23:00'
                 ],
-
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 2
             }
         }).draw();
@@ -63,19 +56,16 @@
         RGraph.SVG.GLOBALS.colors         = ['#058DC7'];
         RGraph.SVG.GLOBALS.filledColors   = ['#E6F4FA'];
         RGraph.SVG.GLOBALS.textSize       = 8;
-        RGraph.SVG.GLOBALS.yaxis          = false;
         RGraph.SVG.GLOBALS.yaxisScaleMax  = 20;
         RGraph.SVG.GLOBALS.yaxisScale     = false;
-        RGraph.SVG.GLOBALS.xaxis          = false;
-        RGraph.SVG.GLOBALS.backgroundGrid = false;
         
         // These are the smaller charts. There's no configuration values
         // that are set here because the default values have been set
         // above.
-        l2 = new RGraph.SVG.Line({id: 'chart-container',data: [4,6,8,5,2,3,5,4,6,7,8,7,8,5,6,8,9,8,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 35,marginRight: 415}}).draw();
+        l2 = new RGraph.SVG.Line({id: 'chart-container',data: [4,6,8,5,2,3,5,4,6,7,8,7,8,5,6,8,9,8,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginRight: 415}}).draw();
         l3 = new RGraph.SVG.Line({id: 'chart-container',data: [1,6,3,5,2,4,5,6,8,7,8,6,8,9,4,7,5,4,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 235,marginRight: 215}}).draw();
         l4 = new RGraph.SVG.Line({id: 'chart-container',data: [3,6,8,4,2,3,8,9,4,6,5,6,7,8,8,8,6,5,0,0,0,0,0,0],options:{marginTop: 150,marginBottom: 75,marginLeft: 435,marginRight: 15}}).draw();
-        l5 = new RGraph.SVG.Line({id: 'chart-container',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 35,marginRight: 415}}).draw();
+        l5 = new RGraph.SVG.Line({id: 'chart-container',data: [2,3,1,0,0,8,7,8,9,1,4,6,3,4,5,2,8,1,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginRight: 415}}).draw();
         l6 = new RGraph.SVG.Line({id: 'chart-container',data: [1,2,3,4,5,2,3,4,6,3,5,2,3,5,4,2,4,5,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 235,marginRight: 215}}).draw();
         l7 = new RGraph.SVG.Line({id: 'chart-container',data: [4,6,8,5,3,4,5,6,8,4,5,6,3,5,6,7,4,5,0,0,0,0,0,0],options:{marginTop: 220,marginBottom: 5,marginLeft: 435,marginRight: 15}}).draw();
 

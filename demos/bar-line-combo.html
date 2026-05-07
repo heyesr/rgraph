@@ -26,11 +26,9 @@
                 titleBold: true,
                 marginBottom: 40,
                 xaxisPosition: 'center',
-                backgroundGridVlinesCount: 0,
                 backgroundGridHlinesCount: 8,
                 yaxisLabelsCount: 8,
                 yaxisTickmarksCount: 8,
-                colorsStroke: 'rgba(0,0,0,0)',
                 xaxisLabels: [
                     'Q1\r\n2009','Q2\r\n2009','Q3\r\n2009','Q4\r\n2009',
                     'Q1\r\n2010','Q2\r\n2010','Q3\r\n2010','Q4\r\n2010',
@@ -43,28 +41,16 @@
 
 
 
-        //var line = new RGraph.Line({
-        //    id: 'cvs',
-        //    data: [-2,-1,0.5,2.2,2.8,3.2,4.7,5.7,5.9,4.5,6.5,7.5,6.8,5.8,5.8],
-        //    options: {
-        //        colors: ['#000'],
-        //        xaxisPosition: 'center',
-        //        yaxisScaleMax: 8,
-        //        linewidth: 4,
-        //        tickmarksStyle: null
-        //    }
-        //})
 
 
         line = new RGraph.Line({
             id: 'cvs',
             data: [-2,-1,0.5,2.2,2.8,3.2,4.7,5.7,5.9,4.5,6.5,7.5,6.8,5.8,5.8,6.0],
             options: {
-                colors: ['#000'],
+                colors: ['black'],
                 xaxisPosition: 'center',
                 yaxisScaleMax: 8,
-                linewidth: 4,
-                tickmarksStyle: null
+                linewidth: 4
             }
         })
 

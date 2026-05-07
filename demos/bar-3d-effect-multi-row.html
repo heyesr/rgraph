@@ -62,6 +62,7 @@
             id: 'cvs',
             data: data[2],
             options: {
+                corners: 'square',
                 
                 // These few properties set the chart to be a 3D Bar chart and turn off
                 // the 3D axes that are drawn.
@@ -70,13 +71,10 @@
                 variantThreedXaxis: false,
                 variantThreedOffsetx: 7,
                 variantThreedOffsety: 3,
-
-                colorsStroke: 'rgba(0,0,0,0)',
                 colors: [colors[2]],
-
+                
                 // The background grid is only enabled on this chart - the
                 // bar chart at the back
-                backgroundGridColor: '#ccc',
                 backgroundGridHlinesCount: 5,
                 backgroundGridVlinesCount: 14,
                 
@@ -88,8 +86,6 @@
                 marginInner: marginInner,
 
                 yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
                 yaxisPosition: 'right',
                 yaxisLabelsOffsetx: 20,
                 yaxisLabelsOffsety: -10,
@@ -110,14 +106,15 @@
                 id: 'cvs',
                 data: data[1],
                 options: {
+                    corners: 'square',
+
                     // Stipulate 3d but no 3D axes
                     variant: '3d',
                     variantThreedYaxis: false,
                     variantThreedXaxis: false,
-                variantThreedOffsetx: 7,
-                variantThreedOffsety: 3,
+                    variantThreedOffsetx: 7,
+                    variantThreedOffsety: 3,
     
-                    colorsStroke: 'rgba(0,0,0,0)',
                     colors: [colors[1]],
     
                     // No background grid or X/Y labels for the second and third charts
@@ -135,8 +132,6 @@
                     marginInner: marginInner,
     
                     yaxisScaleMax: yaxisScaleMax,
-                    xaxis: false,
-                    yaxis: false,
                     yaxisScale: false
                 }
             }).grow({frames: frames}, draw3);
@@ -155,15 +150,16 @@
                 id: 'cvs',
                 data: data[0],
                 options: {
+                
+                    corners: 'square',
     
                     // Set the chart to be 3D but without any axes
                     variant: '3d',
                     variantThreedYaxis: false,
                     variantThreedXaxis: false,
-                variantThreedOffsetx: 7,
-                variantThreedOffsety: 3,
-    
-                    colorsStroke: 'rgba(0,0,0,0)',
+                    variantThreedOffsetx: 7,
+                    variantThreedOffsety: 3,
+
                     colors: [colors[0]],
                     
                     // Now that we're drawing the chart that's "at the front" the X-axis labels can be drawn
@@ -180,8 +176,6 @@
                     marginInner: marginInner,
     
                     yaxisScaleMax: yaxisScaleMax,
-                    xaxis: false,
-                    yaxis: false,
                     yaxisScale: false
                 }
             }).grow({frames: frames});

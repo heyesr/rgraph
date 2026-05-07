@@ -25,7 +25,8 @@
             options: {
                 linewidth: 7,
                 colors: ['black'],
-                shadow: false,
+                xaxis: true,
+                yaxis: true,
                 xaxisTickmarks: false,
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 yaxisTickmarks: false,
@@ -53,28 +54,28 @@
                 events: {
                     draw: function (obj)
                     {
-                        var prop      = obj.properties,
-                            linewidth = prop.linewidth;
+                        //var prop      = obj.properties,
+                        //    linewidth = prop.linewidth;
             
                         // A single path command that draws both of the overhangs on both axes
-                        RGraph.SVG.create({
-                            svg: obj.svg,
-                            type: 'path',
-                            parent: obj.svg.svgAllGroup,
-                            attr: {
-                                d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
-                                    prop.marginLeft - 20 + 5,
-                                    obj.height - prop.marginBottom,
-                                    prop.marginLeft,
-                                    obj.height - prop.marginBottom,
-                                    prop.marginLeft,
-                                    obj.height - prop.marginBottom + 20 - 5
-                                ),
-                                stroke: 'black',
-                                'stroke-width': linewidth,
-                                fill: 'rgba(0,0,0,0)'
-                            }
-                        });
+                        //RGraph.SVG.create({
+                        //    svg: obj.svg,
+                        //    type: 'path',
+                        //    parent: obj.svg.svgAllGroup,
+                        //    attr: {
+                        //        d: 'M {1} {2} L {3} {4} L {5} {6}'.format(
+                        //            prop.marginLeft - 20 + 5,
+                        //            obj.height - prop.marginBottom,
+                        //            prop.marginLeft,
+                        //            obj.height - prop.marginBottom,
+                        //            prop.marginLeft,
+                        //            obj.height - prop.marginBottom + 20 - 5
+                        //        ),
+                        //        stroke: 'black',
+                        //        'stroke-width': linewidth,
+                        //        fill: 'rgba(0,0,0,0)'
+                        //    }
+                        //});
                     }
                 }
             }

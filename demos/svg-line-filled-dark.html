@@ -44,10 +44,7 @@
                 ]
             ],
             options: {
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 backgroundGridColor: '#999',
-                shadow: false,
                 textColor: 'white',
                 xaxisLabels: [
                     '', 'Q1', '',
@@ -56,7 +53,6 @@
                     '', 'Q4', ''
                 ],
                 yaxisScaleUnitsPost: 'kg',
-                marginBottom: 35,
                 marginRight: 10,
                 marginTop: 25,
                 linewidth: 3,
@@ -66,14 +62,11 @@
                     'Gradient(rgba(255,0,0,1):rgba(255,0,0,0.3))',
                     'Gradient(rgba(0,255,0,1):rgba(0,0,0,0.75))'
                 ],
-                // Add some responsive capability that shrinks the
-                // chart for a smaller screen
                 responsive: [
                     {maxWidth: null,width: 700,height:250,options: {textSize: 16,marginLeft:70}},
                     {maxWidth: 900, width: 400,height:200,options: {textSize: 12,marginLeft:60}}
                 ]
             }
-        // Use the trace effect to show the chart
         }).trace();
     </script>
 

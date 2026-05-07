@@ -34,12 +34,14 @@
                 // A custom property used in the tooltips
                 myNames: ['Wilf','Harry','Gerrard'],
 
-                colorsStroke: 'rgba(0,0,0,0)',
+                colorsStroke: 'transparent',
                 margin: 7,
                 variant: '3d',
+                variant3dShadow: false,
                 variantThreedDepth: 10,
                 labelsAxes: 'n',
-                colors: ['gradient(#faa:red)','Gradient(#afa:green)','gradient(#aaf:#ddf)'],
+                colors:['#f99','#9f9','#99f'],
+
                 
                 // Tooltips, given as a template string
                 tooltips: '%{property:myNames[%{index}]} on %{property:labels[%{dataset}]}: <b>%{value}%</b>',
@@ -55,7 +57,7 @@
                     {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'}}
                 ]
             }
-        }).grow({frames: 15});
+        }).grow({frames: 30});
     </script>
 
     <script>showSource()</script>

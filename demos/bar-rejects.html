@@ -27,7 +27,6 @@
                 textSize: 14,
                 title: 'Rejects',
                 titleSize: 20,
-                titleBold: true,
                 xaxisLabels: ['Blurred code','Torn pouch','Weak seal','Pleats','Fold','Leaks','Underweight','Overweight'],
                 xaxisLabelsAngle: 45,
                 xaxisLabelsOffsety: 5,
@@ -44,9 +43,6 @@
                 yaxisTickmarksLength: 7,
                 backgroundGridHlinesCount: 8,
                 backgroundGridColor: 'gray',
-                backgroundGridVlines: false,
-                yaxisColor: 'gray',
-                xaxisColor: 'gray',
                 key: ['Quantity','% Reduction'],
                 keyColors: ['#4F81BD','orange'],
                 keyPositionGraphBoxed: false,
@@ -60,16 +56,12 @@
             data: [11,20,5,9,15,4,5,7.5],
             options: {
                 textSize: 14,
-                xaxis: false,
                 yaxisPosition: 'right',
                 backgroundGrid: false,
                 linewidth: 7,
-                shadow: false,
                 yaxisScaleMax: 25,
                 yaxisScaleDecimals: 1,
                 yaxisScaleUnitsPost: '%',
-                yaxisTickmarksLength: 7,
-                yaxisColor: 'gray',
                 colors: ['orange']
             }
         });
@@ -78,8 +70,7 @@
         combo = new RGraph.CombinedChart([bar, line]);
         combo.draw();
         
-        // Turn the Y axis back on
-        line.set('yaxis', true);
+        // Turn the Y axis scale back on
         line.set('yaxisScale', true);
         
         RGraph.redraw();

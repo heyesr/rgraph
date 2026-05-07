@@ -20,18 +20,16 @@
             marginLeftAuto: false,
             marginLeft: 150,
             colors: ['green'],
-            corners: 'round',
             cornersRoundRadius: 15,
             yaxisLabels: ['Richard','Jerry','Lewis','Pauly','Jamiraquai','Jamie'],
-            yaxisTickmarksLength: 10,
-            xaxisTickmarksLength: 10,
             labelsInbar: true,
             labelsInbarHalign: 'left',
             labelsInbarColor: 'white',
             labelsInbarUnitsPost: '%',
             labelsInbarSize: 14,
             textSize: 18,
-            backgroundGrid: false
+            backgroundGrid: false,
+            xaxisPosition: 'bottom'
         };
 
         new RGraph.HBar({
@@ -40,9 +38,9 @@
             options: {
                 ...opt,
                 text: [{
-                    x: 160,
-                    y: 35,
-                    size: 20,
+                    x: 320,
+                    y: 70,
+                    size: 40,
                     bold: true,
                     font: 'Arial',
                     color: 'gray',

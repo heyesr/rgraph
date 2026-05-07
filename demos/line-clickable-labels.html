@@ -30,16 +30,11 @@
                 filled:true,
                 filledColors: ['#0002'],
                 xaxisLabels: RGraph.MONTHS_SHORT,
-                xaxisTickmarks: false,
                 xaxisLinewidth: 2,
                 marginInner: 30,
                 spline: true,
                 tickmarksStyle: 'circle',
                 tickmarksSize: 5,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                shadow: false,
-                yaxis: false,
                 textSize: 16
             }
         }).trace({frames: 60});
@@ -52,8 +47,6 @@
                 marginTop: 315,
                 marginInner: 2,
                 colors: ['#0001'],
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 backgroundGrid: false,
                 highlightStyle: 'none',
@@ -64,7 +57,7 @@
                 tooltipsCss: {
                     fontSize: '20pt'
                 },
-                highlightFill: '#0000'
+                highlightFill: 'transparent'
             }
         }).draw();
 

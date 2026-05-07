@@ -36,12 +36,9 @@
                 labelsAbove: data.shipped,
                 title: 'Total cars produced vs sold',
                 titleSize: 14,
-                titleBold: true,
-                colorsStroke: 'rgba(0,0,0,0)',
-                xaxisScaleZerostart: true,
-                shadow: true
+                titleBold: true
             }
-        }).draw();
+        }).grow({frames: 30});
 
         bar2 = new RGraph.Bar({
             id: 'cvs',
@@ -51,16 +48,12 @@
                 marginTop: 40,
                 marginLeft: bar1.get('marginLeft') / 2,
                 colors: ['pink'],
-                xaxis: false,
-                yaxis: false,
                 labelsAbove: true,
                 marginInner: 20,
                 yaxisScale: false,
-                backgroundGrid: false,
-                colorsStroke: 'rgba(0,0,0,0)',
-                shadow: true
+                backgroundGrid: false
             }
-        }).draw();
+        }).grow({frames: 30});
     </script>
     
     <script>showSource()</script>

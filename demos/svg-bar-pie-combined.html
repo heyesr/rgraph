@@ -25,16 +25,8 @@
                 labelsAbove: true,
                 labelsAboveSize: 10,
                 xaxisLabels: ['Bob', 'Jamie', 'Cynthia', 'Peter'],
-                xaxis: false,
-                yaxis: false,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 marginInner: 25,
-                colors: ['Gradient(#f11:#f11:white)','Gradient(#1cc:#1cc:white)','Gradient(#00f:#00f:white)'],
-                shadow: true,
-                shadowOffsetx: 0,
-                shadowOffsety: 0,
-                shadowBlur: 7
+                colors: ['Gradient(#f11:#f11:white)','Gradient(#1cc:#1cc:white)','Gradient(#00f:#00f:white)']
             }
         }).wave();
         
@@ -42,22 +34,16 @@
             id: 'chart-container',
             data: [270,270,164],
             options: {
-                exploded: [7,2,],
+                exploded: 1,
                 centerx: 90,
                 centery: 85,
                 radius: 30,
-                shadow: true,
-                shadowBlur: 7,
-                shadowOffsetx: 0,
-                shadowOffsety: 0,
-                shadowOpacity: .25,
                 tooltips: ['Total Monday sales: 270','Total Tuesday sales: 270','Total Wednesday sales: 264'],
                 tooltipsEvent: 'mousemove',
-                colorsStroke: 'rgba(0,0,0,0)',
-                colors: ['Gradient(white:red)','Gradient(white:#0f0)','Gradient(white:blue)'],
                 labels: ['Mondays results'],
                 labelsSticks: false,
-                textBold: true
+                textBold: true,
+                colors: bar.properties.colors
             },
         }).roundRobin({frames: 50});
     </script>

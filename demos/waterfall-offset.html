@@ -20,8 +20,6 @@
             data: [5,4,11,-30,4,5,-3],
             options: {
                 backgroundGridHlinesCount: 6,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun',''],
                 yaxisLabelsCount: 6,
                 yaxisScaleMin: -10,
@@ -29,7 +27,11 @@
                 yaxisScaleDecimals: 2,
                 yaxisScaleUnitsPre: '$',
                 yaxisTickmarksCount: 6,
-                marginLeft: 150
+                marginLeft: 150,
+                xaxis: true,
+                xaxisTickmarks: false,
+                xaxisLinewidth: 2,
+                colors: ['#f66','#6f6','#66f']
             }
         }).draw();
     </script>

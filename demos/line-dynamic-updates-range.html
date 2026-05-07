@@ -53,24 +53,18 @@
                     id: 'cvs',
                     data: [data1, data2],
                     options: {
-                        backgroundGridVlines: false,
-                        backgroundGridBorder: false,
                         title: 'Bandwidth used (Mb/s)',
-                        titleBold: true,
                         titleFont: 'Verdana',
                         colors: ['black'],
                         linewidth: 0.5,
                         yaxisPosition: 'right',
                         yaxisScaleMax: 50,
-                        yaxis: false,
-                        xaxis: false,
                         filled: true,
                         filledRange: true,
                         filledRangeThreshold: 25,
                         filledRangeThresholdColors: ['red','#0c0'],
                         filledColors: 'red',
-                        colors: ['rgba(0,0,0,0)'],
-                        tickmarksStyle: null
+                        colors: ['transparent']
                     }
                 }).draw();
             }

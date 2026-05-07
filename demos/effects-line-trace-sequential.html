@@ -32,7 +32,7 @@
 
 
         // Number of frames for each animation (ie for each dataset)
-        frms = 60;
+        frms = 30;
 
 
         // Show the first (red) dataset. The background grid is visible on this
@@ -43,16 +43,10 @@
             id: 'cvs',
             data: data,
             options: {
-                textColor: '#fff',
-                tickmarksStyle: null,
-                shadow: false,
+                textColor: 'white',
                 linewidth: 0.001,
                 colorsBackground: 'black',
-                backgroundGridVlines: false,
                 backgroundGridColor: '#666',
-                backgroundGridBorder: false,
-                xaxis: false,
-                yaxis: false,
                 spline: true,
                 filled: true,
                 
@@ -84,12 +78,8 @@
                 id: 'cvs',
                 data: data,
                 options: {
-                    tickmarksStyle: false,
-                    shadow: false,
                     linewidth: 0.001,
                     backgroundGrid: false,
-                    xaxis: false,
-                    yaxis: false,
                     yaxisScaleMax: 35,
                     yaxisScale: false,
                     
@@ -119,12 +109,8 @@
                 id: 'cvs',
                 data: data,
                 options: {
-                    tickmarksStyle: false,
-                    shadow: false,
                     linewidth: 0.001,
                     backgroundGrid: false,
-                    xaxis: false,
-                    yaxis: false,
                     yaxisScaleMax: 35,
                     yaxisScale: false,
                     

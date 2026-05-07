@@ -18,7 +18,7 @@
     
     <script>
         // This is the color of the bubbles. The Pie charts will go over them
-        color = 'rgba(0,0,0,0.1)';
+        color = 'transparent';
     
         // The various data arrays
         scatter_data = [ [30,15,color], [60,5,color], [90,8,color], [120,19,color], [150,14,color], [50,12,color], [180,20,color], [250,21,color] ];
@@ -42,14 +42,10 @@
                 xaxisScaleMax: xmax,
                 xaxisLabels: labels,
                 textSize: 12,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 colorsBubbleGraduated: false,
-                xaxis: false,
                 key: ['Hal','Rod','Bob'],
                 keyPosition: 'margin',
                 keyColors: pie_colors,
-                
                 bubbleMin:0,
                 bubbleMax: 100,
                 bubbleWidth: 50,
@@ -71,10 +67,9 @@
                     centerx: x / 2,
                     centery: y / 2,
                     radius: r / 2,
-                    shadow: false,
-                    linewidth: 0,
-                    colorsStroke: 'white',
+                    colorsStroke: 'transparent',
                     colors: pie_colors,
+                    exploded: 1
                 }
             }).roundRobin({frames: 30});
         }

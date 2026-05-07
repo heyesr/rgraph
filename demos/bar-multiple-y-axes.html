@@ -28,20 +28,11 @@
             options: {
                 title: 'Multiple independent Y axes',
                 titleSize: 16,
-                titleBold: true,
-                colorsStroke: 'rgba(0,0,0,0)',
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 marginLeft: 150,
                 colors: colors,
-                backgroundGridVlinesCount: 3,
                 marginInner: 25,
                 marginInnerGrouped: 3,
-                shadowColor: '#666',
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                shadowBlur: 2,
                 textSize: 14
             }
         }).draw();
@@ -50,9 +41,6 @@
             id: 'cvs',
             data: [[0,20,0],[0,30,0],[0,40,0]],
             options: {
-                colorsStroke: 'rgba(0,0,0,0)',
-                xaxis: false,
-                yaxis: false,
                 xaxisLabels: false,
                 yaxisScale: false,
                 marginLeft: 150,
@@ -60,10 +48,6 @@
                 backgroundGrid: false,
                 marginInner: 25,
                 marginInnerGrouped: 3,
-                shadowColor: '#666',
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                shadowBlur: 2,
                 yaxisScaleMax: 50,
                 textSize: 14
             }
@@ -73,19 +57,13 @@
             id: 'cvs',
             data: [[0,0,70],[0,0,80],[0,0,90]],
             options: {
-                colorsStroke: 'rgba(0,0,0,0)',
                 xaxisLabels: ['Monday','Tuesday','Wednesday'],
-                yaxis: false,
                 yaxisScale: false,
                 marginLeft: 150,
                 colors: colors,
                 backgroundGrid: false,
                 marginInner: 25,
                 marginInnerGrouped: 3,
-                shadowColor: '#666',
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                shadowBlur: 2,
                 yaxisScaleMax: 100,
                 textSize: 14
             }
@@ -97,8 +75,9 @@
             options: {
                 yaxisScaleMax: 10,
                 yaxisLabelsColor: 'red',
-                colors: ['red'],
-                textSize: 14
+                yaxisColor: 'red',
+                textSize: 14,
+                yaxisTickmarksLength: 5
             }
         }).draw();
         
@@ -108,8 +87,9 @@
             options: {
                 yaxisScaleMax: 50,
                 yaxisLabelsColor: 'brown',
-                colors: ['brown'],
-                textSize: 14
+                yaxisColor: 'brown',
+                textSize: 14,
+                yaxisTickmarksLength: 5
             }
         }).draw();
         
@@ -119,8 +99,9 @@
             options: {
                 yaxisScaleMax: 100,
                 yaxisLabelsColor: 'blue',
-                colors: ['blue'],
-                textSize: 14
+                yaxisColor: 'blue',
+                textSize: 14,
+                yaxisTickmarksLength: 5
             }
         }).draw();
     </script>

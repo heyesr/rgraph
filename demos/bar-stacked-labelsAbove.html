@@ -31,36 +31,31 @@
             'Sunday'
         ];
         
-        labelsAbove = [];
+        above = [];
         
         // Create the labelsAbove labels
         data.forEach(function (v, k, arr)
         {
-            labelsAbove[k * 4] = '{1}kg'.format(RGraph.arraySum(v))
+            above[k * 4] = '{1}kg'.format(RGraph.arraySum(v))
         });
         
         bar = new RGraph.Bar({
             id: 'cvs',
             data: data,
             options: {
-                textSize: 10,
+                textSize: 14,
                 marginTop: 35,
                 marginBottom: 80,
                 marginInner: 10,
                 xaxisLabels: labels,
                 colors: ['#aaf', 'rgba(96,128,96,0.5)', '#faa','#afa'],
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 grouping: 'stacked',
-                colorsStroke: 'transparent',
-                shadow: false,
                 labelsAbove: true,
                 labelsAboveSize: 12,
-                labelsAboveSpecific: labelsAbove,
-                xaxis: false,
-                yaxis: false
+                labelsAboveSpecific: above,
+                labelsAboveOffsety: 5
             }
-            }).wave();
+        }).wave();
     </script>
     
     <script>showSource()</script>

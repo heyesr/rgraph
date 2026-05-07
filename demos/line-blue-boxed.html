@@ -21,12 +21,8 @@
             id: 'cvs',
             data: [28,21,26,32,35,36,39,45,47,51,55,74,85],
             options: {
-                backgroundGridBorder: false,
-                backgroundGridVlines: false,
                 xaxisLabels: ['1950','\n1955','1960','\n1965','1970','\n1975','1980','\n1985','1990','\n1995','2000','\n2005','2010'],
                 colors: ['blue'],
-                xaxis: false,
-                yaxis: false,
                 yaxisScaleMax: 100,
                 yaxisScaleUnitsPost: '%',
                 marginLeft: 65,
@@ -34,12 +30,10 @@
                 marginTop: 15,
                 linewidth: 3,
                 marginInner: 7,
-                shadow: false,
                 tickmarksStyle: 'filledcircle',
                 textSize: 16,
                 tooltips: '<span style="font-size: 26pt">%{property:xaxisLabels[%{index}]}</span><br /><i style="font-size: 16pt">Results: %{value}</i>',
-                highlightStroke: 'transparent',
-                highlightPointRadius: 3,
+                highlightPointRadius: 4,
                 events: {
                     draw: function (obj)
                     {

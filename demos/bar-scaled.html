@@ -10,7 +10,12 @@
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A basic line chart</h1>
+    <h1>A scaled line chart</h1>
+    
+    <p>
+        In this case, scaling refers to the canvas itself - and how
+        it's scaled up in order to improve the appearance.
+    </p>
     
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="750" height="300">[No canvas support]</canvas>
@@ -30,15 +35,7 @@
                 xaxisLabels: ['Monday','\r\nTuesday','Wednesday','\r\nThursday','Friday','\r\nSaturday','Sunday'],
                 linewidth: 10,
                 marginInner: 15,
-                shadow: true,
-                shadowOffsetx: 2,
-                shadowOffsety: 2,
-                xaxisLabelsOffsety: 3,
-                xaxisTickmarks: false,
-                yaxis: false,
-                xaxisLinewidth: 2,
-                backgroundGridBorder: false,
-                backgroundGridVlines: false
+                colors:['red']
             }
         }).draw();
     </script>

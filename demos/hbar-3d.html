@@ -11,7 +11,7 @@
     <h1>A 3D Horizontal Bar chart</h1>
 
     <div id="rgraph-demo-html">
-        <canvas id="cvs" width="600" height="550">[No canvas support]</canvas>
+        <canvas id="cvs" width="400" height="550">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -25,15 +25,9 @@
                 yaxisPosition: 'left',
                 variant: '3d',
                 marginLeft: 100,
-                shadow: true,
-                shadowOffsety:  0,
-                shadowOffsetx: 13,
-                shadowBlur: 3,
-                shadowColor: '#ccc',
                 marginInner: 10,
-                xaxis: false,
-                yaxis: false,
-                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+                yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                corners: 'square'
             }
         }).draw();
     </script>

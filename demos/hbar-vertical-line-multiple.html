@@ -27,15 +27,12 @@
             id: 'cvs',
             data: [5,4,6,3,5,4,8],
             options: {
-                backgroundGridHlines: false,
-                backgroundGridBorder: false,
                 yaxisLabels: [
                     'Venus','Felicity Jones-Arthur',
                     'Cynthia','Frederick',
                     'Hoolio','Peter'
                 ],
-                xaxis: false,
-                yaxis: false,
+                xaxisPosition: 'bottom',
                 colors: ['transparent'],
                 textSize: 16,
                 key: ['Luis','Pablo','Ricardo'],
@@ -49,12 +46,7 @@
                 line: true,
                 lineSpline: true,
                 lineLinewidth: 7,
-                lineColor: 'red',
-                lineShadow: true,
-                lineShadowColor: '#aaa',
-                lineShadowBlur: 2,
-                lineShadowOffsetx: 2,
-                lineShadowOffsety: 2
+                lineColor: 'red'
             }
         }).draw();
 
@@ -66,9 +58,7 @@
             data: [1,6,2,7,8,4,6],
             options: {
                 backgroundGrid: false,
-                xaxis: false,
                 xaxisScale: false,
-                yaxis: false,
                 colors: ['transparent'],
                 marginLeftAuto: false,
                 marginLeft: hbar1.properties.marginLeft / 2,
@@ -80,12 +70,7 @@
                 line: true,
                 lineSpline: true,
                 lineLinewidth: 7,
-                lineColor: 'black',
-                lineShadow: true,
-                lineShadowColor: '#aaa',
-                lineShadowBlur: 2,
-                lineShadowOffsetx: 2,
-                lineShadowOffsety: 2
+                lineColor: 'black'
             }
         }).draw();
 
@@ -96,9 +81,7 @@
             data: [8,2,6,8,9,6,9],
             options: {
                 backgroundGrid: false,
-                xaxis: false,
                 xaxisScale: false,
-                yaxis: false,
                 colors: ['transparent'],
                 marginLeftAuto: false,
                 marginLeft: hbar1.properties.marginLeft / 2,
@@ -110,12 +93,7 @@
                 line: true,
                 lineSpline: true,
                 lineLinewidth: 7,
-                lineColor: 'green',
-                lineShadow: true,
-                lineShadowColor: '#aaa',
-                lineShadowBlur: 2,
-                lineShadowOffsetx: 2,
-                lineShadowOffsety: 2
+                lineColor: 'green'
             }
         }).draw();
     </script>

@@ -37,15 +37,13 @@
                 
                 // Note that the background of the canvas tag is a CSS gradient
                 // as well as these configuration properties.
+                backgroundGridVlines: true,
                 backgroundGridAlign: false,
                 backgroundGridVlinesCount: 8,
                 backgroundGridHlinesCount: 10,
                 backgroundGridColor: '#6A93CA',
                 backgroundGridLinewidth: 3,
-                
-                // A pink gradient for the bar colors
                 colors:['Gradient(#EC06D8:#FEB2FB:#FEB2FB)'],
-
                 yaxisScaleMax: 100,
                 marginLeft: 10,
                 marginRight: 10,
@@ -54,12 +52,9 @@
                 yaxisScale: false,
                 xaxisLabels: ['A','B','C','D'],
                 xaxisLabelsColor: 'yellow',
-                xaxis: false,
-                yaxis: false,
                 textSize: 22,
-                textColor: 'rgba(0,0,0,0)',
+                textColor: 'transparent',
                 textFont: 'Verdana',
-                colorsStroke: 'rgba(0,0,0,0)',
                 events: {
                     draw: function (obj)
                     {
@@ -82,7 +77,6 @@
                     }
                 }
             }
-        // Use the grow() effect and add a draw event listener
         }).grow();
     </script>
     

@@ -46,8 +46,6 @@
                 keyColors: ['rgba(255,0,0,0.25)','rgba(0,255,0,0.25)','rgba(0,0,255,0.25)'],
                 marginInner: 20,
                 marginInnerGrouped: 5,
-                yaxis: false,
-                xaxis: false,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
                 colors: ['rgba(0,0,0,0)','rgba(0,0,0,0)','rgba(0,0,0,0)'],
                 title: 'Widgets created by day, worker and time of day',
@@ -69,7 +67,7 @@
                                     new RGraph.SVG.Bar({
                                         id: 'chart-container',
                                         data: [[33.333,33.333,33.333]],
-                                        options: {
+                                        options: {  
                                             backgroundGrid: false,
                                             colors: ['rgba(255,0,0,0.75)','rgba(0,255,0,0.75)','rgba(0,0,255,0.75)'],
                                             tooltips: tooltips[index],
@@ -77,8 +75,6 @@
                                             marginInner: 0,
                                             marginInnerGrouped: 0,
                                             grouping: 'stacked',
-                                            yaxis: false,
-                                            xaxis: false,
                                             yaxisScale: false,
                                             marginLeft: coords.x,
                                             marginRight: obj.width - coords.x - coords.width,

@@ -60,33 +60,20 @@
             id: 'cvs',
             data: data,
             options: {
+                xaxisPosition: 'bottom',
                 yaxisLabels: labels,
                 marginLeftAuto: true,
                 marginInner: 10,
-                backgroundGridHlines: false,
-                backgroundGridBorder: false,
                 backgroundGridVlinesCount: 13,
-                xaxis: false,
-                yaxis: false,
                 colors: ['#7CB5EC','#B03060'],
                 xaxisLabelsCount: 13,
                 xaxisScaleMax: 32.5,
                 xaxisScaleDecimals: 1,
-                xaxisTitle: 'Contributions / receipts (ebn)',
-                xaxisTitleY: 910,
-                xaxisTitleColor: '#aaa',
                 key: ['Money contributed in 2013','Money received in 2013'],
                 keyPosition: 'margin',
                 keyLabelsBold: true
             }
         }).grow({frames: 60});
-        
-        node = RGraph.text.find({
-            id: 'cvs',
-            text: /ebn/
-        });
-        
-        node[0].innerHTML = node[0].innerHTML.replace('ebn', '&euro;bn');
     </script>
     
     <script>showSource()</script>

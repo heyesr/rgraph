@@ -36,16 +36,7 @@
                 textSize: 16,
                 yaxisScaleMax: 10,
                 yaxisPosition: 'right',
-
-                // This is not just a normal space character - it comes from
-                // the Windows 'charmap' program and is a non-breaking space.
-                // This means that it doesn't get removed like normal space
-                // characters do. You may need to get this character from
-                // 'charmap' as when you copy the code from this page it
-                // might be converted to a regular space - which is not the
-                // same.
                 yaxisScaleUnitsPre: ' ',
-
                 yaxisScaleUnitsPost: 'ma',
                 yaxisColor: 'red',
                 yaxisLinewidth: 3,
@@ -66,16 +57,7 @@
             options: {
                 textSize: 16,
                 yaxisScaleMax: 20,
-                
-                // This is not just a normal space character - it comes from
-                // the Windows 'charmap' program and is a non-breaking space.
-                // This means that it doesn't get removed like normal space
-                // characters do. You may need to get this character from
-                // 'charmap' as when you copy the code from this page it
-                // might be converted to a regular space - which is not the
-                // same.
                 yaxisScaleUnitsPost: 'ma ',
-
                 yaxisColor: 'gray',
                 yaxisLinewidth: 3,
                 yaxisTickmarksLength: 5,
@@ -87,8 +69,9 @@
 
 
 
-        // Create the Bar chart. The marginInnerGrouped setting is set to
-        // -15 and this is what gives the chart the overlapping appearance.
+        // Create the Bar chart. The marginInnerGrouped setting is
+        // set to -15 and this is what gives the chart the
+        // overlapping appearance.
         bar = new RGraph.Bar({
             id: 'cvs',
             data: [[4,8],[6,5],[5,4],[1,9],[4,8],[8,6]],
@@ -100,8 +83,6 @@
                 colors: ['red','gray'],
                 backgroundGrid: false,
                 yaxisScale: false,
-                xaxis: false,
-                yaxis: false,
                 yaxisScaleMax: 20,
                 yaxisScaleUnitsPost: '%',
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat'],

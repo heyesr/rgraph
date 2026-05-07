@@ -21,25 +21,21 @@
             data: [[3,4,6],[2,5,3],[1,5,2],[1,4,6],[1,6,8]],
             options: {
                 xaxisLabels: ['Mal', 'Barry', 'Gary', 'Neil', 'Kim'],
-                colors: ['Gradient(#99f:#27afe9:#058DC7:#058DC7)', 'Gradient(#94f776:#50B332:#B1E59F)', 'Gradient(#fe783e:#EC561B:#F59F7D)'],
+                colors: [
+                    'Gradient(#99f:#27afe9:#058DC7:#058DC7)',
+                    'Gradient(#94f776:#50B332:#B1E59F)',
+                    'Gradient(#fe783e:#EC561B:#F59F7D)'
+                ],
                 marginInner: 15,
                 marginTop: 50,
-                colorsStroke: 'white',
                 linewidth: 2,
-                shadowOffsetx: 1,
-                shadowOffsety: 0,
-                shadowBlur: 1,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                yaxis: false,
                 xaxisScaleZerostart: true,
-                xaxis: false,
                 title: 'A combined Bar and Line chart',
                 titleSubtitle: 'Also shows the combinedEffect callback',
                 titleBold: true,
                 titleSize: 16,
                 combinedEffect: 'wave',
-                combinedEffectCallback: function () {$a('Finished the bar effect!')},
+                combinedEffectCallback: function () {alert('Finished the bar effect!')},
                 combinedEffectOptions: '{frames: 90}'
             }
         });
@@ -54,11 +50,8 @@
                 tickmarksStyle: 'filledcircle',
                 colors: ['#CDE217'],
                 yaxisScaleMax: 10,
-                shadow: false,
-                xaxis: false,
-                yaxis: false,
                 combinedEffect: 'trace',
-                combinedEffectCallback: function () {$a('Finished the line effect!')},
+                combinedEffectCallback: function () {alert('Finished the line effect!')},
                 combinedEffectOptions: '{frames: 90}'
             }
         });

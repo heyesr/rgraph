@@ -31,12 +31,7 @@
                 colors: ['rgba(248,248,248,1)','white'],
                 marginLeft: 75,
                 marginLeftAuto: false,
-                marginRight: 25,
-                marginTop: 25,
-                marginBottom: 25,
-                xaxis: false,
                 xaxisScale: false,
-                yaxis: false,
                 backgroundGrid: false
             }
         }).draw();
@@ -46,19 +41,12 @@
             data: bar_data,
             options: {
                 marginLeft: 75,
-                marginRight: 25,
-                marginTop: 25,
-                marginBottom: 25,
-                colors: ['gradient(red:#faa)'],
                 yaxisScaleMax: 1200,
                 yaxisLabelsCount:12,
-                yaxis: false,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-                backgroundGridColor: '#eee',
                 backgroundGridHlinesCount: 24,
                 yaxisScaleUnitsPost: 'km',
-                shadow: true,
-                shadowOpacity: 0.2                
+                textSize: 14
             }
         }).wave();
     </script>

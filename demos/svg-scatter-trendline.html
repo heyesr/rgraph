@@ -20,7 +20,8 @@
         for (var i=0,data=[]; i<11; ++i) {
             data.push({
                 x: i,
-                y: RGraph.SVG.random({min: 10, max: 30})
+                y: RGraph.SVG.random({min: 10, max: 30}),
+                color: 'red'
             });
         }
 
@@ -39,20 +40,13 @@
                 xaxisLabelsPosition: 'edge',
                 xaxisLabelsPositionEdgeTickmarksCount: 12,
                 xaxisScaleMax: 10,
-                xaxisColor: '#333',
-                
-                backgroundGridColor: '#eee',
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                
                 line: true,
                 lineLinewidth: 3,
-                
+                lineColors: ['red'],
                 trendline: true,
                 trendlineColors: ['red'],
                 trendlineLinewidth: 2,
                 trendlineDashArray: [5,10],
-                
                 tickmarksStyle: 'circle',
                 tickmarksSize: 15
             }

@@ -54,7 +54,6 @@
             id: 'chart-container',
             data: [4,8,6,4,3,9,8],
             options: {
-
                 tooltips: '<h2>Results for %{prop:days[%{index}]}</h2> %{table}',
                 tooltipsEffect: 'none',
                 tooltipsPointer: false,
@@ -63,14 +62,8 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
-                
-                // These headers are used as the first "row" of the table
                 tooltipsFormattedTableHeaders: ['','Alf','Bert','Charlie','Dave','Egbert','Fred','Gary'],
-                
-                // The data that appears in the tooltip table. As you can see - it's a
-                // three-dimensional array
                 tooltipsFormattedTableData: [
-
                     // Monday tooltip
                     [
                         ['Attempt 1',5,9,6,3,5,6,6], // First row
@@ -132,8 +125,7 @@
                 // The rest of the chart configuration
                 labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 16,
-                title: 'A demonstration of tooltip tables',
-                titleBold: true
+                title: 'A demonstration of tooltip tables'
             }
         }).draw();
     </script>

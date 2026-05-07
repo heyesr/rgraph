@@ -25,11 +25,10 @@
         new RGraph.Drawing.Background({
             id: 'cvs',
             options: {
-                backgroundGridColor: 'gray',
                 backgroundGridVlinesCount: 18,
                 backgroundGridHlinesCount: 10,
                 backgroundGridHlinesCount: 14,
-                backgroundGridColor: '#000',
+                backgroundGridColor: 'black',
                 backgroundGridDashArray: [10,10],
             }
         }).draw();
@@ -38,6 +37,7 @@
             id: 'cvs',
             data: [[9,7],[4,4],[2,4]],
             options: {
+                corners: 'square',
                 tooltips: '%{property:key[%{index}]}: %{value}',
                 tooltipsCss: {
                     fontSize: '20pt'
@@ -45,6 +45,8 @@
                 textBold: true,
                 keyLabelsBold: true,
                 marginInner: 10,
+                xaxis: true,
+                yaxis: true,
                 xaxisLinewidth: 5,
                 xaxisTickmarks: 0,
                 yaxisLinewidth: 5,

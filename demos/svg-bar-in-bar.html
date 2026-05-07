@@ -24,16 +24,12 @@
             id: 'chart-container',
             data: data.shipped,
             options: {
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 marginLeft: 75,
                 colors: ['rgba(0,0,255,0.2)'],
                 xaxisLabels: ['Mini','Ford','Mercedes','BMW','Fiat','Renault','Honda'],
                 labelsAbove: data.shipped,
                 labelsAboveSize: 8,
-                title: 'Total cars produced vs sold',
-                colorsStroke: 'rgba(0,0,0,0)',
-                yaxis: false
+                title: 'Total cars produced vs sold'
             }
         }).grow();
     
@@ -41,18 +37,14 @@
             id: 'chart-container',
             data: data.sold,
             options: {
-                yaxis: false,
                 yaxisScaleMax: bar1.scale.max,
                 yaxisScale: false,
-                xaxis: false,
                 marginLeft: bar1.get('marginLeft'),
                 colors: ['pink'],
                 labelsAbove: true,
                 labelsAboveSize: 8,
                 marginInner: 20,
-                backgroundGrid: false,
-                colorsStroke: 'rgba(0,0,0,0)',
-                shadow: true
+                backgroundGrid: false
             }
         }).grow();
     </script>

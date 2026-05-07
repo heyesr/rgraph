@@ -38,9 +38,6 @@
                 marginTop: 50,
                 colors: ['#024E4E','#009997','#9ECECD'],
                 xaxisLabels: ['2010','2011','2012','2013','2014','2015','2016'],
-                xaxis: false,
-                yaxis: false,
-                backgroundGridVlines: false,
                 backgroundGridHlinesCount: 7,
                 
                 // The Y-axis on this chart has seven values (eight if you
@@ -54,13 +51,14 @@
                 key: ['Petrol','Diesel','All AFVs'],
                 keyPosition: 'margin',
                 keyPositionX: 100,
+                
+                cornersRoundRadius: 2,
 
                 // The title is specified but is aligned to the left-hand-side
                 // of the main chart area.
                 title: 'New car registrations in the UK, 2010-2016',
 
                 titleOffsety: -5,
-                titleBold: true,
                 
                 // Use formatted tooltips to show tooltips
                 tooltips: '<i>Results for <b style="font-size: 14pt">%{property:key[%{index}]}</b> in <b style="font-size: 14pt">%{property:xaxisLabels[%{dataset}]}</b>:</i><br /><span style="font-size: 20pt">$%{value_formatted}</span>',

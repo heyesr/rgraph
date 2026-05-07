@@ -32,19 +32,14 @@
                 marginLeft: marginLeft,
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
                 tooltips: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-
                 colors: ['red'],
                 keyColors: ['red','blue','#0f0'],
                 key: ['Flow rate', 'Speed', 'Pressure'],
                 keyPosition: 'margin',
                 keyPositionMarginBoxed: false,
                 keyPositionX: ((document.getElementById('cvs').width - marginLeft - marginRight) / 2) + marginLeft - 115,
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
-                textSize: 14,
-                tickmarksStyle: null,
-                shadow: false
+                textSize: 14
             }
         }).draw();
         
@@ -70,12 +65,9 @@
                     'November',
                     'December'
                 ],
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 backgroundGrid: false,
                 textSize: 14,
-                shadow: false,
                 colors: ['#0f0'],
             }
         }).draw();
@@ -102,12 +94,9 @@
                     'November',
                     'December'
                 ],
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 backgroundGrid: false,
                 textSize: 14,
-                shadow: false,
                 colors: ['blue'],
             }
         }).draw();

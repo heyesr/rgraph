@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+    <!DOCTYPE html >
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
@@ -23,12 +23,12 @@
             left: [[4,2,5],[4,6,3],[5,8,9],[4,5,2],[4,6,3],[5,8,9],[4,3,5]],
             right: [[8,6,6],[2,3,8],[4,6,8],[4,9,8],[2,5,9],[4,5,3],[4,9,6]],
             options: {
+                backgroundGrid:false,
                 labelsAbove: true,
                 labelsAboveUnitsPost: 'Kg',
                 marginTop: 50,
                 marginLeft: 50,
                 marginRight: 50,
-                xaxis: false,
                 yaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 yaxisLabelsBold: true,
                 yaxisLabelsItalic: true,
@@ -41,9 +41,9 @@
                 title: 'A basic Bipolar example chart',
                 titleSubtitle: 'A subtitle to go along with the title',
                 responsive: [
-                    {maxWidth: 900,  width:400,height:300, options: {marginInner: 5, labelsAboveSize: 10, textSize:10, yaxisLabelsSize:10, yaxis:false, backgroundGridHlines:false, backgroundGridBorder:false}},
-                    {maxWidth: 1100, width:600,height:400, options: {marginInner: 5, labelsAboveSize: 12, textSize:12, yaxisLabelsSize:12, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}},
-                    {maxWidth: null, width:900,height:500, options: {marginInner: 10,labelsAboveSize: 18, textSize:12, yaxisLabelsSize:18, yaxis:true,  backgroundGridHlines:false, backgroundGridBorder:false}}
+                    {maxWidth: 900,  width:400,height:300, options: {marginInner: 5, labelsAboveSize: 10, textSize:10, yaxisLabelsSize:10}},
+                    {maxWidth: 1100, width:600,height:400, options: {marginInner: 5, labelsAboveSize: 12, textSize:12, yaxisLabelsSize:12}},
+                    {maxWidth: null, width:900,height:500, options: {marginInner: 10,labelsAboveSize: 18, textSize:12, yaxisLabelsSize:18}}
                 ]
             }
         }).draw();
