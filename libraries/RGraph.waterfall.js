@@ -1285,7 +1285,7 @@
                 // If this is the first bar and the X axis is at
                 // the top - cover the top of the bar so that it
                 // doesn't cover the X axis
-                if (i === 0) {
+                if (i === 0 && this.properties.xaxis) {
                     
                     if (properties.xaxisPosition.toLowerCase() === 'bottom' || properties.xaxisPosition === 'center') {
                         y = y + h;
@@ -1412,6 +1412,14 @@
                 // Add the coordinates to the coords array (the previousCooords array, at
                 // this point, is actually THIS iterations coords 
                 this.coords.push(previousCoords);
+////////////////////////////////////////////////////
+//                                                //
+// TODO                                           //
+//                                                //
+// DRAW THE RELEVANT BIT OF THE X AXIS SO THAT    //
+// THE XAXIS IS "ON TOP".                         //
+//                                                //
+////////////////////////////////////////////////////
             }
 
 

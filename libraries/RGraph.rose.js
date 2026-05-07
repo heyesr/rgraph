@@ -660,7 +660,9 @@
             
                 // Setting the shadow here means that the first (the bottom Rose)
                 // sill have a shadow but not upper iterations.
-                RGraph.setShadow(this,'rgba(0,0,0,0.35)',0,15,25);
+                if (this.properties.variant3dShadow) {
+                    RGraph.setShadow(this,'rgba(0,0,0,0.35)',0,15,25);
+                }
             
                 for (var i=properties.variantThreedDepth; i>0; i-=1) {
             

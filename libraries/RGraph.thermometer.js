@@ -46,7 +46,7 @@
 
             backgroundColor:           'white',
 
-            colorsStroke:               'black',
+            colorsStroke:               '#666',
             colors:                     RGraph.getColors(),
 
             marginLeft:                 35,

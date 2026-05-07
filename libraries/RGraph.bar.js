@@ -162,7 +162,7 @@
             yaxisTitleAccessible:     null,
 
             xaxis:                   false,
-            xaxisPosition:           'botom',
+            xaxisPosition:           'bottom',
             xaxisLinewidth:          1,
             xaxisColor:              'black',
             xaxisTickmarks:          true,
@@ -727,6 +727,18 @@
                 if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
                     RGraph.clipTo.end();
                 }
+            }
+            
+            
+            
+            
+            
+            
+            
+            // If 3D is enabled then turn off rounded corners
+            // because it doesn't look correct.
+            if (this.properties.variant === '3d' && this.properties.corners === 'round') {
+                this.properties.corners = 'square'
             }
 
 

@@ -288,7 +288,7 @@
             tooltipsEffect:                  'slide',
             tooltipsCssClass:                'RGraph_tooltip',
             tooltipsCss:                     null,
-            tooltipsEvent:                   'click',
+            tooltipsEvent:                   'mousemove',
             tooltipsPersistent:              false,
             tooltipsFormattedThousand:       ',',
             tooltipsFormattedPoint:          '.',

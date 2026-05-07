@@ -153,8 +153,8 @@
             marginTop:     35,
             marginBottom:  35,
 
-            //backgroundStrokeLinewidth:  0.25,
-            //backgroundStroke:           'gray',
+            backgroundStrokeLinewidth:  1,
+            backgroundStroke:           'transparent',
             backgroundFill:             null,
             backgroundFillOpacity:      null,
             backgroundGrid:             false,
@@ -1175,7 +1175,6 @@
                     y: this.centery + 5 + properties.backgroundStrokeLinewidth,
                     valign: 'top',
                     halign: 'center',
-
                     font:   textConf.font,
                     size:   textConf.size,
                     bold:   textConf.bold,

@@ -1792,6 +1792,7 @@
 
                         this.context.strokeStyle = properties.tickmarksStroke ? properties.tickmarksStroke : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
                         this.context.fillStyle   = properties.tickmarksFill ? properties.tickmarksFill : ((typeof properties.colorsStroke == 'object' && properties.colorsStroke[dataset]) ? properties.colorsStroke[dataset] : properties.colorsStroke);
+                        this.context.globalAlpha = 1;
 
                         this.context.arc(
                             this.coords2[dataset][index][0],

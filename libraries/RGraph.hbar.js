@@ -1343,14 +1343,12 @@
             for (i=(len=this.data.length-1); i>=0; --i) {
 
                 // Work out the width and height
-                var width  = Math.abs((this.data[i] / this.max) *  graphwidth);
-                var height = this.graphheight / this.data.length;
-
+                var width       = Math.abs((this.data[i] / this.max) *  graphwidth);
+                var height      = this.graphheight / this.data.length;
                 var orig_height = height;
-
-                var x       = this.getXCoord(0);
-                var y       = this.marginTop + (i * height);
-                var vmargin = properties.marginInner;
+                var x           = this.getXCoord(0);
+                var y           = this.marginTop + (i * height);
+                var vmargin     = properties.marginInner;
                 
                 //
                 // Edge case: When X axis min is greater than 0
@@ -1401,6 +1399,7 @@
 
                     // Accommodate an offset Y axis
                     if (this.scale2.min < 0 && this.scale2.max > 0 &&  properties.yaxisPosition === 'left') {
+                        
                         barWidth = (this.data[i] / (this.max -  properties.xaxisScaleMin)) * this.graphwidth;
                     }
 
@@ -1422,7 +1421,6 @@
 
                         barWidth = Math.abs(barWidth);
                         barX = this.canvas.width - this.marginRight - barWidth;
-
                     }
 
                     // Set the fill color
@@ -1448,7 +1446,7 @@
                     this.context.beginPath();
                     this.context.lineJoin = 'miter';
                     this.context.lineCap  = 'square';
-                    
+
                     // Draw the rounded corners rect positive or negative
                     if (properties.corners === 'square' || (this.data[i] > 0 && this.properties.yaxisPosition !== 'right') ) {
                         this.context.rect(
@@ -1458,10 +1456,25 @@
                             barHeight
                         );
                     } else {
+
+// Corner case adjustment if:
+// o Its an offset X axis
+// o The value is negative
+// o The corners are round
+if (
+       this.properties.yaxisPosition === 'left'
+    && this.properties.xaxisScaleMin < 0
+    && this.properties.xaxisScaleMax > 0
+    && this.properties.corners === 'round'
+   ) {
+    var adjustment = (-1 * Math.abs(barWidth));
+} else {
+    var adjustment = 0;
+}
                         this.roundedCornersRectNegative(
-                            barX,
+                            barX + adjustment,
                             this.marginTop + (i * height) + properties.marginInner,
-                            barWidth,
+                            Math.abs(barWidth),
                             barHeight
                         );
                     }
@@ -1608,7 +1621,7 @@
 
                         var width = (((this.data[i][j]) / (this.max))) * this.graphwidth;
                         var totalWidth = (RGraph.arraySum(this.data[i]) / this.max) * this.graphwidth;
-                        
+
                         if ( properties.yaxisPosition === 'right') {
                             x -= width;
                         }
@@ -1823,7 +1836,7 @@
                         // Account for the Y axis being on the right
                         } else if ( properties.yaxisPosition == 'right') {
                             width = Math.abs(width);
-                            startX = this.canvas.width - this.marginRight - Math.abs(width);
+                            startX = this.canvas.width - this.properties.marginRight - Math.abs(width);
                         }
                         
                         if (width < 0) {
@@ -1848,8 +1861,14 @@
                                 this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
                             }
                         } else {
+
                             if (this.data[i][j] > 0 && properties.corners === 'round') {
-                                this.roundedCornersRectNegative(startX, startY, width, individualBarHeight);
+                                this.roundedCornersRectNegative(
+                                    startX,
+                                    startY,
+                                    width,
+                                    individualBarHeight
+                                );
                             } else {
                                 this.context.rect(startX + width, startY, width, individualBarHeight);
                             }
@@ -3273,9 +3292,9 @@
             var orig_cornersRoundTopRadius    = this.properties.cornersRoundTopRadius;
             var orig_cornersRoundBottomRadius = this.properties.cornersRoundBottomRadius;
 
-            this.properties.cornersRoundRadius       = null;
-            this.properties.cornersRoundTopRadius    = null;
-            this.properties.cornersRoundBottomRadius = null;
+            //this.properties.cornersRoundRadius       = null;
+            //this.properties.cornersRoundTopRadius    = null;
+            //this.properties.cornersRoundBottomRadius = null;
 
             this.set('labelsAbove', false);
 
@@ -3384,9 +3403,9 @@
                         });
                     } else {
 
-                            obj.properties.cornersRoundRadius       = orig_cornersRoundRadius;
-                            obj.properties.cornersRoundTopRadius    = orig_cornersRoundTopRadius;
-                            obj.properties.cornersRoundBottomRadius = orig_cornersRoundBottomRadius;
+                            if (RGraph.isNumber(orig_cornersRoundRadius))       obj.properties.cornersRoundRadius       = orig_cornersRoundRadius;
+                            if (RGraph.isNumber(orig_cornersRoundTopRadius))    obj.properties.cornersRoundTopRadius    = orig_cornersRoundTopRadius;
+                            if (RGraph.isNumber(orig_cornersRoundBottomRadius)) obj.properties.cornersRoundBottomRadius = orig_cornersRoundBottomRadius;
 
                             RGraph.redrawCanvas(obj.canvas);
                     }
@@ -3471,6 +3490,12 @@
         //
         this.roundedCornersRect = function (x, y, width, height)
         {
+            // 2nd May 2026:
+            //
+            // Could this cause problems?
+            //
+            height = Math.abs(height);
+
             var radiusTop    = null;
             var radiusBottom = null;
             
@@ -3550,70 +3575,96 @@
         //
         this.roundedCornersRectNegative = function (x, y, width, height)
         {
-            var radiusTop    = null;
-            var radiusBottom = null;
+            // The updated version of this function (2nd May 2026)
+            // now uses the API function RGraph.roundedRect instead
+            // of doing it itself. This is more reliable (it works
+            // for a start...).
+            return RGraph.roundedRect(
+                this.context,
+                x,
+                y,
+                Math.abs(width),
+                height,
+                this.properties.cornersRoundRadius,
+                true, // tl
+                false,// tr
+                true, // bl
+                false // br
+            );
+
+
+
+
+
+
+
+
+
+
+//            var radiusTop    = null;
+//            var radiusBottom = null;
             
             // Top radius
-            if (properties.cornersRoundTop) {
-                if (RGraph.isNumber(properties.cornersRoundTopRadius)) {
-                    radiusTop = properties.cornersRoundTopRadius;
-                } else {
-                    radiusTop = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
-                }
-            } else {
-                radiusTop = 0;
-            }
+//            if (properties.cornersRoundTop) {
+//                if (RGraph.isNumber(properties.cornersRoundTopRadius)) {
+//                    radiusTop = properties.cornersRoundTopRadius;
+//                } else {
+//                    radiusTop = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+//                }
+//            } else {
+//                radiusTop = 0;
+//            }
 
             // Bottom radius
-            if (properties.cornersRoundBottom) {
-                if (RGraph.isNumber(properties.cornersRoundBottomRadius)) {
-                    radiusBottom = properties.cornersRoundBottomRadius;
-                } else {
-                    radiusBottom = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
-                }
-            } else {
-                radiusBottom = 0;
-            }
+//            if (properties.cornersRoundBottom) {
+//                if (RGraph.isNumber(properties.cornersRoundBottomRadius)) {
+//                    radiusBottom = properties.cornersRoundBottomRadius;
+//                } else {
+//                    radiusBottom = Math.min(width / 2, height / 2, properties.cornersRoundRadius);
+//                }
+//            } else {
+//                radiusBottom = 0;
+//            }
 
 
 
 
-            if ( (radiusTop + radiusBottom) > height) {
-
-                // Calculate the top and bottom radiii and assign
-                // to temporary variables
-                var a = height / (radiusTop + radiusBottom) * radiusTop;
-                var b = height / (radiusTop + radiusBottom) * radiusBottom;
-                
-                // Reassign the values to the correct variables
-                radiusTop    = a;
-                radiusBottom = b;
-            }
+//            if ( (radiusTop + radiusBottom) > height) {
+//
+//                // Calculate the top and bottom radiii and assign
+//                // to temporary variables
+//                var a = height / (radiusTop + radiusBottom) * radiusTop;
+//                var b = height / (radiusTop + radiusBottom) * radiusBottom;
+//                
+//                // Reassign the values to the correct variables
+//                radiusTop    = a;
+//                radiusBottom = b;
+//            }
 
 
             // Because the function is added to the context prototype
             // the 'this' variable is actually the context
             
             // Save the existing state of the canvas so that it can be restored later
-            this.context.save();
+//            this.context.save();
             
                 // Translate to the given X/Y coordinates
-                this.context.translate(x, y);
+//                this.context.translate(x, y);
     
                 // Move to the center of the top horizontal line
-                this.context.moveTo(width,0);
+//                this.context.moveTo(width,0);
 
                 // Draw the rounded corners. The connecting lines in between them are drawn automatically
-                this.context.lineTo(width,height);
-                this.context.lineTo(0 + radiusBottom, height);
-                this.context.arcTo(0,height, 0,height - radiusBottom, properties.cornersRoundBottom ? radiusBottom : 0);
-                this.context.arcTo(0, 0, 0 + radiusTop,0, properties.cornersRoundTop ? radiusTop : 0);
+//                this.context.lineTo(width,height);
+//                this.context.lineTo(0 + radiusBottom, height);
+//                this.context.arcTo(0,height, 0,height - radiusBottom, properties.cornersRoundBottom ? radiusBottom : 0);
+//                this.context.arcTo(0, 0, 0 + radiusTop,0, properties.cornersRoundTop ? radiusTop : 0);
     
                 // Draw a line back to the start coordinates
-                this.context.closePath();
+//                this.context.closePath();
     
             // Restore the state of the canvas to as it was before the save()
-            this.context.restore();
+//            this.context.restore();
         };
 
 
