@@ -1,0 +1,215 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+    <script src="../libraries/RGraph.common.core.js" ></script>
+    <script src="../libraries/RGraph.common.dynamic.js" ></script>
+    <script src="../libraries/RGraph.common.tooltips.js" ></script>
+    <script src="../libraries/RGraph.hbar.js" ></script>
+    <script src="demos.js" ></script>     
+    <meta name="robots" content="noindex, nofollow" />
+</head>
+<body>
+    <h1>Horizontal Bar chart testing the various Y axis positions</h1>
+
+    <style>
+        button {
+            font-size: 20pt;
+            cursor: pointer;
+        }
+    </style>
+
+    <button onclick="toggleRoundedCorners(); RGraph.redraw()">Toggle rounded corners</button>
+    <button onclick="toggleColorsSequential(); RGraph.redraw()">Toggle sequential colors</button>
+
+    <div id="rgraph-demo-html">
+        <h1>Y axis on the left</h1>
+    
+        <canvas id="cvs1" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs2" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs3" width="500" height="400">[No canvas support]</canvas>
+        
+        <h1>Y axis on the right</h1>
+        
+        <canvas id="cvs4" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs5" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs6" width="500" height="400">[No canvas support]</canvas>
+    
+        <h1>Y axis in the center</h1>
+        
+        <canvas id="cvs7" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs8" width="500" height="400">[No canvas support]</canvas>
+    
+        <h1>Offset Y axis</h1>
+        
+        <canvas id="cvs9" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs10" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs11" width="500" height="400">[No canvas support]</canvas>
+        <canvas id="cvs12" width="500" height="400">[No canvas support]</canvas>
+    </div>
+    
+    <script>
+    
+        labels = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        radius = 50;
+
+        function toggleRoundedCorners()
+        {
+            RGraph.ObjectRegistry.iterate(function (obj)
+            {
+                obj.set('corners', obj.get('corners') === 'round' ? 'square' : 'round');
+            });
+        }
+
+        function toggleColorsSequential()
+        {
+            RGraph.ObjectRegistry.iterate(function (obj)
+            {
+                obj.set('colorsSequential', obj.get('colorsSequential') ? false : true);
+            });
+        }
+
+        new RGraph.HBar({
+            id: 'cvs1',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            data: [4,5,7,4,2,4],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs2',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs3',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                grouping: 'stacked',
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs4',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            data: [4,5,7,4,2,4],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                yaxisPosition: 'right',
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs5',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                yaxisPosition: 'right',
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs6',
+            data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                grouping: 'stacked',
+                yaxisPosition: 'right',
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs7',
+            //data: [[1,1],[2,21],[3,3],[4,4],[5,5],[7,6]],
+            data: [2,-5,7,4,-2,-4],
+            options: {
+                cornersRoundRadius: radius,
+                yaxisLabels: labels,
+                yaxisPosition: 'center',
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs8',
+            data: [[1,1],[2,-21],[3,-3],[4,4],[5,5],[7,6]],
+            options: {
+                yaxisLabels: labels,
+                yaxisPosition: 'center',
+                cornersRoundRadius: radius,
+                tooltips: 'A tooltip!'
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs9',
+            data: [[10,-16],[28,-50],[30,-30],[40,48],[51,56],[58,-64]],
+            options: {
+                yaxisLabels: labels,
+                cornersRoundRadius: radius,
+                tooltips: 'A tooltip!',
+                xaxisScaleMin: -150,
+                xaxisScaleMax: 100
+            }
+        }).draw();
+        
+        new RGraph.HBar({
+            id: 'cvs10',
+            data: [[1,1],[2,-5],[3,-3],[4,4],[5,5],[7,6]],
+            options: {
+                yaxisLabels: labels,
+                cornersRoundRadius: radius,
+                tooltips: 'A tooltip!',
+                xaxisScaleMin: -5,
+                xaxisScaleMax: 15,
+                xaxisLabelsCount: 4,
+                backgroundGridVlinesCount: 4
+            }
+        }).draw();
+
+        new RGraph.HBar({
+            id: 'cvs11',
+            data: [-45,65,32,45,-23,-49,-6,-3,184],
+            options: {
+                xaxisScaleMin: -50,
+                xaxisScaleMax: 200,
+                yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
+                tooltips: 'A tooltip!',
+                //corners: 'square',
+            }
+        }).grow();
+
+        new RGraph.HBar({
+            id: 'cvs12',
+            data: [[-45,65],[32,45],[-23,-49],[-6,-3]],
+            options: {
+                marginInner: 20,
+                xaxisScaleMin: -50,
+                xaxisScaleMax: 200,
+                yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia']
+            }
+        }).grow();
+    </script>
+    
+    <script>showSource()</script>
+
+</body>
+</html>
