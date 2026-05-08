@@ -191,6 +191,8 @@
             filledOpacity:      1,
             filledAccumulative: false,
             
+            outofbounds:          false,
+            
             yaxis:                false,
             yaxisPosition:        'left',
             yaxisLinewidth:       1,
@@ -279,7 +281,7 @@
             textLinkItalic: null,
             text:       null,
 
-            linewidth: 1,
+            linewidth: 2,
             linejoin: 'round',
             linecap: 'round',
 
@@ -1038,16 +1040,23 @@
                 
                 var val = data[i],
                     x   = (( (this.graphWidth - properties.marginInner - properties.marginInner) / (len - 1) ) * i) + properties.marginLeft + properties.marginInner,
-                    y   = this.getYCoord(val);
+                    y   = this.getYCoord(val, properties.outofbounds ? true : false);
+
 
                 coords.push([x,y]);
             }
 
 
-            // Go through the coordinates and create the path that draws the line
+            // Go through the coordinates and create the path
+            // that draws the line
             for (var i=0; i<coords.length; ++i) {
 
-                if (i === 0 || RGraph.SVG.isNullish(data[i]) || RGraph.SVG.isNullish(data[i - 1])) {
+                if (   i === 0
+                    || RGraph.SVG.isNullish(data[i])
+                    || RGraph.SVG.isNullish(data[i - 1])
+                    || RGraph.SVG.isNullish(coords[i][1])
+                    || RGraph.SVG.isNullish(coords[i - 1][1])
+                   ) {
                     var action = 'M';
 
                 } else {
@@ -1063,7 +1072,7 @@
 
                 path.push(action + '{1} {2}'.format(
                     coords[i][0],
-                    RGraph.SVG.isNullish(data[i]) ? 0 : coords[i][1]
+                    (RGraph.SVG.isNullish(data[i]) || RGraph.SVG.isNullish(coords[i][1])) ? 0 : coords[i][1]
                 ));
             }
 
@@ -1074,8 +1083,8 @@
 
 
             //
-            // Add the coordinates to the coords array, coords2 array and if
-            // necessary, the coordsSpline array 
+            // Add the coordinates to the coords array, coords2 array
+            // and if necessary, the coordsSpline array.
             //
 
             // The coords array
@@ -1097,7 +1106,7 @@
 
             for (var k=0; k<coords.length; ++k) {
                 
-                //Get the sequential index
+                // Get the sequential index
                 var seq = RGraph.SVG.groupedIndexToSequential({
                     object:  this,
                     dataset: index,
@@ -1727,10 +1736,7 @@
 
 
         //
-        // Redraws the line in certain circumstances:
-        //  o filled
-        //  o filledAccumulative
-        //  o Multiple lines
+        // Redraws the line
         //
         this.redrawLines = function ()
         {
@@ -1797,10 +1803,26 @@
 
                     // Create the path from the coordinates
                     for (var j=0; j<this.coords2[i].length; ++j) {
-                        if (j === 0 || RGraph.SVG.isNullish(this.data[i][j]) || RGraph.SVG.isNullish(this.data[i][j - 1])) {
+                    
+                        var currIndex       = j;
+                        var prevIndex       = j > 0 ? j - 1 : null;
+                        var currValue       = this.data[i][currIndex];
+                        var prevValue       = currIndex > 0 ? this.data[i][prevIndex] : null;
+                        var currYcoord      = this.coords2[i][currIndex].y;
+                        var prevYcoord      = currIndex > 0 ? this.coords2[i][prevIndex].y : null;
+                        var currOutofbounds = currValue > this.scale.max || currValue < this.scale.min;
+                        var prevOutofbounds = prevValue > this.scale.max || prevValue < this.scale.min;
+
+                        if (   currIndex === 0
+                            || RGraph.SVG.isNullish(currValue)
+                            || RGraph.SVG.isNullish(prevValue)
+                            || (currOutofbounds && !this.properties.outofbounds)
+                            || (prevOutofbounds && !this.properties.outofbounds)
+                           ) {
+
                             path += 'M{1} {2} '.format(
                                 this.coords2[i][j][0],
-                                RGraph.SVG.isNullish(this.data[i][j]) ? 0 : this.coords2[i][j][1]
+                                this.coords2[i][j][1]
                             );
                         } else {
                             if (properties.stepped) {
@@ -1816,7 +1838,6 @@
                             );
                         }
                     }
-
 
 
                     RGraph.SVG.create({
