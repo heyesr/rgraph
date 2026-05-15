@@ -24,13 +24,6 @@
             <div style="width: 950px; height: 300px" id="chart-container6"></div>
             <div style="width: 950px; height: 300px" id="chart-container7"></div>
         </div>
-        
-        <style>
-            input[type=text] {
-                box-shadow: 2px 2px 2px #ddd;
-                margin: 5px;
-            }
-        </style>
     </div>
 
     <script>
@@ -54,6 +47,9 @@
                 yaxisTitleBold: true,
                 labelsAbove: true,
                 adjustable: true,
+                style: [
+                    'input[type=text] {margin: 5px;}'
+                ],
                 events: {
                     adjustbegin: function (obj)
                     {

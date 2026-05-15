@@ -14,13 +14,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="300" height="350">[No canvas support]</canvas>
-        <style>
-            .RGraph_tooltip {
-                text-align: center !important;
-                padding: 5px !important;
-                font-weight: bolder;
-            }
-        </style>
     </div>
 
     <script>
@@ -36,7 +29,10 @@
                 tooltipsEvent: 'mousemove',
                 colorsStroke: 'transparent',
                 highlightStyle: 'outline',
-                highlightStyleOutlineWidth: 10
+                highlightStyleOutlineWidth: 10,
+                style: [
+                    '.RGraph_tooltip {text-align: center !important;padding: 5px !important;font-weight: bold !important;}'
+                ]
             }
         }).draw();
     </script>

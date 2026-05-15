@@ -16,21 +16,6 @@
         <div id="chart-container1" style="width: 700px; height: 450px;"></div>
         <div id="chart-container2" style="width: 700px; height: 450px;"></div>
         <div id="chart-container3" style="width: 700px; height: 450px;"></div>
-    
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            div.RGraph_tooltip td {
-                text-align: left;
-                padding-left: 15px;
-            }
-    
-            div.RGraph_tooltip td td {
-                padding-left: 0;
-            }
-        </style>
     </div>
 
     <script>
@@ -63,7 +48,12 @@
                     color: 'black'
                 },
                 tooltipsPointer: false,
-                tooltipsPositionStatic: false
+                tooltipsPositionStatic: false,
+                style: [
+                    'table {border-color: #ccc;}',
+                    'div.RGraph_tooltip td {text-align: left;padding-left: 15px;}',
+                    'div.RGraph_tooltip td td {padding-left: 0;}'
+                ]
             }
         }).draw();
 

@@ -17,21 +17,22 @@
     <script>
         new RGraph.Waterfall({
             id: 'cvs',
-            data: [5,4,11,-30,4,5,-3],
+            data: [5,4,-15,3,4,5,-3],
             options: {
                 backgroundGridHlinesCount: 6,
-                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun',''],
+                xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun','Result'],
                 yaxisLabelsCount: 6,
-                yaxisScaleMin: -10,
-                yaxisScaleMax: 20,
                 yaxisScaleDecimals: 2,
                 yaxisScaleUnitsPre: '$',
                 yaxisTickmarksCount: 6,
+                //xaxisPosition: 'center',
                 marginLeft: 150,
                 xaxis: true,
+                yaxisScaleMin: -10,
+                yaxisScaleMax: 40,
                 xaxisTickmarks: false,
                 xaxisLinewidth: 2,
-                colors: ['#f66','#6f6','#66f']
+                colors: ['#6f6','#f66','#66f']
             }
         }).draw();
     </script>

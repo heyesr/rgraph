@@ -16,39 +16,6 @@
         <div>
             <canvas id="cvs" width="120" height="400">[No canvas support]</canvas>
         </div>
-
-        <style>        
-            .RGraph_tooltip table{
-                border-collapse: collapse;
-                margin-left: 50%;
-                transform: translateX(-50%);
-            }
-    
-            .RGraph_tooltip h2 {
-                margin: 5px;
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip table {
-                border: none;
-                font-family: Verdana;
-            }
-    
-            .RGraph_tooltip thead th {
-                font-style: italic;
-            }
-    
-            .RGraph_tooltip td {
-                padding: 5px;
-            }
-            
-            .RGraph_tooltip td:nth-child(1) {
-                background-color: #ddd;
-                font-style: italic;
-                font-weight: bold;
-                text-align: center;
-            }
-        </style>
     </div>
 
 
@@ -78,6 +45,14 @@
                         ['Saturday',  '50&deg;'],
                         ['Sunday',    '59&deg;']
                     ]
+                ],
+                style: [
+                    '.RGraph_tooltip table{border-collapse: collapse;margin-left: 50%;transform: translateX(-50%);}',
+                    '.RGraph_tooltip h2 {margin: 5px;font-style: italic;}',
+                    '.RGraph_tooltip table {border: none;font-family: Verdana;}',
+                    '.RGraph_tooltip thead th {font-style: italic;}',
+                    '.RGraph_tooltip td {padding: 5px;}',
+                    '.RGraph_tooltip td:nth-child(1) {background-color: #ddd;font-style: italic;font-weight: bold;text-align: center;}'
                 ]
             }
         }).grow();

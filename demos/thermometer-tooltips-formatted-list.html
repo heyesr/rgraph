@@ -12,20 +12,7 @@
 <body>
     <h1>A Thermometer chart with a list in the tooltips</h1>
     
-    <div id="rgraph-demo-html">
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
-        
+    <div id="rgraph-demo-html">        
         <div style="margin-left: 50px">
             <canvas id="cvs" width="250" height="500">[No canvas support]</canvas>
         </div>
@@ -57,7 +44,11 @@
                 marginTop: 60,
                 xaxisLabels: ['Monday','Tuesday','Wednesday'],
                 textSize: 16,
-                title: 'A tooltip list'
+                title: 'A tooltip list',
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).grow();
     </script>

@@ -17,17 +17,6 @@
             <canvas id="cvs" width="750" height="350">[No canvas support]</canvas>
         </div>
     
-        <style>
-            table {
-                font-family: Verdana;
-                border: 1px solid black;
-            }
-            tr:nth-child(1n+1) td:nth-child(1n+2) {
-                background-color: #ddd;
-                text-align: center;
-            }
-        </style>
-    
         <table id="myTable">
             <thead>
                 <tr>
@@ -164,7 +153,11 @@
                             // Now set the new X coord
                             obj.properties.keyPositionX = obj.canvas.width - 100 - width;
                         }
-                    }
+                    },
+                    style: [
+                        'table {font-family: Verdana;border: 1px solid black;}',
+                        'tr:nth-child(1n+1) td:nth-child(1n+2) {background-color: #ddd;text-align: center;}'
+                    ]
                 }
             }).trace();
             

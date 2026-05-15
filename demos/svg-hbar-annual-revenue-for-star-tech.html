@@ -11,14 +11,6 @@
     <h1>A blue SVG Horizontal Bar chart</h1>
     
     <div id="rgraph-demo-html">
-        <style>
-            div#chart-container {
-                background-image: linear-gradient(45deg, #000049,#0000CB);
-                border-bottom-right-radius: 25px;
-                border-top-left-radius: 25px;
-            }
-        </style>
-    
         <div>
             <div id="chart-container" style="width: 650px;height: 300px"></div>
         </div>
@@ -48,6 +40,9 @@
                 labelsAbove: true,
                 xaxisScaleUnitsPre: '$',
                 xaxisScaleUnitsPost: 'm',
+                style: [
+                    'div#chart-container {background-image: linear-gradient(45deg, #000049,#0000CB);border-bottom-right-radius: 25px;border-top-left-radius: 25px;}'
+                ],
                 responsive: [
                     {maxWidth:null,width:650,height:300},
                     {maxWidth:900, width:400,height:250}

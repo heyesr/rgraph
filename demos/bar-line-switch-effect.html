@@ -16,34 +16,6 @@
             <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
             <canvas id="cvs2" width="600" height="250">[No canvas support]</canvas>
         </div>
-
-        <style>
-            div#canvas-container {
-                position: relative;
-                width: 600px;
-                height: 250px;
-            }
-            
-            div#canvas-container canvas {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 600px;
-                height: 250px;
-                background-color: white;
-                transition: all 1s;
-                opacity: 1;
-            }
-            
-            div#canvas-container canvas#cvs1 {
-                top: 0;
-                left: 0;
-                width: 0;
-                height: 0;
-                opacity: 0;
-                transform: rotate(90deg);
-            }
-        </style>
     </div>
 
     <script id="rgraph-demo-source-code">
@@ -62,7 +34,12 @@
                 xaxisTickmarksCount: 0,
                 title: 'A Bar chart (click to switch)',
                 titleSize: 24,
-                xaxisLabels: ['John','Fred','Lucy']
+                xaxisLabels: ['John','Fred','Lucy'],
+                style: [
+                    'div#canvas-container {position: relative;width: 600px;height: 250px;}',
+                    'div#canvas-container canvas {position: absolute;top: 0;left: 0;width: 600px;height: 250px;background-color: white;transition: all 1s;opacity: 1;}',
+                    'div#canvas-container canvas#cvs1 {top: 0;left: 0;width: 0;height: 0;opacity: 0;transform: rotate(90deg);}'
+                ]
             }
 
         }).draw();

@@ -24,53 +24,7 @@
     -->
     <h1>A CSS expand effect</h1>
     
-    <div>
-        <style>
-            #container {
-                position: relative;
-                width: 900px;
-                height: 375px;
-                opacity: 0;
-                transition: opacity 1s;
-            }
-        
-            #container canvas {
-                outline: none;
-                position: absolute;
-                transition-delay: .25s;
-                z-index: 0;
-                width: 300px;
-                background-color: #fff;
-            }
-
-            #container canvas#cvs1 {top: 0;left: 0;}
-            #container canvas#cvs2 {top: 0;left: 300px;}
-            #container canvas#cvs3 {top: 0;left: 600px;}
-            #container canvas#cvs4 {top: 125px;left: 0;}
-            #container canvas#cvs5 {top: 125px;left: 300px;}
-            #container canvas#cvs6 {top: 125px;left: 600px;}
-            #container canvas#cvs7 {top: 250px;left: 0;}
-            #container canvas#cvs8 {top: 250px;left: 300px;}
-            #container canvas#cvs9 {top: 250px;left: 600px;}
-
-            #container canvas#cvs1:focus,
-            #container canvas#cvs2:focus,
-            #container canvas#cvs3:focus,
-            #container canvas#cvs4:focus,
-            #container canvas#cvs5:focus,
-            #container canvas#cvs6:focus,
-            #container canvas#cvs7:focus,
-            #container canvas#cvs8:focus,
-            #container canvas#cvs9:focus {
-                top: 5%;
-                left: 5%;
-                width: 90% !important;
-                height: 90% !important;
-                z-index: 999;
-                box-shadow: 0 0 25px #ccc;
-            }
-        </style>
-        
+    <div>        
         <div id="container">
             <canvas id="cvs1" width="900" height="375" tabindex="1">[No canvas support]</canvas>
             <canvas id="cvs2" width="900" height="375" tabindex="1">[No canvas support]</canvas>
@@ -91,7 +45,21 @@
             options: {
                 xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Cuthbert'],
                 textSize: 14,
-                marginInner: 20
+                marginInner: 20,
+                style: [
+                    '#container {position: relative;width: 900px;height: 375px;opacity: 0;transition: opacity 1s;}',
+                    '#container canvas {outline: none;position: absolute;transition-delay: .25s;z-index: 0;width: 300px;background-color: #fff;}',
+                    '#container canvas#cvs1 {top: 0;left: 0;}',
+                    '#container canvas#cvs2 {top: 0;left: 300px;}',
+                    '#container canvas#cvs3 {top: 0;left: 600px;}',
+                    '#container canvas#cvs4 {top: 125px;left: 0;}',
+                    '#container canvas#cvs5 {top: 125px;left: 300px;}',
+                    '#container canvas#cvs6 {top: 125px;left: 600px;}',
+                    '#container canvas#cvs7 {top: 250px;left: 0;}',
+                    '#container canvas#cvs8 {top: 250px;left: 300px;}',
+                    '#container canvas#cvs9 {top: 250px;left: 600px;}',
+                    '#container canvas#cvs1:focus,#container canvas#cvs2:focus,#container canvas#cvs3:focus,#container canvas#cvs4:focus,#container canvas#cvs5:focus,#container canvas#cvs6:focus,#container canvas#cvs7:focus,#container canvas#cvs8:focus,#container canvas#cvs9:focus {top: 5%;left: 5%;width: 90% !important;height: 90% !important;z-index: 999;box-shadow: 0 0 25px #ccc;}'
+                ]
             }
         }).draw();
 
@@ -242,52 +210,6 @@
 
     Put this where you want the chart to show up:
     <pre class="code">
-&lt;style&gt;
-    #container {
-        position: relative;
-        width: 900px;
-        height: 375px;
-        opacity: 0;
-        transition: opacity 1s;
-    }
-
-    #container canvas {
-        outline: none;
-        position: absolute;
-        transition-delay: .25s;
-        z-index: 0;
-        width: 300px;
-        background-color: #fff;
-    }
-
-    #container canvas#cvs1 {top: 0;left: 0;}
-    #container canvas#cvs2 {top: 0;left: 300px;}
-    #container canvas#cvs3 {top: 0;left: 600px;}
-    #container canvas#cvs4 {top: 125px;left: 0;}
-    #container canvas#cvs5 {top: 125px;left: 300px;}
-    #container canvas#cvs6 {top: 125px;left: 600px;}
-    #container canvas#cvs7 {top: 250px;left: 0;}
-    #container canvas#cvs8 {top: 250px;left: 300px;}
-    #container canvas#cvs9 {top: 250px;left: 600px;}
-
-    #container canvas#cvs1:focus,
-    #container canvas#cvs2:focus,
-    #container canvas#cvs3:focus,
-    #container canvas#cvs4:focus,
-    #container canvas#cvs5:focus,
-    #container canvas#cvs6:focus,
-    #container canvas#cvs7:focus,
-    #container canvas#cvs8:focus,
-    #container canvas#cvs9:focus {
-        top: 5%;
-        left: 5%;
-        width: 90% !important;
-        height: 90% !important;
-        z-index: 999;
-        box-shadow: 0 0 25px #ccc;
-    }
-&lt;/style&gt;
-
 &lt;div id="container"&gt;
     &lt;canvas id="cvs1" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
     &lt;canvas id="cvs2" width="900" height="375" tabindex="1"&gt;[No canvas support]&lt;/canvas&gt;
@@ -312,7 +234,21 @@ This is the code that generates the chart - it should be placed after the canvas
         options: {
             xaxisLabels: ['Dave','Loui','Luis','Pete','Olga','Steve','Kevin','John','Cuthbert'],
             textSize: 14,
-            marginInner: 20
+            marginInner: 20,
+            style: [
+                '#container {position: relative;width: 900px;height: 375px;opacity: 0;transition: opacity 1s;}',
+                '#container canvas {outline: none;position: absolute;transition-delay: .25s;z-index: 0;width: 300px;background-color: #fff;}',
+                '#container canvas#cvs1 {top: 0;left: 0;}',
+                '#container canvas#cvs2 {top: 0;left: 300px;}',
+                '#container canvas#cvs3 {top: 0;left: 600px;}',
+                '#container canvas#cvs4 {top: 125px;left: 0;}',
+                '#container canvas#cvs5 {top: 125px;left: 300px;}',
+                '#container canvas#cvs6 {top: 125px;left: 600px;}',
+                '#container canvas#cvs7 {top: 250px;left: 0;}',
+                '#container canvas#cvs8 {top: 250px;left: 300px;}',
+                '#container canvas#cvs9 {top: 250px;left: 600px;}',
+                '#container canvas#cvs1:focus,#container canvas#cvs2:focus,#container canvas#cvs3:focus,#container canvas#cvs4:focus,#container canvas#cvs5:focus,#container canvas#cvs6:focus,#container canvas#cvs7:focus,#container canvas#cvs8:focus,#container canvas#cvs9:focus {top: 5%;left: 5%;width: 90% !important;height: 90% !important;z-index: 999;box-shadow: 0 0 25px #ccc;}'
+            ]
         }
     }).draw();
 

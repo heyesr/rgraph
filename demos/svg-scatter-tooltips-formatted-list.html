@@ -15,19 +15,6 @@
         <div>
             <div id="chart-container" style="width: 900px; height: 300px"></div>
         </div>
-
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
     </div>
 
     <script>
@@ -35,6 +22,7 @@
             id: 'chart-container',
             data: [{x:.5,y:1},{x:1.5,y:2},{x:2.5,y:3},{x:3.5,y:4},{x:4.5,y:5},{x:5.5,y:6},{x:6.5,y:7}],
             options: {
+                colors: ['green'],
 
                 tooltips: '<h2>Results</h2> %{list}',
                 tooltipsEffect: 'none',
@@ -56,9 +44,14 @@
                 // The rest of the chart configuration
                 line: true,
                 lineColors: ['green'],
+                lineLinewidth: 2,
                 xaxisScaleMax: 7,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-                textSize: 16
+                textSize: 16,
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).draw();
     </script>

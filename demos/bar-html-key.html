@@ -15,12 +15,6 @@
         <div id="container" style="position: relative">
             <canvas id="cvs" width="600" height="200"></canvas>
         </div>
-        
-        <style>
-            table {
-                line-height: 20px;
-            }
-        </style>
     </div>
 
     <script>
@@ -54,7 +48,10 @@
                 titleBold: true,
                 colors: ['red','#0c0'],
                 grouping: 'stacked',
-                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                style: [
+                    'table {line-height: 20px;}'
+                ]
             }
         }).draw();
     </script>

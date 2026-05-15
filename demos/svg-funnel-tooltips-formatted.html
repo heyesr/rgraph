@@ -13,17 +13,6 @@
     
     <div id="rgraph-demo-html">
         <div id="chart-container" style="width: 500px; height: 450px; border: 1px solid #ddd"></div>
-        
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -56,7 +45,11 @@
                     color: 'black'
                 },
                 tooltipsPointer: false,
-                tooltipsPositionStatic: false
+                tooltipsPositionStatic: false,
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
     </script>

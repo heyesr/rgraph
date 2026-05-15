@@ -15,14 +15,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="950" height="350">[No canvas support]</canvas>
-        
-        <style>
-            .RGraph_tooltip {padding:10px!important;}
-            .RGraph_tooltip table {border-collapse:collapse;}
-            .RGraph_tooltip table td:nth-child(1) {font-weight:bold;padding:3px;}
-            .RGraph_tooltip table td:nth-child(1) {background-color:#ddd;}
-            .RGraph_tooltip table td:nth-child(2) {padding-left:10px;}
-        </style>
     </div>
 
     <script>
@@ -65,7 +57,14 @@
                 keyPosition: 'margin',
                 keyPositionY: 320,
                 keyTextSize: 12,
-                cornersRoundRadius: 3
+                cornersRoundRadius: 3,
+                style: [
+                    '.RGraph_tooltip {padding:10px!important;}',
+                    '.RGraph_tooltip table {border-collapse:collapse;}',
+                    '.RGraph_tooltip table td:nth-child(1) {font-weight:bold;padding:3px;}',
+                    '.RGraph_tooltip table td:nth-child(1) {background-color:#ddd;}',
+                    '.RGraph_tooltip table td:nth-child(2) {padding-left:10px;}'
+                ]
             }
         }).draw();
 

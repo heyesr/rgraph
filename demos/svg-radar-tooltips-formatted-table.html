@@ -13,40 +13,6 @@
     
     <div id="rgraph-demo-html">
         <div id="chart-container" style="width: 600px; height: 400px;"></div>
-
-        <style>        
-            .RGraph_tooltip h2 {
-                margin: 5px;
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip table {
-                border-collapse: collapse;
-                font-family: Verdana;
-            }
-    
-            .RGraph_tooltip thead th {
-                font-style: italic;
-            }
-    
-            .RGraph_tooltip th,
-            .RGraph_tooltip td {
-                padding: 5px;
-                border: 1px solid #ccc;
-            }
-            
-            .RGraph_tooltip td:nth-child(1){
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
-                background-color: #eee;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
-                background-color: #ddd;
-            }
-        </style>
     </div>
 
     <script>
@@ -133,7 +99,16 @@
                 labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 16,
                 title: 'A demonstration of tooltip tables',
-                titleY: 30
+                titleY: 30,
+                style: [
+                    '.RGraph_tooltip h2 {margin: 5px;font-style: italic;}',
+                    '.RGraph_tooltip table {border-collapse: collapse;font-family: Verdana;}',
+                    '.RGraph_tooltip thead th {font-style: italic;}',
+                    '.RGraph_tooltip th,.RGraph_tooltip td {padding: 5px;border: 1px solid #ccc;}',
+                    '.RGraph_tooltip td:nth-child(1){font-style: italic;}',
+                    '.RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){background-color: #eee;}',
+                    '.RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){background-color: #ddd;}'
+                ]
             }
         }).draw();
     </script>

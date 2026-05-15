@@ -13,17 +13,7 @@
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="700" height="300">[No canvas support]</canvas><br />
         
-        <style>
-            button {
-                font-size: 20pt;
-                min-width: 350px;
-                margin: 5px;
-                cursor:pointer;
-                box-shadow: 2px 2px 2px #ddd;
-            }
-        </style>
-        
-        <button onclick="line.stopAnimation(); enableButtons()">Stop</button>
+        <button onclick="line.stopAnimation(); enableButtons()" style="color: red; font-weight: bold">Stop</button>
         <button onclick="disableButtons(); window._button = this; line.trace({frames: 180}, function () {enableButtons()})">Trace</button>
         <button onclick="disableButtons(); window._button = this; line.wave({frames: 180, reverse: 0}, function () {enableButtons()})">Wave</button>
         <button onclick="disableButtons(); window._button = this; line.foldtocenter({frames: 180, reverse: 0}, function () {enableButtons()})">Fold to center</button>
@@ -45,7 +35,10 @@
                 spline: true,
                 tickmarksStyle: 'endcircle',
                 colors: ['red','black'],
-                tickmarksSize: 8
+                tickmarksSize: 8,
+                style: [
+                    'button {font-size: 20pt;min-width: 350px;margin: 5px;cursor:pointer;}'
+                ]
             }
         }).draw();
         

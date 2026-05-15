@@ -19,16 +19,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="550" height="300">[No canvas support]</canvas>
-        
-        <style>
-            .RGraph_tooltip {
-                background-color: white ! important;
-            }
-            
-            .RGraph_tooltip img {
-                display: none;
-            }
-        </style>
     </div>
 
     <script>
@@ -49,6 +39,10 @@
                 exploded: [,25],
                 labelsSticksColors: RGraph.arrayPad([], labels.length, 'gray'),
                 labelsSticksLinewidth: 1,
+                style: [
+                    '.RGraph_tooltip {background-color: white ! important;}',
+                    '.RGraph_tooltip img {display: none;}'
+                ],
                 events: {
                     tooltip: function (obj)
                     {

@@ -15,11 +15,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-        <style>
-            div.RGraph_tooltip {
-                font-size: 14pt !important;
-            }
-        </style>
     </div>
     
     <script>
@@ -54,7 +49,12 @@
                 tooltipsCss: {
                     backgroundColor: 'white',
                     color: 'black'
-                }
+                },
+                style: [
+                    '.RGraph_tooltip {font-size: 14pt !important;}',
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
     </script>

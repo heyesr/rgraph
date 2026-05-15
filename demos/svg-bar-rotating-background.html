@@ -13,20 +13,6 @@
     <h1>An SVG Bar chart with a canvas background</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            div#outer {
-                position: relative;
-            }
-            
-            div#outer canvas {
-                position: absolute;
-                left: 50px;
-                top: 50px;
-                width: 680px;
-                height: 230px;
-            }
-        </style>
-
         <div id="outer" style="padding: 15px; display: inline-block">
             <canvas width="750" height="300" id="cvs_background"></canvas>
             <div style="width: 750px; height: 300px" id="chart-container"></div>
@@ -101,7 +87,11 @@
                 marginInner: 25,
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thuesday','Friday','Saturday','Sunday'],
                 tooltips: '%{property:xaxisLabels[%{dataset}]}: %{value_formatted}',
-                tooltipsFormattedUnitsPost: 'kg'
+                tooltipsFormattedUnitsPost: 'kg',
+                style: [
+                    'div#outer {position: relative;}',
+                    'div#outer canvas {position: absolute;left: 50px;top: 50px;width: 680px;height: 230px;}'
+                ]
             }
         }).wave();
     </script>

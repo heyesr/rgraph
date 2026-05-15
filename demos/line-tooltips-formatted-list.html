@@ -16,19 +16,6 @@
         <div>
             <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
         </div>
-    
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
     </div>
 
     <script>
@@ -51,7 +38,11 @@
                 xaxisLabels: ['Monday','Tuesday','Wednesday'],
                 textSize: 16,
                 title: 'A demonstration of a tooltip list',
-                titleOffsety:5
+                titleOffsety:5,
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).trace();
     </script>

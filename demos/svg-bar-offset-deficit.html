@@ -13,12 +13,6 @@
     <h1>A thin Bar chart</h1>
     
     <div id="rgraph-demo-html">
-        <style>
-            body {
-                line-height: 15px;
-            }
-        </style>
-
         <div style="width: 950px; height: 350px; display: inline-block" id="chart-container"></div>
     </div>
 
@@ -72,7 +66,7 @@
                     xaxisLabels: labels,
                     xaxisLabelsOffsety: 10,
                     tooltips: tooltips,
-                    tooltipsEvent: 'mouseover',
+                    tooltipsEvent: 'mousemove',
                     tooltipsEffect: 'none',
                     textSize: 9,
                     textColor: 'gray',
@@ -91,15 +85,16 @@
                         padding: '10px'
                     },
                     tooltipsPointer: false,
+                    style: [
+                        'body {line-height: 15px;}'
+                    ],
                     events: {
                         tooltip: function (obj)
                         {
                             var tooltip = RGraph.SVG.REG.get('tooltip');
                             var index   = tooltip.__index__;
-            
-                            if (data[index] > 0) {
-                                tooltip.style.borderColor = 'blue';
-                            }
+
+                            tooltip.style.borderColor = data[index] > 0 ? 'blue' : 'red';
                         }
                     }
                 }

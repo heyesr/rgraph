@@ -14,19 +14,6 @@
     <div id="rgraph-demo-html">
         <div>
             <div id="chart-container" style="width: 750px; height: 250px"></div>
-
-            <style>
-                .RGraph_tooltip li {
-                    text-align: left;
-                    margin: 3px;
-                }
-        
-                .RGraph_tooltip h2 {
-                    color: white;
-                    margin: 5px;
-                    font-style: italic;
-                }
-            </style>
         </div>
     </div>
 
@@ -57,7 +44,11 @@
                 marginInner: 10,
                 yaxisLabels: ['Monday','Tuesday','Wednesday'],
                 textSize: 16,
-                title: 'A demonstration of a tooltip list'
+                title: 'A demonstration of a tooltip list',
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).draw();
     </script>

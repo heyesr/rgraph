@@ -14,16 +14,6 @@
         
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="400" height="350">[No canvas support]</canvas>
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -53,6 +43,10 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
         

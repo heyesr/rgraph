@@ -16,16 +16,6 @@
         <canvas id="cvs1" width="650" height="450">[No canvas support]</canvas>
         <canvas id="cvs2" width="650" height="450">[No canvas support]</canvas>
         <canvas id="cvs3" width="650" height="450">[No canvas support]</canvas>
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -54,7 +44,11 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
-                marginRight: 65
+                marginRight: 65,
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
         

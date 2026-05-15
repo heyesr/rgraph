@@ -16,22 +16,6 @@
     
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250"></canvas>
-
-        <style>
-            .RGraph_tooltip img {
-                display: none;
-            }
-    
-            .RGraph_tooltip {
-                box-shadow: none ! important;
-                border: 4px solid blue ! important;
-                background-color: white ! important;
-                padding: 3px ! important;
-                text-align: center;
-                font-weight: bold !important;
-                font-family: Verdana;
-            }
-        </style>
     </div>
     
     <script>
@@ -53,7 +37,11 @@
                 title: 'A combined grouped Bar and VProgress bar chart',
                 titleBold: true,
                 titleSize: 16,
-                titleOffsety: -7
+                titleOffsety: -7,
+                style: [
+                    '.RGraph_tooltip img {display: none;}',
+                    '.RGraph_tooltip {box-shadow: none ! important;border: 4px solid blue ! important;background-color: white ! important;padding: 3px ! important;text-align: center;font-weight: bold !important;font-family: Verdana;}'
+                ]
             }
         }).draw();
 

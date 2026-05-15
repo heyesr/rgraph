@@ -15,17 +15,6 @@
     <div id="rgraph-demo-html">
         <canvas id="cvs1" width="950" height="150">[No canvas support]</canvas>
         <canvas id="cvs2" width="950" height="150">[No canvas support]</canvas>
-        
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
 
@@ -59,7 +48,11 @@
                 tooltipsCss: {
                     backgroundColor: 'white',
                     color: 'black'
-                }
+                },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
         

@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+    <!DOCTYPE html >
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
@@ -14,17 +14,6 @@
     <div id="rgraph-demo-html">
         <div id="chart-container1" style="width: 500px; height: 300px"></div>
         <div id="chart-container2" style="width: 500px; height: 300px"></div>
-        
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -60,6 +49,10 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
 

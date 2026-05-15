@@ -12,18 +12,6 @@
     <h1>A Pie chart with a list in the tooltips</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
         <div>
             <div id="chart-container" style="width: 600px; height: 300px"></div>
         </div>
@@ -55,7 +43,11 @@
                 // The rest of the chart configuration
                 labels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 16,
-                title: 'A demonstration of a tooltip list'
+                title: 'A demonstration of a tooltip list',
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).draw();
     </script>

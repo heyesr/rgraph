@@ -11,14 +11,6 @@
 </head>
 <body>
     <h1>Horizontal Bar chart testing the various Y axis positions</h1>
-
-    <style>
-        button {
-            font-size: 20pt;
-            cursor: pointer;
-        }
-    </style>
-
     <button onclick="toggleRoundedCorners(); RGraph.redraw()">Toggle rounded corners</button>
     <button onclick="toggleColorsSequential(); RGraph.redraw()">Toggle sequential colors</button>
 
@@ -76,7 +68,10 @@
             options: {
                 cornersRoundRadius: radius,
                 yaxisLabels: labels,
-                tooltips: 'A tooltip!'
+                tooltips: 'A tooltip!',
+                style: [
+                    'button {font-size: 20pt;cursor: pointer;}'
+                ]
             }
         }).draw();
         

@@ -15,12 +15,6 @@
         <div id="container" style="display: inline-block; position: relative">
             <canvas id="cvs" width="400" height="350" >[No canvas support]</canvas>
         </div>
-        
-        <style>
-            table {
-                line-height: 25px;
-            }
-        </style>
     </div>
     
     <script>
@@ -57,6 +51,9 @@
                 shadowOffsety: 5,
                 shadowColor: '#aaa',
                 exploded: [20,20,20],
+                style: [
+                    'table {line-height: 25px;}'
+                ],
                 events: {
                     draw: function (obj)
                     {

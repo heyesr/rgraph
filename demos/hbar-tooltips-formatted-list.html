@@ -15,19 +15,6 @@
     <div id="rgraph-demo-html">
         <div>
             <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
-            
-            <style>
-                .RGraph_tooltip li {
-                    text-align: left;
-                    margin: 3px;
-                }
-        
-                .RGraph_tooltip h2 {
-                    color: white;
-                    margin: 5px;
-                    font-style: italic;
-                }
-            </style>
         </div>
     </div>
 
@@ -60,7 +47,11 @@
                 xaxis: false,
                 yaxis: false,
                 title: 'A demonstration of a tooltip list',
-                titleBold: true
+                titleBold: true,
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).grow();
     </script>

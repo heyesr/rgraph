@@ -12,18 +12,7 @@
 <body>
     <h1>A Bar chart showing the new (version 5.22) formatted tooltips feature</h1>
     
-    <div id="rgraph-demo-html">
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
-    
+    <div id="rgraph-demo-html">    
         <canvas id="cvs1" width="650" height="250">[No canvas support]</canvas>
         <canvas id="cvs2" width="650" height="250">[No canvas support]</canvas>
         <canvas id="cvs3" width="650" height="250">[No canvas support]</canvas>
@@ -56,7 +45,11 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
-                marginLeft: 60
+                marginLeft: 60,
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
 

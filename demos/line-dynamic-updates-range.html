@@ -15,22 +15,6 @@
             <canvas id="cvs" width="1000" height="250">[No canvas support]</canvas>
             <div id="cvs-gradient-cover"></div>
         </div>
-
-        <style>
-            #cvs-container {
-                display:inline-block;
-                position: relative;
-            }
-    
-            #cvs-gradient-cover {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                display: inline-block;
-                background-image: linear-gradient(90deg, white,rgba(255,0,0,0) 450px);
-                top: 0; left: 0;
-            }
-        </style>
     </div>
     
     <script>
@@ -64,7 +48,11 @@
                         filledRangeThreshold: 25,
                         filledRangeThresholdColors: ['red','#0c0'],
                         filledColors: 'red',
-                        colors: ['transparent']
+                        colors: ['transparent'],
+                        style: [
+                            '#cvs-container {display:inline-block;position: relative;}',
+                            '#cvs-gradient-cover {position: absolute;width: 100%;height: 100%;display: inline-block;background-image: linear-gradient(90deg, white,rgba(255,0,0,0) 450px);top: 0; left: 0;}'
+                        ]
                     }
                 }).draw();
             }

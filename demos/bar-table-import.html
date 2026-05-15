@@ -12,31 +12,7 @@
 <body>
     <h1>A Bar chart importing data from a table</h1>
 
-    <div id="rgraph-demo-html">    
-        <style>
-            table#myTable {
-                border: 1px solid gray;
-                padding: 3px;
-            }
-
-            table#myTable td {
-                padding: 4px;
-                text-align: center;
-            }
-            
-            table#myTable td:nth-child(1) {
-                font-weight: bold;
-            }
-            
-            table#myTable tr:nth-child(even) td:nth-child(1n + 2) {
-                background-color: #ddd;
-            }
-            
-            table#myTable tr:nth-child(2n + 3) td:nth-child(1n + 2) {
-                background-color: #eee;
-            }
-        </style>
-    
+    <div id="rgraph-demo-html">
         <table cellspacing="0" id="myTable">
             <tr>
                 <td></td>
@@ -128,7 +104,14 @@
                     key: key,
                     keyPosition: 'margin',
                     marginTop: 50,
-                    cornersRoundRadius: 3
+                    cornersRoundRadius: 3,
+                    style: [
+                        'table#myTable {border: 1px solid gray;padding: 3px;}',
+                        'table#myTable td {padding: 4px;text-align: center;}',
+                        'table#myTable td:nth-child(1) {font-weight: bold;}',
+                        'table#myTable tr:nth-child(even) td:nth-child(1n + 2) {background-color: #ddd;}',
+                        'table#myTable tr:nth-child(2n + 3) td:nth-child(1n + 2) {background-color: #eee;}'
+                    ]
                 }
             }).wave();
         });

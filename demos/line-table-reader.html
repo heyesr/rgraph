@@ -16,18 +16,6 @@
             <canvas id="cvs" width="750" height="300">[No canvas support]</canvas>
         </div>
 
-        <style>
-            table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}        
-            table tr th {padding: 5px;background-color: #ccc;}        
-            table tr:nth-child(1) th:nth-child(1),
-            table tr:nth-child(1) th:nth-child(6) {background-color: white;}
-            table tr th,
-            table tr td {text-align: center;}        
-            table tr:nth-child(2n+1) td {background-color: #eee;}        
-            table tfoot tr td {background-color: #ccc;}        
-            table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}
-        </style>
-
         <table id="myTable">
             <tr>
                 <th></th>
@@ -110,7 +98,16 @@
                     marginLeft: 45,
                     marginInner: 25,
                     linewidth: 15,
-                    spline: true
+                    spline: true,
+                    style: [
+                        'table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}',
+                        'table tr th {padding: 5px;background-color: #ccc;}',
+                        'table tr:nth-child(1) th:nth-child(1), table tr:nth-child(1) th:nth-child(6) {background-color: white;}',
+                        'table tr th, table tr td {text-align: center;}',
+                        'table tr:nth-child(2n+1) td {background-color: #eee;}',
+                        'table tfoot tr td {background-color: #ccc;}',
+                        'table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}'
+                    ]
                 }
             }).trace();
         });

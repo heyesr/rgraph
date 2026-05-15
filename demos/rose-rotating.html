@@ -11,12 +11,6 @@
     <h1>A rotating Rose chart</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            button {
-                cursor: pointer;
-                font-size: 16pt;
-            }
-        </style>
         <div style="text-align: center; display: inline-block">
             <button onclick="factor -= 0.01">Slower</button>
             <button onclick="factor += 0.01">Faster</button><br />
@@ -32,7 +26,10 @@
                 margin: 5,
                 labelsAxes: 'n',
                 labels: RGraph.DAYS_LONG,
-                textSize: 16
+                textSize: 16,
+                style: [
+                    'button {cursor: pointer;font-size: 16pt;}'
+                ]
             }
         }).wave();
         

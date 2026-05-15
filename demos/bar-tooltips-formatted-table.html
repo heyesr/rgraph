@@ -16,40 +16,6 @@
         <div>
             <canvas id="cvs" width="750" height="250">[No canvas support]</canvas>
         </div>
-    
-        <style>        
-            .RGraph_tooltip h2 {
-                margin: 5px;
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip table {
-                border-collapse: collapse;
-                font-family: Verdana;
-            }
-    
-            .RGraph_tooltip thead th {
-                font-style: italic;
-            }
-    
-            .RGraph_tooltip th,
-            .RGraph_tooltip td {
-                padding: 5px;
-                border: 1px solid #ccc;
-            }
-            
-            .RGraph_tooltip td:nth-child(1){
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
-                background-color: #eee;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
-                background-color: #ddd;
-            }
-        </style>
     </div>
 
     <script>
@@ -133,7 +99,16 @@
                 days: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 textSize: 16,
                 title: 'A demonstration of tooltip tables',
-                titleOffsety: 5
+                titleOffsety: 5,
+                style: [
+                    '.RGraph_tooltip h2 {margin: 5px;font-style: italic;}',
+                    '.RGraph_tooltip table {border-collapse: collapse;font-family: Verdana;}',
+                    '.RGraph_tooltip thead th {font-style: italic;}',
+                    '.RGraph_tooltip th, .RGraph_tooltip td {padding: 5px;border: 1px solid #ccc;}',
+                    '.RGraph_tooltip td:nth-child(1){font-style: italic;}',
+                    '.RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){background-color: #eee;}',
+                    '.RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){background-color: #ddd;}'
+                ]
             }
         }).wave();
     </script>

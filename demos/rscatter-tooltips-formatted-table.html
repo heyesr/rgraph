@@ -16,40 +16,6 @@
         <div>
             <canvas id="cvs" width="750" height="500">[No canvas support]</canvas>
         </div>
-        
-        <style>        
-            .RGraph_tooltip h2 {
-                margin: 5px;
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip table {
-                border-collapse: collapse;
-                font-family: Verdana;
-            }
-    
-            .RGraph_tooltip thead th {
-                font-style: italic;
-            }
-    
-            .RGraph_tooltip th,
-            .RGraph_tooltip td {
-                padding: 5px;
-                border: 1px solid #ccc;
-            }
-            
-            .RGraph_tooltip td:nth-child(1){
-                font-style: italic;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){
-                background-color: #eee;
-            }
-            
-            .RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){
-                background-color: #ddd;
-            }
-        </style>
     </div>
 
     <script>
@@ -203,7 +169,16 @@
                 title: 'A demonstration of tooltip tables',
                 titleY: '+10',
                 linewidth: 4,
-                radius: 195
+                radius: 195,
+                style: [
+                    '.RGraph_tooltip h2 {margin: 5px;font-style: italic;}',
+                    '.RGraph_tooltip table {border-collapse: collapse;font-family: Verdana;}',
+                    '.RGraph_tooltip thead th {font-style: italic;}',
+                    '.RGraph_tooltip th,.RGraph_tooltip td {padding: 5px;border: 1px solid #ccc;}',
+                    '.RGraph_tooltip td:nth-child(1){font-style: italic;}',
+                    '.RGraph_tooltip tr:nth-child(2n+2) td:nth-child(1n+2){background-color: #eee;}',
+                    '.RGraph_tooltip tr:nth-child(2n+1) td:nth-child(1n+2){background-color: #ddd;}'
+                ]
             }
         }).draw();
     </script>

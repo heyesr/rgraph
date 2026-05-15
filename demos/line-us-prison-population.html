@@ -24,16 +24,6 @@
             <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law" rel="nofollow">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div> 
             <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29" rel="nofollow">Substance Abuse and Crime Prevention Act</a> passed in California</div> 
         </div>
-    
-        <style>
-            .tooltip {
-                background-color: #efefef !important;
-                font: 10px Arial, sans-serif !important;
-                padding: 3px;
-                border-color: #999 !important;
-                color: black !important;
-            }
-        </style>
     </div>
 
     <script>
@@ -68,7 +58,10 @@
                 tickmarksStyle: myTick,
                 tooltips: ['id:1980', 'id:1981', 'id:1982', 'id:1983', 'id:1984', 'id:1985','id:1986','id:1987', 'id:1988', 'id:1989', 'id:1990', 'id:1991', 'id:1992', 'id:1993', 'id:1994', 'id:1995', 'id:1996', 'id:1997', 'id:1998', 'id:1999', 'id:2000', 'id:2001', 'id:2002', 'id:2003', 'id:2004', 'id:2005', 'id:2006', 'id:2007', 'id:2008', 'id:2009'],
                 tooltipsCssClass: 'tooltip',
-                highlightStyle: 'halo'
+                highlightStyle: 'halo',
+                style: [
+                    '.tooltip {background-color: #efefef !important;font: 10px Arial, sans-serif !important;padding: 3px;border-color: #999 !important;color: black !important;}'
+                ]
             }
         }).draw();
 

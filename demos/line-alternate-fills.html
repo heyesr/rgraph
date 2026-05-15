@@ -14,22 +14,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="750" height="350" style="background-color: black">[No canvas support]</canvas><br />
-        
-        <style>
-            td{
-                text-align: left;
-                font-size: 12pt;
-            }
-            
-            table tr td:nth-child(1) {
-                color: gray;
-            }
-            
-            table tr:nth-child(3) td:nth-child(2) {
-                color: #0c0;
-                font-weight: bold;
-            }
-        </style>
 
         <label for="checkboxTooltips"><span style="font-size: 30pt">Tooltips</span></label>
         <input type="checkbox" value="1" id="checkboxTooltips" onchange="line.set('tooltips', this.checked ? '%{table}' : ''); RGraph.redraw()" style="width: 35px; height: 35px"  checked />
@@ -171,6 +155,11 @@
                         ['Date: ',  '30th June 1978'],
                         ['Price: ', '$110.1594']
                     ]
+                ],
+                style: [    
+                    'td {text-align: left;font-size: 12pt;}',
+                    'table tr td:nth-child(1) {color: gray;}',
+                    'table tr:nth-child(3) td:nth-child(2) {color: #0c0;font-weight: bold;}'
                 ],
                 events: {
                     draw: function (obj)

@@ -16,16 +16,6 @@
         <div style="padding: 50px">
             <canvas id="cvs" width="450" height="450">[No canvas support]</canvas>
         </div>
-
-         <style>
-            .RGraph_tooltip {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                padding: 10px;
-                text-align:center;
-                font-weight: bold;
-            }
-         </style>
     </div>
     
     <script>
@@ -39,7 +29,10 @@
                 labelsAxes: '',
                 colorsSequential: true,
                 labels: ['Richard','Robert','Rico','Ray','Raife','Ryan','Roland'],
-                tooltips: ['Richard','Robert','Rico','Ray','Raife','Ryan','Roland']
+                tooltips: ['Richard','Robert','Rico','Ray','Raife','Ryan','Roland'],
+                style: [
+                    '.RGraph_tooltip {padding-left: 10px !important;padding-right: 10px !important;padding: 10px;text-align:center;font-weight: bold !important;}'
+                ]
             }
         }).roundRobin({frames: 60});
     </script>

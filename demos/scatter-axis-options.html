@@ -11,16 +11,6 @@
     <h1>A Scatter chart demonstrating  the-axis options</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            button {
-                width: 200px;
-                height: 25px;
-                font-weight: bold;
-                cursor: pointer;
-                line-height: initial;
-            }
-        </style>
-
         <button onclick="scatter.set('yaxisScaleInvert', !scatter.get('yaxisScaleInvert')); RGraph.redraw();">Toggle inverted labels</button>
         <button onclick="scatter.set('xaxisPosition', scatter.get('xaxisPosition') == 'bottom' ? 'center' : 'bottom'); RGraph.redraw();">Toggle the X-axis position</button>
         <button onclick="scatter.set('yaxisPosition', scatter.get('yaxisPosition') == 'left' ? 'right' : 'left'); RGraph.redraw();">Toggle the Y-axis position</button>
@@ -45,7 +35,10 @@
                 xaxisPosition: 'center',
                 marginBottom: 45,
                 marginLeft: 65,
-                marginRight: 65
+                marginRight: 65,
+                style: [
+                    'button {margin: 3px; width: 200px;height: 25px;font-weight: bold;cursor: pointer;line-height: initial;}'
+                ]
             }
         }).draw();
     </script>

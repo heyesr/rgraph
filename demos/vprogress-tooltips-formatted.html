@@ -17,17 +17,6 @@
             <canvas id="cvs" width="125" height="450">[No canvas support]</canvas><br />
             <canvas id="cvs2" width="125" height="450">[No canvas support]</canvas>
         </div>
-
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -57,7 +46,11 @@
                     color: 'black',
                     maxWidth: '950px',
                     fontSize: '14pt'
-                }
+                },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
         

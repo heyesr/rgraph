@@ -13,12 +13,6 @@
 
     <div id="rgraph-demo-html">
         <div style="width: 600px">
-            <style>
-                input {
-                    font-size: 16pt;
-                }
-            </style>
-
             <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
             <div style="position: relative; left: 25px; width: 550px">
                 <span style="font-size: 16pt">X:</span> <input type="text" id="x" /><br />
@@ -48,7 +42,10 @@
             options: {
                 xaxisScaleMax: xmax,
                 xaxisLabels: ['Q1','Q2','Q3','Q4'],
-                textSize: 14
+                textSize: 14,
+                style: [
+                    'input {font-size: 16pt;}'
+                ]
             }
         }).draw();
             

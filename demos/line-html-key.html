@@ -16,12 +16,6 @@
             <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
             <div style="position: absolute; left: 600px; top: 25px" id="myKey"></div>
         </div>
-
-        <style>
-            table {
-                line-height: 20px;
-            }
-        </style>
     </div>
     
     <script>
@@ -34,7 +28,10 @@
                 [15,16,13,18,16,13]
             ],
             options: {
-                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+                xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+                style: [
+                    'table {line-height: 20px;}'
+                ]
             }
         }).draw()
         

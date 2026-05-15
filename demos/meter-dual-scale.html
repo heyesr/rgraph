@@ -14,12 +14,6 @@
     <div id="rgraph-demo-html">
         <canvas id="cvs1" width="600" height="450">[No canvas support]</canvas>
         <canvas id="cvs2" width="600" height="450">[No canvas support]</canvas>
-    
-        <style>
-            canvas#cvs2 {
-                border-radius: 25px;
-            }
-        </style>
     </div>
 
     <script>
@@ -53,6 +47,9 @@
                 centerpinStroke: 'white',
                 centerpinFill: 'black',
                 scaleUnitsPost: 'pc',
+                style: [
+                    'canvas#cvs2 {border-radius: 25px;}'
+                ],
                 events: {
                     beforedraw: function (obj)
                     {

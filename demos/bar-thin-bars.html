@@ -14,19 +14,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas><br />
-
-        <style>
-            button,
-            input {
-                font-size: 18pt;
-                padding: 3px;
-            }
-            
-            button:hover {
-                cursor:pointer;
-            }
-        </style>
-
         <div style="position: relative; left: 25px">
             <input type="text" id="marginInner" value="5" />
             <button onclick="bar.set('marginInner', Number(document.getElementById('marginInner').value) * 2); RGraph.clear(bar.canvas); bar.draw();">Set marginInner</button>
@@ -44,7 +31,11 @@
                 marginInner: 15,
                 textSize: 14,
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-                colors:['red']
+                colors:['red'],
+                style: [
+                    'button,input {font-size: 18pt;padding: 3px;}',
+                    'button:hover {cursor:pointer;}'
+                ]
             }
         }).wave();
     </script>

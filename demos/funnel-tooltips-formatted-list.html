@@ -12,19 +12,6 @@
     <h1>A Funnel chart with a list in the tooltips</h1>
     
     <div id="rgraph-demo-html">
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
-
         <div>
             <canvas id="cvs" width="500" height="450">[No canvas support]</canvas>
         </div>
@@ -53,7 +40,11 @@
                 // The rest of the chart configuration
                 title: 'A demonstration of a tooltip list',
                 titleSize: 20,
-                marginTop: 45
+                marginTop: 45,
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).draw();
     </script>

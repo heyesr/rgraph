@@ -16,19 +16,6 @@
         <div style="margin-left: 50px">
             <canvas id="cvs" width="200" height="500">[No canvas support]</canvas>
         </div>
-
-        <style>
-            .RGraph_tooltip li {
-                text-align: left;
-                margin: 3px;
-            }
-    
-            .RGraph_tooltip h2 {
-                color: white;
-                margin: 5px;
-                font-style: italic;
-            }
-        </style>
     </div>
 
 
@@ -53,7 +40,11 @@
                 // The rest of the chart configuration
                 marginInner: 35,
                 xaxisLabels: ['Monday','Tuesday','Wednesday'],
-                textSize: 16
+                textSize: 16,
+                style: [
+                    '.RGraph_tooltip li {text-align: left;margin: 3px;}',
+                    '.RGraph_tooltip h2 {color: white;margin: 5px;font-style: italic;}'
+                ]
             }
         }).grow();
     </script>

@@ -13,14 +13,6 @@
     <h1>An animated Bar chart</h1>
     
     <div id="rgraph-demo-html">
-        <style>
-            canvas {
-                background-color: #333;
-                border-radius: 5px;
-                box-shadow: 2px 2px 2px #999;
-            }
-        </style>
-        
         <div id="canvas-container">
             <canvas id="cvs" width="500" height="250">[No canvas support]</canvas>
         </div>
@@ -77,6 +69,9 @@
                 responsive: [
                     {maxWidth: null, width: 500, height: 250, options: {textSize: 16, marginLeft: 35, marginBottom: 35}},
                     {maxWidth: 900,  width: 300, height: 150, options: {textSize: 10,  marginLeft: 25, marginBottom: 20}}
+                ],
+                style: [
+                    'canvas {background-color: #333;border-radius: 5px;box-shadow: 2px 2px 2px #999;}'
                 ],
                 events: {
                     tooltip: function (obj)

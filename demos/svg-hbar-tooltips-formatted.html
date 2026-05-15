@@ -12,17 +12,6 @@
     <h1>An SVG Horizontal Bar chart showing the new (version 5.22) formatted tooltips feature</h1>
 
     <div id="rgraph-demo-html">
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
-    
         <div id="chart-container1" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
         <div id="chart-container2" style="width: 700px; height: 650px; border: 1px solid #ddd"></div>
         <div id="chart-container3" style="width: 700px; height: 450px; border: 1px solid #ddd"></div>
@@ -58,7 +47,11 @@
                     color: 'black'
                 },
                 tooltipsPointer: false,
-                tooltipsPositionStatic: false
+                tooltipsPositionStatic: false,
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
 

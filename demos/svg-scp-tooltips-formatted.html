@@ -14,17 +14,6 @@
     <div id="rgraph-demo-html">
         <div id="chart-container" style="width: 500px; height: 300px"></div>
         <div id="chart-container2" style="width: 500px; height: 300px"></div>
-        
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -42,6 +31,7 @@
             value: 5600,
             options: {
                 colors: ['red'],
+                backgroundColor:'#eee',
                 myNames:['Ken'],
                 title: 'Formatted tooltips on a SVG chart',
                 titleSize: 14,
@@ -55,7 +45,11 @@
                 tooltipsCss: {
                     backgroundColor: 'white',
                     color: 'black'
-                }
+                },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).grow();
 
@@ -66,7 +60,7 @@
             value: [3500,4200,1211],
             options: {
                 colors: ['red','green','blue'],
-                backgroundColor: '#gray',
+                backgroundColor: 'gray',
                 myNames:['Ken','Bruce','Paul'],
                 title: 'Formatted tooltips on a SVG chart',
                 titleSize: 18,

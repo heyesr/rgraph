@@ -12,12 +12,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="800" height="450">[No canvas support]</canvas>
-        
-        <style>
-            input[type=range] {
-                width: 250px;
-            }
-        </style> 
     
         <table border="1"  style="float: left" cellspacing="0">
             <tr>  <td>Skill 1</td>   <td><input type="range" min="1" max="10" value="6" id="range_0" oninput="updateRadar(this)"/></td></tr>
@@ -48,7 +42,10 @@
                 colorsStroke: 'black',
                 linewidth: 5,
                 labels: ['Skill 1',' Skill 2',' Skill 3',' Skill 4',' Skill 5',' Skill 6',' Skill 7',' Skill 8',' Skill 9',' Skill 10',' Skill 11',' Skill 12'],
-                labelsOffsetRadius: 10
+                labelsOffsetRadius: 10,
+                style: [
+                    'input[type=range] {width: 250px;}'
+                ]
             }
         }).draw();
         

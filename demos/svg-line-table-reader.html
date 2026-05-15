@@ -16,18 +16,6 @@
         <div>
             <div id="chart-container" style="width: 700px;height:300px"></div>
         </div>
-        
-        <style>
-            table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}        
-            table tr th {padding: 5px;background-color: #ccc;}        
-            table tr:nth-child(1) th:nth-child(1),
-            table tr:nth-child(1) th:nth-child(6) {background-color: white;}
-            table tr th,
-            table tr td {text-align: center;}        
-            table tr:nth-child(2n+1) td {background-color: #eee;}        
-            table tfoot tr td {background-color: #ccc;}        
-            table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}
-        </style>
 
         <table id="myTable">
             <tr>
@@ -111,7 +99,16 @@
                     marginInner: 25,
                     linewidth: 6,
                     spline: true,
-                    key:['Richard','John','India']
+                    key:['Richard','John','India'],
+                    style: [
+                        'table {font-family: Arial;border: 1px solid #aaa;line-height: 25px;}',
+                        'table tr th {padding: 5px;background-color: #ccc;}',
+                        'table tr:nth-child(1) th:nth-child(1),table tr:nth-child(1) th:nth-child(6) {background-color: white;}',
+                        'table tr th,table tr td {text-align: center;}',
+                        'table tr:nth-child(2n+1) td {background-color: #eee;}',
+                        'table tfoot tr td {background-color: #ccc;}',
+                        'table tr:nth-child(1n+1) td:nth-child(6) {background-color: #ddd;}'
+                    ]
                 }
             }).trace({frames: 30});
         });

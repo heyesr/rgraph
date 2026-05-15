@@ -15,19 +15,8 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="650" height="250">[No canvas support]</canvas>
-        
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-                font-size: 14pt;
-            }
-        </style>
     </div>
+
     <script>
         // A function used in the template
         function getDay (index, group, seq)
@@ -61,6 +50,10 @@
                     backgroundColor: 'white',
                     color: 'black'
                 },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;font-size: 14pt;}'
+                ]
             }
         }).draw();
     </script>

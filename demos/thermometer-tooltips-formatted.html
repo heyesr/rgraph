@@ -16,17 +16,6 @@
         <div style="margin-left: 50px">
             <canvas id="cvs" width="125" height="450">[No canvas support]</canvas>
         </div>
-
-        <style>
-            table {
-                border-color: #ccc;
-            }
-    
-            td {
-                text-align: left;
-                padding-left: 15px;
-            }
-        </style>
     </div>
 
     <script>
@@ -57,7 +46,11 @@
                 tooltipsCss: {
                     backgroundColor: 'white',
                     color: 'black'
-                }
+                },
+                style: [
+                    'table {border-color: #ccc;}',
+                    'td {text-align: left;padding-left: 15px;}'
+                ]
             }
         }).draw();
 

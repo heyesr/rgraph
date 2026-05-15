@@ -14,15 +14,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="650" height="350">[No canvas support]</canvas>
-
-        <style>
-            .RGraph_tooltip {
-                font-size: 16pt !important;
-                font-weight: bold;
-                text-align: center;
-                padding: 15px;
-            }
-        </style>
     </div>
     
     <script>
@@ -48,7 +39,10 @@
                 exploded: [,,40],
                 title: 'A 3D Pie chart',
                 titleOffsety: 50,
-                titleSize: 16
+                titleSize: 16,
+                style: [
+                    '.RGraph_tooltip {font-size: 16pt !important;font-weight: bold;text-align: center;padding: 15px;}'
+                ],
             }
         }).draw();
     </script>

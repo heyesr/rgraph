@@ -12,12 +12,6 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250" style="border-radius: 5px; background-color: black">[No canvas support]</canvas>
-        
-        <style>
-            canvas {
-                box-shadow: 3px 3px 5px gray;
-            }
-        </style>
     </div>
 
     <script>
@@ -42,9 +36,10 @@
                     '','Q4',''
                 ],
                 marginLeft: 45,
-                marginRight: 35,
                 marginTop: 25,
-                marginBottom: 35
+                style: [
+                    'canvas {box-shadow: 1px 1px 2px #666;}'
+                ]
             }
         }).draw();
     </script>
