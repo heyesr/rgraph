@@ -824,8 +824,8 @@ opt.object.removeHighlight();
             {
                 tooltipObj.style.opacity = 1;
             }, 5);
-        } else {
-            //tooltipObj.style.opacity = 0.1;
+        } else if (obj.properties.tooltipsEffect === 'none') {
+            tooltipObj.style.transition = '';
         }
 
 

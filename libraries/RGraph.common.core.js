@@ -10709,6 +10709,37 @@
 
 
 
+
+    //
+    // This function uses the above RGraph.addCss function to
+    // centralise the addition of CSS from the style property.
+    // This is general CSS and does not necessarily have to
+    // pertain to the canvas tag. It only gets added once
+    // to the document no matter how many times this draw
+    // function is called.
+    //
+    // @param object obj The RGraph chart object
+    //
+    RGraph.addConfigurationBasedCSS = function (obj)
+    {
+        // Add the CSS to a <style> block in the <head>.
+        RGraph.runOnce(obj.uid + '-add-css-to-document-that-has-been-specified-in-the-configuration', function ()
+        {
+            if (obj.properties.style) {
+                for (var i=0; i<obj.properties.style.length; ++i) {
+                    var styleElement = RGraph.addCss(obj.properties.style[i], styleElement ? styleElement : null);
+                }
+            }
+        });
+    };
+
+
+
+
+
+
+
+
     //
     // This function allows you to run a function once
     // (immediately). Future calls using the same identifier

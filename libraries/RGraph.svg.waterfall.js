@@ -190,7 +190,7 @@
             yaxisLabelsOffsetx:   0,
             yaxisLabelsOffsety:   0,
             yaxisLabelsCount:     5,
-            yaxisLabelsHalign:     'right',
+            yaxisLabelsHalign:     null,
             yaxisLabelsValign:     'center',
             yaxisLabelsColor:       null,
             yaxisLabelsBold:        null,
@@ -360,7 +360,9 @@
             responsive:       null,
             clip:             null,
             zoom:             false,
-            events:           {}
+            events:           {},
+            
+            style:            []
         };
 
 
@@ -418,6 +420,26 @@
         {
             // Fire the beforedraw event
             RGraph.SVG.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Add any CSS that has been specified to the document.
+            // This is general CSS and does not necessarily have to
+            // pertain to the canvas tag. It only gets added once
+            // to the document no matter how many times this draw
+            // function is called.
+            //
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.SVG.addConfigurationBasedCSS(this);
 
 
 

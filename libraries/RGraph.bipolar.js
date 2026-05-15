@@ -286,12 +286,17 @@
             leftVisible:                true,
             rightVisible:               true,
             
+            corners:                    'round',
+            cornersRoundRadius:         3,
+            
             events:                     {},
             clip:                       null,
 
             scale:                      true,
             scaleFactor:                2,
-            antialiasTranslate:         false
+            antialiasTranslate:         false,
+            
+            style:                      []
         };
 
 
@@ -371,6 +376,8 @@
             
             'variantThreedOffsetx',
             'variantThreedOffsety',
+            
+            'cornersRoundRadius'
         ];
 
 
@@ -543,6 +550,18 @@
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+            //
+            // Add any CSS that has been specified to the document.
+            // This is general CSS and does not necessarily have to
+            // pertain to the canvas tag. It only gets added once
+            // to the document no matter how many times this draw
+            // function is called.
+            //
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.addConfigurationBasedCSS(this);
 
 
 
@@ -1480,6 +1499,11 @@
                         prefix: 'shadow'
                     });
                 }
+                
+                // No rounded corners for 3D charts
+                if (this.properties.variant === '3d') {
+                    this.properties.corners = 'square';
+                }
 
 
 
@@ -1516,21 +1540,21 @@
 
                     
                     if (this.left[i] !== null) {
-                        this.context.strokeRect(
-                            coords[0],
-                            coords[1],
-                            coords[2],
-                            coords[3]
-                        );
-                        
-                        this.context.fillRect(
-                            coords[0],
-                            coords[1],
-                            coords[2],
-                            coords[3]
-                        );
-                    }
 
+                        this.context.beginPath();
+
+                        RGraph.roundedRect(
+                            this.context, 
+                            coords[0],
+                            coords[1],
+                            coords[2],
+                            coords[3],
+                            this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0,
+                            true, false, true, false
+                        );
+                        this.context.stroke();
+                        this.context.fill();
+                    }
 
                     // Draw the 3D sides if required
                     if (properties.variant === '3d' && this.left[i] !== null) {
@@ -1646,8 +1670,19 @@
 
 
                         if (this.left[i] !== null) {
-                            this.context.strokeRect(x, y, width, height);
-                            this.context.fillRect(x, y, width, height);
+
+                            this.context.beginPath();
+                            RGraph.roundedRect(
+                                this.context, 
+                                x,
+                                y,
+                                width,
+                                height,
+                                this.properties.corners === 'round' && j === (this.left[i].length - 1) ? this.properties.cornersRoundRadius : 0,
+                                true, false, true, false
+                            );
+                            this.context.stroke();
+                            this.context.fill();
                         }
 
 
@@ -1800,8 +1835,19 @@
 
 
                         if (this.left[i] !== null) {
-                            this.context.strokeRect(x, y, width, height);
-                            this.context.fillRect(x, y, width, height);
+                        
+                            this.context.beginPath();
+                            RGraph.roundedRect(
+                                this.context, 
+                                x,
+                                y,
+                                width,
+                                height,
+                                this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0,
+                                true, false, true, false
+                            );
+                            this.context.stroke();
+                            this.context.fill();
                         }
 
 
@@ -2025,18 +2071,19 @@
 
         
                         if (this.right[i] !== null) {
-                            this.context.strokeRect(
+
+                            this.context.beginPath();
+                            RGraph.roundedRect(
+                                this.context, 
                                 coords[0],
                                 coords[1],
                                 coords[2],
-                                coords[3]
+                                coords[3],
+                                this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0,
+                                false, true, false, true
                             );
-                            this.context.fillRect(
-                                coords[0],
-                                coords[1],
-                                coords[2],
-                                coords[3]
-                            );
+                            this.context.stroke();
+                            this.context.fill();
                         }
         
         
@@ -2196,8 +2243,19 @@
 
 
                         if (this.right[i] !== null) {
-                            this.context.strokeRect(x, y, width, height);
-                            this.context.fillRect(x, y, width, height);
+
+                            this.context.beginPath();
+                            RGraph.roundedRect(
+                                this.context, 
+                                x,
+                                y,
+                                width,
+                                height,
+                                this.properties.corners === 'round' && (j === this.right[i].length - 1) ? this.properties.cornersRoundRadius : 0,
+                                false, true, false, true
+                            );
+                            this.context.stroke();
+                            this.context.fill();
                         }
 
 
@@ -2364,8 +2422,19 @@
 
 
                         if (this.right[i] !== null) {
-                            this.context.strokeRect(x, y, width, height);
-                            this.context.fillRect(x, y, width, height);
+
+                            this.context.beginPath();
+                            RGraph.roundedRect(
+                                this.context, 
+                                x,
+                                y,
+                                width,
+                                height,
+                                this.properties.corners === 'round' ? this.properties.cornersRoundRadius : 0,
+                                false, true, false, true
+                            );
+                            this.context.stroke();
+                            this.context.fill();
                         }
 
 

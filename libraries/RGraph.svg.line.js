@@ -203,7 +203,7 @@
             yaxisLabelsOffsetx:   0,
             yaxisLabelsOffsety:   0,
             yaxisLabelsCount:     5,
-            yaxisLabelsHalign:    'right',
+            yaxisLabelsHalign:    null,
             yaxisLabelsValign:    'center',
             yaxisLabelsFont:      null,
             yaxisLabelsSize:      null,
@@ -416,7 +416,9 @@
             clip:                       null,
             responsive:                 null,
             zoom:                       false,
-            events:                     {}
+            events:                     {},
+            
+            style:                      []
         };
 
         //
@@ -475,6 +477,26 @@
         {
             // Fire the beforedraw event
             RGraph.SVG.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+
+
+
+
+
+
+
+
+            //
+            // Add any CSS that has been specified to the document.
+            // This is general CSS and does not necessarily have to
+            // pertain to the canvas tag. It only gets added once
+            // to the document no matter how many times this draw
+            // function is called.
+            //
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.SVG.addConfigurationBasedCSS(this);
             
             
             
@@ -2710,14 +2732,20 @@
             });
 
             // Get a reference to the background grid <path> node
-            var els  = this.svg.getElementsByClassName('rgraph_background_grid'),
-                grid = els[0];
-
-            // Remove the trendline from the DOM
-            obj.svgAllGroup.removeChild(line);
+            var els  = this.svg.getElementsByClassName('rgraph_background_grid');
             
-            // Now re-add it immedately after the background grid
-            grid.insertAdjacentElement('afterend', line);
+            if (els && els.length > 0) {
+                
+                var grid = els[0];
+
+                // Remove the trendline from the DOM
+                obj.svgAllGroup.removeChild(line);
+                
+                // Now re-add it immedately after the background grid
+                grid.insertAdjacentElement('afterend', line);
+            } else {
+                this.svg.all.insertAdjacentElement('beforeend', line);
+            }
         };
 
 

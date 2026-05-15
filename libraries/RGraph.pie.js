@@ -92,12 +92,14 @@
             labelsSticksColors:             null,
             labelsSticksLinewidth:          1,
             labelsSticksHlength:            5,
-            
             labelsList:                     true,
             labelsListLeftOffsetx:          0,
             labelsListLeftOffsety:          0,
+            
             labelsListRightOffsetx:         0,
             labelsListRightOffsety:         0,
+            labelsListAngled:               false,
+            labelsListOffset:               30,
             
             labelsIngraph:                  null,
             labelsIngraphColor:             null,
@@ -305,7 +307,9 @@
             clip:                       null,
             scale:                      true,
             scaleFactor:                2,
-            antialiasTranslate:         false
+            antialiasTranslate:         false,
+            
+            style:                      []
         };
 
 
@@ -562,6 +566,18 @@
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+            //
+            // Add any CSS that has been specified to the document.
+            // This is general CSS and does not necessarily have to
+            // pertain to the canvas tag. It only gets added once
+            // to the document no matter how many times this draw
+            // function is called.
+            //
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.addConfigurationBasedCSS(this);
 
 
 
@@ -1321,7 +1337,7 @@
 
                 var angle          = this.angles[i][0] + ((this.angles[i][1] - this.angles[i][0]) / 2), // Midpoint
                     endpoint_inner = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + 5),
-                    endpoint_outer = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + 30),
+                    endpoint_outer = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + this.properties.labelsListOffset),
                     explosion      = [
                         (typeof properties.exploded === 'number' ? properties.exploded : properties.exploded[i]),
                         (Math.cos(angle) * (typeof properties.exploded === 'number' ? properties.exploded : properties.exploded[i])),
@@ -1405,18 +1421,35 @@
                         ret.node.__index__ = labels_right[i][0];
                     }
 
-                    // This draws the stick
-                    this.path(
-                        'lc round lw % b m % % qc % % % % s %',
-                        properties.labelsSticksLinewidth,
-                        labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
-                        
-                        // The quadraticCurveTo arguments
-                        labels_right[i][4][0] + explosionX,labels_right[i][4][1] + explosionY,
-                        ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
-                        
-                        labels_right[i][5]
-                    );
+                    // Draw the stick (angular)
+                    if (this.properties.labelsListAngled) {
+
+                        this.path(
+                            'lc round lw % b m % % l % % l % % s %',
+                            properties.labelsSticksLinewidth,
+                            labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
+                            
+                            // The quadraticCurveTo arguments
+                            labels_right[i][4][0] + explosionX, labels_right[i][4][1] + explosionY,
+                            ret.x - (5 * scaleFactor), ret.y + (ret.height / 2),
+                            
+                            labels_right[i][5]
+                        );
+                    
+                    // Draw the stick (curvy)
+                    } else {
+                        this.path(
+                            'lc round lw % b m % % qc % % % % s %',
+                            properties.labelsSticksLinewidth,
+                            labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
+                            
+                            // The quadraticCurveTo arguments
+                            labels_right[i][4][0] + explosionX,labels_right[i][4][1] + explosionY,
+                            ret.x - (5 * scaleFactor),ret.y + (ret.height / 2),
+                            
+                            labels_right[i][5]
+                        );
+                    }
 
                     
                     // Draw a circle at the end of the stick
@@ -1484,18 +1517,33 @@
                         ret.node.__index__ = labels_left[i][0];
                     }
 
-                    this.path(
-                        'lw % b m % % qc % % % % s %',
-                        properties.labelsSticksLinewidth,
-                        
-                        labels_left[i][3][0] + explosionX,labels_left[i][3][1] + explosionY,
-                        
-                        // The quadraticCurveTo arguments
-                        labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),
-                        ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
-                        
-                        labels_left[i][5]
-                    );
+                    if (this.properties.labelsListAngled) {
+                        this.path(
+                            'lw % b m % % l % % l % % s %',
+                            properties.labelsSticksLinewidth,
+                            
+                            labels_left[i][3][0] + explosionX,labels_left[i][3][1] + explosionY,
+                            
+                            // The quadraticCurveTo arguments
+                            labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),
+                            ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
+                            
+                            labels_left[i][5]
+                        );
+                    } else {
+                        this.path(
+                            'lw % b m % % qc % % % % s %',
+                            properties.labelsSticksLinewidth,
+                            
+                            labels_left[i][3][0] + explosionX,labels_left[i][3][1] + explosionY,
+                            
+                            // The quadraticCurveTo arguments
+                            labels_left[i][4][0] + explosionX,Math.round(labels_left[i][4][1] + explosionY),
+                            ret.x + (5 * scaleFactor) + ret.width,ret.y + (ret.height / 2),
+                            
+                            labels_left[i][5]
+                        );
+                    }
 
                     
                     // Draw a circle at the end of the stick

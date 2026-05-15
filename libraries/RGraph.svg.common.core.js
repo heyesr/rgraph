@@ -1259,7 +1259,7 @@
     
                     // Draw an extra tick if the X axis position is not zero or
                     // if the xaxis is not being shown
-                    if (properties.xaxis === false) {
+                    if (!properties.xaxis) {
 
                         if (obj.type === 'hbar' && properties.xaxisScaleMin <= 0 && properties.xaxisScaleMax < 0) {
                             var startX = obj.getXCoord(properties.xaxisScaleMax);
@@ -1423,7 +1423,7 @@
                 for (var i=0; i<obj.scale.labels.length; ++i) {
     
                     var y = obj.height - properties.marginBottom - (segment * i) - segment;
-    
+
                     RGraph.SVG.text({
                         
                         object: obj,
@@ -7231,6 +7231,20 @@ backgroundRounded = opt.backgroundRounded || 0,
         
         return func();
     };
+
+
+
+
+
+
+
+
+    //
+    //
+    // IMPORTANT:
+    //
+    // There's an RGraph.SVG.roundedRect function below too
+    // which may well be easier to use!
     //
     // Produce a rounded rectangle
     //
@@ -7265,7 +7279,7 @@ backgroundRounded = opt.backgroundRounded || 0,
     //            radius: 15,
     //            stroke: 'black',
     //            fill: 'yellow',
-    //            linewidth: 1
+    //            'stroke-width': 1
     //        }
     //    });
     //    
@@ -8425,6 +8439,178 @@ backgroundRounded = opt.backgroundRounded || 0,
 
         return colors;
     };
+
+
+
+
+
+
+
+
+    //
+    // Adds a style to the document. You give the whole
+    // selector/style string and it will add it.
+    //
+    // If a style element hasn't already been created
+    // it will create one and then reuse it on subsequent
+    // calls to this function.
+    //
+    // @param string style        The styles to assign to the
+    //                            new CSS. An example:
+    //
+    //                            table tr td {color: red;}
+    //
+    // @param object styleElement The style element to which the
+    //                            style is attached.
+    // @param object parent       If given (default is null),
+    //                            this is the node to which the
+    //                            style element is attached. If
+    //                            not given then the style element
+    //                            is added to the <head>.
+    //
+    RGraph.SVG.addCss = function (style, styleElement = null, parent = null)
+    {
+        // Create a style element and add the CSS
+        var el = styleElement || document.createElement('style');
+            el.insertAdjacentHTML('beforeend', style);
+
+        // Append the style element to the document? Only
+        // do this on newly created style elements. You can
+        // optionally pass in an element on which to attach
+        // the style element instead of the head.
+        if (parent) {
+            parent.appendChild(el);
+        } else {
+            document.head.appendChild(el);
+        }
+        
+        return el;
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function uses the above RGraph.addCss function to
+    // centralise the addition of CSS from the style property.
+    // This is general CSS and does not necessarily have to
+    // pertain to the canvas tag. It only gets added once
+    // to the document no matter how many times this draw
+    // function is called.
+    //
+    // @param object obj The RGraph chart object
+    //
+    RGraph.SVG.addConfigurationBasedCSS = function (obj)
+    {
+        // Add the CSS to a <style> block in the <head>.
+        RGraph.SVG.runOnce(obj.uid + '-add-css-to-document-that-has-been-specified-in-the-configuration', function ()
+        {
+            if (obj.properties.style) {
+                for (var i=0; i<obj.properties.style.length; ++i) {
+                    var styleElement = RGraph.SVG.addCss(obj.properties.style[i], styleElement ? styleElement : null);
+                }
+            }
+        });
+    };
+
+
+
+
+
+
+
+
+    //
+    // IMPORTANT:
+    //
+    // Appear to already have an RGraph.SVG.roundRect funtion
+    // above! Oops! Thia one may be easier to use though.
+    //
+    // Produces a rounded rectangle at the given coordinates.
+    //
+    // Example usage:
+    //
+    // el = RGraph.SVG.roundedRect(
+    //    bar.svg,           // The SVG object
+    //    50,50,100,100,     // The X/Y/W/H of the rect
+    //    {                  // SVG attributes
+    //     fill: '#f00',
+    //     stroke:'black',
+    //     'stroke-width': 2
+    //    },
+    //    {},                // Any styles to apply
+    //    10,10,10,10        // The radii of the corners. All are
+    //                       // optional and default to 3
+    // );
+    //
+    //
+    // @param svg   object The SVG tag
+    // @param x     number The X cordinate
+    // @param y     number The Y cordinate
+    // @param w     number The width
+    // @param h     number The height
+    // @param attr  object An optional object of attributes for the path
+    //                     tag. Default is an empty object.
+    // @param style object An optional object of style properties and
+    //                     values  for the path tag. Default is an
+    //                     empty object.
+    // @param number tl    The amount of rounding for the top left
+    //                     corner. Default is 3.
+    // @param number tr    The amount of rounding for the top right
+    //                     corner. Default is 3.
+    // @param number bl    The amount of rounding for the bottom left
+    //                     corner. Default is 3.
+    // @param number br    The amount of rounding for the bottom right
+    //                     corner. Default is 3.
+    // @return             The SVG <path> object
+    //
+    RGraph.SVG.roundedRect = function (svg, x, y, w, h, attr = {}, style = {}, tl = 3,  tr = 3, bl = 3, br = 3)
+    {
+        // Perform some "bounds checking" on the corner radii - they can
+        // be no more than have the width/height.
+        var smallestDimension = Math.min(w, h) / 2;
+    
+        tl = Math.min(tl, smallestDimension);
+        tr = Math.min(tr, smallestDimension);
+        bl = Math.min(bl, smallestDimension);
+        br = Math.min(br, smallestDimension);
+
+        // Add the transform to the X and Y coordinates
+        attr.transform = "translate({1}, {2})".format(x, y);
+    
+        //
+        // This function builds the path for the rounded
+        // rectangle.
+        //
+        var getPath = function (w,h,tl,tr,bl,br) {
+            return 'M 0 {1} A {1} {1} 0 0 1 {1} 0 L {2} 0 A {3} {3} 0 0 1 {4} {3} L {5} {6} A {7} {7} 0 0 1 {8} {9}  L {10} {11}  A {12} {12} 0 0 1 0 {13} Z'.format(
+                tl, w-tr, tr,w, w,h-br,br,w-br,h,bl,h,bl,h-bl
+            );    
+        };
+
+        var path = getPath(w,h,tl,tr,bl,br);
+    
+        var el = RGraph.SVG.create({
+            svg: svg,
+            type: 'path',
+            attr: {
+                ...attr,
+                d: path
+            },
+            style: {
+                ...style
+            }
+        });
+        
+        return el;
+    };
+
+
+
 
 
 

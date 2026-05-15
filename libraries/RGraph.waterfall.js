@@ -338,7 +338,9 @@
             responsive:                        null,
             scale:                             true,
             scaleFactor:                       2,
-            antialiasTranslate:                false
+            antialiasTranslate:                false,
+            
+            style:                             []
         };
 
 
@@ -636,6 +638,18 @@
             // Fire the onbeforedraw event
             //
             RGraph.fireCustomEvent(this, 'onbeforedraw');
+
+
+
+            //
+            // Add any CSS that has been specified to the document.
+            // This is general CSS and does not necessarily have to
+            // pertain to the canvas tag. It only gets added once
+            // to the document no matter how many times this draw
+            // function is called.
+            //
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.addConfigurationBasedCSS(this);
 
 
             // Translate half a pixel for antialiasing purposes - but
@@ -1412,14 +1426,26 @@
                 // Add the coordinates to the coords array (the previousCooords array, at
                 // this point, is actually THIS iterations coords 
                 this.coords.push(previousCoords);
-////////////////////////////////////////////////////
-//                                                //
-// TODO                                           //
-//                                                //
-// DRAW THE RELEVANT BIT OF THE X AXIS SO THAT    //
-// THE XAXIS IS "ON TOP".                         //
-//                                                //
-////////////////////////////////////////////////////
+                
+                
+//
+// Redraw the relevant bit of the x axis so that
+// the xaxis is "on top".
+//
+// Why the + 2 here for the Y coordinate?
+//
+if (this.properties.xaxis) {
+
+    y = this.getYCoord(0);
+
+    this.path(
+        'b lw % m % % l % % s %',
+        this.properties.xaxisLinewidth,
+        x - this.properties.marginInner, y,
+        x + w + this.properties.marginInner, y,
+        properties.xaxisColor
+    );
+}
             }
 
 

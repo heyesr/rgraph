@@ -1388,7 +1388,7 @@ div#page-download div#download-button-development {
     display: inline-block;
     padding: 5px 20px 5px 20px;
     border-radius: 50px;
-    box-shadow: 3px 3px 3px #ccc;
+    -box-shadow: 3px 3px 3px #ccc;
     font-size: 20pt;
 }
 
