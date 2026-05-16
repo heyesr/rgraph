@@ -92,14 +92,14 @@
             labelsSticksColors:             null,
             labelsSticksLinewidth:          1,
             labelsSticksHlength:            5,
+            
             labelsList:                     true,
             labelsListLeftOffsetx:          0,
             labelsListLeftOffsety:          0,
-            
             labelsListRightOffsetx:         0,
             labelsListRightOffsety:         0,
-            labelsListAngled:               false,
-            labelsListOffset:               30,
+            labelsListSticksAngled:         false,
+            labelsListSticksOffset:         30,
             
             labelsIngraph:                  null,
             labelsIngraphColor:             null,
@@ -343,6 +343,7 @@
             'labelsListLeftOffsety',
             'labelsListRightOffsetx',
             'labelsListRightOffsety',
+            'labelsListSticksOffset',
             
             'labelsIngraphSize',
             'labelsIngraphRadius',
@@ -1337,7 +1338,7 @@
 
                 var angle          = this.angles[i][0] + ((this.angles[i][1] - this.angles[i][0]) / 2), // Midpoint
                     endpoint_inner = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + 5),
-                    endpoint_outer = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + this.properties.labelsListOffset),
+                    endpoint_outer = RGraph.getRadiusEndPoint(centerx, centery, angle, radius + this.properties.labelsListSticksOffset),
                     explosion      = [
                         (typeof properties.exploded === 'number' ? properties.exploded : properties.exploded[i]),
                         (Math.cos(angle) * (typeof properties.exploded === 'number' ? properties.exploded : properties.exploded[i])),
@@ -1422,14 +1423,13 @@
                     }
 
                     // Draw the stick (angular)
-                    if (this.properties.labelsListAngled) {
+                    if (this.properties.labelsListSticksAngled) {
 
                         this.path(
                             'lc round lw % b m % % l % % l % % s %',
                             properties.labelsSticksLinewidth,
                             labels_right[i][3][0] + explosionX,labels_right[i][3][1] + explosionY,
                             
-                            // The quadraticCurveTo arguments
                             labels_right[i][4][0] + explosionX, labels_right[i][4][1] + explosionY,
                             ret.x - (5 * scaleFactor), ret.y + (ret.height / 2),
                             
@@ -1517,7 +1517,7 @@
                         ret.node.__index__ = labels_left[i][0];
                     }
 
-                    if (this.properties.labelsListAngled) {
+                    if (this.properties.labelsListSticksAngled) {
                         this.path(
                             'lw % b m % % l % % l % % s %',
                             properties.labelsSticksLinewidth,
