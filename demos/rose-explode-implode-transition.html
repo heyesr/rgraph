@@ -13,7 +13,7 @@
 
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="450" height="400">[No canvas support]</canvas>
-        <button onclick="transition();">Switch!</button>
+        <button style="font-size: 20pt; cursor: pointer" onclick="transition()">Switch!</button>
     </div>
 
     <script>
@@ -43,10 +43,7 @@
                 id: 'cvs',
                 data: [4,8,6,5,3,2,9,4,2,8],
                 options: {
-                    backgroundGrid: false,
-                    colorStroke: 'transparent',
-                    margin: 3,
-                    clearto: 'white'
+                    margin: 3
                 }
             }).implode();
             
@@ -67,10 +64,7 @@
                 data: [1,8,8,8,4,6,3,2,5,6],
                 options: {
                     colorsSequential: true,
-                    backgroundGrid: false,
-                    colorsStroke: 'transparent',
-                    margin: 3,
-                    clearto: 'white'
+                    margin: 3
                 }
             }).implode();
             

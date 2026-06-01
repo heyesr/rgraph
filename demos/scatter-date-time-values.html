@@ -23,15 +23,15 @@
         data1 = [
             ['2012-02-12 15:51:55', 5],
             ['2012-03-01 21:45',10],
-            [],
-            [],
+            ['01-05-2012',6],
+            ['01 Jun 2012',13],
             ['August 15 2012',7],
             ['15 Nov 2012', 16]
         ];
         
         // The second set of points that are drawn on to the chart
         data2 = [
-            ['5th January 2012 12:45', 6],
+            ['5th January 2012 12:45',6],
             ['2012 Mar 05 09:45',17],
             ['2012/05/05 12:48:45',13],
             ['2012/09/09 15:45:45',19],
@@ -42,6 +42,11 @@
             id: 'cvs',
             data: [data1, data2],
             options: {
+                
+                // Colors for the tickmarks and lines
+                colorsDefault: ['red','green'],
+                lineColors: ['red','green'],
+            
                 // Stipulate the start of year (ie the minimum value of the chart)
                 xaxisScaleMin: '2012-01-01',
                 

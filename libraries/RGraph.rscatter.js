@@ -107,7 +107,7 @@
             radius:                                 null,
 
             colors:                                 [], // This is used internally for the key
-            colorsDefault:                          RGraph.getColors()[0],
+            colorsDefault:                          RGraph.getColors(),
 
             marginLeft:                             35,
             marginRight:                            35,

@@ -35,7 +35,7 @@
                 xaxisLabels: labels,
                 marginLeft: marginLeft,
                 marginRight: marginRight,
-                xaxisColor: '#ccc',
+                xaxisLinewidth: 3,
                 xaxisTickmarksCount: 0,
                 xaxisTickmarksLastLeft: false,
                 tooltips: ['The X-axis shows Flintstones characters']
@@ -46,12 +46,10 @@
             id: 'cvs',
             x: marginLeft * 2,
             options: {
-                yaxisColor: '#ccc',
-                yaxisTickmarksCount: 0,
+                yaxis: false,
                 yaxisScaleMax: max,
                 marginTop: marginTop,
                 marginBottom: marginBottom,
-                yaxisTickmarksLastBottom: false,
                 tooltips: ['The Y-axis']
             }
         }).draw()
@@ -71,7 +69,7 @@
                 height: height,
                 options: {
                     tooltips: [labels[i]],
-                    highlightStroke: 'rgba(0,0,0,0)'
+                    highlightStroke: 'transparent'
                 }
             }).draw()
         }

@@ -29,17 +29,18 @@
             data: [4,8,6,3,5,2,5],
             options: {
                 shadow: true,
-                shadowOffsetx: 0,
-                shadowOffsety: 5,
-                shadowColor: '#aaa',
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowColor: '#666',
+                shadowBlur: 2,
                 variant: 'donut3d',
                 labels: labels,
                 labelsSticksLength: 15,
                 labelsSticksLinewidth: 2,
-                colorsStroke: 'transparent',
                 tooltipsCss:{
                     fontSize:'16pt'
-                }
+                },
+                exploded: 10
             }
         }).draw();
         

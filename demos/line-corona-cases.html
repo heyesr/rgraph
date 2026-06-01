@@ -457,7 +457,6 @@
                     marginBottom: 100,
                     marginLeft: 75,
                     backgroundGridHlinesCount: 6,
-                    backgroundGridVlinesCount: labels.length -1 ,
                     colors: ['#62A3B3'],
                     linewidth: 5
                 }
@@ -506,12 +505,10 @@
                     marginLeft: 75,
                     marginRight: 75,
                     marginBottom:50,
-                    backgroundGridVlinesCount: labels.length - 1,
-                    backgroundGridAutofitAlign: false,
                     colors: ['#62A3B3'],
                     yaxisLabelsColor: '#62A3B3',
                     key: ['Daily cases','Average daily cases'],
-                    keyLabelsOffsety: 2,
+                    keyLabelsOffsety: -3,
                     keyColors: ['#62A3B3','#300'],
                     keyPosition: 'margin'
                 }
@@ -552,12 +549,9 @@
                 id: 'cvs-sex',
                 data: data,
                 options: {
-                    backgroundGridVlines: false,
                     xaxisLabels: labels,
                     xaxisLabelsAngle: 45,
                     xaxisLabelsOffsety: 5,
-                    xaxis: false,
-                    yaxis: false,
                     colors: ['#5C1955','#62A3B3'],
                     tooltips: '<b>%{prop:xaxisLabels[%{dataset}]}</b> %{key} ',
                     tooltipsFormattedKeyLabels: ['Male','Female'],

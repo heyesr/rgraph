@@ -201,7 +201,7 @@
 
 
             colors:                     [], // This is used internally for the tooltip key
-            colorsDefault:              RGraph.getColors()[0],
+            colorsDefault:              RGraph.getColors(),
             colorsBubbleGraduated:      false,
             colorsBubbleStroke:         null,
             
@@ -440,7 +440,7 @@
 
             line:                       false,
             lineLinewidth:              1,
-            lineColors:                 ['green', 'red','blue','orange','pink','brown','black','gray'],
+            lineColors:                 RGraph.getColors(),
             lineShadowColor:            'transparent',
             lineShadowBlur:             2,
             lineShadowOffsetx:          3,
@@ -1441,6 +1441,14 @@
 
             var xmax          = properties.xaxisScaleMax;
             var default_color = properties.colorsDefault;
+            
+            //
+            // Allow the colorsDefault property to be an array
+            //
+
+            if (RGraph.isArray(default_color) && default_color[i]) {
+                default_color = default_color[i];
+            }
 
             for (var j=0,len=this.data[i].length; j<len; j+=1) {
                 //
@@ -1486,7 +1494,6 @@
         //
         this.drawMark = function (data_set_index, x, y, xMax, yMax, color, tooltip, coords, data, data_index)
         {
-
             var tickmarks = properties.tickmarksStyle,
                 tickSize  = properties.tickmarksSize,
                 xMin      = properties.xaxisScaleMin,
@@ -1802,7 +1809,7 @@
                 this.context.lineCap     = 'round';
                 this.context.lineJoin    = 'round';
                 this.context.lineWidth   = this.getLineWidth(i);// i is the index of the set of coordinates
-                this.context.strokeStyle = properties.lineColors[i];
+                this.context.strokeStyle = this.properties.lineColors[i];
 
                 this.context.beginPath();
 
@@ -2752,7 +2759,7 @@
                 data[seq] = Math.min(data[seq], max);
 
                 var radius = (((data[seq] - min) / (max - min) ) * width) / 2,
-                    color  = this.data[dataset][index][2] ? this.data[dataset][index][2] : this.properties.colorsDefault;
+                    color  = this.data[dataset][index][2] ? this.data[dataset][index][2] : (RGraph.isArray(this.properties.colorsDefault) ? this.properties.colorsDefault[dataset] : this.properties.colorsDefault);
 
 
 
@@ -2908,19 +2915,29 @@
                     colors[i] = this.parseSingleColorForGradient(colors[i]);
                 }
             }
-    
-             properties.colorsDefault         = this.parseSingleColorForGradient(properties.colorsDefault);
-             properties.crosshairsColor       = this.parseSingleColorForGradient(properties.crosshairsColor);
-             properties.highlightStroke       = this.parseSingleColorForGradient(properties.highlightStroke);
-             properties.highlightFill         = this.parseSingleColorForGradient(properties.highlightFill);
-             properties.backgroundBarsColor1  = this.parseSingleColorForGradient(properties.backgroundBarsColor1);
-             properties.backgroundBarsColor2  = this.parseSingleColorForGradient(properties.backgroundBarsColor2);
-             properties.backgroundGridColor   = this.parseSingleColorForGradient(properties.backgroundGridColor);
-             properties.backgroundColor       = this.parseSingleColorForGradient(properties.backgroundColor);
-             properties.axesColor             = this.parseSingleColorForGradient(properties.axesColor);
-             properties.marimekkoColorsStroke = this.parseSingleColorForGradient(properties.marimekkoColorsStroke);
-             properties.marimekkoLabelsIngraphBackgroundStroke = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundStroke);
-             properties.marimekkoLabelsIngraphBackgroundFill   = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundFill);
+            
+            //
+            // Parse the colorsDefault property
+            //
+            if (RGraph.isArray(properties.colorsDefault)) {
+                for (var i=0; i<properties.colorsDefault.length; ++i) {
+                    properties.colorsDefault[i] = this.parseSingleColorForGradient(properties.colorsDefault[i]);
+                }
+            } else {
+                properties.colorsDefault = this.parseSingleColorForGradient(properties.colorsDefault);
+            }
+            
+            properties.crosshairsColor       = this.parseSingleColorForGradient(properties.crosshairsColor);
+            properties.highlightStroke       = this.parseSingleColorForGradient(properties.highlightStroke);
+            properties.highlightFill         = this.parseSingleColorForGradient(properties.highlightFill);
+            properties.backgroundBarsColor1  = this.parseSingleColorForGradient(properties.backgroundBarsColor1);
+            properties.backgroundBarsColor2  = this.parseSingleColorForGradient(properties.backgroundBarsColor2);
+            properties.backgroundGridColor   = this.parseSingleColorForGradient(properties.backgroundGridColor);
+            properties.backgroundColor       = this.parseSingleColorForGradient(properties.backgroundColor);
+            properties.axesColor             = this.parseSingleColorForGradient(properties.axesColor);
+            properties.marimekkoColorsStroke = this.parseSingleColorForGradient(properties.marimekkoColorsStroke);
+            properties.marimekkoLabelsIngraphBackgroundStroke = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundStroke);
+            properties.marimekkoLabelsIngraphBackgroundFill   = this.parseSingleColorForGradient(properties.marimekkoLabelsIngraphBackgroundFill);
         };
 
 

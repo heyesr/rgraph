@@ -34,14 +34,16 @@
                 // A custom property used in the tooltips
                 myNames: ['Wilf','Harry','Gerrard'],
 
-                colorsStroke: 'transparent',
                 margin: 7,
-                variant: '3d',
-                variant3dShadow: false,
-                variantThreedDepth: 10,
                 labelsAxes: 'n',
                 colors:['#f99','#9f9','#99f'],
 
+                variant3dShadow: true,
+                variant3dShadowOffsetx: 5,
+                variant3dShadowOffsety: 5,
+                variant3dShadowBlur: 1,
+                
+                variant: '3d',
                 
                 // Tooltips, given as a template string
                 tooltips: '%{property:myNames[%{index}]} on %{property:labels[%{dataset}]}: <b>%{value}%</b>',
@@ -53,8 +55,8 @@
 
                 labels: labels_large,
                 responsive: [
-                    {maxWidth: null, width: 600, height: 300,options:{labels:labels_large,variant:'3d'}},
-                    {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small,variant:'none'}}
+                    {maxWidth: null, width: 600, height: 300,options:{labels:labels_large}},
+                    {maxWidth: 800, width: 400, height: 350,options:{labels:labels_small}}
                 ]
             }
         }).grow({frames: 30});

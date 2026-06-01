@@ -21,8 +21,6 @@
             id: 'cvs',
             data: [4,5,7,4,2,4,6,8,6,5],
             options: {
-                backgroundGridHlines: false,
-                backgroundGridBorder: false,
                 colors: ['rgba(255,0,0,1)'],
                 yaxisLabels: [
                     'John','Fredericko','Bono','Lucy','Charles',
@@ -49,7 +47,7 @@
             }
         }).trace({frames: 90}, function (obj)
         {
-            for (let i=0; i<=30; ++i) {
+            for (let i=0; i<=60; ++i) {
                 setTimeout(function ()
                 {
                     obj.set('colors', ['rgba(255,0,0,' + ((30-i) * 0.0333) + ')']);
@@ -59,7 +57,7 @@
                     }
                     
                     RGraph.redraw();
-                }, i * 15);
+                }, i * 10);
             }
         });
     </script>

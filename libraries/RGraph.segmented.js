@@ -19,7 +19,7 @@
     {
         var id     = conf.id,
             canvas = document.getElementById(id),
-            min    = conf.min,
+            min    = conf.min || 0,
             max    = conf.max,
             value  = conf.value;
 

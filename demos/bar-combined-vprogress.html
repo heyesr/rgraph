@@ -33,9 +33,7 @@
                 keyColors: ['red','yellow'],
                 keyPosition: 'margin',
                 textSize: 14,
-                colors: ['transparent'],
                 title: 'A combined grouped Bar and VProgress bar chart',
-                titleBold: true,
                 titleSize: 16,
                 titleOffsety: -7,
                 style: [
@@ -73,7 +71,7 @@
                 max: 100,
                 value: [25,75],
                 options: {
-                    colorsBackground: 'transparent',
+                    corners: 'square',
                     marginLeft: coords[0] / 2, // Account for scaling
                     marginTop: coords[1] / 2, // Account for scaling
                     marginRight: (bar.canvas.width - coords[0] - coords[2]) / 2,
@@ -90,8 +88,8 @@
                         color: 'black',
                         fontSize: '16pt'
                     },
-                    colorsStrokeInner: 'rgba(0,0,0,0)',
-                    colorsStrokeOuter: 'rgba(0,0,0,0)',
+                    colorsStrokeInner: 'transparent',
+                    colorsStrokeOuter: 'transparent',
                     events: {
                         draw: function (obj)
                         {

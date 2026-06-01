@@ -19,8 +19,11 @@
     <script>
         chart  = null;
         data   = [
-            8,9,6,5,3,2,9,5,2,5,4,9, //12
-            8,6,5,2,5,8,9,6,3,5,8,4  //24
+            8,9,6,5,3,2,9,5,2,5,4,9,  // 12
+            8,6,5,2,5,8,9,6,3,5,8,4,  // 24
+            5,8,7,6,5,4,8,6,4,7,9,10,  // 36
+            9,7,6,4,8,5,7,6,5,6,7,9,  // 48
+            9,7,6,4,8,5,7,6,5,6,7,9   // 60
         ];
         labels = ['24s','18s','12s','6s','0s']
 
@@ -43,6 +46,7 @@
                 marginBottom: 60,
                 title: 'A dynamic Line chart',
                 titleSize: 30,
+                titleBold: false,
                 titleOffsety: 10,
                 titleFont: 'Impact',
                 marginTop: 40
@@ -67,7 +71,7 @@
 
             RGraph.redraw();
 
-            setTimeout(draw, 1000);
+            setTimeout(draw, 250);
         })();
     </script>
 

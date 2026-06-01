@@ -212,6 +212,7 @@
             highlightStroke:               'transparent',
             highlightFill:                 'rgba(255,255,255,0.7)',
             highlightFade:                 true,
+            highlightLinewidth:            1,
 
             annotatable:                   false,
             annotatableColor:              'black',
@@ -229,6 +230,11 @@
 
             variant:                       'stacked',
             variantThreedDepth:            10,
+            variantThreedShadow:           false,
+            variantThreedShadowColor:      '#ccc',
+            variantThreedShadowOffsetx:    5,
+            variantThreedShadowOffsety:    5,
+            variantThreedShadowBlur:       5,
 
             exploded:                      0,
 
@@ -308,6 +314,8 @@
 
             'annotateLinewidth',
 
+            'highlightLinewidth',
+
             'centerx',
             'centery',
             'radius',
@@ -382,6 +390,12 @@
         {
             var value = typeof arguments[1] === 'undefined' ? null : arguments[1];
 
+            
+            // Accommodate misspelling of 3D variant name
+            if (name.toLowerCase().indexOf('variant3d') > -1) {
+                name = name.replace(/variant3d/i,'variantThreed');
+            }
+
             // Go through all of the properties and make sure
             // that they're using the correct capitalisation
             if (typeof name === 'string') {
@@ -393,6 +407,11 @@
                 name = 'labelsOffsetRadius';
             }
             
+            // Accommodate misspelling of 3D variant name
+            if (name.indexOf('variant3d') > -1) {
+                name = name.replace(/variant3d/,'variantThreed');
+            }
+
             // Set the colorsParsed flag to false if the colors
             // property is being set
             if (
@@ -438,6 +457,9 @@
             // Go through all of the properties and make sure
             // that they're using the correct capitalisation
             name = this.properties_lowercase_map[name.toLowerCase()] || name;
+
+            // Accommodate misspelling of 3D variant name
+            name = name.replace(/variant3d/,'variantThreed');
 
             // BC
             if (name === 'labelsOffset') {
@@ -674,8 +696,14 @@
             
                 // Setting the shadow here means that the first (the bottom Rose)
                 // sill have a shadow but not upper iterations.
-                if (this.properties.variant3dShadow) {
-                    RGraph.setShadow(this,'rgba(0,0,0,0.35)',0,15,25);
+                if (this.properties.variantThreedShadow) {
+                    RGraph.setShadow(
+                        this,
+                        this.properties.variantThreedShadowColor,
+                        this.properties.variantThreedShadowOffsetx,
+                        this.properties.variantThreedShadowOffsety,
+                        this.properties.variantThreedShadowBlur
+                    );
                 }
             
                 for (var i=properties.variantThreedDepth; i>0; i-=1) {
@@ -1017,7 +1045,7 @@
                     total += data[i][1];
                 }
                 
-                if (properties.shadow) {
+                if (properties.shadow && this.properties.variant !== '3d') {
                     RGraph.setShadow(
                         this,
                         properties.shadowColor,
@@ -1105,7 +1133,7 @@
             
                 var sequentialColorIndex = 0;
                 
-                if (properties.shadow) {
+                if (properties.shadow && this.properties.variant !== '3d') {
                     RGraph.setShadow(
                         this,
                         properties.shadowColor,
@@ -2057,7 +2085,11 @@
 
 
                 // Add the new segment highlight
-                obj.path('b a % % % % % false',shape.x, shape.y, shape.radiusEnd, shape.angleStart, shape.angleEnd);
+                obj.path(
+                    'b lw % a % % % % % false',
+                    obj.properties.highlightLinewidth,
+                    shape.x, shape.y, shape.radiusEnd, shape.angleStart, shape.angleEnd
+                );
 
                 if (shape.radiusStart > 0) {
                     obj.path('a % % % % % true',shape.x, shape.y, shape.radiusStart, shape.angleEnd, shape.angleStart);
@@ -2065,7 +2097,10 @@
                     obj.path('l % %',shape.x, shape.y);
                 }
                 
-                obj.path('c s % f %', obj.properties.highlightStroke, obj.properties.highlightFill);
+                obj.path(
+                    'c f % s % s %',
+                    obj.properties.highlightFill, obj.properties.highlightStroke
+                );
             });
         };
 

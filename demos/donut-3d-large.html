@@ -12,8 +12,8 @@
 <body>    
     <h1>A large 3D Donut chart</h1>
 
-    <div id="rgraph-demo-html">
-        <canvas id="cvs" width="800" height="450">[No canvas support]</canvas>
+    <div id="rgraph-demo-html" style="text-align: center">
+        <canvas id="cvs" width="1000" height="450">[No canvas support]</canvas>
     </div>
     
     <script>
@@ -22,8 +22,7 @@
             data: [25,8,6,3,5,2,8,6,4,3,2,1],
             options: {
                 colors: ["rgb(128,243,32)", "rgb(214,7,143)", "rgb(1,191,202)", "rgb(229,156,4)", "rgb(106,24,237)", "rgb(60,254,91)", "rgb(251,47,73)", "rgb(15,122,246)", "rgb(172,218,9)", "rgb(176,1,185)", "rgb(13,225,162)", "rgb(249,112,20)", "rgb(64,55,253)", "rgb(101,252,52)"],
-                colorsStroke: "rgba(0,0,0,0)",
-                labels: ["NetFlix", "Apple", "Google", "IMAPS", "AppleiCloud", "Yahoo", "TLS", "Amazon", "Facebook", "Unknown", "DNS", "Playstation", "", ""],
+                labels: ["NetFlix", "Apple", "Google", "IMAPS", "Apple iCloud", "Yahoo", "TLS", "Amazon", "Facebook", "Unknown", "DNS", "Playstation", "", ""],
                 labelsSticks: [true, true, true, true, true, true, true, true, true, true, true, true, false, false],
                 labelsSticksLength: 20,
                 labelsSticksColors: "black",
@@ -39,12 +38,11 @@
                 marginTop: 0,
                 marginBottom: 0,
                 shadow: true,
-                shadowColor: "#bbb",
-                shadowOffsetx: 0,
-                shadowOffsety: 10,
-                shadowBlur: 15,
-                textSize: 8,
-                textColor: "black",
+                shadowColor: "gray",
+                shadowOffsetx: 2,
+                shadowOffsety: 2,
+                shadowBlur: 5,
+                textSize: 14,
                 tooltips: ["NetFlix", "Apple", "Google", "IMAPS", "AppleiCloud", "Yahoo", "TLS", "Amazon", "Facebook", "Unknown", "DNS", "Playstation", "HTTP", "MQTT"],
                 radius: 140,
                 variant: "donut3d",

@@ -288,7 +288,7 @@
             variantDonutWidth:              null,
             variantThreedDepth:             20,
 
-            exploded:                       5,
+            exploded:                       [],
 
             effectRoundrobinMultiplier:     1,
 

@@ -25,19 +25,13 @@
             data: [4,5,3,8,4,9,6,5,3,7],
             options: {
                 title: 'An animated combined spline and Bar chart',
-                titleBold: true,
                 titleSize: 16,
-                xaxis: false,
-                yaxis: false,
                 xaxisLabels: labels,
                 colors: ['#ddf'],
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 textSize: 12,
-                colorsStroke: 'rgba(0,0,0,0)',
                 marginBottom: 35
             }
-        }).grow();
+        }).wave();
 
 
 
@@ -45,14 +39,10 @@
             id: 'cvs',
             data: [41,43,45,54,42,41,21,18,12,11],
             options: {
-                xaxis: false,
-                yaxis: false,
+                backgroundGrid: false,  
                 spline: true,
-                shadow: true,
                 tickmarksStyle: 'circle',
                 tickmarksSize: 5,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 tooltips: 'Results for %{property:tooltipsNames[%{index}]}: %{value}',
                 tooltipsNames: labels,
                 tooltipsCss: {
@@ -61,9 +51,7 @@
                     fontSize: '20pt'
                 },
                 marginBottom: 35,
-                yaxisScale: false,
-                xaxisTickmarksCount: 0,
-                yaxisTickmarksCount: 0
+                yaxisScale: false
             }
         });
 

@@ -23,7 +23,6 @@ pre.code {
     overflow-x: auto;
     padding: 15px;
     position: relative;
-    border: 1px solid #ccc;
 }
 
 pre.code span {
@@ -129,6 +128,7 @@ div.codeblock pre {
     bottom: 0;
     position: absolute;
     box-sizing: border-box;
+    font-size: 12pt;
 }
 
 div.codeblock span.copy-link {

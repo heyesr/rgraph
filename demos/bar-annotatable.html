@@ -23,7 +23,6 @@
             data: [248,243,180,160,120,43],
             options: {
                 title: 'An annotatable Bar chart',
-                titleBold: true,
                 titleSize: 16,
                 xaxisLabels: ['Jack','Jane','Lucy','Pete','Jen','Olga'],
                 annotatable: true,
@@ -35,9 +34,6 @@
                     ['Clear', function () {RGraph.Clear(bar.canvas); RGraph.clearAnnotations(bar.canvas); RGraph.redraw();}]
                 ],
                 textSize: 14,
-                xaxis: false,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 marginLeft: 45,
                     events: {
                         beforedraw: function (obj)

@@ -18,7 +18,7 @@
     </div>
     
     <script>
-        new RGraph.Bipolar({
+        bipolar = new RGraph.Bipolar({
             id: 'cvs1',
             left: [4,8,6,4,3],
             right: [18,4,6,3,3],
@@ -27,13 +27,27 @@
             }
         }).draw();
 
-        new RGraph.Gauge({
+        gauge = new RGraph.Gauge({
             id: 'cvs2',
             min: 0,
             max: 100,
-            value: 87,
+            value: 20,
             options: {
-                adjustable: true
+                adjustable: true,
+                events: {
+                    adjust: obj =>
+                    {
+                        var min = 20;
+
+                        if (obj.value > min) {
+                            bipolar.set('xaxisScaleMax', obj.value);
+                        } else {
+                            obj.value = 20;
+                        }
+
+                        RGraph.redraw();
+                    }
+                }
             }
         }).draw();
     </script>

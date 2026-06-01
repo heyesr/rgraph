@@ -57,7 +57,10 @@
         {
             RGraph.ObjectRegistry.iterate(function (obj)
             {
-                obj.set('colorsSequential', obj.get('colorsSequential') ? false : true);
+                obj.set(
+                    'colorsSequential',
+                    !obj.get('colorsSequential')
+                );
             });
         }
 
@@ -187,8 +190,7 @@
                 xaxisScaleMin: -50,
                 xaxisScaleMax: 200,
                 yaxisLabels: ['Venus','Felicity Jones-Arthur','Cynthia','Frederick','Hoolio','Peter','Jennifer','Richard','Jonathan'],
-                tooltips: 'A tooltip!',
-                //corners: 'square',
+                tooltips: 'A tooltip!'
             }
         }).grow();
 

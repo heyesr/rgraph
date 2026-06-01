@@ -92,10 +92,6 @@
                 // The background grid is only enabled on this chart
                 backgroundGridColor: '#ccc',
                 backgroundGridHlinesCount: 5,
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
-                //backgroundGridDashed: false,
-                //backgroundGridColor: '#333',
                 
                 // Set the margins based on the values that are defined above
                 marginBottom: marginBottom,
@@ -105,14 +101,11 @@
                 marginInner:  marginInner,
 
                 yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
                 yaxisPosition: 'right',
                 yaxisScaleUnitsPost: 'Kg',
                 textSize: 10,
                 title: title,
                 titleSize: 16,
-                titleBold: true,
                 titleOffsety: 5,
                 events: {
                     scale: function (obj)
@@ -137,8 +130,6 @@
             options: {
 
                 colors: [colors[0]],
-                
-                shadow: false,
 
                 // The background grid is only enabled on this chart - the
                 // bar chart at the back
@@ -155,7 +146,6 @@
 
                 xaxis: false,
                 yaxisScaleMax: yaxisScaleMax,
-                yaxis: false,
                 yaxisPosition: 'right',
                 yaxisScale: false,
                 
@@ -188,8 +178,6 @@
             options: {
 
                 colors: [colors[1]],
-                
-                shadow: false,
 
                 backgroundGrid: false,
 
@@ -203,8 +191,6 @@
                 filledColors: [filledColors[1]],
 
                 yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 
                 linewidth: 5,
@@ -230,8 +216,6 @@
             options: {
 
                 colors: [colors[2]],
-                
-                shadow: false,
 
                 backgroundGrid: false,
 
@@ -245,8 +229,6 @@
                 filledColors: [filledColors[2]],
 
                 yaxisScaleMax: yaxisScaleMax,
-                xaxis: false,
-                yaxis: false,
                 yaxisScale: false,
                 
                 // The X-axis labels are shown on this chart
@@ -263,7 +245,6 @@
                 }
             }
         }).draw();
-
     </script>
     
     <script>showSource()</script>

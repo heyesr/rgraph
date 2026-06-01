@@ -22,12 +22,7 @@
                     marginLeft: 50,
                     xaxisLabels: ['Jill','Joseph','Joe','Jim','July','Jake','John'],
                     textSize: 14,
-                    colors: ['Gradient(#fcc:red:red)'],
-                    xaxis: false,
-                    yaxis: false,
-                    backgroundGridVlines: false,
-                    backgroundGridBorder: false,
-                    corners: 'round'
+                    colors: ['Gradient(#fcc:red:red)']
                 }
             }).wave();
         };
@@ -74,19 +69,19 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
 &lt;/script&gt;
     </pre>
 
-    <!-- The RGraph core chart library -->
+    <!-- The RGraph libraries -->
     <script>
-        //
-        // o---------------------------------------------------------------------------------o
-        // | This file is part of the RGraph package - you can learn more at:                |
-        // |                                                                                 |
-        // |                       https://www.rgraph.net/license.html                       |
-        // |                                                                                 |
-        // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-        // | free to use and there are no restrictions on what you can use RGraph for!       |
-        // | If the GPL license does not suit you however, then there's an inexpensive       |
-        // | commercial license option available. See the URL above for more details.        |
-        // o---------------------------------------------------------------------------------o
+        // o---------------------------------------------------------------------------o
+        // | This file is part of the RGraph package - you can learn more at:          |
+        // |                                                                           |
+        // |                           https://www.rgraph.net                          |
+        // |                                                                           |
+        // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+        // | that it's free to use for any purpose. The GPL license does have          |
+        // | consequences on the license of the software that you include it in,       |
+        // | however. If this is not desirable, then there's an inexpensive commercial |
+        // | license option available. See the RGraph website for more details.        |
+        // o---------------------------------------------------------------------------o
     
         window.RGraph = window.RGraph || {isrgraph:true,isRGraph: true,rgraph:true};
     
@@ -261,8 +256,8 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         //
         // IMPORTANT:
         //
-        // This function is being phased out to try and improve
-        // performance.
+        // THIS FUNCTION IS NO LONGER USED TO TRY AND IMPROVE
+        // PERFORMANCE.
         //
         // This function allows both object based arguments to functions
         // and also regular arguments as well.
@@ -279,36 +274,36 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         // @param string names A comma seperated list of desired names for the
         //                     arguments eg: 'object,color,size'.
         //
-        RGraph.getArgs = function (args, names)
-        {
-            var ret   = {};
-            var count = 0;
-            names     = names.trim().split(/ *, */);
+        //RGraph.getArgs = function (args, names)
+        //{
+        //    var ret   = {};
+        //    var count = 0;
+        //    names     = names.trim().split(/ *, */);
     
-            if (   args
-                && args[0]
-                && args.length === 1
-                && typeof args[0][names[0]] !== 'undefined') {
-                
-                for (var i=0; i<names.length; ++i) {
-                    if (typeof args[0][names[i]] === 'undefined') {
-                        args[0][names[i]] = null;
-                    }
-                }
+        //    if (   args
+        //        && args[0]
+        //        && args.length === 1
+        //        && typeof args[0][names[0]] !== 'undefined') {
+        //        
+        //        for (var i=0; i<names.length; ++i) {
+        //            if (typeof args[0][names[i]] === 'undefined') {
+        //                args[0][names[i]] = null;
+        //            }
+        //        }
     
-                return args[0];
-            } else {
-                for (var i in names) {
-                    if (RGraph.isString(i)) {
-                        ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
-                        
-                        count += 1;
-                    }
-                }
-            }
+        //        return args[0];
+        //    } else {
+        //        for (var i in names) {
+        //            if (RGraph.isString(i)) {
+        //                ret[names[i]] = typeof args[count] === 'undefined' ? null : args[count];
+        //                
+        //                count += 1;
+        //            }
+        //        }
+        //    }
     
-            return ret;
-        };
+        //    return ret;
+        //};
     
     
     
@@ -465,7 +460,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
                 // Now generate the scale. Temporarily set the objects
                 // scaleDecimal and scalePoint to those that we've been
-                // given as the number_format functuion looks at those
+                // given as the number_format function looks at those
                 // instead of using arguments.
                 var tmp_point    = properties[prefix + 'ScalePoint'];
                 var tmp_thousand = properties[prefix + 'ScaleThousand'];
@@ -547,7 +542,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         //
         // Parse a gradient thats in JSON format like this:
         //
-        // Gradient({colors: ["red","white"],x1:0,y1:25,x2:0,y2:275}).
+        // Gradient({colors: ["red","white"],x1:0,y1:25,x2:0,y2:275})
         //
         // @param object args The gradient definition. Possible keys
         //                    in this object are:
@@ -717,40 +712,6 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
             return out2;
         };
-    
-    
-    
-    
-    
-    
-    
-    
-        //
-        //
-        // *** OLD VERSION OF THE CLONE FUNCTION ***
-        //
-        // Makes a clone of an array.
-        //
-        // @param args mixed The object to clone.
-        //
-        //RGraph.arrayClone = function ()
-        //{
-        //    var args = RGraph.getArgs(arguments, 'array,options');
-        //    var c;
-        //    var structuredClone = args.options && args.options.structuredClone;
-        //
-        //    if (window.structuredClone && structuredClone) {
-        //        c = window.structuredClone(args.array);
-        //    } else {
-        //        if(args.array === null || typeof args.array !== 'object') {
-        //            return args.array;
-        //        }
-        //
-        //        c = JSON.parse(JSON.stringify(args.array));
-        //     }
-        //
-        //    return c;
-        //};
     
     
     
@@ -8187,7 +8148,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                             //
                             obj.path('b m % % l % % s #bbb',
                                 Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin )) * (obj.canvas.width - properties.marginLeft - properties.marginRight) )), obj.canvas.height - properties.marginBottom,
-                                Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + 20
+                                Math.round(properties.marginLeft + (((properties.xaxisLabels[i][1] - properties.xaxisScaleMin) / (properties.xaxisScaleMax - properties.xaxisScaleMin))) * (obj.canvas.width - properties.marginLeft - properties.marginRight) ), obj.canvas.height - properties.marginBottom + (20 * RGraph.getScaleFactor(obj))
                             );
                             
                             // Draw the final indicator line if
@@ -8195,7 +8156,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                             if (i === properties.xaxisLabels.length - 1) {
                                 obj.path('b m % % l % % s #bbb',
                                     obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom,
-                                    obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + 20
+                                    obj.canvas.width - properties.marginRight, obj.canvas.height - properties.marginBottom + (20 * RGraph.getScaleFactor(obj))
                                 );
                             }
         
@@ -9372,6 +9333,82 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
         //
+        // Split a string into an array whilst allowing for quoted
+        // sections.
+        //
+        // @param  str   string  The string to Split
+        // @param  split string  The character to split on (default=,)
+        // @param  quote string  The quote character - either a single
+        //                       or double quote (default=")
+        // @param  empty boolean Whether to keep empty elements or not 
+        //                       (default=true)
+        // @return       array   The resulting array
+        //
+        RGraph.splitStringArray = function (str, split = ',', quote = '"', empty = true)
+        {
+            // Loop over the string, character-by-character
+            var ret = [], quoted = false, buf = '';
+            
+            for (var i=0; i<str.length; ++i) {
+            
+                var chr  = str[i];
+                var prev = i === 0 ? '' : str[i-1];
+                var next = i === (str.length - 1) ? '' : str[i+1];
+                
+                // First - if this character is a backslash add the
+                // next character no matter what it is
+                if (chr === "\\") {
+                    buf += next;
+                    i++;
+                    continue;
+                }
+    
+                // Encountered the split char
+                if (chr === split && !quoted) {
+                    // Add the buffer to the return array if the buffer isn't
+                    // empty or empty elements are being kept (the default)
+                    if (buf.trim() || empty) {
+                        ret.push(buf);
+                        buf = '';
+                    }
+                    continue;
+                }
+    
+                // Quote character
+                if (chr === quote) {
+                    
+                    // Opening quote...
+                    if (!quoted) {
+                        quoted = true;
+                        continue;
+                    
+                    // Closing quote...
+                    } else {
+                        quoted = false;
+                        continue;
+                    }
+                }
+                
+                buf += chr;
+            }
+            
+             // Add the last bit to the returned array
+             if (buf.trim() || empty) {
+                ret.push(buf);
+                buf = '';
+             }
+             
+             return ret;
+        };
+    
+    
+    
+    
+    
+    
+    
+    
+        //
         // A set of functions which help you get data from the GET
         // string (the query string). This function simply returns
         // the querystring as-is.
@@ -9653,7 +9690,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 //
                 // Clip to horizontal percentages.
                 //
-                } else if (dimensions.match(/^\s*x\s*:\s*([-.0-9minax]+)%?\s*-\s*([.0-9minax]+)%?\s*$/i)) {
+                } else if (dimensions.match(/^\s*x\s*:\s*([-.0-9minax]+)\s*%?\s*-\s*([.0-9minax]+)\s*%?\s*$/i)) {
     
     
                     // Accommodate the min/max keywords.
@@ -9680,7 +9717,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 
                 
                 // Clip to vertical percentages
-                } else if (dimensions.match(/^\s*y\s*:\s*([-.0-9minax]+)%?\s*-\s*([.0-9minax]+)%?\s*/i)) {
+                } else if (dimensions.match(/^\s*y\s*:\s*([-.0-9minax]+)\s*%?\s*-\s*([.0-9minax]+)\s*%?\s*/i)) {
     
                     // Accommodate the min/max keywords
                     var from = RegExp.$1,
@@ -9713,7 +9750,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
                 // Clip to radial percentages. This only works with
                 // charts that have the centerx and centery properties.
-                } else if (dimensions.match(/^\s*r(?:adius)?\s*:\s*([-.0-9minax]+)%?\s*-\s*([.0-9minax]+)%?\s*/i)) {
+                } else if (dimensions.match(/^\s*r(?:adius)?\s*:\s*([-.0-9minax]+)\s*%?\s*-\s*([.0-9minax]+)\s*%?\s*/i)) {
     
                     // Accommodate the min/max keywords.
                     var from = RegExp.$1,
@@ -10062,7 +10099,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 // Test that the cursor is within the given X
                 // percentages range.
                 //
-                } else if (clip.match(/^\s*x\s*:\s*([-.0-9minax]+)%?\s*-\s*([.0-9minax]+)%?\s*$/i)) {
+                } else if (clip.match(/^\s*x\s*:\s*([-.0-9minax]+)\s*%?\s*-\s*([.0-9minax]+)\s*%?\s*$/i)) {
                 
                     // Accommodate the min/max keywords.
                     var from = RegExp.$1,
@@ -10091,7 +10128,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
                 // Test that the cursor is within the given Y
                 // percentages range.
-                } else if (clip.match(/^\s*y\s*:\s*([-.0-9minax]+)%?\s*-\s*([.0-9minax]+)%?\s*/i)) {
+                } else if (clip.match(/^\s*y\s*:\s*([-.0-9minax]+)\s*%?\s*-\s*([.0-9minax]+)\s*%?\s*/i)) {
     
                     // Accommodate the min/max keywords.
                     var from = RegExp.$1,
@@ -10313,14 +10350,25 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         //                 or not. If it is clipping will be installed
         //                 first.
         //
-        RGraph.clipTo.callback = function (obj, callback)
+        RGraph.clipTo.callback = function ()
         {
+            // Accommodate being given two or three arguments
+            var obj = arguments[0];
+            
+            if (arguments.length === 2) {
+                var clip     = obj.properties.clip;
+                var callback = arguments[1];
+            } else if (arguments.length === 3) {
+                var clip     = arguments[1];
+                var callback = arguments[2];
+            }
+    
             var endClipping = false;
             
             // Install clipping so that the highlight is clipped
             // as well as the main chart.
-            if (!RGraph.isNullish(obj.properties.clip)) {
-                RGraph.clipTo.start(obj, obj.properties.clip);
+            if (!RGraph.isNullish(clip)) {
+                RGraph.clipTo.start(obj, clip);
                 endClipping = true;
             }
     
@@ -10354,7 +10402,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         // foo=bar,foo2=bar2,foo3="bar 3"
         //
         // @param  string  string    The string to parse.
-        // @param  string  separator The string to parse.
+        // @param  string  separator The separator used to separate values.
         // @param  boolean preserve  By default the values are
         //                           trim()med to remove any trailing
         //                           or leading whitepsace - by
@@ -10696,32 +10744,68 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         // it will create one and then reuse it on subsequent
         // calls to this function.
         //
-        // @param string style The styles to assign to the
-        //                     new class. An example:
+        // @param string style        The styles to assign to the
+        //                            new CSS. An example:
         //
-        //                     table tr td {color: red;}
+        //                            table tr td {color: red;}
         //
-        RGraph.addCss = function (style)
+        // @param object styleElement The style element to which the
+        //                            style is attached.
+        // @param object parent       If given (default is null),
+        //                            this is the node to which the
+        //                            style element is attached. If
+        //                            not given then the style element
+        //                            is added to the <head>.
+        //
+        RGraph.addCss = function (style, styleElement = null, parent = null)
         {
-            var append = false;
-    
-            if (!RGraph.addCss.styleElement) {
-                RGraph.addCss.styleElement = document.createElement('style');
-                
-                // Should the element be appended to the
-                // document?
-                append = true;
-            }
-            
-            var el = RGraph.addCss.styleElement;
+            // Create a style element and add the CSS
+            var el = styleElement || document.createElement('style');
                 el.insertAdjacentHTML('beforeend', style);
     
             // Append the style element to the document? Only
-            // do this on newly created style elements.
-            if (append) {
+            // do this on newly created style elements. You can
+            // optionally pass in an element on which to attach
+            // the style element instead of the head.
+            if (parent) {
+                parent.appendChild(el);
+            } else {
                 document.head.appendChild(el);
             }
+            
+            return el;
         };
+    
+    
+    
+    
+    
+    
+    
+    
+        //
+        // This function uses the above RGraph.addCss function to
+        // centralise the addition of CSS from the style property.
+        // This is general CSS and does not necessarily have to
+        // pertain to the canvas tag. It only gets added once
+        // to the document no matter how many times this draw
+        // function is called.
+        //
+        // @param object obj The RGraph chart object
+        //
+        RGraph.addConfigurationBasedCSS = function (obj)
+        {
+            // Add the CSS to a <style> block in the <head>.
+            RGraph.runOnce(obj.uid + '-add-css-to-document-that-has-been-specified-in-the-configuration', function ()
+            {
+                if (obj.properties.style) {
+                    for (var i=0; i<obj.properties.style.length; ++i) {
+                        var styleElement = RGraph.addCss(obj.properties.style[i], styleElement ? styleElement : null);
+                    }
+                }
+            });
+        };
+    
     
     
     
@@ -10827,7 +10911,9 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
         {
             // Allow various data structures to be given as well as
             // strings.
-            str = String(str);
+            if (!RGraph.isString(str)) {
+                str = JSON.stringify(str);
+            }
     
             var hc="0123456789abcdef";
             function rh(n) {var j,s="";for(j=0;j<=3;j++) s+=hc.charAt((n>>(j*8+4))&0x0F)+hc.charAt((n>>(j*8))&0x0F);return s;}
@@ -10968,7 +11054,6 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                     context.strokeStyle = stroke;
                     context.stroke();
                 }
-                
         };
     
     
@@ -11747,6 +11832,48 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
             return obj.properties.scale
                        ? obj.properties.scaleFactor
                        : 1;
+        };
+    
+    
+    
+    
+    
+    
+    
+    
+        //
+        // Returns default colors that are used in many of the charts.
+        //
+        // @param  array colors You can pass in your own colors to
+        //               this function if you wish and those will
+        //               be the ones that are used.
+        // @return array The array of colors.
+        //
+        RGraph.getColors = function (colors = [])
+        {
+            var defaultColors = [
+                '#ff000088','#00ff0088','#0000ff88',
+                '#ffc0cb88','#ffA50088','#00ffff88',
+                '#00000088','#ffff6688','#00800088',
+                '#ff00ff88','#ffff0088','#aaffaa88',
+                '#ffaaaa88','#aaaaff88','#aaffff88',
+                '#ffffaa88','#ffaaff88','#00ffff88',
+                '#964B0088','#80808088','#00000088',
+                '#ffc0cb88','#aaffaa88','#ffaaaa88',
+                '#aaaaff88','#aaffff88','#ffffaa88',
+                '#ffaaff88','#00ffff88','#964b0088',
+                '#80808088','#00000088','#ffc0cb88'
+            ];
+            
+            if (colors.length) {
+                // Nada
+            } else {
+                for (var i=0; i<5; ++i) {
+                    colors = colors.concat(defaultColors);
+                }
+            }
+    
+            return colors;
         };
     
     
@@ -13391,34 +13518,21 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
             // Now replace those saved percentage signs with a percentage sign.
             return s.replace('__PPEERRCCEENNTT__', '%');
         };
-    </script>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-    <!-- The RGraph Bar chart library -->
-    <script>
-        // o---------------------------------------------------------------------------------o
-        // | This file is part of the RGraph package - you can learn more at:                |
-        // |                                                                                 |
-        // |                       https://www.rgraph.net/license.html                       |
-        // |                                                                                 |
-        // | RGraph is dual-licensed under the Open Source GPL license. That means that it's |
-        // | free to use and there are no restrictions on what you can use RGraph for!       |
-        // | If the GPL license does not suit you however, then there's an inexpensive       |
-        // | commercial license option available. See the URL above for more details.        |
-        // o---------------------------------------------------------------------------------o
+        // o---------------------------------------------------------------------------o
+        // | This file is part of the RGraph package - you can learn more at:          |
+        // |                                                                           |
+        // |                           https://www.rgraph.net                          |
+        // |                                                                           |
+        // | RGraph is dual-licensed under the Open Source GPL license. This means     |
+        // | that it's free to use for any purpose. The GPL license does have          |
+        // | consequences on the license of the software that you include it in,       |
+        // | however. If this is not desirable, then there's an inexpensive commercial |
+        // | license option available. See the RGraph website for more details.        |
+        // o---------------------------------------------------------------------------o
     
         RGraph = window.RGraph || {isrgraph:true,isRGraph: true,rgraph:true};
     
@@ -13456,16 +13570,16 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
             this.properties =
             {
                 backgroundBarsCount:        null,
-                backgroundBarsColor1:       'rgba(0,0,0,0)',
-                backgroundBarsColor2:       'rgba(0,0,0,0)',
+                backgroundBarsColor1:       'transparent',
+                backgroundBarsColor2:       'transparent',
                 backgroundGrid:             true,
-                backgroundGridColor:        '#ddd',
+                backgroundGridColor:        '#eee',
                 backgroundGridLinewidth:    1,
                 backgroundGridHsize:        20,
                 backgroundGridVsize:        20,
-                backgroundGridVlines:       true,
+                backgroundGridVlines:       false,
                 backgroundGridHlines:       true,
-                backgroundGridBorder:       true,
+                backgroundGridBorder:       false,
                 backgroundGridAutofit:      true,
                 backgroundGridAutofitAlign: true,
                 backgroundGridHlinesCount:  5,
@@ -13524,7 +13638,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 labelsAboveUnitsPost:'',
                 labelsAboveFormatter:null,
     
-                yaxis:                    true,
+                yaxis:                    false,
                 yaxisLinewidth:           1,
                 yaxisColor:               'black',
                 yaxisTickmarks:           true,
@@ -13571,7 +13685,8 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 yaxisTitleValign:         null,
                 yaxisTitleAccessible:     null,
     
-                xaxis:                   true,
+                xaxis:                   false,
+                xaxisPosition:           'bottom',
                 xaxisLinewidth:          1,
                 xaxisColor:              'black',
                 xaxisTickmarks:          true,
@@ -13644,22 +13759,28 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 titleSubtitleOffsetx: 0,
                 titleSubtitleOffsety: 0,
     
-                colorsStroke:          'rgba(0,0,0,0)',
-                colors:                 ['red','#0f0','blue','pink','orange','cyan','black','white','green','magenta'],
+                colorsStroke:          'transparent',
+                colors:                RGraph.getColors(),
                 colorsSequential:      false,
                 colorsReverse:         false,
     
                 grouping:               'grouped',
     
-                variant:                'bar',
-                variantSketchVerticals: true,
-                variantThreedXaxis:   true,
-                variantThreedYaxis:   true,
-                variantThreedAngle:   0.1,
-                variantThreedOffsetx: 10,
-                variantThreedOffsety: 5,
-                variantThreedXaxisColor: '#ddd',
-                variantThreedYaxisColor: '#ddd',
+                variant:                        'bar',
+                variantSketchVerticals:         true,
+                variantThreedXaxis:             true,
+                variantThreedYaxis:             true,
+                variantThreedAngle:             0.1,
+                variantThreedOffsetx:           10,
+                variantThreedOffsety:           5,
+                variantThreedXaxisColor:        '#ddd',
+                variantThreedYaxisColor:        '#ddd',
+                variantDumbbellLinewidth:       8,
+                variantDumbbellEndTop:          true,
+                variantDumbbellEndBottom:       true,
+                variantDumbbellEndRadius:       13,
+                variantDumbbellEndTopRadius:    null,
+                variantDumbbellEndBottomRadius: null,
     
                 shadow:                false,
                 shadowColor:           '#aaa',
@@ -13693,8 +13814,9 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 tooltipsPointerOffsety:     0,
                 tooltipsPositionStatic:     true,
     
-                highlightStroke:       'rgba(0,0,0,0)',
+                highlightStroke:       'transparent',
                 highlightFill:         'rgba(255,255,255,0.7)',
+                highlightFade:         true,
     
                 key:                    null,
                 keyBackground:         'white',
@@ -13754,17 +13876,17 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 beveled:               false,
     
                 errorbars:              false,
-                errorbarsColor:        'black',
+                errorbarsColor:         'black',
                 errorbarsCapped:        true,
-                errorbarsCappedWidth:  14,
+                errorbarsCappedWidth:   14,
                 errorbarsLinewidth:     1,
     
                 combinedEffect:    null,
                 combinedEffectOptions:  null,
                 combinedEffectCallback: null,
     
-                corners:                 'square',
-                cornersRoundRadius:      10,
+                corners:                 'round',
+                cornersRoundRadius:      5,
                 cornersRoundLeft:        true,
                 cornersRoundRight:       true,
                 cornersRoundLeftRadius:  null,
@@ -13772,13 +13894,18 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 
                 responsive: null,
     
-                clearto: 'rgba(0,0,0,0)',
+                clearto: 'transparent',
+                
+                style: null,
                 
                 events:  {},
+                clip:    null,
                 
                 scale:                  true,
                 scaleFactor:            2,
-                antialiasTranslate:     false
+                antialiasTranslate:     false,
+                
+                style:                  []
             };
     
     
@@ -13843,6 +13970,10 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 'titleSubtitleOffsety',
                 'variantThreedOffsetx',
                 'variantThreedOffsety',
+                'variantDumbbellLinewidth',
+                'variantDumbbellEndRadius',
+                'variantDumbbellEndTopRadius',
+                'variantDumbbellEndBottomRadius',
                 'shadowOffsetx',
                 'shadowOffsety',
                 'shadowBlur',
@@ -14083,7 +14214,15 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
     
-    
+                //
+                // Add any CSS that has been specified to the document.
+                // This is general CSS and does not necessarily have to
+                // pertain to the canvas tag. It only gets added once
+                // to the document no matter how many times this draw
+                // function is called.
+                //
+                // Add the CSS to a <style> block in the <head>.
+                RGraph.addConfigurationBasedCSS(this);
     
     
     
@@ -14124,6 +14263,18 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                     if (!RGraph.isNullish(this.properties.clip) && this.scale2) {
                         RGraph.clipTo.end();
                     }
+                }
+                
+                
+                
+                
+                
+                
+                
+                // If 3D is enabled then turn off rounded corners
+                // because it doesn't look correct.
+                if (this.properties.variant === '3d' && this.properties.corners === 'round') {
+                    this.properties.corners = 'square'
                 }
     
     
@@ -14226,10 +14377,24 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
     
+                // If a dumbbell chart is being drawn then a few
+                // properties need to be massaged
+                if (!this.properties.colorsDumbbell && this.properties.variant === 'dumbbell') {
+                    this.set({
+                        colorsDumbbell: this.get('colors')
+                    });
+                
+                
+                    this.set({
+                        colors: ['#0000']
+                    });
+                };
+    
+    
                 //
                 // Work out the max value
                 //
-                if (properties.yaxisScaleMax) {
+                if (this.properties.yaxisScaleMax) {
     
                     this.scale2 = RGraph.getScale({object: this, options: {
                         'scale.max':         properties.yaxisScaleMax,
@@ -14307,6 +14472,12 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
     
+    
+    
+    
+    
+    
+    
                     this.scale2 = RGraph.getScale({object: this, options: {
                         'scale.max':         this.max,
                         'scale.min':         properties.yaxisScaleMin,
@@ -14357,9 +14528,19 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 //    this.drawAxes();
                 //    this.drawbars();
                 //} else {
-                    this.drawbars();
-                    this.drawAxes();
+                this.drawbars();
+                this.drawAxes();
                 //}
+    
+                //
+                // Draw the dumbbell bars variant Draw this here
+                // so that the dumbells are drawn over the axes.
+                //
+                if (this.properties.variant === 'dumbbell') {
+                    this.drawdumbbell();
+                }
+    
+    
                 this.drawLabels();
     
     
@@ -14593,7 +14774,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                     RGraph.drawBars(this);
                 }
     
-                var variant = properties.variant;
+                var variant = this.properties.variant;
     
                 //
                 // Draw the 3D axes is necessary
@@ -14729,7 +14910,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                                 this.context.fillStyle = colors[i];
                             }
     
-                            if (variant == 'sketch') {
+                            if (variant === 'sketch') {
     
                                 this.context.lineCap = 'round';
     
@@ -14789,7 +14970,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                                 this.context.stroke();
     
                             // Regular bar
-                            } else if (variant == 'bar' || variant == '3d' || variant == 'glass' || variant == 'bevel') {
+                            } else if (variant === 'bar' || variant === '3d' || variant === 'glass' || variant === 'bevel' || variant === 'dumbbell') {
     
                                 if (variant == 'glass') {
                                     RGraph.roundedRect(
@@ -14975,7 +15156,7 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
                             // Dot chart
-                            } else if (variant == 'dot') {
+                            } else if (variant === 'dot') {
     
     
                                 var scaleFactor = RGraph.getScaleFactor(this);
@@ -15868,27 +16049,55 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
     
     
             //
-            // Each object type has its own Highlight() function which highlights the appropriate shape
+            // Each object type has its own Highlight() function which
+            // highlights the appropriate shape.
             //
-            // @param object shape The shape to highlight
+            // @param object shape The shape to highlight.
             //
             this.highlight = function (shape)
             {
+                // If the highlightFade property is not set then call
+                // the highlight function multiple times when the
+                // globalAlpha is set at varying levels of transparency
+                // to fade the highlight in. If the variable is set,
+                // however, then this call is probably a part of said
+                // highlighting process so don't call ourselves
+                // again - just highlight the chart.
+                if (this.properties.highlightFade && !this.highlight.highlighting) {
+                
+                    // Add a variable to the highlight function (this
+                    // function) to indicate that we're currently in
+                    // the process of highlighting.
+                    this.highlight.highlighting = true;
+                    
+                    var obj = this;
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 20);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 40);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 60);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 80);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 100);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 120);
+                    setTimeout(function() {obj.context.globalAlpha = 0.2; obj.highlight(shape); obj.context.globalAlpha = 1;}, 140);
+                    setTimeout(function() {obj.highlight.highlighting = false;}, 400);
+                
+                    return;
+                }
+    
                 RGraph.clipTo.callback(this, function (obj)
                 {
-                    if (typeof properties.highlightStyle === 'function') {
-                        (properties.highlightStyle)(shape);
+                    if (typeof obj.properties.highlightStyle === 'function') {
+                        (obj.properties.highlightStyle)(shape);
                     
                     // Highlight all of the rects except this one - essentially
                     // an inverted highlight
-                    } else if (typeof properties.highlightStyle === 'string' && properties.highlightStyle === 'invert') {
+                    } else if (typeof obj.properties.highlightStyle === 'string' && obj.properties.highlightStyle === 'invert') {
                         for (var i=0; i<obj.coords.length; ++i) {
                             if (i !== shape.sequentialIndex) {
                                 obj.path(
                                     'b r % % % % s % f %',
-                                    obj.coords[i][0],pbj.coords[i][1],obj.coords[i][2],obj.coords[i][3],
-                                    properties.highlightStroke,
-                                    properties.highlightFill
+                                    obj.coords[i][0],obj.coords[i][1],obj.coords[i][2],obj.coords[i][3],
+                                    obj.properties.highlightStroke,
+                                    obj.properties.highlightFill
                                 );
                             }
                         }
@@ -15897,18 +16106,20 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                         // appear over the X axis. But not the X axis
                         // labels or the title. This is new in
                         // September 2024.
-                        RGraph.drawXAxis(obj, {
-                            labels: false,
-                             title: false
-                        });
+                        if (obj.properties.variant !== 'dumbbell') {
+                            RGraph.drawXAxis(obj, {
+                                labels: false,
+                                 title: false
+                            });
+                        }
                     } else {
-                        if (properties.grouping === 'stacked' && shape.index === 0 && properties.xaxisPosition === 'bottom') {
+                        if (properties.grouping === 'stacked' && shape.index === 0 && obj.properties.xaxisPosition === 'bottom') {
                         
                             obj.context.beginPath();
-                            obj.context.strokeStyle = properties.highlightStroke;
-                            obj.context.fillStyle   = properties.highlightFill;
+                            obj.context.strokeStyle = obj.properties.highlightStroke;
+                            obj.context.fillStyle   = obj.properties.highlightFill;
                             
-                            if (properties.corners === 'round') {
+                            if (obj.properties.corners === 'round') {
                                 obj.roundedCornersRect(shape.x,shape.y,shape.width,shape.height);
                             } else {
                                 obj.context.rect(shape.x, shape.y, shape.width, shape.height);
@@ -15924,10 +16135,12 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                             // appear over the X axis. But not the X axis
                             // labels or the title. This is new in
                             // September 2024.
-                            RGraph.drawXAxis(obj, {
-                                labels: false,
-                                 title: false
-                            });
+                            if (obj.properties.variant !== 'dumbbell') {
+                                RGraph.drawXAxis(obj, {
+                                    labels: false,
+                                     title: false
+                                });
+                            }
                         }
                     }
                 }); // End of clipping callback function.
@@ -15955,13 +16168,19 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                     mouseXY[1] -= adjustment;
                 }
     
-    
+                var dbEndTopradius  = 0;
+                var dbEndBottomradius = 0;
+                
+                if (this.properties.variant === 'dumbbell') {
+                    dbEndTopradius    = this.properties.variantDumbbellEndTopRadius  || this.properties.variantDumbbellEndRadius;
+                    dbEndBottomradius = this.properties.variantDumbbellEndBottomRadius || this.properties.variantDumbbellEndRadius;
+                }
     
                 if (
-                       mouseXY[0] >= properties.marginLeft
-                    && mouseXY[0] <= (this.canvas.width - properties.marginRight)
-                    && mouseXY[1] >= properties.marginTop
-                    && mouseXY[1] <= (this.canvas.height - properties.marginBottom)
+                       mouseXY[0] >= this.properties.marginLeft
+                    && mouseXY[0] <= (this.canvas.width - this.properties.marginRight)
+                    && mouseXY[1] >= this.properties.marginTop - dbEndTopradius
+                    && mouseXY[1] <= (this.canvas.height - this.properties.marginBottom + dbEndBottomradius)
                     ) {
     
                     return this;
@@ -17231,7 +17450,35 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
             {
                 var indexes = RGraph.sequentialIndexToGrouped(opt.index, this.data);
                 var values = this.data[indexes[0]];
+    
+    
+                // This makes dumbbell charts work correctly
+                //
+                // Match the current index with the correct group/index
+                // values by looking through the coords2 array using the
+                // current mouse position.
+                if (this.properties.variant === 'dumbbell') {
                 
+                    var mouseXY = RGraph.getMouseXY(window.event);
+                    
+                    outer:
+                    for (var i=0; i<this.coords2.length; ++i) {
+                        for (var j=0; j<this.coords2[i].length; ++j) {
+                            if (
+                                   mouseXY[0] > this.coords2[i][j][0]
+                                && mouseXY[0] < (this.coords2[i][j][0] + this.coords2[i][j][2])
+                                && mouseXY[1] > this.coords2[i][j][1]
+                                && mouseXY[1] < (this.coords2[i][j][1] + this.coords2[i][j][3])
+                               ) {
+                               
+                               indexes = [i, j];
+                               
+                               break outer;
+                            }
+                        }
+                    }
+                }
+    
                 if (typeof values === 'number') {
                     values = [values];
                 }
@@ -17753,6 +18000,261 @@ This is the code that generates the chart - it uses the <code>window.onload</cod
                 return value;
             };
     
+    
+    
+    
+    
+    
+    
+    
+            //
+            // Draw a dumbbell chart
+            //
+            this.drawdumbbell = function ()
+            {
+                var dumbbellCoords  = [];
+                var obj             = this;
+                var seq             = 0;
+                //var y               = obj.getYCoord(this.data[0]);
+    
+                this.coords  = [];
+                this.coords2 = [];
+                
+                this.data.forEach(function (v, k, arr)
+                {
+                    var section = ((obj.canvas.width - obj.properties.marginLeft - obj.properties.marginRight) / obj.data.length);
+                    var coordX  = (section * k) + obj.properties.marginLeft + (section / 2);
+                    var coordW  = obj.properties.variantDumbbellEndRadius;
+    
+            
+                
+                    if (obj.properties.shadow) {
+                        RGraph.setShadow(
+                            obj,
+                            obj.properties.shadowColor,
+                            obj.properties.shadowOffsetx,
+                            obj.properties.shadowOffsety,
+                            obj.properties.shadowBlur
+                        );
+                    }
+            
+                    //
+                    // TODO Need to convert this if condition
+                    //
+                    if (v.length > 2) {
+                        
+                        obj.coords2[k] = [];
+    
+                        for (var j=1; j<v.length; ++j) {
+                            
+                            var coordY = obj.getYCoord(v[j]);
+                            var coordH = obj.getYCoord(v[j - 1]) - obj.getYCoord(v[j]);
+    
+                            obj.path('b r % % % %',
+                                coordX,
+                                coordY,
+                                coordW,
+                                coordH//(coordH * 2) + (2 * obj.properties.shadowOffsety)
+                            );
+            
+                            obj.pathDumbbell(
+                                coordX,
+                                coordY,
+                                coordW,
+                                coordH,
+                                j === (v.length - 1) && (RGraph.isNull(obj.properties.variantDumbbellEndTop) || obj.properties.variantDumbbellEndTop),
+                                j === 1 && (RGraph.isNull(obj.properties.variantDumbbellEndBottom) || obj.properties.variantDumbbellEndBottom)
+                            );
+            
+                            // Add the rect to the canvas
+                            if (obj.properties.colorsSequential) {
+                                obj.path('f ' + obj.properties.colorsDumbbell[seq]);
+                            } else {
+                                obj.path('f ' + obj.properties.colorsDumbbell[j - 1]);
+                            }
+            
+            
+                            // Determine the height of the
+                            // hotspot
+                            var radius = Math.max(
+                                (obj.properties.variantDumbbellEndTopRadius || obj.properties.variantDumbbellEndTopRadius || 0),
+                                (obj.properties.variantDumbbellEndBottomRadius || obj.properties.variantDumbbellEndBottomRadius || 0)
+                            );
+                            radius = Math.max(coordW, radius);
+                            
+                            //
+                            // Calculate the shadowOffset so that the
+                            // highlight covers the shadow as well.
+                            //
+                            var shadowOffset = Math.max(
+                                Math.abs(obj.properties.shadowOffsetx),
+                                Math.abs(obj.properties.shadowOffsety)
+                            );
+            
+                            var coords = [
+                                coordX - radius,
+                                coordY - (j === (v.length - 1) ? radius : 0),
+                                coordW + (2 * radius),
+                                coordH + (j === 1 || (j === v.length - 1) ? radius : 0),
+                            ];
+            
+            
+            
+            
+                            // Modify the coords so that the
+                            // shadowOffset is taken into account when
+                            // the highlight is added.
+    /*
+                            // First segment
+                            if (j === 1) {  
+                                
+                                // Horizontal offset manglement
+                                if (obj.properties.shadowOffsetx < 0) {
+                                    coords[0] -= shadowOffset;
+                                    coords[2] += shadowOffset;
+                                } else {
+                                    coords[2] += shadowOffset;
+                                }
+                                
+                                // Vertical offset manglement
+                                if (obj.properties.shadowOffsety > 0) {
+                                    coords[3] += shadowOffset;
+                                }
+                            
+                            // Last segment
+                            } else if (j === (v.length - 1) ) {
+                                
+                                // Horizontal offset manglement
+                                if (obj.properties.shadowOffsetx > 0) {
+                                    coords[2] += shadowOffset;
+                                } else {
+                                    coords[0] -= shadowOffset;
+                                    coords[2] += shadowOffset;
+                                }
+                                
+                                // Vertical offset manglement
+                                if (obj.properties.shadowOffsety > 0) {
+                                    //coords[3] += shadowOffset;
+                                } else if (obj.properties.shadowOffsety < 0) {
+                                    coords[1] -= shadowOffset;
+                                    coords[3] += shadowOffset;
+                                }
+            
+                            // Middle segments
+                            } else {
+                                
+                                // Vertical offset manglement
+                                if (obj.properties.shadowOffsetx > 0) {
+                                    coords[2] += shadowOffset;
+                                } else {
+                                    coords[0] -= shadowOffset;
+                                    coords[2] += shadowOffset;
+                                }
+                            }
+    */
+                            
+                            obj.coords.push(coords);
+                            obj.coords2[k].push(coords);
+            
+            
+            
+            
+                            
+                            seq++;  
+                        }
+                        
+                        // //
+                        // Need this so that the colors are
+                        // used in the coorect order
+                        //
+                        seq--;
+            
+            
+            
+            
+                     // Only TWO Y values - so a minimum and a
+                     // maximum.
+                    } else {
+                    
+                        obj.coords2[k] = [];
+    
+                        var coordH = obj.getYCoord(v[0]) - obj.getYCoord(v[1]);
+                        var coordY = obj.getYCoord(v[0]) - coordH;
+    
+                        
+    
+                        obj.pathDumbbell(
+                            coordX,
+                            coordY,
+                            coordW,
+                            coordH
+                        );
+    
+                        if (obj.properties.colorsSequential) {
+                            obj.path('f ' + obj.properties.colorsDumbbell[k]);
+                        } else {
+                            obj.path('f ' + obj.properties.colorsDumbbell[0]);
+                        }
+            
+            
+                        // Store the dumbbell coordinates
+                        var coords = [
+                            coordX - obj.properties.variantDumbbellEndRadius - obj.properties.shadowOffsetx,
+                            coordY - obj.properties.shadowOffsety - obj.properties.variantDumbbellEndRadius,
+                            coordW + (2 * obj.properties.variantDumbbellEndRadius) + (2 * obj.properties.shadowOffsetx),
+                            coordH  + (2 * obj.properties.variantDumbbellEndRadius) + (2 * obj.properties.shadowOffsety)
+                        ];
+            
+                        obj.coords.push(coords);
+                        obj.coords2[k].push(coords);
+                    }
+                    seq++;
+                    RGraph.noShadow(obj);
+                });
+            };
+            
+            
+            
+            
+            
+            
+            
+            
+            //
+            // Paths a dumbbell bar
+            //
+            this.pathDumbbell = function (x, y, w, h, topEnd = true, bottomEnd = true)
+            {
+                this.path(
+                    'b r % % % %',
+                    x + (this.properties.variantDumbbellLinewidth / 2) - 2,
+                    y,
+                    this.properties.variantDumbbellLinewidth,
+                    h
+                );
+            
+            
+            
+            
+                if (this.properties.variantDumbbellEndTop && topEnd) {
+                    this.path(
+                        'm % %          a % % % 0 6.29 false',
+                        x + (w/2), y,
+                        x + (w/2), y, (RGraph.isNumber(this.properties.variantDumbbellEndTopRadius) ? this.properties.variantDumbbellEndTopRadius : this.properties.variantDumbbellEndRadius)
+                    );
+                }
+            
+            
+            
+            
+                if (this.properties.variantDumbbellEndBottom && bottomEnd) {
+                    this.path(
+                        'm % %          a % % % 0 6.29 false',
+                        x + (w/2), y+h,
+                        x + (w/2), y+h, (RGraph.isNumber(this.properties.variantDumbbellEndBottomRadius) ? this.properties.variantDumbbellEndBottomRadius : this.properties.variantDumbbellEndRadius)
+                    );
+                }
+            };
     
     
     

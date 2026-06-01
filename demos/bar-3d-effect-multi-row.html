@@ -61,9 +61,7 @@
         bar1 = new RGraph.Bar({
             id: 'cvs',
             data: data[2],
-            options: {
-                corners: 'square',
-                
+            options: {                
                 // These few properties set the chart to be a 3D Bar chart and turn off
                 // the 3D axes that are drawn.
                 variant: '3d',
@@ -76,7 +74,6 @@
                 // The background grid is only enabled on this chart - the
                 // bar chart at the back
                 backgroundGridHlinesCount: 5,
-                backgroundGridVlinesCount: 14,
                 
                 // Set the margins based on the values that are defined above
                 marginBottom: marginBottom,
@@ -88,8 +85,7 @@
                 yaxisScaleMax: yaxisScaleMax,
                 yaxisPosition: 'right',
                 yaxisLabelsOffsetx: 20,
-                yaxisLabelsOffsety: -10,
-                variantThreedYaxis: false
+                yaxisLabelsOffsety: -10
             }
         }).grow({frames: frames}, draw2);
 
@@ -106,8 +102,6 @@
                 id: 'cvs',
                 data: data[1],
                 options: {
-                    corners: 'square',
-
                     // Stipulate 3d but no 3D axes
                     variant: '3d',
                     variantThreedYaxis: false,
@@ -150,9 +144,6 @@
                 id: 'cvs',
                 data: data[0],
                 options: {
-                
-                    corners: 'square',
-    
                     // Set the chart to be 3D but without any axes
                     variant: '3d',
                     variantThreedYaxis: false,

@@ -23,9 +23,7 @@
         data       = [4,8,6,5,3,5,2];
         properties = {
             marginInner: 20,
-            marginBottom: 50,
-            xaxis: false,
-            yaxis: false
+            marginBottom: 50
         };
 
         // The black Bar chart "at the rear"
@@ -35,8 +33,6 @@
             options: {
                 ...properties,
                 colors: ['black'],
-                backgroundGridVlines: false,
-                backgroundGridBorder: false,
                 xaxisLabels: RGraph.DAYS_SHORT,
                 textSize: 20,
                 xaxisLabelsOffsety: 5
@@ -51,7 +47,9 @@
                 ...properties,
                 marginInner: 30,
                 backgroundGrid: false,
-                yaxisScale: false
+                yaxisScale: false,
+                corners: 'square',
+                colors: ['red']
             }
         }).grow();
         

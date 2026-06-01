@@ -2733,7 +2733,7 @@
 
             // Get a reference to the background grid <path> node
             var els  = this.svg.getElementsByClassName('rgraph_background_grid');
-            
+
             if (els && els.length > 0) {
                 
                 var grid = els[0];
@@ -2744,7 +2744,7 @@
                 // Now re-add it immedately after the background grid
                 grid.insertAdjacentElement('afterend', line);
             } else {
-                this.svg.all.insertAdjacentElement('beforeend', line);
+                obj.svgAllGroup.insertAdjacentElement('beforeend', line);
             }
         };
 

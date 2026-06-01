@@ -109,7 +109,8 @@
             // the <div> tag
             // If SVG is found, get rid off CSS position and CSS display
             // from the DIV tag
-            html = html.replace(/<svg.*<\/svg>/g,'')
+            html = html.replace(/<div id="rgraph.*?><\/div>/g,'') // Get rid of generic animation effect cover divs
+                       .replace(/<svg.*<\/svg>/g,'')              // Get rid of SVG tags
                        .replace(/position:? ?relative;?/g,'')
                        .replace(/;? *display *: *inline-block;/g,'')
                        .replace(/; *" /g,'" ');
