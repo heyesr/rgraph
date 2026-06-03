@@ -266,7 +266,7 @@
             shadowColor:                '#ccc',
             shadowOffsetx:              3,
             shadowOffsety:              3,
-            shadowOlur:                 3,
+            shadowBlur:                 3,
             
             annotatable:                false,
             annotatableColor:           'black',
@@ -703,9 +703,11 @@
             this.drawLeftBars();
             this.drawRightBars();
 
-            // Redraw the bars so that shadows on not on top
-            if (properties.leftVisible) this.drawLeftBars({shadow: false});
-            if (properties.rightVisible) this.drawRightBars({shadow: false});
+            // Redraw the bars so that shadows are not on top
+            if (properties.shadow) {
+                if (properties.leftVisible) this.drawLeftBars({shadow: false});
+                if (properties.rightVisible) this.drawRightBars({shadow: false});
+            }
 
 
             this.drawAxes();
