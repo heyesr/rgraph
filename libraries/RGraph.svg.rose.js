@@ -1425,7 +1425,7 @@
                                 anticlockwise: false
                             });
 
-                            var arcPath2 = RGraph.SVG.TRIG.getArcPath2({
+                            var arcPath2 = RGraph.SVG.TRIG.getArcPath3({
                                 cx: cx,
                                 cy: cy,
                                 r: prevRadius,

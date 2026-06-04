@@ -48,7 +48,7 @@
         {
             colors:                         RGraph.getColors(),
             colorsStrokeInner:              'transparent',
-            colorsStrokeOuter:              'black',
+            colorsStrokeOuter:              'transparent',
 
             tickmarksOuter:                 true,
             tickmarksInner:                 false,
