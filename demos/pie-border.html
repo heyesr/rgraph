@@ -22,7 +22,6 @@
     </div>
 
     <script>
-        colors = ['red','#ccc','#0f0','blue','pink','yellow','black'];
         labels = ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
     
         // Create the Pie chart
@@ -50,7 +49,7 @@
                         var co      = obj.context,
                             tooltip = RGraph.Registry.get('tooltip'),
                             index   = tooltip.__index__,
-                            color   = colors[index],
+                            color   = obj.properties.colors[index],
                             e       = window.event,
                             shape   = obj.getShape(e);
                 

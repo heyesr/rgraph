@@ -15,14 +15,16 @@
     </div>
     
     <script>
-        data1 = [['2013-01-01',50,'green'],['2013-02-01',10,'green'],['2013-11-31',35,'green'],['2013-12-31',25,'green']];
-        data2 = [['2013-03-31',54,'red'],['2013-06-06',45,'red'],['2013-04-06',13,'red'],['2013-08-23',32,'red']];
+        data1 = [['2013-01-01',50,'red'],['2013-02-01',10,'red'],['2013-11-31',35,'red'],['2013-12-31',25,'red']];
+        data2 = [['2013-03-31',54,'black'],['2013-06-06',45,'black'],['2013-04-06',13,'black'],['2013-08-23',32,'black']];
 
         scatter = new RGraph.Scatter({
             id: 'cvs',
             data: [data1,data2],
             options: {
                 line: true,
+                lineColors: ['red','black'],
+                lineLinewidth: 2,
                 xaxisScaleMin: '1 January 2013',
                 xaxisScaleMax: '2013-12-31',
                 xaxisLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']

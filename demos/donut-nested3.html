@@ -35,6 +35,7 @@
                     '#aaa', '#900','#009',
                     '#aaa', '#900','#009',
                 ],
+                colorsStroke: 'white',
                 labels: [
                     'Belgium','France','Germany','Luxembourg',
                     'Netherlands','Denmark','Ireland','United Kingdom',
@@ -58,8 +59,7 @@
                     transform: 'rotate(45deg) translateY(3px)'
                 },
                 tooltipsEvent: 'mousemove',
-                highlightStyle: 'outline',
-                exploded: 3
+                highlightStyle: 'outline'
             }
         }).roundRobin({frames: 30});
 
@@ -73,6 +73,7 @@
                 variant: 'donut',
                 variantDonutWidth: 100,
                 colors: ['#aaa'],
+                colorsStroke: 'white',
                 linewidth: 1,
                 labelsIngraph: true,
                 labelsIngraphSpecific: ['1957','1973','1981','1986','1995','2004','2007'],

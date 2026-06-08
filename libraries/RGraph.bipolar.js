@@ -1609,8 +1609,8 @@
                         );
                     }
 
-                    // Only store coordinates if this isn't a shadow iteration
-                    if (!opt.shadow) {
+                    // Only store coordinates if this IS a shadow iteration
+                    if (opt.shadow) {
 
                         // Add the coordinates to the coords array
                         this.coords.push([
@@ -1745,8 +1745,8 @@
 
 
 
-                        // Only store coordinates if this isn't a shadow iteration
-                        if (!opt.shadow) {
+                        // Only store coordinates if this IS a shadow iteration
+                        if (opt.shadow) {
                         
                             //
                             // Add the coordinates to the coords arrays
@@ -1908,10 +1908,8 @@
 
 
 
-                        // Only store coordinates if this isn't a shadow iteration
-                        if (!opt.shadow) {
-
-
+                        // Only store coordinates if this IS a shadow iteration
+                        if (opt.shadow) {
 
                             // Add the coordinates to the coords arrays
                             this.coords.push([
@@ -2177,8 +2175,8 @@
         
         
         
-                        // Only store coordinates if this isn't a shadow iteration
-                        if (!opt.shadow) {
+                        // Only store coordinates if this IS a shadow iteration
+                        if (opt.shadow) {
 
                             //
                             // Add the coordinates to the coords array
@@ -2330,8 +2328,8 @@
                         }
 
 
-                        // Only store coordinates if this isn't a shadow iteration
-                        if (!opt.shadow) {
+                        // Only store coordinates if this IS a shadow iteration
+                        if (opt.shadow) {
                             
                             // Add the coordinates to the coords arrays
                             this.coords.push([
@@ -2451,8 +2449,8 @@
 
 
 
-                        // Only store coordinates if this isn't a shadow iteration
-                        if (!opt.shadow) {
+                        // Only store coordinates if this IS a shadow iteration
+                        if (opt.shadow) {
 
 
 

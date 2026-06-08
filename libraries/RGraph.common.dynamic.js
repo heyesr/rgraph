@@ -919,6 +919,7 @@ if (obj && obj.properties.highlightDataset && obj.properties.highlightDatasetEve
                     // Handle adjusting for all object types
                     //
                     if (obj && obj.isRGraph && obj.get('adjustable')) {
+
                         //
                         // Check the cursor is in the correct area
                         //
