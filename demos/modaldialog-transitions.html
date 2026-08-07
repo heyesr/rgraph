@@ -1,0 +1,73 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="./demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An example of the updated Modal Dialog using various transition effects</h1>
+
+    <div id="rgraph-demo-html">       
+        <p style="text-align: center">
+            <button id="myButton" style="font-size: 20pt; cursor: pointer">Demonstration</button>
+        </p>
+    </div>
+
+
+    <script>
+        document.getElementById("myButton").onclick = function ()
+        {
+            ModalDialog.confirm({
+                text: 'Are you sure that you want to do that?',
+                dialog: {
+                    rotationStart: '-45deg',
+                    rotationEnd: '-45deg',
+                    skewStart: '-90deg, -90deg',
+                    skewEnd: '-90deg, -90deg',                
+                    translateStart: '-300px, -300px',
+                    translateEnd: '-300px, -300px',
+                    effectShowDuration: 1000,
+                    effectHideDuration: 1000,
+                    style: [
+                        '.ModalDialog_dialog {padding: 10px !important;font-size: 18pt !important;}',
+                        '.ModalDialog_dialog button {font-size: 14pt !important;}'
+                    ]
+                }
+            });
+        };
+        
+        // new RGraph.
+    </script>
+    
+
+    
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+
+    <script>showSource()</script>
+
+</body>
+</html>

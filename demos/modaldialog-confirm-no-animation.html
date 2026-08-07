@@ -1,0 +1,81 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="./demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An example of the Modal Dialog confirmation dialog with no animation</h1>
+
+    <div id="rgraph-demo-html">       
+        <p style="text-align: center">
+            <button id="myButton" style="font-size: 20pt; cursor: pointer">Confirm...</button>
+        </p>
+    </div>
+
+
+    <script>
+        document.getElementById("myButton").onclick = function ()
+        {
+            ModalDialog.confirm({
+                text: 'Are you sure that you want to do that?',
+                dialog: {
+                    opacityStart: 1,
+                    opacityEnd: 1,
+                    effectShowDuration: 25,
+                    effectHideDuration: 25,
+                    style: [
+                        '.ModalDialog_dialog {font-size: 20pt !important;line-height: 25px; padding: 20px !important; border: 1px solid gray !important;border-radius: 0 !important;}',
+                        '.ModalDialog_dialog input {width: 300px;font-size: 20pt !important; margin-top: 10px;}',
+                        '.ModalDialog_dialog button {font-size: 20pt;}',
+                        '.ModalDialog_dialog button#rgraph-modaldialog-cancel-button {color: #aaa;}'
+                    ],
+                },
+                buttons: {
+                    ok:'Yes',
+                    cancel: 'No'
+                },
+                callbacks: {
+                    ok: function ()
+                    {
+                        alert('Yes was pressed');
+                    }
+                }
+            });
+        }
+        
+        // new RGraph.
+    </script>
+    
+
+    
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+
+    <script>showSource()</script>
+
+</body>
+</html>

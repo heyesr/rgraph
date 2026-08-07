@@ -1,0 +1,128 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
+
+    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="./demos.js" ></script>
+    <meta name="robots" content="noindex, nofollow" />
+
+</head>
+<body>
+
+    <h1>An example of the updated Modal Dialog</h1>
+
+    <div id="rgraph-demo-html">       
+        <p style="text-align: center">
+            <button id="myButton" style="font-size: 20pt; cursor: pointer">Login...</button>
+        </p>
+
+        <div id="myDialog" class="myDialog" style="display: none">
+            <b>Please login</b>
+            <table border="0">
+                <tr>
+                    <td align="right" style="padding-top: 4px">Email:</td>
+                    <td><input type="text" name="email" style="width: 150px" /></td>
+                </tr>
+                <tr>
+                    <td align="right" style="padding-top: 4px">Password:</td>
+                    <td><input type="password" name="password" style="width: 150px" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <input type="reset" value="Cancel" onclick="ModalDialog.hide()">
+                        <input type="submit"
+                                  name="submit"
+                                  value="Login"
+                                  onclick="alert('This is just an example'); event.stopPropagation()">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById("myButton").onclick = function ()
+        {
+            ModalDialog.show({
+                id: 'myDialog',
+                options: {
+                    zoomFactorStart: 1,
+                    zoomFactorEnd: 1,
+                    rotationStart: '-45deg',
+                    rotationEnd: '-45deg',
+                    skewStart: '-90deg, -90deg',
+                    skewEnd: '-90deg, -90deg',
+                    translateStart: '-250px , -250px',
+                    translateEnd: '-250px, -250px',                
+                    effectShowDuration: 750,
+                    effectHideDuration: 750,
+                    style: [
+                        '.ModalDialog_dialog {font-family: Verdana, sans-serif; line-height: 35px;padding: 20px !important;}',
+                        '.ModalDialog_dialog td {font-size: 16pt !important;}',
+                        '.ModalDialog_dialog input[type=reset],input[type=submit],input[type=text],input[type=password] {cursor: pointer;font-size: 16pt;}',
+                        '.ModalDialog_dialog b {font-size: 22pt; font-style: italic;}'
+                    ]
+                }
+            });
+        };
+        
+        // new RGraph.
+    </script>
+    
+
+    
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.
+    
+    <!--
+        This is the popup dialog (an alternative is to use supply the HTML
+        that the dialog uses as a string instead of the id of your <div> tag.
+    -->
+    <div id="myDialog" class="myDialog" style="display: none">
+        <b>Please login</b>
+        <table border="0">
+            <tr>
+                <td align="right" style="padding-top: 4px">Email:</td>
+                <td><input type="text" name="email" style="width: 150px" /></td>
+            </tr>
+            <tr>
+                <td align="right" style="padding-top: 4px">Password:</td>
+                <td><input type="password" name="password" style="width: 150px" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input type="reset" value="Cancel" onclick="ModalDialog.hide()">
+                    <input type="submit"
+                              name="submit"
+                              value="Login"
+                              onclick="alert('This is just an example'); event.stopPropagation()">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- End of dialog -->
+    
+    <script>showSource()</script>
+
+</body>
+</html>
