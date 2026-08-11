@@ -100,14 +100,14 @@
             backgroundGridCircles:                  true,
             backgroundGridCirclesCount:             null,
             backgroundGridLinewidth:                1,
-            backgroundGridColor:                    '#ccc',
+            backgroundGridColor:                    '#eee',
 
             centerx:                                null,
             centery:                                null,
             radius:                                 null,
 
             colors:                                 [], // This is used internally for the key
-            colorsDefault:                          RGraph.getColors(),
+            colorsDefault:                          RGraph.getColors()[0],
 
             marginLeft:                             35,
             marginRight:                            35,
@@ -1091,7 +1091,7 @@
                         x = x + obj.centerx;
                         y = obj.centery - y;
             
-            
+
                         obj.drawTick(x, y, color);
 
                         // Populate the coords array with the coordinates and the tooltip

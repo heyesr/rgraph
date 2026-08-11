@@ -1844,7 +1844,7 @@
                     searchInput.value = window.sessionStorage[this.searchPersistentSessionStorageKey] || '';
 
 
-                    // Add an icon so that the user can click on it
+                    // Add an magnifying glass icon so that the user can click on it
                     // and trigger a search.
                     if (!searchInput.value) {
                         var div_search_icon = document.createElement('div');

@@ -33,13 +33,13 @@
                             console.log('This alert was triggered by the modaldialog DOM1 style event listener');
                         };
             
-                        ModalDialog.Show({
+                        ModalDialog.show({
                             id: 'string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>',
                             options: {
                                 zoomFactorEnd: 2,
-                                styleBackground: {
-                                    backgroundColor: '#0008'
-                                }
+                                style: [
+                                    '.ModalDialog_background {background-color: #0008 !important;}'
+                                ]
                             }
                         });
                     },

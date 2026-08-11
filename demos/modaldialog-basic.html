@@ -17,6 +17,12 @@
             <button id="myButton" style="font-size: 20pt; cursor: pointer">Login...</button>
         </p>
 
+
+        <!--
+            This is the HTML that's shown in the dialog. Only the
+            innerHTML of the DIV is used - not the DIV itself so
+            it can be safely hidden.
+        -->
         <div id="myDialog" class="myDialog" style="display: none">
             <b>Please login</b>
             <table border="0">
@@ -39,6 +45,7 @@
                 </tr>
             </table>
         </div>
+        <!-- End of the dialog HTML -->
     </div>
 
 
@@ -50,14 +57,8 @@
                 options: {
                     zoomFactorStart: 1,
                     zoomFactorEnd: 1,
-                    rotationStart: '-45deg',
-                    rotationEnd: '-45deg',
-                    skewStart: '-90deg, -90deg',
-                    skewEnd: '-90deg, -90deg',
-                    translateStart: '-250px , -250px',
-                    translateEnd: '-250px, -250px',                
-                    effectShowDuration: 750,
-                    effectHideDuration: 750,
+                    rotationStart: '0deg',
+                    rotationEnd: '0deg',
                     style: [
                         '.ModalDialog_dialog {font-family: Verdana, sans-serif; line-height: 35px;padding: 20px !important;}',
                         '.ModalDialog_dialog td {font-size: 16pt !important;}',

@@ -18,7 +18,7 @@
     </div>
 
     <script>
-        ModalDialog.Show({
+        ModalDialog.show({
             id: 'string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>',
             options: {
             }
@@ -29,6 +29,9 @@
             data: [12,18,10,9,6,20,18],
             options: {
                 tooltips: '%{property:xaxisLabels[%{dataset}]}',
+                tooltipsCss: {
+                    zIndex: 2147483647
+                },
                 xaxisLabels: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
                 yaxisScaleUnitsPost: 'k',
                 colors: ['red'],

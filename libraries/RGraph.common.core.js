@@ -3926,7 +3926,7 @@
 
 
     //
-    // Loosly mimicks the PHP function print_r().
+    // Loosely mimicks the PHP function print_r().
     //
     // @param mixed   obj    The variable you want to see.
     // @param boolean notify Whether to use the alert() function

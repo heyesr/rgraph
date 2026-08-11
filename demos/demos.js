@@ -119,9 +119,8 @@
             html = '<pre class="code">' + html.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(re,'').trim() + '</pre>';
     
             // Turn HTML comments green
-            //html = html.replace(//isg, '<span>&lt;!--')
-            //html = html.replace(/--&gt;/isg, '--&gt;</span>')
-            html = html.replace(/&lt;!--(.*)--&gt;/isg, '<span>&lt;!--$1--&gt;</span>');
+            html = html.replace(/(&lt;!--.*?--&gt;)/gis, '<span>$1</span>');
+
             
             //
             // Do this for the treemenu examples - get rid of the
