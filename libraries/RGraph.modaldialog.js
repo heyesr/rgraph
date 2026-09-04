@@ -10,14 +10,16 @@
     // | license option available. See the RGraph website for more details.        |
     // o---------------------------------------------------------------------------o
     
-    ModalDialog = {};
+    ModalDialog =
+    Modal = {};
+    Modal.notify = {};
 
-    ModalDialog.Open =
-    ModalDialog.open =
-    ModalDialog.Show =
-    ModalDialog.show =
-    ModalDialog.Draw =
-    ModalDialog.draw = function (conf)
+    Modal.Open =
+    Modal.open =
+    Modal.Show =
+    Modal.show =
+    Modal.Draw =
+    Modal.draw = function (conf)
     {
         //
         // First, some functions that draw the dialog and its
@@ -30,28 +32,28 @@
         var drawBackground = function ()
         {
             // Create the background
-            ModalDialog.background                  = document.createElement('DIV');
-            ModalDialog.background.id               = 'ModalDialog_background';
-            ModalDialog.background.className        = 'ModalDialog_background';
-            ModalDialog.background.style.position   = 'fixed';
-            ModalDialog.background.style.top        = '-50px';
-            ModalDialog.background.style.left       = '-50px';
-            ModalDialog.background.style.width      = 'calc(100% + 100px)';
-            ModalDialog.background.style.height     = 'calc(100% + 100px)';
-            ModalDialog.background.style.backgroundColor = '#cccc';
-            ModalDialog.background.style.opacity    = Number(ModalDialog.properties.opacityStart);
-            ModalDialog.background.style.transition = ModalDialog.properties.effectShowDuration + "ms opacity ease-out";
+            Modal.background                  = document.createElement('DIV');
+            Modal.background.id               = 'Modal_background';
+            Modal.background.className        = 'Modal_background';
+            Modal.background.style.position   = 'fixed';
+            Modal.background.style.top        = '-50px';
+            Modal.background.style.left       = '-50px';
+            Modal.background.style.width      = 'calc(100% + 100px)';
+            Modal.background.style.height     = 'calc(100% + 100px)';
+            Modal.background.style.backgroundColor = '#cccc';
+            Modal.background.style.opacity    = Number(Modal.properties.opacityStart);
+            Modal.background.style.transition = Modal.properties.effectShowDuration + "ms opacity ease-out";
 
-            ModalDialog.container.appendChild(ModalDialog.background);
+            Modal.container.appendChild(Modal.background);
 
 
 
             // If the relevant property is set add an event listener
             // for it.
-            if (ModalDialog.properties.hideOnBackground) {
-                ModalDialog.background.addEventListener('click', function (e)
+            if (Modal.properties.hideOnBackground) {
+                Modal.background.addEventListener('click', function (e)
                 {
-                    ModalDialog.hide();
+                    Modal.hide();
                 }, false);
             }
         };
@@ -70,27 +72,27 @@
         {
             // Allow the number to be be both a string or a number.
             // If its a number then treat as milliseconds
-            if (typeof ModalDialog.properties.effectDuration === 'number' || (typeof ModalDialog.properties.effectDuration === 'string' && ModalDialog.properties.effectDuration.match(/^[0-9]+$/))) {
-                ModalDialog.properties.effectDuration = parseInt(ModalDialog.properties.effectDuration);
+            if (typeof Modal.properties.effectDuration === 'number' || (typeof Modal.properties.effectDuration === 'string' && Modal.properties.effectDuration.match(/^[0-9]+$/))) {
+                Modal.properties.effectDuration = parseInt(Modal.properties.effectDuration);
             }
 
             // Create the dialog div
-            ModalDialog.dialog = document.createElement('div');
+            Modal.dialog = document.createElement('div');
 
-            ModalDialog.dialog.id        = 'ModalDialog_dialog';
-            ModalDialog.dialog.className = 'ModalDialog_dialog';
+            Modal.dialog.id        = 'Modal_dialog';
+            Modal.dialog.className = 'Modal_dialog';
 
-            ModalDialog.dialog.style.borderRadius    = '5px';
-            ModalDialog.dialog.style.position        = 'fixed';
-            ModalDialog.dialog.style.backgroundColor = 'white';
-            ModalDialog.dialog.style.border          = '0';
-            ModalDialog.dialog.style.padding         = '5px';
-            ModalDialog.dialog.style.opacity         = Number(ModalDialog.properties.opacityStart),
-            ModalDialog.dialog.style.transition      = ModalDialog.properties.effectShowDuration + 'ms opacity ease-out, ' + ModalDialog.properties.effectShowDuration + 'ms transform ease-out';
-            ModalDialog.dialog.style.transform       = 'scale(' + ModalDialog.properties.zoomFactorStart + ') rotate(' + ModalDialog.properties.rotationStart + ') translate(' + ModalDialog.properties.translateStart + ') skew(' + ModalDialog.properties.skewStart + ')';
-            ModalDialog.dialog.style.left            = 0;
-            ModalDialog.dialog.style.top             = 0;
-            ModalDialog.container.appendChild(ModalDialog.dialog);
+            Modal.dialog.style.borderRadius    = '5px';
+            Modal.dialog.style.position        = 'fixed';
+            Modal.dialog.style.backgroundColor = 'white';
+            Modal.dialog.style.border          = '0';
+            Modal.dialog.style.padding         = '5px';
+            Modal.dialog.style.opacity         = Number(Modal.properties.opacityStart),
+            Modal.dialog.style.transition      = Modal.properties.effectShowDuration + 'ms opacity ease-out, ' + Modal.properties.effectShowDuration + 'ms transform ease-out';
+            Modal.dialog.style.transform       = 'scale(' + Modal.properties.zoomFactorStart + ') rotate(' + Modal.properties.rotationStart + ') translate(' + Modal.properties.translateStart + ') skew(' + Modal.properties.skewStart + ')';
+            Modal.dialog.style.left            = 0;
+            Modal.dialog.style.top             = 0;
+            Modal.container.appendChild(Modal.dialog);
 
 
 
@@ -98,16 +100,16 @@
             // Add the content DIV that the given content sits inside
             //
             var content = document.createElement('DIV');
-                content.id           = 'ModalDialog_content';
-                content.className    = 'ModalDialog_content ';
+                content.id           = 'Modal_content';
+                content.className    = 'Modal_content ';
                 content.style.width  = '100%';
                 content.style.height = '100%';
-            ModalDialog.dialog.appendChild(content);
+            Modal.dialog.appendChild(content);
 
-            if (ModalDialog.id.toLowerCase().substring(0, 7) == 'string:') {
-                content.innerHTML = ModalDialog.id.substring(7);
+            if (Modal.id.toLowerCase().substring(0, 7) == 'string:') {
+                content.innerHTML = Modal.id.substring(7);
             } else {
-                content.innerHTML = document.getElementById(ModalDialog.id).innerHTML;
+                content.innerHTML = document.getElementById(Modal.id).innerHTML;
             }
 
 
@@ -127,7 +129,7 @@
             //
             // Show the dialog
             //
-            ModalDialog.dialog.style.visibility = 'visible';
+            Modal.dialog.style.visibility = 'visible';
             
             // Fade the dialog in and position it now that the width
             // is known.
@@ -135,7 +137,7 @@
             {
                 // Position the dialog
                 //
-                var position = ModalDialog.properties.position.trim().toLowerCase().split(/\s+/);
+                var position = Modal.properties.position.trim().toLowerCase().split(/\s+/);
 
                 //
                 // Determine the X position.
@@ -175,7 +177,7 @@
                 // Calculate the horizontal off set because of
                 // horizontal allignment.
                 //
-                var align   = ModalDialog.properties.align.match(/^\s*(left|center|right)\s*(top|center|bottom)\s*$/);
+                var align   = Modal.properties.align.match(/^\s*(left|center|right)\s*(top|center|bottom)\s*$/);
                 var halign  = RegExp.$1;
                 var valign  = RegExp.$2;
                 var hoffset = 0;
@@ -187,9 +189,9 @@
                 if (halign === 'left') {
                     hoffset = 0;
                 } else if (halign === 'right') {
-                    hoffset = ModalDialog.dialog.offsetWidth;
+                    hoffset = Modal.dialog.offsetWidth;
                 } else if (halign === 'center') {
-                    hoffset = ModalDialog.dialog.offsetWidth / 2;
+                    hoffset = Modal.dialog.offsetWidth / 2;
                 }
 
 
@@ -199,19 +201,19 @@
                 if (valign === 'top') {
                     voffset = 0;
                 } else if (valign === 'bottom') {
-                    voffset = ModalDialog.dialog.offsetHeight;
+                    voffset = Modal.dialog.offsetHeight;
                 } else if (valign === 'center') {
-                    voffset = ModalDialog.dialog.offsetHeight / 2;
+                    voffset = Modal.dialog.offsetHeight / 2;
                 }
 
-                ModalDialog.dialog.style.left = 'calc(' + x + xUnits + ' - ' + hoffset + 'px)'
-                ModalDialog.dialog.style.top = 'calc(' + y + yUnits + ' - ' + voffset + 'px)'
+                Modal.dialog.style.left = 'calc(' + x + xUnits + ' - ' + hoffset + 'px)'
+                Modal.dialog.style.top = 'calc(' + y + yUnits + ' - ' + voffset + 'px)'
 
 
 
-                ModalDialog.dialog.style.transform   = '';
-                ModalDialog.dialog.style.opacity     = 1;
-                ModalDialog.background.style.opacity = 1;
+                Modal.dialog.style.transform   = '';
+                Modal.dialog.style.opacity     = 1;
+                Modal.background.style.opacity = 1;
             }, 15);
         };
 
@@ -234,13 +236,13 @@
 
 
         // Some object properties
-        ModalDialog.id              = conf.id;
-        ModalDialog.uid             = ModalDialog.random(Date.now(), 9999999999999);
-        ModalDialog.dialog          = null;
-        ModalDialog.background      = null;
-        ModalDialog.eventListeners  = [];
+        Modal.id              = conf.id;
+        Modal.uid             = Modal.random(Date.now(), 9999999999999);
+        Modal.dialog          = null;
+        Modal.background      = null;
+        Modal.eventListeners  = [];
         
-        ModalDialog.properties = {
+        Modal.properties = {
             zoomFactorEnd:         0,
             zoomFactorStart:       0,
             hideOnBackground:      true,
@@ -276,10 +278,10 @@
         // Add the reverse look-up table  for property names
         // so that property names can be specified in any case.
         //
-        ModalDialog.properties_lowercase_map = [];
-        for (var j in ModalDialog.properties) {
+        Modal.properties_lowercase_map = [];
+        for (var j in Modal.properties) {
             if (typeof j === 'string') {
-                ModalDialog.properties_lowercase_map[j.toLowerCase()] = j;
+                Modal.properties_lowercase_map[j.toLowerCase()] = j;
             }
         }
 
@@ -316,11 +318,11 @@
                 value = RegExp.$1 + (RegExp.$2 || 'deg');
             }
 
-            if (ModalDialog.properties_lowercase_map[i.toLowerCase()]) {
-                i = ModalDialog.properties_lowercase_map[i.toLowerCase()];
+            if (Modal.properties_lowercase_map[i.toLowerCase()]) {
+                i = Modal.properties_lowercase_map[i.toLowerCase()];
             }
 
-            ModalDialog.properties[i] = value;
+            Modal.properties[i] = value;
         }
 
 
@@ -329,13 +331,13 @@
         // Create a CONTAINER DIV that the dialog and the background
         // are added to.
         var container = document.createElement('DIV');
-            container.id             = 'ModalDialog_container_' + ModalDialog.uid;
-            container.className      = 'ModalDialog_container';
+            container.id             = 'Modal_container_' + Modal.uid;
+            container.className      = 'Modal_container';
             container.style.position = 'relative';
-            container.style.zIndex   = ModalDialog.properties.zIndex;
+            container.style.zIndex   = Modal.properties.zIndex;
         document.body.appendChild(container);
         
-        ModalDialog.container = container;
+        Modal.container = container;
 
 
 
@@ -345,11 +347,11 @@
         
         //
         // Now add any style that's defined in the style option.
-        // Prefix each entry with "div#ModalDialog_container".
+        // Prefix each entry with "div#Modal_container".
         //
-        if (ModalDialog.properties.style) {
-            for (var i=0; i<ModalDialog.properties.style.length; ++i) {
-                ModalDialog.styleElement = ModalDialog.addCss('div#ModalDialog_container_' + ModalDialog.uid + ' ' + ModalDialog.properties.style[i], ModalDialog.styleElement || null);
+        if (Modal.properties.style) {
+            for (var i=0; i<Modal.properties.style.length; ++i) {
+                Modal.styleElement = Modal.addCss('div#Modal_container_' + Modal.uid + ' ' + Modal.properties.style[i], Modal.styleElement || null);
             }
         }
 
@@ -358,13 +360,13 @@
 
         // Add an event listener so that the
         // ESC key hides the dialog
-        ModalDialog.eventListeners.hideDialogOnKeydown  = function (e)
+        Modal.eventListeners.hideDialogOnKeydown  = function (e)
         {
             if (e.keyCode === 27) {
-                ModalDialog.close();
+                Modal.close();
             }
         }
-        document.body.addEventListener('keydown', ModalDialog.eventListeners.hideDialogOnKeydown, false);
+        document.body.addEventListener('keydown', Modal.eventListeners.hideDialogOnKeydown, false);
 
 
 
@@ -373,15 +375,15 @@
         //            
         // First - Determine the scrollbar width
         //
-        if (!ModalDialog.properties.pageScroll) {
+        if (!Modal.properties.pageScroll) {
             var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
             
-            if (!ModalDialog.originalCSS) {
-                ModalDialog.originalCSS = {};
+            if (!Modal.originalCSS) {
+                Modal.originalCSS = {};
             };
 
-            ModalDialog.originalCSS.paddingRight = document.body.style.paddingRight;
-            ModalDialog.originalCSS.overflow     = document.body.style.overflow;
+            Modal.originalCSS.paddingRight = document.body.style.paddingRight;
+            Modal.originalCSS.overflow     = document.body.style.overflow;
 
             document.body.style.overflow     = 'hidden';
             document.body.style.paddingRight = scrollbarWidth + 'px';
@@ -391,10 +393,10 @@
 
 
         //
-        // Call the onmodaldialog event if it has been added.
+        // Call the onmodal event if it has been added.
         //
-        if (typeof ModalDialog.onmodaldialog === 'function') {
-            ModalDialog.onmodaldialog();
+        if (typeof Modal.onmodal === 'function') {
+            Modal.onmodal();
         }
     };
 
@@ -406,42 +408,42 @@
 
 
     //
-    // Close the ModalDialog
+    // Close the Modal
     //
-    ModalDialog.Hide  =
-    ModalDialog.hide  =
-    ModalDialog.Close =
-    ModalDialog.close = function ()
+    Modal.Hide  =
+    Modal.hide  =
+    Modal.Close =
+    Modal.close = function ()
     {
         // Hide the background
-        if (ModalDialog.background) {
-            ModalDialog.background.style.transition = ModalDialog.properties.effectHideDuration + "ms opacity ease-out";
-            ModalDialog.background.style.opacity    = Number(ModalDialog.properties.opacityEnd);
+        if (Modal.background) {
+            Modal.background.style.transition = Modal.properties.effectHideDuration + "ms opacity ease-out";
+            Modal.background.style.opacity    = Number(Modal.properties.opacityEnd);
         }
 
         // Hide the dialog
-        if (ModalDialog.dialog) {
-            ModalDialog.dialog.style.transition = ModalDialog.properties.effectHideDuration + "ms opacity ease-out, " + ModalDialog.properties.effectHideDuration + 'ms transform ease-out';
-            ModalDialog.dialog.style.opacity    = Number(ModalDialog.properties.opacityEnd);
-            ModalDialog.dialog.style.transform  = 'scale(' + ModalDialog.properties.zoomFactorEnd + ') rotate(' + ModalDialog.properties.rotationEnd + ') translate(' + ModalDialog.properties.translateEnd + ') skew(' + ModalDialog.properties.skewEnd + ')'
+        if (Modal.dialog) {
+            Modal.dialog.style.transition = Modal.properties.effectHideDuration + "ms opacity ease-out, " + Modal.properties.effectHideDuration + 'ms transform ease-out';
+            Modal.dialog.style.opacity    = Number(Modal.properties.opacityEnd);
+            Modal.dialog.style.transform  = 'scale(' + Modal.properties.zoomFactorEnd + ') rotate(' + Modal.properties.rotationEnd + ') translate(' + Modal.properties.translateEnd + ') skew(' + Modal.properties.skewEnd + ')'
         }
 
         // Remove the style element from the DOM if it exists
         setTimeout(function ()
         {
-            if (ModalDialog.styleElement && ModalDialog.styleElement.parentNode) {
-                ModalDialog.styleElement.parentNode.removeChild(ModalDialog.styleElement);
+            if (Modal.styleElement && Modal.styleElement.parentNode) {
+                Modal.styleElement.parentNode.removeChild(Modal.styleElement);
             }
-        }, ModalDialog.properties.effectHideDuration);
+        }, Modal.properties.effectHideDuration);
         
         // Enable the documents scrollbars after a short delay to
         // allow the dialog to be hidden.
-        if (ModalDialog.originalCSS) {
+        if (Modal.originalCSS) {
             setTimeout(function ()
             {
-                document.body.style.overflow     = ModalDialog.originalCSS.overflow;
-                document.body.style.paddingRight = ModalDialog.originalCSS.paddingRight;
-            }, ModalDialog.properties.effectHideDuration);
+                document.body.style.overflow     = Modal.originalCSS.overflow;
+                document.body.style.paddingRight = Modal.originalCSS.paddingRight;
+            }, Modal.properties.effectHideDuration);
         }
 
         
@@ -451,17 +453,17 @@
         {
             // Remove the container from the DOM thereby removing
             // both the background and the dialog too.
-            if (ModalDialog.container.parentNode) {
-                ModalDialog.container.parentNode.removeChild(ModalDialog.container);
+            if (Modal.container.parentNode) {
+                Modal.container.parentNode.removeChild(Modal.container);
             }
             
             // Remove the event listener
-            if (ModalDialog.confirm.keyDownListener) {
-                document.body.removeEventListener('keydown', ModalDialog.confirm.keyDownListener)
-                ModalDialog.confirm.keyDownListener = null;
+            if (Modal.confirm.keyDownListener) {
+                document.body.removeEventListener('keydown', Modal.confirm.keyDownListener)
+                Modal.confirm.keyDownListener = null;
             }
 
-        }, ModalDialog.properties.effectHideDuration);
+        }, Modal.properties.effectHideDuration);
     };
 
 
@@ -478,14 +480,14 @@
     //                          page: http://www.rgraph.net/canvas/integration.html
     //                          for more information.
     //
-    ModalDialog.confirm = function (properties)
+    Modal.confirm = function (properties)
     {
         // First things first - reset the properties back to the
         // original.
-        if (!ModalDialog.originalOptions) {
-            ModalDialog.originalProperties = ModalDialog.arrayClone(ModalDialog.properties, true);
+        if (!Modal.originalOptions) {
+            Modal.originalProperties = Modal.arrayClone(Modal.properties, true);
         } else {
-            ModalDialog.properties = ModalDialog.arrayClone(ModalDialog.originalProperties, true)
+            Modal.properties = Modal.arrayClone(Modal.originalProperties, true)
         }
 
         // Some default values
@@ -498,8 +500,8 @@
         properties.buttons.cancel ??= 'Cancel';
 
 
-        ModalDialog.show({
-            id: 'string:<div style="font-family: sans-serif;">' + (properties.header ? properties.header : '') + properties.text + '<div style="text-align: right; margin-top: 10px"><button class="cancel" type="button" style="cursor: pointer" id="rgraph-modaldialog-cancel-button" onclick="event.preventDefault(); ModalDialog.cancelConfirmationModalDialog()">' + properties.buttons.cancel + '</button>&nbsp;<button type="button" class="ok" style="cursor: pointer" id="rgraph-modaldialog-ok-button"  onclick="event.preventDefault(); ModalDialog.confirmConfirmationModalDialog()">' + properties.buttons.ok + '</button></div>' + (properties.footer ? properties.footer : '') + '</div>',
+        Modal.show({
+            id: 'string:<div style="font-family: sans-serif;">' + (properties.header ? properties.header : '') + properties.text + '<div style="text-align: right; margin-top: 10px"><button class="cancel" type="button" style="cursor: pointer" id="rgraph-modal-cancel-button" onclick="event.preventDefault(); Modal.cancelConfirmationModal()">' + properties.buttons.cancel + '</button>&nbsp;<button type="button" class="ok" style="cursor: pointer" id="rgraph-modal-ok-button"  onclick="event.preventDefault(); Modal.confirmConfirmationModal()">' + properties.buttons.ok + '</button></div>' + (properties.footer ? properties.footer : '') + '</div>',
             options: {
                 rotationStart: 0,
                 rotationEnd: 0,
@@ -511,7 +513,7 @@
         });
         
         // Make the OK button the default
-        var okButton = document.getElementById('rgraph-modaldialog-ok-button');
+        var okButton = document.getElementById('rgraph-modal-ok-button');
         
         if (okButton) {
             okButton.focus();
@@ -524,14 +526,14 @@
         // This function runs when the OK button on the dialog
         // is pressed.
         //
-        ModalDialog.confirmConfirmationModalDialog = function ()
+        Modal.confirmConfirmationModal = function ()
         {
             if (typeof properties.callbacks.ok === 'function') {
-                (properties.callbacks.ok)(ModalDialog.dialog);
+                (properties.callbacks.ok)(Modal.dialog);
             }
 
             // Get rid of the dialog
-            ModalDialog.hide();
+            Modal.hide();
         };
 
 
@@ -540,33 +542,139 @@
         //
         // This function runs when the dialog is cancelled
         //
-        ModalDialog.cancelConfirmationModalDialog = function ()
+        Modal.cancelConfirmationModal = function ()
         {
             if (typeof properties.callbacks.cancel === 'function') {
-                (properties.callbacks.cancel)(ModalDialog.dialog);
+                (properties.callbacks.cancel)(Modal.dialog);
             }
             
             // Get rid of the dialog
-            ModalDialog.hide();
+            Modal.hide();
         };
 
 
 
         // If the Esc key is pressed then do this as well as
         // hiding the dialog.
-        document.body.addEventListener('keydown', ModalDialog.confirm.keyDownListener = function (e)
+        document.body.addEventListener('keydown', Modal.confirm.keyDownListener = function (e)
         {
             if (e.keyCode === 13) {
-                ModalDialog.confirmConfirmationModalDialog();
+                Modal.confirmConfirmationModal();
                 e.stopPropagation();
                 e.preventDefault();
                 
             } else if (e.keyCode === 27) {
-                ModalDialog.cancelConfirmationModalDialog();
+                Modal.cancelConfirmationModal();
                 e.stopPropagation();
                 e.preventDefault();
             }
         }, false);
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function hows a modal dialog success dialog
+    //
+    Modal.notify.success = function (properties)
+    {
+        Modal.confirm({
+            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="M32,2C15.431,2,2,15.432,2,32c0,16.568,13.432,30,30,30c16.568,0,30-13.432,30-30C62,15.432,48.568,2,32,2z M25.025,50 l-0.02-0.02L24.988,50L11,35.6l7.029-7.164l6.977,7.184l21-21.619L53,21.199L25.025,50z" fill="#43a047"/></svg>'
+                    + '<span style="display: inline-block; transform: translatey(-35%); color: #43a047; font-weight: bold;">Success</span><br />' + properties.text,
+            dialog: {
+                style: [
+                    ', button {font-size: 20pt;}',
+                    'button#rgraph-modal-success-button {font-size: 20pt;}',
+                    'button#rgraph-modal-cancel-button {display: none;}'
+                ],
+                ...properties.dialog
+            }
+        });
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function hows a modal dialog warning dialog
+    //
+    Modal.notify.warning = function (properties)
+    {
+        Modal.confirm({
+            text: '<svg width="32" height="32"  xmlns="http://www.w3.org/2000/svg" style="margin: 5px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#D8C401" style="transform-origin: 50% 50%; transform: rotate(180deg)"/></svg>'
+                    + '<span style="display: inline-block; transform: translatey(-35%); color: #D8C401; font-weight: bold;">Warning</span><br />' + properties.text,
+            dialog: {
+                style: [
+                    ', button {font-size: 20pt;}',
+                    'button#rgraph-modal-success-button {font-size: 20pt;}',
+                    'button#rgraph-modal-cancel-button {display: none;}'
+                ],
+                ...properties.dialog
+            }
+        });
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function hows a modal dialog information dialog
+    //
+    Modal.notify.info =
+    Modal.notify.information = function (properties)
+    {
+        Modal.confirm({
+            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#6666ff"/></svg>'
+                     + '<span style="display: inline-block; transform: translatey(-35%); color: #6666ff; font-weight: bold;">Information</span><br />' + properties.text,
+            dialog: {
+                style: [
+                    ', button {font-size: 20pt;}',
+                    'button#rgraph-modal-success-button {font-size: 20pt;}',
+                    'button#rgraph-modal-cancel-button {display: none;}'
+                ],
+                ...properties.dialog
+            }
+        });
+    };
+
+
+
+
+
+
+
+
+    //
+    // This function hows a modal dialog error dialog
+    //
+    Modal.notify.error = function (properties)
+    {
+        Modal.confirm({
+            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff"/><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5.513 44.508l-5.514-9.894-5.825 9.894h-7.048l9.331-14.783-8.878-14.232h7.244l5.175 9.449 5.317-9.449h7.008l-8.878 13.996 9.429 15.02h-7.361z" fill="#ff0000"/></svg>'
+                    + '<span style="display: inline-block; transform: translatey(-35%); color: red; font-weight: bold;">An error occurred</span><br />' + properties.text,
+            dialog: {
+                style: [
+                    '{min-width: 300px;}',
+                    ', button {font-size: 20pt;}',
+                    'button#rgraph-modal-success-button {font-size: 20pt;}',
+                    'button#rgraph-modal-cancel-button {display: none;}'
+                ],
+                ...properties.dialog
+            }
+        });
     };
 
 
@@ -597,7 +705,7 @@
     //                            not given then the style element
     //                            is added to the <head>.
     //
-    ModalDialog.addCss = function (style, styleElement = null, parent = null)
+    Modal.addCss = function (style, styleElement = null, parent = null)
     {
         // Create a style element and add the CSS
         var el = styleElement || document.createElement('style');
@@ -632,7 +740,7 @@
     // @param objects boolean Whether to clone objects or not,
     //                        default is not to.
     //
-    ModalDialog.arrayClone = function (array, objects = false, maxdepth = 5)
+    Modal.arrayClone = function (array, objects = false, maxdepth = 5)
     {
         // This is here to limit recurusion
         if (maxdepth < 0) {
@@ -671,12 +779,12 @@
                     ret = new Array();
                     for (var i=0; i<array.length; ++i) {
 
-                        ret[i] = ModalDialog.arrayClone(array[i], objects, maxdepth - 1);
+                        ret[i] = Modal.arrayClone(array[i], objects, maxdepth - 1);
                     }
                 } else if (array.constructor.toString().indexOf('Object') > 0 && objects) {
                     ret = new Object();
                     for (var i in array) {
-                        ret[i] = ModalDialog.arrayClone(array[i], true, maxdepth - 1);
+                        ret[i] = Modal.arrayClone(array[i], true, maxdepth - 1);
                     }
                 }
                 break;
@@ -703,7 +811,7 @@
     // @return boolean       Whether the given value is an array
     //                       or not.
     //
-    ModalDialog.isArray = function (value)
+    Modal.isArray = function (value)
     {
         if (value && value.constructor) {
             var pos = value.constructor.toString().indexOf('Array');
@@ -731,7 +839,7 @@
     // @param number max The maximum value.
     // @param number     OPTIONAL Number of decimal places.
     //
-    ModalDialog.random = function (min, max, decimals = 0)
+    Modal.random = function (min, max, decimals = 0)
     {
         var r = Math.random();
         
