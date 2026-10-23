@@ -80,7 +80,7 @@
             
             borderWidth:  10,
 
-            textFont:                     'Arial, Verdana, sans-serif',
+            textFont:                     'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:                     12,
             textColor:                    '#666',
             textBold:                     false,

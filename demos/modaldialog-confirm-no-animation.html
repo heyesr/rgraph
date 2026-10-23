@@ -3,14 +3,14 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
 </head>
 <body>
 
-    <h1>An example of the Modal Dialog confirmation dialog with no animation</h1>
+    <h1>An example of the Modal Dialog confirmation dialog with no animation - just a a fade in</h1>
 
     <div id="rgraph-demo-html">       
         <p style="text-align: center">
@@ -22,18 +22,16 @@
     <script>
         document.getElementById("myButton").onclick = function ()
         {
-            ModalDialog.confirm({
+            Modal.confirm({
                 text: 'Are you sure that you want to do that?',
                 dialog: {
-                    opacityStart: 1,
                     opacityEnd: 1,
-                    effectShowDuration: 25,
                     effectHideDuration: 25,
                     style: [
-                        '.ModalDialog_dialog {font-size: 20pt !important;line-height: 25px; padding: 20px !important; border: 1px solid gray !important;border-radius: 0 !important;}',
-                        '.ModalDialog_dialog input {width: 300px;font-size: 20pt !important; margin-top: 10px;}',
-                        '.ModalDialog_dialog button {font-size: 20pt;}',
-                        '.ModalDialog_dialog button#rgraph-modaldialog-cancel-button {color: #aaa;}'
+                        '.Modal_dialog {font-size: 20pt !important;line-height: 25px; padding: 20px !important; border: 1px solid gray !important;border-radius: 0 !important;}',
+                        '.Modal_dialog input {width: 300px;font-size: 20pt !important; margin-top: 10px;}',
+                        '.Modal_dialog button {font-size: 20pt;}',
+                        '.Modal_dialog button#rgraph-modal-cancel-button {color: #aaa;}'
                     ],
                 },
                 buttons: {

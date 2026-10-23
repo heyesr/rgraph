@@ -7,7 +7,7 @@
     }
 }
 
-@media screen and (width <= 1200px){
+@media screen and (width <= 1000px){
     p#floated-para {
         display:none;
     }
@@ -23,11 +23,9 @@
     }
 
     div#page-common-navbar2 {
-        height: 155px;
     }
     
     div#page-common-navbar2-logo-large svg {
-        transform: translateY(10px);
     }
 
     div#page-common-navbar2-hamburger-icon {

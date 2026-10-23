@@ -153,7 +153,7 @@
             marginRight:  35,
             marginTop:    35,
             marginBottom: 35,
-            marginInner:  0,
+            marginInner:  15,
 
             backgroundColor:            null,
             backgroundImage:            null,
@@ -165,7 +165,7 @@
             backgroundImageW:           null,
             backgroundImageH:           null,
             backgroundGrid:             true,
-            backgroundGridColor:        '#eee',
+            backgroundGridColor:        '#f3f4f6',
             backgroundGridLinewidth:    1,
             backgroundGridHlines:       true,
             backgroundGridHlinesCount:  null,
@@ -269,8 +269,8 @@
             xaxisTitleHalign:     null,
             xaxisTitleValign:     null,
 
-            textColor:  'black',
-            textFont:   'Arial, Verdana, sans-serif',
+            textColor:  '#4b5563',
+            textFont:   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:   12,
             textBold:   false,
             textItalic: false,

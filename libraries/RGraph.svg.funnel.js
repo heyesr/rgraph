@@ -180,8 +180,8 @@
             colorsStroke: 'white',
             colors:       RGraph.SVG.getColors(),
             
-            textColor:  'black',
-            textFont:   'Arial, Verdana, sans-serif',
+            textColor:  '#4b5563',
+            textFont:   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:   12,
             textBold:   false,
             textItalic: false,

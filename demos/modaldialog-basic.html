@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="right">
-                        <input type="reset" value="Cancel" onclick="ModalDialog.hide()">
+                        <input type="reset" value="Cancel" onclick="Modal.hide()">
                         <input type="submit"
                                   name="submit"
                                   value="Login"
@@ -52,7 +52,7 @@
     <script>
         document.getElementById("myButton").onclick = function ()
         {
-            ModalDialog.show({
+            Modal.show({
                 id: 'myDialog',
                 options: {
                     zoomFactorStart: 1,
@@ -60,10 +60,10 @@
                     rotationStart: '0deg',
                     rotationEnd: '0deg',
                     style: [
-                        '.ModalDialog_dialog {font-family: Verdana, sans-serif; line-height: 35px;padding: 20px !important;}',
-                        '.ModalDialog_dialog td {font-size: 16pt !important;}',
-                        '.ModalDialog_dialog input[type=reset],input[type=submit],input[type=text],input[type=password] {cursor: pointer;font-size: 16pt;}',
-                        '.ModalDialog_dialog b {font-size: 22pt; font-style: italic;}'
+                        '.Modal_dialog {font-family: Verdana, sans-serif; line-height: 35px;padding: 20px !important;}',
+                        '.Modal_dialog td {font-size: 16pt !important;}',
+                        '.Modal_dialog input[type=reset],input[type=submit],input[type=text],input[type=password] {cursor: pointer;font-size: 16pt;}',
+                        '.Modal_dialog b {font-size: 22pt; font-style: italic;}'
                     ]
                 }
             });
@@ -112,7 +112,7 @@
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <input type="reset" value="Cancel" onclick="ModalDialog.hide()">
+                    <input type="reset" value="Cancel" onclick="Modal.hide()">
                     <input type="submit"
                               name="submit"
                               value="Login"

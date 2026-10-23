@@ -74,7 +74,7 @@
             marginRight:           35, // Used for clipping
 
             textSize:                12,
-            textFont:                'Arial, Verdana, sans-serif',
+            textFont:                'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:                false,
             textItalic:              false,
             text:                    null,

@@ -87,9 +87,9 @@
             titleBold:            true,
             titleItalic:          null,
             
-            textFont:             'Arial, Verdana, sans-serif',
+            textFont:             'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:             12,
-            textColor:            'black',
+            textColor:            '#4b5563',
             textBold:             false,
             textItalic:           false,
             textAccessible:       false,

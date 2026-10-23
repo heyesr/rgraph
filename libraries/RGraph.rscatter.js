@@ -100,7 +100,7 @@
             backgroundGridCircles:                  true,
             backgroundGridCirclesCount:             null,
             backgroundGridLinewidth:                1,
-            backgroundGridColor:                    '#eee',
+            backgroundGridColor:                    '#f3f4f6',
 
             centerx:                                null,
             centery:                                null,
@@ -158,8 +158,8 @@
             labelsAxesOffsetx:                      0,
             labelsAxesOffsety:                      0,
 
-            textColor:                              'black',
-            textFont:                               'Arial, Verdana, sans-serif',
+            textColor:                              '#4b5563',
+            textFont:                               'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:                               12,
             textBold:                               false,
             textItalic:                             false,

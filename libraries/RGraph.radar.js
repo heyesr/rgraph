@@ -127,13 +127,13 @@
 
             backgroundGrid:       true,
             backgroundGridCount:  null,
-            backgroundGridColor:  '#aaa',
+            backgroundGridColor:  '#f3f4f6',
             backgroundGridPoly:   true,
             backgroundGridSpokes: 24,
 
             textSize:             12,
-            textFont:             'Arial, Verdana, sans-serif',
-            textColor:            'black',
+            textFont:             'Segoe UI, Inter, Arial, Verdana, sans-serif',
+            textColor:            '#4b5563',
             textBold:             false,
             textItalic:           false,
             textAccessible:               false,

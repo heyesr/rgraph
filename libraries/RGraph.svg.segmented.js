@@ -137,9 +137,9 @@
             backgroundColor:                       'black',
             colors:                                ['red','white'],
             
-            textFont:                              'Arial, Verdana, sans-serif',
+            textFont:                              'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:                              60,
-            textColor:                             'gray',
+            textColor:                             '#4b5563',
             textBold:                              false,
             textItalic:                            false,
             textLinkColor:  'blue',

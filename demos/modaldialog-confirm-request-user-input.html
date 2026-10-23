@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
@@ -22,7 +22,7 @@
     <script>
         document.getElementById("myButton").onclick = function ()
         {
-            ModalDialog.confirm({
+            Modal.confirm({
                 text: 'What is your name? <br /> <input type="text" id="name-input-text-box" />',
                 dialog:{
                     rotationStart: '-45deg',
@@ -30,9 +30,9 @@
                     zoomFactorStart: 0,
                     zoomFactorEnd: 2,
                     style: [
-                        '.ModalDialog_dialog {font-size: 20pt !important;line-height: 25px; padding-top: 10px !important; padding-bottom: 20px !important;}',
-                        '.ModalDialog_dialog input {width: 300px;font-size: 20pt !important; margin-top: 10px;}',
-                        '.ModalDialog_dialog button {font-size: 20pt;}'
+                        '.Modal_dialog {font-size: 20pt !important;line-height: 25px; padding-top: 10px !important; padding-bottom: 20px !important;}',
+                        '.Modal_dialog input {width: 300px;font-size: 20pt !important; margin-top: 10px;}',
+                        '.Modal_dialog button {font-size: 20pt;}'
                     ],
                 },
                 callbacks: {

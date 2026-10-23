@@ -63,14 +63,14 @@
             marginRight:           35,
             marginTop:             35,
             marginBottom:          35,
-            marginInner:           2,
+            marginInner:           15,
             marginInnerGrouped:    2,
             
             backgroundBarsCount:       null,
             backgroundBarsColor1:      'transparent',
             backgroundBarsColor2:      'transparent',
             backgroundGrid:            true,
-            backgroundGridColor:       '#eee',
+            backgroundGridColor:       '#f3f4f6',
             backgroundGridLinewidth:   1,
             backgroundGridHsize:       25,
             backgroundGridVsize:       25,
@@ -115,8 +115,8 @@
             titleSubtitleOffsety: 0,
 
             textSize:              12,
-            textColor:             'black',
-            textFont:              'Arial, Verdana, sans-serif',
+            textColor:             '#4b5563',
+            textFont:              'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:              false,
             textItalic:            false,
             textAngle:             0,
@@ -2687,10 +2687,11 @@ if (
 
 
         //
-        // This function handles highlighting an entire data-series for the interactive
-        // key
+        // This function handles highlighting an entire data-series
+        // for the interactive key.
         // 
-        // @param int index The index of the data series to be highlighted
+        // @param int index The index of the data series to be
+        //                  highlighted
         //
         this.interactiveKeyHighlight = function (index)
         {
@@ -2711,7 +2712,6 @@ if (
                 );
             });
         };
-
 
 
 
@@ -3408,20 +3408,17 @@ if (
                          || typeof orig_cornersRoundBottomRadius === 'number'
                         )
                        ) {
-                    
-                        obj.animate({
-                            frames: 15,
-                            cornersRoundRadius:       orig_cornersRoundRadius,
-                            cornersRoundTopRadius:    orig_cornersRoundTopRadius,
-                            cornersRoundBottomRadius: orig_cornersRoundBottomRadius
-                        });
+                        if (!RGraph.isNull(orig_cornersRoundRadius)) obj.animate({frames: 15, cornersRoundRadius: orig_cornersRoundRadius});
+                        if (!RGraph.isNull(orig_cornersRoundTopRadius)) obj.animate({frames: 15, cornersRoundTopRadius: orig_cornersRoundTopRadius});
+                        if (!RGraph.isNull(orig_cornersRoundBottomRadius)) obj.animate({frames: 15, cornersRoundBottomRadius: orig_cornersRoundBottomRadius});
+
                     } else {
 
-                            if (RGraph.isNumber(orig_cornersRoundRadius))       obj.properties.cornersRoundRadius       = orig_cornersRoundRadius;
-                            if (RGraph.isNumber(orig_cornersRoundTopRadius))    obj.properties.cornersRoundTopRadius    = orig_cornersRoundTopRadius;
-                            if (RGraph.isNumber(orig_cornersRoundBottomRadius)) obj.properties.cornersRoundBottomRadius = orig_cornersRoundBottomRadius;
+                        if (RGraph.isNumber(orig_cornersRoundRadius))       obj.properties.cornersRoundRadius       = orig_cornersRoundRadius * RGraph.getScaleFactor(this);
+                        if (RGraph.isNumber(orig_cornersRoundTopRadius))    obj.properties.cornersRoundTopRadius    = orig_cornersRoundTopRadius * RGraph.getScaleFactor(this);
+                        if (RGraph.isNumber(orig_cornersRoundBottomRadius)) obj.properties.cornersRoundBottomRadius = orig_cornersRoundBottomRadius * RGraph.getScaleFactor(this);
 
-                            RGraph.redrawCanvas(obj.canvas);
+                        RGraph.redrawCanvas(obj.canvas);
                     }
                     
                     this.isWave = null;

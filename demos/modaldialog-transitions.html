@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
@@ -22,7 +22,7 @@
     <script>
         document.getElementById("myButton").onclick = function ()
         {
-            ModalDialog.confirm({
+            Modal.confirm({
                 text: 'Are you sure that you want to do that?',
                 dialog: {
                     rotationStart: '-45deg',
@@ -34,8 +34,8 @@
                     effectShowDuration: 1000,
                     effectHideDuration: 1000,
                     style: [
-                        '.ModalDialog_dialog {padding: 10px !important;font-size: 18pt !important;}',
-                        '.ModalDialog_dialog button {font-size: 14pt !important;}'
+                        '.Modal_dialog {padding: 10px !important;font-size: 18pt !important;}',
+                        '.Modal_dialog button {font-size: 14pt !important;}'
                     ]
                 }
             });

@@ -77,9 +77,9 @@
             backgroundColor:                    'black',
             colors:                             ['red','#ddd'],
             
-            textFont:                              'Arial, Verdana, sans-serif',
+            textFont:                              'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:                              null,
-            textColor:                             'gray',
+            textColor:                             '#4b5563',
             textBold:                              false,
             textItalic:                            false,
             textAccessible:                        false,

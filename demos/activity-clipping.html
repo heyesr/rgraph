@@ -25,10 +25,10 @@
             options: {
                 // Clip to the bottom-right quarter
                 clip: 'b m 300 300 a 300 300 1000 0 1.57 false',
-                backgroundColor: null,
                 
                 colors: ['red','blue','yellow'],
                 width: 25,
+                labelsCenter: true,
                 events: {
                     beforedraw: function (obj)
                     {
@@ -46,8 +46,8 @@
             options: {
                 // Clip to the bottom-left quarter
                 clip: 'b m 300 300 a 300 300 1000 1.57 3.14 false',
-                backgroundColor: null,
-                width: 25
+                width: 25,
+                labelsCenter: true
             }
         }).draw();
         
@@ -59,9 +59,9 @@
             options: {
                 // Clip to the top-left quarter
                 clip: 'b m 300 300 a 300 300 1000 3.14 4.71 false',
-                backgroundColor: null,
                 colors: ['lime','orange','green'],
-                width: 25
+                width: 25,
+                labelsCenter: true
             }
         }).draw();
 
@@ -75,8 +75,8 @@
                 backgroundColor: null,
                 // Clip to the top-right quarter
                 clip: 'b m 300 300 a 300 300 1000 4.71 6.29 false',
-                
-                width: 25
+                width: 25,
+                labelsCenter: true
             }
         }).draw();
 
@@ -107,7 +107,8 @@
                     {
                         RGraph.clear(obj.canvas, 'black');
                     }
-                }
+                },
+                labelsCenter: true
             }
         }).draw();
 
@@ -121,7 +122,8 @@
                 // Clip to a segment
                 clip: 'segment: 300,300,600,3.14,6.29',
                 colors: ['#999','#bbb','#ddd'],
-                width: 25
+                width: 25,
+                labelsCenter: true
             }
             
         }).draw();
@@ -145,7 +147,8 @@
             value: [9,7,5],
             options: {
                 clip: 'scale:0-7',
-                width: 25
+                width: 25,
+                labelsCenter: true
             }
         }).grow();
     </script>

@@ -48,7 +48,7 @@
             backgroundBarsColor2:   'transparent',
             backgroundGrid:        true,
             backgroundGridLinewidth:  1,
-            backgroundGridColor:  '#eee',
+            backgroundGridColor:  '#f3f4f6',
             backgroundGridHsize:  20,
             backgroundGridVsize:  20,
             backgroundGridHlines: true,
@@ -70,8 +70,8 @@
 
 
             textSize:              12,
-            textFont:              'Arial, Verdana, sans-serif',
-            textColor:             'black',
+            textFont:              'Segoe UI, Inter, Arial, Verdana, sans-serif',
+            textColor:             '#4b5563',
             textBold:              false,
             textItalic:            false,
             textAccessible:               false,

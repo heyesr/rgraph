@@ -4,13 +4,20 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>     
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Bar chart showing the modaldialog event</h1>
+    <h1>A Bar chart showing the modal event</h1>
+    
+    <p>
+        <b>Important:</b>
+        The Modal Dialog library is now just called <i>RGraph.modal.js</i>.
+        Similarly, references to "ModalDialog" have been changed to
+        just "Modal".
+    </p>
     
     <div id="rgraph-demo-html">
         <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -21,24 +28,24 @@
             id: 'cvs',
             data: [4,8,5,3,4,6,8],
             options: {
-                title: 'A Bar chart showing the onmodaldialog event',
+                title: 'A Bar chart showing the modal event',
                 titleSize: 16,
                 xaxisLabels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 textSize:16,
                 events: {
                     click: function (e, shape)
                     {
-                        ModalDialog.onmodaldialog = function ()
+                        Modal.onmodal = function ()
                         {
-                            console.log('This alert was triggered by the modaldialog DOM1 style event listener');
+                            console.log('This alert was triggered by the onmodal DOM1 style event listener');
                         };
             
-                        ModalDialog.show({
-                            id: 'string:<h2>A sample dialog</h2><center><a href="javascript:ModalDialog.Close()">Close</a></center>',
+                        Modal.show({
+                            id: 'string:<h2>A sample dialog</h2><center><a href="javascript:Modal.Close()">Close</a></center>',
                             options: {
                                 zoomFactorEnd: 2,
                                 style: [
-                                    '.ModalDialog_background {background-color: #0008 !important;}'
+                                    '.Modal_background {background-color: #0008 !important;}'
                                 ]
                             }
                         });

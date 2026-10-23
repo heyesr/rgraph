@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.datagrid.js" ></script>
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
     
@@ -198,22 +198,13 @@
                         {
                             if (meta.column === 3 && meta.value > 100 || !RGraph.isNumeric(meta.value) ) {
 
-                                //alert('Old value: ' + meta.original_value);
-                                //alert('New value: ' + meta.value);
-                                ModalDialog.topbar = false;
-                                ModalDialog.show({
-                                    id: 'string:<h1 style="margin-top: 10px">An error occurred!</h1><p><b>The value that you entered was either too high or not a number at all.<br /> Values that you enter must be a number that is at most 100kg!</b></p>',
-                                    options: {
-                                        styleDialog: {
-                                            padding: '25px',
-                                            backgroundColor: '#fff',
-                                            border: '5px solid red'
-                                        },
-                                        styleTopbar: {
-                                            display: 'none'
-                                        }
-                                    }
-                                });
+                                // Show an error notification after
+                                // a small delay so that the key
+                                // press doesn't hide the dialog.
+                                setTimeout(function ()
+                                {
+                                    Modal.notify.error('The value was out of range');
+                                }, 50);
 
                                 meta.cancelEdit = true;
                             }

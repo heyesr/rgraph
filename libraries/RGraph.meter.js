@@ -71,9 +71,9 @@
             border:                 			true,
             borderColor:           				'black',
             
-            textFont:              				'Arial, Verdana, sans-serif',
+            textFont:              				'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:              				12,
-            textColor:             				'black',
+            textColor:             				'#4b5563',
             textBold:              				false,
             textItalic:            				false,
             textValign:            				'center',

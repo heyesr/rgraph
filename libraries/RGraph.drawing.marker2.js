@@ -85,9 +85,9 @@
             colorsStroke:               'black',
             colorsFill:                 'white',
 
-            textColor:                  'black',
+            textColor:                  '#4b5563',
             textSize:                   12,
-            textFont:                   'Arial, Verdana, sans-serif',
+            textFont:                   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:                   false,
             textItalic:                 false,
             textAccessible:             false,

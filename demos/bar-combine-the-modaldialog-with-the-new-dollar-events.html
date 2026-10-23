@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
@@ -29,8 +29,8 @@
                 marginTop: 40,
                 marginInner: 15,
                 style: [
-                    '.ModalDialog_background {}',
-                    '.ModalDialog_dialog {}'
+                    '.Modal_background {}',
+                    '.Modal_dialog {}'
                 ]
             }
         });
@@ -61,7 +61,7 @@
         
         bar.$1.onclick = function (e, shape)
         {
-            ModalDialog.show({
+            Modal.show({
                 id: 'string:<div style="text-align: center"><h2>Notice:</h2><p>Put information here that you want to display to the user.</p><p></p></div>',
                 options: {
                 }

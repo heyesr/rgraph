@@ -73,8 +73,8 @@
             marginBottom:                20,
             
             textSize:                    12,
-            textColor:                   'black', // Does not support gradients
-            textFont:                    'Arial, Verdana, sans-serif',
+            textColor:                   '#4b5563', // Does not support gradients
+            textFont:                    'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:                    false,
             textItalic:                  false,
             textAccessible:              false,

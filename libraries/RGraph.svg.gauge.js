@@ -160,7 +160,7 @@
             backgroundFill:      '#ddd',
             backgroundStroke:    '#ddd',
             backgroundGrid:      true,
-            backgroundGridColor: '#aaa',
+            backgroundGridColor: '#f3f4f6',
 
             linewidth:          1,
             colors:             RGraph.SVG.getColors(),
@@ -170,8 +170,8 @@
             tickmarksInnerSize: 3,
             tickmarksCount:     10,
 
-            textColor:      'black',
-            textFont:       'Arial, Verdana, sans-serif',
+            textColor:      '#4b5563',
+            textFont:       'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:       12 ,
             textBold:       false,
             textItalic:     false,

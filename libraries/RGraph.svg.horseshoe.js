@@ -135,9 +135,9 @@
             backgroundColor:       null,
             colors:                ['black','#eee'],
             
-            textFont:              'Arial, Verdana, sans-serif',
+            textFont:              'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:              70,
-            textColor:             'black',
+            textColor:             '#4b5563',
             textBold:              false,
             textItalic:            false,
             textLinkColor:  'blue',

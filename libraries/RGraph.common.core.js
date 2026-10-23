@@ -12721,20 +12721,20 @@
 
 
 
-            var indentImg       = '<img src="' + imageSrcs.indent +       '" align="center" class="rgraph-tree-structure-images indentImg" data-shortname="indent" />';
-            var folderImg       = '<img src="' + imageSrcs.folder +       '" align="center" class="rgraph-tree-structure-images folderImg rgraph-tree-structure-icon" data-shortname="folder" />';
-            var folderexpImg    = '<img src="' + imageSrcs.folderexp +    '" align="center" class="rgraph-tree-structure-images folderexpImg rgraph-tree-structure-icon" data-shortname="folderexp" />';
-            var pageImg         = '<img src="' + imageSrcs.page +         '" align="center" class="rgraph-tree-structure-images pageImg rgraph-tree-structure-icon" data-shortname="page" />';
-            var lineImg         = '<img src="' + imageSrcs.line +         '" align="center" class="rgraph-tree-structure-images lineImg" data-shortname="line" />';
-            var branchImg       = '<img src="' + imageSrcs.branch +       '" align="center" class="rgraph-tree-structure-images branchImg" data-shortname="branch" />';
-            var branchtopImg    = '<img src="' + imageSrcs.branchtop +    '" align="center" class="rgraph-tree-structure-images branchtopImg" data-shortname="branchtop" />';
-            var branchbottomImg = '<img src="' + imageSrcs.branchbottom + '" align="center" class="rgraph-tree-structure-images branchbottomImg" data-shortname="branchbottom" />';
-            var plusImg         = '<img src="' + imageSrcs.plus +         '" align="center" class="rgraph-tree-structure-images plusImg" data-shortname="plus" />';
-            var plusbottomImg   = '<img src="' + imageSrcs.plusbottom +   '" align="center" class="rgraph-tree-structure-images plusbottomImg" data-shortname="plusbottom" />';
-            var plustopImg      = '<img src="' + imageSrcs.plustop +      '" align="center" class="rgraph-tree-structure-images plustopImg" data-shortname="plustop" />';
-            var minusImg        = '<img src="' + imageSrcs.minus +        '" align="center" class="rgraph-tree-structure-images minusImg" data-shortname="minus" />';
-            var minusbottomImg  = '<img src="' + imageSrcs.minusbottom +  '" align="center" class="rgraph-tree-structure-images minusbottomImg" data-shortname="minusbottom" />';
-            var minustopImg     = '<img src="' + imageSrcs.minustop +     '" align="center" class="rgraph-tree-structure-images minustopImg" data-shortname="minustop" />';
+            var indentImg       = '<img src="' + imageSrcs.indent +       '" align="absmiddle" class="rgraph-tree-structure-images indentImg" data-shortname="indent" />';
+            var folderImg       = '<img src="' + imageSrcs.folder +       '" align="absmiddle" class="rgraph-tree-structure-images folderImg rgraph-tree-structure-icon" data-shortname="folder" />';
+            var folderexpImg    = '<img src="' + imageSrcs.folderexp +    '" align="absmiddle" class="rgraph-tree-structure-images folderexpImg rgraph-tree-structure-icon" data-shortname="folderexp" />';
+            var pageImg         = '<img src="' + imageSrcs.page +         '" align="absmiddle" class="rgraph-tree-structure-images pageImg rgraph-tree-structure-icon" data-shortname="page" />';
+            var lineImg         = '<img src="' + imageSrcs.line +         '" align="absmiddle" class="rgraph-tree-structure-images lineImg" data-shortname="line" />';
+            var branchImg       = '<img src="' + imageSrcs.branch +       '" align="absmiddle" class="rgraph-tree-structure-images branchImg" data-shortname="branch" />';
+            var branchtopImg    = '<img src="' + imageSrcs.branchtop +    '" align="absmiddle" class="rgraph-tree-structure-images branchtopImg" data-shortname="branchtop" />';
+            var branchbottomImg = '<img src="' + imageSrcs.branchbottom + '" align="absmiddle" class="rgraph-tree-structure-images branchbottomImg" data-shortname="branchbottom" />';
+            var plusImg         = '<img src="' + imageSrcs.plus +         '" align="absmiddle" class="rgraph-tree-structure-images plusImg" data-shortname="plus" />';
+            var plusbottomImg   = '<img src="' + imageSrcs.plusbottom +   '" align="absmiddle" class="rgraph-tree-structure-images plusbottomImg" data-shortname="plusbottom" />';
+            var plustopImg      = '<img src="' + imageSrcs.plustop +      '" align="absmiddle" class="rgraph-tree-structure-images plustopImg" data-shortname="plustop" />';
+            var minusImg        = '<img src="' + imageSrcs.minus +        '" align="absmiddle" class="rgraph-tree-structure-images minusImg" data-shortname="minus" />';
+            var minusbottomImg  = '<img src="' + imageSrcs.minusbottom +  '" align="absmiddle" class="rgraph-tree-structure-images minusbottomImg" data-shortname="minusbottom" />';
+            var minustopImg     = '<img src="' + imageSrcs.minustop +     '" align="absmiddle" class="rgraph-tree-structure-images minustopImg" data-shortname="minustop" />';
 
 
 
@@ -13102,7 +13102,7 @@
                 //
 
                 if (RGraph.isObject(node.getData()) && RGraph.isString(node.getData().image)) {
-                    html += '<img src="' + node.getData().image + '" align="center" class="rgraph-tree-structure-images rgraph-tree-structure-icon" data-shortname="user" />';
+                    html += '<img src="' + node.getData().image + '" align="absmiddle" class="rgraph-tree-structure-images rgraph-tree-structure-icon" data-shortname="user" />';
                 } else if (node.hasChildren()) {
                     html += folderImg;
                 } else {
@@ -13198,6 +13198,10 @@
             if (!RGraph.isArray(obj.options.style)) {
                 obj.options.style = [];
             }
+            
+            // Add some default CSS
+            obj.options.style.push('div#myTree {line-height: 10px;}');
+            obj.options.style.push('div#myTree span.rgraph-tree-branch-label {display: inline-block; transform: translateY(3px);}')
 
             for (var i=0; i<obj.options.style.length; ++i) {
                 

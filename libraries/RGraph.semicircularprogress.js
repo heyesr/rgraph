@@ -47,7 +47,7 @@
             backgroundColor:            'transparent',
             backgroundGrid:             false,
             backgroundGridMargin:       20,
-            backgroundGridColor:        '#eee',
+            backgroundGridColor:        '#f3f4f6',
             backgroundGridLinewidth:    1,
             backgroundGridCircles:      true,
             backgroundGridRadials:      true,
@@ -171,7 +171,7 @@
 
             textSize:                   12,
             textColor:                  'black',
-            textFont:                   'Arial, Verdana, sans-serif',
+            textFont:                   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:                   false,
             textItalic:                 false,
             textAccessible:             false,

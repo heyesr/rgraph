@@ -56,7 +56,7 @@
             axesTickmarks:                  true,
 
             backgroundGrid:                 true,
-            backgroundGridColor:            '#ccc',
+            backgroundGridColor:            '#f3f4f6',
             backgroundGridSize:             null,
             backgroundGridRadialsCount:     0,
             backgroundGridRadialsOffset:    0,
@@ -136,8 +136,8 @@
             labelsAxesOffsetx:             0,
             labelsAxesOffsety:             0,
             
-            textColor:                     'black',
-            textFont:                      'Arial, Verdana, sans-serif',
+            textColor:                     '#4b5563',
+            textFont:                      'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:                      12,
             textBold:                      false,
             textItalic:                    false,

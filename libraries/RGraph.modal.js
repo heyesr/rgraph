@@ -10,8 +10,8 @@
     // | license option available. See the RGraph website for more details.        |
     // o---------------------------------------------------------------------------o
     
-    ModalDialog =
-    Modal = {};
+    ModalDialog  =
+    Modal        = {};
     Modal.notify = {};
 
     Modal.Open =
@@ -583,9 +583,13 @@
     //
     Modal.notify.success = function (properties)
     {
+        if (typeof properties === 'string') {
+            properties = {text: properties};
+        }
+
         Modal.confirm({
-            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="M32,2C15.431,2,2,15.432,2,32c0,16.568,13.432,30,30,30c16.568,0,30-13.432,30-30C62,15.432,48.568,2,32,2z M25.025,50 l-0.02-0.02L24.988,50L11,35.6l7.029-7.164l6.977,7.184l21-21.619L53,21.199L25.025,50z" fill="#43a047"/></svg>'
-                    + '<span style="display: inline-block; transform: translatey(-35%); color: #43a047; font-weight: bold;">Success</span><br />' + properties.text,
+            text: '<div style="display: flex; align-items: center"><svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="M32,2C15.431,2,2,15.432,2,32c0,16.568,13.432,30,30,30c16.568,0,30-13.432,30-30C62,15.432,48.568,2,32,2z M25.025,50 l-0.02-0.02L24.988,50L11,35.6l7.029-7.164l6.977,7.184l21-21.619L53,21.199L25.025,50z" fill="#43a047"/></svg>&nbsp;<span style="color: #43a047; font-weight: bold; font-size: 18pt">Success</span></div>'
+                    + properties.text,
             dialog: {
                 style: [
                     ', button {font-size: 20pt;}',
@@ -609,9 +613,13 @@
     //
     Modal.notify.warning = function (properties)
     {
+        if (typeof properties === 'string') {
+            properties = {text: properties};
+        }
+
         Modal.confirm({
-            text: '<svg width="32" height="32"  xmlns="http://www.w3.org/2000/svg" style="margin: 5px" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#D8C401" style="transform-origin: 50% 50%; transform: rotate(180deg)"/></svg>'
-                    + '<span style="display: inline-block; transform: translatey(-35%); color: #D8C401; font-weight: bold;">Warning</span><br />' + properties.text,
+            text: '<div style="display: flex; align-items: center"><svg width="32" height="32"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#D8C401" style="transform-origin: 50% 50%; transform: rotate(180deg)"/></svg>&nbsp;<span style="color: #d8c401; font-weight: bold; font-size: 18pt">Warning</span></div>'
+                    + properties.text,
             dialog: {
                 style: [
                     ', button {font-size: 20pt;}',
@@ -636,9 +644,13 @@
     Modal.notify.info =
     Modal.notify.information = function (properties)
     {
+        if (typeof properties === 'string') {
+            properties = {text: properties};
+        }
+
         Modal.confirm({
-            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#6666ff"/></svg>'
-                     + '<span style="display: inline-block; transform: translatey(-35%); color: #6666ff; font-weight: bold;">Information</span><br />' + properties.text,
+            text: '<div style="display: flex; align-items: center"><svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5 49.75h-10v-24h10v24m-5-29.5c-2.761 0-5-2.238-5-5s2.239-5 5-5c2.762 0 5 2.238 5 5s-2.238 5-5 5" fill="#6666ff"/></svg>&nbsp;<span style="color: #6666ff; font-weight: bold; font-size: 18pt">Information</span></div>'
+                    + properties.text,
             dialog: {
                 style: [
                     ', button {font-size: 20pt;}',
@@ -662,10 +674,15 @@
     //
     Modal.notify.error = function (properties)
     {
+        if (typeof properties === 'string') {
+            properties = {text: properties};
+        }
+
         Modal.confirm({
-            text: '<svg width="32" height="32" style="margin: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff"/><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5.513 44.508l-5.514-9.894-5.825 9.894h-7.048l9.331-14.783-8.878-14.232h7.244l5.175 9.449 5.317-9.449h7.008l-8.878 13.996 9.429 15.02h-7.361z" fill="#ff0000"/></svg>'
-                    + '<span style="display: inline-block; transform: translatey(-35%); color: red; font-weight: bold;">An error occurred</span><br />' + properties.text,
-            dialog: {
+            text: '<div style="display: flex; align-items: center"><svg width="32" height="32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" enable-background="new 0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff"/><path d="m32 2c-16.568 0-30 13.432-30 30s13.432 30 30 30 30-13.432 30-30-13.432-30-30-30m5.513 44.508l-5.514-9.894-5.825 9.894h-7.048l9.331-14.783-8.878-14.232h7.244l5.175 9.449 5.317-9.449h7.008l-8.878 13.996 9.429 15.02h-7.361z" fill="#ff0000"/></svg>&nbsp;<span style="color: #f00; font-weight: bold; font-size: 18pt">Error</span></div>'
+                    + properties.text,
+                
+                dialog: {
                 style: [
                     '{min-width: 300px;}',
                     ', button {font-size: 20pt;}',

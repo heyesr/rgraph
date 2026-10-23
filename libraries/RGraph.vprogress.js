@@ -101,8 +101,8 @@
             titleSideOffsety:               0,
 
             textSize:                       12,
-            textColor:                      'black',
-            textFont:                       'Arial, Verdana, sans-serif',
+            textColor:                      '#4b5563',
+            textFont:                       'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textBold:                       false,
             textItalic:                     false,
             textAccessible:                 false,

@@ -25,7 +25,7 @@
     RGraph.tooltips.styleDefaults = {
         display:    'inline-block',
         position:   'absolute',
-        padding:    '6px',
+        padding:    '10px',
         fontFamily: 'Arial',
         fontSize:   '10pt',
         fontWeight: 'normal',

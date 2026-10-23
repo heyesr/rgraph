@@ -163,7 +163,7 @@
             amargin:       '3deg',
             
             backgroundGrid: true,
-            backgroundGridColor:            '#eee',
+            backgroundGridColor:            '#f3f4f6',
             backgroundGridRadialsCount:     0,
             backgroundGridRadialsAngleOffset: 0,
             backgroundGridConcentricsCount: 5,
@@ -174,8 +174,8 @@
             colorsOpacity:      1,
             colorsSequential:   false,
             
-            textColor:  'black',
-            textFont:   'Arial, Verdana, sans-serif',
+            textColor:  '#4b5563',
+            textFont:   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textSize:   12,
             textBold:   false,
             textItalic: false,

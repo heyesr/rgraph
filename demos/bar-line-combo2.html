@@ -20,7 +20,7 @@
     <script id="rgraph-demo-source-code">
     
         data           = [20,60,70,30,80,50,80,90,50,90,50,80];
-        data2          = [20,40,60,70,90,30,40,70,60,80,20,30];
+        data2          = [-20,-40,-60,-70,-90,-30,-40,-70,-60,-80,-20,-30];
         marginLeft     = 75;
         yaxisTitleBold = true;
         labels         = RGraph.arrayClone(data2);
@@ -29,51 +29,50 @@
             id: 'cvs',
             data: RGraph.arrayClone(data),
             options: {
+                marginBottom: 50,
+                marginLeft: 50,
                 backgroundGrid: false,
                 colors: ['#31D631'],
-                marginLeft: 75,
-                marginBottom: 200,
-                yaxisLabelsCount: 4,
                 yaxisScaleMax: 100,
                 title: 'Year-on-year growth',
                 titleSize: 20,
                 titleOffsety: 5,
                 yaxisTitle: 'Current year',
                 yaxisTitleBold: true,
+                yaxisTitleOffsetx: 5,
+                yaxisScale: false,
+                xaxisPosition: 'center',
                 xaxisLabels: [],
                 xaxisLabelsSize: 10,
                 xaxisLabelsBold: true,
                 xaxisLabelsOffsety: -12
             }
-        }).wave(null, function (obj)
-        {
-            obj.set('xaxisLabels', data);
-            RGraph.redraw();
-        });
+        }).wave();
+
+
+
+
+
+
+
 
         bar2 = new RGraph.Bar({
             id: 'cvs',
             data: RGraph.arrayClone(data2),
             options: {
+                marginBottom: 50,
+                marginLeft: 50,
                 xaxisPosition: 'top',
                 yaxisScaleMax: 100,
-                yaxisTitle: 'Previous year',
                 backgroundGrid: false,
                 colors: ['#2DD0D9'],
-                marginLeft: 75,
-                marginTop: 200,
-                yaxisLabelsSpecific: ['','25','50','75','100'],
-                yaxisTitleBold: true,
+                xaxisPosition: 'center',
                 xaxisLabels: [],
                 xaxisLabelsSize: 10,
                 xaxisLabelsBold: true,
                 xaxisLabelsOffsety: 14
             }
-        }).wave(null, function (obj)
-        {
-            obj.set('xaxisLabels', data2);
-            RGraph.redraw();
-        });
+        }).wave();
 
         new RGraph.Bar({
             id: 'cvs',
@@ -81,6 +80,7 @@
             options: {
                 backgroundGrid: false,
                 yaxisScale: false,
+                yaxisScaleMax: 100,
                 marginLeft: 75,
                 xaxisLabels: RGraph.MONTHS_SHORT,
                 xaxisLabelsOffsety: 2,
@@ -96,11 +96,12 @@
                 colors: ['black'],
                 linewidth: 3,
                 backgroundGrid: false,
-                marginLeft: 75,
                 marginInner: 25,
                 yaxisLabels: false,
-                marginBottom: 200,
+                marginBottom: 50,
+                marginLeft: 50,
                 yaxisScale: false,
+                xaxisPosition: 'center',
                 tickmarksLinewidth: 2,
                 tickmarksStyle: 'circle',
                 tickmarksSize: 5

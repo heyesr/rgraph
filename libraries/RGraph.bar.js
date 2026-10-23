@@ -49,7 +49,7 @@
             backgroundBarsColor1:       'transparent',
             backgroundBarsColor2:       'transparent',
             backgroundGrid:             true,
-            backgroundGridColor:        '#eee',
+            backgroundGridColor:        '#f3f4f6',
             backgroundGridLinewidth:    1,
             backgroundGridHsize:        20,
             backgroundGridVsize:        20,
@@ -84,7 +84,7 @@
             marginBottom:          35,
             marginLeft:            35,
             marginRight:           35,
-            marginInner:           5,
+            marginInner:           15,
             marginInnerGrouped:   1,
 
             labelsIngraph:        null,
@@ -205,9 +205,9 @@
 
             textItalic:                   false,
             textBold:                     false,
-            textColor:                    'black',
-            textSize:                     12,
-            textFont:                     'Arial, Verdana, sans-serif',
+            textColor:                    '#4b5563',
+            textSize:                     14,
+            textFont:                     'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textAccessible:               false,
             textAccessibleOverflow:      'visible',
             textAccessiblePointerevents: false,
@@ -1372,7 +1372,7 @@
                         // Check for a negative bar width
                         //
                         if (barWidth < 0) {
-                            alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
+                            //alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
                         }
 
                         // Set the fill color
@@ -1721,7 +1721,7 @@ this.context.lineTo(
                         // Check for a negative bar width
                         //
                         if (barWidth < 0) {
-                            alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
+                            //alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
                         }
 
                         for (j=0; j<dataset.length; ++j) {
@@ -1960,7 +1960,7 @@ this.context.lineTo(
                             // Check for a negative bar width
                             //
                             if (individualBarWidth < 0) {
-                                alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
+                                //alert('[RGRAPH] Warning: you have a negative bar width. This may be caused by the marginInner being too high or the width of the canvas not being sufficient.');
                             }
 
                             // If the X axis pos is in the center, we need to half the  height

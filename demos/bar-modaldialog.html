@@ -5,21 +5,21 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-    <h1>A Bar chart in a ModalDialog</h1>
+    <h1>A Bar chart in a Modal Dialog</h1>
     
     <div id="rgraph-demo-html">
         Nothing to see here!
     </div>
 
     <script>
-        ModalDialog.show({
-            id: 'string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:ModalDialog.close()">[Close dialog]</a></div>',
+        Modal.show({
+            id: 'string:<div style="text-align: center; padding: 15px"><canvas id="cvs" width="750" height="250">[No canvas support]</canvas><br /><a href="javascript:Modal.close()">[Close dialog]</a></div>',
             options: {
             }
         });
@@ -36,7 +36,7 @@
                 yaxisScaleUnitsPost: 'k',
                 colors: ['red'],
                 textSize: 14,
-                title: 'A Bar chart inside a ModalDialog',
+                title: 'A Bar chart inside a Modal Dialog',
                 marginInner: 25
             }
         }).draw();

@@ -68,7 +68,7 @@
         this.properties =
         {
             backgroundGrid:             true,
-            backgroundGridColor:        '#eee',
+            backgroundGridColor:        '#f3f4f6',
             backgroundGridVlines:       true,
             backgroundGridHlines:       false,
             backgroundGridLinewidth:    1,
@@ -131,8 +131,8 @@
             textBold:                   false,
             textItalic:                 false,
             textSize:                   12,
-            textColor:                  'black',
-            textFont:                   'Arial, Verdana, sans-serif',
+            textColor:                  '#4b5563',
+            textFont:                   'Segoe UI, Inter, Arial, Verdana, sans-serif',
             textAccessible:             false,
             textAccessibleOverflow:     'visible',
             textAccessiblePointerevents:false,
@@ -183,7 +183,7 @@
             marginRight:                35,
             marginTop:                  35,
             marginBottom:               35,
-            marginInner:                5,
+            marginInner:                15,
             marginInnerGrouped:         3,
 
 

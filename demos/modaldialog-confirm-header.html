@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
 
-    <script src="../libraries/RGraph.modaldialog.js" ></script>
+    <script src="../libraries/RGraph.modal.js" ></script>
     <script src="./demos.js" ></script>
     <meta name="robots" content="noindex, nofollow" />
 
@@ -22,7 +22,7 @@
     <script>
         document.getElementById("myButton").onclick = function ()
         {
-            ModalDialog.confirm({
+            Modal.confirm({
                 text: 'Are you sure that you want to do that?',
                 header: '<div id="header">Please confirm</div>',
                 callbacks: {
@@ -31,8 +31,8 @@
                 },
                 dialog: {
                     style: [
-                        '.ModalDialog_dialog {overflow: hidden;border-radius: 0 !important;box-shadow: 0 0 25px #aaa;font-size: 18pt !important;}',
-                        '.ModalDialog_dialog div#header {margin: -5px;margin-bottom: 10px;padding: 5px; padding-left: 10px;background-color: #ccc; border: 1px solid gray; line-height: 30px;font-weight: bold;font-style:italic;}'
+                        '.Modal_dialog {overflow: hidden;border-radius: 0 !important;box-shadow: 0 0 25px #aaa;font-size: 18pt !important;}',
+                        '.Modal_dialog div#header {margin: -5px;margin-bottom: 10px;padding: 5px; padding-left: 10px;background-color: #ccc; border: 1px solid gray; line-height: 30px;font-weight: bold;font-style:italic;}'
                     ]
                 }
             });
